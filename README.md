@@ -9,14 +9,17 @@ point, recorded in `docs/key-tape.md`.
 
 ```sh
 direnv allow          # or: nix develop
-cargo test
 stfst compile recipe.toml
-stfst test build/dicts/emily-symbols.stfst tests/golden/emily-symbols.tsv
+scripts/check.sh      # unit tests, then the golden files
+stfst bench build/dicts/typey-type.stfst --system systems/stenotype-extended.toml
 ```
 
 HFST and foma come from the flake and are needed only to *build* a dictionary.
 Nothing at runtime links them, which matters because HFST is GPLv3 and the
-eventual consumer is an Android keyboard.
+eventual consumer is an Android keyboard. `stfst-ol` reads the compiled
+artifact, so `lookup`, `test` and `bench` need nothing on `PATH`;
+`--engine hfst` switches them to HFST's reader, which is how
+`scripts/crosscheck-ol.sh` checks ours.
 
 ## Layout
 
@@ -28,7 +31,7 @@ eventual consumer is an Android keyboard.
 | `tests/golden/` | Host-independent golden tests: a tape, a tab, the expected records. |
 | `crates/stfst-core` | Systems, the key tape, the record language, the golden format. No FST dependency, so a host can link it. |
 | `crates/stfst-compile` | The compiler: prelude generation, JSON import, the HFST pipeline. |
-| `crates/stfst-ol` | Reader for the `hfstol` runtime format. Not written yet. |
+| `crates/stfst-ol` | Reader for the `hfstol` runtime format: mapped, no decode, no HFST. |
 | `crates/stfst-dict` | The runtime: longest match, priority stack. Not written yet. |
 | `crates/stfst-cli` | `stfst`. Testing only. |
 

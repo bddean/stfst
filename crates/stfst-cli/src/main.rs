@@ -1,11 +1,12 @@
-mod oracle;
+mod bench;
+mod lookup;
 
 use std::path::PathBuf;
 
 use anyhow::{Context, Result};
 use clap::{Parser, Subcommand};
+use lookup::Engine;
 use stfst_compile::lexc::Align;
-use oracle::{HfstLookup, Lookup};
 use stfst_core::{golden, System};
 
 #[derive(Parser)]
@@ -50,11 +51,30 @@ enum Command {
         system: PathBuf,
         /// Outlines as a Plover dictionary spells them; stdin if absent.
         outlines: Vec<String>,
+        #[arg(long, value_enum, default_value_t = Engine::Stfst)]
+        engine: Engine,
+        /// Read the arguments as key tapes, not as Plover outlines.
+        #[arg(long)]
+        tape: bool,
     },
     /// Run a golden test file against a compiled artifact.
     Test {
         artifact: PathBuf,
         golden: PathBuf,
+        #[arg(long, value_enum, default_value_t = Engine::Stfst)]
+        engine: Engine,
+    },
+    /// Measure lookup latency in process, which is the number M0 asks for.
+    Bench {
+        artifact: PathBuf,
+        #[arg(long)]
+        system: PathBuf,
+        /// Read stdin as key tapes, not as Plover outlines.
+        #[arg(long)]
+        tape: bool,
+        /// Passes over the whole probe list.
+        #[arg(long, default_value_t = 1)]
+        reps: usize,
     },
     /// Emit the generated xfst prelude for a system.
     Prelude {
@@ -128,14 +148,13 @@ fn main() -> Result<()> {
             artifact,
             system,
             outlines,
+            engine,
+            tape,
         } => {
             let sys = System::load(&system)?;
             let outlines = or_stdin(outlines)?;
-            let mut tapes = Vec::new();
-            for outline in &outlines {
-                tapes.push(sys.to_tape(&sys.parse_outline(outline)?));
-            }
-            let results = HfstLookup::open(&artifact)?.lookup_batch(&tapes)?;
+            let tapes = to_tapes(&sys, &outlines, tape)?;
+            let results = lookup::open(&artifact, engine)?.lookup_batch(&tapes)?;
             for ((outline, tape), records) in outlines.iter().zip(&tapes).zip(&results) {
                 if records.is_empty() {
                     println!("{outline}\t{tape}\t-");
@@ -144,7 +163,11 @@ fn main() -> Result<()> {
                 }
             }
         }
-        Command::Test { artifact, golden: path } => {
+        Command::Test {
+            artifact,
+            golden: path,
+            engine,
+        } => {
             let text = std::fs::read_to_string(&path)
                 .with_context(|| format!("reading {}", path.display()))?;
             let cases = golden::parse(&text)?;
@@ -157,7 +180,7 @@ fn main() -> Result<()> {
             }
 
             let tapes: Vec<String> = cases.iter().map(|c| c.tape.clone()).collect();
-            let results = HfstLookup::open(&artifact)?.lookup_batch(&tapes)?;
+            let results = lookup::open(&artifact, engine)?.lookup_batch(&tapes)?;
             let mut failed = 0;
             for (case, got) in cases.iter().zip(results) {
                 let outcome = golden::Outcome {
@@ -178,6 +201,16 @@ fn main() -> Result<()> {
                 anyhow::bail!("{failed} golden cases failed");
             }
         }
+        Command::Bench {
+            artifact,
+            system,
+            tape,
+            reps,
+        } => {
+            let sys = System::load(&system)?;
+            let tapes = to_tapes(&sys, &or_stdin(Vec::new())?, tape)?;
+            bench::run(&artifact, &tapes, reps)?;
+        }
         Command::Prelude { system } => {
             print!("{}", stfst_compile::prelude::generate(&System::load(&system)?));
         }
@@ -196,6 +229,20 @@ fn main() -> Result<()> {
         }
     }
     Ok(())
+}
+
+/// Probes as key tapes, whether they arrived as tapes or as Plover outlines.
+fn to_tapes(sys: &System, given: &[String], already_tapes: bool) -> Result<Vec<String>> {
+    given
+        .iter()
+        .map(|s| {
+            if already_tapes {
+                Ok(s.clone())
+            } else {
+                Ok(sys.to_tape(&sys.parse_outline(s)?))
+            }
+        })
+        .collect()
 }
 
 /// Read outlines from stdin when none are given as arguments, so a caller can

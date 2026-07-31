@@ -1,37 +1,62 @@
-//! Looking up a tape in a compiled artifact.
+//! Looking up a tape in a compiled artifact, two ways.
 //!
-//! `hfst-optimized-lookup` is the lookup here, which is fine for a testing CLI
-//! and wrong for anything embedded: it is a subprocess, and HFST is GPLv3. The
-//! seam exists so `stfst-ol` replaces it without the callers noticing.
+//! `stfst-ol` is the reader a host embeds. `hfst-optimized-lookup` is a
+//! subprocess and links GPLv3 code, so it is here for one purpose: to hold our
+//! reader honest. Any tape the two disagree on is our bug.
 
 use std::io::Write;
 use std::path::{Path, PathBuf};
 use std::process::{Command, Stdio};
 
 use anyhow::{bail, Context, Result};
+use stfst_ol::Automaton;
 
 pub trait Lookup {
-    /// Every record the artifact returns for each tape, in the same order as
-    /// the tapes given.
+    /// Every record the artifact returns for each tape, in the order given.
     fn lookup_batch(&self, tapes: &[String]) -> Result<Vec<Vec<String>>>;
 }
 
-pub struct HfstLookup {
-    artifact: PathBuf,
+#[derive(Debug, Clone, Copy, PartialEq, Eq, clap::ValueEnum)]
+pub enum Engine {
+    /// Our own reader, mapped in process.
+    Stfst,
+    /// HFST's, as a subprocess.
+    Hfst,
 }
 
-impl HfstLookup {
-    pub fn open(artifact: &Path) -> Result<Self> {
-        let forward = if artifact.is_dir() {
-            artifact.join("forward.hfstol")
-        } else {
-            artifact.to_path_buf()
-        };
-        if !forward.exists() {
-            bail!("no automaton at {}", forward.display());
-        }
-        Ok(HfstLookup { artifact: forward })
+pub fn open(artifact: &Path, engine: Engine) -> Result<Box<dyn Lookup>> {
+    let forward = forward(artifact)?;
+    Ok(match engine {
+        Engine::Stfst => Box::new(Automaton::open(&forward)?),
+        Engine::Hfst => Box::new(HfstLookup { artifact: forward }),
+    })
+}
+
+pub fn forward(artifact: &Path) -> Result<PathBuf> {
+    let forward = if artifact.is_dir() {
+        artifact.join("forward.hfstol")
+    } else {
+        artifact.to_path_buf()
+    };
+    if !forward.exists() {
+        bail!("no automaton at {}", forward.display());
     }
+    Ok(forward)
+}
+
+impl Lookup for Automaton {
+    fn lookup_batch(&self, tapes: &[String]) -> Result<Vec<Vec<String>>> {
+        // A tape using a symbol the automaton does not have matches nothing,
+        // which is the same answer as a tape with no path.
+        Ok(tapes
+            .iter()
+            .map(|t| self.lookup(t).unwrap_or_default())
+            .collect())
+    }
+}
+
+struct HfstLookup {
+    artifact: PathBuf,
 }
 
 impl Lookup for HfstLookup {
@@ -44,13 +69,19 @@ impl Lookup for HfstLookup {
             .stderr(Stdio::piped())
             .spawn()
             .context("spawning hfst-optimized-lookup")?;
-        {
-            let stdin = child.stdin.as_mut().expect("piped");
-            for tape in tapes {
-                writeln!(stdin, "{tape}")?;
+        // Write from a thread. hfst answers as it reads, so filling its stdout
+        // pipe while we still hold the pen deadlocks both ends.
+        let mut stdin = child.stdin.take().expect("piped");
+        let batch = tapes.to_vec();
+        let writer = std::thread::spawn(move || {
+            for tape in &batch {
+                if writeln!(stdin, "{tape}").is_err() {
+                    return; // the child died; its stderr is the better report
+                }
             }
-        }
+        });
         let out = child.wait_with_output()?;
+        writer.join().map_err(|_| anyhow::anyhow!("writer panicked"))?;
         if !out.status.success() {
             bail!(
                 "hfst-optimized-lookup failed: {}",

@@ -28,9 +28,8 @@ open('probe.outlines', 'w').write('\n'.join(random.sample(list(d), 20000)) + '\n
 PY
 ../$B tape --system "../$SYS" < probe.outlines | cut -f2 > probe.tape
 
-echo "== lookup throughput"
-/usr/bin/time -l hfst-optimized-lookup -q m0.hfstol < probe.tape > m0.out 2> m0.look.time
-LOOK_REAL=$(grep -E "^ *[0-9.]+ real" m0.look.time | awk '{print $1}')
+echo "== lookup latency"
+../$B bench m0.hfstol --system "../$SYS" --tape --reps 5 < probe.tape
 
 python3 - "$JSON" <<'PY'
 import json, resource, sys, time
@@ -51,5 +50,3 @@ PY
 echo "artifact hfstol         $(size m0.hfstol) bytes (mmap-able, zero heap)"
 echo "source json             $(size "$JSON") bytes"
 echo "compile peak rss        $(rss m0.lexc.time) bytes"
-echo "hfstol lookup wall      ${LOOK_REAL}s for 20000 probes"
-echo "hfstol hit lines        $(grep -c . m0.out || true)"

@@ -72,7 +72,6 @@ pub struct System {
     pub separator: char,
     keys: Vec<Key>,
     by_symbol: BTreeMap<char, usize>,
-    by_name: BTreeMap<String, usize>,
     /// digit -> index into `keys`
     numbers: BTreeMap<char, usize>,
     implicit_hyphen: Vec<usize>,
@@ -176,7 +175,6 @@ impl System {
             separator: file.separator,
             keys,
             by_symbol,
-            by_name,
             numbers,
             implicit_hyphen,
             first_right,
