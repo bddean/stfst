@@ -1,0 +1,84 @@
+! Shrimple, whole-keyboard fingerspelling for foreign words and names.
+! Ported from Shrimple-WSI-English.py; the three tables are transcribed by
+! scripts/gen-shrimple-tables.py into shrimple-tables.xfst, which must be
+! compiled before this file.
+!
+! The Python is 597 lines because a Plover dictionary cannot express a
+! multi-stroke language: it declares LONGEST_KEY = 40, re-derives the whole run
+! on every stroke, and needs lists of strokes that "exit Shrimple" to stop the
+! greedy match. Here the language is the entry:
+!
+!     ^ / syllable / syllable / ...        syllable = starter vowel ender
+!
+! and the runtime's longest match ends it, so the exit lists become one
+! subtraction rather than five lookup-time tests.
+!
+! Segmentation is the interesting part. A chord is cut into consecutive table
+! entries, so STKPWHR can be one piece or several, and Python resolves that with
+! fewest-pieces-first. That is a priority union over piece count, which xfst has,
+! so the rule survives as a rule instead of becoming a search.
+
+! Priority union, spelled out. `.P.` complements over the whole alphabet, text
+! included, and nesting five of those wanted a gigabyte. On the input side the
+! alphabet is only keys, so subtract the domains there and compose.
+define PU(A, B)  [ A | [ [ B.u - A.u ] .o. B ] ] ;
+
+define Piece(T)  PU(T, PU([ T T ], PU([ T T T ], PU([ T T T T ], [ T T T T T ])))) ;
+
+! A cut into table entries does not know steno order: nothing in `T+` stops it
+! reading `t` then `b`, or `s` twice. The tape does know, so constrain the domain
+! to an ordered subset of the bank. The compiler caught this, with
+! `^/KPSSEp/WWAlrz` as the counterexample.
+define Left          [ (S) (T) (K) (P) (W) (H) (R) ] ;
+define Right         [ (f) (r) (p) (b) (l) (g) (t) (s) (d) (z) ] ;
+
+define Starters      [ Left  .o. Piece(Starter) ] ;
+define StartersStar  [ Left  .o. [ Starter* StarterStar Starter* ] .o. Piece([ Starter | StarterStar ]) ] ;
+define Enders        [ Right .o. Piece(Ender) ] ;
+define EndersStar    [ Right .o. [ Ender* EnderStar Ender* ] .o. Piece([ Ender | EnderStar ]) ] ;
+
+! A vowel straddles the star, so the two halves come from the table and the star
+! sits between them, claimed by whoever the shape says.
+define Vowel      VowelBody ;
+define VowelStar  VowelStarBody ;
+define VowelPass  VowelSplitBody ;
+
+! Where the star goes: the ender claims it, else the vowel, else the starter.
+! Python's cascade in that order, and priority union is that order.
+! `^` marks the syllable as attached, which is a record flag and not text, and
+! Canonical moves it to the end. It sits before the left bank on the tape, so it
+! sits there here: a concatenation is in tape order or it is not an outline, and
+! the compiler says which.
+define Caret      [ [ "^" .x. "[ATTACH_L]" ] | 0 ] ;
+
+define Plain      [ Caret (Starters)     Vowel      (Enders)     ] ;
+define StarEnder  [ Caret (Starters)     VowelPass  EndersStar   ] ;
+define StarVowel  [ Caret (Starters)     VowelStar  (Enders)     ] ;
+define StarStart  [ Caret StartersStar   VowelPass  (Enders)     ] ;
+define Syllable   PU(Plain, PU(StarEnder, PU(StarVowel, StarStart))) ;
+
+! `#` on a syllable capitalises it. A record has no case operator that reaches
+! inside the body, and it does not need one: compose the case change onto the
+! syllable while the syllable is still its own relation, so `.#.` is its first
+! letter and not the record's.
+define UpFirst    [ a -> A , b -> B , c -> C , d -> D , e -> E , f -> F , g -> G , h -> H , i -> I , j -> J , k -> K , l -> L , m -> M , n -> N , o -> O , p -> P , q -> Q , r -> R , s -> S , t -> T , u -> U , v -> V , w -> W , x -> X , y -> Y , z -> Z || .#. _ ] ;
+define Cell       [ [ [ "#" .x. 0 ] [ Syllable .o. UpFirst ] ] | Syllable ] ;
+
+! `[e]`, `[y]` and `[s]` are Shrimple's orthography notes. The first two move a
+! letter past the ender, and the third two are attach-suffix requests.
+define OrthoE     [ {%[e%]} -> {e} ] ;
+define OrthoY     [ {%[y%]} -> 0 ] ;
+define OrthoS     [ {%[s%]} -> 0 ] ;
+define Ortho      [ OrthoE .o. OrthoY .o. OrthoS ] ;
+
+! A bare symbol is the identity pair, so the entry stroke and the separators
+! reach the record unless they are deleted. The record language cannot catch it:
+! `^` and `/` are legal text.
+define Join       [ Sep .x. 0 ] ;
+define Word       [ Cell [ Join Cell ]* ] ;
+
+! The entry stroke alone announces the mode. Plover returned the literal text
+! `{Shrimple}` for it, which is what a host shows while the mode is open.
+define Enter      [ "^" .x. {Shrimple} ] ;
+
+define Grammar    [ [ Enter | [ [ "^" .x. 0 ] Join Word ] ] .o. Ortho .o. Canonical ] ;

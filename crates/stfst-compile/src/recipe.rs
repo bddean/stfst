@@ -21,8 +21,10 @@ pub struct Dict {
     /// Higher shadows lower, as `plover.cfg` file order does today.
     pub priority: i32,
     /// Hand-written xfst defining `Grammar`. Gets the §3 acceptor checks.
+    /// Several files concatenate in order, which is how two dictionaries share
+    /// a table: the shared file comes first and the grammar reads its defines.
     #[serde(default)]
-    pub xfst: Option<PathBuf>,
+    pub xfst: Vec<PathBuf>,
     /// A Plover JSON dictionary to import.
     #[serde(default)]
     pub json: Option<PathBuf>,
@@ -36,17 +38,17 @@ fn default_version() -> String {
 
 impl Dict {
     pub fn source(&self) -> Result<Source<'_>> {
-        match (&self.xfst, &self.json) {
-            (Some(p), None) => Ok(Source::Xfst(p)),
-            (None, Some(p)) => Ok(Source::Json(p)),
-            (None, None) => bail!("{}: needs one of `xfst` or `json`", self.name),
-            (Some(_), Some(_)) => bail!("{}: has both `xfst` and `json`", self.name),
+        match (self.xfst.is_empty(), &self.json) {
+            (false, None) => Ok(Source::Xfst(&self.xfst)),
+            (true, Some(p)) => Ok(Source::Json(p)),
+            (true, None) => bail!("{}: needs one of `xfst` or `json`", self.name),
+            (false, Some(_)) => bail!("{}: has both `xfst` and `json`", self.name),
         }
     }
 }
 
 pub enum Source<'a> {
-    Xfst(&'a Path),
+    Xfst(&'a [PathBuf]),
     Json(&'a Path),
 }
 

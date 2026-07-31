@@ -4,7 +4,12 @@ system = "systems/stenotype-extended.toml"
 [[dict]]
 name = "emily-symbols"
 priority = 100
-xfst = "dictionaries/emily-symbols.xfst"
+xfst = ["dictionaries/emily-symbols.xfst"]
+
+[[dict]]
+name = "shrimple"
+priority = 90
+xfst = ["dictionaries/shrimple-tables.xfst", "dictionaries/shrimple.xfst"]
 
 [[dict]]
 name = "typey-type"

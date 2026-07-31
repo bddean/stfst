@@ -66,7 +66,7 @@ fn run(program: &str, args: &[&str]) -> Result<String> {
 /// over every reachable path rather than over a sampled test suite.
 pub fn compile_xfst(
     system: &System,
-    source: &Path,
+    sources: &[PathBuf],
     work: &Path,
     out_fst: &Path,
 ) -> Result<Checks> {
@@ -74,11 +74,12 @@ pub fn compile_xfst(
     let script = work.join("build.xfst");
     let net = work.join("grammar.hfst");
 
-    let body = std::fs::read_to_string(source)
-        .with_context(|| format!("reading {}", source.display()))?;
-
     let mut s = prelude::generate(system);
-    s.push_str(&body);
+    for source in sources {
+        let body = std::fs::read_to_string(source)
+            .with_context(|| format!("reading {}", source.display()))?;
+        s.push_str(&body);
+    }
     s.push_str(&format!(
         "\npush Grammar\nsave stack {}\n",
         net.display()

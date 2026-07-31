@@ -21,9 +21,9 @@ pub fn compile_recipe(recipe_path: &Path, out: &Path, work: &Path) -> Result<()>
         let forward = work_dir.join("forward.hfstol");
 
         match dict.source()? {
-            recipe::Source::Xfst(src) => {
-                let src = recipe::resolve(&base, src);
-                let checks = pipeline::compile_xfst(&system, &src, &work_dir, &forward)?;
+            recipe::Source::Xfst(srcs) => {
+                let srcs: Vec<_> = srcs.iter().map(|s| recipe::resolve(&base, s)).collect();
+                let checks = pipeline::compile_xfst(&system, &srcs, &work_dir, &forward)?;
                 if !checks.passed() {
                     bail!("{} failed its checks:\n{}", dict.name, checks.report());
                 }
