@@ -4,6 +4,7 @@
 //! No I/O policy and no FST toolchain dependency, so a host can link this and
 //! the runtime without pulling in the compiler.
 
+pub mod golden;
 pub mod record;
 pub mod system;
 

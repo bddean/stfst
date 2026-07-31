@@ -37,6 +37,10 @@ impl ImportReport {
 pub struct Import {
     pub lexc: String,
     pub report: ImportReport,
+    /// Golden cases: `(tape, record)`. Every entry whose record carries a tag,
+    /// since that is where the translation grammar can be wrong, plus a fixed
+    /// stride through the rest. Deterministic, so the file does not churn.
+    pub golden: Vec<(String, String)>,
 }
 
 pub fn import_file(
@@ -55,6 +59,8 @@ pub fn import(raw: &BTreeMap<String, String>, system: &System, align: Align) -> 
         ..Default::default()
     };
     let mut entries: Vec<(String, String)> = Vec::with_capacity(raw.len());
+    let mut golden: Vec<(String, String)> = Vec::new();
+    const STRIDE: usize = 500;
 
     for (outline, translation) in raw {
         let parsed = match system.parse_outline(outline) {
@@ -78,14 +84,21 @@ pub fn import(raw: &BTreeMap<String, String>, system: &System, align: Align) -> 
                 continue;
             }
         };
-        let upper = lexc::escape(&system.to_tape(&parsed));
-        let lower = lexc::escape_symbols(&record.to_symbols());
-        entries.push((upper, lower));
+        let tape = system.to_tape(&parsed);
+        let plain = record.to_string();
+        if plain.contains('[') || report.imported % STRIDE == 0 {
+            golden.push((tape.clone(), plain));
+        }
+        entries.push((
+            lexc::escape(&tape),
+            lexc::escape_symbols(&record.to_symbols()),
+        ));
         report.imported += 1;
     }
 
     Import {
         lexc: lexc::lexicon(entries, align),
         report,
+        golden,
     }
 }
