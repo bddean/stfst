@@ -234,10 +234,10 @@ mod tests {
 
     #[test]
     fn the_long_tail_is_text_plus_one_attach_flag() {
-        assert_eq!(r("{^ing}").to_string(), "[ATTACH_L]ing");
-        assert_eq!(r("{cyto^}").to_string(), "[ATTACH_R]cyto");
-        assert_eq!(r("{^s}").to_string(), "[ATTACH_L]s");
-        assert_eq!(r("{^a^}").to_string(), "[ATTACH_L][ATTACH_R]a");
+        assert_eq!(r("{^ing}").to_string(), "ing[ATTACH_L]");
+        assert_eq!(r("{cyto^}").to_string(), "cyto[ATTACH_R]");
+        assert_eq!(r("{^s}").to_string(), "s[ATTACH_L]");
+        assert_eq!(r("{^a^}").to_string(), "a[ATTACH_L][ATTACH_R]");
     }
 
     #[test]
@@ -249,8 +249,8 @@ mod tests {
     fn case_and_glue() {
         assert_eq!(r("{-|}").to_string(), "[CAP_NEXT]");
         assert_eq!(r("{>}").to_string(), "[LOWER_NEXT]");
-        assert_eq!(r("{&1}").to_string(), "[GLUE]1");
-        assert_eq!(r("{~|'^}").to_string(), "[ATTACH_R][CARRY_CAP]'");
+        assert_eq!(r("{&1}").to_string(), "1[GLUE]");
+        assert_eq!(r("{~|'^}").to_string(), "'[ATTACH_R][CARRY_CAP]");
     }
 
     #[test]
@@ -258,7 +258,7 @@ mod tests {
         assert_eq!(r("{#Return}").to_string(), "[KEY]Return[END]");
         assert_eq!(
             r("{#Control_L(Left)}{^}").to_string(),
-            "[ATTACH_L][ATTACH_R][KEY]Control_L(Left)[END]"
+            "[KEY]Control_L(Left)[END][ATTACH_L][ATTACH_R]"
         );
         assert_eq!(
             r("{#Return}{#Return}").to_string(),
@@ -269,17 +269,17 @@ mod tests {
     #[test]
     fn flags_apply_to_the_record_wherever_they_sit() {
         // Plover writes the cap flag last; a record carries it as a leading tag.
-        assert_eq!(r("world? {-|}").to_string(), "[CAP_NEXT]world? ");
+        assert_eq!(r("world? {-|}").to_string(), "world? [CAP_NEXT]");
         assert_eq!(
             r("{#Return}{#Return}{^}{-|}").to_string(),
-            "[ATTACH_L][ATTACH_R][CAP_NEXT][KEY]Return[END][KEY]Return[END]"
+            "[KEY]Return[END][KEY]Return[END][ATTACH_L][ATTACH_R][CAP_NEXT]"
         );
     }
 
     #[test]
     fn escaped_braces_are_text() {
         assert_eq!(r("\\{").to_string(), "{");
-        assert_eq!(r("{^ ^}\\{\\}").to_string(), "[ATTACH_L][ATTACH_R] {}");
+        assert_eq!(r("{^ ^}\\{\\}").to_string(), " {}[ATTACH_L][ATTACH_R]");
     }
 
     #[test]
@@ -304,7 +304,7 @@ mod tests {
             Err(TranslateError::Unsupported(_))
         ));
         // A pipe is ordinary text, so this one is supported.
-        assert_eq!(r("{^|^}").to_string(), "[ATTACH_L][ATTACH_R]|");
+        assert_eq!(r("{^|^}").to_string(), "|[ATTACH_L][ATTACH_R]");
     }
 
 }

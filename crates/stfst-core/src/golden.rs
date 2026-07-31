@@ -144,7 +144,7 @@ mod tests {
 
     #[test]
     fn an_illegal_expectation_is_caught() {
-        let cases = parse("Sr\ting[CAP_NEXT]\n").unwrap();
+        let cases = parse("Sr\t[CAP_NEXT]ing\n").unwrap();
         assert_eq!(check_expectations(&cases).len(), 1);
     }
 

@@ -1,8 +1,14 @@
 //! The lower tape: an output record.
 //!
 //! Both tapes are strings, which is the hard constraint of the formalism, so a
-//! record is a serialisation and never a nested structure. Tags come from a
-//! closed alphabet in canonical order, then the body.
+//! record is a serialisation and never a nested structure. The body comes first,
+//! then the closed tags in canonical order.
+//!
+//! The tags come last because the keys that decide them come last. A record that
+//! led with its flags could not be written until the whole outline had been
+//! read, so a forward lookup had to guess the flags and carry every guess: 96
+//! live paths after one key, measured in `docs/latency.md`. Nothing else prefers
+//! flags first, because this parser takes them in any order anyway.
 //!
 //! Nothing here parses a flat string as the primary path. A tag and a literal
 //! `[` are different *symbols* on the tape, and only the printed form confuses
@@ -119,8 +125,8 @@ pub enum RecordError {
     ConflictingCase,
     #[error("[CANCEL_SPACE] and [RETRO_SPACE] cannot both apply")]
     ConflictingSpace,
-    #[error("{0} appears after the body, but tags are canonically leading")]
-    TagAfterBody(String),
+    #[error("{0} appears after a flag tag, but the flags come last")]
+    BodyAfterFlags(String),
     #[error("unterminated {0}")]
     Unterminated(String),
     #[error("unknown tag {0}")]
@@ -142,13 +148,16 @@ impl Record {
     /// Parse a tape symbol sequence. Each element is either a tag (`[KEY]`) or
     /// a single character of text.
     pub fn parse_symbols(symbols: &[&str]) -> Result<Record, RecordError> {
-        let mut flags = Flags::default();
         let mut body = Vec::new();
-        let mut i = 0;
+        let i = Self::parse_body(symbols, &mut body)?;
+        let flags = Self::parse_flags(&symbols[i..])?;
+        Ok(Record { flags, body })
+    }
 
-        // Leading closed tags.
-        while i < symbols.len() {
-            let s = symbols[i];
+    /// The trailing closed tags.
+    fn parse_flags(symbols: &[&str]) -> Result<Flags, RecordError> {
+        let mut flags = Flags::default();
+        for &s in symbols {
             let set = |slot: &mut bool| -> Result<(), RecordError> {
                 if *slot {
                     return Err(RecordError::RepeatedTag(s.to_string()));
@@ -196,13 +205,16 @@ impl Record {
                     let n = counted_tag(s, "REP").unwrap();
                     flags.repeat = NonZeroU8::new(n).ok_or(RecordError::ZeroRepeat)?;
                 }
-                _ => break,
+                _ => return Err(RecordError::BodyAfterFlags(s.to_string())),
             }
-            i += 1;
         }
+        Ok(flags)
+    }
 
-        // Body.
-        while i < symbols.len() {
+    /// The body, up to the first flag tag. Returns where the flags start.
+    fn parse_body(symbols: &[&str], body: &mut Vec<Item>) -> Result<usize, RecordError> {
+        let mut i = 0;
+        while i < symbols.len() && !is_flag(symbols[i]) {
             let s = symbols[i];
             match s {
                 "[KEY]" => {
@@ -224,12 +236,7 @@ impl Record {
                     });
                     i = next;
                 }
-                _ if is_tag(s) => {
-                    if FLAG_TAGS.contains(&s) || counted_tag(s, "REP").is_some() {
-                        return Err(RecordError::TagAfterBody(s.to_string()));
-                    }
-                    return Err(RecordError::UnknownTag(s.to_string()));
-                }
+                _ if is_tag(s) => return Err(RecordError::UnknownTag(s.to_string())),
                 _ => {
                     // Merge a run of characters into one text item.
                     let mut text = String::new();
@@ -241,13 +248,38 @@ impl Record {
                 }
             }
         }
-
-        Ok(Record { flags, body })
+        Ok(i)
     }
 
     /// The canonical tape form, as symbols.
     pub fn to_symbols(&self) -> Vec<String> {
         let mut out: Vec<String> = Vec::new();
+        for item in &self.body {
+            match item {
+                Item::Text(t) => out.extend(t.chars().map(|c| c.to_string())),
+                Item::Key(k) => {
+                    out.push("[KEY]".into());
+                    out.extend(k.chars().map(|c| c.to_string()));
+                    out.push("[END]".into());
+                }
+                Item::Copy(n) => out.push(copy_tag(*n)),
+                Item::Cmd { name, arg } | Item::Meta { name, arg } => {
+                    out.push(
+                        if matches!(item, Item::Cmd { .. }) {
+                            "[CMD]"
+                        } else {
+                            "[META]"
+                        }
+                        .into(),
+                    );
+                    out.extend(name.chars().map(|c| c.to_string()));
+                    out.push("[ARG]".into());
+                    out.extend(arg.chars().map(|c| c.to_string()));
+                    out.push("[END]".into());
+                }
+            }
+        }
+
         let f = &self.flags;
         match f.space {
             Some(SpaceOp::Cancel) => out.push("[CANCEL_SPACE]".into()),
@@ -274,31 +306,6 @@ impl Record {
         if f.repeat.get() != 1 {
             out.push(repeat_tag(f.repeat.get()));
         }
-        for item in &self.body {
-            match item {
-                Item::Text(t) => out.extend(t.chars().map(|c| c.to_string())),
-                Item::Key(k) => {
-                    out.push("[KEY]".into());
-                    out.extend(k.chars().map(|c| c.to_string()));
-                    out.push("[END]".into());
-                }
-                Item::Copy(n) => out.push(copy_tag(*n)),
-                Item::Cmd { name, arg } | Item::Meta { name, arg } => {
-                    out.push(
-                        if matches!(item, Item::Cmd { .. }) {
-                            "[CMD]"
-                        } else {
-                            "[META]"
-                        }
-                        .into(),
-                    );
-                    out.extend(name.chars().map(|c| c.to_string()));
-                    out.push("[ARG]".into());
-                    out.extend(arg.chars().map(|c| c.to_string()));
-                    out.push("[END]".into());
-                }
-            }
-        }
         out
     }
 
@@ -310,6 +317,11 @@ impl Record {
         let refs: Vec<&str> = symbols.iter().map(|s| s.as_str()).collect();
         Record::parse_symbols(&refs)
     }
+}
+
+/// A closed tag, which is to say one that belongs after the body.
+fn is_flag(symbol: &str) -> bool {
+    FLAG_TAGS.contains(&symbol) || counted_tag(symbol, "REP").is_some()
 }
 
 /// `[REP3]` -> `Some(3)` when `prefix` is `"REP"`.
@@ -402,11 +414,11 @@ mod tests {
 
     #[test]
     fn the_doc_example_round_trips() {
-        let r = Record::parse_symbols(&syms(&["[ATTACH_L]", "[CAP_NEXT]", "i", "n", "g"])).unwrap();
+        let r = Record::parse_symbols(&syms(&["i", "n", "g", "[ATTACH_L]", "[CAP_NEXT]"])).unwrap();
         assert!(r.flags.attach_l);
         assert_eq!(r.flags.case, Some(Case::Next));
         assert_eq!(r.body, vec![Item::Text("ing".into())]);
-        assert_eq!(r.to_string(), "[ATTACH_L][CAP_NEXT]ing");
+        assert_eq!(r.to_string(), "ing[ATTACH_L][CAP_NEXT]");
     }
 
     #[test]
@@ -436,25 +448,25 @@ mod tests {
 
     #[test]
     fn repeat_is_a_flag_on_the_record() {
-        let r = Record::parse_symbols(&syms(&["[REP3]", "!"])).unwrap();
+        let r = Record::parse_symbols(&syms(&["!", "[REP3]"])).unwrap();
         assert_eq!(r.flags.repeat.get(), 3);
         assert_eq!(r.body, vec![Item::Text("!".into())]);
-        assert_eq!(r.to_string(), "[REP3]!");
+        assert_eq!(r.to_string(), "![REP3]");
     }
 
     #[test]
     fn conflicting_case_is_rejected() {
         assert_eq!(
-            Record::parse_symbols(&syms(&["[CAP_NEXT]", "[LOWER_NEXT]", "a"])),
+            Record::parse_symbols(&syms(&["a", "[CAP_NEXT]", "[LOWER_NEXT]"])),
             Err(RecordError::ConflictingCase)
         );
     }
 
     #[test]
-    fn a_trailing_flag_is_rejected_because_order_is_canonical() {
+    fn a_leading_flag_is_rejected_because_order_is_canonical() {
         assert_eq!(
-            Record::parse_symbols(&syms(&["a", "[CAP_NEXT]"])),
-            Err(RecordError::TagAfterBody("[CAP_NEXT]".into()))
+            Record::parse_symbols(&syms(&["[CAP_NEXT]", "a"])),
+            Err(RecordError::BodyAfterFlags("a".into()))
         );
     }
 
@@ -473,12 +485,12 @@ mod tests {
     #[test]
     fn display_form_round_trips() {
         for s in [
-            "[ATTACH_L][CAP_NEXT]ing",
+            "ing[ATTACH_L][CAP_NEXT]",
             "[KEY]Return[END]",
             "[CMD]wm.focus[ARG]left[END]",
-            "[REP3]!",
+            "![REP3]",
             "[COPY1]",
-            "[GLUE]a",
+            "a[GLUE]",
             "plain text",
         ] {
             let r = Record::parse_display(s).unwrap();

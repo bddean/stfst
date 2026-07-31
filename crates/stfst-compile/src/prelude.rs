@@ -59,16 +59,17 @@ pub fn generate(system: &System) -> String {
         .collect();
     out.push_str(&format!("define Rep [ {} ] ;\n", repeats.join(" | ")));
     out.push_str(
-        "define Record [ (\"[CANCEL_SPACE]\" | \"[RETRO_SPACE]\") (\"[ATTACH_L]\") \
+        "define Record [ Item* (\"[CANCEL_SPACE]\" | \"[RETRO_SPACE]\") (\"[ATTACH_L]\") \
          (\"[ATTACH_R]\") (\"[GLUE]\") (\"[CAP_NEXT]\" | \"[LOWER_NEXT]\") (\"[CARRY_CAP]\") \
-         (Rep) Item* ] ;\n\n",
+         (Rep) ] ;\n\n",
     );
 
     out.push_str("! ---- canonical order\n");
     out.push_str(
-        "! Each hoist moves its flag to the front. The transducer guesses the flag\n\
-         ! on the output before reading it, which nondeterminism makes free, and its\n\
-         ! pass-through is \"any symbol but this flag\" so later hoists still see theirs.\n",
+        "! Each hoist moves its flag to the end, and its pass-through is \"any symbol\n\
+         ! but this flag\" so a later hoist still finds its own. Flags go last because\n\
+         ! the keys that set them are last in steno order, so a dictionary emits them\n\
+         ! where it reads them and the lookup never guesses. See docs/latency.md.\n",
     );
     let mut hoists: Vec<String> = Vec::new();
     for tag in FLAG_TAGS {
@@ -83,9 +84,8 @@ pub fn generate(system: &System) -> String {
         out.push_str(&hoist(&name, &tag));
         hoists.push(name);
     }
-    // The last hoist composed ends up leftmost, so compose in reverse canonical
-    // order.
-    hoists.reverse();
+    // Each hoist appends after what the previous one appended, so composing in
+    // canonical order leaves the flags in it.
     out.push_str(&format!(
         "define Canonical [ {} ] ;\n",
         hoists.join(" .o. ")
@@ -115,7 +115,7 @@ fn camel(tag: &str) -> String {
 
 fn hoist(name: &str, tag: &str) -> String {
     format!(
-        "define {name} [ [ [ 0 .x. \"{tag}\" ] \\\"{tag}\"* [ \"{tag}\" .x. 0 ] \\\"{tag}\"* ] \
+        "define {name} [ [ \\\"{tag}\"* [ \"{tag}\" .x. 0 ] \\\"{tag}\"* [ 0 .x. \"{tag}\" ] ] \
          | \\\"{tag}\"* ] ;\n"
     )
 }

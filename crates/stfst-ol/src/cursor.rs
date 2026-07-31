@@ -5,10 +5,10 @@
 //! a symbol advances, and a plain lookup is that frontier folded over a tape.
 //! There is no separate whole-string search.
 //!
-//! The frontier is wide. A record puts its flags first and the keys that decide
-//! them last, so the automaton emits a flag prefix on a guess and carries every
-//! guess forward. That is tens of live paths per step and hundreds at the
-//! widest, most of which die. `docs/latency.md` measures it.
+//! The frontier can be wide, so this is a search and not a walk. An automaton
+//! that emits output the input has not yet decided has to guess, and every guess
+//! is a live path until a symbol kills it. An imported dictionary runs at 34
+//! paths a step for that reason, measured in `docs/latency.md`.
 
 use std::collections::HashSet;
 use std::hash::{BuildHasherDefault, Hasher};

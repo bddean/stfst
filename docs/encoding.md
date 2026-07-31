@@ -16,21 +16,21 @@ symbols:
 | encoding | states | arcs |
 |---|---|---|
 | inputs alone | 131,840 | 231,413 |
-| records alone | 62,082 | 109,672 |
-| pairwise | 274,876 | 399,365 |
-| delayed | 590,077 | 728,598 |
+| records alone | 61,983 | 109,795 |
+| pairwise | 274,327 | 398,875 |
+| delayed | 591,146 | 729,667 |
 
 **Delayed alignment is 1.8 times bigger, not smaller.** Sharing the record tails
 does work, and it costs more than it saves: an entry becomes `len(in) + len(out)`
 arcs where pairwise puts two symbols on one arc, and worse, the input side stops
 merging. Two outlines that share a suffix can share states only if what follows
 is the same, and what follows now includes the whole record. So the input
-automaton degenerates towards a trie: 590,077 states against 131,840 for the
+automaton degenerates towards a trie: 591,146 states against 131,840 for the
 inputs on their own.
 
 **Pairwise is already close to the floor.** The two sides taken separately need
-341,085 arcs, and no single automaton can beat that while also relating them.
-Pairwise spends 399,365, which is 17 per cent above a bound it cannot reach. The
+341,208 arcs, and no single automaton can beat that while also relating them.
+Pairwise spends 398,875, which is 17 per cent above a bound it cannot reach. The
 redundancy the earlier note pointed at is 17 per cent at the very most, and the
 encoding that would chase it costs 80 per cent more.
 
@@ -47,16 +47,16 @@ slot and a transition table of 8 bytes an entry. The transition table holds one
 entry per arc plus one terminator per state:
 
 ```
-399,365 arcs + 274,876 states = 674,241 transition entries
+398,875 arcs + 274,327 states = 673,202 transition entries
 ```
 
-The artifact has 674,241. Not approximately: exactly. And
+The artifact has 673,202. Not approximately: exactly. And
 
 ```
-143,706 index slots x 6  +  674,241 entries x 8  =  6,256,164
+143,071 index slots x 6  +  673,202 entries x 8  =  6,244,042
 ```
 
-against a file of 6,256,951 bytes, the difference being the header and the 181
+against a file of 6,244,829 bytes, the difference being the header and the 181
 symbol names. So the automaton the experiment builds is the automaton HFST
 builds, and any future question about size is arithmetic on states and arcs
 rather than a compile and a `stat`.

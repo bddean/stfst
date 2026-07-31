@@ -82,11 +82,19 @@ load-bearing mechanism, which is the real argument for this ordering.
 
 Not yet implemented, and not yet needed.
 
-## One tag added to the §3 table
+## Three changes to §3's record language
 
-`[CARRY_CAP]`, for Plover's `{~|}`. Twelve typey-type entries need it, Plover
-already implements it, and it is one more closed flag.
+**The flags come last, not first.** §3 puts the closed tags in front of the body.
+The keys that decide them are the last keys in steno order, so a leading position
+forces a forward lookup to guess the flags and carry every guess: 96 live paths
+one key into `#TRU`. Moving them to the end made the `emily-symbols` artifact a
+seventeenth of its size and its lookups seven times faster, measured in
+`docs/latency.md`. Nothing wanted them first, because `Record` parses tags
+wherever they fall.
 
-`[REPn]` and `[COPYn]` are enumerated rather than delimited. §3's own rule says
-closed and small should be enumerated, and single symbols can be hoisted to
+**`[CARRY_CAP]` is added**, for Plover's `{~|}`. Twelve typey-type entries need
+it, Plover already implements it, and it is one more closed flag.
+
+**`[REPn]` and `[COPYn]` are enumerated rather than delimited.** §3's own rule
+says closed and small should be enumerated, and a single symbol can be moved to
 canonical position where a multi-symbol block cannot.
