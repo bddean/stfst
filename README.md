@@ -21,6 +21,15 @@ artifact, so `lookup`, `test` and `bench` need nothing on `PATH`;
 `--engine hfst` switches them to HFST's reader, which is how
 `scripts/crosscheck-ol.sh` checks ours.
 
+## Measurements and decisions
+
+| | |
+|---|---|
+| `docs/key-tape.md` | Why the upper tape is keys and not chords, and where this repo diverges from the design doc. |
+| `docs/M0.md` | The M0 acceptance measurement: size against Plover's in-memory dictionary. |
+| `docs/latency.md` | Per-lookup latency, and why the search frontier is wide. |
+| `docs/encoding.md` | What the artifact costs, why delayed alignment would cost more, and the exact size model. |
+
 ## Layout
 
 | | |
