@@ -7,8 +7,6 @@
 //! Anything unrecognised is reported rather than guessed at. The import is only
 //! worth trusting if it says what it could not convert.
 
-use std::num::NonZeroU8;
-
 use stfst_core::record::{Case, Flags, Item, Record, SpaceOp};
 
 #[derive(Debug, thiserror::Error, PartialEq, Eq)]
@@ -220,30 +218,6 @@ fn set_space(flags: &mut Flags, want: SpaceOp) -> Result<(), TranslateError> {
     }
 }
 
-/// Collapse a repeated body into `[REPn]`, which is how emily-symbols'
-/// repetition arrives without unrolling the glyph table.
-pub fn fold_repeat(record: &mut Record) {
-    let Some(Item::Text(t)) = record.body.first() else {
-        return;
-    };
-    if record.body.len() != 1 || t.is_empty() {
-        return;
-    }
-    let chars: Vec<char> = t.chars().collect();
-    for n in (2..=9u8).rev() {
-        let n_us = n as usize;
-        if chars.len() % n_us != 0 {
-            continue;
-        }
-        let unit = chars.len() / n_us;
-        if (0..chars.len()).all(|i| chars[i] == chars[i % unit]) {
-            record.flags.repeat = NonZeroU8::new(n).unwrap();
-            record.body = vec![Item::Text(chars[..unit].iter().collect())];
-            return;
-        }
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -323,20 +297,14 @@ mod tests {
     #[test]
     fn a_nested_brace_is_reported_not_guessed() {
         assert!(translate("though. {{-|}^}").is_err());
+        // An interior caret is a transposed attach marker. typey-type spells
+        // the "thousand" suffix `{,^000}` where it means `{^,000}`.
         assert!(matches!(
-            translate("{^|foo}"),
+            translate("{,^000}"),
             Err(TranslateError::Unsupported(_))
         ));
+        // A pipe is ordinary text, so this one is supported.
+        assert_eq!(r("{^|^}").to_string(), "[ATTACH_L][ATTACH_R]|");
     }
 
-    #[test]
-    fn repetition_folds_into_a_count() {
-        let mut rec = r("!!!");
-        fold_repeat(&mut rec);
-        assert_eq!(rec.to_string(), "[REP3]!");
-
-        let mut rec = r("aba");
-        fold_repeat(&mut rec);
-        assert_eq!(rec.to_string(), "aba");
-    }
 }

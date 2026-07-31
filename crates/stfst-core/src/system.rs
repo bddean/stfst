@@ -195,10 +195,6 @@ impl System {
         self.by_symbol.get(&symbol).copied()
     }
 
-    pub fn index_of_name(&self, name: &str) -> Option<usize> {
-        self.by_name.get(name).copied()
-    }
-
     /// The steno order as a symbol string, which is how the prelude spells it.
     pub fn order(&self) -> String {
         self.keys.iter().map(|k| k.symbol).collect()

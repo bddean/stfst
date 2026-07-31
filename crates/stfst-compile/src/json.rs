@@ -23,10 +23,6 @@ pub struct ImportReport {
 }
 
 impl ImportReport {
-    pub fn skipped(&self) -> usize {
-        self.bad_outlines.len() + self.bad_translations.len()
-    }
-
     pub fn summary(&self) -> String {
         format!(
             "{} of {} entries imported; {} outlines unparseable, {} translations unsupported",

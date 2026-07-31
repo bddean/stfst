@@ -127,9 +127,7 @@ pub enum RecordError {
     UnknownTag(String),
     #[error("{0} needs [ARG] before [END]")]
     MissingArg(String),
-    #[error("{tag} value {value:?} is not a number")]
-    NotANumber { tag: String, value: String },
-    #[error("[REP]0[END] is not a repetition")]
+    #[error("[REP0] is not a repetition")]
     ZeroRepeat,
 }
 
