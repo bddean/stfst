@@ -1,0 +1,12 @@
+# The dictionary stack. Priority mirrors plover.cfg order: higher shadows lower.
+system = "systems/stenotype-extended.toml"
+
+[[dict]]
+name = "emily-symbols"
+priority = 100
+xfst = "dictionaries/emily-symbols.xfst"
+
+[[dict]]
+name = "typey-type"
+priority = 40
+json = "~/.config/plover/typey-type-full.json"

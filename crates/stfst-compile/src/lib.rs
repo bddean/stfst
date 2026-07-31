@@ -1,3 +1,54 @@
 pub mod json;
 pub mod lexc;
+pub mod pipeline;
+pub mod prelude;
+pub mod recipe;
 pub mod translate;
+
+use std::path::Path;
+
+use anyhow::{bail, Result};
+use stfst_core::System;
+
+/// Compile every dictionary in a recipe into `out`, one artifact directory each.
+pub fn compile_recipe(recipe_path: &Path, out: &Path, work: &Path) -> Result<()> {
+    let (recipe, base) = recipe::Recipe::load(recipe_path)?;
+    let system = System::load(recipe::resolve(&base, &recipe.system))?;
+
+    for dict in &recipe.dict {
+        let work_dir = work.join(&dict.name);
+        std::fs::create_dir_all(&work_dir)?;
+        let forward = work_dir.join("forward.hfstol");
+
+        match dict.source()? {
+            recipe::Source::Xfst(src) => {
+                let src = recipe::resolve(&base, src);
+                let checks = pipeline::compile_xfst(&system, &src, &work_dir, &forward)?;
+                if !checks.passed() {
+                    bail!("{} failed its checks:\n{}", dict.name, checks.report());
+                }
+            }
+            recipe::Source::Json(src) => {
+                let src = recipe::resolve(&base, src);
+                let imported = json::import_file(&src, &system, lexc::Align::Pairwise)?;
+                eprintln!("  {}: {}", dict.name, imported.report.summary());
+                let lexc_path = work_dir.join("import.lexc");
+                std::fs::write(&lexc_path, &imported.lexc)?;
+                pipeline::compile_lexc(&lexc_path, &work_dir, &forward)?;
+            }
+        }
+
+        let artifact = out.join(format!("{}.stfst", dict.name));
+        pipeline::write_artifact(
+            &artifact,
+            &dict.name,
+            &dict.version,
+            &system,
+            dict.priority,
+            &forward,
+        )?;
+        let size = std::fs::metadata(artifact.join("forward.hfstol"))?.len();
+        eprintln!("  {} -> {} ({size} bytes)", dict.name, artifact.display());
+    }
+    Ok(())
+}

@@ -29,6 +29,19 @@ enum Command {
         #[arg(long, default_value = "delayed")]
         align: String,
     },
+    /// Compile every dictionary in a recipe.
+    Compile {
+        recipe: PathBuf,
+        #[arg(short, long, default_value = "build/dicts")]
+        out: PathBuf,
+        #[arg(long, default_value = "build/work")]
+        work: PathBuf,
+    },
+    /// Emit the generated xfst prelude for a system.
+    Prelude {
+        #[arg(long)]
+        system: PathBuf,
+    },
     /// Show how a system reads an outline, and what tape it becomes.
     Tape {
         #[arg(long)]
@@ -69,6 +82,12 @@ fn main() -> Result<()> {
                 Some(path) => std::fs::write(path, imported.lexc)?,
                 None => print!("{}", imported.lexc),
             }
+        }
+        Command::Compile { recipe, out, work } => {
+            stfst_compile::compile_recipe(&recipe, &out, &work)?;
+        }
+        Command::Prelude { system } => {
+            print!("{}", stfst_compile::prelude::generate(&System::load(&system)?));
         }
         Command::Tape { system, outlines } => {
             let sys = System::load(&system)?;
