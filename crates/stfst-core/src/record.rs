@@ -23,6 +23,7 @@ pub const FLAG_TAGS: &[&str] = &[
     "[GLUE]",
     "[CAP_NEXT]",
     "[LOWER_NEXT]",
+    "[CARRY_CAP]",
 ];
 
 /// Delimiters for the open-ended tags, whose values the host parses.
@@ -68,6 +69,8 @@ pub struct Flags {
     pub attach_r: bool,
     pub glue: bool,
     pub case: Option<Case>,
+    /// `{~|}`: pass the pending capitalisation through to the next word.
+    pub carry_cap: bool,
     pub space: Option<SpaceOp>,
     /// `[REP3]`. Repetition is a host operation: an FST cannot copy an
     /// unbounded string, and unrolling it per glyph is the enumeration the
@@ -82,6 +85,7 @@ impl Default for Flags {
             attach_r: false,
             glue: false,
             case: None,
+            carry_cap: false,
             space: None,
             repeat: NonZeroU8::new(1).unwrap(),
         }
@@ -158,6 +162,7 @@ impl Record {
                 "[ATTACH_L]" => set(&mut flags.attach_l)?,
                 "[ATTACH_R]" => set(&mut flags.attach_r)?,
                 "[GLUE]" => set(&mut flags.glue)?,
+                "[CARRY_CAP]" => set(&mut flags.carry_cap)?,
                 "[CAP_NEXT]" | "[LOWER_NEXT]" => {
                     let want = if s == "[CAP_NEXT]" {
                         Case::Next
@@ -264,6 +269,9 @@ impl Record {
             Some(Case::Next) => out.push("[CAP_NEXT]".into()),
             Some(Case::LowerNext) => out.push("[LOWER_NEXT]".into()),
             None => {}
+        }
+        if f.carry_cap {
+            out.push("[CARRY_CAP]".into());
         }
         if f.repeat.get() != 1 {
             out.push(repeat_tag(f.repeat.get()));
