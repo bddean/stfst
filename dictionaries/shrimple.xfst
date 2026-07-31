@@ -82,3 +82,8 @@ define Word       [ Cell [ Join Cell ]* ] ;
 define Enter      [ "^" .x. {Shrimple} ] ;
 
 define Grammar    [ [ Enter | [ [ "^" .x. 0 ] Join Word ] ] .o. Ortho .o. Canonical ] ;
+
+! Not finished. A syllable with no vowel (`^/TPH` for "n") does not match,
+! because `Vowel` is required here and Shrimple's table allows the empty one.
+! The fix is to make it optional and check the segmentation ambiguity that
+! opens; the golden file against the Python oracle is not written yet either.
