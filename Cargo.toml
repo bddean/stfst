@@ -1,0 +1,24 @@
+[workspace]
+resolver = "2"
+members = ["crates/stfst-core", "crates/stfst-ol", "crates/stfst-dict", "crates/stfst-compile", "crates/stfst-cli"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+repository = "https://github.com/bdean/stfst"
+
+[workspace.dependencies]
+stfst-core = { path = "crates/stfst-core" }
+stfst-ol = { path = "crates/stfst-ol" }
+stfst-dict = { path = "crates/stfst-dict" }
+stfst-compile = { path = "crates/stfst-compile" }
+
+anyhow = "1"
+thiserror = "2"
+indexmap = { version = "2", features = ["serde"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+toml = { version = "0.8", features = ["preserve_order"] }
+memmap2 = "0.9"
+clap = { version = "4", features = ["derive"] }

@@ -1,0 +1,54 @@
+# Stenotype Extended, matching plover-stenotype-extended's KEYS order with the
+# local `@-` addition.
+#
+# Right-bank keys take lowercase symbols so that every key is one distinct
+# character. That is what lets an xfst rule name a key directly: `{TPl}` is
+# `T- P- -L` with no hyphen convention and no chord-level indirection.
+
+name      = "stenotype-extended"
+order     = "#@^+STKPWHRAO*EUfrpblgtsdz"
+separator = "/"
+
+# Keys that split the banks on their own, so a written outline needs no hyphen.
+implicit_hyphen = "AO*EU"
+
+[keys]
+"#" = "#"
+"@" = "@-"
+"^" = "^-"
+"+" = "+-"
+"S" = "S-"
+"T" = "T-"
+"K" = "K-"
+"P" = "P-"
+"W" = "W-"
+"H" = "H-"
+"R" = "R-"
+"A" = "A-"
+"O" = "O-"
+"*" = "*"
+"E" = "-E"
+"U" = "-U"
+"f" = "-F"
+"r" = "-R"
+"p" = "-P"
+"b" = "-B"
+"l" = "-L"
+"g" = "-G"
+"t" = "-T"
+"s" = "-S"
+"d" = "-D"
+"z" = "-Z"
+
+# Number bar: the digit a key writes when `#` is held.
+[numbers]
+"1" = "S"
+"2" = "T"
+"3" = "P"
+"4" = "H"
+"5" = "A"
+"0" = "O"
+"6" = "f"
+"7" = "p"
+"8" = "l"
+"9" = "t"
