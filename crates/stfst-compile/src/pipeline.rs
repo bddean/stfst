@@ -117,12 +117,22 @@ pub fn compile_lexc(source: &Path, work: &Path, out_fst: &Path) -> Result<()> {
 }
 
 fn to_hfstol(net: &Path, out: &Path) -> Result<()> {
+    // Composition leaves every intermediate symbol in the alphabet, including
+    // the feature tags the grammar consumes. Pruning them makes the artifact
+    // self describing: its alphabet becomes exactly what it can emit, which is
+    // what lets a host check the record language once at load time rather than
+    // by walking every transition.
+    let pruned = net.with_extension("pruned");
+    run(
+        "hfst-prune-alphabet",
+        &["-i", net.to_str().unwrap(), "-o", pruned.to_str().unwrap()],
+    )?;
     run(
         "hfst-fst2fst",
         &[
             "-O",
             "-i",
-            net.to_str().unwrap(),
+            pruned.to_str().unwrap(),
             "-o",
             out.to_str().unwrap(),
         ],

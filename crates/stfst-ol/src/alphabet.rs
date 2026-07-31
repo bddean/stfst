@@ -48,6 +48,13 @@ impl Alphabet {
         }
     }
 
+    /// Every symbol the automaton can read or write. A host checks these once at
+    /// load time, so an artifact that could emit something it does not
+    /// understand is refused before a stroke arrives.
+    pub fn symbols(&self) -> impl Iterator<Item = &str> {
+        self.symbols.iter().map(String::as_str)
+    }
+
     pub fn number(&self, name: &str) -> Option<Sym> {
         self.by_name.get(name).copied()
     }

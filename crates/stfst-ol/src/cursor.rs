@@ -69,6 +69,12 @@ impl<'a> Cursor<'a> {
         self.frontier.len()
     }
 
+    /// End every path. For a caller that knows the next symbol is not in this
+    /// automaton's alphabet, which no step could represent.
+    pub fn kill(&mut self) {
+        self.frontier.clear();
+    }
+
     /// Every record reachable by what has been read so far.
     pub fn outputs(&self) -> Vec<Vec<Sym>> {
         let mut records: Vec<Vec<Sym>> = Vec::new();

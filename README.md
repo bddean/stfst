@@ -2,8 +2,8 @@
 
 Steno dictionaries compiled to finite-state transducers, with a compiler, a
 dictionary set, and a headless CLI for testing. Design in
-`~/.config/plover/FST-DICT-DESIGN.md`; this repo diverges from §3 of it on one
-point, recorded in `docs/key-tape.md`.
+`~/.config/plover/FST-DICT-DESIGN.md`. This repo diverges from §3 of it on the
+upper tape and on the record language, recorded in `docs/key-tape.md`.
 
 ## Getting started
 
@@ -12,6 +12,7 @@ direnv allow          # or: nix develop
 stfst compile recipe.toml
 scripts/check.sh      # unit tests, then the golden files
 stfst bench build/dicts/typey-type.stfst --system systems/stenotype-extended.toml
+stfst translate build/dicts/*.stfst --system systems/stenotype-extended.toml
 ```
 
 HFST and foma come from the flake and are needed only to *build* a dictionary.
@@ -29,6 +30,7 @@ artifact, so `lookup`, `test` and `bench` need nothing on `PATH`;
 | `docs/M0.md` | The M0 acceptance measurement: size against Plover's in-memory dictionary. |
 | `docs/latency.md` | Per-lookup latency, and why the search frontier is wide. |
 | `docs/encoding.md` | What the artifact costs, why delayed alignment would cost more, and the exact size model. |
+| `docs/translation.md` | The runtime: longest match without a declared longest key, and what a dictionary is checked for at load. |
 
 ## Layout
 
@@ -38,10 +40,11 @@ artifact, so `lookup`, `test` and `bench` need nothing on `PATH`;
 | `dictionaries/` | Hand-written dictionary source, in xfst. |
 | `recipe.toml` | The dictionary stack: what to compile, and at what priority. |
 | `tests/golden/` | Host-independent golden tests: a tape, a tab, the expected records. |
+| `tests/translate/` | Stroke streams and what the stack makes of them, where the answer depends on the history. |
 | `crates/stfst-core` | Systems, the key tape, the record language, the golden format. No FST dependency, so a host can link it. |
 | `crates/stfst-compile` | The compiler: prelude generation, JSON import, the HFST pipeline. |
 | `crates/stfst-ol` | Reader for the `hfstol` runtime format: mapped, no decode, no HFST. |
-| `crates/stfst-dict` | The runtime: longest match, priority stack. Not written yet. |
+| `crates/stfst-dict` | The runtime: the dictionary stack, longest match, record interpretation. |
 | `crates/stfst-cli` | `stfst`. Testing only. |
 
 ## The upper tape is keys, one symbol each

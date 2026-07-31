@@ -1,0 +1,12 @@
+! Longest match ending at the current stroke, and what undo restores.
+! Fed to the whole stack, so priority and multi-stroke growth both show.
+! Lines starting with ! are comments to stfst translate, except !undo.
+TP-PL
+TAP
+#TRU
+1
+5
+*T
+!undo
+*T
+PWORD

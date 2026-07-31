@@ -1,0 +1,12 @@
+! 0 emily-symbols priority 100
+! 1 typey-type priority 40
+TP-PL	1	typey-type	.
+TAP	1	typey-type	tap
+#TRU	1	emily-symbols	[KEY]Tab[END]
+1	1	typey-type	1[GLUE]
+5	2	typey-type	15
+*T	3	typey-type	15th
+!undo	*T
+*T	3	typey-type	15th
+PWORD	1	typey-type	bored
+! 7 strokes, 3 candidates at the widest

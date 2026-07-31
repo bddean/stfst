@@ -1,5 +1,6 @@
 mod bench;
 mod lookup;
+mod translate;
 
 use std::path::PathBuf;
 
@@ -79,6 +80,16 @@ enum Command {
         /// Passes over the whole probe list.
         #[arg(long, default_value_t = 1)]
         reps: usize,
+    },
+    /// Translate a stroke stream through a dictionary stack.
+    Translate {
+        /// Artifact directories. Priority comes from each manifest.
+        artifacts: Vec<PathBuf>,
+        #[arg(long)]
+        system: PathBuf,
+        /// One stroke per line on stdin; `!undo` takes one back.
+        #[arg(long)]
+        strokes: Option<PathBuf>,
     },
     /// Emit the generated xfst prelude for a system.
     Prelude {
@@ -225,6 +236,21 @@ fn main() -> Result<()> {
             let sys = System::load(&system)?;
             let tapes = to_tapes(&sys, &or_stdin(Vec::new())?, tape)?;
             bench::run(&artifact, &tapes, reps)?;
+        }
+        Command::Translate {
+            artifacts,
+            system,
+            strokes,
+        } => {
+            let lines = match strokes {
+                Some(path) => std::fs::read_to_string(&path)
+                    .with_context(|| format!("reading {}", path.display()))?
+                    .lines()
+                    .map(str::to_string)
+                    .collect(),
+                None => or_stdin(Vec::new())?,
+            };
+            translate::run(&artifacts, &system, lines)?;
         }
         Command::Prelude { system } => {
             print!("{}", stfst_compile::prelude::generate(&System::load(&system)?));

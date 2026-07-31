@@ -343,6 +343,11 @@ impl System {
         out
     }
 
+    /// One stroke as tape symbols, in steno order.
+    pub fn stroke_symbols(&self, stroke: Stroke) -> impl Iterator<Item = char> + '_ {
+        stroke.indices().map(|i| self.keys[i].symbol)
+    }
+
     /// The upper tape: one symbol per key in steno order, strokes separated.
     pub fn to_tape(&self, outline: &Outline) -> String {
         let mut out = String::new();
@@ -350,9 +355,7 @@ impl System {
             if n > 0 {
                 out.push(self.separator);
             }
-            for i in stroke.indices() {
-                out.push(self.keys[i].symbol);
-            }
+            out.extend(self.stroke_symbols(*stroke));
         }
         out
     }

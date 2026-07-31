@@ -12,3 +12,20 @@ for dict in emily-symbols typey-type; do
     echo "== $dict"
     $B test "build/dicts/$dict.stfst" "tests/golden/$dict.tsv" | tail -1
 done
+
+# Translation is not a per-tape question, so it needs its own fixture: a stroke
+# stream through the whole stack, where the answer depends on the history.
+echo "== translate"
+for case in tests/translate/*.strokes; do
+    if $B translate build/dicts/typey-type.stfst build/dicts/emily-symbols.stfst \
+        --system systems/stenotype-extended.toml --strokes "$case" \
+        | diff -u "${case%.strokes}.expected" - > /dev/null; then
+        echo "$(basename "$case") ok"
+    else
+        $B translate build/dicts/typey-type.stfst build/dicts/emily-symbols.stfst \
+            --system systems/stenotype-extended.toml --strokes "$case" \
+            | diff -u "${case%.strokes}.expected" - || true
+        echo "$(basename "$case") FAILED" >&2
+        exit 1
+    fi
+done
