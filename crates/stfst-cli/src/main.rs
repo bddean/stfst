@@ -35,6 +35,10 @@ enum Command {
         /// Also write a golden test file.
         #[arg(long)]
         golden: Option<PathBuf>,
+        /// Also write every entry as `tape<TAB>symbols`, symbols separated by
+        /// US (0x1f). What an encoding experiment reads.
+        #[arg(long)]
+        pairs: Option<PathBuf>,
     },
     /// Compile every dictionary in a recipe.
     Compile {
@@ -98,6 +102,7 @@ fn main() -> Result<()> {
             report,
             align,
             golden: golden_out,
+            pairs,
         } => {
             let sys = System::load(&system)?;
             let align = match align.as_str() {
@@ -135,6 +140,16 @@ fn main() -> Result<()> {
                     json.display()
                 );
                 std::fs::write(path, header + &golden::render(&cases))?;
+            }
+            if let Some(path) = pairs {
+                let mut lines = String::new();
+                for (tape, symbols) in &imported.pairs {
+                    lines.push_str(tape);
+                    lines.push('\t');
+                    lines.push_str(&symbols.join("\u{1f}"));
+                    lines.push('\n');
+                }
+                std::fs::write(path, lines)?;
             }
             match out {
                 Some(path) => std::fs::write(path, imported.lexc)?,

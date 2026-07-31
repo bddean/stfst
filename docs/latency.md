@@ -54,9 +54,9 @@ and after one key `typey-type` has 68 live paths.
 
 Delayed alignment predicts the opposite shape: nothing is emitted until the
 outline is complete, so the frontier stays at one path through the input and
-opens once at the end. That is a second reason to want the builder from
-`docs/M0.md`, and a sharper one than size, where the arithmetic could go either
-way.
+opens once at the end. That would be the fix, and `docs/encoding.md` prices it at
+1.8 times the artifact. Not worth it at 8 us against a 16 ms frame, so the
+frontier stays wide and this is the reason why.
 
 ## Reading the format
 

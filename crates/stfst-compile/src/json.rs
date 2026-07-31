@@ -41,6 +41,9 @@ pub struct Import {
     /// since that is where the translation grammar can be wrong, plus a fixed
     /// stride through the rest. Deterministic, so the file does not churn.
     pub golden: Vec<(String, String)>,
+    /// What the emitter is given, symbol by symbol on both tapes: the input to
+    /// any question about how an artifact could be encoded instead.
+    pub pairs: Vec<(String, Vec<String>)>,
 }
 
 pub fn import_file(
@@ -60,6 +63,7 @@ pub fn import(raw: &BTreeMap<String, String>, system: &System, align: Align) -> 
     };
     let mut entries: Vec<(String, String)> = Vec::with_capacity(raw.len());
     let mut golden: Vec<(String, String)> = Vec::new();
+    let mut pairs: Vec<(String, Vec<String>)> = Vec::with_capacity(raw.len());
     const STRIDE: usize = 500;
 
     for (outline, translation) in raw {
@@ -89,10 +93,9 @@ pub fn import(raw: &BTreeMap<String, String>, system: &System, align: Align) -> 
         if plain.contains('[') || report.imported % STRIDE == 0 {
             golden.push((tape.clone(), plain));
         }
-        entries.push((
-            lexc::escape(&tape),
-            lexc::escape_symbols(&record.to_symbols()),
-        ));
+        let symbols = record.to_symbols();
+        entries.push((lexc::escape(&tape), lexc::escape_symbols(&symbols)));
+        pairs.push((tape, symbols));
         report.imported += 1;
     }
 
@@ -100,5 +103,6 @@ pub fn import(raw: &BTreeMap<String, String>, system: &System, align: Align) -> 
         lexc: lexc::lexicon(entries, align),
         report,
         golden,
+        pairs,
     }
 }
