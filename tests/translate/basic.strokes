@@ -17,3 +17,6 @@ KAT
 ! phrasing, which no other dictionary in the stack can reach
 +T
 ^+T*
+! the @ namespace: a letter as text, then the same key with ctrl held
+@KR
+@KR-F

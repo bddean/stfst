@@ -5,13 +5,14 @@
 !   #      STKPWHR      AO        U       rb       g       ts
 !   id     pattern      variant   id      attach   cap     repeat
 !
-! The Row table below is the data. Everything else is a rule, so adding a row
-! gives you all of its variant, attach, capitalisation and repeat combinations
-! at once. The Python this replaces enumerated 5,248 strokes to say the same
-! thing, and raised KeyError seven times where here a path simply does not exist.
+! The table is `emily-symbols-tables.xfst`, which `emily-modifiers` shares.
+! Everything here is a rule, so adding a row to it gives all of that row's
+! variant, attach, capitalisation and repeat combinations at once. The Python this
+! replaces enumerated 5,248 strokes to say the same thing, and raised KeyError
+! seven times where here a path simply does not exist.
 !
 ! Note what validates the pattern: nothing does, explicitly. `Pat` accepts any
-! subset of STKPWHR, and a subset with no Row dies at the Glyph composition. So
+! subset of STKPWHR, and a subset with no row dies at the Glyph composition. So
 ! the table is the only place the 37 patterns are written down.
 !
 ! Divergence from emily-symbols.py, deliberate: that file sets
@@ -20,25 +21,6 @@
 ! the host spaces the symbol, while -R and -B attach a side directly. Same
 ! visible output in ordinary use, and it makes repetition well defined, which
 ! literal-space wrapping does not: [REP3] over " ! " gives " ! ! ! ".
-
-define Kb "[KEY]" ;   define Mb "[META]" ;
-define Ke "[END]" ;   define Ma "[ARG]" ;
-
-define V0 "[V=0]" ;   define V2 "[V=2]" ;
-define V1 "[V=1]" ;   define V3 "[V=3]" ;
-
-! ---- shapes
-!
-! xfst has no loop, but it does have parameterised defines, so each shape is
-! written once and every use of it reads as data.
-
-! One optional key, two tags.
-define Bit(K, Z, O)         [ [ 0 .x. Z ] | [ K .x. O ] ] ;
-! A pattern and its four variants.
-define Row(K, A, B, C, D)   [ [ K .x. 0 ] [ [ V0 .x. A ] | [ V1 .x. B ]
-                                          | [ V2 .x. C ] | [ V3 .x. D ] ] ] ;
-! The same, where all four are keystrokes.
-define KeyRow(K, A, B, C, D) Row(K, [Kb A Ke], [Kb B Ke], [Kb C Ke], [Kb D Ke]) ;
 
 ! ---- fields, in steno order
 
@@ -56,55 +38,6 @@ define RepKeys  [ 0    .x. "[R=1]" ] | [ {s}  .x. "[R=2]" ]
 ! Both halves of the identifier are required, so a stroke missing # or -U has no
 ! path. That is the absence of the Python's `raise KeyError`.
 define Parse [ "#" .x. 0 ] Pat Variant [ {U} .x. 0 ] Attach Cap RepKeys ;
-
-! ---- the table
-
-define GlyphPair KeyRow({TR}, {Tab}, {BackSpace}, {Delete}, {Escape})
-  | KeyRow({STR},   {Return},    {Insert},    {Menu},      {Print})
-  | KeyRow({KPWR},  {Up},        {Left},      {Right},     {Down})
-  | KeyRow({KPWHR}, {Page_Up},   {Home},      {End},       {Page_Down})
-  | KeyRow({KWHR},  {AudioPlay}, {AudioPrev}, {AudioNext}, {AudioStop})
-  | KeyRow({WHR},   {AudioMute}, {AudioLowerVolume}, {AudioRaiseVolume}, {Eject})
-
-  ! The bare identifier: no glyph, and the space fiddles.
-  | Row(0,    0,   "[CANCEL_SPACE]", "[RETRO_SPACE]", [Kb {space} Ke])
-  ! Retrospective case operations are host requests, not text.
-  | Row({TH}, [Mb {retro.cap} Ma Ke],  [Mb {retro.upper} Ma Ke],
-              [Mb {upper.next} Ma Ke], [Mb {retro.lower} Ma Ke])
-
-  | Row({HR},     {!}, {¬}, {↦}, {¡})
-  | Row({PH},     {"}, {“}, {”}, {„})
-  | Row({TKHR},   {#}, {©}, {®}, {™})
-  | Row({KPWH},   {$}, {¥}, {€}, {£})
-  | Row({PWHR},   {%}, {‰}, {‱}, {φ})
-  | Row({SKP},    {&}, {∩}, {∧}, {∈})
-  | Row({H},      {'}, {‘}, {’}, {‚})
-  | Row({TPH},    {(}, {[}, {<}, "{")
-  | Row({KWR},    {)}, {]}, {>}, "}")
-  | Row({T},      "*", {∏}, {§}, {×})
-  | Row({K},      "+", {∑}, {¶}, {±})
-  | Row({W},      {,}, {∪}, {∨}, {∉})
-  | Row({TP},     "-", {−}, {–}, {—})
-  | Row({R},      {.}, {•}, {·}, {…})
-  | Row({WH},     {/}, {⇒}, {⇔}, {÷})
-  | Row({TK},     {:}, {∋}, {∵}, {∴})
-  | Row({WR},     {;}, {∀}, {∃}, {∄})
-  | Row({TKPW},   {=}, {≡}, {≈}, {≠})
-  | Row({TPW},    {?}, {¿}, {∝}, {‽})
-  | Row({TKPWHR}, {@}, {⊕}, {⊗}, {∅})
-  ! %\ and not "\", which escapes its own closing quote.
-  | Row({PR},     %\,  {Δ}, {√}, {∞})
-  | Row({KPR},    "^", {«}, {»}, {°})
-  | Row({KW},     {_}, {≤}, {≥}, {µ})
-  | Row({P},      {`}, {⊂}, {⊃}, {π})
-  | Row({PW},     {|}, {⊤}, {⊥}, {¦})
-  | Row({TPWR},   {~}, {⊆}, {⊇}, {˜})
-  | Row({TPWH},   {↑}, {←}, {→}, {↓})
-  ! bs block-sigil glyphs on free S+ chords
-  | Row({SPW},    {☐}, {◧}, {◫}, {⊟})
-  | Row({STK},    {☑}, {☒}, {✓}, {✗})
-  | Row({SR},     {◆}, {◷}, {↻}, {◇})
-  | Row({SKPR},   {◦}, {‹}, {›}, {‣}) ;
 
 ! Glyph consumes only the pattern keys and the variant tag, so the modifier tags
 ! must be carried past it as identity or composition finds no path.

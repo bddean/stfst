@@ -35,6 +35,17 @@ pub const FLAG_TAGS: &[&str] = &[
 /// Delimiters for the open-ended tags, whose values the host parses.
 pub const OPEN_TAGS: &[&str] = &["[KEY]", "[CMD]", "[META]", "[ARG]", "[END]"];
 
+/// Modifier tags, in canonical order, valid only inside a `[KEY]` item.
+///
+/// A keysym is open-ended and delimits, but the modifiers held with it are five
+/// values and closed, so §3's rule enumerates them. Putting them in the item
+/// rather than in the keysym text is also what keeps a keysym free to be any
+/// character: `ctrl+plus` needs no escape if `+` never delimits anything.
+///
+/// This order is steno order for the keys that set them in `emily-modifiers`
+/// (`-F -P -L -T -D`), so a dictionary emits each one where it reads it.
+pub const MOD_TAGS: &[&str] = &["[CTRL]", "[SHIFT]", "[SUPER]", "[ALT]", "[FN]"];
+
 /// Largest repetition and largest bound word index. Both are closed and tiny,
 /// so they are enumerated symbols rather than delimited values: that keeps them
 /// hoistable to canonical position, which a multi-symbol block is not.
@@ -98,11 +109,59 @@ impl Default for Flags {
     }
 }
 
+/// The modifiers held with a keystroke. Five orthogonal booleans, so every
+/// combination is legal and none is a state to rule out.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+pub struct Mods {
+    pub ctrl: bool,
+    pub shift: bool,
+    pub super_: bool,
+    pub alt: bool,
+    /// Honoured only where the host can synthesise it.
+    pub fn_: bool,
+}
+
+impl Mods {
+    pub fn is_empty(&self) -> bool {
+        *self == Mods::default()
+    }
+
+    /// The flag a modifier tag sets, for a caller that has the tag and not the
+    /// field. `None` when the tag is not a modifier.
+    pub fn slot_of(&mut self, tag: &str) -> Option<&mut bool> {
+        self.slot(tag)
+    }
+
+    fn slot(&mut self, tag: &str) -> Option<&mut bool> {
+        match tag {
+            "[CTRL]" => Some(&mut self.ctrl),
+            "[SHIFT]" => Some(&mut self.shift),
+            "[SUPER]" => Some(&mut self.super_),
+            "[ALT]" => Some(&mut self.alt),
+            "[FN]" => Some(&mut self.fn_),
+            _ => None,
+        }
+    }
+
+    fn tags(&self) -> impl Iterator<Item = &'static str> + '_ {
+        MOD_TAGS
+            .iter()
+            .copied()
+            .filter(move |t| match *t {
+                "[CTRL]" => self.ctrl,
+                "[SHIFT]" => self.shift,
+                "[SUPER]" => self.super_,
+                "[ALT]" => self.alt,
+                _ => self.fn_,
+            })
+    }
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Item {
     Text(String),
-    /// `[KEY]Return[END]`: a keystroke, not text.
-    Key(String),
+    /// `[KEY]Return[SHIFT][END]`: a keystroke, not text.
+    Key { name: String, mods: Mods },
     /// `[CMD]wm.focus[ARG]left[END]`: a request the host may decline.
     Cmd { name: String, arg: String },
     /// `[META]retro.caps[ARG]2[END]`: a declared context operation.
@@ -218,8 +277,8 @@ impl Record {
             let s = symbols[i];
             match s {
                 "[KEY]" => {
-                    let (value, next) = take_until(symbols, i + 1, "[END]", "[KEY]")?;
-                    body.push(Item::Key(value));
+                    let (name, mods, next) = take_key(symbols, i + 1)?;
+                    body.push(Item::Key { name, mods });
                     i = next;
                 }
                 _ if counted_tag(s, "COPY").is_some() => {
@@ -257,9 +316,10 @@ impl Record {
         for item in &self.body {
             match item {
                 Item::Text(t) => out.extend(t.chars().map(|c| c.to_string())),
-                Item::Key(k) => {
+                Item::Key { name, mods } => {
                     out.push("[KEY]".into());
-                    out.extend(k.chars().map(|c| c.to_string()));
+                    out.extend(name.chars().map(|c| c.to_string()));
+                    out.extend(mods.tags().map(str::to_string));
                     out.push("[END]".into());
                 }
                 Item::Copy(n) => out.push(copy_tag(*n)),
@@ -339,6 +399,7 @@ fn counted_tag(symbol: &str, prefix: &str) -> Option<u8> {
 pub fn all_tags() -> Vec<String> {
     let mut out: Vec<String> = FLAG_TAGS.iter().map(|s| s.to_string()).collect();
     out.extend(OPEN_TAGS.iter().map(|s| s.to_string()));
+    out.extend(MOD_TAGS.iter().map(|s| s.to_string()));
     for n in 2..=MAX_COUNT {
         out.push(repeat_tag(n));
     }
@@ -368,6 +429,29 @@ fn tokenise_display(s: &str) -> Vec<String> {
         rest = &rest[c.len_utf8()..];
     }
     out
+}
+
+/// A keystroke item: the keysym, then its modifiers, then `[END]`. The keysym is
+/// text and the modifiers are tags, so the two need no delimiter between them.
+fn take_key(symbols: &[&str], mut i: usize) -> Result<(String, Mods, usize), RecordError> {
+    let mut name = String::new();
+    while i < symbols.len() && !is_tag(symbols[i]) {
+        name.push_str(symbols[i]);
+        i += 1;
+    }
+    let mut mods = Mods::default();
+    while i < symbols.len() {
+        if symbols[i] == "[END]" {
+            return Ok((name, mods, i + 1));
+        }
+        match mods.slot(symbols[i]) {
+            Some(slot) if !*slot => *slot = true,
+            Some(_) => return Err(RecordError::RepeatedTag(symbols[i].to_string())),
+            None => break,
+        }
+        i += 1;
+    }
+    Err(RecordError::Unterminated("[KEY]".into()))
 }
 
 fn take_until(
@@ -431,7 +515,38 @@ mod tests {
     #[test]
     fn keystrokes_and_commands_parse() {
         let r = Record::parse_symbols(&syms(&["[KEY]", "T", "a", "b", "[END]"])).unwrap();
-        assert_eq!(r.body, vec![Item::Key("Tab".into())]);
+        assert_eq!(
+            r.body,
+            vec![Item::Key {
+                name: "Tab".into(),
+                mods: Mods::default()
+            }]
+        );
+
+        // Modifiers are tags inside the item, so a keysym never needs escaping.
+        let r = Record::parse_symbols(&syms(&["[KEY]", "+", "[CTRL]", "[ALT]", "[END]"]))
+            .unwrap();
+        assert_eq!(
+            r.body,
+            vec![Item::Key {
+                name: "+".into(),
+                mods: Mods {
+                    ctrl: true,
+                    alt: true,
+                    ..Mods::default()
+                }
+            }]
+        );
+        assert_eq!(r.to_string(), "[KEY]+[CTRL][ALT][END]");
+
+        // Canonical order is fixed, so the parser takes them in any order and the
+        // serialiser puts them back.
+        let r = Record::parse_display("[KEY]c[ALT][CTRL][END]").unwrap();
+        assert_eq!(r.to_string(), "[KEY]c[CTRL][ALT][END]");
+        assert_eq!(
+            Record::parse_display("[KEY]c[CTRL][CTRL][END]"),
+            Err(RecordError::RepeatedTag("[CTRL]".into()))
+        );
 
         let r = Record::parse_symbols(&syms(&[
             "[CMD]", "w", "m", ".", "f", "[ARG]", "l", "e", "f", "t", "[END]",

@@ -31,6 +31,7 @@ artifact, so `lookup`, `test` and `bench` need nothing on `PATH`;
 | `docs/M0.md` | The M0 acceptance measurement: size against Plover's in-memory dictionary. |
 | `docs/latency.md` | Per-lookup latency, and why the search frontier is wide. |
 | `docs/encoding.md` | What the artifact costs, why delayed alignment would cost more, and the exact size model. |
+| `docs/modifiers.md` | The `@` keysym namespace, and why a keystroke's modifiers are tags inside the item. |
 | `docs/phrasing.md` | The §7 phrasing prototype: what the port settled, and what it left. |
 | `docs/translation.md` | The runtime: longest match without a declared longest key, what a dictionary is checked for at load, and why reverse lookup is a cheapest-first search. |
 

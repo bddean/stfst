@@ -8,7 +8,7 @@ cargo test --workspace
 cargo build --release -q
 B=./target/release/stfst
 
-for dict in emily-symbols shrimple phrasing typey-type; do
+for dict in emily-symbols emily-modifiers shrimple phrasing typey-type; do
     echo "== $dict"
     $B test "build/dicts/$dict.stfst" "tests/golden/$dict.tsv" | tail -1
     # The reverse direction has no oracle of its own; forward lookup is the check.

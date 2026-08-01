@@ -6,7 +6,7 @@
 //! the same tag list `stfst_core::record` parses, so the acceptor and the parser
 //! cannot drift.
 
-use stfst_core::record::{all_tags, copy_tag, repeat_tag, FLAG_TAGS, MAX_COUNT};
+use stfst_core::record::{all_tags, copy_tag, repeat_tag, FLAG_TAGS, MAX_COUNT, MOD_TAGS};
 use stfst_core::System;
 
 /// xfst needs `"` around anything it would otherwise read as an operator, and
@@ -53,7 +53,11 @@ pub fn generate(system: &System) -> String {
     let tags: Vec<String> = all_tags().iter().map(|t| format!("\"{t}\"")).collect();
     out.push_str(&format!("define Tag [ {} ] ;\n", tags.join(" | ")));
     out.push_str("define Text \\Tag ;\n");
-    out.push_str("define KeyItem [ \"[KEY]\" Text+ \"[END]\" ] ;\n");
+    // A keysym is open-ended text; the modifiers held with it are five closed
+    // values, so they are tags inside the item and in canonical order.
+    let mods: Vec<String> = MOD_TAGS.iter().map(|t| format!("(\"{t}\")")).collect();
+    out.push_str(&format!("define Mods [ {} ] ;\n", mods.join(" ")));
+    out.push_str("define KeyItem [ \"[KEY]\" Text+ Mods \"[END]\" ] ;\n");
     out.push_str("define CmdItem [ \"[CMD]\" Text+ \"[ARG]\" Text* \"[END]\" ] ;\n");
     out.push_str("define MetaItem [ \"[META]\" Text+ \"[ARG]\" Text* \"[END]\" ] ;\n");
     let copies: Vec<String> = (1..=MAX_COUNT)

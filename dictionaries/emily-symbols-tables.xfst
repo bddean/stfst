@@ -1,0 +1,80 @@
+! Emily's glyph table, shared by two dictionaries.
+!
+! `emily-symbols.xfst` reads it under `#`, and `emily-modifiers.xfst` reads it for
+! its literal mode, which is emily-modifiers.py importing the same table from
+! emily-symbols.py. So the table lives in one file and the grammars over it are
+! separate.
+!
+! Divergence from emily-symbols.py, deliberate: that file returns Plover
+! directives (`{*-|}`, `{#Tab}`) as glyph strings. Here a retrospective case
+! operation is a `[META]` request and a keystroke is a `[KEY]` item, because a
+! record says what it means and the host decides.
+
+define Kb "[KEY]" ;   define Mb "[META]" ;
+define Ke "[END]" ;   define Ma "[ARG]" ;
+
+define V0 "[V=0]" ;   define V2 "[V=2]" ;
+define V1 "[V=1]" ;   define V3 "[V=3]" ;
+
+! ---- shapes
+!
+! xfst has no loop, but it does have parameterised defines, so each shape is
+! written once and every use of it reads as data.
+
+! One optional key, two tags.
+define Bit(K, Z, O)         [ [ 0 .x. Z ] | [ K .x. O ] ] ;
+! A pattern and its four variants.
+define Row(K, A, B, C, D)   [ [ K .x. 0 ] [ [ V0 .x. A ] | [ V1 .x. B ]
+                                          | [ V2 .x. C ] | [ V3 .x. D ] ] ] ;
+! The same, where all four are keystrokes.
+define KeyRow(K, A, B, C, D) Row(K, [Kb A Ke], [Kb B Ke], [Kb C Ke], [Kb D Ke]) ;
+
+! ---- the table
+
+define GlyphPair KeyRow({TR}, {Tab}, {BackSpace}, {Delete}, {Escape})
+  | KeyRow({STR},   {Return},    {Insert},    {Menu},      {Print})
+  | KeyRow({KPWR},  {Up},        {Left},      {Right},     {Down})
+  | KeyRow({KPWHR}, {Page_Up},   {Home},      {End},       {Page_Down})
+  | KeyRow({KWHR},  {AudioPlay}, {AudioPrev}, {AudioNext}, {AudioStop})
+  | KeyRow({WHR},   {AudioMute}, {AudioLowerVolume}, {AudioRaiseVolume}, {Eject})
+
+  ! The bare identifier: no glyph, and the space fiddles.
+  | Row(0,    0,   "[CANCEL_SPACE]", "[RETRO_SPACE]", [Kb {space} Ke])
+  ! Retrospective case operations are host requests, not text.
+  | Row({TH}, [Mb {retro.cap} Ma Ke],  [Mb {retro.upper} Ma Ke],
+              [Mb {upper.next} Ma Ke], [Mb {retro.lower} Ma Ke])
+
+  | Row({HR},     {!}, {¬}, {↦}, {¡})
+  | Row({PH},     {"}, {“}, {”}, {„})
+  | Row({TKHR},   {#}, {©}, {®}, {™})
+  | Row({KPWH},   {$}, {¥}, {€}, {£})
+  | Row({PWHR},   {%}, {‰}, {‱}, {φ})
+  | Row({SKP},    {&}, {∩}, {∧}, {∈})
+  | Row({H},      {'}, {‘}, {’}, {‚})
+  | Row({TPH},    {(}, {[}, {<}, "{")
+  | Row({KWR},    {)}, {]}, {>}, "}")
+  | Row({T},      "*", {∏}, {§}, {×})
+  | Row({K},      "+", {∑}, {¶}, {±})
+  | Row({W},      {,}, {∪}, {∨}, {∉})
+  | Row({TP},     "-", {−}, {–}, {—})
+  | Row({R},      {.}, {•}, {·}, {…})
+  | Row({WH},     {/}, {⇒}, {⇔}, {÷})
+  | Row({TK},     {:}, {∋}, {∵}, {∴})
+  | Row({WR},     {;}, {∀}, {∃}, {∄})
+  | Row({TKPW},   {=}, {≡}, {≈}, {≠})
+  | Row({TPW},    {?}, {¿}, {∝}, {‽})
+  | Row({TKPWHR}, {@}, {⊕}, {⊗}, {∅})
+  ! %\ and not "\", which escapes its own closing quote.
+  | Row({PR},     %\,  {Δ}, {√}, {∞})
+  | Row({KPR},    "^", {«}, {»}, {°})
+  | Row({KW},     {_}, {≤}, {≥}, {µ})
+  | Row({P},      {`}, {⊂}, {⊃}, {π})
+  | Row({PW},     {|}, {⊤}, {⊥}, {¦})
+  | Row({TPWR},   {~}, {⊆}, {⊇}, {˜})
+  | Row({TPWH},   {↑}, {←}, {→}, {↓})
+  ! bs block-sigil glyphs on free S+ chords
+  | Row({SPW},    {☐}, {◧}, {◫}, {⊟})
+  | Row({STK},    {☑}, {☒}, {✓}, {✗})
+  | Row({SR},     {◆}, {◷}, {↻}, {◇})
+  | Row({SKPR},   {◦}, {‹}, {›}, {‣}) ;
+

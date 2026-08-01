@@ -7,7 +7,7 @@
 //! Anything unrecognised is reported rather than guessed at. The import is only
 //! worth trusting if it says what it could not convert.
 
-use stfst_core::record::{Case, Flags, Item, Record, SpaceOp};
+use stfst_core::record::{Case, Flags, Item, Mods, Record, SpaceOp};
 
 #[derive(Debug, thiserror::Error, PartialEq, Eq)]
 pub enum TranslateError {
@@ -112,6 +112,44 @@ fn split_pieces(s: &str) -> Result<Vec<Piece>, TranslateError> {
     Ok(out)
 }
 
+/// Plover writes a held key as a wrapper: `Control_L(Left)` is ctrl and Left,
+/// and `Alt_L(Tab(Tab))` is alt held over two presses of Tab. A modifier wrapper
+/// sets a flag; any other wrapper is a key held over what it wraps, which is that
+/// key pressed and then the rest, so it becomes two items.
+fn keystrokes(token: &str, mods: Mods, out: &mut Vec<Item>) -> Option<()> {
+    let Some((head, rest)) = token.split_once('(') else {
+        out.push(Item::Key {
+            name: token.to_string(),
+            mods,
+        });
+        return Some(());
+    };
+    let inner = rest.strip_suffix(')')?;
+    let mut mods = mods;
+    match modifier(head) {
+        Some(tag) => *mods.slot_of(tag)? = true,
+        None => out.push(Item::Key {
+            name: head.to_string(),
+            mods,
+        }),
+    }
+    keystrokes(inner, mods, out)
+}
+
+/// A Plover modifier name, with the side dropped: it is not a distinction any
+/// host here can act on.
+fn modifier(name: &str) -> Option<&'static str> {
+    let name = name.trim_end_matches("_L").trim_end_matches("_R");
+    match name.to_ascii_lowercase().as_str() {
+        "control" | "ctrl" => Some("[CTRL]"),
+        "shift" => Some("[SHIFT]"),
+        "super" | "command" | "cmd" => Some("[SUPER]"),
+        "alt" | "option" | "meta" => Some("[ALT]"),
+        "fn" => Some("[FN]"),
+        _ => None,
+    }
+}
+
 fn directive(d: &str, flags: &mut Flags) -> Result<Vec<Item>, TranslateError> {
     // Attachment wraps everything else, so peel it first and recurse on the core.
     let (core, attach_l, attach_r) = peel_attach(d);
@@ -148,10 +186,12 @@ fn directive(d: &str, flags: &mut Flags) -> Result<Vec<Item>, TranslateError> {
         };
     }
     if let Some(rest) = core.strip_prefix('#') {
-        return Ok(rest
-            .split_whitespace()
-            .map(|k| Item::Key(k.to_string()))
-            .collect());
+        let mut out = Vec::new();
+        for token in rest.split_whitespace() {
+            keystrokes(token, Mods::default(), &mut out)
+                .ok_or_else(|| TranslateError::Unsupported(d.to_string()))?;
+        }
+        return Ok(out);
     }
     if let Some(rest) = core.strip_prefix("PLOVER:") {
         let (name, arg) = rest.split_once(':').unwrap_or((rest, ""));
@@ -256,9 +296,15 @@ mod tests {
     #[test]
     fn keystrokes_including_combos() {
         assert_eq!(r("{#Return}").to_string(), "[KEY]Return[END]");
+        // A modifier wrapper is a flag on the item, not part of the keysym.
         assert_eq!(
             r("{#Control_L(Left)}{^}").to_string(),
-            "[KEY]Control_L(Left)[END][ATTACH_L][ATTACH_R]"
+            "[KEY]Left[CTRL][END][ATTACH_L][ATTACH_R]"
+        );
+        // Anything else a wrapper holds is that key pressed, then the rest.
+        assert_eq!(
+            r("{#Alt_L(Tab(Tab))}").to_string(),
+            "[KEY]Tab[ALT][END][KEY]Tab[ALT][END]"
         );
         assert_eq!(
             r("{#Return}{#Return}").to_string(),

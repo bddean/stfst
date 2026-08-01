@@ -1,0 +1,99 @@
+! The `@` keysym namespace, ported from emily-modifiers.py.
+!
+! One left key opens the namespace and the rest of the board is a payload, so a
+! stroke is read as five fields:
+!
+!   #    @    ^    STKPWHR    AO    *    EU    fplt d    z
+!   16   id   128  payload    var   lit  mode  mods      lit
+!
+! Five layers, dispatched by the mode field exactly as the Python's if-chain is:
+!
+!   @E  + a consonant chord   a symbol keysym          @TRE   -> [KEY]Tab[END]
+!   @U  + payload bits        a digit or an F-key      @TPRU  -> [KEY]F1[END]
+!   @   + * or -Z             literal mode             @HR*E  -> !
+!   @U  + * or -Z             a literal number         @^R*U  -> 129
+!   otherwise                 fingerspelling           @KR    -> c
+!
+! Out of scope, decided: the skhd branch. Whenever an `@` combo matches an skhd
+! binding the Python shells out and emits nothing, which works around skhd not
+! seeing the synthetic events Plover injects on macOS. That is host-shaped, not
+! dictionary-shaped, so skhd owns it. See FST-DICT-DESIGN.md §6.
+!
+! The glyph table for literal mode is `emily-symbols-tables.xfst`, which is the
+! same sharing the Python does by importing emily-symbols.py.
+
+define Kill(X)  [ X .x. 0 ] ;
+define Say(X)   [ 0 .x. X ] ;
+
+! ---- fields, in steno order
+
+! Any left-bank subset, and any non-empty one. Which subsets are real is each
+! table's business, and a subset with no row dies at the composition.
+define Pat      [ (S) (T) (K) (P) (W) (H) (R) ] ;
+define Some     [ Pat - 0 ] ;
+define Variant  [ 0 .x. V0 ] | [ {A} .x. V1 ] | [ {O} .x. V2 ] | [ {AO} .x. V3 ] ;
+define Vowels   [ (A) (O) ] ;
+! `#` is the F-key bit and the 256 bit of a literal number. Every other layer
+! reads it and ignores it, which is what the Python's unused `hashmark` does.
+define Hash     [ Kill("#") | 0 ] ;
+
+! The four modifier keys and `-D`, which reach the host only where it can
+! synthesise `fn`. In literal mode the top row is off modifier duty, so the same
+! keys read as attachment and case instead.
+define ModTag   [ "[CTRL]" | "[SHIFT]" | "[SUPER]" | "[ALT]" | "[FN]" ] ;
+define Mod      [ ([ {f} .x. "[CTRL]" ]) ([ {p} .x. "[SHIFT]" ])
+                  ([ {l} .x. "[SUPER]" ]) ([ {t} .x. "[ALT]" ])
+                  ([ {d} .x. "[FN]" ]) ] ;
+define LitFlag  [ ([ {f} .x. "[ATTACH_L]" ]) ([ {p} .x. "[ATTACH_R]" ])
+                  ([ {l} .x. "[CAP_NEXT]" ]) (Kill({t})) (Kill({d})) ] ;
+define Flag     [ "[ATTACH_L]" | "[ATTACH_R]" | "[CAP_NEXT]" ] ;
+define NoMod    [ (Kill({f})) (Kill({p})) (Kill({l})) (Kill({t})) (Kill({d})) ] ;
+
+! Literal mode is either key, and either may be pressed alone, so the marker is
+! split across the stroke: `*` before the mode field and `-Z` after the
+! modifiers. `B` is everything between them.
+define Lit(B)   [ [ Kill("*") B (Kill({z})) ] | [ B Kill({z}) ] ] ;
+
+! ---- a keypress
+!
+! Text where it can be, a keystroke where it cannot. A host can undo text and
+! cannot undo a keystroke, so an unmodified printable keysym is better as text;
+! with a modifier held the keystroke is the whole point, and a keysym with no
+! printable form has no choice. So this is a preference, which is a priority
+! union, and the two shapes need no flag to tell them apart.
+define Press(Name, Char)
+    PU([ Char Say("[ATTACH_L]") Say("[ATTACH_R]") ],
+       [ Say("[KEY]") Name [ ModTag* ] Say("[END]") ]) ;
+
+! ---- the five layers
+
+! `@E` and a consonant chord: a symbol keysym, which composes with modifiers
+! where a glyph would not.
+define Sym      [ [ Hash Kill("@") Some Variant Kill(E) Mod ]
+                  .o. Press(SymName, SymChar) ] ;
+
+! `@U` and payload bits: a digit, or an F-key when the chord holds both T and P.
+! `#` adds 16 there, so it reaches the table rather than the rules.
+define Num      [ [ ("#") Kill("@") Pat Vowels Kill(U) Mod ] .o. Press(NumName, NumChar) ] ;
+
+! Literal mode: the glyph itself instead of the keysym that types it, and the top
+! row attaches and capitalises instead of holding modifiers.
+define SymLit   [ [ Hash Kill("@") Some Variant Lit([ Kill(E) LitFlag ]) ]
+                  .o. [ GlyphPair Flag* ] ] ;
+
+! A literal number: the payload read as binary, `^` the 128 bit and `#` the 256.
+! Modifiers have nothing to modify here, and the Python ignores them.
+define NumLit   [ [ ("#") Kill("@") ("^") Pat (Kill(A)) (Kill(O))
+                    Lit([ Kill(U) NoMod ]) ] .o. LitNum ] ;
+
+! Fingerspelling, which is what a chord means when no mode key claims it. The
+! literal keys are inert, so the table carries the `*` and this drops the `-Z`.
+define Chord    [ (S) (T) (K) (P) (W) (H) (R) (A) (O) ("*") (E) (U) ] ;
+! `@U` under the literal marker is a number, and the Python returns one there
+! rather than falling through, so those strokes never reach the letters.
+define NumberMode  [ $[U] & ~$[E] & [ $["*"] | $[{z}] ] ] ;
+! A letter is always printable, so the two shapes read the one table.
+define Letter   [ ~NumberMode .o. [ Hash Kill("@") Chord Mod (Kill({z})) ]
+                  .o. Press(Spell, Spell) ] ;
+
+define Grammar  [ [ Sym | Num | SymLit | NumLit | Letter ] .o. Canonical ] ;
