@@ -7,7 +7,7 @@
 use std::collections::BTreeMap;
 use std::path::Path;
 
-use stfst_core::System;
+use stfst_core::{Record, System};
 
 use crate::lexc::{self, Align};
 use crate::translate::{translate, TranslateError};
@@ -64,7 +64,10 @@ pub fn import(raw: &BTreeMap<String, String>, system: &System, align: Align) -> 
     let mut entries: Vec<(String, String)> = Vec::with_capacity(raw.len());
     let mut golden: Vec<(String, String)> = Vec::new();
     let mut pairs: Vec<(String, Vec<String>)> = Vec::with_capacity(raw.len());
-    const STRIDE: usize = 500;
+    // A regression file wants breadth, so a small dictionary contributes every
+    // entry and a large one is sampled. Either way every entry holding a record
+    // tag is in, because that is where the translation grammar can be wrong.
+    let stride = if raw.len() <= 1000 { 1 } else { 500 };
 
     for (outline, translation) in raw {
         let parsed = match system.parse_outline(outline) {
@@ -88,9 +91,21 @@ pub fn import(raw: &BTreeMap<String, String>, system: &System, align: Align) -> 
                 continue;
             }
         };
+        // Neither lexc nor xfst can write a control character: lexc reads `\n` as
+        // two characters and a literal newline inside a quoted symbol crashes
+        // hfst-xfst. Three entries in `commands.json` are a newline or a
+        // paragraph break, so they are reported rather than silently mangled.
+        if let Some(c) = control_char(&record) {
+            report.bad_translations.push((
+                outline.clone(),
+                translation.clone(),
+                format!("control character {:?} in the translation", c),
+            ));
+            continue;
+        }
         let tape = system.to_tape(&parsed);
         let plain = record.to_string();
-        if plain.contains('[') || report.imported % STRIDE == 0 {
+        if plain.contains('[') || report.imported % stride == 0 {
             golden.push((tape.clone(), plain));
         }
         let symbols = record.to_symbols();
@@ -105,4 +120,13 @@ pub fn import(raw: &BTreeMap<String, String>, system: &System, align: Align) -> 
         golden,
         pairs,
     }
+}
+
+/// The first control character a record's tape would hold, if any.
+fn control_char(record: &Record) -> Option<char> {
+    record
+        .to_symbols()
+        .iter()
+        .flat_map(|s| s.chars().collect::<Vec<_>>())
+        .find(|c| c.is_control())
 }

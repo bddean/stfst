@@ -1,4 +1,6 @@
-# The dictionary stack. Priority mirrors plover.cfg order: higher shadows lower.
+# The dictionary stack. Priority mirrors plover.cfg order: higher shadows lower,
+# and the list here is that file's list, top to bottom. `main.json` is disabled
+# there, so it is absent here.
 system = "systems/stenotype-extended.toml"
 
 [[dict]]
@@ -7,21 +9,46 @@ priority = 100
 xfst = ["dictionaries/emily-symbols-tables.xfst", "dictionaries/emily-symbols.xfst"]
 
 [[dict]]
-name = "emily-modifiers"
-priority = 95
-xfst = ["dictionaries/emily-symbols-tables.xfst", "dictionaries/emily-modifiers-tables.xfst", "dictionaries/emily-modifiers.xfst"]
-
-[[dict]]
 name = "shrimple"
 priority = 90
 xfst = ["dictionaries/shrimple-tables.xfst", "dictionaries/shrimple.xfst"]
 
 [[dict]]
-name = "phrasing"
+name = "user"
 priority = 80
-xfst = ["dictionaries/phrasing-tables.xfst", "dictionaries/phrasing.xfst"]
+json = "~/.config/plover/user.json"
+
+[[dict]]
+name = "phrases"
+priority = 70
+json = "~/.config/plover/phrases.json"
+
+[[dict]]
+name = "commands"
+priority = 60
+json = "~/.config/plover/commands.json"
+
+[[dict]]
+name = "emily-modifiers"
+priority = 50
+xfst = ["dictionaries/emily-symbols-tables.xfst", "dictionaries/emily-modifiers-tables.xfst", "dictionaries/emily-modifiers.xfst"]
+
+[[dict]]
+name = "semantic-suffixes"
+priority = 40
+json = "~/.config/plover/semantic-suffixes.json"
 
 [[dict]]
 name = "typey-type"
-priority = 40
+priority = 30
 json = "~/.config/plover/typey-type-full.json"
+
+[[dict]]
+name = "and-fold"
+priority = 20
+json = "~/.config/plover/and-fold.json"
+
+[[dict]]
+name = "phrasing"
+priority = 10
+xfst = ["dictionaries/phrasing-tables.xfst", "dictionaries/phrasing.xfst"]

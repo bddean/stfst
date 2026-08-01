@@ -1,0 +1,215 @@
+! 212 cases from /Users/ben/.config/plover/user.json. A regression file for the import pipeline,
+! not an oracle: the expectations come from our own translation
+! grammar, which is unit tested separately.
+l	ly[ATTACH_L]
+Afrt	after the
+AO*Epbt	even though
+AOE/KO	eco
+AOUfpblg	usage
+AUbt	all about
+E	he
+Efpbs	essense
+HA	hah
+HAErp	happier
+HO*/SApb/TPHA	Hossanah
+HOpbls	honestly
+HRpb	less than
+HRAElz	lazily
+HRAEUbt	a little bit
+HRAUrpbd	launder
+HREUbt	little bit
+HUpb	honey
+Kfg	config
+KA*f	cav
+KA*frpb	caravan
+KAEp/PWAr/RA	capybara
+KAO*Ef	Kyiv
+KAOEUpl	a couple
+KAOEUrpbd	kinder
+KAUl/KWRAOE	callee
+KAUrl	caller
+KH*p	Ch[ATTACH_L][ATTACH_R]
+KPApbd	expand
+KPH*Er	Khmer
+KPHOUgt	coming out
+KPHOUt	come out
+KPHOUtd	came out
+KPObgt	expect to
+KPWErt	combinator
+KREblgt	correctly
+KRO	co^
+KWRAOEt	yeet
+KWROEUl	yellow
+KWRUp	yup
+O	to
+Opbl	only
+Or/REU	orrery
+OUfpbd	out of hand
+PHb	must be
+PHAOEUfl	mindful
+PHApbl	manual
+PHOEUrbg	micro-
+PHOr/PHOr	more and more
+PHRAErt	popularity
+PHREfpblt	pleasantly
+POEpb	pony
+PREpbd	pretend
+PREUbl	predictable
+PREUrb	perish
+PWHRApbg	blank
+PWHROEp	blow up
+PWOEUr	berry
+RAEtd	read the
+RAEUrpbg	ranger
+RAOEpt	repeat
+RAOUf	review
+REfbgs	revision
+RUp/TAO*EUpl	runtime
+Sgd	do something
+Srs	src
+SAUfp	such a
+SEUfrl	silver
+SH*	sh[GLUE]
+SHREfblgt	selective
+SHRO*s	is lost
+SK*Uft	disgust
+SKEUrpl	skirm
+SKPpbt	and then
+SKPAOEUl	and I'll
+SKPEpb	and then
+SKPHOU	and how
+SKPO	and to
+SKPOU	and now
+SKPWHOU	and how
+SKREfpbt	scent of
+SKREUpgs	subscription
+SKUft	disgust
+SKWRAEUt	generate
+SPHbl	assemble
+SPHR	must have
+SPHRb	must have been
+SPHREpbd	splendid
+SPOEUlt	spoilt
+SPWgt	integrate
+SPWAEUrgt	interrogate
+SR*EUl	vil
+SRl	is really
+SRAOEpbts	convenience
+SRApblg	vantage
+SREUrlg	villager
+STHAt	so that
+STKbl	dissemble
+STKEbl	dissemble
+STKHRAOEUpb	decline
+STKOg	do something
+STKOrd	discord
+STKPAOEr	disappear
+STKRAOEt	discrete
+STKUfgtd	disgusting
+STKUftd	disgust
+STPAft	so fast
+STPAOEp	fall asleep
+STPHE	if she
+STR*Ubgt	struct
+STROEU	destroy
+STWOUpb	someone to
+SWUpb	someone
+TA/TAr	Tatar
+TA/TArs	Tatars
+TAUbt	talk about
+TH*	th[GLUE]
+TH*Ed	they would
+THAEUb	by the way
+THAOEUb	by the
+THAt	that the
+THEUb	think about
+TKAOEt	detail
+TKHRAEUr	declare
+TKOEUpl	demo
+TKPOr	go for
+TKPWArpb	garden
+TKPWHRElt	let go
+TKPWOg	going to
+TKPWUg	debug
+TOfp	top of
+TOUrplt	tournament
+TPAEUrbg	faker
+TPAOpblg	footage
+TPE	if he
+TPEUrpbt	interface
+TPEUrplt	firmament
+TPHg	in a
+TPHAUrl	natural
+TPHOUrt	right now
+TPHRAfl	interactively
+TPHROEUf	in love with
+TPHROf	in love
+TPHRUrt	flutter
+TPOElg	topology
+TPOrgt	forgot
+TPOUrpb	for now
+TPRA	for a
+TPRAEUbt	for a bit
+TPRAOEUpb	frighten
+TPRAOUs	overuse
+TPRAUl	for all
+TPWRAEU	betray
+TPWUpbs	for once
+TRAEUpblt	transparently
+TWA	to a
+Upt	up the
+WA	with a
+WEfbt	eventual
+WEUbg	when I can
+WEUfpblt	eventually
+WH*	wh[GLUE]
+WHAOs	whose
+WHAUp	what's up
+WHEUbg	while I can
+WHEUd	what did
+WHUbg	while you can
+WOrbg/A*rpbd	workaround
+WUbg	when you can
+WUf	one of
+WUft	one of the
+^AOEUd	I had
+^HEUpbd	behind
+^HO	uh oh
+^HRAfrpb	avalanche
+^HREUf	alive
+^HROEpb	alone
+^HROUd	allowed
+^KUpl	a couple
+^PArpbt	apparent
+^PEpbd	append
+^PHAfp	rematch
+^PHEUt	emit
+^PHRAEUs	replace
+^PHRAOEU	apply
+^PHREfpblt	unpleasantly
+^PHREfpbt	unpleasant
+^PWHRAOEUpblg	oblige
+^RAOEUf	arrive
+^ROE	arrow
+^ROr	error
+^SAOUpl	assume
+^SEbl	assemble
+^SHRAEUt	isolate
+^SHRAt	isolate
+^SKWREl	angel
+^SKWROEU	enjoy
+^SKWRUft	adjust
+^SPEbgt	inspect
+^SPHbl	assemble
+^SRAblg	disadvantage
+^ST	it is
+^TEpbl	potential
+^TKPWRAOE	agree
+^TPfrpbt	unfortunate
+^TPEUg	configure
+^TPHOEr	another
+^TPHOrpls	enormous
+^TPOrpbt	unfortunate
+^WAEUbg	awake
+^WEU	in which
+^WRAOEUt	rewrite

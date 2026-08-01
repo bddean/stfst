@@ -112,11 +112,21 @@ fn split_pieces(s: &str) -> Result<Vec<Piece>, TranslateError> {
     Ok(out)
 }
 
-/// Plover writes a held key as a wrapper: `Control_L(Left)` is ctrl and Left,
-/// and `Alt_L(Tab(Tab))` is alt held over two presses of Tab. A modifier wrapper
-/// sets a flag; any other wrapper is a key held over what it wraps, which is that
-/// key pressed and then the rest, so it becomes two items.
+/// Plover writes a held key as a wrapper: `Control_L(Left)` is ctrl and Left, and
+/// `Alt_L(Tab(Tab))` is alt held over two presses of Tab. A modifier wrapper sets
+/// a flag; any other wrapper is a key held over what it wraps, which is that key
+/// pressed and then the rest, so it becomes two items.
+///
+/// Whitespace inside a wrapper is a sequence under the same hold, so
+/// `Alt_L(Tab Tab)` means the same as `Alt_L(Tab(Tab))`.
 fn keystrokes(token: &str, mods: Mods, out: &mut Vec<Item>) -> Option<()> {
+    let held = held_keys(token);
+    if held.len() > 1 {
+        for word in held {
+            keystrokes(word, mods, out)?;
+        }
+        return Some(());
+    }
     let Some((head, rest)) = token.split_once('(') else {
         out.push(Item::Key {
             name: token.to_string(),
@@ -134,6 +144,31 @@ fn keystrokes(token: &str, mods: Mods, out: &mut Vec<Item>) -> Option<()> {
         }),
     }
     keystrokes(inner, mods, out)
+}
+
+/// Split at whitespace outside any wrapper. `Control_L(a) Control_L(b)` is two
+/// keystrokes, and the space in `Alt_L(Tab Tab)` is inside one.
+fn held_keys(tokens: &str) -> Vec<&str> {
+    let mut out = Vec::new();
+    let (mut depth, mut start) = (0usize, None);
+    for (i, c) in tokens.char_indices() {
+        match c {
+            '(' => depth += 1,
+            ')' => depth = depth.saturating_sub(1),
+            c if c.is_whitespace() && depth == 0 => {
+                if let Some(from) = start.take() {
+                    out.push(&tokens[from..i]);
+                }
+                continue;
+            }
+            _ => {}
+        }
+        start.get_or_insert(i);
+    }
+    if let Some(from) = start {
+        out.push(&tokens[from..]);
+    }
+    out
 }
 
 /// A Plover modifier name, with the side dropped: it is not a distinction any
@@ -187,7 +222,7 @@ fn directive(d: &str, flags: &mut Flags) -> Result<Vec<Item>, TranslateError> {
     }
     if let Some(rest) = core.strip_prefix('#') {
         let mut out = Vec::new();
-        for token in rest.split_whitespace() {
+        for token in held_keys(rest) {
             keystrokes(token, Mods::default(), &mut out)
                 .ok_or_else(|| TranslateError::Unsupported(d.to_string()))?;
         }
@@ -301,10 +336,19 @@ mod tests {
             r("{#Control_L(Left)}{^}").to_string(),
             "[KEY]Left[CTRL][END][ATTACH_L][ATTACH_R]"
         );
-        // Anything else a wrapper holds is that key pressed, then the rest.
+        // Anything else a wrapper holds is that key pressed, then the rest, and a
+        // space inside the wrapper is the same sequence under the same hold.
         assert_eq!(
             r("{#Alt_L(Tab(Tab))}").to_string(),
             "[KEY]Tab[ALT][END][KEY]Tab[ALT][END]"
+        );
+        assert_eq!(
+            r("{#Alt_L(Tab Tab)}").to_string(),
+            "[KEY]Tab[ALT][END][KEY]Tab[ALT][END]"
+        );
+        assert_eq!(
+            r("{#Control_L(a) Escape}").to_string(),
+            "[KEY]a[CTRL][END][KEY]Escape[END]"
         );
         assert_eq!(
             r("{#Return}{#Return}").to_string(),

@@ -23,6 +23,31 @@ artifact, so `lookup`, `test` and `bench` need nothing on `PATH`;
 `--engine hfst` switches them to HFST's reader, which is how
 `scripts/crosscheck-ol.sh` checks ours.
 
+## The stack
+
+`recipe.toml` is `plover.cfg`'s enabled list, in its order, so priority here means
+what file order means there. `main.json` is disabled there and absent here.
+
+| Dictionary | Source | Forward | Reverse |
+|---|---|---|---|
+| emily-symbols | xfst over a shared glyph table | 12,075 | 12,701 |
+| shrimple | xfst over a generated table | 97,378 | 107,364 |
+| user | JSON, imported | 18,620 | 18,724 |
+| phrases | JSON, imported | 11,752 | 11,958 |
+| commands | JSON, imported | 7,092 | 7,316 |
+| emily-modifiers | xfst over generated tables | 63,011 | 59,635 |
+| semantic-suffixes | JSON, imported | 917 | 979 |
+| typey-type | JSON, imported | 6,242,881 | 6,509,829 |
+| and-fold | JSON, imported | 40,093 | 38,241 |
+| phrasing | xfst, the §7 prototype slice | 15,927 | 13,835 |
+
+13.3 MB for both directions of everything, against 93.6 MB resident for the
+Plover-style dictionary and its reverse index in `docs/M0.md`.
+
+Nine entries in the whole set do not import, and each is named by
+`stfst import --report`: five hold a `{}` shape the record language has no meaning
+for, and four hold a control character, which neither `lexc` nor `xfst` can write.
+
 ## Measurements and decisions
 
 | | |

@@ -1,8 +1,13 @@
 ! 0 emily-symbols priority 100
-! 1 emily-modifiers priority 95
-! 2 shrimple priority 90
-! 3 phrasing priority 80
-! 4 typey-type priority 40
+! 1 shrimple priority 90
+! 2 user priority 80
+! 3 phrases priority 70
+! 4 commands priority 60
+! 5 emily-modifiers priority 50
+! 6 semantic-suffixes priority 40
+! 7 typey-type priority 30
+! 8 and-fold priority 20
+! 9 phrasing priority 10
 TP-PL	1	typey-type	.
 TAP	1	typey-type	tap
 #TRU	1	emily-symbols	[KEY]Tab[END]

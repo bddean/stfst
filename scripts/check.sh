@@ -8,11 +8,13 @@ cargo test --workspace
 cargo build --release -q
 B=./target/release/stfst
 
-for dict in emily-symbols emily-modifiers shrimple phrasing typey-type; do
+# Every artifact in the stack, so adding one to the recipe cannot skip its tests.
+for artifact in build/dicts/*.stfst; do
+    dict=$(basename "$artifact" .stfst)
     echo "== $dict"
-    $B test "build/dicts/$dict.stfst" "tests/golden/$dict.tsv" | tail -1
+    $B test "$artifact" "tests/golden/$dict.tsv" | tail -1
     # The reverse direction has no oracle of its own; forward lookup is the check.
-    scripts/check-reverse.py "build/dicts/$dict.stfst" "tests/golden/$dict.tsv"
+    scripts/check-reverse.py "$artifact" "tests/golden/$dict.tsv"
 done
 
 # Translation is not a per-tape question, so it needs its own fixture: a stroke
