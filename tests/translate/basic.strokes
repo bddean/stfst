@@ -10,3 +10,7 @@ TAP
 !undo
 *T
 PWORD
+! a Shrimple word: the entry stroke, then syllables, longest match growing
+^
+TAP
+KAT

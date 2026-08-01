@@ -23,7 +23,32 @@
 ! alphabet is only keys, so subtract the domains there and compose.
 define PU(A, B)  [ A | [ [ B.u - A.u ] .o. B ] ] ;
 
-define Piece(T)  PU(T, PU([ T T ], PU([ T T T ], PU([ T T T T ], [ T T T T T ])))) ;
+! Fewest pieces is only half of Python's rule. Within a count it walks the split
+! points in ascending order, so the first piece is as short as it can be, and a
+! quarter of the left-bank chords need that tiebreak: KPWHR cuts into K+PW+HR
+! ("kbl") or KP+W+HR ("xwl") and both are three pieces.
+!
+! So each level chooses where the first boundary falls, shortest first, and the
+! tail is the level below, which prefers shortest first in turn. `Ln` is the
+! table restricted to an n-key entry.
+define L1(T)  [ [ ? ]             .o. T ] ;
+define L2(T)  [ [ ? ? ]           .o. T ] ;
+define L3(T)  [ [ ? ? ? ]         .o. T ] ;
+define L4(T)  [ [ ? ? ? ? ]       .o. T ] ;
+define L5(T)  [ [ ? ? ? ? ? ]     .o. T ] ;
+define L6(T)  [ [ ? ? ? ? ? ? ]   .o. T ] ;
+define L7(T)  [ [ ? ? ? ? ? ? ? ] .o. T ] ;
+
+define Split(T, Q)  PU([ L1(T) Q ], PU([ L2(T) Q ], PU([ L3(T) Q ], PU([ L4(T) Q ],
+                    PU([ L5(T) Q ], PU([ L6(T) Q ], [ L7(T) Q ])))))) ;
+
+define Q1(T)  T ;
+define Q2(T)  Split(T, Q1(T)) ;
+define Q3(T)  Split(T, Q2(T)) ;
+define Q4(T)  Split(T, Q3(T)) ;
+define Q5(T)  Split(T, Q4(T)) ;
+
+define Piece(T)  PU(Q1(T), PU(Q2(T), PU(Q3(T), PU(Q4(T), Q5(T))))) ;
 
 ! A cut into table entries does not know steno order: nothing in `T+` stops it
 ! reading `t` then `b`, or `s` twice. The tape does know, so constrain the domain
@@ -32,16 +57,43 @@ define Piece(T)  PU(T, PU([ T T ], PU([ T T T ], PU([ T T T T ], [ T T T T T ]))
 define Left          [ (S) (T) (K) (P) (W) (H) (R) ] ;
 define Right         [ (f) (r) (p) (b) (l) (g) (t) (s) (d) (z) ] ;
 
+! Exactly one piece of the cut claims the asterisk, and fewest pieces still wins,
+! so the levels enumerate where the starred piece sits. Composing a "contains a
+! starred piece" relation onto the cut instead relates its *output* to the cut's
+! input, which is not a constraint at all and quietly dropped every starred
+! ender.
+! The starred cut needs all three of Python's preferences, not one: fewest
+! pieces, then the shortest first piece, then the earliest piece claiming the
+! star. Enumerating star positions without the length tiebreak left 68 of 916
+! chords ambiguous.
+!
+! At each boundary the first piece either claims the star, and the tail is
+! ordinary, or it does not, and the tail must claim it. Claiming it early wins.
+define Both(A, B, Q, R)  PU([ A Q ], [ B R ]) ;
+define SplitStar(T, S, Q, R)
+    PU(Both(L1(S), L1(T), Q, R), PU(Both(L2(S), L2(T), Q, R),
+    PU(Both(L3(S), L3(T), Q, R), PU(Both(L4(S), L4(T), Q, R),
+    PU(Both(L5(S), L5(T), Q, R), PU(Both(L6(S), L6(T), Q, R),
+       Both(L7(S), L7(T), Q, R))))))) ;
+
+define R1(T, S)  S ;
+define R2(T, S)  SplitStar(T, S, Q1(T), R1(T, S)) ;
+define R3(T, S)  SplitStar(T, S, Q2(T), R2(T, S)) ;
+define R4(T, S)  SplitStar(T, S, Q3(T), R3(T, S)) ;
+
+define PieceStar(T, S)  PU(R1(T, S), PU(R2(T, S), PU(R3(T, S), R4(T, S)))) ;
+
 define Starters      [ Left  .o. Piece(Starter) ] ;
-define StartersStar  [ Left  .o. [ Starter* StarterStar Starter* ] .o. Piece([ Starter | StarterStar ]) ] ;
+define StartersStar  [ Left  .o. PieceStar(Starter, StarterStar) ] ;
 define Enders        [ Right .o. Piece(Ender) ] ;
-define EndersStar    [ Right .o. [ Ender* EnderStar Ender* ] .o. Piece([ Ender | EnderStar ]) ] ;
+define EndersStar    [ Right .o. PieceStar(Ender, EnderStar) ] ;
 
 ! A vowel straddles the star, so the two halves come from the table and the star
-! sits between them, claimed by whoever the shape says.
-define Vowel      VowelBody ;
+! sits between them, claimed by whoever the shape says. A syllable need not have
+! one: Shrimple's table holds the empty vowel, so `^/TPH` is "n".
+define Vowel      (VowelBody) ;
 define VowelStar  VowelStarBody ;
-define VowelPass  VowelSplitBody ;
+define VowelPass  [ VowelSplitBody | [ "*" .x. 0 ] ] ;
 
 ! Where the star goes: the ender claims it, else the vowel, else the starter.
 ! Python's cascade in that order, and priority union is that order.
@@ -62,14 +114,35 @@ define Syllable   PU(Plain, PU(StarEnder, PU(StarVowel, StarStart))) ;
 ! syllable while the syllable is still its own relation, so `.#.` is its first
 ! letter and not the record's.
 define UpFirst    [ a -> A , b -> B , c -> C , d -> D , e -> E , f -> F , g -> G , h -> H , i -> I , j -> J , k -> K , l -> L , m -> M , n -> N , o -> O , p -> P , q -> Q , r -> R , s -> S , t -> T , u -> U , v -> V , w -> W , x -> X , y -> Y , z -> Z || .#. _ ] ;
-define Cell       [ [ [ "#" .x. 0 ] [ Syllable .o. UpFirst ] ] | Syllable ] ;
+! `[e]`, `[y]` and `[s]` are Shrimple's orthography notes, and they are not the
+! same shape. `[e]` *moves*: a vowel carrying it lands its `e` after the ender,
+! so `AOEU` plus `-F` is "ife" and not "ief". The other two only mark a suffix
+! that is already at the end, and a suffix attached to text that is already
+! contiguous is just the letter.
+! `%` is not an escape inside `{...}`, so a bracket is its own quoted symbol.
+! Written the other way these rules still matched the tables, because the tables
+! had the same corruption, and only a case with a bare `&` in it showed anything.
+define NoteE      [ "[" {e} "]" ] ;
+define NoteY      [ "[" {y} "]" ] ;
+define NoteS      [ "[" {s} "]" ] ;
+define HasE       $[ NoteE ] ;
+define MoveE      [ [ HasE .o. [ NoteE -> 0 ] .o. [ ?* [ 0 .x. {e} ] ] ] | ~HasE ] ;
+define Ortho      [ [ NoteY -> {y} ] .o. [ NoteS -> {s} ] ] ;
 
-! `[e]`, `[y]` and `[s]` are Shrimple's orthography notes. The first two move a
-! letter past the ender, and the third two are attach-suffix requests.
-define OrthoE     [ {%[e%]} -> {e} ] ;
-define OrthoY     [ {%[y%]} -> 0 ] ;
-define OrthoS     [ {%[s%]} -> 0 ] ;
-define Ortho      [ OrthoE .o. OrthoY .o. OrthoS ] ;
+! The exit strokes. Plover needs these because LONGEST_KEY = 40 makes the match
+! greedy, so a stroke that means something else has to be tested for at lookup
+! time; here they leave the language and the runtime's longest match does the
+! rest. `Mid` is the vowel field, so the one left-bank pattern can say "exactly
+! this left bank, whatever follows".
+define Mid        [ (A) (O) ("*") (E) (U) ] ;
+define Exit       [ ExitStroke | [ {SKWH} Mid Right ] ] ;
+
+! Every part of a syllable is optional, so the syllable relation accepts the
+! empty tape. A stroke with no keys is not a stroke, so require one, and no
+! stroke of a Shrimple word may be an exit stroke.
+define Filled     [ [ ?+ - Exit ] .o. [ Syllable .o. MoveE ] ] ;
+define Cell       [ [ [ "#" .x. 0 ] [ Filled .o. UpFirst ] ] | Filled ] ;
+
 
 ! A bare symbol is the identity pair, so the entry stroke and the separators
 ! reach the record unless they are deleted. The record language cannot catch it:
@@ -83,7 +156,6 @@ define Enter      [ "^" .x. {Shrimple} ] ;
 
 define Grammar    [ [ Enter | [ [ "^" .x. 0 ] Join Word ] ] .o. Ortho .o. Canonical ] ;
 
-! Not finished. A syllable with no vowel (`^/TPH` for "n") does not match,
-! because `Vowel` is required here and Shrimple's table allows the empty one.
-! The fix is to make it optional and check the segmentation ambiguity that
-! opens; the golden file against the Python oracle is not written yet either.
+! One simplification worth naming: Shrimple's `^` starter is `{^^}`, Plover
+! in-band syntax that a record cannot hold in the middle of its body. So a `^`
+! anywhere in a word attaches the whole record rather than that one syllable.

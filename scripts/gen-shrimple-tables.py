@@ -17,6 +17,7 @@ Usage: scripts/gen-shrimple-tables.py > dictionaries/shrimple-tables.xfst
 """
 import importlib.util
 import os
+import subprocess
 import sys
 
 ORDER = "#@^+STKPWHRAO*EUfrpblgtsdz"
@@ -52,11 +53,27 @@ def tape(fragment, right_bank):
 
 
 def literal(text):
-    """An xfst literal: `{...}` with every non-alphanumeric escaped."""
+    """An xfst literal for `text`.
+
+    `%` is not an escape inside `{...}`: xfst reads `{A%*B}` as the five symbols
+    `A % * B`, so escaping there corrupts the string silently and both sides of a
+    rule can agree on the corruption and look fine. Alphanumeric runs go in
+    braces and every other character is its own quoted symbol.
+    """
     if text == "":
         return "0"
-    body = "".join(("%" + c if not c.isalnum() else c) for c in text)
-    return "{" + body + "}"
+    out, run = [], ""
+    for c in text:
+        if c.isalnum():
+            run += c
+            continue
+        if run:
+            out.append("{" + run + "}")
+            run = ""
+        out.append('"' + c + '"' if c not in '"\\' else "%" + c)
+    if run:
+        out.append("{" + run + "}")
+    return "[ " + " ".join(out) + " ]" if len(out) > 1 else out[0]
 
 
 def pair(keys, value):
@@ -73,6 +90,29 @@ def emit(name, rows, doc):
     for row in rows[1:]:
         print(f"  | {row}")
     print("] ;\n")
+
+
+def exit_strokes(shrimple):
+    """The whole strokes that end a Shrimple word, as tapes.
+
+    Plover notation needs position to be read, so the tape comes from
+    `stfst tape` rather than from a letter table here.
+    """
+    here = os.path.dirname(__file__)
+    outlines = sorted(set(shrimple.strokes_you_can_use_to_exit_shrimple_with))
+    out = subprocess.run(
+        [os.path.join(here, "..", "target", "release", "stfst"), "tape",
+         "--system", os.path.join(here, "..", "systems", "stenotype-extended.toml")],
+        input="\n".join(outlines) + "\n",
+        capture_output=True, text=True, check=True).stdout
+    tapes = []
+    for line in out.splitlines():
+        fields = line.split("\t")
+        if len(fields) >= 2 and fields[1] != "!":
+            tapes.append(fields[1])
+        else:
+            print(f"! unparseable exit stroke {fields[0]}", file=sys.stderr)
+    return tapes
 
 
 def main(path):
@@ -119,6 +159,8 @@ def main(path):
          "vowel halves with nothing between them")
     emit("VowelStarBody", [r.replace(" SLOT ", " [ \"*\" .x. 0 ] ") for r in starred],
          "vowel halves with the asterisk between them, claimed by the vowel")
+    emit("ExitStroke", [literal(t) for t in exit_strokes(shrimple)],
+         "whole strokes that end a Shrimple word")
     emit("VowelSplitBody", [r.replace(" SLOT ", " [ \"*\" .x. 0 ] ") for r in plain],
          "vowel halves with the asterisk between them, claimed by someone else")
 

@@ -37,7 +37,7 @@ artifact, so `lookup`, `test` and `bench` need nothing on `PATH`;
 | | |
 |---|---|
 | `systems/` | Steno systems. Which tape symbol each key writes is configuration, not a convention baked into the tools. |
-| `dictionaries/` | Hand-written dictionary source, in xfst. |
+| `dictionaries/` | Hand-written dictionary source, in xfst. A `-tables.xfst` file is transcribed data with an upstream owner; the grammar over it is authored. |
 | `recipe.toml` | The dictionary stack: what to compile, and at what priority. |
 | `tests/golden/` | Host-independent golden tests: a tape, a tab, the expected records. |
 | `tests/translate/` | Stroke streams and what the stack makes of them, where the answer depends on the history. |
@@ -108,3 +108,6 @@ Each of these cost a debugging round, so they are written down:
 - parameterised defines work, which is what lets a table read as data
 - in `lexc`, escape every non-alphanumeric ASCII character, and `0`, which is
   epsilon and otherwise vanishes silently
+- `%` is *not* an escape inside `{...}`: xfst reads `{A%*B}` as `A % * B`. Put
+  alphanumeric runs in braces and quote every other character on its own. This
+  one hides: both sides of a rule can share the corruption and agree

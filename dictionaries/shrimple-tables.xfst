@@ -34,7 +34,7 @@ define Starter [ [ {S} .x. {s} ]
 ] ;
 
 ! left bank to text, claims the asterisk
-define StarterStar [ [ {SKP} .x. {%&} ]
+define StarterStar [ [ {SKP} .x. "&" ]
 ] ;
 
 ! right bank to text, no asterisk
@@ -75,7 +75,7 @@ define Ender [ [ {f} .x. {f} ]
   | [ {tz} .x. 0 ]
   | [ {s} .x. {s} ]
   | [ {d} .x. {d} ]
-  | [ {z} .x. {%[s%]} ]
+  | [ {z} .x. [ "[" {s} "]" ] ]
 ] ;
 
 ! right bank to text, claims the asterisk
@@ -88,9 +88,9 @@ define EnderStar [ [ {ft} .x. {st} ]
   | [ {lg} .x. {lk} ]
   | [ {t} .x. {th} ]
   | [ {td} .x. {thed} ]
-  | [ {s} .x. {c%[e%]} ]
+  | [ {s} .x. [ {c} "[" {e} "]" ] ]
   | [ {sz} .x. {c} ]
-  | [ {d} .x. {%[y%]} ]
+  | [ {d} .x. [ "[" {y} "]" ] ]
   | [ {z} .x. {z} ]
 ] ;
 
@@ -98,13 +98,13 @@ define EnderStar [ [ {ft} .x. {st} ]
 define VowelBody [ [ [ {A} .x. {a} ] [ 0 .x. 0 ] ]
   | [ [ {AO} .x. {oo} ] [ 0 .x. 0 ] ]
   | [ [ {AO} .x. {ee} ] [ {E} .x. 0 ] ]
-  | [ [ {AO} .x. {i%[e%]} ] [ {EU} .x. 0 ] ]
-  | [ [ {AO} .x. {u%[e%]} ] [ {U} .x. 0 ] ]
+  | [ [ {AO} .x. [ {i} "[" {e} "]" ] ] [ {EU} .x. 0 ] ]
+  | [ [ {AO} .x. [ {u} "[" {e} "]" ] ] [ {U} .x. 0 ] ]
   | [ [ {A} .x. {ea} ] [ {E} .x. 0 ] ]
-  | [ [ {A} .x. {a%[e%]} ] [ {EU} .x. 0 ] ]
+  | [ [ {A} .x. [ {a} "[" {e} "]" ] ] [ {EU} .x. 0 ] ]
   | [ [ {A} .x. {au} ] [ {U} .x. 0 ] ]
   | [ [ {O} .x. {o} ] [ 0 .x. 0 ] ]
-  | [ [ {O} .x. {o%[e%]} ] [ {E} .x. 0 ] ]
+  | [ [ {O} .x. [ {o} "[" {e} "]" ] ] [ {E} .x. 0 ] ]
   | [ [ {O} .x. {oi} ] [ {EU} .x. 0 ] ]
   | [ [ {O} .x. {ou} ] [ {U} .x. 0 ] ]
   | [ [ 0 .x. {e} ] [ {E} .x. 0 ] ]
@@ -123,17 +123,55 @@ define VowelStarBody [ [ [ {A} .x. {u} ] [ "*" .x. 0 ] [ 0 .x. 0 ] ]
   | [ [ {O} .x. {ow} ] [ "*" .x. 0 ] [ {U} .x. 0 ] ]
 ] ;
 
+! whole strokes that end a Shrimple word
+define ExitStroke [ "*"
+  | [ {A} "*" {Es} ]
+  | {AEs}
+  | {AEz}
+  | {Efbg}
+  | {HAErb}
+  | {KPA}
+  | [ {KPA} "*" ]
+  | {KWbg}
+  | {KWpl}
+  | [ {KWRA} "*" {t} ]
+  | {Pp}
+  | [ {PW} "*" {fp} ]
+  | {PWfp}
+  | {Rr}
+  | {Sp}
+  | {STKHR}
+  | {STPHb}
+  | {STPHbg}
+  | {STPHfr}
+  | {STPHg}
+  | {STPHlg}
+  | {STPHp}
+  | {STPHr}
+  | {STPHrb}
+  | [ {TA} "*" {b} ]
+  | {TKls}
+  | {TKHR}
+  | {TKUpt}
+  | {TPbg}
+  | {TPpl}
+  | [ {TPHO} "*" {frl} ]
+  | [ {TPWA} "*" ]
+  | [ "^" "*" ]
+  | [ "^" {S} ]
+] ;
+
 ! vowel halves with the asterisk between them, claimed by someone else
 define VowelSplitBody [ [ [ {A} .x. {a} ] [ "*" .x. 0 ] [ 0 .x. 0 ] ]
   | [ [ {AO} .x. {oo} ] [ "*" .x. 0 ] [ 0 .x. 0 ] ]
   | [ [ {AO} .x. {ee} ] [ "*" .x. 0 ] [ {E} .x. 0 ] ]
-  | [ [ {AO} .x. {i%[e%]} ] [ "*" .x. 0 ] [ {EU} .x. 0 ] ]
-  | [ [ {AO} .x. {u%[e%]} ] [ "*" .x. 0 ] [ {U} .x. 0 ] ]
+  | [ [ {AO} .x. [ {i} "[" {e} "]" ] ] [ "*" .x. 0 ] [ {EU} .x. 0 ] ]
+  | [ [ {AO} .x. [ {u} "[" {e} "]" ] ] [ "*" .x. 0 ] [ {U} .x. 0 ] ]
   | [ [ {A} .x. {ea} ] [ "*" .x. 0 ] [ {E} .x. 0 ] ]
-  | [ [ {A} .x. {a%[e%]} ] [ "*" .x. 0 ] [ {EU} .x. 0 ] ]
+  | [ [ {A} .x. [ {a} "[" {e} "]" ] ] [ "*" .x. 0 ] [ {EU} .x. 0 ] ]
   | [ [ {A} .x. {au} ] [ "*" .x. 0 ] [ {U} .x. 0 ] ]
   | [ [ {O} .x. {o} ] [ "*" .x. 0 ] [ 0 .x. 0 ] ]
-  | [ [ {O} .x. {o%[e%]} ] [ "*" .x. 0 ] [ {E} .x. 0 ] ]
+  | [ [ {O} .x. [ {o} "[" {e} "]" ] ] [ "*" .x. 0 ] [ {E} .x. 0 ] ]
   | [ [ {O} .x. {oi} ] [ "*" .x. 0 ] [ {EU} .x. 0 ] ]
   | [ [ {O} .x. {ou} ] [ "*" .x. 0 ] [ {U} .x. 0 ] ]
   | [ [ 0 .x. {e} ] [ "*" .x. 0 ] [ {E} .x. 0 ] ]
