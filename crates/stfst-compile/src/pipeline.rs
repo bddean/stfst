@@ -69,6 +69,7 @@ pub fn compile_xfst(
     sources: &[PathBuf],
     work: &Path,
     out_fst: &Path,
+    out_reverse: &Path,
 ) -> Result<Checks> {
     std::fs::create_dir_all(work)?;
     let script = work.join("build.xfst");
@@ -96,6 +97,7 @@ pub fn compile_xfst(
 
     if checks.passed() {
         to_hfstol(&net, out_fst)?;
+        to_hfstol_inverted(&net, out_reverse)?;
     }
     Ok(checks)
 }
@@ -107,14 +109,20 @@ pub fn compile_xfst(
 /// order, and each tape through the outline parser, which can only emit steno
 /// order. The check exists to catch hand-written rules, and there are none on
 /// this path.
-pub fn compile_lexc(source: &Path, work: &Path, out_fst: &Path) -> Result<()> {
+pub fn compile_lexc(
+    source: &Path,
+    work: &Path,
+    out_fst: &Path,
+    out_reverse: &Path,
+) -> Result<()> {
     std::fs::create_dir_all(work)?;
     let net = work.join("lexicon.hfst");
     run(
         "hfst-lexc",
         &[source.to_str().unwrap(), "-o", net.to_str().unwrap()],
     )?;
-    to_hfstol(&net, out_fst)
+    to_hfstol(&net, out_fst)?;
+    to_hfstol_inverted(&net, out_reverse)
 }
 
 fn to_hfstol(net: &Path, out: &Path) -> Result<()> {
@@ -123,7 +131,7 @@ fn to_hfstol(net: &Path, out: &Path) -> Result<()> {
     // self describing: its alphabet becomes exactly what it can emit, which is
     // what lets a host check the record language once at load time rather than
     // by walking every transition.
-    let pruned = net.with_extension("pruned");
+    let pruned = out.with_extension("pruned.hfst");
     run(
         "hfst-prune-alphabet",
         &["-i", net.to_str().unwrap(), "-o", pruned.to_str().unwrap()],
@@ -139,6 +147,18 @@ fn to_hfstol(net: &Path, out: &Path) -> Result<()> {
         ],
     )?;
     Ok(())
+}
+
+/// The same relation read the other way, records to outlines. Optimized lookup
+/// only ever walks the input side, so a reverse lookup needs its own automaton
+/// and cannot share the forward one.
+fn to_hfstol_inverted(net: &Path, out: &Path) -> Result<()> {
+    let inverted = out.with_extension("inverted.hfst");
+    run(
+        "hfst-invert",
+        &["-i", net.to_str().unwrap(), "-o", inverted.to_str().unwrap()],
+    )?;
+    to_hfstol(&inverted, out)
 }
 
 fn parse_checks(log: &str, system: &System) -> Checks {
@@ -192,9 +212,11 @@ pub fn write_artifact(
     system: &System,
     priority: i32,
     forward: &Path,
+    reverse: &Path,
 ) -> Result<()> {
     std::fs::create_dir_all(dir)?;
     std::fs::copy(forward, dir.join("forward.hfstol"))?;
+    std::fs::copy(reverse, dir.join("reverse.hfstol"))?;
     std::fs::write(dir.join("tags.txt"), all_tags().join("\n") + "\n")?;
     let keys: Vec<String> = system
         .keys()

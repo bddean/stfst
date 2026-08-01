@@ -62,6 +62,18 @@ enum Command {
         #[arg(long)]
         tape: bool,
     },
+    /// Look up the outlines that write a record, which is the direction a
+    /// suggestions window asks in.
+    Reverse {
+        artifact: PathBuf,
+        #[arg(long)]
+        system: PathBuf,
+        /// Records in printed form; stdin if absent.
+        records: Vec<String>,
+        /// How many outlines to show per record, shortest first.
+        #[arg(long, default_value_t = 5)]
+        limit: usize,
+    },
     /// Run a golden test file against a compiled artifact.
     Test {
         artifact: PathBuf,
@@ -186,6 +198,29 @@ fn main() -> Result<()> {
                     println!("{outline}\t{tape}\t-");
                 } else {
                     println!("{outline}\t{tape}\t{}", records.join("\t"));
+                }
+            }
+        }
+        Command::Reverse {
+            artifact,
+            system,
+            records,
+            limit,
+        } => {
+            let sys = System::load(&system)?;
+            let dict = stfst_dict::Dict::open(&artifact, &sys)?;
+            for text in or_stdin(records)? {
+                let record = stfst_core::Record::parse_display(&text)?;
+                let found = dict.outlines(&record, limit)?;
+                let outlines: Vec<String> = found
+                    .tapes
+                    .iter()
+                    .map(|tape| Ok(sys.format_outline(&sys.from_tape(tape)?)))
+                    .collect::<Result<_>>()?;
+                let more = if found.truncated { "\t..." } else { "" };
+                match outlines.is_empty() {
+                    true => println!("{text}\t-{more}"),
+                    false => println!("{text}\t{}{more}", outlines.join("\t")),
                 }
             }
         }

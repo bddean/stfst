@@ -13,9 +13,8 @@
 use std::collections::HashSet;
 use std::hash::{BuildHasherDefault, Hasher};
 
+use crate::chain::{Chain, ROOT};
 use crate::{Automaton, Loc, Sym, EPSILON};
-
-const ROOT: u32 = u32::MAX;
 
 /// One live path: where it is, and the output it has emitted so far.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -27,8 +26,7 @@ struct Path {
 #[derive(Clone)]
 pub struct Cursor<'a> {
     fst: &'a Automaton,
-    /// Emitted output, as parent-linked chains so paths share their prefixes.
-    nodes: Vec<(Sym, u32)>,
+    out: Chain,
     frontier: Vec<Path>,
     /// The paths this step has already seen. Held across steps, so a step
     /// allocates nothing once the buffers have grown.
@@ -44,7 +42,7 @@ impl<'a> Cursor<'a> {
         };
         let mut cursor = Cursor {
             fst,
-            nodes: Vec::new(),
+            out: Chain::default(),
             frontier: vec![start],
             seen: HashSet::default(),
             taken: Vec::new(),
@@ -82,7 +80,7 @@ impl<'a> Cursor<'a> {
             if !self.fst.is_final(path.loc) {
                 continue;
             }
-            let record = self.read(path.out);
+            let record = self.out.read(path.out);
             if !records.contains(&record) {
                 records.push(record);
             }
@@ -122,25 +120,13 @@ impl<'a> Cursor<'a> {
             let out = if sym == EPSILON {
                 parent
             } else {
-                self.nodes.push((sym, parent));
-                (self.nodes.len() - 1) as u32
+                self.out.push(sym, parent)
             };
             let path = Path { loc, out };
             if self.seen.insert(path) {
                 self.frontier.push(path);
             }
         }
-    }
-
-    fn read(&self, mut id: u32) -> Vec<Sym> {
-        let mut out = Vec::new();
-        while id != ROOT {
-            let (sym, parent) = self.nodes[id as usize];
-            out.push(sym);
-            id = parent;
-        }
-        out.reverse();
-        out
     }
 }
 

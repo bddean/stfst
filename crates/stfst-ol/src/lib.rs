@@ -7,10 +7,13 @@
 //! and `scripts/crosscheck-ol.sh` holds the reading to `hfst-optimized-lookup`.
 
 mod alphabet;
+mod chain;
 mod cursor;
+mod search;
 
 pub use alphabet::Alphabet;
 pub use cursor::Cursor;
+pub use search::Cheapest;
 
 use std::ops::Deref;
 use std::path::Path;

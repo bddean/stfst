@@ -7,7 +7,7 @@
 mod dict;
 mod session;
 
-pub use dict::{Dict, Input, Manifest, Meta, Requires, HOST_VERSION};
+pub use dict::{Dict, Input, Manifest, Meta, Outlines, Requires, HOST_VERSION};
 pub use session::{Match, Session};
 
 use std::path::PathBuf;
@@ -42,6 +42,8 @@ pub enum DictError {
         wants: String,
         have: String,
     },
+    #[error("{name} was compiled without reverse.hfstol, so it cannot be read backwards")]
+    NoReverse { name: String },
     #[error("{name} produced a record that does not parse: {source}")]
     Record { name: String, source: RecordError },
 }

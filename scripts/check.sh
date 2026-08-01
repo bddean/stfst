@@ -11,6 +11,8 @@ B=./target/release/stfst
 for dict in emily-symbols shrimple typey-type; do
     echo "== $dict"
     $B test "build/dicts/$dict.stfst" "tests/golden/$dict.tsv" | tail -1
+    # The reverse direction has no oracle of its own; forward lookup is the check.
+    scripts/check-reverse.py "build/dicts/$dict.stfst" "tests/golden/$dict.tsv"
 done
 
 # Translation is not a per-tape question, so it needs its own fixture: a stroke

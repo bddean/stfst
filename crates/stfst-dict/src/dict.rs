@@ -44,10 +44,30 @@ pub struct Input {
     pub separator: char,
 }
 
+/// What a reverse lookup found: key tapes, shortest first, and whether a bound
+/// ended the search. A caller that shows a suggestion list wants to know the
+/// difference between "no outline writes this" and "the search gave up".
+pub struct Outlines {
+    pub tapes: Vec<String>,
+    pub truncated: bool,
+}
+
 pub struct Dict {
     pub manifest: Manifest,
     fst: Automaton,
+    back: Option<Back>,
     encoding: Encoding,
+}
+
+/// The same relation with the tapes swapped. Optimized lookup only walks the
+/// input side, so the other direction is a second automaton and not a second way
+/// of reading this one.
+///
+/// One key weighs one and the separator weighs more than a stroke can hold, so a
+/// cheaper tape is one with fewer strokes, and then with fewer keys.
+struct Back {
+    fst: Automaton,
+    weight: Vec<u32>,
 }
 
 /// How this dictionary's alphabet numbers the host's keys. Built once at open,
@@ -112,9 +132,23 @@ impl Dict {
                 .collect(),
             separator: alphabet.number(&manifest.input.separator.to_string()),
         };
+        let back_path = dir.join("reverse.hfstol");
+        let back = match back_path.exists() {
+            true => {
+                let fst = Automaton::open(&back_path)?;
+                let alphabet = fst.alphabet();
+                let mut weight = vec![1u32; alphabet.symbols().count()];
+                if let Some(sep) = alphabet.number(&manifest.input.separator.to_string()) {
+                    weight[sep as usize] = system.key_count() as u32 + 1;
+                }
+                Some(Back { fst, weight })
+            }
+            false => None,
+        };
         Ok(Dict {
             manifest,
             fst,
+            back,
             encoding,
         })
     }
@@ -147,6 +181,48 @@ impl Dict {
 
     pub fn priority(&self) -> i64 {
         self.manifest.dict.priority
+    }
+
+    /// The shortest outlines that write this record, as key tapes, shortest
+    /// first. Item 4 of the host contract, and what a suggestions window asks
+    /// for.
+    ///
+    /// Shortest, not every: a generative dictionary writes one word with
+    /// unboundedly many outlines, so "every outline" is not a finite answer.
+    /// Fewer strokes wins, and a tie goes to fewer keys.
+    ///
+    /// A record is the whole query, flags included, so `ing` and `ing[ATTACH_L]`
+    /// are different questions. A symbol this dictionary does not have means no
+    /// entry of its can be this record, so the answer is empty rather than an
+    /// error.
+    pub fn outlines(&self, record: &Record, limit: usize) -> Result<Outlines, DictError> {
+        let back = self.back.as_ref().ok_or_else(|| DictError::NoReverse {
+            name: self.name().to_string(),
+        })?;
+        let alphabet = back.fst.alphabet();
+        let mut input = Vec::new();
+        for symbol in record.to_symbols() {
+            match alphabet.number(&symbol) {
+                Some(sym) => input.push(sym),
+                None => {
+                    return Ok(Outlines {
+                        tapes: Vec::new(),
+                        truncated: false,
+                    })
+                }
+            }
+        }
+        let found = back
+            .fst
+            .cheapest(&input, &back.weight, limit, limit * 4096);
+        Ok(Outlines {
+            tapes: found
+                .outputs
+                .iter()
+                .map(|tape| alphabet.render(tape))
+                .collect(),
+            truncated: found.truncated,
+        })
     }
 
     pub(crate) fn interpret(&self, outputs: &[Vec<Sym>]) -> Result<Vec<Record>, DictError> {

@@ -13,6 +13,7 @@ stfst compile recipe.toml
 scripts/check.sh      # unit tests, then the golden files
 stfst bench build/dicts/typey-type.stfst --system systems/stenotype-extended.toml
 stfst translate build/dicts/*.stfst --system systems/stenotype-extended.toml
+stfst reverse build/dicts/typey-type.stfst --system systems/stenotype-extended.toml because
 ```
 
 HFST and foma come from the flake and are needed only to *build* a dictionary.
@@ -30,7 +31,7 @@ artifact, so `lookup`, `test` and `bench` need nothing on `PATH`;
 | `docs/M0.md` | The M0 acceptance measurement: size against Plover's in-memory dictionary. |
 | `docs/latency.md` | Per-lookup latency, and why the search frontier is wide. |
 | `docs/encoding.md` | What the artifact costs, why delayed alignment would cost more, and the exact size model. |
-| `docs/translation.md` | The runtime: longest match without a declared longest key, and what a dictionary is checked for at load. |
+| `docs/translation.md` | The runtime: longest match without a declared longest key, what a dictionary is checked for at load, and why reverse lookup is a cheapest-first search. |
 
 ## Layout
 
