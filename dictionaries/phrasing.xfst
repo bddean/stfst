@@ -1,0 +1,111 @@
+! Phrasing: the §7 prototype. Subject, copula, negation, modality, tense, and
+! the contraction modes, ported from phrasing.py.
+!
+! This dictionary is the reason the format exists. Its full table is 2.7M single
+! strokes, about 3.9M translations, roughly 150MB of baked JSON, so it cannot be
+! a dictionary file. Here it is a grammar, and the prototype is the slice that
+! settles whether the grammar is pleasant to write: the empty verb slot, which
+! denotes the copula.
+!
+! Out of the slice, and so out of the language: aspect (`E`/`U`), question (`#`),
+! emphasis (`@`), the verb and adverb enders, satellites, and the retroactive
+! modifier layer, which needs host contract item 6. A stroke holding any of them
+! has no entry here and falls through to the rest of the stack.
+!
+! Two tapes, three layers, as §7 sets out. `Chord` reads keys and writes a
+! feature record; `Realize` reads a feature record and writes English. Neither
+! knows the other's alphabet, which is the point: agreement, contraction and the
+! finite forms are all decided in `Realize`, over features, and never over keys.
+!
+!     ^+T*      ->  [SUBJ]it[/SUBJ][C][3sg][BE][NEG][FULL]  ->  it is not
+!
+! The feature record is internal. Composition leaves its symbols in the
+! alphabet, and the compiler prunes them, so what reaches a host is keys to text.
+
+! ---- the feature record
+!
+! Canonical order, which is the order the keys arrive in, with two exceptions:
+! `^` is the first key and `[FULL]` is the last feature, and `*` comes before the
+! right bank while `[NEG]` comes after `[PAST]`. Both are hoists: the branch that
+! reads the key emits its feature after the rest of the body. Reading a feature
+! before the subject would mean guessing the subject, which is what the record
+! language's flag order avoids too (see docs/latency.md).
+
+define Kill(X)  [ X .x. 0 ] ;
+define Say(X)   [ 0 .x. X ] ;
+define Sp       [ 0 .x. " " ] ;
+define SayNot   [ "[NEG]" .x. [ " " {not} ] ] ;
+
+define Feature  [ "[SUBJ]" | "[/SUBJ]" | "[C]" | "[INF]" | "[AND]" | Agr | Head
+                | "[PAST]" | "[NEG]" | "[FULL]" ] ;
+! The subject word, copied through. Anything that is not a feature symbol.
+define Word     [ \Feature ]+ ;
+
+! ---- layer 1: keys to features
+
+! Modality on `A O`, the four corners of two keys (§4.2). No key is no modal, and
+! the head is then the copula, which is what the empty verb slot denotes.
+define Mid      [ [ [ "A" "O" ] .x. "[WILL]" ] | [ "A" .x. "[CAN]" ]
+                | [ "O" .x. "[SHALL]" ] | Say("[BE]") ] ;
+
+! The lone tense key past-shifts the head: `+T-D` is "it was", `+KAOD` is "I'd".
+! `D` sits in no verb chord, so nothing is shadowed.
+define Past     [ [ "d" .x. "[PAST]" ] | 0 ] ;
+
+define Star(B)  [ [ Kill("*") B Say("[NEG]") ] | B ] ;
+define Full(B)  [ [ Kill("^") B Say("[FULL]") ] | B ] ;
+
+define Chord    [ Full([ Kill("+") Subjects Mid Star(Past) ]) ] ;
+
+! ---- layer 2: features to English
+
+! `there're` does not surface, so `there` keeps the full form with `are` and
+! cliticizes everywhere else ("there's", "there'll"). The exception is about the
+! pair, not about the subject, so it is a rule and not a column in the table.
+define ThereRe    [ "[SUBJ]" {there} "[/SUBJ]" "[C]" "[pl]" "[BE]" ] ;
+define NoThereRe  ~[ ThereRe ?* ] ;
+
+define Subj(Tail)  [ Kill("[SUBJ]") Word Kill("[/SUBJ]") Tail ] ;
+
+! Two shapes, and every mode is one of them. A clause says its finite word after
+! the subject; a clitic hangs the word on the subject instead and leaves any
+! `not` behind. `Fin` is which table the word comes from, `Tail` what is left to
+! read once it is said.
+define Clause(Fin, Tail)  [ Subj([ Kill("[C]") | 0 ]) Sp Fin Tail ] ;
+define Clitic(Fin, Tail)  [ NoThereRe .o. [ Subj(Kill("[C]")) Fin Tail ] ] ;
+
+! Full mode (`^`): nothing reduces, and negation is a separate word. "it is",
+! "it is not". Modality is inert here, and so is the past copula: "I could" and
+! "I was" have no reduced form to differ from.
+define FullAff  Clause(AffW, Kill("[FULL]")) ;
+define FullNeg  Clause(AffW, [ SayNot Kill("[FULL]") ]) ;
+
+! Reduced mode, the default, the spoken form: the subject takes the clitic where
+! the affirmative form has one ("it's"), and otherwise the negative takes the aux
+! contraction ("it isn't").
+define RedClit  Clitic(Suf, 0) ;
+define RedAff   Clause(AffW, 0) ;
+
+! Where the negative is two words there is no aux contraction to take, so the
+! reduction falls back to the subject: "am not" gives "I'm not", and `NegSep` is
+! the table of selectors that happens for.
+define RedClitNot  Clitic([ NegSep .o. Suf ], SayNot) ;
+define RedNeg      Clause(NegW, Kill("[NEG]")) ;
+
+! An infinitive has no subject and no agreement, so modality and tense have
+! nothing to inflect and are ignored (§4.1b). Negation is the "not to" form, and
+! a clausal "and" precedes both, so each branch says its words before reading the
+! keys that chose them.
+define And      [ [ "[AND]" .x. [ {and} " " ] ] | 0 ] ;
+define InfTail  [ Kill(Agr) Kill(Head) [ Kill("[PAST]") | 0 ] ] ;
+define Inf(Say1, Tail)  [ And Kill("[INF]") Say1 InfTail Tail [ Kill("[FULL]") | 0 ] ] ;
+define Infinitive  [ Inf(Say([ {to} " " {be} ]), 0)
+                   | Inf(Say([ {not} " " {to} " " {be} ]), Kill("[NEG]")) ] ;
+
+! Reduction is a preference, not a case: reduce where the tables allow it, else
+! say the full form. That is a priority union, and it is why the two modes need
+! no marker to tell them apart.
+define Realize  [ Infinitive | FullAff | FullNeg
+                | PU(RedClit, RedAff) | PU(RedClitNot, RedNeg) ] ;
+
+define Grammar  [ Chord .o. Realize .o. Canonical ] ;

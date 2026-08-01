@@ -1,6 +1,7 @@
 ! 0 emily-symbols priority 100
 ! 1 shrimple priority 90
-! 2 typey-type priority 40
+! 2 phrasing priority 80
+! 3 typey-type priority 40
 TP-PL	1	typey-type	.
 TAP	1	typey-type	tap
 #TRU	1	emily-symbols	[KEY]Tab[END]
@@ -13,4 +14,6 @@ PWORD	1	typey-type	bored
 ^	1	shrimple	Shrimple
 TAP	2	shrimple	tap
 KAT	3	shrimple	tapkat
-! 10 strokes, 3 candidates at the widest
++T	1	phrasing	it's
+^+T*	1	phrasing	it is not
+! 12 strokes, 3 candidates at the widest

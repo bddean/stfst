@@ -8,7 +8,7 @@ cargo test --workspace
 cargo build --release -q
 B=./target/release/stfst
 
-for dict in emily-symbols shrimple typey-type; do
+for dict in emily-symbols shrimple phrasing typey-type; do
     echo "== $dict"
     $B test "build/dicts/$dict.stfst" "tests/golden/$dict.tsv" | tail -1
     # The reverse direction has no oracle of its own; forward lookup is the check.
@@ -19,12 +19,12 @@ done
 # stream through the whole stack, where the answer depends on the history.
 echo "== translate"
 for case in tests/translate/*.strokes; do
-    if $B translate build/dicts/typey-type.stfst build/dicts/emily-symbols.stfst build/dicts/shrimple.stfst \
+    if $B translate build/dicts/*.stfst \
         --system systems/stenotype-extended.toml --strokes "$case" \
         | diff -u "${case%.strokes}.expected" - > /dev/null; then
         echo "$(basename "$case") ok"
     else
-        $B translate build/dicts/typey-type.stfst build/dicts/emily-symbols.stfst build/dicts/shrimple.stfst \
+        $B translate build/dicts/*.stfst \
             --system systems/stenotype-extended.toml --strokes "$case" \
             | diff -u "${case%.strokes}.expected" - || true
         echo "$(basename "$case") FAILED" >&2

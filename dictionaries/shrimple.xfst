@@ -18,11 +18,6 @@
 ! fewest-pieces-first. That is a priority union over piece count, which xfst has,
 ! so the rule survives as a rule instead of becoming a search.
 
-! Priority union, spelled out. `.P.` complements over the whole alphabet, text
-! included, and nesting five of those wanted a gigabyte. On the input side the
-! alphabet is only keys, so subtract the domains there and compose.
-define PU(A, B)  [ A | [ [ B.u - A.u ] .o. B ] ] ;
-
 ! Fewest pieces is only half of Python's rule. Within a count it walks the split
 ! points in ascending order, so the first piece is as short as it can be, and a
 ! quarter of the left-bank chords need that tiebreak: KPWHR cuts into K+PW+HR

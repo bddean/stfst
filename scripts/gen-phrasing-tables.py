@@ -1,0 +1,170 @@
+#!/usr/bin/env python3
+"""Transcribe the phrasing tables from `phrasing.py` into xfst.
+
+Two kinds of table live here, and neither is a rule:
+
+- The **subject map**, one row per left-key set. `PHRASING-DESIGN.md` §4.1 gives
+  it as a sublanguage with growth, coordination, politeness order and a type
+  shift, but every one of those is a finite map over subsets of five keys, so it
+  precomputes away, which is what `FST-DICT-DESIGN.md` §7 item 1 says.
+- The **closed-class conjugation**, `be` and the modals. English's finite forms
+  are irregular, so this is data by nature: `am`/`is`/`are`/`was`/`were`, the
+  negatives, and which of them a subject may cliticize.
+
+The rules that read these tables are hand-written in `phrasing.xfst`.
+
+Usage: scripts/gen-phrasing-tables.py > dictionaries/phrasing-tables.xfst
+"""
+import contextlib
+import importlib.util
+import io
+import itertools
+import os
+import sys
+
+LEFT = "STKPWHR"
+AGR = {"1sg": '"[1sg]"', "3sg": '"[3sg]"', "pl": '"[pl]"'}
+HEADS = {None: '"[BE]"', "can": '"[CAN]"', "shall": '"[SHALL]"',
+         "will": '"[WILL]"'}
+
+
+def load(path):
+    spec = importlib.util.spec_from_file_location("phrasing", path)
+    module = importlib.util.module_from_spec(spec)
+    with contextlib.redirect_stdout(io.StringIO()):
+        spec.loader.exec_module(module)
+    return module
+
+
+def literal(text):
+    """A text as xfst symbols.
+
+    `%` is not an escape inside `{...}`, so `{isn%'t}` is six symbols with a
+    literal `%` among them. Alphanumeric runs go in braces and every other
+    character is its own quoted symbol.
+    """
+    if text == "":
+        return "0"
+    out, run = [], ""
+    for c in text:
+        if c.isalnum():
+            run += c
+            continue
+        if run:
+            out.append("{" + run + "}")
+            run = ""
+        out.append('"' + c + '"' if c not in '"\\' else "%" + c)
+    if run:
+        out.append("{" + run + "}")
+    return "[ " + " ".join(out) + " ]" if len(out) > 1 else out[0]
+
+
+def keys(left):
+    """A left-key set as its tape symbols, in steno order."""
+    return " ".join('"%s"' % k for k in LEFT if k in left)
+
+
+def subject_rows(ph):
+    """One row per left-key set that names a subject.
+
+    A set with no referent and no `W` is a modifier, not a clause (§4.1), so it
+    has no row and no entry: the stroke leaves this dictionary's language.
+    """
+    rows = []
+    for n in range(len(LEFT) + 1):
+        for combo in itertools.combinations(LEFT, n):
+            left = set(combo)
+            subj = ph._subject(left)
+            if subj is None:
+                continue
+            if subj["kind"] == "inf":
+                # An infinitive has no subject word, so a clausal "and" has
+                # nothing to fold into and needs its own marker.
+                conj = '"[AND]" ' if subj.get("conj_and") else ""
+                rows.append((left, conj + '"[INF]" "[3sg]"'))
+                continue
+            word = subj["word"]
+            agr = AGR[ph._agr(subj["person"], subj["number"])]
+            # Contractibility is a fact about the pronoun, so a clausal "and I"
+            # reads it off the inner word, which is what `realize` does before it
+            # prepends the conjunction.
+            clitic = ' "[C]"' if word in ph._CONTRACTIBLE_SUBJ else ""
+            if subj.get("conj_and"):
+                word = "and " + word
+            rows.append((left, '"[SUBJ]" %s "[/SUBJ]"%s %s'
+                         % (literal(word), clitic, agr)))
+    return rows
+
+
+def finite_rows(ph):
+    """The finite word for each (agreement, head, tense), and its clitic.
+
+    `realize` picks the clitic from the *affirmative* form whatever the polarity,
+    so the suffix table is keyed the same way as the words.
+    """
+    aff, neg, suf, sep = [], [], [], []
+    for agr in AGR:
+        for modality, head in HEADS.items():
+            for tense, past in (("pres", ""), ("past", ' "[PAST]"')):
+                sel = "%s %s%s" % (AGR[agr], head, past)
+                if modality is None:
+                    a = ph._BE[tense][agr]
+                    n = ph._BE_NEG[tense][agr]
+                else:
+                    a = ph._MODAL[modality][tense == "past"]
+                    n = ph._MODAL_NEG[modality][tense == "past"]
+                aff.append((sel, a))
+                neg.append((sel, n))
+                if a in ph._AUX_SUFFIX:
+                    suf.append((sel, ph._AUX_SUFFIX[a]))
+                # A "negative" that is really two words is where the reduced mode
+                # falls back to the subject clitic: "am not" gives "I'm not".
+                if n == a + " not":
+                    sep.append(sel)
+    return aff, neg, suf, sep
+
+
+def relation(name, rows, comment):
+    body = " |\n    ".join("[ [ %s ] .x. [ %s ] ]" % (sel, out) for sel, out in rows)
+    return "%sdefine %s [\n    %s ] ;\n\n" % (comment, name, body)
+
+
+def main(path):
+    ph = load(path)
+    out = [
+        "! Generated by scripts/gen-phrasing-tables.py from phrasing.py.",
+        "! Edit that, not this. The rules that read these tables are in",
+        "! phrasing.xfst.",
+        "",
+        "define Agr  [ \"[1sg]\" | \"[3sg]\" | \"[pl]\" ] ;",
+        "define Head [ \"[BE]\" | \"[CAN]\" | \"[SHALL]\" | \"[WILL]\" ] ;",
+        "define Sel  [ Agr Head (\"[PAST]\") ] ;",
+        "",
+    ]
+    print("\n".join(out))
+
+    rows = subject_rows(ph)
+    print(relation(
+        "Subjects",
+        [(keys(left), record) for left, record in rows],
+        "! The subject map: left keys to subject features (%d of the %d sets name\n"
+        "! a subject; the rest are modifiers, which this prototype does not have).\n"
+        % (len(rows), 2 ** len(LEFT)),
+    ), end="")
+
+    aff, neg, suf, sep = finite_rows(ph)
+    print(relation("AffW", [(s, literal(w)) for s, w in aff],
+                   "! The affirmative finite word.\n"), end="")
+    print(relation("NegW", [(s, literal(w)) for s, w in neg],
+                   "! The negative finite word, contracted where English has one.\n"),
+          end="")
+    print(relation("Suf", [(s, literal(w)) for s, w in suf],
+                   "! The clitic suffix, where the affirmative form has one.\n"), end="")
+    print("! Selectors whose negative is two words, so the reduced mode reduces the\n"
+          "! subject instead.\ndefine NegSep [\n    %s ] ;\n"
+          % " |\n    ".join("[ %s ]" % s for s in sep))
+
+
+if __name__ == "__main__":
+    main(sys.argv[1] if len(sys.argv) > 1
+         else os.path.expanduser("~/.config/plover/phrasing.py"))

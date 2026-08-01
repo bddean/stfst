@@ -41,6 +41,14 @@ pub fn generate(system: &System) -> String {
     ));
     out.push_str("define Outline [ Stroke [ Sep Stroke ]* ] ;\n\n");
 
+    out.push_str(
+        "! ---- priority union, spelled out\n\
+         ! `.P.` complements over the whole alphabet, text included, and nesting five\n\
+         ! of those wanted a gigabyte. Every caller prefers on the input side, where\n\
+         ! the alphabet is small, so subtract the domains there and compose.\n",
+    );
+    out.push_str("define PU(A, B) [ A | [ [ B.u - A.u ] .o. B ] ] ;\n\n");
+
     out.push_str("! ---- lower tape: the record language\n");
     let tags: Vec<String> = all_tags().iter().map(|t| format!("\"{t}\"")).collect();
     out.push_str(&format!("define Tag [ {} ] ;\n", tags.join(" | ")));
@@ -142,7 +150,10 @@ mod tests {
     fn generated_identifiers_are_alphanumeric() {
         for line in generate(&sys()).lines() {
             if let Some(rest) = line.strip_prefix("define ") {
+                // A parameterised define names itself `PU(A, B)`, so the
+                // identifier ends at the parameter list.
                 let name = rest.split_whitespace().next().unwrap();
+                let name = name.split('(').next().unwrap();
                 assert!(
                     name.chars().all(|c| c.is_ascii_alphanumeric()),
                     "xfst rejects {name:?} as an identifier"

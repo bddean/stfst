@@ -12,6 +12,11 @@ priority = 90
 xfst = ["dictionaries/shrimple-tables.xfst", "dictionaries/shrimple.xfst"]
 
 [[dict]]
+name = "phrasing"
+priority = 80
+xfst = ["dictionaries/phrasing-tables.xfst", "dictionaries/phrasing.xfst"]
+
+[[dict]]
 name = "typey-type"
 priority = 40
 json = "~/.config/plover/typey-type-full.json"
