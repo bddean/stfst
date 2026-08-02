@@ -36,8 +36,22 @@ pub fn escape_symbols(symbols: &[String]) -> String {
     out
 }
 
-pub fn header() -> String {
-    format!("Multichar_Symbols {}\n\n", all_tags().join(" "))
+/// The multichar symbols an entry set uses, and only those.
+///
+/// Declaring the whole tag table cost more than it looked. `hfstol` indexes a state
+/// by symbol number, so the alphabet sizes the index rows, and a hundred declared
+/// symbols made `typey-type`'s tables wide enough to hurt: 56 microseconds a stroke
+/// against 13. A dictionary that writes plain text now declares nothing.
+pub fn header(used: &[String]) -> String {
+    let known = all_tags();
+    let kept: Vec<&String> = known.iter().filter(|t| used.iter().any(|u| u == *t)).collect();
+    match kept.is_empty() {
+        true => String::new(),
+        false => format!(
+            "Multichar_Symbols {}\n\n",
+            kept.iter().map(|s| s.as_str()).collect::<Vec<_>>().join(" ")
+        ),
+    }
 }
 
 /// How the two tapes line up, which decides what the automaton can share.
@@ -53,13 +67,16 @@ pub enum Align {
     Delayed,
 }
 
+/// `used` are the multichar symbols these entries write; anything else stays out
+/// of the alphabet.
 pub fn lexicon(
     entries: impl IntoIterator<Item = (String, String)>,
     align: Align,
+    used: &[String],
 ) -> String {
     match align {
         Align::Pairwise => {
-            let mut out = header();
+            let mut out = header(used);
             out.push_str("LEXICON Root\n");
             for (upper, lower) in entries {
                 let lower = if lower.is_empty() { "0".into() } else { lower };
@@ -80,7 +97,7 @@ pub fn lexicon(
                 let lower = if lower.is_empty() { "0" } else { lower };
                 tails.push_str(&format!("LEXICON T{id}\n0:{lower} # ;\n"));
             }
-            let mut out = header();
+            let mut out = header(used);
             out.push_str(&root);
             out.push('\n');
             out.push_str(&tails);

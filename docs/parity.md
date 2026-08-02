@@ -75,9 +75,13 @@ this format exists to avoid.
 ## What the ecosystem needs that the format still cannot do
 
 **Lookahead.** `{=regex/yes/no}` depends on the translation that has not arrived.
-Every context mechanism here looks backwards. The state half of host contract 6
-plus `[REPLACE1]` is the shape of an answer: write the guess, correct it next
-stroke.
+Every context mechanism here looks backwards. The state half of host contract 6 plus
+`[REPLACE1]` is the shape of an answer: write the guess, correct it next stroke.
+
+Left undone on purpose, and the reason is a count: no dictionary in
+`~/.config/plover` uses it. Zero across typey-type's 145,345 entries, `main.json`,
+and every other JSON file there. It would cost the formatter a pending unit, which
+is a real change to what a host must do, and nothing is asking.
 
 **A morphology lexicon.** `plover-semantic-suffixes` uses `lemminflect` for
 `run`→`ran`, `child`→`children`, and a POS tag per word. That is a lexicon, which

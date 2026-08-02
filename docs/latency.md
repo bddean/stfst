@@ -6,15 +6,22 @@ M0 asks for per-lookup latency against Plover's in-memory dictionary.
 startup. `stfst-ol` makes the measurement real.
 
 `stfst bench`, release build, this machine (aarch64-darwin), 20,000 random
-outlines from the dictionary, five passes:
+outlines from the dictionary, five passes. Re-measured after the parity work, which
+is why two columns of numbers appear below:
 
 | | typey-type | emily-symbols |
 |---|---|---|
-| open | 0.04 ms | 0.03 ms |
-| median | 8.8 us | 0.83 us |
-| p95 | 25 us | 1.8 us |
-| p99 | 35 us | 2.3 us |
-| throughput | 95,000/s | 1,048,000/s |
+| open | 0.23 ms | 0.03 ms |
+| median | 12 us | 0.67 us |
+| p95 | 34 us | 1.4 us |
+| p99 | 48 us | 1.9 us |
+| throughput | 70,000/s | 1,374,000/s |
+
+The hand-written dictionary got faster and the imported one got slower, both by
+about a third, and neither move is explained. The alphabet grew by forty symbols
+over the same period, which was the obvious suspect and is not the cause: declaring
+only the symbols an import writes changed the artifacts not at all, because
+`hfst-lexc` already prunes what it does not see. Recorded rather than resolved.
 
 Against 0.34 us for the Python dictionary lookup. So a hand-written dictionary is
 at parity and an imported one is 25 times slower, which is the honest comparison
@@ -23,6 +30,43 @@ and also not the interesting one: a stroke needs a handful of lookups, a frame i
 
 Open is a `mmap` and a header read. Nothing is decoded, so a cold dictionary
 costs its first few lookups and no startup.
+
+## A stroke costs a lookup per live candidate
+
+The number a host cares about is per *stroke*, not per lookup, and it follows from
+the two above: every stroke opens one candidate per dictionary and advances every
+candidate that is still live, so the cost is the width of the candidate window times
+the cost of a step.
+
+`stfst translate --quiet`, 9,349 single strokes drawn from typey-type outlines,
+whole stack of 13 dictionaries, formatting and folding included:
+
+| | |
+|---|---|
+| per stroke | 65 us |
+| candidates | 7 at the widest |
+| typey-type and emily-symbols alone | 56 us |
+
+Against a 16 ms frame, so a stroke uses four tenths of one per cent of the time
+available. The stack size is nearly free: 13 dictionaries cost 9 microseconds more
+than 2, because the small ones die in a key or two.
+
+§4's "12.5 us a stroke for the whole stack" is not comparable. It predates the
+formatter, the window and folding, and it counted a narrower stream.
+
+## Two things that were quadratic
+
+**The output buffer.** A unit's snapshot copied the whole buffer, and the buffer
+grew without bound, so 9,349 strokes cost 320 microseconds each and most of that was
+copying words nothing could reach. The buffer and the undo depth are now bounded, at
+512 words and 64 units, which is more than any window or undo run needs: 65
+microseconds. The document a writer is filling lives in their editor, not in the
+engine.
+
+**The fold.** Building a folded candidate as each stroke arrived cost a cursor per
+suffix key per candidate on every stroke, and a fold can only matter on a stroke
+that matched nothing. Built on demand instead, from the same replay undo uses, it
+costs nothing until it is needed.
 
 ## What the cost is
 

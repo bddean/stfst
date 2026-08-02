@@ -60,6 +60,7 @@ pub fn compile(text: &str, system: &System, align: Align) -> Result<Plain, Vec<P
     let mut seen: BTreeMap<String, usize> = BTreeMap::new();
     let mut entries: Vec<(String, String)> = Vec::new();
     let mut golden: Vec<(String, String)> = Vec::new();
+    let mut used: Vec<String> = Vec::new();
 
     for (n, raw) in text.lines().enumerate() {
         let line = n + 1;
@@ -109,10 +110,13 @@ pub fn compile(text: &str, system: &System, align: Align) -> Result<Plain, Vec<P
         }
         let tape = system.to_tape(&parsed);
         golden.push((tape.clone(), record.to_string()));
-        entries.push((
-            lexc::escape(&tape),
-            lexc::escape_symbols(&record.to_symbols()),
-        ));
+        let symbols = record.to_symbols();
+        for symbol in &symbols {
+            if symbol.chars().count() > 1 && !used.contains(symbol) {
+                used.push(symbol.clone());
+            }
+        }
+        entries.push((lexc::escape(&tape), lexc::escape_symbols(&symbols)));
     }
 
     if !errors.is_empty() {
@@ -120,7 +124,7 @@ pub fn compile(text: &str, system: &System, align: Align) -> Result<Plain, Vec<P
     }
     Ok(Plain {
         entries: entries.len(),
-        lexc: lexc::lexicon(entries, align),
+        lexc: lexc::lexicon(entries, align, &used),
         golden,
     })
 }

@@ -19,6 +19,18 @@
 pub mod format;
 pub mod ortho;
 
+use std::collections::VecDeque;
+
+/// How much text a host keeps, and how far back it can undo.
+///
+/// Both are policy rather than format, and both have to be bounded, because a
+/// snapshot per unit over an unbounded buffer is quadratic: 9,349 strokes cost 320
+/// microseconds each before this, almost all of it copying words nothing could
+/// reach. The numbers are more than any window or undo run needs, and the document
+/// a writer is filling lives in their editor, not here.
+const CELLS: usize = 512;
+const UNITS: usize = 64;
+
 use stfst_core::record::Case;
 
 /// One word and the whitespace after it.
@@ -93,7 +105,7 @@ pub struct Text {
     /// A snapshot per unit rather than an inverse edit per unit: an edit is not
     /// always invertible (a retro operation can delete a distinction), and a
     /// steno host writes a few words a second, so the copy is not the cost.
-    history: Vec<Snapshot>,
+    history: VecDeque<Snapshot>,
     /// The buffer as each unit found it *after* whatever that unit replaced, so
     /// before it wrote anything of its own.
     ///
@@ -103,7 +115,10 @@ pub struct Text {
     /// what the previous fold *wrote*, so it wants the state that fold started
     /// from. Reverting to `history` instead brings the base phrase back and writes
     /// the new one after it.
-    bases: Vec<Snapshot>,
+    bases: VecDeque<Snapshot>,
+    /// Units written, ever. A count rather than the length of `history`, which is
+    /// capped: a caller comparing marks needs a number that only goes up.
+    units: usize,
     /// Set while a record with `[ORTHO_L]` is writing its first text, so the join
     /// applies once and to the right join. Transient, and never observed from
     /// outside a call.
@@ -128,7 +143,7 @@ impl Text {
     }
 
     pub fn units(&self) -> usize {
-        self.history.len()
+        self.units
     }
 
     /// Everything written, as one string.
@@ -154,9 +169,10 @@ impl Text {
 
     /// Take back the last unit.
     pub fn undo(&mut self) -> bool {
-        self.bases.pop();
-        match self.history.pop() {
+        self.bases.pop_back();
+        match self.history.pop_back() {
             Some(snapshot) => {
+                self.units -= 1;
                 self.restore(snapshot);
                 true
             }
@@ -182,14 +198,28 @@ impl Text {
     /// too: undoing the stroke that turned capitals on has to turn them off.
     fn mark(&mut self) {
         let snapshot = self.snapshot();
-        self.history.push(snapshot);
+        self.history.push_back(snapshot);
+        self.units += 1;
+        if self.history.len() > UNITS {
+            self.history.pop_front();
+        }
     }
 
     /// Remember where this unit's own writing starts, once it has replaced
     /// whatever it replaces.
     fn base(&mut self) {
         let snapshot = self.snapshot();
-        self.bases.push(snapshot);
+        self.bases.push_back(snapshot);
+        if self.bases.len() > UNITS {
+            self.bases.pop_front();
+        }
+    }
+
+    /// Drop text nothing can reach any more.
+    pub(crate) fn trim(&mut self) {
+        if self.cells.len() > CELLS {
+            self.cells.drain(..self.cells.len() - CELLS);
+        }
     }
 
     /// Start from text a host has already written, for a caller that is testing

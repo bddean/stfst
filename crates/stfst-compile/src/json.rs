@@ -64,6 +64,9 @@ pub fn import(raw: &BTreeMap<String, String>, system: &System, align: Align) -> 
     let mut entries: Vec<(String, String)> = Vec::with_capacity(raw.len());
     let mut golden: Vec<(String, String)> = Vec::new();
     let mut pairs: Vec<(String, Vec<String>)> = Vec::with_capacity(raw.len());
+    // The multichar symbols this dictionary turns out to write. Declaring the whole
+    // tag table widens every index row in the artifact for nothing.
+    let mut used: Vec<String> = Vec::new();
     // A regression file wants breadth, so a small dictionary contributes every
     // entry and a large one is sampled. Either way every entry holding a record
     // tag is in, because that is where the translation grammar can be wrong.
@@ -109,13 +112,18 @@ pub fn import(raw: &BTreeMap<String, String>, system: &System, align: Align) -> 
             golden.push((tape.clone(), plain));
         }
         let symbols = record.to_symbols();
+        for symbol in &symbols {
+            if symbol.chars().count() > 1 && !used.contains(symbol) {
+                used.push(symbol.clone());
+            }
+        }
         entries.push((lexc::escape(&tape), lexc::escape_symbols(&symbols)));
         pairs.push((tape, symbols));
         report.imported += 1;
     }
 
     Import {
-        lexc: lexc::lexicon(entries, align),
+        lexc: lexc::lexicon(entries, align, &used),
         report,
         golden,
         pairs,

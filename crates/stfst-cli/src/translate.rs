@@ -21,14 +21,28 @@ const UNDO: &str = "!undo";
 /// written without stroking it.
 const BUFFER: &str = "!buffer ";
 
-pub fn run(artifacts: &[PathBuf], system: &Path, strokes: Vec<String>) -> Result<()> {
+pub fn run(
+    artifacts: &[PathBuf],
+    system: &Path,
+    strokes: Vec<String>,
+    quiet: bool,
+) -> Result<()> {
     let system = System::load(system)?;
     // This harness implements every command and meta in the tables, so it declares
     // the lot. A host that implemented fewer would be refused the dictionaries that
     // need them, which is the point of declaring.
     let stack = Stack::open(artifacts, &system, &Capabilities::reference())?;
+    // One macro rather than a branch at every call: the harness prints six
+    // different lines and each one is only for a reader.
+    macro_rules! say {
+        ($($arg:tt)*) => {
+            if !quiet {
+                println!($($arg)*);
+            }
+        };
+    }
     for (n, dict) in stack.dicts().iter().enumerate() {
-        println!("! {n} {} priority {}", dict.name(), dict.priority());
+        say!("! {n} {} priority {}", dict.name(), dict.priority());
     }
 
     let mut session = stack.session();
@@ -46,7 +60,7 @@ pub fn run(artifacts: &[PathBuf], system: &Path, strokes: Vec<String>) -> Result
         if let Some(seed) = line.strip_prefix(BUFFER) {
             text = Text::default();
             text.seed(seed);
-            println!("{line}\t{:?}", text.to_string());
+            say!("{line}\t{:?}", text.to_string());
             continue;
         }
         // `!` marks a comment, as in a golden file, and `#` cannot: it is a key.
@@ -57,7 +71,7 @@ pub fn run(artifacts: &[PathBuf], system: &Path, strokes: Vec<String>) -> Result
             match session.undo() {
                 Some(stroke) => {
                     take_text_back(&mut text, &mut marks);
-                    println!(
+                    say!(
                         "{UNDO}\t{}\t{:?}",
                         system.format_outline(&Outline(vec![stroke])),
                         text.to_string()
@@ -81,7 +95,7 @@ pub fn run(artifacts: &[PathBuf], system: &Path, strokes: Vec<String>) -> Result
 
         let found = session.best_with(|words| text.span(words).1)?;
         let Some(m) = found else {
-            println!("{line}\t-\t{:?}", text.to_string());
+            say!("{line}\t-\t{:?}", text.to_string());
             continue;
         };
         // A longer match supersedes what the strokes it covers already wrote.
@@ -116,7 +130,7 @@ pub fn run(artifacts: &[PathBuf], system: &Path, strokes: Vec<String>) -> Result
             };
             // A stack command needs no stroke put back, so it runs where it is.
             if session.stack_command(name, arg) {
-                println!("{line}\t{name}\t{arg:?}");
+                say!("{line}\t{name}\t{arg:?}");
                 continue 'stroke;
             }
             let engine = matches!(
@@ -145,7 +159,7 @@ pub fn run(artifacts: &[PathBuf], system: &Path, strokes: Vec<String>) -> Result
                 }
                 _ => {}
             }
-            println!("{line}\t{name}\t{:?}", text.to_string());
+            say!("{line}\t{name}\t{:?}", text.to_string());
             continue 'stroke;
         }
         // The context is what the host computes from its own output, so it is
@@ -155,7 +169,7 @@ pub fn run(artifacts: &[PathBuf], system: &Path, strokes: Vec<String>) -> Result
         context.set("CAP", if tail.case.is_some() { "on" } else { "off" });
         context.set("W1", text.last_word_case());
 
-        println!(
+        say!(
             "{line}\t{}\t{}{}\t{}\t{:?}",
             m.strokes,
             dict.name(),

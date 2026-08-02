@@ -150,6 +150,7 @@ impl Text {
             self.revert(n.get());
         }
         self.base();
+        self.trim();
     }
 
     /// Where the first character this record wrote sits, as a cell and an offset

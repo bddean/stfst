@@ -114,6 +114,10 @@ enum Command {
         /// One stroke per line on stdin; `!undo` takes one back.
         #[arg(long)]
         strokes: Option<PathBuf>,
+        /// Print only the summary. What a per-stroke measurement needs, because
+        /// printing the whole buffer each stroke costs more than translating it.
+        #[arg(long)]
+        quiet: bool,
     },
     /// Join word and suffix pairs, for measuring the orthography rules against
     /// Plover's own. One `word<TAB>suffix` per line.
@@ -339,6 +343,7 @@ fn main() -> Result<()> {
             artifacts,
             system,
             strokes,
+            quiet,
         } => {
             let lines = match strokes {
                 Some(path) => std::fs::read_to_string(&path)
@@ -348,7 +353,7 @@ fn main() -> Result<()> {
                     .collect(),
                 None => or_stdin(Vec::new())?,
             };
-            translate::run(&artifacts, &system, lines)?;
+            translate::run(&artifacts, &system, lines, quiet)?;
         }
         Command::Ortho { pairs } => {
             let text = std::fs::read_to_string(&pairs)
