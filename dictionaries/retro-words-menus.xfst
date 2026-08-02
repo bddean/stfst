@@ -114,4 +114,4 @@ define WrapOp [
     [ Kill("E") Kill("U") Kill("r") Kill("l") Kill("g") Kill("t") Total(Wrap("*", "*")) ] ] ;
 
 ! `^A` opens the namespace and the four verbs partition the rest.
-define Grammar [ [ Kill("^") Kill(A) [ CaseOp | JoinOp | SplitOp | WrapOp ] ] .o. Canonical ] ;
+define Grammar Canon([ Kill("^") Kill(A) [ CaseOp | JoinOp | SplitOp | WrapOp ] ]) ;

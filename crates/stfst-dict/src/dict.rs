@@ -5,7 +5,7 @@ use std::path::Path;
 use serde::Deserialize;
 use stfst_core::context;
 use stfst_core::record::{all_tags, is_tag};
-use stfst_core::{Emission, Prefix, Record, Stroke, System, Window};
+use stfst_core::{Capabilities, Emission, Prefix, Record, Stroke, System, Window};
 use stfst_ol::{Automaton, Cursor, Sym};
 
 use crate::DictError;
@@ -53,6 +53,12 @@ pub struct Requires {
     /// so a host and a dictionary cannot disagree about it.
     #[serde(default)]
     pub significant: String,
+    /// Operations this dictionary can ask a host for. A host that cannot do one
+    /// refuses the dictionary at load, which is the point of naming them.
+    #[serde(default)]
+    pub commands: Vec<String>,
+    #[serde(default)]
+    pub metas: Vec<String>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -103,7 +109,7 @@ impl Dict {
     /// before a stroke arrives. §5 asks for that explicitly: an unknown tag is a
     /// load-time error and not a runtime surprise. It is also cheap, because
     /// every tag a dictionary can emit is a symbol in its alphabet.
-    pub fn open(dir: &Path, system: &System) -> Result<Dict, DictError> {
+    pub fn open(dir: &Path, system: &System, host: &Capabilities) -> Result<Dict, DictError> {
         let path = dir.join("manifest.toml");
         let text = std::fs::read_to_string(&path).map_err(|source| DictError::Io {
             path: path.display().to_string(),
@@ -126,6 +132,19 @@ impl Dict {
                 return Err(DictError::UnknownSlot {
                     name: name.clone(),
                     slot: slot.clone(),
+                });
+            }
+        }
+        // A meta that does not run leaves the text quietly wrong, so a host that
+        // cannot do one refuses the dictionary. A command that does not run is a
+        // request declined, which is the ordinary case for `plover.quit` on a
+        // phone, so the dictionary still loads.
+        for op in &manifest.requires.metas {
+            if !host.has_meta(op) {
+                return Err(DictError::Unimplemented {
+                    name: name.clone(),
+                    kind: "meta",
+                    op: op.clone(),
                 });
             }
         }

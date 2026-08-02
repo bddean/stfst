@@ -79,7 +79,7 @@ define Num      [ [ ("#") Kill("@") Pat Vowels Kill(U) Mod ] .o. Press(NumName, 
 ! Literal mode: the glyph itself instead of the keysym that types it, and the top
 ! row attaches and capitalises instead of holding modifiers.
 define SymLit   [ [ Hash Kill("@") Some Variant Lit([ Kill(E) LitFlag ]) ]
-                  .o. [ GlyphPair Flag* ] ] ;
+                  .o. [ GlyphPair Flag* ] .o. OneCase ] ;
 
 ! A literal number: the payload read as binary, `^` the 128 bit and `#` the 256.
 ! Modifiers have nothing to modify here, and the Python ignores them.
@@ -96,4 +96,4 @@ define NumberMode  [ $[U] & ~$[E] & [ $["*"] | $[{z}] ] ] ;
 define Letter   [ ~NumberMode .o. [ Hash Kill("@") Chord Mod (Kill({z})) ]
                   .o. Press(Spell, Spell) ] ;
 
-define Grammar  [ [ Sym | Num | SymLit | NumLit | Letter ] .o. Canonical ] ;
+define Grammar  Canon([ Sym | Num | SymLit | NumLit | Letter ]) ;

@@ -82,7 +82,8 @@ name = "repeat-word"
 priority = 7
 plain = "dictionaries/repeat-word.dict"
 
-[[dict]]
-name = "semantic-retro"
-priority = 6
-json = "~/.config/plover/semantic-retro.json"
+# semantic-retro is absent, and the absence is the design working. Its entries ask
+# for `[META=clause]`, the clause rewrites `plover-semantic-suffixes` implements
+# with a morphology lexicon, and the reference host has no lexicon. A meta that does
+# not run leaves the text quietly wrong, so `Dict::open` refuses the dictionary
+# rather than loading it and doing nothing. Phrasing's own fold is the alternative.

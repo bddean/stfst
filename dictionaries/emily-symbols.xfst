@@ -49,8 +49,14 @@ define Glyph   GlyphPair ModTags ;
 
 define DoAttach [ "[AL=1]" -> "[ATTACH_L]" ,, "[AL=0]" -> 0 ,,
                   "[AR=1]" -> "[ATTACH_R]" ,, "[AR=0]" -> 0 ] ;
-define DoCap    [ "[C=1]" -> "[CAP_NEXT]" ,, "[C=0]" -> 0 ] ;
+! The glyph table's own case flag wins over the `-G` key, because a stroke that
+! asks for both has asked for the stronger one: `{<}` uppercases the whole next
+! word and `-G` only its first letter. Without this the record would carry two
+! case flags, which is not a state a record can be in.
+! `OneCase` is in the shared table, because both emily dictionaries read the glyph
+! that cases the next word and both have a key that does too.
+define DoCap    [ [ "[C=1]" -> "[CAP_NEXT]" ,, "[C=0]" -> 0 ] .o. OneCase ] ;
 define DoRep    [ "[R=1]" -> 0 ,, "[R=2]" -> "[REP2]" ,,
                   "[R=3]" -> "[REP3]" ,, "[R=4]" -> "[REP4]" ] ;
 
-define Grammar [ Parse .o. Glyph .o. DoAttach .o. DoCap .o. DoRep .o. Canonical ] ;
+define Grammar Canon([ Parse .o. Glyph .o. DoAttach .o. DoCap .o. DoRep ]) ;

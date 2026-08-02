@@ -7,6 +7,7 @@
 //! cannot drift.
 
 use stfst_core::context::{self, Slot};
+use stfst_core::host;
 use stfst_core::window::{self, Class};
 use stfst_core::record::{
     all_tags, copy_tag, repeat_tag, replace_tag, FLAG_TAGS, MAX_COUNT, MOD_TAGS,
@@ -19,7 +20,19 @@ fn q(symbol: char) -> String {
     format!("\"{symbol}\"")
 }
 
+/// The whole prelude, with every operation the tables name.
 pub fn generate(system: &System) -> String {
+    generate_for(system, None)
+}
+
+/// The prelude for one grammar, naming only the operations that grammar mentions.
+///
+/// Every symbol an acceptor names is a symbol the record check has to complement
+/// over, and the check is the expensive step: naming all thirty-one commands and
+/// metas took `emily-symbols` from 29 seconds to 4 minutes and 25. So the acceptor
+/// gets the vocabulary the grammar can actually use. Nothing else changes, because
+/// the manifest is derived from the finished artifact and not from this.
+pub fn generate_for(system: &System, used: Option<&[String]>) -> String {
     let mut out = String::new();
     out.push_str(&format!(
         "! Generated from system {:?}. Do not edit.\n\n",
@@ -104,7 +117,16 @@ pub fn generate(system: &System) -> String {
     out.push_str("define Win [ WinOpen [ \\WinEnd ]* WinEnd ] ;\n\n");
 
     out.push_str("! ---- lower tape: the record language\n");
-    let tags: Vec<String> = all_tags().iter().map(|t| format!("\"{t}\"")).collect();
+    let tags: Vec<String> = all_tags()
+        .iter()
+        .filter(|t| {
+            // The same reasoning as `named`: a tag no grammar here can emit does not
+            // need to be in the alphabet the check complements over.
+            let operation = host::is_command(t) || host::is_meta(t);
+            !operation || used.is_none_or(|u| u.iter().any(|s| s == *t))
+        })
+        .map(|t| format!("\"{t}\""))
+        .collect();
     out.push_str(&format!("define Tag [ {} ] ;\n", tags.join(" | ")));
     // Text is what neither tape reads as structure. Context symbols count, or a
     // record body could hold one and a state block could swallow the prefix.
@@ -119,8 +141,27 @@ pub fn generate(system: &System) -> String {
     let mods: Vec<String> = MOD_TAGS.iter().map(|t| format!("(\"{t}\")")).collect();
     out.push_str(&format!("define Mods [ {} ] ;\n", mods.join(" ")));
     out.push_str("define KeyItem [ \"[KEY]\" Text+ Mods \"[END]\" ] ;\n");
-    out.push_str("define CmdItem [ \"[CMD]\" Text+ \"[ARG]\" Text* \"[END]\" ] ;\n");
-    out.push_str("define MetaItem [ \"[META]\" Text+ \"[ARG]\" Text* \"[END]\" ] ;\n");
+    // A command and a meta name one operation from a closed table, so each name is
+    // a symbol and the artifact's alphabet declares what a host must implement.
+    let named = |tags: Vec<String>| -> String {
+        let kept: Vec<String> = tags
+            .into_iter()
+            .filter(|tag| used.is_none_or(|u| u.iter().any(|s| s == tag)))
+            .map(|tag| format!("\"{tag}\""))
+            .collect();
+        // An empty set still has to be a language, and `[ 0 - 0 ]` is the empty one.
+        match kept.is_empty() {
+            true => "[ 0 - 0 ]".to_string(),
+            false => kept.join(" | "),
+        }
+    };
+    out.push_str(&format!(
+        "define CmdName [ {} ] ;\ndefine MetaName [ {} ] ;\n",
+        named(host::COMMANDS.iter().map(|c| host::command_tag(c)).collect()),
+        named(host::METAS.iter().map(|m| host::meta_tag(m)).collect())
+    ));
+    out.push_str("define CmdItem [ CmdName Text* \"[END]\" ] ;\n");
+    out.push_str("define MetaItem [ MetaName Text* \"[END]\" ] ;\n");
     let copies: Vec<String> = (1..=MAX_COUNT)
         .map(|n| format!("\"{}\"", copy_tag(n)))
         .collect();
@@ -137,11 +178,19 @@ pub fn generate(system: &System) -> String {
         .map(|n| format!("\"{}\"", replace_tag(n)))
         .collect();
     out.push_str(&format!("define Replace [ {} ] ;\n", replaces.join(" | ")));
-    out.push_str(
-        "define Record [ Item* (\"[CANCEL_SPACE]\" | \"[RETRO_SPACE]\") (\"[ATTACH_L]\") \
-         (\"[ATTACH_R]\") (\"[GLUE]\") (\"[CAP_NEXT]\" | \"[LOWER_NEXT]\") (\"[CARRY_CAP]\") \
-         (Rep) (Replace) ] ;\n\n",
-    );
+    // Built from the same groups the parser reads, so a new flag cannot be legal
+    // for one and illegal for the other.
+    let slots: Vec<String> = stfst_core::record::FLAG_GROUPS
+        .iter()
+        .map(|group| {
+            let values: Vec<String> = group.iter().map(|t| format!("\"{t}\"")).collect();
+            format!("({})", values.join(" | "))
+        })
+        .collect();
+    out.push_str(&format!(
+        "define Record [ Item* {} (Rep) (Replace) ] ;\n\n",
+        slots.join(" ")
+    ));
 
     out.push_str(
         "! ---- state: a string the dictionary wrote and the host handed back\n\
@@ -185,10 +234,16 @@ pub fn generate(system: &System) -> String {
     // and a dictionary that carries state emits it after the whole record
     // already; the acceptor check is what proves that, so a hoist would only
     // hide a misplacement.
-    // Each hoist appends after what the previous one appended, so composing in
+    // Applied to the grammar one at a time, and never composed with each other.
+    // Each hoist is three states with an arc per symbol, so composing nineteen of
+    // them together is a product: it came to 786,432 states and 86 seconds, and it
+    // doubled every time the flag table grew. Against the grammar, left to right,
+    // each step stays the size of the grammar.
+    //
+    // Each hoist appends after what the previous one appended, so applying them in
     // canonical order leaves the flags in it.
     out.push_str(&format!(
-        "define Canonical [ {} ] ;\n",
+        "define Canon(G) [ G .o. {} ] ;\n",
         hoists.join(" .o. ")
     ));
 

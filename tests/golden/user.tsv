@@ -1,7 +1,7 @@
-! 212 cases from /Users/ben/.config/plover/user.json. A regression file for the import pipeline,
+! 219 cases from /Users/ben/.config/plover/user.json. A regression file for the import pipeline,
 ! not an oracle: the expectations come from our own translation
 ! grammar, which is unit tested separately.
-l	ly[ATTACH_L]
+l	ly[ORTHO_L]
 Afrt	after the
 AO*Epbt	even though
 AOE/KO	eco
@@ -34,7 +34,9 @@ KPH*Er	Khmer
 KPHOUgt	coming out
 KPHOUt	come out
 KPHOUtd	came out
+KPHROr	explore
 KPObgt	expect to
+KPR	come from
 KPWErt	combinator
 KREblgt	correctly
 KRO	co^
@@ -42,6 +44,7 @@ KWRAOEt	yeet
 KWROEUl	yellow
 KWRUp	yup
 O	to
+Opbg	on a
 Opbl	only
 Or/REU	orrery
 OUfpbd	out of hand
@@ -77,6 +80,7 @@ SKEUrpl	skirm
 SKPpbt	and then
 SKPAOEUl	and I'll
 SKPEpb	and then
+SKPEUpb	and in
 SKPHOU	and how
 SKPO	and to
 SKPOU	and now
@@ -114,6 +118,7 @@ STR*Ubgt	struct
 STROEU	destroy
 STWOUpb	someone to
 SWUpb	someone
+TA*rpl	tamper
 TA/TAr	Tatar
 TA/TArs	Tatars
 TAUbt	talk about
@@ -180,6 +185,7 @@ WUft	one of the
 ^HROEpb	alone
 ^HROUd	allowed
 ^KUpl	a couple
+^KWROpb	beyond
 ^PArpbt	apparent
 ^PEpbd	append
 ^PHAfp	rematch
@@ -204,6 +210,7 @@ WUft	one of the
 ^SRAblg	disadvantage
 ^ST	it is
 ^TEpbl	potential
+^THRs	there is
 ^TKPWRAOE	agree
 ^TPfrpbt	unfortunate
 ^TPEUg	configure

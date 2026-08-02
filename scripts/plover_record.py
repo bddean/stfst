@@ -11,8 +11,9 @@ missing case.
 """
 
 FLAG_ORDER = [
-    "[CANCEL_SPACE]", "[RETRO_SPACE]", "[ATTACH_L]", "[ATTACH_R]",
-    "[GLUE]", "[CAP_NEXT]", "[LOWER_NEXT]", "[CARRY_CAP]",
+    "[CANCEL_SPACE]", "[RETRO_SPACE]", "[ATTACH_L]", "[ORTHO_L]", "[ATTACH_R]",
+    "[GLUE]", "[CAP_NEXT]", "[LOWER_NEXT]", "[UPPER_NEXT]", "[CARRY_CAP]",
+    "[WORD_END]",
 ]
 
 FLAGS = {
@@ -20,15 +21,17 @@ FLAGS = {
     "*?": "[RETRO_SPACE]",
     "-|": "[CAP_NEXT]",
     ">": "[LOWER_NEXT]",
+    "<": "[UPPER_NEXT]",
+    "$": "[WORD_END]",
 }
 
-# Retrospective case operations are host requests, not text, which is the
-# divergence emily-symbols-tables.xfst records.
+# Retrospective case operations edit text already written, so they are declared
+# host operations rather than text. The name is a symbol, so a host checks it at
+# load.
 METAS = {
-    "*-|": "[META]retro.cap[ARG][END]",
-    "*<": "[META]retro.upper[ARG][END]",
-    "<": "[META]upper.next[ARG][END]",
-    "*>": "[META]retro.lower[ARG][END]",
+    "*-|": "[META=retro.cap][END]",
+    "*<": "[META=retro.upper][END]",
+    "*>": "[META=retro.lower][END]",
 }
 
 MODS = {
@@ -103,8 +106,14 @@ def record(translation, extra=()):
     backslash, so the concatenation is ambiguous in a way the flag is not.
     """
     body, flags = [], list(extra)
+    # One case per record. A flag the translation sets beats the same slot from
+    # `extra`, because the caller's flag came from a key and the translation's came
+    # from the glyph: `{<}` cases the whole word and the key only its first letter.
+    CASE = ("[CAP_NEXT]", "[LOWER_NEXT]", "[UPPER_NEXT]")
 
     def flag(tag):
+        if tag in CASE:
+            flags[:] = [f for f in flags if f not in CASE]
         if tag not in flags:
             flags.append(tag)
 
@@ -125,14 +134,17 @@ def record(translation, extra=()):
         elif value == "^":
             flag("[ATTACH_R]" if body else "[ATTACH_L]")
         elif value.startswith("^") or value.endswith("^"):
-            if value.startswith("^"):
-                flag("[ATTACH_L]")
-                value = value[1:]
-            if value.endswith("^"):
+            # A caret with text after it and none before is a suffix, so the join
+            # applies the system's orthography. An infix goes inside a word, so it
+            # does not.
+            left, right = value.startswith("^"), value.endswith("^")
+            core = value[1 if left else None:-1 if right else None]
+            if left:
+                flag("[ORTHO_L]" if core and not right else "[ATTACH_L]")
+            if right:
                 flag("[ATTACH_R]")
-                value = value[:-1]
-            if value:
-                body.append(value)
+            if core:
+                body.append(core)
         elif value == "":
             pass
         else:

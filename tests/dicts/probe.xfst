@@ -38,6 +38,6 @@ define Flip(In, Out, Text)
     [ Kill("[STATE]") Kill(In) Kill("[END]") Slot Kill("*")
       Say(Text) Say("[REPLACE1]") State(Out) ] ;
 
-define Grammar  [ [ Cap | The | Start
-                  | Flip({pres}, {neg}, {it isn't})
-                  | Flip({neg}, {pres}, {it's}) ] .o. Canonical ] ;
+define Grammar  Canon([ Cap | The | Start
+                      | Flip({pres}, {neg}, {it isn't})
+                      | Flip({neg}, {pres}, {it's}) ]) ;

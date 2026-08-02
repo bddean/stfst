@@ -8,6 +8,7 @@ use std::process::Command;
 
 use anyhow::{bail, Context, Result};
 use stfst_core::context;
+use stfst_core::host;
 use stfst_core::record::{all_tags, copy_tag, is_tag};
 use stfst_core::window;
 use stfst_core::System;
@@ -24,17 +25,23 @@ pub struct Checks {
     /// Multichar symbols that are neither record tags nor keys, which means an
     /// internal feature tag survived into the artifact.
     pub leaked_symbols: Vec<String>,
+    /// Whether the grammar relates anything at all.
+    pub empty: bool,
 }
 
 impl Checks {
     pub fn passed(&self) -> bool {
-        self.bad_records.is_empty()
+        !self.empty
+            && self.bad_records.is_empty()
             && self.bad_outlines.is_empty()
             && self.leaked_symbols.is_empty()
     }
 
     pub fn report(&self) -> String {
         let mut out = String::new();
+        if self.empty {
+            out.push_str("  the grammar is empty, so it relates no outline to anything\n");
+        }
         for r in &self.bad_records {
             out.push_str(&format!("  output is not a legal record: {r}\n"));
         }
@@ -78,12 +85,20 @@ pub fn compile_xfst(
     let net = work.join("grammar.hfst");
     let fresh = work.join("fresh.hfst");
 
-    let mut s = prelude::generate(system);
+    let mut bodies = String::new();
     for source in sources {
         let body = std::fs::read_to_string(source)
             .with_context(|| format!("reading {}", source.display()))?;
-        s.push_str(&body);
+        bodies.push_str(&body);
     }
+    // Which operations this grammar can ask for, read off its own text. A name it
+    // never writes is one the acceptor need not know.
+    let used: Vec<String> = all_tags()
+        .into_iter()
+        .filter(|tag| (host::is_command(tag) || host::is_meta(tag)) && bodies.contains(tag))
+        .collect();
+    let mut s = prelude::generate_for(system, Some(&used));
+    s.push_str(&bodies);
     s.push_str(&format!(
         "\npush Grammar\nsave stack {}\nclear stack\n",
         net.display()
@@ -97,6 +112,10 @@ pub fn compile_xfst(
     // Bound the counterexamples: the difference can be an infinite language.
     s.push_str("echo STFST-CHECK-RECORD\nregex Grammar.l - Emission ;\nprint random-words 3\n");
     s.push_str("echo STFST-CHECK-OUTLINE\nregex Grammar.u - Outline ;\nprint random-words 3\n");
+    // An undefined identifier is a *symbol* in xfst, not an error, so a typo in a
+    // grammar composes with nothing and the result is empty. Nothing else notices:
+    // every other check passes trivially over no paths.
+    s.push_str("echo STFST-CHECK-EMPTY\npush Grammar\ntest null\nclear stack\n");
     s.push_str("echo STFST-CHECK-SIGMA\npush Grammar\nprint sigma\n");
     s.push_str("echo STFST-CHECK-END\n");
     std::fs::write(&script, s)?;
@@ -175,6 +194,7 @@ fn parse_checks(log: &str, system: &System) -> Checks {
         bad_records: Vec::new(),
         bad_outlines: Vec::new(),
         leaked_symbols: Vec::new(),
+        empty: true,
     };
     let tags = all_tags();
     let mut section = "";
@@ -184,6 +204,7 @@ fn parse_checks(log: &str, system: &System) -> Checks {
             section = match name {
                 "RECORD" => "record",
                 "OUTLINE" => "outline",
+                "EMPTY" => "empty",
                 "SIGMA" => "sigma",
                 _ => "",
             };
@@ -193,6 +214,8 @@ fn parse_checks(log: &str, system: &System) -> Checks {
             continue;
         }
         match section {
+            // `test null` answers "1, (1 = TRUE, 0 = FALSE)" for the empty language.
+            "empty" => checks.empty = line.starts_with('1'),
             "record" => checks.bad_records.push(line.to_string()),
             "outline" => checks.bad_outlines.push(line.to_string()),
             "sigma" => {
@@ -200,6 +223,8 @@ fn parse_checks(log: &str, system: &System) -> Checks {
                     let known = tags.iter().any(|t| t == sym)
                         || context::all_symbols().iter().any(|c| c == sym)
                         || window::sig_char(sym).is_some()
+                        || host::is_command(sym)
+                        || host::is_meta(sym)
                         || sym.chars().count() == 1
                         || sym.starts_with("@_")
                         || sym == format!("{}", system.separator);
@@ -232,6 +257,10 @@ pub struct Declared {
     /// Characters this dictionary named, so the host sends them as themselves
     /// rather than as their class.
     pub significant: Vec<char>,
+    /// Operations this dictionary can ask for. Both are symbols, so both come
+    /// straight out of the alphabet, which is why they are symbols.
+    pub commands: Vec<String>,
+    pub metas: Vec<String>,
     /// How many words of already-written text the host must show. Declared in the
     /// recipe rather than read back: it is a property of the language and not of
     /// the alphabet, and it is the dial that sets what a lookup costs.
@@ -247,6 +276,8 @@ impl Declared {
             && !self.state
             && self.registers == 0
             && self.words == 0;
+        // Commands and metas do not raise the version: host 1 had them, and the
+        // only change is that the manifest now says which ones.
         match plain {
             true => 1,
             false => 2,
@@ -277,6 +308,14 @@ pub fn declare(forward: &Path, words: u8) -> Result<Declared> {
     // host has to agree with this exactly, so nothing declares it twice.
     declared.significant = symbols.iter().filter_map(|s| window::sig_char(s)).collect();
     declared.significant.sort_unstable();
+    for symbol in &symbols {
+        if host::is_command(symbol) {
+            declared.commands.push(host::tag_name(symbol, "CMD").unwrap().to_string());
+        }
+        if host::is_meta(symbol) {
+            declared.metas.push(host::tag_name(symbol, "META").unwrap().to_string());
+        }
+    }
     Ok(declared)
 }
 
@@ -320,6 +359,8 @@ pub fn write_artifact(
              registers = {}\n\
              words = {}\n\
              significant = {:?}\n\
+             commands = [{}]\n\
+             metas = [{}]\n\
              \n[input]\n\
              alphabet = \"keys\"\n\
              order = {:?}\n\
@@ -337,11 +378,21 @@ pub fn write_artifact(
             declared.registers,
             declared.words,
             declared.significant.iter().collect::<String>(),
+            quoted(&declared.commands),
+            quoted(&declared.metas),
             system.order(),
             system.separator.to_string(),
         ),
     )?;
     Ok(())
+}
+
+fn quoted(names: &[String]) -> String {
+    names
+        .iter()
+        .map(|n| format!("{n:?}"))
+        .collect::<Vec<_>>()
+        .join(", ")
 }
 
 /// Where build products go for a dictionary.

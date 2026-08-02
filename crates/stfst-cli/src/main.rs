@@ -8,7 +8,7 @@ use anyhow::{Context, Result};
 use clap::{Parser, Subcommand};
 use lookup::Engine;
 use stfst_compile::lexc::Align;
-use stfst_core::{golden, System};
+use stfst_core::{golden, Capabilities, System};
 
 #[derive(Parser)]
 #[command(name = "stfst", about = "steno dictionaries as finite-state transducers")]
@@ -114,6 +114,12 @@ enum Command {
         /// One stroke per line on stdin; `!undo` takes one back.
         #[arg(long)]
         strokes: Option<PathBuf>,
+    },
+    /// Join word and suffix pairs, for measuring the orthography rules against
+    /// Plover's own. One `word<TAB>suffix` per line.
+    Ortho {
+        #[arg(long)]
+        pairs: PathBuf,
     },
     /// Emit the generated xfst prelude for a system.
     Prelude {
@@ -265,7 +271,7 @@ fn main() -> Result<()> {
             limit,
         } => {
             let sys = System::load(&system)?;
-            let dict = stfst_dict::Dict::open(&artifact, &sys)?;
+            let dict = stfst_dict::Dict::open(&artifact, &sys, &Capabilities::reference())?;
             for text in or_stdin(records)? {
                 let record = stfst_core::Record::parse_display(&text)?;
                 let found = dict.outlines(&record, limit)?;
@@ -343,6 +349,18 @@ fn main() -> Result<()> {
                 None => or_stdin(Vec::new())?,
             };
             translate::run(&artifacts, &system, lines)?;
+        }
+        Command::Ortho { pairs } => {
+            let text = std::fs::read_to_string(&pairs)
+                .with_context(|| format!("reading {}", pairs.display()))?;
+            for line in text.lines() {
+                let Some((word, suffix)) = line.split_once('\t') else {
+                    continue;
+                };
+                let joined = stfst_text::ortho::join(word, suffix)
+                    .unwrap_or_else(|| format!("{word}{suffix}"));
+                println!("{joined}");
+            }
         }
         Command::Prelude { system } => {
             print!("{}", stfst_compile::prelude::generate(&System::load(&system)?));

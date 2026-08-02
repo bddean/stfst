@@ -19,10 +19,10 @@ SPECIAL = {
     '{*!}': '[CANCEL_SPACE]',
     '{*?}': '[RETRO_SPACE]',
     '{#space}': '[KEY]space[END]',
-    '{*-|}': '[META]retro.cap[ARG][END]',
-    '{*<}': '[META]retro.upper[ARG][END]',
-    '{<}': '[META]upper.next[ARG][END]',
-    '{*>}': '[META]retro.lower[ARG][END]',
+    '{*-|}': '[META=retro.cap][END]',
+    '{*<}': '[META=retro.upper][END]',
+    '{<}': '[UPPER_NEXT]',
+    '{*>}': '[META=retro.lower][END]',
 }
 
 

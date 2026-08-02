@@ -12,7 +12,7 @@ pub use session::{Match, Session};
 
 use std::path::PathBuf;
 
-use stfst_core::{RecordError, System};
+use stfst_core::{Capabilities, RecordError, System};
 
 #[derive(Debug, thiserror::Error)]
 pub enum DictError {
@@ -32,6 +32,12 @@ pub enum DictError {
     HostTooOld { name: String, wants: u32 },
     #[error("{name} reads context slot {slot}, which is not in the contract's table")]
     UnknownSlot { name: String, slot: String },
+    #[error("{name} asks for the {kind} {op}, which this host does not implement")]
+    Unimplemented {
+        name: String,
+        kind: &'static str,
+        op: String,
+    },
     #[error("{name} needs key {key}, which the system does not have")]
     MissingKey { name: String, key: String },
     #[error("{name} can emit {tag}, which is not a tag in the record language")]
@@ -56,10 +62,14 @@ pub struct Stack {
 impl Stack {
     /// Higher priority shadows lower, which is what `plover.cfg` file order
     /// means today. Equal priorities keep the order given.
-    pub fn open(dirs: &[PathBuf], system: &System) -> Result<Stack, DictError> {
+    pub fn open(
+        dirs: &[PathBuf],
+        system: &System,
+        host: &Capabilities,
+    ) -> Result<Stack, DictError> {
         let mut dicts = Vec::with_capacity(dirs.len());
         for dir in dirs {
-            let dict = Dict::open(dir, system)?;
+            let dict = Dict::open(dir, system, host)?;
             if dict.manifest.dict.system != system.name {
                 return Err(DictError::WrongSystem {
                     name: dict.name().to_string(),

@@ -5,11 +5,13 @@
 //! keeps the text, so it can show a dictionary its window, bind its registers,
 //! carry its state, and retract the units a longer match supersedes.
 
+use std::collections::VecDeque;
 use std::path::{Path, PathBuf};
 
 use anyhow::{Context, Result};
-use stfst_core::{Emission, Outline, System};
+use stfst_core::{Capabilities, Emission, Outline, System};
 use stfst_dict::Stack;
+use stfst_text::format::Event;
 use stfst_text::Text;
 
 /// A line that takes back the last stroke. A host has a key for this; a text
@@ -21,7 +23,10 @@ const BUFFER: &str = "!buffer ";
 
 pub fn run(artifacts: &[PathBuf], system: &Path, strokes: Vec<String>) -> Result<()> {
     let system = System::load(system)?;
-    let stack = Stack::open(artifacts, &system)?;
+    // This harness implements every command and meta in the tables, so it declares
+    // the lot. A host that implemented fewer would be refused the dictionaries that
+    // need them, which is the point of declaring.
+    let stack = Stack::open(artifacts, &system, &Capabilities::reference())?;
     for (n, dict) in stack.dicts().iter().enumerate() {
         println!("! {n} {} priority {}", dict.name(), dict.priority());
     }
@@ -32,7 +37,11 @@ pub fn run(artifacts: &[PathBuf], system: &Path, strokes: Vec<String>) -> Result
     // several strokes can put back what those strokes wrote.
     let mut marks: Vec<usize> = Vec::new();
     let mut widest = 0;
-    for line in strokes {
+    // A queue rather than a loop over the input, because a command can put a stroke
+    // back: `{*+}` re-fires the last outline and `{*}` re-translates it with the
+    // star flipped, so both end by feeding a stroke of their own.
+    let mut queue: VecDeque<String> = strokes.into();
+    'stroke: while let Some(line) = queue.pop_front() {
         let line = line.trim();
         if let Some(seed) = line.strip_prefix(BUFFER) {
             text = Text::default();
@@ -83,7 +92,7 @@ pub fn run(artifacts: &[PathBuf], system: &Path, strokes: Vec<String>) -> Result
         }
         let dict = stack.dict(m.dict);
         let first = m.emissions.first().cloned().unwrap_or_default();
-        match &m.window {
+        let events = match &m.window {
             Some(window) => text.rewrite(&first.record, window, dict.words())?,
             None => {
                 let registers = text.registers(dict.registers());
@@ -91,6 +100,43 @@ pub fn run(artifacts: &[PathBuf], system: &Path, strokes: Vec<String>) -> Result
             }
         };
         session.accept(m.dict, first.state.clone());
+        // The commands the formatter cannot carry out are the ones that reach the
+        // stroke buffer, so they land here, where the buffer is. Each one first takes
+        // its own stroke back: the command wrote nothing, so leaving it there would
+        // cost an extra undo later.
+        for event in &events {
+            let Event::Cmd { name, .. } = event else {
+                continue;
+            };
+            let engine = matches!(
+                name.as_str(),
+                "engine.undo" | "engine.repeat_stroke" | "engine.toggle_star"
+            );
+            if !engine {
+                continue;
+            }
+            take_back(&mut session, &mut text, &mut marks);
+            match name.as_str() {
+                "engine.undo" => take_back(&mut session, &mut text, &mut marks),
+                "engine.repeat_stroke" => {
+                    if let Some(&last) = session.history().last() {
+                        queue.push_front(system.format_outline(&Outline(vec![last])));
+                    }
+                }
+                "engine.toggle_star" => {
+                    if let Some(&last) = session.history().last() {
+                        take_back(&mut session, &mut text, &mut marks);
+                        let star = system.index_of_symbol('*');
+                        queue.push_front(
+                            system.format_outline(&Outline(vec![toggled(last, star)])),
+                        );
+                    }
+                }
+                _ => {}
+            }
+            println!("{line}\t{name}\t{:?}", text.to_string());
+            continue 'stroke;
+        }
         // The context is what the host computes from its own output, so it is
         // recomputed here rather than being remembered.
         let tail = text.tail().clone();
@@ -115,4 +161,27 @@ pub fn run(artifacts: &[PathBuf], system: &Path, strokes: Vec<String>) -> Result
         session.history().len()
     );
     Ok(())
+}
+
+/// Take back one stroke and whatever it wrote.
+fn take_back(session: &mut stfst_dict::Session, text: &mut Text, marks: &mut Vec<usize>) {
+    if session.undo().is_some() {
+        marks.pop();
+        text.undo();
+    }
+}
+
+/// The same stroke with the star key flipped, which is what `{*}` re-translates.
+fn toggled(stroke: stfst_core::Stroke, star: Option<usize>) -> stfst_core::Stroke {
+    let Some(star) = star else { return stroke };
+    let mut out = stfst_core::Stroke::EMPTY;
+    for i in stroke.indices() {
+        if i != star {
+            out = out.with(i);
+        }
+    }
+    match stroke.contains(star) {
+        true => out,
+        false => out.with(star),
+    }
 }

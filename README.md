@@ -33,27 +33,30 @@ shadow a working entry.
 
 | Dictionary | Source | Forward | Reverse |
 |---|---|---|---|
-| emily-symbols | xfst over a shared glyph table | 12,075 | 13,019 |
-| shrimple | xfst over a generated table | 97,378 | 107,940 |
-| user | JSON, imported | 19,108 | 19,212 |
+| emily-symbols | xfst over a shared glyph table | 12,434 | 13,066 |
+| shrimple | xfst over a generated table | 97,084 | 107,940 |
+| user | JSON, imported | 19,118 | 19,264 |
 | phrases | JSON, imported | 11,752 | 11,958 |
-| commands | JSON, imported | 7,092 | 7,316 |
-| emily-modifiers | xfst over generated tables | 63,011 | 59,485 |
-| semantic-suffixes | JSON, imported | 917 | 979 |
-| typey-type | JSON, imported | 6,242,881 | 6,509,829 |
+| commands | JSON, imported | 6,170 | 6,478 |
+| emily-modifiers | xfst over generated tables | 61,722 | 58,340 |
+| semantic-suffixes | JSON, imported | 594 | 638 |
+| typey-type | JSON, imported | 6,247,472 | 6,512,692 |
 | and-fold | JSON, imported | 40,093 | 38,241 |
-| phrasing | xfst, the §7 prototype slice | 15,927 | 13,775 |
-| retro-words | xfst over a window of written text | 405,783 | none |
+| phrasing | xfst, the §7 prototype slice | 16,065 | 13,775 |
+| retro-words | xfst over a window of written text | 406,095 | none |
 | repeat-idioms | JSON, imported | 80,658 | 80,498 |
 | repeat-word | flat source in the record language | 1,311 | 1,247 |
-| semantic-retro | JSON, imported | 3,924 | 3,746 |
 
-14.1 MB for both directions of everything, against 93.6 MB resident for the
-Plover-style dictionary and its reverse index in `docs/M0.md`.
+13.8 MB for both directions of everything, against 93.6 MB resident for the
+Plover-style dictionary and its reverse index in `docs/M0.md`. The whole stack
+compiles in 36 seconds.
 
 `retro-words` has no reverse automaton, and that is not an omission: it rewrites
 text rather than writing a word, so the question a suggestion window asks has no
 answer for it. See `docs/retro.md`.
+
+`semantic-retro.json` is absent, and the absence is the load-time check working:
+it asks for an operation no host here implements. See `docs/parity.md`.
 
 Nine entries in the whole set do not import, and each is named by
 `stfst import --report`: five hold a `{}` shape the record language has no meaning
@@ -69,6 +72,7 @@ for, and four hold a control character, which neither `lexc` nor `xfst` can writ
 | `docs/encoding.md` | What the artifact costs, why delayed alignment would cost more, and the exact size model. |
 | `docs/modifiers.md` | The `@` keysym namespace, and why a keystroke's modifiers are tags inside the item. |
 | `docs/phrasing.md` | The §7 phrasing prototype: what the port settled, and what it left. |
+| `docs/parity.md` | Plover's translation language operator by operator, what the record language says instead, and what it still cannot say. |
 | `docs/retro.md` | Rewriting text already written: why the window comes after the keys, why the tape carries character classes and not characters, and what is left in the host. |
 | `docs/translation.md` | The runtime: longest match without a declared longest key, what a dictionary is checked for at load, and why reverse lookup is a cheapest-first search. |
 

@@ -19,26 +19,45 @@
 use std::fmt;
 use std::num::NonZeroU8;
 
+use crate::host;
 use crate::context::{State, STATE_CLOSE, STATE_OPEN};
 use crate::window::{sig_char, Class, DROP};
 
 /// Flag tags, in canonical tape order. The prelude generator reads this, so the
 /// acceptor it emits and the parser here cannot drift apart.
+/// The flags, grouped: each group is the values of one slot, and a record carries
+/// at most one from each. The acceptor the compiler generates is built from this,
+/// so a flag added here cannot be legal for the parser and illegal for the
+/// grammar, which is how `[UPPER_NEXT]` broke `emily-symbols` once.
+pub const FLAG_GROUPS: &[&[&str]] = &[
+    &["[CANCEL_SPACE]", "[RETRO_SPACE]"],
+    &["[ATTACH_L]"],
+    &["[ORTHO_L]"],
+    &["[ATTACH_R]"],
+    &["[GLUE]"],
+    &["[CAP_NEXT]", "[LOWER_NEXT]", "[UPPER_NEXT]"],
+    &["[CARRY_CAP]"],
+    &["[WORD_END]"],
+];
+
 pub const FLAG_TAGS: &[&str] = &[
     "[CANCEL_SPACE]",
     "[RETRO_SPACE]",
     "[ATTACH_L]",
+    "[ORTHO_L]",
     "[ATTACH_R]",
     "[GLUE]",
     "[CAP_NEXT]",
     "[LOWER_NEXT]",
+    "[UPPER_NEXT]",
     "[CARRY_CAP]",
+    "[WORD_END]",
 ];
 
 /// Delimiters for the open-ended tags, whose values the host parses. `[STATE]`
 /// closes with the same `[END]`, and what it delimits is not part of the record;
 /// see `Emission`.
-pub const OPEN_TAGS: &[&str] = &["[KEY]", "[CMD]", "[META]", "[ARG]", "[STATE]", "[END]"];
+pub const OPEN_TAGS: &[&str] = &["[KEY]", "[STATE]", "[END]"];
 
 /// Modifier tags, in canonical order, valid only inside a `[KEY]` item.
 ///
@@ -79,10 +98,12 @@ pub fn is_tag(symbol: &str) -> bool {
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Case {
-    /// `{-|}`
+    /// `{-|}`: the next word's first letter.
     Next,
-    /// `{>}`
+    /// `{>}`: the next word's first letter, lowered.
     LowerNext,
+    /// `{<}`: the whole of the next word, in capitals.
+    UpperNext,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -97,12 +118,21 @@ pub enum SpaceOp {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Flags {
     pub attach_l: bool,
+    /// `{^ing}`: join to the previous word *and* apply the system's orthography,
+    /// so `run` and `ing` make `running`.
+    ///
+    /// A separate flag from `attach_l` because they are separate statements, and
+    /// Plover's most-used directive is this one. `[ATTACH_L]` alone is what `{^^}`
+    /// means: close the gap and change nothing.
+    pub ortho_l: bool,
     pub attach_r: bool,
     pub glue: bool,
     pub case: Option<Case>,
     /// `{~|}`: pass the pending capitalisation through to the next word.
     pub carry_cap: bool,
     pub space: Option<SpaceOp>,
+    /// `{$}`: this translation finishes a word, so nothing later folds into it.
+    pub word_end: bool,
     /// `[REP3]`. Repetition is a host operation: an FST cannot copy an
     /// unbounded string, and unrolling it per glyph is the enumeration the
     /// format exists to avoid.
@@ -116,11 +146,13 @@ impl Default for Flags {
     fn default() -> Self {
         Flags {
             attach_l: false,
+            ortho_l: false,
             attach_r: false,
             glue: false,
             case: None,
             carry_cap: false,
             space: None,
+            word_end: false,
             repeat: NonZeroU8::new(1).unwrap(),
             replace: None,
         }
@@ -180,9 +212,11 @@ pub enum Item {
     Text(String),
     /// `[KEY]Return[SHIFT][END]`: a keystroke, not text.
     Key { name: String, mods: Mods },
-    /// `[CMD]wm.focus[ARG]left[END]`: a request the host may decline.
+    /// `[CMD=mode.set_space]x[END]`: a request the host may decline. The name is a
+    /// symbol from `host::COMMANDS`, so an artifact declares its commands in its
+    /// alphabet and a host checks them at load.
     Cmd { name: String, arg: String },
-    /// `[META]retro.caps[ARG]2[END]`: a declared context operation.
+    /// `[META=retro.cap][END]`: an edit to text already written, from `host::METAS`.
     Meta { name: String, arg: String },
     /// `[COPY1]`: splice in the host's nth bound word without inspecting it.
     Copy(u8),
@@ -205,7 +239,7 @@ pub struct Record {
 pub enum RecordError {
     #[error("{0} appears twice")]
     RepeatedTag(String),
-    #[error("[CAP_NEXT] and [LOWER_NEXT] cannot both apply")]
+    #[error("a record carries one case at most, and this one carries two")]
     ConflictingCase,
     #[error("[CANCEL_SPACE] and [RETRO_SPACE] cannot both apply")]
     ConflictingSpace,
@@ -215,8 +249,6 @@ pub enum RecordError {
     Unterminated(String),
     #[error("unknown tag {0}")]
     UnknownTag(String),
-    #[error("{0} needs [ARG] before [END]")]
-    MissingArg(String),
     #[error("{0} counts nothing")]
     ZeroCount(String),
     #[error("unterminated [STATE]")]
@@ -253,14 +285,16 @@ impl Record {
             };
             match s {
                 "[ATTACH_L]" => set(&mut flags.attach_l)?,
+                "[ORTHO_L]" => set(&mut flags.ortho_l)?,
+                "[WORD_END]" => set(&mut flags.word_end)?,
                 "[ATTACH_R]" => set(&mut flags.attach_r)?,
                 "[GLUE]" => set(&mut flags.glue)?,
                 "[CARRY_CAP]" => set(&mut flags.carry_cap)?,
-                "[CAP_NEXT]" | "[LOWER_NEXT]" => {
-                    let want = if s == "[CAP_NEXT]" {
-                        Case::Next
-                    } else {
-                        Case::LowerNext
+                "[CAP_NEXT]" | "[LOWER_NEXT]" | "[UPPER_NEXT]" => {
+                    let want = match s {
+                        "[CAP_NEXT]" => Case::Next,
+                        "[LOWER_NEXT]" => Case::LowerNext,
+                        _ => Case::UpperNext,
                     };
                     match flags.case {
                         None => flags.case = Some(want),
@@ -334,13 +368,14 @@ impl Record {
                     body.push(Item::Copy(counted_tag(s, "COPY").unwrap()));
                     i += 1;
                 }
-                "[CMD]" | "[META]" => {
-                    let (name, after_name) = take_until(symbols, i + 1, "[ARG]", s)?;
-                    let (arg, next) = take_until(symbols, after_name, "[END]", s)?;
-                    body.push(if s == "[CMD]" {
-                        Item::Cmd { name, arg }
-                    } else {
-                        Item::Meta { name, arg }
+                _ if host::is_command(s) || host::is_meta(s) => {
+                    let command = host::is_command(s);
+                    let kind = if command { "CMD" } else { "META" };
+                    let name = host::tag_name(s, kind).unwrap().to_string();
+                    let (arg, next) = take_until(symbols, i + 1, "[END]", s)?;
+                    body.push(match command {
+                        true => Item::Cmd { name, arg },
+                        false => Item::Meta { name, arg },
                     });
                     i = next;
                 }
@@ -375,16 +410,10 @@ impl Record {
                 Item::Glyph(class) => out.push(class.tag().to_string()),
                 Item::Drop => out.push(DROP.to_string()),
                 Item::Cmd { name, arg } | Item::Meta { name, arg } => {
-                    out.push(
-                        if matches!(item, Item::Cmd { .. }) {
-                            "[CMD]"
-                        } else {
-                            "[META]"
-                        }
-                        .into(),
-                    );
-                    out.extend(name.chars().map(|c| c.to_string()));
-                    out.push("[ARG]".into());
+                    out.push(match item {
+                        Item::Cmd { .. } => host::command_tag(name),
+                        _ => host::meta_tag(name),
+                    });
                     out.extend(arg.chars().map(|c| c.to_string()));
                     out.push("[END]".into());
                 }
@@ -400,6 +429,9 @@ impl Record {
         if f.attach_l {
             out.push("[ATTACH_L]".into());
         }
+        if f.ortho_l {
+            out.push("[ORTHO_L]".into());
+        }
         if f.attach_r {
             out.push("[ATTACH_R]".into());
         }
@@ -409,10 +441,14 @@ impl Record {
         match f.case {
             Some(Case::Next) => out.push("[CAP_NEXT]".into()),
             Some(Case::LowerNext) => out.push("[LOWER_NEXT]".into()),
+            Some(Case::UpperNext) => out.push("[UPPER_NEXT]".into()),
             None => {}
         }
         if f.carry_cap {
             out.push("[CARRY_CAP]".into());
+        }
+        if f.word_end {
+            out.push("[WORD_END]".into());
         }
         if f.repeat.get() != 1 {
             out.push(repeat_tag(f.repeat.get()));
@@ -526,6 +562,8 @@ pub fn all_tags() -> Vec<String> {
     for n in 1..=MAX_COUNT {
         out.push(replace_tag(n));
     }
+    out.extend(host::COMMANDS.iter().map(|c| host::command_tag(c)));
+    out.extend(host::METAS.iter().map(|m| host::meta_tag(m)));
     out.extend(Class::ALL.iter().map(|c| c.tag().to_string()));
     out.push(DROP.to_string());
     out.push(crate::window::WINDOW_OPEN.to_string());
@@ -578,6 +616,7 @@ fn take_key(symbols: &[&str], mut i: usize) -> Result<(String, Mods, usize), Rec
     Err(RecordError::Unterminated("[KEY]".into()))
 }
 
+/// The text up to `[END]`, which is how an argument delimits.
 fn take_until(
     symbols: &[&str],
     mut i: usize,
@@ -595,11 +634,7 @@ fn take_until(
         value.push_str(symbols[i]);
         i += 1;
     }
-    if terminator == "[ARG]" {
-        Err(RecordError::MissingArg(opener.to_string()))
-    } else {
-        Err(RecordError::Unterminated(opener.to_string()))
-    }
+    Err(RecordError::Unterminated(opener.to_string()))
 }
 
 impl fmt::Display for Record {
@@ -618,6 +653,12 @@ mod tests {
     fn syms(v: &[&str]) -> Vec<&'static str> {
         // helper so tests read as tape symbol lists
         v.iter().map(|s| Box::leak(s.to_string().into_boxed_str()) as &'static str).collect()
+    }
+
+    #[test]
+    fn the_flag_groups_and_the_flag_list_agree() {
+        let flat: Vec<&str> = FLAG_GROUPS.iter().flat_map(|g| g.iter().copied()).collect();
+        assert_eq!(flat, FLAG_TAGS);
     }
 
     #[test]
@@ -672,17 +713,17 @@ mod tests {
             Err(RecordError::RepeatedTag("[CTRL]".into()))
         );
 
-        let r = Record::parse_symbols(&syms(&[
-            "[CMD]", "w", "m", ".", "f", "[ARG]", "l", "e", "f", "t", "[END]",
-        ]))
-        .unwrap();
+        // A command's name is a symbol, not text, so the alphabet declares it and
+        // a host checks it once at load.
+        let r = Record::parse_symbols(&syms(&["[CMD=mode.set_space]", "_", "[END]"])).unwrap();
         assert_eq!(
             r.body,
             vec![Item::Cmd {
-                name: "wm.f".into(),
-                arg: "left".into()
+                name: "mode.set_space".into(),
+                arg: "_".into()
             }]
         );
+        assert_eq!(r.to_string(), "[CMD=mode.set_space]_[END]");
     }
 
     #[test]
@@ -716,8 +757,8 @@ mod tests {
             Err(RecordError::Unterminated("[KEY]".into()))
         );
         assert_eq!(
-            Record::parse_symbols(&syms(&["[CMD]", "x", "[END]"])),
-            Err(RecordError::MissingArg("[CMD]".into()))
+            Record::parse_symbols(&syms(&["[CMD=plover.quit]", "x"])),
+            Err(RecordError::Unterminated("[CMD=plover.quit]".into()))
         );
     }
 
@@ -744,7 +785,7 @@ mod tests {
         for s in [
             "ing[ATTACH_L][CAP_NEXT]",
             "[KEY]Return[END]",
-            "[CMD]wm.focus[ARG]left[END]",
+            "[CMD=plover.lookup][END]",
             "![REP3]",
             "[COPY1]",
             "a[GLUE]",

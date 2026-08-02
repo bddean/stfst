@@ -149,7 +149,7 @@ define Word       [ Cell [ Join Cell ]* ] ;
 ! `{Shrimple}` for it, which is what a host shows while the mode is open.
 define Enter      [ "^" .x. {Shrimple} ] ;
 
-define Grammar    [ [ Enter | [ [ "^" .x. 0 ] Join Word ] ] .o. Ortho .o. Canonical ] ;
+define Grammar    Canon([ [ Enter | [ [ "^" .x. 0 ] Join Word ] ] .o. Ortho ]) ;
 
 ! One simplification worth naming: Shrimple's `^` starter is `{^^}`, Plover
 ! in-band syntax that a record cannot hold in the middle of its body. So a `^`

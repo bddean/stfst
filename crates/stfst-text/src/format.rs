@@ -12,7 +12,8 @@
 use stfst_core::record::{Case, Item, Mods, Record, SpaceOp};
 use stfst_core::window::{Class, Window};
 
-use crate::{Cell, Tail, Text};
+use crate::ortho;
+use crate::{Cell, ModeCase, Tail, Text};
 
 /// What only the host can carry out.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -31,6 +32,8 @@ pub enum FormatError {
     ShortWindow { wanted: usize, had: usize },
     #[error("this record rewrites a window, and none was shown")]
     NoWindow,
+    #[error("{0} cannot take the argument {1:?}")]
+    BadMeta(String, String),
 }
 
 impl Text {
@@ -50,8 +53,12 @@ impl Text {
         let flags = &record.flags;
         let attached = self.tail.attach
             || flags.attach_l
+            || flags.ortho_l
             || flags.space == Some(SpaceOp::Cancel)
             || (self.tail.glue && flags.glue);
+        // An orthographic join is a join *plus* a rewrite, and it only applies to a
+        // word the previous record left unfinished.
+        self.ortho = flags.ortho_l && !self.tail.word_end;
         // Only a record that writes text opens a gap. `[CAP_NEXT]` alone must not:
         // it is a note for the next record, and a space here would strand the
         // word it was meant to join.
@@ -60,7 +67,8 @@ impl Text {
             .iter()
             .any(|i| matches!(i, Item::Text(_) | Item::Copy(_) | Item::Glyph(_)));
         if writes && !attached {
-            self.gap(" ");
+            let space = self.mode.space.clone();
+            self.gap(&space);
         }
         if flags.space == Some(SpaceOp::Retro) {
             self.retro_gap();
@@ -89,18 +97,19 @@ impl Text {
                         name: name.clone(),
                         mods: *mods,
                     }),
-                    Item::Cmd { name, arg } => events.push(Event::Cmd {
-                        name: name.clone(),
-                        arg: arg.clone(),
-                    }),
+                    // A mode is this crate's business; anything else is the
+                    // host's, so it leaves as an event.
+                    Item::Cmd { name, arg } => match self.mode_command(name, arg) {
+                        true => {}
+                        false => events.push(Event::Cmd {
+                            name: name.clone(),
+                            arg: arg.clone(),
+                        }),
+                    },
                     // A glyph is a window character, and a record that holds one
                     // belongs to `rewrite`, not here.
                     Item::Glyph(_) | Item::Drop => return Err(FormatError::NoWindow),
-                    // A meta is a host operation, and the only operations left
-                    // are the host's own: nothing in this crate names one.
-                    Item::Meta { name, .. } => {
-                        return Err(FormatError::UnknownMeta(name.clone()))
-                    }
+                    Item::Meta { name, arg } => self.meta(name, arg)?,
                 }
             }
         }
@@ -110,10 +119,16 @@ impl Text {
         if let (Some(at), Some(case)) = (wrote, self.tail.case) {
             self.recase(at, case);
         }
+        // A mode applies to every word this record wrote, and after the pending
+        // case, so `{-|}` inside `{mode:lower}` still loses.
+        if let (Some(mode), Some((at, from))) = (self.mode.case, wrote) {
+            self.apply_mode(mode, at, from);
+        }
 
         self.tail = Tail {
             attach: flags.attach_r,
             glue: flags.glue,
+            word_end: flags.word_end,
             // `[CARRY_CAP]` passes a pending capitalisation on rather than
             // spending it, which is what lets `{~|'}` write an apostrophe inside a
             // word without eating the capital. A record that wrote nothing passes
@@ -227,9 +242,8 @@ impl Text {
     /// restores what it replaced: a fold is undoable one step at a time.
     fn revert(&mut self, n: u8) {
         let at = self.bases.len().saturating_sub(n as usize);
-        if let Some((cells, tail)) = self.bases.get(at) {
-            self.cells = cells.clone();
-            self.tail = tail.clone();
+        if let Some(snapshot) = self.bases.get(at).cloned() {
+            self.restore(snapshot);
         }
     }
 
@@ -257,6 +271,9 @@ impl Text {
     /// following another inside one record.
     fn write(&mut self, text: &str) {
         for (n, (word, space)) in split_words(text).into_iter().enumerate() {
+            if n > 0 {
+                self.ortho = false;
+            }
             let join = n == 0
                 && self
                     .cells
@@ -264,8 +281,15 @@ impl Text {
                     .is_some_and(|c| c.space.is_empty() && !c.word.is_empty());
             match join {
                 true => {
+                    let rewritten = self
+                        .ortho
+                        .then(|| ortho::join(&self.cells.last().expect("a cell").word, &word))
+                        .flatten();
                     let last = self.cells.last_mut().expect("a cell to join");
-                    last.word.push_str(&word);
+                    match rewritten {
+                        Some(whole) => last.word = whole,
+                        None => last.word.push_str(&word),
+                    }
                     last.space = space;
                 }
                 false => self.cells.push(Cell { word, space }),
@@ -274,6 +298,9 @@ impl Text {
     }
 
     /// Apply a pending case to the first letter at or after this position.
+    ///
+    /// `{<}` is the odd one: it cases the whole word rather than its first letter,
+    /// so it does not stop at the first letter it changes.
     fn recase(&mut self, (at, from): (usize, usize), case: Case) {
         let Some(cell) = self.cells.get_mut(at) else {
             return;
@@ -288,11 +315,138 @@ impl Text {
             match case {
                 Case::Next => out.extend(c.to_uppercase()),
                 Case::LowerNext => out.extend(c.to_lowercase()),
+                Case::UpperNext => {
+                    out.extend(c.to_uppercase());
+                    continue;
+                }
             }
             done = true;
         }
         cell.word = out;
     }
+
+    /// A mode over every word from this position on, which is what a mode does
+    /// that a pending case does not: it applies to all of them and it persists.
+    fn apply_mode(&mut self, mode: ModeCase, at: usize, from: usize) {
+        let first_word = at == 0 && from == 0;
+        for (n, cell) in self.cells[at..].iter_mut().enumerate() {
+            let skip = if n == 0 { from } else { 0 };
+            let head: String = cell.word.chars().take(skip).collect();
+            let rest: String = cell.word.chars().skip(skip).collect();
+            let cased = match mode {
+                ModeCase::Caps => rest.to_uppercase(),
+                ModeCase::Lower => rest.to_lowercase(),
+                ModeCase::Title => title(&rest),
+                // Camel is title case with the very first word left alone, which is
+                // what makes the run read as one identifier.
+                ModeCase::Camel if first_word && n == 0 => rest,
+                ModeCase::Camel => title(&rest),
+            };
+            cell.word = head + &cased;
+        }
+    }
+
+    /// `{mode:…}`. True when this crate handled it.
+    fn mode_command(&mut self, name: &str, arg: &str) -> bool {
+        self.mode.case = match name {
+            "mode.caps" => Some(ModeCase::Caps),
+            "mode.title" => Some(ModeCase::Title),
+            "mode.lower" => Some(ModeCase::Lower),
+            "mode.camel" => Some(ModeCase::Camel),
+            "mode.snake" => {
+                self.mode.space = "_".to_string();
+                None
+            }
+            "mode.reset_case" => None,
+            "mode.set_space" => {
+                self.mode.space = arg.to_string();
+                return true;
+            }
+            "mode.reset_space" => {
+                self.mode.space = " ".to_string();
+                return true;
+            }
+            "mode.reset" => {
+                self.mode = crate::Mode::default();
+                return true;
+            }
+            _ => return false,
+        };
+        // Camel runs words together, and snake puts an underscore between them, so
+        // both are a case and a space at once.
+        if name == "mode.camel" {
+            self.mode.space = String::new();
+        }
+        true
+    }
+
+    /// The declared metas: edits to text already written. Everything here is a
+    /// Plover built-in, because a dictionary-specific edit belongs in the
+    /// dictionary, over a window.
+    fn meta(&mut self, name: &str, arg: &str) -> Result<(), FormatError> {
+        let Some(cell) = self.cells.last_mut() else {
+            return Ok(());
+        };
+        match name {
+            "retro.cap" => cell.word = title(&cell.word),
+            "retro.upper" => cell.word = cell.word.to_uppercase(),
+            "retro.lower" => cell.word = cell.word.to_lowercase(),
+            // `{*($c)}`: the argument is the format, with `c` where the number goes.
+            "retro.currency" => {
+                let digits: String = cell.word.chars().filter(|c| c.is_ascii_digit()).collect();
+                if digits.is_empty() {
+                    return Ok(());
+                }
+                let (before, after) = arg.split_once('c').unwrap_or((arg, ""));
+                cell.word = format!("{before}{}{after}", grouped(&digits));
+            }
+            // `{:infl:…}`: the regular cases, which are the orthography rules. An
+            // irregular form is a lexicon, and this host has none, so `run` and
+            // `ed` come back as `runed` rather than as nothing: the entry is
+            // reported by the checker rather than failing silently.
+            "infl" => {
+                let suffix = match arg {
+                    "ed" => "ed",
+                    "ing" => "ing",
+                    "ofs" | "s" => "s",
+                    "ofz" | "z" => "'s",
+                    _ => return Err(FormatError::BadMeta(name.into(), arg.into())),
+                };
+                let word = cell.word.clone();
+                cell.word = ortho::join(&word, suffix).unwrap_or(word + suffix);
+            }
+            _ => return Err(FormatError::UnknownMeta(name.to_string())),
+        }
+        Ok(())
+    }
+}
+
+/// The first letter capitalised, the rest left alone.
+fn title(word: &str) -> String {
+    let mut out = String::new();
+    let mut done = false;
+    for c in word.chars() {
+        match !done && c.is_alphabetic() {
+            true => {
+                out.extend(c.to_uppercase());
+                done = true;
+            }
+            false => out.push(c),
+        }
+    }
+    out
+}
+
+/// Digits with a comma every three, counted from the right.
+fn grouped(digits: &str) -> String {
+    let mut out = String::new();
+    for (n, c) in digits.chars().enumerate() {
+        if n > 0 && (digits.len() - n) % 3 == 0 {
+            out.push(',');
+        }
+        out.push(c);
+    }
+    out
 }
 
 /// Text as `(word, trailing whitespace)` pairs.
@@ -387,6 +541,50 @@ mod tests {
     #[test]
     fn repetition_repeats_the_body() {
         assert_eq!(text(&["![REP3]"]), "!!!");
+    }
+
+    #[test]
+    fn the_declared_metas_edit_what_is_written() {
+        assert_eq!(text(&["hello", "[META=retro.cap][END]"]), "Hello");
+        assert_eq!(text(&["hello", "[META=retro.upper][END]"]), "HELLO");
+        assert_eq!(text(&["HELLO", "[META=retro.lower][END]"]), "hello");
+        // `{*($c)}`: the argument is the format and `c` is where the number goes.
+        assert_eq!(text(&["1234", "[META=retro.currency]$c[END]"]), "$1,234");
+        // `{:infl:…}`: the regular cases, which are the orthography rules.
+        assert_eq!(text(&["run", "[META=infl]ing[END]"]), "running");
+        assert_eq!(text(&["carry", "[META=infl]ofs[END]"]), "carries");
+        assert_eq!(text(&["dog", "[META=infl]ofz[END]"]), "dog's");
+    }
+
+    #[test]
+    fn a_mode_persists_and_undoes() {
+        assert_eq!(text(&["[CMD=mode.caps][END]", "one", "two"]), "ONE TWO");
+        assert_eq!(text(&["[CMD=mode.snake][END]", "one", "two"]), "one_two");
+        assert_eq!(text(&["[CMD=mode.camel][END]", "one", "two"]), "oneTwo");
+        assert_eq!(
+            text(&["[CMD=mode.caps][END]", "one", "[CMD=mode.reset][END]", "two"]),
+            "ONE two"
+        );
+        assert_eq!(text(&["[CMD=mode.set_space]-[END]", "one", "two"]), "one-two");
+
+        // A mode is host state, so taking back the stroke that set it turns it off.
+        let mut out = Text::default();
+        for r in ["[CMD=mode.caps][END]", "one"] {
+            let record = Record::parse_display(r).unwrap();
+            out.apply(&record, &[]).unwrap();
+        }
+        out.undo();
+        out.undo();
+        assert_eq!(out.mode().case, None);
+    }
+
+    #[test]
+    fn an_orthographic_join_is_not_a_plain_join() {
+        // `{^ing}` after `run`, against `{^^}ing` which only closes the gap.
+        assert_eq!(text(&["run", "ing[ORTHO_L]"]), "running");
+        assert_eq!(text(&["run", "ing[ATTACH_L]"]), "runing");
+        // `{$}` says the word is finished, so nothing folds into it.
+        assert_eq!(text(&["run[WORD_END]", "ing[ORTHO_L]"]), "runing");
     }
 
     #[test]

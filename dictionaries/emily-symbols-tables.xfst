@@ -10,8 +10,19 @@
 ! operation is a `[META]` request and a keystroke is a `[KEY]` item, because a
 ! record says what it means and the host decides.
 
-define Kb "[KEY]" ;   define Mb "[META]" ;
-define Ke "[END]" ;   define Ma "[ARG]" ;
+define Kb "[KEY]" ;   define Ke "[END]" ;
+! A meta names one operation from a closed table, so the name is a symbol and a
+! host checks it when it loads the dictionary rather than when a stroke arrives.
+! A glyph that cases the next word and a key that also cases it are one case, not
+! two, and a record cannot hold two. The glyph wins, because `{<}` cases the whole
+! word and the key only its first letter. Written as a local context: containment
+! would complement over every glyph the table can write.
+define OneCase [ "[CAP_NEXT]" -> 0
+                 || "[UPPER_NEXT]" ("[ATTACH_L]") ("[ATTACH_R]") _ ] ;
+
+define Mcap   "[META=retro.cap]" ;
+define Mupper "[META=retro.upper]" ;
+define Mlower "[META=retro.lower]" ;
 
 define V0 "[V=0]" ;   define V2 "[V=2]" ;
 define V1 "[V=1]" ;   define V3 "[V=3]" ;
@@ -41,8 +52,9 @@ define GlyphPair KeyRow({TR}, {Tab}, {BackSpace}, {Delete}, {Escape})
   ! The bare identifier: no glyph, and the space fiddles.
   | Row(0,    0,   "[CANCEL_SPACE]", "[RETRO_SPACE]", [Kb {space} Ke])
   ! Retrospective case operations are host requests, not text.
-  | Row({TH}, [Mb {retro.cap} Ma Ke],  [Mb {retro.upper} Ma Ke],
-              [Mb {upper.next} Ma Ke], [Mb {retro.lower} Ma Ke])
+  ! `{<}` is not a retro operation: it cases the word that follows, so it is a
+  ! flag on this record and not a request about one already written.
+  | Row({TH}, [Mcap Ke], [Mupper Ke], "[UPPER_NEXT]", [Mlower Ke])
 
   | Row({HR},     {!}, {¬}, {↦}, {¡})
   | Row({PH},     {"}, {“}, {”}, {„})

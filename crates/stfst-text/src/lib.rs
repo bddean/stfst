@@ -17,6 +17,7 @@
 //! anywhere in this crate.
 
 pub mod format;
+pub mod ortho;
 
 use stfst_core::record::Case;
 
@@ -49,6 +50,36 @@ pub struct Tail {
     pub glue: bool,
     /// A case to apply to the next word.
     pub case: Option<Case>,
+    /// The previous record said its word was finished, so a suffix must not fold
+    /// into it: `{$}`.
+    pub word_end: bool,
+}
+
+/// A persistent output mode, which a `[CMD=mode.*]` sets and only another command
+/// clears. Not part of the tail: a mode outlives the unit that set it.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ModeCase {
+    Caps,
+    Title,
+    Lower,
+    /// Title case with no space, and a lowercase first word.
+    Camel,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct Mode {
+    pub case: Option<ModeCase>,
+    /// What goes between words. `{mode:snake}` makes it an underscore.
+    pub space: String,
+}
+
+impl Default for Mode {
+    fn default() -> Self {
+        Mode {
+            case: None,
+            space: " ".to_string(),
+        }
+    }
 }
 
 /// The text a host has written, and enough history to take a unit back.
@@ -56,12 +87,13 @@ pub struct Tail {
 pub struct Text {
     cells: Vec<Cell>,
     tail: Tail,
+    mode: Mode,
     /// The buffer and tail before each unit, newest last. What makes undo a pop.
     ///
     /// A snapshot per unit rather than an inverse edit per unit: an edit is not
     /// always invertible (a retro operation can delete a distinction), and a
     /// steno host writes a few words a second, so the copy is not the cost.
-    history: Vec<(Vec<Cell>, Tail)>,
+    history: Vec<Snapshot>,
     /// The buffer as each unit found it *after* whatever that unit replaced, so
     /// before it wrote anything of its own.
     ///
@@ -71,12 +103,28 @@ pub struct Text {
     /// what the previous fold *wrote*, so it wants the state that fold started
     /// from. Reverting to `history` instead brings the base phrase back and writes
     /// the new one after it.
-    bases: Vec<(Vec<Cell>, Tail)>,
+    bases: Vec<Snapshot>,
+    /// Set while a record with `[ORTHO_L]` is writing its first text, so the join
+    /// applies once and to the right join. Transient, and never observed from
+    /// outside a call.
+    pub(crate) ortho: bool,
+}
+
+/// The text and the state that goes with it, as one unit found it.
+#[derive(Debug, Clone, Default)]
+pub(crate) struct Snapshot {
+    pub cells: Vec<Cell>,
+    pub tail: Tail,
+    pub mode: Mode,
 }
 
 impl Text {
     pub fn tail(&self) -> &Tail {
         &self.tail
+    }
+
+    pub fn mode(&self) -> &Mode {
+        &self.mode
     }
 
     pub fn units(&self) -> usize {
@@ -108,24 +156,40 @@ impl Text {
     pub fn undo(&mut self) -> bool {
         self.bases.pop();
         match self.history.pop() {
-            Some((cells, tail)) => {
-                self.cells = cells;
-                self.tail = tail;
+            Some(snapshot) => {
+                self.restore(snapshot);
                 true
             }
             None => false,
         }
     }
 
-    /// Remember where a unit starts, so it can be taken back.
+    pub(crate) fn snapshot(&self) -> Snapshot {
+        Snapshot {
+            cells: self.cells.clone(),
+            tail: self.tail.clone(),
+            mode: self.mode.clone(),
+        }
+    }
+
+    pub(crate) fn restore(&mut self, snapshot: Snapshot) {
+        self.cells = snapshot.cells;
+        self.tail = snapshot.tail;
+        self.mode = snapshot.mode;
+    }
+
+    /// Remember where a unit starts, so it can be taken back. The mode goes in
+    /// too: undoing the stroke that turned capitals on has to turn them off.
     fn mark(&mut self) {
-        self.history.push((self.cells.clone(), self.tail.clone()));
+        let snapshot = self.snapshot();
+        self.history.push(snapshot);
     }
 
     /// Remember where this unit's own writing starts, once it has replaced
     /// whatever it replaces.
     fn base(&mut self) {
-        self.bases.push((self.cells.clone(), self.tail.clone()));
+        let snapshot = self.snapshot();
+        self.bases.push(snapshot);
     }
 
     /// Start from text a host has already written, for a caller that is testing

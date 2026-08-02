@@ -31,3 +31,10 @@ PHOR
 EL
 TPAPBT
 ^TPH
+! parity with Plover's own operators
+! an orthographic join: the suffix key is a meta, and `run` plus `ing` doubles
+RUPB
+-G
+! `{<}` cases the whole next word, which `{-|}` does not
+KPA*L
+RUPB

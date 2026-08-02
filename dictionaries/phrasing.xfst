@@ -108,4 +108,4 @@ define Infinitive  [ Inf(Say([ {to} " " {be} ]), 0)
 define Realize  [ Infinitive | FullAff | FullNeg
                 | PU(RedClit, RedAff) | PU(RedClitNot, RedNeg) ] ;
 
-define Grammar  [ Chord .o. Realize .o. Canonical ] ;
+define Grammar  Canon([ Chord .o. Realize ]) ;

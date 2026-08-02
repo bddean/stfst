@@ -173,8 +173,8 @@ def main(path, out_dir):
                       "! Wrap, and widen an existing wrap. `-R` takes the literal last\n"
                       "! word instead.\n"))
         f.write("! `^A` opens the namespace and the four verbs partition the rest.\n")
-        f.write("define Grammar [ [ Kill(\"^\") Kill(A) "
-                "[ CaseOp | JoinOp | SplitOp | WrapOp ] ] .o. Canonical ] ;\n")
+        f.write("define Grammar Canon([ Kill(\"^\") Kill(A) "
+                "[ CaseOp | JoinOp | SplitOp | WrapOp ] ]) ;\n")
 
 
 if __name__ == "__main__":
