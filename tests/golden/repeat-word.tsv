@@ -1,0 +1,19 @@
+! 16 cases from dictionaries/repeat-word.dict. The source is already outline to record, so
+! this file checks the outline parse and the compile, not the
+! meaning of an entry.
+^SKP	and [COPY1]
+^Or	or [COPY1]
+^O	to [COPY1]
+^TO	to [COPY1]
+^t	the [COPY1]
+^f	of [COPY1]
+^*f	of [COPY1]
+^PWEU	by [COPY1]
+^TPr	for [COPY1]
+^TPOr	for [COPY1]
+^TPH	in [COPY1]
+^EUpb	in [COPY1]
+^Ob	on [COPY1]
+^Opb	on [COPY1]
+^OEfr	over [COPY1]
+^Af	after [COPY1]

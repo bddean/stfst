@@ -1,0 +1,43 @@
+! A fixture, not a dictionary. It exists to exercise the two halves of the host
+! contract that no dictionary in `recipe.toml` uses yet, so that they are proven
+! rather than claimed: a context slot on the input tape, and a state carried from
+! one translation unit to the next.
+!
+! Both are host contract items 5 and 6 of FST-DICT-DESIGN.md §5. The intended
+! consumer of the state half is phrasing's retro modifier layer, where a `*` after
+! a phrase negates it; this is that shape in miniature, over one phrase.
+
+define Kill(X)  [ X .x. 0 ] ;
+define Say(X)   [ 0 .x. X ] ;
+
+! ---- item 5: a context slot
+!
+! The host says whether a capitalisation is pending, and the entry writes its own
+! first letter accordingly. Nothing here reads host state: the slot is a symbol on
+! the tape before the keys, and the compiler notices it and writes `context =
+! ["CAP"]` into the manifest.
+! Declaring a slot means the host sends it before every stroke, so every entry
+! has to read it, including the ones that do not care what it says. That follows
+! from the manifest being derived: one entry that reads `CAP` makes `CAP` part of
+! this dictionary's tape.
+define Slot     [ Kill("[CAP=on]") | Kill("[CAP=off]") ] ;
+define Cap      [ Slot Kill(K) Kill(P) Kill(A) Say("[CAP_NEXT]") ] ;
+define The      [ [ Kill("[CAP=on]") Kill(T) Say({The}) ]
+                | [ Kill("[CAP=off]") Kill(T) Say({the}) ] ] ;
+
+! ---- item 6: a Mealy step over translation units
+!
+! `+T` writes a phrase and remembers what it wrote. `*` reads that back, writes the
+! other one, and says it replaces the unit before it. The state is a string the
+! host stores and never reads, and the host's stack of them is what makes undo a
+! pop: undoing the `*` puts the first phrase back, along with the state that
+! produced it.
+define State(S) [ Say("[STATE]") Say(S) Say("[END]") ] ;
+define Start    [ Slot Kill("+") Kill(T) Say({it's}) State({pres}) ] ;
+define Flip(In, Out, Text)
+    [ Kill("[STATE]") Kill(In) Kill("[END]") Slot Kill("*")
+      Say(Text) Say("[REPLACE1]") State(Out) ] ;
+
+define Grammar  [ [ Cap | The | Start
+                  | Flip({pres}, {neg}, {it isn't})
+                  | Flip({neg}, {pres}, {it's}) ] .o. Canonical ] ;

@@ -253,6 +253,7 @@ dependencies = [
  "stfst-core",
  "stfst-dict",
  "stfst-ol",
+ "stfst-text",
 ]
 
 [[package]]
@@ -264,6 +265,7 @@ dependencies = [
  "serde",
  "serde_json",
  "stfst-core",
+ "stfst-ol",
  "thiserror",
  "toml",
 ]
@@ -294,6 +296,14 @@ name = "stfst-ol"
 version = "0.1.0"
 dependencies = [
  "memmap2",
+ "thiserror",
+]
+
+[[package]]
+name = "stfst-text"
+version = "0.1.0"
+dependencies = [
+ "stfst-core",
  "thiserror",
 ]
 

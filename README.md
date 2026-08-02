@@ -10,6 +10,7 @@ upper tape and on the record language, recorded in `docs/key-tape.md`.
 ```sh
 direnv allow          # or: nix develop
 stfst compile recipe.toml
+stfst compile tests/recipe.toml --out build/test-dicts --work build/test-work
 scripts/check.sh      # unit tests, then the golden files
 stfst bench build/dicts/typey-type.stfst --system systems/stenotype-extended.toml
 stfst translate build/dicts/*.stfst --system systems/stenotype-extended.toml
@@ -26,23 +27,33 @@ artifact, so `lookup`, `test` and `bench` need nothing on `PATH`;
 ## The stack
 
 `recipe.toml` is `plover.cfg`'s enabled list, in its order, so priority here means
-what file order means there. `main.json` is disabled there and absent here.
+what file order means there. `main.json` is disabled there and absent here. The
+retro family is disabled there too, and sits below everything enabled so it cannot
+shadow a working entry.
 
 | Dictionary | Source | Forward | Reverse |
 |---|---|---|---|
-| emily-symbols | xfst over a shared glyph table | 12,075 | 12,701 |
-| shrimple | xfst over a generated table | 97,378 | 107,364 |
-| user | JSON, imported | 18,620 | 18,724 |
+| emily-symbols | xfst over a shared glyph table | 12,075 | 13,019 |
+| shrimple | xfst over a generated table | 97,378 | 107,940 |
+| user | JSON, imported | 19,108 | 19,212 |
 | phrases | JSON, imported | 11,752 | 11,958 |
 | commands | JSON, imported | 7,092 | 7,316 |
-| emily-modifiers | xfst over generated tables | 63,011 | 59,635 |
+| emily-modifiers | xfst over generated tables | 63,011 | 59,485 |
 | semantic-suffixes | JSON, imported | 917 | 979 |
 | typey-type | JSON, imported | 6,242,881 | 6,509,829 |
 | and-fold | JSON, imported | 40,093 | 38,241 |
-| phrasing | xfst, the §7 prototype slice | 15,927 | 13,835 |
+| phrasing | xfst, the §7 prototype slice | 15,927 | 13,775 |
+| retro-words | xfst over a window of written text | 405,783 | none |
+| repeat-idioms | JSON, imported | 80,658 | 80,498 |
+| repeat-word | flat source in the record language | 1,311 | 1,247 |
+| semantic-retro | JSON, imported | 3,924 | 3,746 |
 
-13.3 MB for both directions of everything, against 93.6 MB resident for the
+14.1 MB for both directions of everything, against 93.6 MB resident for the
 Plover-style dictionary and its reverse index in `docs/M0.md`.
+
+`retro-words` has no reverse automaton, and that is not an omission: it rewrites
+text rather than writing a word, so the question a suggestion window asks has no
+answer for it. See `docs/retro.md`.
 
 Nine entries in the whole set do not import, and each is named by
 `stfst import --report`: five hold a `{}` shape the record language has no meaning
@@ -58,6 +69,7 @@ for, and four hold a control character, which neither `lexc` nor `xfst` can writ
 | `docs/encoding.md` | What the artifact costs, why delayed alignment would cost more, and the exact size model. |
 | `docs/modifiers.md` | The `@` keysym namespace, and why a keystroke's modifiers are tags inside the item. |
 | `docs/phrasing.md` | The §7 phrasing prototype: what the port settled, and what it left. |
+| `docs/retro.md` | Rewriting text already written: why the window comes after the keys, why the tape carries character classes and not characters, and what is left in the host. |
 | `docs/translation.md` | The runtime: longest match without a declared longest key, what a dictionary is checked for at load, and why reverse lookup is a cheapest-first search. |
 
 ## Layout
@@ -69,10 +81,12 @@ for, and four hold a control character, which neither `lexc` nor `xfst` can writ
 | `recipe.toml` | The dictionary stack: what to compile, and at what priority. |
 | `tests/golden/` | Host-independent golden tests: a tape, a tab, the expected records. |
 | `tests/translate/` | Stroke streams and what the stack makes of them, where the answer depends on the history. |
+| `tests/dicts/`, `tests/probe/` | Fixtures for the parts of the host contract no shipped dictionary uses yet: a context slot, and a carried state. Compiled by `tests/recipe.toml`. |
 | `crates/stfst-core` | Systems, the key tape, the record language, the golden format. No FST dependency, so a host can link it. |
 | `crates/stfst-compile` | The compiler: prelude generation, JSON import, the HFST pipeline. |
 | `crates/stfst-ol` | Reader for the `hfstol` runtime format: mapped, no decode, no HFST. |
 | `crates/stfst-dict` | The runtime: the dictionary stack, longest match, record interpretation. |
+| `crates/stfst-text` | The host side of the record language: the word buffer, the formatter, and the one general rewrite. Names no operation. |
 | `crates/stfst-cli` | `stfst`. Testing only. |
 
 ## The upper tape is keys, one symbol each
@@ -102,7 +116,19 @@ has nothing to measure. See `docs/key-tape.md`.
 
 ## Adding a dictionary
 
-Hand-written, in xfst, defining `Grammar`:
+Three source forms. Hand-written xfst for anything with rules in it, a flat
+`.dict` file for a list of entries in the record language, and JSON for anything
+imported from Plover.
+
+```
+! dictionaries/repeat-word.dict: an outline, a tab, a record
+^SKP    and [COPY1]
+```
+
+`!` opens a comment and not `#`, because `#` is a key. A duplicate outline is an
+error here, where a JSON object would silently keep the last one.
+
+The xfst form defines `Grammar`:
 
 ```xfst
 define Grammar [ Parse .o. Glyph .o. DoAttach .o. Canonical ] ;

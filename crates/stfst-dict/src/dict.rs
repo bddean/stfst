@@ -3,16 +3,18 @@
 use std::path::Path;
 
 use serde::Deserialize;
+use stfst_core::context;
 use stfst_core::record::{all_tags, is_tag};
-use stfst_core::{Record, Stroke, System};
+use stfst_core::{Emission, Prefix, Record, Stroke, System, Window};
 use stfst_ol::{Automaton, Cursor, Sym};
 
 use crate::DictError;
 
-/// The host contract version this crate implements: items 1 to 4 of
-/// `FST-DICT-DESIGN.md` §5. Context tapes and translation-unit state are 5 and
-/// 6, so a dictionary that declares them is refused rather than mistranslated.
-pub const HOST_VERSION: u32 = 1;
+/// The host contract version this crate implements: `FST-DICT-DESIGN.md` §5,
+/// items 1 to 6. Version 1 was items 1 to 4; a dictionary that needs neither a
+/// context slot, nor a carried state, nor a bound word still declares 1 and
+/// still loads in a host that implements only those.
+pub const HOST_VERSION: u32 = 2;
 
 #[derive(Debug, Deserialize)]
 pub struct Manifest {
@@ -33,8 +35,24 @@ pub struct Meta {
 pub struct Requires {
     pub keys: Vec<String>,
     pub host: u32,
+    /// Context slots this dictionary reads, in table order. The host puts them on
+    /// the input tape before the keys; a dictionary declaring none sees the tape
+    /// it would have seen under host 1.
     pub context: Vec<String>,
+    /// Whether the dictionary carries state from one translation unit to the
+    /// next, which the host stores and replays without reading.
     pub state: bool,
+    /// How many recent words the host must bind, for `[COPYn]` to splice.
+    #[serde(default)]
+    pub registers: u8,
+    /// How many words of already-written text the host must show, after the keys.
+    #[serde(default)]
+    pub words: u8,
+    /// The characters this dictionary named, so the host sends them as themselves
+    /// and everything else as its class. Read out of the grammar by the compiler,
+    /// so a host and a dictionary cannot disagree about it.
+    #[serde(default)]
+    pub significant: String,
 }
 
 #[derive(Debug, Deserialize)]
@@ -57,6 +75,8 @@ pub struct Dict {
     fst: Automaton,
     back: Option<Back>,
     encoding: Encoding,
+    /// The named characters, as a slice for `Window::encode`.
+    significant: Vec<char>,
 }
 
 /// The same relation with the tapes swapped. Optimized lookup only walks the
@@ -101,8 +121,13 @@ impl Dict {
                 wants: manifest.requires.host,
             });
         }
-        if !manifest.requires.context.is_empty() || manifest.requires.state {
-            return Err(DictError::Unavailable { name });
+        for slot in &manifest.requires.context {
+            if context::slot(slot).is_none() {
+                return Err(DictError::UnknownSlot {
+                    name: name.clone(),
+                    slot: slot.clone(),
+                });
+            }
         }
         for key in &manifest.requires.keys {
             if !system.keys().iter().any(|k| &k.name == key) {
@@ -117,6 +142,14 @@ impl Dict {
         let alphabet = fst.alphabet();
         let known = all_tags();
         for symbol in alphabet.symbols() {
+            // A context symbol and a named character are input side, and the
+            // manifest already declares both, so neither is an unknown tag. What
+            // this check is for is an output tag a host would not understand.
+            if stfst_core::window::sig_char(symbol).is_some()
+                || context::all_symbols().iter().any(|c| c == symbol)
+            {
+                continue;
+            }
             if is_tag(symbol) && !known.iter().any(|t| t == symbol) {
                 return Err(DictError::UnknownTag {
                     name,
@@ -145,11 +178,13 @@ impl Dict {
             }
             false => None,
         };
+        let significant = manifest.requires.significant.chars().collect();
         Ok(Dict {
             manifest,
             fst,
             back,
             encoding,
+            significant,
         })
     }
 
@@ -171,8 +206,74 @@ impl Dict {
         }
     }
 
-    pub(crate) fn cursor(&self) -> Cursor<'_> {
-        self.fst.cursor()
+    /// A cursor that has read the host's prefix and is waiting for keys.
+    ///
+    /// The prefix holds only what this dictionary declared, so a dictionary that
+    /// declared nothing starts where it always did, and no lookup pays for a
+    /// contract item it does not use. A symbol the automaton does not have kills
+    /// the cursor, which is what a host that offers a slot the dictionary never
+    /// reads would produce.
+    pub(crate) fn cursor(&self, prefix: &Prefix) -> Cursor<'_> {
+        let mut cursor = self.fst.cursor();
+        if prefix.is_empty() {
+            return cursor;
+        }
+        let alphabet = self.fst.alphabet();
+        for symbol in prefix.to_symbols() {
+            match alphabet.number(&symbol) {
+                Some(sym) => cursor.step(sym),
+                None => {
+                    cursor.kill();
+                    break;
+                }
+            }
+        }
+        cursor
+    }
+
+    /// How many recent words the host must bind for `[COPYn]` to splice.
+    pub fn registers(&self) -> u8 {
+        self.manifest.requires.registers
+    }
+
+    /// How many words of written text this dictionary is shown.
+    pub fn words(&self) -> u8 {
+        self.manifest.requires.words
+    }
+
+    /// Encode a span the way this dictionary expects to read it.
+    pub fn window(&self, span: &str) -> Window {
+        Window::encode(span, &self.significant)
+    }
+
+    /// What this candidate says, having also read the window.
+    ///
+    /// The live cursor holds keys only, so it is cloned to ask: a candidate that
+    /// is never harvested costs nothing, and one that is costs a step per
+    /// character of window. Nothing about the live frontier changes, which is why
+    /// a window is affordable at all.
+    pub(crate) fn harvest(&self, cursor: &Cursor<'_>, window: &Window) -> Vec<Vec<Sym>> {
+        let alphabet = self.fst.alphabet();
+        let mut cursor = cursor.clone();
+        for symbol in window.to_symbols() {
+            match alphabet.number(&symbol) {
+                Some(sym) => cursor.step(sym),
+                // A class this dictionary's rules never mention. The stroke does
+                // not translate, which is the visible answer rather than a rule
+                // matching half a word.
+                None => return Vec::new(),
+            }
+        }
+        cursor.outputs()
+    }
+
+    /// The context slots this dictionary reads.
+    pub fn context(&self) -> &[String] {
+        &self.manifest.requires.context
+    }
+
+    pub fn stateful(&self) -> bool {
+        self.manifest.requires.state
     }
 
     pub fn name(&self) -> &str {
@@ -225,16 +326,18 @@ impl Dict {
         })
     }
 
-    pub(crate) fn interpret(&self, outputs: &[Vec<Sym>]) -> Result<Vec<Record>, DictError> {
+    pub(crate) fn interpret(&self, outputs: &[Vec<Sym>]) -> Result<Vec<Emission>, DictError> {
         let alphabet = self.fst.alphabet();
-        let mut records = Vec::with_capacity(outputs.len());
+        let mut out = Vec::with_capacity(outputs.len());
         for symbols in outputs {
             let text: Vec<&str> = symbols.iter().map(|&s| alphabet.symbol(s)).collect();
-            records.push(Record::parse_symbols(&text).map_err(|source| DictError::Record {
-                name: self.name().to_string(),
-                source,
-            })?);
+            out.push(
+                Emission::parse_symbols(&text).map_err(|source| DictError::Record {
+                    name: self.name().to_string(),
+                    source,
+                })?,
+            );
         }
-        Ok(records)
+        Ok(out)
     }
 }

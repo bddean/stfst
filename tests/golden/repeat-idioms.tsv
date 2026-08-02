@@ -1,0 +1,610 @@
+! 607 cases from /Users/ben/.config/plover/repeat-idioms.json. A regression file for the import pipeline,
+! not an oracle: the expectations come from our own translation
+! grammar, which is unit tested separately.
+A/SAUlt/^SKP	assault and battery
+Abgt/^*f	act of god
+Abgt/^f	act of god
+AEpbs/^t	answer the question
+AEUbgs/^SKP	aches and pains
+AEUpblg/^Or	age or older
+AEUrbgz/^*f	acres of land
+AEUrbgz/^f	acres of land
+AEUs/^EUpb	ace in the hole
+AEUs/^TPH	ace in the hole
+AO*EUls/^*f	isle of wight
+AO*EUls/^f	isle of wight
+AO*EUs/^Ob	eyes on the prize
+AO*EUs/^Opb	eyes on the prize
+AOEfp/^SKP	each and every
+AOElgs/^t	essentially the same
+AOErt/^Or	either or
+AOEs/^*f	ease of use
+AOEs/^f	ease of use
+AOEU/^TPr	eye for an eye
+AOEU/^TPOr	eye for an eye
+AOEUs/g/^Ob	icing on the cake
+AOEUs/g/^Opb	icing on the cake
+AOUs/^Or	use it or lose it
+Arts/^SKP	arts and crafts
+AUl/^Ob	all hands on deck
+AUl/^Opb	all hands on deck
+AUl/^Or	all or nothing
+Eb/^SKP	ebb and flow
+El/TPApbt/^EUpb	elephant in the room
+El/TPApbt/^TPH	elephant in the room
+Elg/^t	exactly the same
+Ertd/^EUpb	editor in chief
+Ertd/^TPH	editor in chief
+HAErpl/^SKP	hammer and tongs
+HAOEr/^SKP	here and there
+HAOEU/^SKP	high and dry
+HAOEUd/^SKP	hide and seek
+HAOU/^SKP	hue and cry
+HArd/WAEUr/^SKP	hardware and software
+HArt/^*f	heart of hearts
+HArt/^f	heart of hearts
+HArt/^SKP	heart and soul
+HAUl/^*f	hall of fame
+HAUl/^f	hall of fame
+HEd/^O	head to toe
+HEd/^OEfr	head over heels
+HEd/^TO	head to toe
+HEdz/^Or	heads or tails
+HEfpb/^SKP	heaven and earth
+HEl/^Or	hell or high water
+HEpl/^SKP	hem and haw
+HEUt/^t	hit the road
+HEUt/^Or	hit or miss
+HEUt/^SKP	hit and run
+HOEl/^EUpb	hole in one
+HOEl/^TPH	hole in one
+HOEps/^SKP	hopes and dreams
+HOEUl/^*f	holy of holies
+HOEUl/^f	holy of holies
+HOld/^t	hold the phone
+HOt/^SKP	hot and cold
+HOUs/^*f	house of cards
+HOUs/^f	house of cards
+HOUs/^SKP	house and home
+HRf/^Or	love or hate
+HRAEUb/^*f	labor of love
+HRAEUb/^f	labor of love
+HRAObg/^SKP	look and feel
+HRAOEp/^*f	leap of faith
+HRAOEp/^f	leap of faith
+HRAOEps/^SKP	leaps and bounds
+HRAOEUf/^Or	life or death
+HRAOEUf/^SKP	life and limb
+HRAOEUpb/^*f	line of sight
+HRAOEUpb/^f	line of sight
+HRAU/^SKP	law and order
+HREf/^*f	leave of absence
+HREf/^f	leave of absence
+HREft/^Or	left or right
+HRErpb/^t	learn the ropes
+HREUf/^Or	live or die
+HREUf/^SKP	live and learn
+HRO*s/^SKP	lost and found
+HRObg/^SKP	lock and key
+HROrd/^*f	lord of lords
+HROrd/^f	lord of lords
+HROUd/^SKP	loud and clear
+HUf/^SKP	huff and puff
+HUfl/^SKP	hustle and bustle
+K*EUt/^SKP	kith and kin
+KA*s/^SKP	cast and crew
+KAOEp/^EUpb	keep in mind
+KAOEp/^TPH	keep in mind
+KArb/^Ob	cash on delivery
+KArb/^Opb	cash on delivery
+KArb/^Or	cash or credit
+KArdz/^Ob	cards on the table
+KArdz/^Opb	cards on the table
+KAt/^SKP	cat and mouse
+KAUl/^*f	call of duty
+KAUl/^f	call of duty
+KAUl/^t	call the shots
+KAUs/^SKP	cause and effect
+KEUbg/^t	kick the bucket
+KEUl/^Or	kill or cure
+KEUpbg/^*f	king of kings
+KEUpbg/^f	king of kings
+KEUs/^*f	kiss of death
+KEUs/^f	kiss of death
+KEUs/^SKP	kiss and tell
+KHAEUpb/^*f	chain of command
+KHAEUpb/^f	chain of command
+KHAEUpbg/^*f	change of heart
+KHAEUpbg/^f	change of heart
+KHAEUrpl/^*f	chamber of commerce
+KHAEUrpl/^f	chamber of commerce
+KHAOEf/^*f	chief of staff
+KHAOEf/^f	chief of staff
+KHAOEfs/^*f	chiefs of staff
+KHAOEfs/^f	chiefs of staff
+KHApt/^SKP	chapter and verse
+KHAUbg/^SKP	chalk and cheese
+KHEUp/^Ob	chip on the shoulder
+KHEUp/^Opb	chip on the shoulder
+KHREpblgs/^SKP	colleges and universities
+KHROEbg/^SKP	cloak and dagger
+KO*g/^*f	coming of age
+KO*g/^f	coming of age
+KOEt/^*f	coat of arms
+KOEt/^f	coat of arms
+KOEUpbd/^t	coined the term
+KOps/^SKP	cops and robbers
+KOrt/^*f	court of law
+KOrt/^f	court of law
+KPHApb/TKEr/^EUpb	commander in chief
+KPHApb/TKEr/^TPH	commander in chief
+KPHEr/^*f	commissioner of police
+KPHEr/^f	commissioner of police
+KRtd/^t	contracted the virus
+KRAbg/^*f	crack of dawn
+KRAbg/^f	crack of dawn
+KRAEUl/^O	cradle to grave
+KRAEUl/^TO	cradle to grave
+KRAOEU/^OEfr	cry over spilled milk
+KROs/^t	cross the line
+KUp/^SKP	cup and saucer
+KUt/^t	cut the cord
+KWEUbg/^SKP	quick and easy
+KWRE/^Or	yes or no
+KWREUpb/^SKP	yin and yang
+O*Et/^*f	oath of office
+O*Et/^f	oath of office
+Odz/^SKP	odds and ends
+OEfr/^t	over the top
+OEp/^SKP	open and shut
+OEpbd/^SKP	owned and operated
+OEUl/^SKP	oil and gas
+Of/^t	off the record
+OUt/^SKP	out and about
+PAbg/^*f	pack of lies
+PAbg/^f	pack of lies
+PAEs/^*f	peace of mind
+PAEs/^f	peace of mind
+PAEs/^SKP	peace and quiet
+PAEUfd/^t	paved the way
+PAEUfg/^t	paving the way
+PAEUp/^Or	paper or plastic
+PAEUpb/^EUpb	pain in the neck
+PAEUpb/^TPH	pain in the neck
+PAEUpbt/^t	paint the town
+PAf/^t	pave the way
+PAOEs/^*f	piece of cake
+PAOEs/^f	piece of cake
+PAOEU/^EUpb	pie in the sky
+PAOEU/^TPH	pie in the sky
+PArpb/^EUpb	partner in crime
+PArpb/^TPH	partner in crime
+PArt/^SKP	part and parcel
+PAs/^t	pass the buck
+PEpb/^SKP	pen and paper
+PEUbg/^SKP	pick and choose
+PEUf/^Or	positive or negative
+PEUfrpb/^*f	pinch of salt
+PEUfrpb/^f	pinch of salt
+PEUg/^EUpb	pig in a poke
+PEUg/^TPH	pig in a poke
+PEUl/Ar/^*f	pillar of strength
+PEUl/Ar/^f	pillar of strength
+PEUpbs/^SKP	pins and needles
+PHrbs/^EUpb	measures in place
+PHrbs/^TPH	measures in place
+PHAEl/^Or	male or female
+PHAEl/^SKP	male and female
+PHAErt/^*f	matter of fact
+PHAErt/^f	matter of fact
+PHAEt/^SKP	meat and potatoes
+PHAEUbg/^Or	make or break
+PHAEUl/^EUpb	mail in ballots
+PHAEUl/^TPH	mail in ballots
+PHAfrt/^*f	master of none
+PHAfrt/^f	master of none
+PHAOEUpbd/^t	mind the gap
+PHAOEUpbd/^OEfr	mind over matter
+PHApb/^*f	man of the hour
+PHApb/^f	man of the hour
+PHEpb/^SKP	men and women
+PHEpl/TKUpl/^*f	memorandum of understanding
+PHEpl/TKUpl/^f	memorandum of understanding
+PHEUs/^t	miss the boat
+PHO*d/^EUpb	method in the madness
+PHO*d/^TPH	method in the madness
+PHOEr/^EUpb	mother in law
+PHOEr/^TPH	mother in law
+PHOfrs/^SKP	movers and shakers
+PHOr/^Or	more or less
+PHRAEU/^t	play the field
+PHRAEUfs/^*f	places of worship
+PHRAEUfs/^f	places of worship
+PHREUbg/^SKP	public and private
+PHUfp/^t	much the same
+PHUpb/^Ob	money on the table
+PHUpb/^Opb	money on the table
+PO*pl/^SKP	pomp and circumstance
+POEUpbt/^*f	point of view
+POEUpbt/^f	point of view
+POp/^t	pop the question
+PRAOEUd/^SKP	pride and joy
+PRAOEUft/^SKP	private and public
+PREUpbs/^*f	prince of wales
+PREUpbs/^f	prince of wales
+PREUpl/^SKP	prim and proper
+PREUs/TPHErs/^*f	prisoners of war
+PREUs/TPHErs/^f	prisoners of war
+PROEUpl/^SKP	primary and secondary
+PROs/^SKP	pros and cons
+PROUbgt/^Or	product or service
+PROUbgz/^Or	products or services
+PUt/^EUpb	put in place
+PUt/^Or	put up or shut up
+PUt/^TPH	put in place
+PWfr/^Or	before or after
+PWls/^*f	billions of dollars
+PWls/^f	billions of dollars
+PWAbg/^SKP	back and forth
+PWAd/^TPr	bad for business
+PWAd/^TPOr	bad for business
+PWAEr/^EUpb	bear in mind
+PWAEr/^TPH	bear in mind
+PWAEt/^t	beat the odds
+PWAEUt/^SKP	bait and switch
+PWAfp/HROr/^*f	bachelor of science
+PWAfp/HROr/^f	bachelor of science
+PWAOEUt/^t	bite the bullet
+PWAOpl/^Or	boom or bust
+PWAOts/^Ob	boots on the ground
+PWAOts/^Opb	boots on the ground
+PWEf/^*f	benefit of the doubt
+PWEf/^f	benefit of the doubt
+PWEls/^SKP	bells and whistles
+PWEU/^SKP	by and large
+PWEUl/^*f	bill of rights
+PWEUl/^f	bill of rights
+PWEUrd/^EUpb	bird in the hand
+PWEUrd/^TPH	bird in the hand
+PWEUts/^SKP	bits and pieces
+PWHRAbg/^SKP	black and white
+PWO*Ed/^SKP	body and soul
+PWOE/^SKP	bow and arrow
+PWOErt/^Or	better or worse
+PWOrpb/^SKP	born and raised
+PWR*Et/^*f	breath of fresh air
+PWR*Et/^f	breath of fresh air
+PWRAEbg/^t	break the ice
+PWRAEd/^SKP	bread and butter
+PWREUbg/^SKP	brick and mortar
+PWREUbgs/^SKP	bricks and mortar
+PWREUpblg/^OEfr	bridge over troubled water
+PWROEr/^EUpb	brother in law
+PWROEr/^TPH	brother in law
+PWROErs/^SKP	brothers and sisters
+PWUbg/^t	buck the trend
+PWUpbld/^*f	bundle of joy
+PWUpbld/^f	bundle of joy
+R*Ufl/^t	roughly the same
+Rd/^SKP	ready and willing
+RAbg/^SKP	rack and ruin
+RAEd/^t	read the room
+RAEd/^Or	read or write
+RAEpb/^*f	reign of terror
+RAEpb/^f	reign of terror
+RAEU/^*f	ray of sunshine
+RAEU/^f	ray of sunshine
+RAEUpb/^Or	rain or shine
+RAEUpl/^t	remain the same
+RAEUz/^t	raise the bar
+RAgz/^O	rags to riches
+RAgz/^TO	rags to riches
+RAO*EUt/^*f	rite of passage
+RAO*EUt/^f	rite of passage
+RAOEfp/^TPr	reach for the stars
+RAOEfp/^TPOr	reach for the stars
+RAOEUt/^Or	right or wrong
+RAOEUz/^SKP	rise and shine
+RAOpl/^TPr	room for improvement
+RAOpl/^TPOr	room for improvement
+RAOUl/^*f	rule of thumb
+RAOUl/^f	rule of thumb
+RApbt/^SKP	rant and rave
+REfrb/^t	reserve the right
+REfrbs/^t	reserves the right
+REUfpl/^SKP	rhythm and blues
+RObg/^t	rock the boat
+RObg/^SKP	rock and roll
+ROl/^t	roll the dice
+RUpb/^TPr	run for it
+RUpb/^TPOr	run for it
+S*EUpbg/^Or	sink or swim
+SA*El/^*f	seal of approval
+SA*El/^f	seal of approval
+SAEUf/^SKP	safe and sound
+SAf/^t	save the day
+SAlt/^SKP	salt and pepper
+SAOEs/^SKP	cease and desist
+SAOEU/^*f	sigh of relief
+SAOEU/^f	sigh of relief
+SAOEUpbd/^SKP	signed and sealed
+SAOEz/^t	seize the day
+SAOrpb/^Or	sooner or later
+SEbgd/^Or	second or third
+SEbgd/^SKP	second and third
+SEbgt/REU/^*f	secretary of state
+SEbgt/REU/^f	secretary of state
+SEfrpb/^SKP	search and rescue
+SEpbs/^*f	sense of humor
+SEpbs/^f	sense of humor
+SEt/^t	set the stage
+SEUbg/^SKP	sick and tired
+SHAOt/^t	shoot the breeze
+SHObg/^SKP	shock and awe
+SHOE/^SKP	show and tell
+SHOEUd/^*f	shadow of a doubt
+SHOEUd/^f	shadow of a doubt
+SHOrt/pbs/^*f	shortness of breath
+SHOrt/pbs/^f	shortness of breath
+SHOrt/^SKP	short and sweet
+SHOt/^SKP	shot and killed
+SHREUp/^*f	slip of the tongue
+SHREUp/^f	slip of the tongue
+SHROE/^t	slow the spread
+SHROE/^SKP	slow and steady
+SHUrg/^SKP	sugar and spice
+SKAOUrts/^SKP	securities and exchange
+SKEUpb/^SKP	skin and bones
+SKWR*Upl/^t	jump the gun
+SO*EUr/^O	zero to hero
+SO*EUr/^TO	zero to hero
+SOpb/^EUpb	son in law
+SOpb/^TPH	son in law
+SOpbg/^*f	song of songs
+SOpbg/^f	song of songs
+SOpbg/^SKP	song and dance
+SOpl/^Or	some or all
+SOUp/^O	soup to nuts
+SOUp/^TO	soup to nuts
+SOUpbd/^t	sound the alarm
+SOUpbd/^SKP	sound and fury
+SPAOEd/^*f	speed of light
+SPAOEd/^f	speed of light
+SPEUbg/^SKP	spick and span
+SPEUl/^t	spill the beans
+SPHOEbg/^SKP	smoke and mirrors
+SPHRAOEU/^SKP	supply and demand
+SRAO*Ep/^TPr	recipe for disaster
+SRAO*Ep/^TPOr	recipe for disaster
+STr/^EUpb	sister in law
+STr/^TPH	sister in law
+STAEl/^t	steal the show
+STAEUt/^*f	state of mind
+STAEUt/^f	state of mind
+STApbd/^Or	stand or fall
+STArt/^O	start to finish
+STArt/^TO	start to finish
+STEpl/^O	stem to stern
+STEpl/^TO	stem to stern
+STEUbg/^EUpb	stick in the mud
+STEUbg/^TPH	stick in the mud
+STEUbgs/^SKP	sticks and stones
+STPHAOUts/^*f	institutes of health
+STPHAOUts/^f	institutes of health
+STPHEt/^*f	internet of things
+STPHEt/^f	internet of things
+STREfd/^t	stressed the importance
+STRObg/^*f	stroke of luck
+STRObg/^f	stroke of luck
+SUplz/^*f	sums of money
+SUplz/^f	sums of money
+SWAOEt/^SKP	sweet and sour
+T*Es/^t	test the waters
+TAEpb/^TPr	taken for granted
+TAEpb/^TPOr	taken for granted
+TAEUbg/^t	take the cake
+TAEUbg/^Or	take it or leave it
+TAO*t/^SKP	tooth and nail
+TAOEUpl/^SKP	time and again
+TAr/^SKP	tar and feather
+TEls/^t	tells the story
+TEpbz/^*f	tens of thousands
+TEpbz/^f	tens of thousands
+TErpls/^SKP	terms and conditions
+TEUp/^*f	tip of the iceberg
+TEUp/^f	tip of the iceberg
+TEUp/^t	tip the scales
+TEUt/^TPr	tit for tat
+TEUt/^TPOr	tit for tat
+TH/^Or	this or that
+TH/^SKP	this and that
+THApbgs/^TPr	thanks for nothing
+THApbgs/^TPOr	thanks for nothing
+THEUbg/^SKP	thick and thin
+THOrpb/^EUpb	thorn in the side
+THOrpb/^TPH	thorn in the side
+THRAOE/^Or	three or four
+THUpbd/^SKP	thunder and lightning
+TKAEU/^*f	day of days
+TKAEU/^f	day of days
+TKAEU/^SKP	day and night
+TKAOEUpld/^EUpb	diamond in the rough
+TKAOEUpld/^TPH	diamond in the rough
+TKAOU/^EUpb	due in part
+TKAOU/^TPH	due in part
+TKAUpb/^O	dawn to dusk
+TKAUpb/^TO	dawn to dusk
+TKEd/^Or	dead or alive
+TKEd/^SKP	dead and gone
+TKEpb/^*f	den of thieves
+TKEpb/^f	den of thieves
+TKO/^Or	do or die
+TKOUpb/^O	down to earth
+TKOUpb/^SKP	down and out
+TKOUpb/^TO	down to earth
+TKPWAOd/^Or	good or bad
+TKPWAOdz/^SKP	goods and services
+TKPWEUf/^Or	give or take
+TKPWEUf/^SKP	give and take
+TKPWOpb/^TPr	gone for good
+TKPWOpb/^TPOr	gone for good
+TKPWRAEUpb/^*f	grain of salt
+TKPWRAEUpb/^f	grain of salt
+TKPWRAfp/^t	grasp the nettle
+TKPWREUpb/^SKP	grin and bear it
+TKPWUfl/^*f	gulf of mexico
+TKPWUfl/^f	gulf of mexico
+TKRAg/^SKP	drag and drop
+TKREl/^Or	directly or indirectly
+TKUrg/^SKP	during and after
+TKWAOEUd/^SKP	divide and conquer
+TO*E/^t	toe the line
+TO/^SKP	to and fro
+TOEUl/^SKP	toil and trouble
+TOp/^O	top to bottom
+TOp/^TO	top to bottom
+TOUpbs/^SKP	towns and cities
+TPA*s/^SKP	fast and furious
+TPAEr/^EUpb	father in law
+TPAEr/^TPH	father in law
+TPAEUpl/^SKP	fame and fortune
+TPAEUr/^SKP	fair and square
+TPAEUs/^t	face the music
+TPAl/^EUpb	fall in love
+TPAl/^TPH	fall in love
+TPAO*Es/^Or	feast or famine
+TPAOEt/^Ob	feet on the ground
+TPAOEt/^Opb	feet on the ground
+TPAOEUr/^SKP	fire and brimstone
+TPAOEUt/^Or	fight or flight
+TPAOU/^SKP	few and far between
+TPAr/^SKP	far and wide
+TPArpl/^O	farm to table
+TPArpl/^TO	farm to table
+TPAUlg/^EUpb	falling in love
+TPAUlg/^TPH	falling in love
+TPAUls/^EUpb	falls in love
+TPAUls/^TPH	falls in love
+TPAUpbl/^EUpb	fallen in love
+TPAUpbl/^TPH	fallen in love
+TPAUrg/^SKP	forgive and forget
+TPEl/^EUpb	fell in love
+TPEl/^TPH	fell in love
+TPEpbd/^TPr	fend for yourself
+TPEpbd/^TPOr	fend for yourself
+TPEUf/^Or	five or six
+TPEUg/^*f	figure of speech
+TPEUg/^f	figure of speech
+TPEUrb/^Or	fish or cut bait
+TPEUrb/^SKP	fish and chips
+TPEUrs/^SKP	first and foremost
+TPEUt/^TPr	fit for a king
+TPEUt/^TPOr	fit for a king
+TPEUts/^SKP	fits and starts
+TPHdz/^SKP	inside and outside
+TPHpb/^t	under the weather
+TPH/^SKP	in and out
+TPHAEUpl/^SKP	name and shame
+TPHAO*Eld/^EUpb	needle in a haystack
+TPHAO*Eld/^SKP	needle and thread
+TPHAO*Eld/^TPH	needle in a haystack
+TPHAO*EUt/^EUpb	knight in shining armor
+TPHAO*EUt/^TPH	knight in shining armor
+TPHAOErl/^t	nearly the same
+TPHAOEUf/^SKP	knife and fork
+TPHAt/^SKP	national and international
+TPHEbg/^*f	neck of the woods
+TPHEbg/^f	neck of the woods
+TPHEgt/^O	next to nothing
+TPHEgt/^TO	next to nothing
+TPHEU/^SKP	any and all
+TPHEUbg/*l/^SKP	nickel and dime
+TPHEUbg/^*f	nick of time
+TPHEUbg/^f	nick of time
+TPHOE/^TPr	know for sure
+TPHOE/^TPOr	know for sure
+TPHOEs/^O	nose to tail
+TPHOEs/^TO	nose to tail
+TPHOU/^Or	now or never
+TPHOU/^SKP	now and then
+TPHRAOEU/^EUpb	fly in the ointment
+TPHRAOEU/^TPH	fly in the ointment
+TPHRAOr/^O	floor to ceiling
+TPHRAOr/^TO	floor to ceiling
+TPHRErb/^SKP	flesh and blood
+TPHREUbgt/^*f	conflict of interest
+TPHREUbgt/^f	conflict of interest
+TPHROEr/^SKP	flora and fauna
+TPHUl/^SKP	null and void
+TPHUts/^SKP	nuts and bolts
+TPO*Urt/^*f	fourth of july
+TPO*Urt/^f	fourth of july
+TPOr/^t	for the win
+TPOrs/^*f	force of habit
+TPOrs/^f	force of habit
+TPOUpb/TAEUpb/^*f	fountain of youth
+TPOUpb/TAEUpb/^f	fountain of youth
+TPOUr/^Or	four or five
+TPOUrpbd/^SKP	founder and ceo
+TPRAEUpl/^*f	frame of mind
+TPRAEUpl/^f	frame of mind
+TPRAl/^SKP	federal and state
+TPRAOEpld/^*f	freedom of speech
+TPRAOEpld/^f	freedom of speech
+TPRAOUts/^SKP	fruits and vegetables
+TPREpbd/^Or	friend or foe
+TPUpb/^SKP	fun and games
+TRAbg/^SKP	track and field
+TRAEUpb/^*f	train of thought
+TRAEUpb/^f	train of thought
+TRAO*Ut/^Or	truth or dare
+TRAOE/^*f	tree of life
+TRAOE/^f	tree of life
+TRAOEUd/^SKP	tried and true
+TRAOEUl/^SKP	trial and error
+TRAOEUls/^SKP	trials and tribulations
+TRAOU/^Or	true or false
+TREUbg/^Or	trick or treat
+TUfp/^SKP	touch and go
+TUrpb/^t	turn the tide
+TW*EUs/^*f	twist of fate
+TW*EUs/^f	twist of fate
+TW*EUs/^SKP	twist and shout
+TWO/^Or	two or three
+Up/^TPr	up for grabs
+Up/^TPOr	up for grabs
+Ups/^SKP	ups and downs
+WAbgs/^SKP	wax and wane
+WAEft/^*f	waste of time
+WAEft/^f	waste of time
+WAEr/^SKP	wear and tear
+WAEUs/^SKP	ways and means
+WAEUt/^SKP	wait and see
+WAEUt/^TPr	wait for it
+WAEUt/^TPOr	wait for it
+WAOEbgs/^Or	weeks or months
+WAOEUpb/^SKP	wine and dine
+WAOUpl/^O	womb to tomb
+WAOUpl/^TO	womb to tomb
+WAr/^SKP	war and peace
+WArb/^SKP	wash and wear
+WArts/^SKP	warts and all
+WAUbg/^*f	walk of life
+WAUbg/^f	walk of life
+WAUbgs/^*f	walks of life
+WAUbgs/^f	walks of life
+WEb/^*f	web of lies
+WEb/^f	web of lies
+WEUpb/^Or	win or lose
+WHAOEl/^SKP	wheel and deal
+WHR*/^t	weather the storm
+WOfl/^EUpb	wolf in sheep's clothing
+WOfl/^TPH	wolf in sheep's clothing
+WOrbg/^*f	work of art
+WOrbg/^f	work of art
+WOrd/^*f	word of mouth
+WOrd/^f	word of mouth
+WUpb/^Or	one or more
+WUpbs/^EUpb	once in a while
+WUpbs/^Or	once or twice
+WUpbs/^TPH	once in a while

@@ -52,3 +52,37 @@ json = "~/.config/plover/and-fold.json"
 name = "phrasing"
 priority = 10
 xfst = ["dictionaries/phrasing-tables.xfst", "dictionaries/phrasing.xfst"]
+
+# The retro family. `plover.cfg` has these four disabled, so they sit below
+# everything it enables and cannot shadow a working entry. They are here because
+# host contract items 5 and 6 are what they needed, and that is what M4 built.
+#
+# repeat-idioms above repeat-word, as `repeat-word.py` asks: an idiom overrides
+# the trigrams whose third word is not the first (`^SKP` after IN is "in and out",
+# not "in and in").
+
+[[dict]]
+name = "retro-words"
+priority = 9
+# The words this dictionary is shown, which is `retro-words.py`'s WINDOW.
+words = 16
+xfst = [
+    "dictionaries/retro-words-chars.xfst",
+    "dictionaries/retro-words.xfst",
+    "dictionaries/retro-words-menus.xfst",
+]
+
+[[dict]]
+name = "repeat-idioms"
+priority = 8
+json = "~/.config/plover/repeat-idioms.json"
+
+[[dict]]
+name = "repeat-word"
+priority = 7
+plain = "dictionaries/repeat-word.dict"
+
+[[dict]]
+name = "semantic-retro"
+priority = 6
+json = "~/.config/plover/semantic-retro.json"

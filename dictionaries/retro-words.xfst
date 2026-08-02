@@ -1,0 +1,153 @@
+! Retro word operators, ported from retro-words.py.
+!
+! Recase, join, split and wrap text that is already on screen, by word rather
+! than by stroke. The text arrives on the tape after the keys, one symbol per
+! character, and this dictionary rewrites it. So every operation is a rule here
+! and none of them is host code: what a host does is show the last words and put
+! back what comes out. See docs/retro.md.
+!
+! ---- layout (stem `^A`: an empty left hand, so the namespace is free)
+!
+!   ^  A    E U      f r p b      l g t s
+!   stem   verb      case dial    menu
+!
+!   verb        -E join, -U split, -EU wrap, absent: case only
+!   case dial   -F whole word, -R the literal last word, -P up / -B down
+!   menu        a 4-bit index into the separator or bracket menu
+!
+! The keys emit nothing at all. They only choose which rule reads the window, so
+! there is no output before the input has decided it, and the dispatch table costs
+! no live paths beyond the choice itself.
+!
+! ---- what a rule can see
+!
+! A character reaches the tape as its class, unless this dictionary names it, and
+! the ones it names are the menus' punctuation: splitting on `-` means finding a
+! `-`. A letter is `Lo` or `Up` and no rule ever learns which letter it was, so
+! casing stays with the host and `RÉSUMÉ` needs no case table anywhere.
+
+define Kill(X)  [ X .x. 0 ] ;
+define Say(X)   [ 0 .x. X ] ;
+
+! ---- the window
+!
+! `SigChar` is generated beside the menus, so a new separator cannot forget to
+! make its character visible.
+define Char     Glyph(SigChar) ;
+define NotSp    [ Char - Sp ] ;
+define Word     [ NotSp+ ] ;
+define Gap      [ Sp+ ] ;
+define Span     [ Word [ Gap Word ]* ] ;
+! Everything before the word an operation acts on. A language stands for the
+! identity relation, so nothing here has to say "copy".
+define Head     [ Word Gap ]* ;
+
+! Every operation is total: where the rule does not apply, the window comes back
+! unchanged. That is the Python's ops returning `None` and their meta writing
+! nothing, said in one place instead of six.
+define Or(E)    PU(E, Span) ;
+! Two operations in a row, each total on its own. Both have to be, or a composed
+! stroke would do nothing whenever either half had nothing to do: `^AEP` on a
+! single word is a capital and no join.
+define Then(A, B) [ Or(A) .o. Or(B) ] ;
+define Total(E) [ Kill(WinOpen) Or(E) Kill(WinEnd) ] ;
+
+! `Find` walks back to the newest word the transform would change, which is what
+! makes a stroke repeatable: strike it again and the next word back changes. The
+! words after the target have to be ones the transform would *not* change, and
+! that set is `Word - T.u`. The transform's own domain answers "is this word
+! already in that form", so nothing states it twice.
+define Find(T)  [ Head T [ Gap [ Word - T.u ] ]* ] ;
+define Last(T)  [ Head T ] ;
+
+! ---- the case dial
+!
+! Reaching a bare `Lo` is what says "not already uppercase", because case is a
+! class and not a mark. So no rule tests the current case; the pattern is the
+! test.
+define Cased      [ Lo | Up ] ;
+define Bare       [ NotSp - Cased ] ;
+define UpFirst    [ Bare* [ Lo .x. Up ] NotSp* ] ;
+define DownFirst  [ Bare* [ Up .x. Lo ] NotSp* ] ;
+! Every letter at once. The composition's left side is the condition that
+! something changes, and its right side is the map.
+define MapUp      [ [ Bare | [ Lo .x. Up ] | Up ]* ] ;
+define MapDown    [ [ Bare | [ Up .x. Lo ] | Lo ]* ] ;
+define UpAll      [ [ NotSp* Lo NotSp* ] .o. MapUp ] ;
+define DownAll    [ [ NotSp* Up NotSp* ] .o. MapDown ] ;
+
+! ---- gaps
+!
+! Every character the host showed has to be accounted for, so closing a gap eats
+! its characters one by one and writes the separator instead. A rule that simply
+! deleted them would leave the substitution one character out of step for the
+! rest of the window, which is exactly what it did before `Drop` existed.
+define Eat      [ Sp .x. Drop ] ;
+define Regap(S) [ Eat+ Say(S) ] ;
+
+! ---- join
+!
+! `Head Word` before the gap forces the *last* gap, because only one word may
+! follow it.
+define Join(S)  [ Head Word Regap(S) Word ] ;
+
+! ---- split
+!
+! A run of separators becomes one space, and a leading or trailing run goes, which
+! is the Python filtering out its empty parts. `Free` is "a word with no separator
+! in it", so the pieces cannot swallow one.
+define Free(G)  [ NotSp+ - [ NotSp* G NotSp* ] ] ;
+define Trim(G)  [ Kill([ G+ ]) | 0 ] ;
+define Split(G) [ Head Trim(G) Free(G) [ [ [ G+ ] .x. " " ] Free(G) ]+ Trim(G) ] ;
+
+! Splitting on word shape, which is menu index 0. Two rules, and the second is
+! the one that keeps an acronym whole: a run of capitals gives back its last one
+! when a lowercase letter follows, so `HTTPServer` is `HTTP` and `Server`.
+!
+! This is where the port diverges from the Python on purpose. The Python splits on
+! `[^0-9A-Za-z]+`, so it treats `é` as punctuation and breaks a word there. A
+! class knows better, and `Cs` and `Lo` are letters here.
+define Alnum    [ Cased | Cs | Dg ] ;
+define Mark     [ NotSp - Alnum ] ;
+define Shape    [ [..] -> " " || [ Lo | Dg | Cs ] _ Up , Up _ Up Lo ] ;
+! A mark that is one of this dictionary's own characters takes no substitution
+! slot, so it can go; a mark that arrived as a class has to be eaten.
+define Bite     [ [ Ot .x. Drop ] | Kill(SigChar) ] ;
+define Shed     [ [ Bite+ ] | 0 ] ;
+define Marks    [ [ Alnum+ [ [ Bite+ Say(" ") ] Alnum+ ]* ] ] ;
+! A word that turns out to have no boundary in it must not change at all, or
+! shedding a trailing full stop would look like a split. Nothing in the rule can
+! say that, because the two boundary mechanisms are unrelated, so the finished
+! output is the test: a split wrote a space.
+define Written  [ AnyClass | SigChar | Drop | " " ] ;
+define Cut      [ Written* " " Written* ] ;
+define SplitShape [ [ Head Shed [ Marks .o. Shape ] Shed ] .o. Cut ] ;
+
+! ---- wrap
+!
+! A pair around the newest word that has a letter in it. `Find` reads here too: a
+! word with no letter is one this transform would not change.
+define Round(O, C)  [ Say(O) NotSp+ Say(C) ] ;
+define Letters      [ NotSp* Cased NotSp* ] ;
+define Wrap(O, C)   [ Find([ Letters .o. Round(O, C) ]) ] ;
+
+! Widening, which is the interesting half. The newest word already ends with the
+! closing bracket, so this stroke moves the opening one a word to the left: the
+! old pair is deleted where it stands and a new one is written around the wider
+! span. Strike it repeatedly and a bracket walks to where its left edge belongs.
+define NoOpen(G)    [ Word - [ NotSp* G NotSp* ] ] ;
+define Opened(G)    [ NotSp* Kill(G) NotSp* ] ;
+define Closed(G)    [ NotSp* Kill(G) ] ;
+! The inner span, brackets removed and its gaps normalised to one space, as the
+! Python's `" ".join` does.
+define Inner(Og, Cg)
+    [ [ NotSp* Kill(Og) NotSp* Kill(Cg) ]
+    | [ Opened(Og) [ Regap(" ") NoOpen(Og) ]* Regap(" ") Closed(Cg) ] ] ;
+define Widen(Og, Ope, Cg, Clo)
+    [ Head Say(Ope) Word Regap(" ") Inner(Og, Cg) Say(Clo) ] ;
+! Already wrapped from the start of the window: there is nothing left to widen, so
+! the stroke does nothing rather than wrapping the wrap.
+define Whole(Og, Cg)
+    [ [ NotSp* Og NotSp* ] [ Gap NoOpen(Og) ]* [ Gap [ NotSp* Cg ] | 0 ] ] ;
+define WrapFind(Og, Ope, Cg, Clo)
+    PU(Widen(Og, Ope, Cg, Clo), PU(Whole(Og, Cg), Wrap(Ope, Clo))) ;

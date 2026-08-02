@@ -1,0 +1,15 @@
+! Host contract items 5 and 6, against tests/dicts/probe.stfst.
+! Nothing in recipe.toml needs either yet, so this is where they are checked.
+! First the context slot: the same key, read under a pending capital and without.
+T
+KPA
+T
+! Then the Mealy step. `+T` writes a phrase and remembers it; `*` reads that back,
+! writes the other one, and replaces the unit before it.
++T
+*
+*
+! Undo is a pop of the state stack, so the phrase before comes back, and so does
+! the state that wrote it: the next `*` flips from there and not from the start.
+!undo
+*

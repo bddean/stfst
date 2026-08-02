@@ -6,7 +6,11 @@
 //! the same tag list `stfst_core::record` parses, so the acceptor and the parser
 //! cannot drift.
 
-use stfst_core::record::{all_tags, copy_tag, repeat_tag, FLAG_TAGS, MAX_COUNT, MOD_TAGS};
+use stfst_core::context::{self, Slot};
+use stfst_core::window::{self, Class};
+use stfst_core::record::{
+    all_tags, copy_tag, repeat_tag, replace_tag, FLAG_TAGS, MAX_COUNT, MOD_TAGS,
+};
 use stfst_core::System;
 
 /// xfst needs `"` around anything it would otherwise read as an operator, and
@@ -39,7 +43,7 @@ pub fn generate(system: &System) -> String {
         "define Stroke [ [ {} ] - 0 ] ;\n",
         optional.join(" ")
     ));
-    out.push_str("define Outline [ Stroke [ Sep Stroke ]* ] ;\n\n");
+    out.push_str("define Keys [ Stroke [ Sep Stroke ]* ] ;\n\n");
 
     out.push_str(
         "! ---- priority union, spelled out\n\
@@ -49,10 +53,67 @@ pub fn generate(system: &System) -> String {
     );
     out.push_str("define PU(A, B) [ A | [ [ B.u - A.u ] .o. B ] ] ;\n\n");
 
+    out.push_str(
+        "! ---- context: what the host says before the keys\n\
+         ! One value per slot at most, in table order, so a host cannot spell the\n\
+         ! same context two ways. A dictionary reads the slots it wants and the\n\
+         ! compiler writes what it read into the manifest.\n",
+    );
+    for slot in context::SLOTS {
+        let values: Vec<String> = slot.symbols().map(|s| format!("\"{s}\"")).collect();
+        out.push_str(&format!(
+            "define {} [ {} ] ;\n",
+            ctx_name(slot),
+            values.join(" | ")
+        ));
+    }
+    let optional_slots: Vec<String> = context::SLOTS
+        .iter()
+        .map(|s| format!("({})", ctx_name(s)))
+        .collect();
+    out.push_str(&format!(
+        "define Ctx [ {} ] ;\n\n",
+        optional_slots.join(" ")
+    ));
+
+    out.push_str(
+        "! ---- the window: text the host has already written\n\
+         ! One symbol per character, after the keys. A character is its class unless\n\
+         ! the grammar names it, in which case the host sends `[=x]` and the rule can\n\
+         ! read it. `Glyph` takes that named set as a parameter, because only the\n\
+         ! dictionary knows what it named.\n",
+    );
+    for class in Class::ALL {
+        out.push_str(&format!(
+            "define {} \"{}\" ;\n",
+            class_name(*class),
+            class.tag()
+        ));
+    }
+    let classes: Vec<&str> = Class::ALL.iter().map(|c| class_name(*c)).collect();
+    out.push_str(&format!("define AnyClass [ {} ] ;\n", classes.join(" | ")));
+    out.push_str("define Glyph(Sig) [ AnyClass | Sig ] ;\n");
+    out.push_str(&format!("define Drop \"{}\" ;\n", window::DROP));
+    out.push_str(&format!(
+        "define WinOpen \"{}\" ;\ndefine WinEnd \"{}\" ;\n",
+        window::WINDOW_OPEN,
+        window::WINDOW_CLOSE
+    ));
+    // Permissive on purpose. What the window holds is the dictionary's business,
+    // and this only has to say where it starts and stops for the outline check.
+    out.push_str("define Win [ WinOpen [ \\WinEnd ]* WinEnd ] ;\n\n");
+
     out.push_str("! ---- lower tape: the record language\n");
     let tags: Vec<String> = all_tags().iter().map(|t| format!("\"{t}\"")).collect();
     out.push_str(&format!("define Tag [ {} ] ;\n", tags.join(" | ")));
-    out.push_str("define Text \\Tag ;\n");
+    // Text is what neither tape reads as structure. Context symbols count, or a
+    // record body could hold one and a state block could swallow the prefix.
+    let ctx_any: Vec<String> = context::SLOTS.iter().map(|s| ctx_name(s)).collect();
+    out.push_str(&format!(
+        "define Special [ Tag | {} ] ;\n",
+        ctx_any.join(" | ")
+    ));
+    out.push_str("define Text \\Special ;\n");
     // A keysym is open-ended text; the modifiers held with it are five closed
     // values, so they are tags inside the item and in canonical order.
     let mods: Vec<String> = MOD_TAGS.iter().map(|t| format!("(\"{t}\")")).collect();
@@ -64,16 +125,40 @@ pub fn generate(system: &System) -> String {
         .map(|n| format!("\"{}\"", copy_tag(n)))
         .collect();
     out.push_str(&format!("define CopyItem [ {} ] ;\n", copies.join(" | ")));
-    out.push_str("define Item [ Text | KeyItem | CmdItem | MetaItem | CopyItem ] ;\n\n");
+    out.push_str(
+        "define Item [ Text | AnyClass | Drop | KeyItem | CmdItem | MetaItem | CopyItem ] ;\n\n",
+    );
 
     let repeats: Vec<String> = (2..=MAX_COUNT)
         .map(|n| format!("\"{}\"", repeat_tag(n)))
         .collect();
     out.push_str(&format!("define Rep [ {} ] ;\n", repeats.join(" | ")));
+    let replaces: Vec<String> = (1..=MAX_COUNT)
+        .map(|n| format!("\"{}\"", replace_tag(n)))
+        .collect();
+    out.push_str(&format!("define Replace [ {} ] ;\n", replaces.join(" | ")));
     out.push_str(
         "define Record [ Item* (\"[CANCEL_SPACE]\" | \"[RETRO_SPACE]\") (\"[ATTACH_L]\") \
          (\"[ATTACH_R]\") (\"[GLUE]\") (\"[CAP_NEXT]\" | \"[LOWER_NEXT]\") (\"[CARRY_CAP]\") \
-         (Rep) ] ;\n\n",
+         (Rep) (Replace) ] ;\n\n",
+    );
+
+    out.push_str(
+        "! ---- state: a string the dictionary wrote and the host handed back\n\
+         ! Opaque to the host, so it delimits rather than enumerating, and it sits\n\
+         ! last on each tape: the whole stroke decides it. `Fresh` is the same\n\
+         ! relation with no state carried in and none written out, which is the\n\
+         ! question a reverse lookup asks.\n",
+    );
+    out.push_str(&format!(
+        "define StateBlock [ \"{}\" Text* \"{}\" ] ;\n",
+        context::STATE_OPEN, context::STATE_CLOSE
+    ));
+    out.push_str("define Prefix [ (StateBlock) Ctx ] ;\n");
+    out.push_str("define Outline [ Prefix Keys (Win) ] ;\n");
+    out.push_str("define Emission [ Record (StateBlock) ] ;\n");
+    out.push_str(
+        "define Fresh(G) [ [ [ 0 .x. Ctx ] Keys ] .o. G .o. [ Record ([ StateBlock .x. 0 ]) ] ] ;\n\n",
     );
 
     out.push_str("! ---- canonical order\n");
@@ -96,6 +181,10 @@ pub fn generate(system: &System) -> String {
         out.push_str(&hoist(&name, &tag));
         hoists.push(name);
     }
+    // No hoist for Replace. Every hoist is a composition every grammar pays for,
+    // and a dictionary that carries state emits it after the whole record
+    // already; the acceptor check is what proves that, so a hoist would only
+    // hide a misplacement.
     // Each hoist appends after what the previous one appended, so composing in
     // canonical order leaves the flags in it.
     out.push_str(&format!(
@@ -104,6 +193,24 @@ pub fn generate(system: &System) -> String {
     ));
 
     out
+}
+
+/// The acceptor for one character class. `Lo` rather than `Letter`, so a rule
+/// reads at a glance and the identifiers stay short where they are used most.
+fn class_name(class: Class) -> &'static str {
+    match class {
+        Class::Letter => "Lo",
+        Class::Upper => "Up",
+        Class::Caseless => "Cs",
+        Class::Digit => "Dg",
+        Class::Other => "Ot",
+        Class::Space => "Sp",
+    }
+}
+
+/// The acceptor for one context slot's values.
+fn ctx_name(slot: &Slot) -> String {
+    format!("Ctx{}", slot.name)
 }
 
 /// `[CANCEL_SPACE]` -> `CancelSpace`. xfst identifiers are alphanumeric, so an

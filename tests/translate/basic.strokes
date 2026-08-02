@@ -20,3 +20,14 @@ KAT
 ! the @ namespace: a letter as text, then the same key with ctrl held
 @KR
 @KR-F
+! the retro family, which reads the text rather than the strokes
+! repeat-word: a connective, then the word again, spliced by the host
+PHOR
+^SKP
+! retro-words: capitalise, then close the gap, over words from three dictionaries
+^AP
+^AEL
+! an idiom overrides the plain repeat, by being a longer match
+EL
+TPAPBT
+^TPH

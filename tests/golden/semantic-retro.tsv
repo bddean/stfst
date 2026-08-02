@@ -1,0 +1,22 @@
+! 19 cases from /Users/ben/.config/plover/semantic-retro.json. A regression file for the import pipeline,
+! not an oracle: the expectations come from our own translation
+! grammar, which is unit tested separately.
+#+	[META]retro[ARG]question[END]
++	[META]retro[ARG]clitic[END]
++*	[META]retro[ARG]negate[END]
++d	[META]retro[ARG]past[END]
++g	[META]retro[ARG]prog[END]
++s	[META]retro[ARG]plural[END]
++z	[META]retro[ARG]plural[END]
++A	[META]retro[ARG]modal:can[END]
++Ad	[META]retro[ARG]modal:could[END]
++AO	[META]retro[ARG]modal:will[END]
++AOd	[META]retro[ARG]modal:would[END]
++E	[META]retro[ARG]prog[END]
++EU	[META]retro[ARG]perfprog[END]
++O	[META]retro[ARG]modal:shall[END]
++Od	[META]retro[ARG]modal:should[END]
++U	[META]retro[ARG]perf[END]
++Ud	[META]retro[ARG]perf[END][META]retro[ARG]past[END]
+@+	[META]retro[ARG]emph[END]
+^+	[META]retro[ARG]full[END]

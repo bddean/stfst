@@ -1,0 +1,7 @@
+# Fixtures. Compiled to `build/test-dicts`, and never part of a writer's stack.
+system = "../systems/stenotype-extended.toml"
+
+[[dict]]
+name = "probe"
+priority = 1
+xfst = ["dicts/probe.xfst"]

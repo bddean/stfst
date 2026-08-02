@@ -8,20 +8,31 @@
 ! 7 typey-type priority 30
 ! 8 and-fold priority 20
 ! 9 phrasing priority 10
-TP-PL	1	typey-type	.
-TAP	1	typey-type	tap
-#TRU	1	emily-symbols	[KEY]Tab[END]
-1	1	typey-type	1[GLUE]
-5	2	typey-type	15
-*T	3	typey-type	15th
-!undo	*T
-*T	3	typey-type	15th
-PWORD	1	typey-type	bored
-^	1	shrimple	Shrimple
-TAP	2	shrimple	tap
-KAT	3	shrimple	tapkat
-+T	1	phrasing	it's
-^+T*	1	phrasing	it is not
-@KR	1	emily-modifiers	c[ATTACH_L][ATTACH_R]
-@KR-F	1	emily-modifiers	[KEY]c[CTRL][END]
-! 14 strokes, 3 candidates at the widest
+! 10 retro-words priority 9
+! 11 repeat-idioms priority 8
+! 12 repeat-word priority 7
+! 13 semantic-retro priority 6
+TP-PL	1	typey-type	.	"."
+TAP	1	typey-type	tap	". tap"
+#TRU	1	emily-symbols	[KEY]Tab[END]	". tap"
+1	1	typey-type	1[GLUE]	". tap 1"
+5	2	typey-type	15	". tap 15"
+*T	3	typey-type	15th	". tap 15th"
+!undo	*T	". tap"
+*T	3	typey-type	15th	". tap 15th"
+PWORD	1	typey-type	bored	". tap 15th bored"
+^	1	shrimple	Shrimple	". tap 15th bored Shrimple"
+TAP	2	shrimple	tap	". tap 15th bored tap"
+KAT	3	shrimple	tapkat	". tap 15th bored tapkat"
++T	1	phrasing	it's	". tap 15th bored tapkat it's"
+^+T*	1	phrasing	it is not	". tap 15th bored tapkat it's it is not"
+@KR	1	emily-modifiers	c[ATTACH_L][ATTACH_R]	". tap 15th bored tapkat it's it is notc"
+@KR-F	1	emily-modifiers	[KEY]c[CTRL][END]	". tap 15th bored tapkat it's it is notc"
+PHOR	1	typey-type	more	". tap 15th bored tapkat it's it is notc more"
+^SKP	1	repeat-word	and [COPY1]	". tap 15th bored tapkat it's it is notc more and more"
+^AP	1	retro-words	.[SP][LETTER][LETTER][LETTER][SP][DIGIT][DIGIT][LETTER][LETTER][SP][LETTER][LETTER][LETTER][LETTER][LETTER][SP][LETTER][LETTER][LETTER][LETTER][LETTER][LETTER][SP][LETTER][LETTER]'[LETTER][SP][LETTER][LETTER][SP][LETTER][LETTER][SP][LETTER][LETTER][LETTER][LETTER][SP][LETTER][LETTER][LETTER][LETTER][SP][LETTER][LETTER][LETTER][SP][UPPER][LETTER][LETTER][LETTER]	". tap 15th bored tapkat it's it is notc more and More"
+^AEL	1	retro-words	.[SP][LETTER][LETTER][LETTER][SP][DIGIT][DIGIT][LETTER][LETTER][SP][LETTER][LETTER][LETTER][LETTER][LETTER][SP][LETTER][LETTER][LETTER][LETTER][LETTER][LETTER][SP][LETTER][LETTER]'[LETTER][SP][LETTER][LETTER][SP][LETTER][LETTER][SP][LETTER][LETTER][LETTER][LETTER][SP][LETTER][LETTER][LETTER][LETTER][SP][LETTER][LETTER][LETTER][DROP]-[UPPER][LETTER][LETTER][LETTER]	". tap 15th bored tapkat it's it is notc more and-More"
+EL	1	typey-type	El	". tap 15th bored tapkat it's it is notc more and-More El"
+TPAPBT	2	typey-type	elephant	". tap 15th bored tapkat it's it is notc more and-More elephant"
+^TPH	3	repeat-idioms	elephant in the room	". tap 15th bored tapkat it's it is notc more and-More elephant in the room"
+! 21 strokes, 6 candidates at the widest

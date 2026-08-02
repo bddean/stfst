@@ -6,6 +6,7 @@ license.workspace = true
 
 [dependencies]
 stfst-core.workspace = true
+stfst-ol.workspace = true
 anyhow.workspace = true
 indexmap.workspace = true
 serde.workspace = true

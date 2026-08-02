@@ -19,6 +19,9 @@
 use std::fmt;
 use std::num::NonZeroU8;
 
+use crate::context::{State, STATE_CLOSE, STATE_OPEN};
+use crate::window::{sig_char, Class, DROP};
+
 /// Flag tags, in canonical tape order. The prelude generator reads this, so the
 /// acceptor it emits and the parser here cannot drift apart.
 pub const FLAG_TAGS: &[&str] = &[
@@ -32,8 +35,10 @@ pub const FLAG_TAGS: &[&str] = &[
     "[CARRY_CAP]",
 ];
 
-/// Delimiters for the open-ended tags, whose values the host parses.
-pub const OPEN_TAGS: &[&str] = &["[KEY]", "[CMD]", "[META]", "[ARG]", "[END]"];
+/// Delimiters for the open-ended tags, whose values the host parses. `[STATE]`
+/// closes with the same `[END]`, and what it delimits is not part of the record;
+/// see `Emission`.
+pub const OPEN_TAGS: &[&str] = &["[KEY]", "[CMD]", "[META]", "[ARG]", "[STATE]", "[END]"];
 
 /// Modifier tags, in canonical order, valid only inside a `[KEY]` item.
 ///
@@ -57,6 +62,15 @@ pub fn repeat_tag(n: u8) -> String {
 
 pub fn copy_tag(n: u8) -> String {
     format!("[COPY{n}]")
+}
+
+/// `[REPLACE1]`: this record supersedes the previous translation unit rather
+/// than following it, which is how a retro-modifier stroke rewrites what its
+/// base stroke wrote. A multi-stroke entry needs no such tag, because its length
+/// already says how much it replaces; a one-stroke fold over a carried state has
+/// no length to say it with.
+pub fn replace_tag(n: u8) -> String {
+    format!("[REPLACE{n}]")
 }
 
 pub fn is_tag(symbol: &str) -> bool {
@@ -93,6 +107,9 @@ pub struct Flags {
     /// unbounded string, and unrolling it per glyph is the enumeration the
     /// format exists to avoid.
     pub repeat: NonZeroU8,
+    /// `[REPLACE1]`: how many translation units this one supersedes. `None`
+    /// appends, which is what every dictionary without a carried state does.
+    pub replace: Option<NonZeroU8>,
 }
 
 impl Default for Flags {
@@ -105,6 +122,7 @@ impl Default for Flags {
             carry_cap: false,
             space: None,
             repeat: NonZeroU8::new(1).unwrap(),
+            replace: None,
         }
     }
 }
@@ -168,6 +186,13 @@ pub enum Item {
     Meta { name: String, arg: String },
     /// `[COPY1]`: splice in the host's nth bound word without inspecting it.
     Copy(u8),
+    /// `[DROP]`: the next character of the window, not written.
+    Drop,
+    /// `[LETTER]`: the next character of the window, in this class. What a rule
+    /// writes when it is copying text it was given rather than text of its own,
+    /// and where it changes the class, the host recases the character. See
+    /// `window`.
+    Glyph(Class),
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
@@ -192,8 +217,10 @@ pub enum RecordError {
     UnknownTag(String),
     #[error("{0} needs [ARG] before [END]")]
     MissingArg(String),
-    #[error("[REP0] is not a repetition")]
-    ZeroRepeat,
+    #[error("{0} counts nothing")]
+    ZeroCount(String),
+    #[error("unterminated [STATE]")]
+    UnterminatedState,
 }
 
 impl Record {
@@ -257,12 +284,20 @@ impl Record {
                         Some(_) => return Err(RecordError::ConflictingSpace),
                     }
                 }
+                _ if counted_tag(s, "REPLACE").is_some() => {
+                    if flags.replace.is_some() {
+                        return Err(RecordError::RepeatedTag(s.to_string()));
+                    }
+                    let n = counted_tag(s, "REPLACE").unwrap();
+                    flags.replace = Some(NonZeroU8::new(n).ok_or(RecordError::ZeroCount(s.into()))?);
+                }
                 _ if counted_tag(s, "REP").is_some() => {
                     if flags.repeat.get() != 1 {
                         return Err(RecordError::RepeatedTag(s.to_string()));
                     }
                     let n = counted_tag(s, "REP").unwrap();
-                    flags.repeat = NonZeroU8::new(n).ok_or(RecordError::ZeroRepeat)?;
+                    flags.repeat =
+                        NonZeroU8::new(n).ok_or(RecordError::ZeroCount(s.to_string()))?;
                 }
                 _ => return Err(RecordError::BodyAfterFlags(s.to_string())),
             }
@@ -280,6 +315,20 @@ impl Record {
                     let (name, mods, next) = take_key(symbols, i + 1)?;
                     body.push(Item::Key { name, mods });
                     i = next;
+                }
+                DROP => {
+                    body.push(Item::Drop);
+                    i += 1;
+                }
+                _ if Class::from_tag(s).is_some() => {
+                    body.push(Item::Glyph(Class::from_tag(s).unwrap()));
+                    i += 1;
+                }
+                _ if sig_char(s).is_some() => {
+                    // A character the grammar named reaches the output as itself,
+                    // so it is text and takes no substitution slot.
+                    body.push(Item::Text(sig_char(s).unwrap().to_string()));
+                    i += 1;
                 }
                 _ if counted_tag(s, "COPY").is_some() => {
                     body.push(Item::Copy(counted_tag(s, "COPY").unwrap()));
@@ -323,6 +372,8 @@ impl Record {
                     out.push("[END]".into());
                 }
                 Item::Copy(n) => out.push(copy_tag(*n)),
+                Item::Glyph(class) => out.push(class.tag().to_string()),
+                Item::Drop => out.push(DROP.to_string()),
                 Item::Cmd { name, arg } | Item::Meta { name, arg } => {
                     out.push(
                         if matches!(item, Item::Cmd { .. }) {
@@ -366,6 +417,9 @@ impl Record {
         if f.repeat.get() != 1 {
             out.push(repeat_tag(f.repeat.get()));
         }
+        if let Some(n) = f.replace {
+            out.push(replace_tag(n.get()));
+        }
         out
     }
 
@@ -379,9 +433,72 @@ impl Record {
     }
 }
 
+/// One whole output tape: the record, and the state a Mealy dictionary carries
+/// forward to its next step.
+///
+/// The state is not output, so it is not part of the record: nothing that
+/// formats text ever sees it, and the host stores it without reading it. It sits
+/// last on the tape for the same reason the flags do. The whole stroke decides
+/// it, so a tape that led with it could not be written until the stroke had been
+/// read, and every path would carry a guess.
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
+pub struct Emission {
+    pub record: Record,
+    pub state: Option<State>,
+}
+
+impl Emission {
+    pub fn parse_symbols(symbols: &[&str]) -> Result<Emission, RecordError> {
+        let (head, state) = split_state(symbols)?;
+        Ok(Emission {
+            record: Record::parse_symbols(head)?,
+            state,
+        })
+    }
+
+    pub fn parse_display(s: &str) -> Result<Emission, RecordError> {
+        let symbols = tokenise_display(s);
+        let refs: Vec<&str> = symbols.iter().map(|s| s.as_str()).collect();
+        Emission::parse_symbols(&refs)
+    }
+
+    pub fn to_symbols(&self) -> Vec<String> {
+        let mut out = self.record.to_symbols();
+        if let Some(state) = &self.state {
+            out.extend(state.to_symbols());
+        }
+        out
+    }
+}
+
+impl fmt::Display for Emission {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        for s in self.to_symbols() {
+            f.write_str(&s)?;
+        }
+        Ok(())
+    }
+}
+
+/// Split a trailing state block off a tape. `[STATE]` cannot appear inside an
+/// item, so the last one opens the block and the tape has to end with its
+/// `[END]`.
+fn split_state<'a>(symbols: &'a [&'a str]) -> Result<(&'a [&'a str], Option<State>), RecordError> {
+    let Some(at) = symbols.iter().rposition(|s| *s == STATE_OPEN) else {
+        return Ok((symbols, None));
+    };
+    if symbols.last() != Some(&STATE_CLOSE) {
+        return Err(RecordError::UnterminatedState);
+    }
+    let content: String = symbols[at + 1..symbols.len() - 1].concat();
+    Ok((&symbols[..at], Some(State(content))))
+}
+
 /// A closed tag, which is to say one that belongs after the body.
 fn is_flag(symbol: &str) -> bool {
-    FLAG_TAGS.contains(&symbol) || counted_tag(symbol, "REP").is_some()
+    FLAG_TAGS.contains(&symbol)
+        || counted_tag(symbol, "REP").is_some()
+        || counted_tag(symbol, "REPLACE").is_some()
 }
 
 /// `[REP3]` -> `Some(3)` when `prefix` is `"REP"`.
@@ -406,6 +523,13 @@ pub fn all_tags() -> Vec<String> {
     for n in 1..=MAX_COUNT {
         out.push(copy_tag(n));
     }
+    for n in 1..=MAX_COUNT {
+        out.push(replace_tag(n));
+    }
+    out.extend(Class::ALL.iter().map(|c| c.tag().to_string()));
+    out.push(DROP.to_string());
+    out.push(crate::window::WINDOW_OPEN.to_string());
+    out.push(crate::window::WINDOW_CLOSE.to_string());
     out
 }
 
@@ -594,6 +718,24 @@ mod tests {
         assert_eq!(
             Record::parse_symbols(&syms(&["[CMD]", "x", "[END]"])),
             Err(RecordError::MissingArg("[CMD]".into()))
+        );
+    }
+
+    #[test]
+    fn a_state_block_is_not_part_of_the_record() {
+        let e = Emission::parse_display("it isn't[REPLACE1][STATE]it be neg[END]").unwrap();
+        assert_eq!(e.record.body, vec![Item::Text("it isn't".into())]);
+        assert_eq!(e.record.flags.replace.unwrap().get(), 1);
+        assert_eq!(e.state, Some(State("it be neg".into())));
+        assert_eq!(e.to_string(), "it isn't[REPLACE1][STATE]it be neg[END]");
+
+        // No block is the ordinary case, and it is not the empty block.
+        let e = Emission::parse_display("ing[ATTACH_L]").unwrap();
+        assert_eq!(e.state, None);
+        // A record parser on its own has no meaning for the block.
+        assert_eq!(
+            Record::parse_display("a[STATE]x[END]"),
+            Err(RecordError::UnknownTag("[STATE]".into()))
         );
     }
 

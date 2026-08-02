@@ -28,8 +28,15 @@ pub struct Dict {
     /// A Plover JSON dictionary to import.
     #[serde(default)]
     pub json: Option<PathBuf>,
+    /// A flat dictionary written in the record language. See `plain`.
+    #[serde(default)]
+    pub plain: Option<PathBuf>,
     #[serde(default = "default_version")]
     pub version: String,
+    /// How many words of already-written text this dictionary is shown, after the
+    /// keys. Zero for a dictionary that only reads strokes, which is most of them.
+    #[serde(default)]
+    pub words: u8,
 }
 
 fn default_version() -> String {
@@ -38,11 +45,20 @@ fn default_version() -> String {
 
 impl Dict {
     pub fn source(&self) -> Result<Source<'_>> {
-        match (self.xfst.is_empty(), &self.json) {
-            (false, None) => Ok(Source::Xfst(&self.xfst)),
-            (true, Some(p)) => Ok(Source::Json(p)),
-            (true, None) => bail!("{}: needs one of `xfst` or `json`", self.name),
-            (false, Some(_)) => bail!("{}: has both `xfst` and `json`", self.name),
+        let mut found: Vec<Source<'_>> = Vec::new();
+        if !self.xfst.is_empty() {
+            found.push(Source::Xfst(&self.xfst));
+        }
+        if let Some(p) = &self.json {
+            found.push(Source::Json(p));
+        }
+        if let Some(p) = &self.plain {
+            found.push(Source::Plain(p));
+        }
+        match found.len() {
+            1 => Ok(found.remove(0)),
+            0 => bail!("{}: needs one of `xfst`, `json` or `plain`", self.name),
+            _ => bail!("{}: has more than one source", self.name),
         }
     }
 }
@@ -50,6 +66,7 @@ impl Dict {
 pub enum Source<'a> {
     Xfst(&'a [PathBuf]),
     Json(&'a Path),
+    Plain(&'a Path),
 }
 
 impl Recipe {

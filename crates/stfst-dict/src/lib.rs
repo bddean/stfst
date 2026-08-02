@@ -30,8 +30,8 @@ pub enum DictError {
     Automaton(#[from] stfst_ol::OlError),
     #[error("{name} wants host {wants}, and this host is {HOST_VERSION}")]
     HostTooOld { name: String, wants: u32 },
-    #[error("{name} needs context tapes or translation state, which this host does not have")]
-    Unavailable { name: String },
+    #[error("{name} reads context slot {slot}, which is not in the contract's table")]
+    UnknownSlot { name: String, slot: String },
     #[error("{name} needs key {key}, which the system does not have")]
     MissingKey { name: String, key: String },
     #[error("{name} can emit {tag}, which is not a tag in the record language")]

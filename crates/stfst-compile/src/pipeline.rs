@@ -7,7 +7,9 @@ use std::path::{Path, PathBuf};
 use std::process::Command;
 
 use anyhow::{bail, Context, Result};
-use stfst_core::record::{all_tags, is_tag};
+use stfst_core::context;
+use stfst_core::record::{all_tags, copy_tag, is_tag};
+use stfst_core::window;
 use stfst_core::System;
 
 use crate::prelude;
@@ -74,6 +76,7 @@ pub fn compile_xfst(
     std::fs::create_dir_all(work)?;
     let script = work.join("build.xfst");
     let net = work.join("grammar.hfst");
+    let fresh = work.join("fresh.hfst");
 
     let mut s = prelude::generate(system);
     for source in sources {
@@ -82,11 +85,17 @@ pub fn compile_xfst(
         s.push_str(&body);
     }
     s.push_str(&format!(
-        "\npush Grammar\nsave stack {}\n",
+        "\npush Grammar\nsave stack {}\nclear stack\n",
         net.display()
     ));
+    // The reverse direction asks what to stroke from where the writer is now, so
+    // it reads the relation with no state carried in and none written out.
+    s.push_str(&format!(
+        "define FreshGrammar Fresh(Grammar) ;\npush FreshGrammar\nsave stack {}\nclear stack\n",
+        fresh.display()
+    ));
     // Bound the counterexamples: the difference can be an infinite language.
-    s.push_str("echo STFST-CHECK-RECORD\nregex Grammar.l - Record ;\nprint random-words 3\n");
+    s.push_str("echo STFST-CHECK-RECORD\nregex Grammar.l - Emission ;\nprint random-words 3\n");
     s.push_str("echo STFST-CHECK-OUTLINE\nregex Grammar.u - Outline ;\nprint random-words 3\n");
     s.push_str("echo STFST-CHECK-SIGMA\npush Grammar\nprint sigma\n");
     s.push_str("echo STFST-CHECK-END\n");
@@ -97,7 +106,7 @@ pub fn compile_xfst(
 
     if checks.passed() {
         to_hfstol(&net, out_fst)?;
-        to_hfstol_inverted(&net, out_reverse)?;
+        to_hfstol_inverted(&fresh, out_reverse)?;
     }
     Ok(checks)
 }
@@ -189,6 +198,8 @@ fn parse_checks(log: &str, system: &System) -> Checks {
             "sigma" => {
                 for sym in line.split_whitespace() {
                     let known = tags.iter().any(|t| t == sym)
+                        || context::all_symbols().iter().any(|c| c == sym)
+                        || window::sig_char(sym).is_some()
                         || sym.chars().count() == 1
                         || sym.starts_with("@_")
                         || sym == format!("{}", system.separator);
@@ -203,6 +214,72 @@ fn parse_checks(log: &str, system: &System) -> Checks {
     checks
 }
 
+/// What a dictionary turned out to need from its host, read back from the
+/// automaton it compiled to.
+///
+/// Nothing declares any of this in the source. The alphabet already says it: a
+/// grammar that reads `[CAP=off]` has the symbol, one that carries state has
+/// `[STATE]`, and one that splices the host's second bound word has `[COPY2]`. A
+/// declaration would be a second copy of a fact the artifact determines, and the
+/// two would eventually disagree.
+#[derive(Debug, Default)]
+pub struct Declared {
+    /// Context slot names, in table order.
+    pub context: Vec<String>,
+    pub state: bool,
+    /// How many recent words the host must bind, from the highest `[COPYn]`.
+    pub registers: u8,
+    /// Characters this dictionary named, so the host sends them as themselves
+    /// rather than as their class.
+    pub significant: Vec<char>,
+    /// How many words of already-written text the host must show. Declared in the
+    /// recipe rather than read back: it is a property of the language and not of
+    /// the alphabet, and it is the dial that sets what a lookup costs.
+    pub words: u8,
+}
+
+impl Declared {
+    /// The oldest host contract that can run this dictionary. Items 5 and 6 are
+    /// host version 2, so a dictionary that uses neither stays loadable by a host
+    /// that implements neither.
+    pub fn host(&self) -> u32 {
+        let plain = self.context.is_empty()
+            && !self.state
+            && self.registers == 0
+            && self.words == 0;
+        match plain {
+            true => 1,
+            false => 2,
+        }
+    }
+}
+
+pub fn declare(forward: &Path, words: u8) -> Result<Declared> {
+    let fst = stfst_ol::Automaton::open(forward)
+        .with_context(|| format!("reading back {}", forward.display()))?;
+    let mut declared = Declared {
+        words,
+        ..Declared::default()
+    };
+    let symbols: Vec<&str> = fst.alphabet().symbols().collect();
+    for slot in context::SLOTS {
+        if slot.symbols().any(|s| symbols.contains(&s.as_str())) {
+            declared.context.push(slot.name.to_string());
+        }
+    }
+    declared.state = symbols.contains(&context::STATE_OPEN);
+    for n in 1..=stfst_core::record::MAX_COUNT {
+        if symbols.contains(&copy_tag(n).as_str()) {
+            declared.registers = declared.registers.max(n);
+        }
+    }
+    // Which characters the grammar named, read straight out of the alphabet. The
+    // host has to agree with this exactly, so nothing declares it twice.
+    declared.significant = symbols.iter().filter_map(|s| window::sig_char(s)).collect();
+    declared.significant.sort_unstable();
+    Ok(declared)
+}
+
 /// Write the artifact directory: the automaton plus what a host needs to refuse
 /// a dictionary it cannot interpret.
 pub fn write_artifact(
@@ -213,10 +290,14 @@ pub fn write_artifact(
     priority: i32,
     forward: &Path,
     reverse: &Path,
+    words: u8,
 ) -> Result<()> {
     std::fs::create_dir_all(dir)?;
     std::fs::copy(forward, dir.join("forward.hfstol"))?;
-    std::fs::copy(reverse, dir.join("reverse.hfstol"))?;
+    if reverse.exists() {
+        std::fs::copy(reverse, dir.join("reverse.hfstol"))?;
+    }
+    let declared = declare(forward, words)?;
     std::fs::write(dir.join("tags.txt"), all_tags().join("\n") + "\n")?;
     let keys: Vec<String> = system
         .keys()
@@ -233,15 +314,29 @@ pub fn write_artifact(
              priority = {priority}\n\
              \n[requires]\n\
              keys = [{}]\n\
-             host = 1\n\
-             context = []\n\
-             state = false\n\
+             host = {}\n\
+             context = [{}]\n\
+             state = {}\n\
+             registers = {}\n\
+             words = {}\n\
+             significant = {:?}\n\
              \n[input]\n\
              alphabet = \"keys\"\n\
              order = {:?}\n\
              separator = {:?}\n",
             system.name,
             keys.join(", "),
+            declared.host(),
+            declared
+                .context
+                .iter()
+                .map(|c| format!("{c:?}"))
+                .collect::<Vec<_>>()
+                .join(", "),
+            declared.state,
+            declared.registers,
+            declared.words,
+            declared.significant.iter().collect::<String>(),
             system.order(),
             system.separator.to_string(),
         ),

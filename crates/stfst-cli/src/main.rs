@@ -41,6 +41,18 @@ enum Command {
         #[arg(long)]
         pairs: Option<PathBuf>,
     },
+    /// Read a flat dictionary written in the record language, to lexc.
+    Plain {
+        source: PathBuf,
+        #[arg(long)]
+        system: PathBuf,
+        /// Where to write the lexc; stdout if absent.
+        #[arg(short, long)]
+        out: Option<PathBuf>,
+        /// Also write a golden test file.
+        #[arg(long)]
+        golden: Option<PathBuf>,
+    },
     /// Compile every dictionary in a recipe.
     Compile {
         recipe: PathBuf,
@@ -177,6 +189,51 @@ fn main() -> Result<()> {
             match out {
                 Some(path) => std::fs::write(path, imported.lexc)?,
                 None => print!("{}", imported.lexc),
+            }
+        }
+        Command::Plain {
+            source,
+            system,
+            out,
+            golden: golden_out,
+        } => {
+            let sys = System::load(&system)?;
+            let text = std::fs::read_to_string(&source)
+                .with_context(|| format!("reading {}", source.display()))?;
+            let compiled = stfst_compile::plain::compile(&text, &sys, Align::Pairwise)
+                .map_err(|errors| {
+                    anyhow::anyhow!(
+                        "{}:\n{}",
+                        source.display(),
+                        errors
+                            .iter()
+                            .map(|e| format!("  {e}"))
+                            .collect::<Vec<_>>()
+                            .join("\n")
+                    )
+                })?;
+            eprintln!("{} entries", compiled.entries);
+            if let Some(path) = golden_out {
+                let cases: Vec<golden::Case> = compiled
+                    .golden
+                    .iter()
+                    .map(|(tape, record)| golden::Case {
+                        tape: tape.clone(),
+                        expect: vec![record.clone()],
+                    })
+                    .collect();
+                let header = format!(
+                    "! {} cases from {}. The source is already outline to record, so\n\
+                     ! this file checks the outline parse and the compile, not the\n\
+                     ! meaning of an entry.\n",
+                    cases.len(),
+                    source.display()
+                );
+                std::fs::write(path, header + &golden::render(&cases))?;
+            }
+            match out {
+                Some(path) => std::fs::write(path, compiled.lexc)?,
+                None => print!("{}", compiled.lexc),
             }
         }
         Command::Compile { recipe, out, work } => {

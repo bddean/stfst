@@ -1,0 +1,10 @@
+! 0 probe priority 1
+T	1	probe	the	"the"
+KPA	1	probe	[CAP_NEXT]	"the"
+T	1	probe	The	"the The"
++T	1	probe	it's[STATE]pres[END]	"the The it's"
+*	1	probe	it isn't[REPLACE1][STATE]neg[END]	"the The it isn't"
+*	1	probe	it's[REPLACE1][STATE]pres[END]	"the The it's"
+!undo	*	"the The it isn't"
+*	1	probe	it's[REPLACE1][STATE]pres[END]	"the The it's"
+! 6 strokes, 1 candidates at the widest

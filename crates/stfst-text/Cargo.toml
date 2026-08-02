@@ -1,0 +1,9 @@
+[package]
+name = "stfst-text"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+stfst-core.workspace = true
+thiserror.workspace = true
