@@ -85,11 +85,20 @@ is what HFST is for, and compiling one is a build job rather than a design
 question. Until then `[META=infl]` does the regular cases and `[META=clause]` is
 declared and unimplemented.
 
-**A dynamic stack.** `plover-dict-commands` turns dictionaries on and off mid-run
-and `plover_modal_dictionary` hides one until an activation stroke. The names are
-in the table (`stack.toggle`, `stack.solo`, `stack.end_solo`, `stack.priority`);
-`Stack` is immutable after `open`, and what a stack change means for a candidate
-that spans it is undecided.
+**A dynamic stack.** *Done for enable, disable and solo.* Which dictionaries are
+answering is part of the frame, like the context and the carried state, so a stroke
+can change it and undo puts it back. Plover's dictionary commands have no undo at
+all; here it costs nothing, because the frame stack was already there.
+
+A dictionary turned off stops answering at once, including a run it had already
+started. That is what `stack.solo` is for, and `plover-dict-commands` says so: a
+mode with no interference from a multi-stroke entry below it. A name this stack does
+not have is ignored, because a user's dictionary set is not a promise about anyone
+else's, and `commands.json`'s one solo entry names two dictionaries this stack does
+not load.
+
+`stack.priority` is declared and not implemented. Reordering needs an order per
+frame rather than a flag per dictionary, and nothing here asks for it.
 
 ## Suffix folding, which was the last piece of engine parity
 

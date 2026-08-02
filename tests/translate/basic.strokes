@@ -44,3 +44,10 @@ KAOEP
 KAOEPT
 TAPG
 TAPGS
+! a stroke that changes the dictionary set, and undo putting it back. Plover's
+! dictionary commands have no undo; here it falls out of the frame stack.
+SKAEBG
+TAP
+!undo
+!undo
+TAP

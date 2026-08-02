@@ -71,6 +71,12 @@ struct Frame {
     /// Per dictionary, in stack order. `None` is a dictionary at its start
     /// state, which is the absent prefix and not an empty one.
     state: Vec<Option<State>>,
+    /// Which dictionaries are answering. A stroke can turn one off, so this is
+    /// per frame like everything else here, and undo puts it back: Plover's
+    /// dictionary commands have no undo at all.
+    enabled: Vec<bool>,
+    /// What `stack.solo` saved, for `stack.end_solo` to restore.
+    solo: Option<Vec<bool>>,
 }
 
 pub struct Session<'a> {
@@ -96,6 +102,8 @@ impl<'a> Session<'a> {
             frames: vec![Frame {
                 context: Context::default(),
                 state: vec![None; stack.dicts().len()],
+                enabled: vec![true; stack.dicts().len()],
+                solo: None,
             }],
         }
     }
@@ -121,6 +129,54 @@ impl<'a> Session<'a> {
     /// does not: a dictionary can offer several, and choosing is the host's.
     pub fn accept(&mut self, dict: usize, state: Option<State>) {
         self.frames.last_mut().expect("a current frame").state[dict] = state;
+    }
+
+    /// Turn dictionaries on and off, which is what `plover-dict-commands` does.
+    ///
+    /// The argument is a comma-separated list of names, each with `+` to enable,
+    /// `-` to disable or `!` to toggle. A name this stack does not have is ignored,
+    /// because a user's dictionary set is not a promise about anyone else's.
+    ///
+    /// Returns false when the command is not one of these, so a host can pass
+    /// everything through and let this decide.
+    pub fn stack_command(&mut self, name: &str, arg: &str) -> bool {
+        let count = self.stack.dicts().len();
+        let names: Vec<String> = self.stack.dicts().iter().map(|d| d.name().to_string()).collect();
+        let frame = self.frames.last_mut().expect("a current frame");
+        match name {
+            "stack.toggle" => {}
+            "stack.solo" => {
+                // Solo remembers what it interrupted, and starts from nothing on:
+                // the point of it is a mode with no interference from below.
+                frame.solo = Some(frame.enabled.clone());
+                frame.enabled = vec![false; count];
+            }
+            "stack.end_solo" => {
+                if let Some(saved) = frame.solo.take() {
+                    frame.enabled = saved;
+                }
+                return true;
+            }
+            _ => return false,
+        }
+        for item in arg.split(',').map(str::trim).filter(|s| !s.is_empty()) {
+            let (op, wanted) = item.split_at(1);
+            let Some(at) = names.iter().position(|n| n == wanted) else {
+                continue;
+            };
+            frame.enabled[at] = match op {
+                "+" => true,
+                "-" => false,
+                "!" => !frame.enabled[at],
+                _ => continue,
+            };
+        }
+        true
+    }
+
+    /// Whether a dictionary is answering, as of the frame a candidate reads.
+    fn enabled(&self, at: usize, dict: usize) -> bool {
+        self.frames[at].enabled[dict]
     }
 
     /// The state a dictionary carries right now, for a host that shows it.
@@ -175,6 +231,9 @@ impl<'a> Session<'a> {
                 continue;
             }
             for (dict, entry) in self.stack.dicts().iter().enumerate() {
+                if !self.enabled(newest, dict) {
+                    continue;
+                }
                 let mut cursor = entry.cursor(&self.prefix(newest, dict));
                 entry.feed(&mut cursor, bare, false);
                 if cursor.live() > 0 {
@@ -234,8 +293,15 @@ impl<'a> Session<'a> {
     ) -> Result<Option<Match>, DictError> {
         let span = &span;
         let mut best: Option<(&Live, Vec<Vec<stfst_ol::Sym>>, Option<Window>)> = None;
+        let now = self.history.len().saturating_sub(1);
         for live in &self.live {
             if best.as_ref().is_some_and(|(b, _, _)| live.start >= b.start) {
+                continue;
+            }
+            // A stroke that turns a dictionary off stops it answering at once,
+            // including a run it had already started. That is what `stack.solo` is
+            // for: a mode with no interference from a multi-stroke entry below.
+            if !self.enabled(now, live.dict) {
                 continue;
             }
             let dict = self.stack.dict(live.dict);
@@ -283,6 +349,9 @@ impl<'a> Session<'a> {
             {
                 continue;
             }
+            if !self.enabled(self.history.len().saturating_sub(1), folded.live.dict) {
+                continue;
+            }
             let dict = self.stack.dict(folded.live.dict);
             let (outputs, window) = match dict.words() {
                 0 => (folded.live.cursor.outputs(), None),
@@ -304,7 +373,8 @@ impl<'a> Session<'a> {
         // The context in force for the stroke the key was folded off, which is the
         // one a candidate opening there would have read.
         let at = self.history.len().saturating_sub(1);
-        let Some(suffix) = self.stack.bare(folded.key, &self.frames[at].context)? else {
+        let frame = &self.frames[at];
+        let Some(suffix) = self.stack.bare(folded.key, &frame.context, &frame.enabled)? else {
             return Ok(None);
         };
         Ok(Some(Match {
@@ -320,6 +390,9 @@ impl<'a> Session<'a> {
     /// there. Keeps the ones still live.
     fn open_at(&mut self, start: usize) {
         for (dict, entry) in self.stack.dicts().iter().enumerate() {
+            if !self.enabled(start, dict) {
+                continue;
+            }
             let mut cursor = entry.cursor(&self.prefix(start, dict));
             for (n, &stroke) in self.history[start..].iter().enumerate() {
                 if cursor.live() == 0 {

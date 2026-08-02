@@ -114,9 +114,13 @@ impl Stack {
         &self,
         key: usize,
         context: &stfst_core::Context,
+        enabled: &[bool],
     ) -> Result<Option<stfst_core::Emission>, DictError> {
         let stroke = stfst_core::Stroke::EMPTY.with(key);
-        for dict in &self.dicts {
+        for (at, dict) in self.dicts.iter().enumerate() {
+            if !enabled[at] {
+                continue;
+            }
             let prefix = stfst_core::Prefix {
                 state: None,
                 context: context.select(dict.context()),

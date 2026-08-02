@@ -56,8 +56,7 @@ pub fn run(artifacts: &[PathBuf], system: &Path, strokes: Vec<String>) -> Result
         if line == UNDO {
             match session.undo() {
                 Some(stroke) => {
-                    marks.pop();
-                    text.undo();
+                    take_text_back(&mut text, &mut marks);
                     println!(
                         "{UNDO}\t{}\t{:?}",
                         system.format_outline(&Outline(vec![stroke])),
@@ -112,9 +111,14 @@ pub fn run(artifacts: &[PathBuf], system: &Path, strokes: Vec<String>) -> Result
         // its own stroke back: the command wrote nothing, so leaving it there would
         // cost an extra undo later.
         for event in &events {
-            let Event::Cmd { name, .. } = event else {
+            let Event::Cmd { name, arg } = event else {
                 continue;
             };
+            // A stack command needs no stroke put back, so it runs where it is.
+            if session.stack_command(name, arg) {
+                println!("{line}\t{name}\t{arg:?}");
+                continue 'stroke;
+            }
             let engine = matches!(
                 name.as_str(),
                 "engine.undo" | "engine.repeat_stroke" | "engine.toggle_star"
@@ -177,7 +181,18 @@ pub fn run(artifacts: &[PathBuf], system: &Path, strokes: Vec<String>) -> Result
 /// Take back one stroke and whatever it wrote.
 fn take_back(session: &mut stfst_dict::Session, text: &mut Text, marks: &mut Vec<usize>) {
     if session.undo().is_some() {
-        marks.pop();
+        take_text_back(text, marks);
+    }
+}
+
+/// Undo the text back to where the last stroke found it.
+///
+/// Not one `Text::undo` per stroke: a stroke that matched nothing wrote no unit,
+/// and a stroke that superseded a run wrote one where several had been. The mark is
+/// what says how many.
+fn take_text_back(text: &mut Text, marks: &mut Vec<usize>) {
+    let mark = marks.pop().unwrap_or(0);
+    while text.units() > mark {
         text.undo();
     }
 }
