@@ -57,6 +57,9 @@ pub enum DictError {
 /// The dictionaries a host has loaded, in priority order.
 pub struct Stack {
     dicts: Vec<Dict>,
+    /// Kept because folding needs it: which keys may be stripped, and what a bare
+    /// key means, are both stack-wide questions.
+    system: System,
 }
 
 impl Stack {
@@ -80,7 +83,10 @@ impl Stack {
             dicts.push(dict);
         }
         dicts.sort_by_key(|d| -d.priority());
-        Ok(Stack { dicts })
+        Ok(Stack {
+            dicts,
+            system: system.clone(),
+        })
     }
 
     pub fn dicts(&self) -> &[Dict] {
@@ -93,5 +99,35 @@ impl Stack {
 
     pub fn session(&self) -> Session<'_> {
         Session::new(self)
+    }
+
+    pub(crate) fn system_suffix_keys(&self) -> &[usize] {
+        self.system.suffix_keys()
+    }
+
+    /// What one key means on its own, looked up across the whole stack.
+    ///
+    /// This is what makes folding cross-stack: `-S` is defined in whichever
+    /// dictionary defines it, and the base word is in whichever dictionary has the
+    /// base word, and neither knows about the other.
+    pub(crate) fn bare(
+        &self,
+        key: usize,
+        context: &stfst_core::Context,
+    ) -> Result<Option<stfst_core::Emission>, DictError> {
+        let stroke = stfst_core::Stroke::EMPTY.with(key);
+        for dict in &self.dicts {
+            let prefix = stfst_core::Prefix {
+                state: None,
+                context: context.select(dict.context()),
+            };
+            let mut cursor = dict.cursor(&prefix);
+            dict.feed(&mut cursor, stroke, false);
+            let outputs = cursor.outputs();
+            if !outputs.is_empty() {
+                return Ok(dict.interpret(&outputs)?.into_iter().next());
+            }
+        }
+        Ok(None)
     }
 }

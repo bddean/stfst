@@ -45,6 +45,8 @@ struct SystemFile {
     numbers: BTreeMap<char, char>,
     #[serde(default)]
     implicit_hyphen: String,
+    #[serde(default)]
+    suffix_keys: String,
 }
 
 /// One key of a system, in steno order.
@@ -75,6 +77,10 @@ pub struct System {
     /// digit -> index into `keys`
     numbers: BTreeMap<char, usize>,
     implicit_hyphen: Vec<usize>,
+    /// Keys that can be *folded* onto a stroke: the engine may strip one, look the
+    /// rest up across the whole stack, and append what the bare key means on its
+    /// own. Plover's `SUFFIX_KEYS`.
+    suffix_keys: Vec<usize>,
     /// First index on the right bank; a written `-` skips to here.
     first_right: usize,
 }
@@ -157,6 +163,14 @@ impl System {
             numbers.insert(*digit, idx);
         }
 
+        let mut suffix_keys = Vec::new();
+        for symbol in file.suffix_keys.chars() {
+            let idx = *by_symbol
+                .get(&symbol)
+                .ok_or(SystemError::UnknownImplicitHyphen(symbol))?;
+            suffix_keys.push(idx);
+        }
+
         let mut implicit_hyphen = Vec::new();
         for symbol in file.implicit_hyphen.chars() {
             let idx = *by_symbol
@@ -177,12 +191,18 @@ impl System {
             by_symbol,
             numbers,
             implicit_hyphen,
+            suffix_keys,
             first_right,
         })
     }
 
     pub fn keys(&self) -> &[Key] {
         &self.keys
+    }
+
+    /// The keys a stroke may be folded on, newest declaration order.
+    pub fn suffix_keys(&self) -> &[usize] {
+        &self.suffix_keys
     }
 
     pub fn key_count(&self) -> usize {
@@ -230,6 +250,11 @@ impl Stroke {
     pub fn with(self, index: usize) -> Stroke {
         debug_assert!(index < 64, "systems are limited to 64 keys");
         Stroke(self.0 | (1 << index))
+    }
+
+    /// The same stroke without one key, for a caller folding a suffix off it.
+    pub fn without(self, index: usize) -> Stroke {
+        Stroke(self.0 & !(1 << index))
     }
 
     pub fn indices(self) -> impl Iterator<Item = usize> {

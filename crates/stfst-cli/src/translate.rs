@@ -99,6 +99,13 @@ pub fn run(artifacts: &[PathBuf], system: &Path, strokes: Vec<String>) -> Result
                 text.apply(&first.record, &registers)?
             }
         };
+        // A folded match writes the base, then what the folded key means. The base
+        // dictionary never heard of the suffix, and the suffix dictionary never
+        // heard of the word.
+        if let Some(suffix) = &m.suffix {
+            let registers = text.registers(9);
+            text.apply(&suffix.record, &registers)?;
+        }
         session.accept(m.dict, first.state.clone());
         // The commands the formatter cannot carry out are the ones that reach the
         // stroke buffer, so they land here, where the buffer is. Each one first takes
@@ -145,9 +152,13 @@ pub fn run(artifacts: &[PathBuf], system: &Path, strokes: Vec<String>) -> Result
         context.set("W1", text.last_word_case());
 
         println!(
-            "{line}\t{}\t{}\t{}\t{:?}",
+            "{line}\t{}\t{}{}\t{}\t{:?}",
             m.strokes,
             dict.name(),
+            match &m.suffix {
+                Some(s) => format!("+{s}"),
+                None => String::new(),
+            },
             m.emissions
                 .iter()
                 .map(Emission::to_string)

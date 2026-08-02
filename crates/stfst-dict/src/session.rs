@@ -34,6 +34,12 @@ pub struct Match {
     /// The window this match was read against, when the dictionary asked for one.
     /// The host needs it to substitute the characters back.
     pub window: Option<Window>,
+    /// What a folded key means on its own, to be written after this match.
+    ///
+    /// Set when the match was found by stripping a suffix key from the last stroke:
+    /// `PWABGS` is `PWABG` plus whatever `-S` means, and the base dictionary knows
+    /// nothing about the suffix. Host contract item 8.
+    pub suffix: Option<Emission>,
 }
 
 /// One live candidate: a dictionary, where it started, and how far it has read.
@@ -41,6 +47,19 @@ struct Live<'a> {
     dict: usize,
     start: usize,
     cursor: Cursor<'a>,
+}
+
+/// A candidate that read the current stroke with a suffix key removed.
+///
+/// One shot, and cleared by the next stroke. A fold applies to the *last* stroke of
+/// a match, and no candidate knows it is at the last stroke, so the fold is tried
+/// by cloning each live candidate as the stroke arrives rather than by replaying
+/// later. The clone is cheap and a candidate that is never harvested costs nothing
+/// more.
+struct Folded<'a> {
+    live: Live<'a>,
+    /// The key that was stripped, as an index into the system's keys.
+    key: usize,
 }
 
 /// What the host says before the keys, as of one point in the stroke history:
@@ -60,6 +79,7 @@ pub struct Session<'a> {
     /// The oldest start still live after each stroke. Enough to rebuild.
     oldest: Vec<usize>,
     live: Vec<Live<'a>>,
+    folded: Vec<Folded<'a>>,
     /// `frames[i]` is what a candidate opening at stroke `i` reads. The last one
     /// is current, so there is always one more frame than stroke.
     frames: Vec<Frame>,
@@ -72,6 +92,7 @@ impl<'a> Session<'a> {
             history: Vec::new(),
             oldest: Vec::new(),
             live: Vec::new(),
+            folded: Vec::new(),
             frames: vec![Frame {
                 context: Context::default(),
                 state: vec![None; stack.dicts().len()],
@@ -110,11 +131,64 @@ impl<'a> Session<'a> {
     /// Read one stroke. Every live candidate advances or dies, and a new
     /// candidate opens at this stroke in every dictionary.
     pub fn push(&mut self, stroke: Stroke) {
+        // Every key this stroke could have been folded on, tried against the
+        // candidates as they stood before it.
+        self.folded.clear();
+        for &key in self.stack.system_suffix_keys() {
+            if !stroke.contains(key) {
+                continue;
+            }
+            let bare = stroke.without(key);
+            if bare.is_empty() {
+                continue;
+            }
+            for live in &self.live {
+                let mut cursor = live.cursor.clone();
+                self.stack.dict(live.dict).feed(&mut cursor, bare, true);
+                if cursor.live() > 0 {
+                    self.folded.push(Folded {
+                        live: Live {
+                            dict: live.dict,
+                            start: live.start,
+                            cursor,
+                        },
+                        key,
+                    });
+                }
+            }
+        }
+
         for live in &mut self.live {
             self.stack.dict(live.dict).feed(&mut live.cursor, stroke, true);
         }
         self.live.retain(|l| l.cursor.live() > 0);
         self.history.push(stroke);
+        // A fold can also be the whole match, which is a one-stroke entry folded on
+        // its own: `KAOEPT` is `KAOEP` plus `-T`.
+        let newest = self.history.len() - 1;
+        for &key in self.stack.system_suffix_keys() {
+            if !stroke.contains(key) {
+                continue;
+            }
+            let bare = stroke.without(key);
+            if bare.is_empty() {
+                continue;
+            }
+            for (dict, entry) in self.stack.dicts().iter().enumerate() {
+                let mut cursor = entry.cursor(&self.prefix(newest, dict));
+                entry.feed(&mut cursor, bare, false);
+                if cursor.live() > 0 {
+                    self.folded.push(Folded {
+                        live: Live {
+                            dict,
+                            start: newest,
+                            cursor,
+                        },
+                        key,
+                    });
+                }
+            }
+        }
         self.open_at(self.history.len() - 1);
         let newest = self.history.len() - 1;
         let oldest = self.live.iter().map(|l| l.start).min().unwrap_or(newest);
@@ -132,6 +206,7 @@ impl<'a> Session<'a> {
         self.oldest.pop();
         self.frames.pop();
         self.live.clear();
+        self.folded.clear();
         let end = self.history.len();
         if end > 0 {
             for start in self.oldest[end - 1]..end {
@@ -157,6 +232,7 @@ impl<'a> Session<'a> {
         &self,
         span: impl Fn(u8) -> String,
     ) -> Result<Option<Match>, DictError> {
+        let span = &span;
         let mut best: Option<(&Live, Vec<Vec<stfst_ol::Sym>>, Option<Window>)> = None;
         for live in &self.live {
             if best.as_ref().is_some_and(|(b, _, _)| live.start >= b.start) {
@@ -174,14 +250,69 @@ impl<'a> Session<'a> {
                 best = Some((live, outputs, window));
             }
         }
+        // A fold is a fallback, as it is in Plover: only when nothing matches the
+        // stroke as it was written. Otherwise `PWABGS` would fold when it has an
+        // entry of its own.
         let Some((live, outputs, window)) = best else {
-            return Ok(None);
+            return self.folded_best(&span);
         };
         Ok(Some(Match {
             dict: live.dict,
             strokes: self.history.len() - live.start,
             emissions: self.stack.dict(live.dict).interpret(&outputs)?,
             window,
+            suffix: None,
+        }))
+    }
+
+    /// The best match that needed a key folded off the last stroke, with what that
+    /// key means on its own.
+    ///
+    /// Host contract item 8, and the answer to where a suffix rule lives when the
+    /// base word is in a dictionary that has never heard of the suffix: not in a
+    /// dictionary at all.
+    fn folded_best(
+        &self,
+        span: &impl Fn(u8) -> String,
+    ) -> Result<Option<Match>, DictError> {
+        let mut best: Option<(&Folded, Vec<Vec<stfst_ol::Sym>>, Option<Window>)> = None;
+        for folded in &self.folded {
+            if best
+                .as_ref()
+                .is_some_and(|(b, _, _)| folded.live.start >= b.live.start)
+            {
+                continue;
+            }
+            let dict = self.stack.dict(folded.live.dict);
+            let (outputs, window) = match dict.words() {
+                0 => (folded.live.cursor.outputs(), None),
+                n => {
+                    let window = dict.window(&span(n));
+                    (dict.harvest(&folded.live.cursor, &window), Some(window))
+                }
+            };
+            if !outputs.is_empty() {
+                best = Some((folded, outputs, window));
+            }
+        }
+        let Some((folded, outputs, window)) = best else {
+            return Ok(None);
+        };
+        // What the bare key means is a lookup like any other, in the whole stack, so
+        // the suffix and the base need not be in the same dictionary or know about
+        // each other.
+        // The context in force for the stroke the key was folded off, which is the
+        // one a candidate opening there would have read.
+        let at = self.history.len().saturating_sub(1);
+        let Some(suffix) = self.stack.bare(folded.key, &self.frames[at].context)? else {
+            return Ok(None);
+        };
+        Ok(Some(Match {
+            dict: folded.live.dict,
+            strokes: self.history.len() - folded.live.start,
+            emissions: self.stack.dict(folded.live.dict).interpret(&outputs)?,
+            window,
+            suffix: Some(suffix),
         }))
     }
 

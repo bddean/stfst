@@ -91,12 +91,31 @@ in the table (`stack.toggle`, `stack.solo`, `stack.end_solo`, `stack.priority`);
 `Stack` is immutable after `open`, and what a stack change means for a candidate
 that spans it is undecided.
 
-**Suffix folding across the stack.** Plover's translator strips a `SUFFIX_KEYS`
-key from the last stroke, looks the base up in the whole stack, and appends the
-suffix's own translation. That is the answer to §9's "where does a folding rule
-live when the base word is in a lower-priority dictionary", and it is not in a
-dictionary at all. `Session` opens one candidate per dictionary per start already,
-so it is a small addition and it is not written yet.
+## Suffix folding, which was the last piece of engine parity
+
+*Done.* Plover's translator strips a `SUFFIX_KEYS` key from the last stroke, looks
+the base up in the whole stack, and appends what the bare key means on its own. So
+a folding rule does not live in a dictionary at all, which is why §4a could not
+find a home for it and why §9 kept the question open.
+
+The engine detail worth writing down: a fold applies to the *last* stroke of a
+match, and no candidate knows it is at the last stroke. So the fold is tried as the
+stroke arrives, by cloning each live candidate and feeding it the stroke with the
+key removed. The clone is cheap, the folded candidate is one shot and the next
+stroke clears it, and a candidate nobody harvests costs nothing. A fold is a
+fallback, as it is in Plover: `PWABGS` has an entry of its own, so it never folds.
+
+```
+KAOEPT   keep + what -T means      "keep the"
+TAPGS    tapping + what -S means   "tappings"
+```
+
+The second one crosses three parties. `TAPG` is typey-type's, `-S` is
+`semantic-suffixes.json`'s `{:infl:ofs}`, and the inflection is the host's
+orthography. None of the three knows about the others.
+
+`suffix_keys` is system configuration, like the keys themselves, and it carries the
+local fork's `-T` so that `KAOEPT` reads as "keep the".
 
 ## Two things measured on the way
 

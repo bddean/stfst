@@ -12,6 +12,13 @@ separator = "/"
 # Keys that split the banks on their own, so a written outline needs no hyphen.
 implicit_hyphen = "AO*EU"
 
+# Keys a stroke may be folded on. The engine strips one, looks the rest up across
+# the whole stack, and appends what the bare key means by itself, so a suffix
+# reaches a base word in a dictionary that knows nothing about the suffix. Plover's
+# SUFFIX_KEYS; `-T` is the local fork's addition, which is what makes `KAOEPT`
+# read as "keep the".
+suffix_keys = "zdsgt"
+
 [keys]
 "#" = "#"
 "@" = "@-"

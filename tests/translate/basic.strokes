@@ -38,3 +38,9 @@ RUPB
 ! `{<}` cases the whole next word, which `{-|}` does not
 KPA*L
 RUPB
+! folding a suffix key onto a stroke, which reaches across the stack: the base is
+! in one dictionary and what the key means is in another
+KAOEP
+KAOEPT
+TAPG
+TAPGS
