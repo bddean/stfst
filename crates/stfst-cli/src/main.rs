@@ -118,12 +118,41 @@ enum Command {
         /// printing the whole buffer each stroke costs more than translating it.
         #[arg(long)]
         quiet: bool,
+        /// Where `stfst morph` wrote the artifacts. Without them a host cannot
+        /// inflect, so a dictionary that asks to is refused.
+        #[arg(long, default_value = "build/morph")]
+        morph: PathBuf,
     },
     /// Join word and suffix pairs, for measuring the orthography rules against
     /// Plover's own. One `word<TAB>suffix` per line.
     Ortho {
         #[arg(long)]
         pairs: PathBuf,
+        /// Where `stfst morph` wrote the artifacts.
+        #[arg(long, default_value = "build/morph")]
+        morph: PathBuf,
+    },
+    /// Inflect words, for measuring `{:infl:…}` against the lexicon it came from.
+    /// One `word<TAB>mode` per line.
+    Infl {
+        #[arg(long)]
+        pairs: PathBuf,
+        #[arg(long, default_value = "build/morph")]
+        morph: PathBuf,
+    },
+    /// Compile the morphology artifacts: the orthography rules and the two
+    /// lexicons. Not a dictionary, so not part of `compile`: nothing here is over
+    /// the key tape. `scripts/gen-morph.py` writes the lexc these read.
+    Morph {
+        #[arg(long, default_value = "morphology/ortho.xfst")]
+        rules: PathBuf,
+        /// Directory holding `words.lexc` and `infl.lexc`.
+        #[arg(long, default_value = "build/morph")]
+        lexicons: PathBuf,
+        #[arg(long, default_value = "build/morph")]
+        out: PathBuf,
+        #[arg(long, default_value = "build/morph-work")]
+        work: PathBuf,
     },
     /// Emit the generated xfst prelude for a system.
     Prelude {
@@ -344,6 +373,7 @@ fn main() -> Result<()> {
             system,
             strokes,
             quiet,
+            morph,
         } => {
             let lines = match strokes {
                 Some(path) => std::fs::read_to_string(&path)
@@ -353,18 +383,41 @@ fn main() -> Result<()> {
                     .collect(),
                 None => or_stdin(Vec::new())?,
             };
-            translate::run(&artifacts, &system, lines, quiet)?;
+            translate::run(&artifacts, &system, lines, quiet, &morph)?;
         }
-        Command::Ortho { pairs } => {
+        Command::Ortho { pairs, morph } => {
             let text = std::fs::read_to_string(&pairs)
                 .with_context(|| format!("reading {}", pairs.display()))?;
+            let morph = stfst_text::morph::Morph::open(&morph)?;
             for line in text.lines() {
                 let Some((word, suffix)) = line.split_once('\t') else {
                     continue;
                 };
-                let joined = stfst_text::ortho::join(word, suffix)
-                    .unwrap_or_else(|| format!("{word}{suffix}"));
-                println!("{joined}");
+                println!("{}", morph.join(word, suffix));
+            }
+        }
+        Command::Infl { pairs, morph } => {
+            let text = std::fs::read_to_string(&pairs)
+                .with_context(|| format!("reading {}", pairs.display()))?;
+            let morph = stfst_text::morph::Morph::open(&morph)?;
+            for line in text.lines() {
+                let Some((word, mode)) = line.split_once('\t') else {
+                    continue;
+                };
+                match morph.inflect(word, mode) {
+                    Some(form) => println!("{form}"),
+                    None => println!("!{mode}"),
+                }
+            }
+        }
+        Command::Morph {
+            rules,
+            lexicons,
+            out,
+            work,
+        } => {
+            for line in stfst_compile::pipeline::compile_morph(&rules, &lexicons, &work, &out)? {
+                println!("{line}");
             }
         }
         Command::Prelude { system } => {

@@ -51,3 +51,10 @@ TAP
 !undo
 !undo
 TAP
+! Inflection against orthography, which is the whole reason the morphology
+! artifacts exist. A fold of -D on "run" is "ran": no rule can know that, so this
+! line fails for any host that answers it with the orthography rules.
+RUPB
+-D
+KHAOEULD
+-S

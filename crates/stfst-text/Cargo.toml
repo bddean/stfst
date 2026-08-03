@@ -6,4 +6,5 @@ license.workspace = true
 
 [dependencies]
 stfst-core.workspace = true
+stfst-ol.workspace = true
 thiserror.workspace = true

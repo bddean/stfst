@@ -11,6 +11,7 @@ upper tape and on the record language, recorded in `docs/key-tape.md`.
 direnv allow          # or: nix develop
 stfst compile recipe.toml
 stfst compile tests/recipe.toml --out build/test-dicts --work build/test-work
+scripts/build-morph.sh   # orthography and inflection; needs Plover installed
 scripts/check.sh      # unit tests, then the golden files
 stfst bench build/dicts/typey-type.stfst --system systems/stenotype-extended.toml
 stfst translate build/dicts/*.stfst --system systems/stenotype-extended.toml
@@ -63,6 +64,28 @@ Nine entries in the whole set do not import, and each is named by
 `stfst import --report`: five hold a `{}` shape the record language has no meaning
 for, and four hold a control character, which neither `lexc` nor `xfst` can write.
 
+## Morphology, which is not a dictionary
+
+`{^ing}` is not "close the gap": Plover's English system carries 38 rewrite rules
+over the join plus a 338,882-word list to choose between the candidates they
+generate. Three artifacts hold all of it, and `scripts/build-morph.sh` builds them:
+
+| | |
+|---|---|
+| `ortho.hfstol` | `word ^ suffix` to every candidate, tagged with the rule that made it |
+| `words.hfstol` | a word to how common it is, which is what ranks the candidates |
+| `infl.hfstol` | `word ^ mode` to an inflected form, for `{:infl:…}` |
+
+None of them is over the key tape, so none is a dictionary and `stfst morph` builds
+them rather than `stfst compile`. The rules are hand written and committed. The two
+lexicons come from data that ships with Plover and lemminflect, so
+`scripts/gen-morph.py` runs under Plover's python and its output stays out of git.
+
+`{^s}` and `{:infl:ofs}` are different questions, and mixing them was a bug. The
+first is orthography, so `child` and `s` is `childs`, exactly as Plover says. The
+second is inflection, so it is `children`. Only the second asks a lexicon, and a
+host with no lexicon refuses `{:infl:…}` rather than answering it with rules.
+
 ## Measurements and decisions
 
 | | |
@@ -83,6 +106,7 @@ for, and four hold a control character, which neither `lexc` nor `xfst` can writ
 |---|---|
 | `systems/` | Steno systems. Which tape symbol each key writes is configuration, not a convention baked into the tools. |
 | `dictionaries/` | Hand-written dictionary source, in xfst. A `-tables.xfst` file is transcribed data with an upstream owner; the grammar over it is authored. |
+| `morphology/` | `ortho.xfst`, Plover's 38 orthography rules. Not a dictionary: nothing here is over the key tape. The two lexicons beside it are generated, not committed. |
 | `recipe.toml` | The dictionary stack: what to compile, and at what priority. |
 | `tests/golden/` | Host-independent golden tests: a tape, a tab, the expected records. |
 | `tests/translate/` | Stroke streams and what the stack makes of them, where the answer depends on the history. |
@@ -91,7 +115,7 @@ for, and four hold a control character, which neither `lexc` nor `xfst` can writ
 | `crates/stfst-compile` | The compiler: prelude generation, JSON import, the HFST pipeline. |
 | `crates/stfst-ol` | Reader for the `hfstol` runtime format: mapped, no decode, no HFST. |
 | `crates/stfst-dict` | The runtime: the dictionary stack, longest match, record interpretation. |
-| `crates/stfst-text` | The host side of the record language: the word buffer, the formatter, and the one general rewrite. Names no operation. |
+| `crates/stfst-text` | The host side of the record language: the word buffer, the formatter, the one general rewrite, and the morphology reader. Names no operation. |
 | `crates/stfst-cli` | `stfst`. Testing only. |
 
 ## The upper tape is keys, one symbol each

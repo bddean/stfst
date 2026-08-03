@@ -10,7 +10,7 @@ installed system's 38 orthography rules.
 | Plover | Here |
 |---|---|
 | `{^}` `{^^}` `{^ ^}` `{^a^}` | `[ATTACH_L]` `[ATTACH_R]`: close the gap |
-| `{^ing}` | `[ORTHO_L]`: close the gap *and* apply the rules |
+| `{^ing}` | `[ORTHO_L]`: close the gap *and* apply the 38 rules |
 | `{&a}` | `[GLUE]` |
 | `{-\|}` `{>}` `{<}` | `[CAP_NEXT]` `[LOWER_NEXT]` `[UPPER_NEXT]` |
 | `{~\|'}` | `[CARRY_CAP]` |
@@ -23,7 +23,7 @@ installed system's 38 orthography rules.
 | `{mode:caps}` … `{mode:set_space:_}` | `[CMD=mode.caps]` … `[CMD=mode.set_space]_[END]` |
 | `=undo` `{*+}` `{*}` | `[CMD=engine.undo]` `[CMD=engine.repeat_stroke]` `[CMD=engine.toggle_star]` |
 | `{plover:…}` | `[CMD=plover.…]` |
-| `{:infl:ed}` | `[META=infl]ed[END]`: inflection only, no part of speech |
+| `{:infl:ed}` | `[META=infl]ed[END]`: a lexicon, no part of speech |
 | `{:retro:past}` | **not carried.** A clause rewrite over a tagger |
 | `{=regex/yes/no}` | **not expressible.** It reads the *next* translation |
 | `{}` cancel formatting | not implemented |
@@ -49,31 +49,101 @@ dictionary is refused.
 
 ## Orthography, which is the operator that mattered
 
+*Done, and it is three artifacts rather than any host code.*
+
 `{^ing}` is the most common directive in every real dictionary and it is not
 "close the gap". Plover's English system carries 38 rewrite rules over the join
-plus a word list to choose between candidates, so `run` and `ing` make `running`
-and `box` and `s` make `boxes`.
-
-The reference host implements 13 of the 38, hand written, because the rules cannot
-be compiled by a Rust regex crate: rule 8 needs a lookbehind and neither `regex`
-nor `regex-lite` has one. Coverage is measured rather than claimed. Over 40,000
-pairs, every lowercase single-word translation in `typey-type-full.json` against
-the ten commonest suffixes, with Plover's own `add_suffix` as the oracle:
+plus a 338,882-word list to choose between the candidates they generate, so `run`
+and `ing` make `running` and `discover` and `ed` make `discovered` rather than
+`discoverred`. Thirty-eight regexes in every host is the thing this format exists
+to avoid, so all three parts are artifacts:
 
 ```
-40000 pairs, 39612 agree (99.0%)
-  seduce + able: plover 'seducible', ours 'seducable'
-  discover + ed: plover 'discovered', ours 'discoverred'
-  signal + ed: plover 'signaled', ours 'signalled'
+ortho.hfstol   122 KB   `word ^ suffix` to every candidate, tagged with its rule
+words.hfstol   6.9 MB   a word to how common it is
+infl.hfstol    788 KB   `word ^ mode` to an inflected form
 ```
 
-The residual is not the missing rules. It is the **word list**: Plover generates
-candidates and prefers one that is a known word, which is how `discover` avoids
-doubling and how `signal` picks the American spelling. That mechanism is a lexicon,
-and a lexicon is an automaton, so the honest place for it is a compiled
-orthography transducer that a host reads like any other artifact:
-`PU(rule .o. InWordList, plain)`. Thirty-eight regexes in every host is the thing
-this format exists to avoid.
+The rules are 150 lines of xfst, one line per rule, and two of them are the reason
+this belongs in an automaton rather than in a regex engine. Rule 8 is a lookbehind,
+`(?<![gin]a)r`, which is a subtraction here: `[ L* - [ L* [g|i|n] a ] ] r`, so
+`dispatches` and `monarchs` both come out right. Rule 38 doubles a consonant,
+which is a copy, and a copy of *one* symbol is finite, so it stays regular.
+
+What is left in the host is Plover's choosing, and it is fifteen lines with no
+English in it: prefer a candidate the word list knows, among those prefer the
+commonest, break a tie by which rule made it. The rule number is why the artifact
+emits one.
+
+§9 predicted one composed artifact instead, `PU(rule .o. InWordList, plain)`, and
+three uncomposed ones are better for two reasons. Composing the rules against the
+list means building the preimage of a 338,882-word list under 38 relations, which is
+a large net to construct for a choice the host can make in fifteen lines. And the
+choice is not a priority union: Plover ranks the surviving candidates by *how
+common* each one is, which is a number per word rather than an order over rules, so
+the composition would have to carry weights to say it. Leaving the three relations
+separate says it with no weights at all, and `words.hfstol` becomes a thing a host
+can ask other questions of. A suggestion window wants exactly that.
+
+Two measurements, because the two cases differ and reporting one would hide the
+other. Both use Plover's own `add_suffix` as the oracle.
+
+```
+300000 pairs, 300000 agree (100.0%)      lowercase words, ten commonest suffixes
+ 91090 pairs,  90869 agree (99.76%)      capitalised and accented words
+```
+
+The first is exact, and it is also the case that happens: a formatter capitalises
+*after* it joins, so the word reaching a join is lowercase unless a dictionary
+already wrote a capital.
+
+The 221 differences in the second are all one thing, Plover's word list being
+case-sensitive where this lowercases to look up. 177 are ours preferring a word the
+list knows (`Doctored`, against Plover's `Doctorred`, which is not a word). 37 are
+the converse, Plover finding a capitalised entry we miss (`Latiner`). 7 are a
+suffix that swallows a final capital in an acronym (`SASEd` against `SASed`). Fixing
+the last group needs the rules to report where the word stops and the join begins,
+which is a real mechanism for 7 pairs in 91,090, all of them a suffix on an
+acronym. It is not built, and this is the number that says why.
+
+An exact check sits under the rate, and it is the tighter one: for every pair,
+Plover's rules give a set of `(rule number, expansion)` and so does the artifact,
+and `scripts/check-ortho-rules.py` requires the two sets to be *equal*. A rule that
+never fires and a rule that fires wrongly look the same in an agreement rate and
+not in a set comparison. It found three transcription errors and one alphabet gap
+the first time it ran, and it reports which of the 38 rules the sample never
+reached rather than leaving coverage to a hopeful `limit`.
+
+## Inflection, which is the other half of a join
+
+*Done.* `plover-semantic-suffixes` uses `lemminflect` for `run`→`ran` and
+`child`→`children`, and that is a lexicon, so `infl.hfstol` is one: `word ^ mode`
+to a form, compiled from lemminflect's own tables.
+
+Keeping it separate from orthography is the point, and conflating them was the bug
+it replaced. `{^s}` is orthography, so `child` and `s` make `childs`, exactly as
+Plover says. `{:infl:ofs}` is inflection, so they make `children`. Only the second
+asks a lexicon, and a host with no lexicon now *refuses* `{:infl:…}` rather than
+answering it with the rules, because a wrong word is worse than a missing one.
+
+The artifact holds only the 69,806 pairs where the lexicon disagrees with
+`add_suffix`, and the host falls back to the rules for the other 27,793. That is a
+filter and not an approximation: the generator computes both sides and keeps the
+entry whenever they differ, so `walk` and `ed` needs no entry and `run` and `ed`
+does. `scripts/check-infl.py` checks the composition of all three parts, the
+generator's choice, lexc's escaping and the host's fallback, over 60,000
+inflections, exactly.
+
+Re-inflection falls out of the lemma table and cost nothing: `running` and `ed` is
+`ran`, because the lexicon inflects the lemma and not the form it was handed.
+
+One thing needed deciding rather than porting. `-S` is genuinely ambiguous between a
+plural and a third person, and the plugin resolved it with the tagger, by looking at
+the word before. What resolves it here is the inflection itself: try the noun
+reading, then the verb, and prefer whichever *changes the word*. The plural of the
+noun "abandon" is "abandon", so `-S` there means "abandons". Where neither reading
+changes it, that is the answer and not a failure, because an invariant plural is a
+lexicon fact and only a word list knows it: `sheep` and `-S` is `sheep`.
 
 ## What the ecosystem needs that the format still cannot do
 
@@ -85,11 +155,6 @@ Left undone on purpose, and the reason is a count: no dictionary in
 `~/.config/plover` uses it. Zero across typey-type's 145,345 entries, `main.json`,
 and every other JSON file there. It would cost the formatter a pending unit, which
 is a real change to what a host must do, and nothing is asking.
-
-**A morphology lexicon.** `plover-semantic-suffixes` uses `lemminflect` for
-`run`→`ran` and `child`→`children`. That is a lexicon, which is what HFST is for, so
-compiling one is a build job rather than a design question, and until it exists
-`[META=infl]` does the regular cases through the orthography rules.
 
 **Not a tagger, and that is a decision rather than a gap.** The same plugin also
 chooses *words* by part of speech: `-S` after an "of" word writes "of", after a

@@ -12,7 +12,6 @@
 use stfst_core::record::{Case, Item, Mods, Record, SpaceOp};
 use stfst_core::window::{Class, Window};
 
-use crate::ortho;
 use crate::{Cell, ModeCase, Tail, Text};
 
 /// What only the host can carry out.
@@ -34,6 +33,8 @@ pub enum FormatError {
     NoWindow,
     #[error("{0} cannot take the argument {1:?}")]
     BadMeta(String, String),
+    #[error("this host has no morphology artifacts, so it cannot inflect")]
+    NoMorph,
 }
 
 impl Text {
@@ -282,10 +283,12 @@ impl Text {
                     .is_some_and(|c| c.space.is_empty() && !c.word.is_empty());
             match join {
                 true => {
-                    let rewritten = self
-                        .ortho
-                        .then(|| ortho::join(&self.cells.last().expect("a cell").word, &word))
-                        .flatten();
+                    let rewritten = match (self.ortho, &self.morph) {
+                        (true, Some(morph)) => {
+                            Some(morph.join(&self.cells.last().expect("a cell").word, &word))
+                        }
+                        _ => None,
+                    };
                     let last = self.cells.last_mut().expect("a cell to join");
                     match rewritten {
                         Some(whole) => last.word = whole,
@@ -401,20 +404,15 @@ impl Text {
                 let (before, after) = arg.split_once('c').unwrap_or((arg, ""));
                 cell.word = format!("{before}{}{after}", grouped(&digits));
             }
-            // `{:infl:…}`: the regular cases, which are the orthography rules. An
-            // irregular form is a lexicon, and this host has none, so `run` and
-            // `ed` come back as `runed` rather than as nothing: the entry is
-            // reported by the checker rather than failing silently.
+            // `{:infl:…}`: the lexicon, and the rules only where it agrees with
+            // them. Without a lexicon there is nothing honest to write, so this
+            // fails rather than appending `ed` to `run`.
             "infl" => {
-                let suffix = match arg {
-                    "ed" => "ed",
-                    "ing" => "ing",
-                    "ofs" | "s" => "s",
-                    "ofz" | "z" => "'s",
-                    _ => return Err(FormatError::BadMeta(name.into(), arg.into())),
-                };
                 let word = cell.word.clone();
-                cell.word = ortho::join(&word, suffix).unwrap_or(word + suffix);
+                let morph = self.morph.as_ref().ok_or(FormatError::NoMorph)?;
+                cell.word = morph
+                    .inflect(&word, arg)
+                    .ok_or_else(|| FormatError::BadMeta(name.into(), arg.into()))?;
             }
             _ => return Err(FormatError::UnknownMeta(name.to_string())),
         }
@@ -551,10 +549,16 @@ mod tests {
         assert_eq!(text(&["HELLO", "[META=retro.lower][END]"]), "hello");
         // `{*($c)}`: the argument is the format and `c` is where the number goes.
         assert_eq!(text(&["1234", "[META=retro.currency]$c[END]"]), "$1,234");
-        // `{:infl:…}`: the regular cases, which are the orthography rules.
-        assert_eq!(text(&["run", "[META=infl]ing[END]"]), "running");
-        assert_eq!(text(&["carry", "[META=infl]ofs[END]"]), "carries");
-        assert_eq!(text(&["dog", "[META=infl]ofz[END]"]), "dog's");
+    }
+
+    #[test]
+    fn inflection_needs_a_lexicon_and_says_so() {
+        // `run` and `ed` is `ran`, and no rule can know that, so a host with no
+        // lexicon refuses instead of answering with the rules. Answering was the bug.
+        let mut out = Text::default();
+        let record = Record::parse_display("[META=infl]ed[END]").unwrap();
+        out.apply(&Record::parse_display("run").unwrap(), &[]).unwrap();
+        assert_eq!(out.apply(&record, &[]), Err(FormatError::NoMorph));
     }
 
     #[test]
@@ -580,11 +584,15 @@ mod tests {
     }
 
     #[test]
-    fn an_orthographic_join_is_not_a_plain_join() {
-        // `{^ing}` after `run`, against `{^^}ing` which only closes the gap.
-        assert_eq!(text(&["run", "ing[ORTHO_L]"]), "running");
-        assert_eq!(text(&["run", "ing[ATTACH_L]"]), "runing");
-        // `{$}` says the word is finished, so nothing folds into it.
+    fn an_orthographic_join_is_a_plain_join_with_no_rules_to_apply() {
+        // What this crate decides on its own is *where* the join happens. What the
+        // join spells is `morph`'s, and with no artifacts there is nothing to
+        // spell: `running` is measured in `scripts/check-ortho.py`, not here.
+        // `{^ing}` and `{^^}ing` close the same gap, and only the rules tell them
+        // apart. `{$}` does not reopen it: it stops the rewrite, not the join.
+        for record in ["ing[ORTHO_L]", "ing[ATTACH_L]"] {
+            assert_eq!(text(&["run", record]), "runing");
+        }
         assert_eq!(text(&["run[WORD_END]", "ing[ORTHO_L]"]), "runing");
     }
 

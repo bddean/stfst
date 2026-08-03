@@ -43,9 +43,18 @@ whole stack of 13 dictionaries, formatting and folding included:
 
 | | |
 |---|---|
-| per stroke | 65 us |
+| per stroke | 61 us |
 | candidates | 7 at the widest |
 | typey-type and emily-symbols alone | 56 us |
+| one orthographic join | 16 us |
+
+A join is the one operation that reads several artifacts at once. It asks the rules
+for candidates and then asks the 338,882-word list about each, so up to forty
+lookups answer one `{^ing}`. That costs 16 microseconds and does not move the
+per-stroke number, because a stroke does at most one join: a stream where every
+third stroke folds a suffix and inflects it measures 59 microseconds a stroke,
+which is the ordinary number. The fold is a clone of a live candidate and the
+inflection is one lookup.
 
 Against a 16 ms frame, so a stroke uses four tenths of one per cent of the time
 available. The stack size is nearly free: 13 dictionaries cost 9 microseconds more

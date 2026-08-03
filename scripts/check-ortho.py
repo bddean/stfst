@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Measure how much of Plover's orthography the reference host reproduces.
+"""Measure how much of Plover's orthography the artifacts reproduce.
 
-`crates/stfst-text/src/ortho.rs` is twelve of Plover's thirty-eight rules, so the
-coverage is a claim and this is the number behind it. Plover's own `add_suffix` is
-the oracle, which means running under Plover's python:
+`scripts/check-ortho-rules.py` checks the rules themselves, candidate for
+candidate. This checks the whole join: the rules, the word list that ranks their
+candidates, and the host's fifteen lines of choosing between them. Plover's own
+`add_suffix` is the oracle, which means running under Plover's python:
 
   /Applications/Plover.app/Contents/Frameworks/Python.framework/Versions/3.13/bin/python3.13 \\
       scripts/check-ortho.py
@@ -11,6 +12,11 @@ the oracle, which means running under Plover's python:
 The pairs come from `typey-type-full.json`: every word it writes as a single
 translation, against the suffixes its own `{^…}` entries use. That weights the
 sample the way real writing does rather than the way a rule list does.
+
+Lowercase words only, and that is the case that happens rather than a convenient
+one: a formatter capitalises after it joins, so a word reaching a join is lowercase
+unless a dictionary already wrote a capital. `docs/parity.md` has the number for
+capitalised words and names every difference behind it.
 """
 import json
 import os

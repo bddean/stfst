@@ -17,7 +17,7 @@
 //! anywhere in this crate.
 
 pub mod format;
-pub mod ortho;
+pub mod morph;
 
 use std::collections::VecDeque;
 
@@ -123,6 +123,12 @@ pub struct Text {
     /// applies once and to the right join. Transient, and never observed from
     /// outside a call.
     pub(crate) ortho: bool,
+    /// The orthography and inflection artifacts, when the host has them.
+    ///
+    /// Absent, `[ORTHO_L]` degrades to a plain join and `[META=infl]` fails, which
+    /// is the honest pair of answers: a gap is a join with the rules missing, and
+    /// an inflection with no lexicon is not an inflection at all.
+    morph: Option<std::sync::Arc<morph::Morph>>,
 }
 
 /// The text and the state that goes with it, as one unit found it.
@@ -134,6 +140,14 @@ pub(crate) struct Snapshot {
 }
 
 impl Text {
+    /// Text that can join a suffix properly, given the artifacts to do it with.
+    pub fn with_morph(morph: std::sync::Arc<morph::Morph>) -> Text {
+        Text {
+            morph: Some(morph),
+            ..Text::default()
+        }
+    }
+
     pub fn tail(&self) -> &Tail {
         &self.tail
     }

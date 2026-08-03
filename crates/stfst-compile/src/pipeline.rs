@@ -153,6 +153,79 @@ pub fn compile_lexc(
     to_hfstol_inverted(&net, out_reverse)
 }
 
+/// Compile the morphology artifacts: the rules from xfst, the two lexicons from
+/// lexc.
+///
+/// None of the dictionary checks apply and none of them is missing. A dictionary
+/// relates a key tape to a record, so §3 has properties to check; these relate
+/// text to text, so it has nothing to say about them. Nor is there a reverse
+/// direction: a host asks what a join produces and never what produced one.
+///
+/// The empty check stays, because the trap it catches is xfst's and not a
+/// dictionary's: an undefined identifier is a *symbol* there, so a typo in a rule
+/// composes with nothing and leaves an artifact that answers every question with
+/// silence.
+pub fn compile_morph(rules: &Path, lexicons: &Path, work: &Path, out: &Path) -> Result<Vec<String>> {
+    std::fs::create_dir_all(work)?;
+    std::fs::create_dir_all(out)?;
+    let mut report = Vec::new();
+
+    let net = work.join("ortho.hfst");
+    let script = work.join("ortho.xfst");
+    std::fs::write(
+        &script,
+        format!(
+            "source {}\npush Ortho\nsave stack {}\nclear stack\n\
+             echo STFST-CHECK-EMPTY\npush Ortho\ntest null\nclear stack\n",
+            rules.display(),
+            net.display()
+        ),
+    )?;
+    let log = run("hfst-xfst", &["-F", script.to_str().unwrap()])?;
+    if empty(&log) {
+        bail!(
+            "{} defines an empty Ortho, so it relates no join to anything",
+            rules.display()
+        );
+    }
+    to_hfstol(&net, &out.join("ortho.hfstol"))?;
+    report.push(format!("ortho.hfstol from {}", rules.display()));
+
+    for name in ["words", "infl"] {
+        let source = lexicons.join(format!("{name}.lexc"));
+        if !source.exists() {
+            bail!(
+                "{} is missing; run scripts/gen-morph.py under Plover's python",
+                source.display()
+            );
+        }
+        let net = work.join(format!("{name}.hfst"));
+        run(
+            "hfst-lexc",
+            &[source.to_str().unwrap(), "-o", net.to_str().unwrap()],
+        )?;
+        to_hfstol(&net, &out.join(format!("{name}.hfstol")))?;
+        report.push(format!("{name}.hfstol from {}", source.display()));
+    }
+    Ok(report)
+}
+
+/// Whether an xfst log's `test null` said the net was empty.
+fn empty(log: &str) -> bool {
+    let mut after = false;
+    for line in log.lines() {
+        let line = line.trim();
+        if line == "STFST-CHECK-EMPTY" {
+            after = true;
+            continue;
+        }
+        if after && !line.is_empty() {
+            return line.starts_with('1');
+        }
+    }
+    false
+}
+
 fn to_hfstol(net: &Path, out: &Path) -> Result<()> {
     // Composition leaves every intermediate symbol in the alphabet, including
     // the feature tags the grammar consumes. Pruning them makes the artifact

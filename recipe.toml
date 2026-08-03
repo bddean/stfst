@@ -82,8 +82,9 @@ name = "repeat-word"
 priority = 7
 plain = "dictionaries/repeat-word.dict"
 
-# semantic-retro is absent, and the absence is the design working. Its entries ask
-# for `[META=clause]`, the clause rewrites `plover-semantic-suffixes` implements
-# with a morphology lexicon, and the reference host has no lexicon. A meta that does
-# not run leaves the text quietly wrong, so `Dict::open` refuses the dictionary
-# rather than loading it and doing nothing. Phrasing's own fold is the alternative.
+# semantic-retro is absent, and the absence is the design working. Its nineteen
+# entries ask for a clause rewrite over a part-of-speech tagger, and a tagger is a
+# statistical model rather than a function of its input, so this format has no
+# meaning for one and the importer says so entry by entry. Not a lexicon problem:
+# `morphology/` supplies one, and `{:infl:…}` uses it. Phrasing's own fold is the
+# alternative. See docs/parity.md.

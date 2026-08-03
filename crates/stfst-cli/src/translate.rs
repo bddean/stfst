@@ -7,6 +7,7 @@
 
 use std::collections::VecDeque;
 use std::path::{Path, PathBuf};
+use std::sync::Arc;
 
 use anyhow::{Context, Result};
 use stfst_core::{Capabilities, Emission, Outline, System};
@@ -26,8 +27,12 @@ pub fn run(
     system: &Path,
     strokes: Vec<String>,
     quiet: bool,
+    morph: &Path,
 ) -> Result<()> {
     let system = System::load(system)?;
+    // One set of artifacts for every `Text` this run makes, which is what `Arc` is
+    // for here: `!buffer` starts a fresh buffer and must not reopen them.
+    let morph = Arc::new(stfst_text::morph::Morph::open(morph)?);
     // This harness implements every command and meta in the tables. A host that
     // implemented fewer would be refused the dictionaries that need them, which is
     // the point of declaring.
@@ -46,7 +51,7 @@ pub fn run(
     }
 
     let mut session = stack.session();
-    let mut text = Text::default();
+    let mut text = Text::with_morph(morph.clone());
     // How many units the text held before each stroke, so a match that spans
     // several strokes can put back what those strokes wrote.
     let mut marks: Vec<usize> = Vec::new();
@@ -58,7 +63,7 @@ pub fn run(
     'stroke: while let Some(line) = queue.pop_front() {
         let line = line.trim();
         if let Some(seed) = line.strip_prefix(BUFFER) {
-            text = Text::default();
+            text = Text::with_morph(morph.clone());
             text.seed(seed);
             say!("{line}\t{:?}", text.to_string());
             continue;

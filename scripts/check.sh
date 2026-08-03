@@ -63,6 +63,20 @@ for case in tests/probe/*.strokes; do
     fi
 done
 
+# Morphology. Skipped rather than failed where the artifacts are absent: they are
+# built from data that ships with Plover rather than checked in, so a machine can
+# have this repo and not have them. Plover's python is also the oracle here, which
+# is why one condition covers both.
+echo "== morphology"
+PLOVER_PYTHON=${PLOVER_PYTHON:-/Applications/Plover.app/Contents/Frameworks/Python.framework/Versions/3.13/bin/python3.13}
+if [ -f build/morph/ortho.hfstol ] && [ -x "$PLOVER_PYTHON" ]; then
+    "$PLOVER_PYTHON" scripts/check-ortho-rules.py build/morph/ortho.hfst 400
+    "$PLOVER_PYTHON" scripts/check-ortho.py 4000
+    "$PLOVER_PYTHON" scripts/check-infl.py 20000 | head -1
+else
+    echo "skipped: no build/morph artifacts, or no Plover python"
+fi
+
 # Translation is not a per-tape question, so it needs its own fixture: a stroke
 # stream through the whole stack, where the answer depends on the history.
 echo "== translate"
