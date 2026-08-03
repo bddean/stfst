@@ -23,7 +23,8 @@ installed system's 38 orthography rules.
 | `{mode:caps}` … `{mode:set_space:_}` | `[CMD=mode.caps]` … `[CMD=mode.set_space]_[END]` |
 | `=undo` `{*+}` `{*}` | `[CMD=engine.undo]` `[CMD=engine.repeat_stroke]` `[CMD=engine.toggle_star]` |
 | `{plover:…}` | `[CMD=plover.…]` |
-| `{:infl:ed}`, `{:retro:past}` | `[META=infl]ed[END]`, `[META=clause]past[END]` |
+| `{:infl:ed}` | `[META=infl]ed[END]`: inflection only, no part of speech |
+| `{:retro:past}` | **not carried.** A clause rewrite over a tagger |
 | `{=regex/yes/no}` | **not expressible.** It reads the *next* translation |
 | `{}` cancel formatting | not implemented |
 
@@ -33,10 +34,12 @@ fixed set, so the set is closed, and enumerating it makes the load-time check th
 same one-pass alphabet check as every other tag. A dictionary that asks for an
 operation this host cannot do is refused when it loads.
 
-That refusal has already earned itself: `semantic-retro.json` asks for
-`[META=clause]`, the clause rewrites `plover-semantic-suffixes` does with a
-morphology lexicon, and the reference host has no lexicon. So it is out of the
-recipe instead of loading and quietly doing nothing.
+That refusal has already earned itself: while the table still held a clause-rewrite
+operation nobody had written, `semantic-retro.json` was refused at load rather than
+loading and quietly doing nothing. The operation is now out of the table too, so
+those entries do not import at all and `stfst import --report` names each of the
+nineteen. That is the stronger statement: not "this host cannot", but "this format
+has no meaning for it".
 
 The distinction between a command and a meta decides what happens when a host
 cannot oblige. A **command** is a request, so an unimplemented one is declined and
@@ -84,10 +87,23 @@ and every other JSON file there. It would cost the formatter a pending unit, whi
 is a real change to what a host must do, and nothing is asking.
 
 **A morphology lexicon.** `plover-semantic-suffixes` uses `lemminflect` for
-`run`→`ran`, `child`→`children`, and a POS tag per word. That is a lexicon, which
-is what HFST is for, and compiling one is a build job rather than a design
-question. Until then `[META=infl]` does the regular cases and `[META=clause]` is
-declared and unimplemented.
+`run`→`ran` and `child`→`children`. That is a lexicon, which is what HFST is for, so
+compiling one is a build job rather than a design question, and until it exists
+`[META=infl]` does the regular cases through the orthography rules.
+
+**Not a tagger, and that is a decision rather than a gap.** The same plugin also
+chooses *words* by part of speech: `-S` after an "of" word writes "of", after a
+preposition it writes "this", and where the last word cannot take a suffix it walks
+left for a head that can. None of that is ported, and none of it should be. Deciding
+whether "run" is a noun here is a statistical model, so an artifact holding one could
+not be checked and would not be a function of its input, which are the two properties
+the format exists to have.
+
+What replaces it is a rule about direction. **What a folded key adds, it appends.**
+`KAOEPT` is "keep the" and never "the keep", and the plugin's own README came to the
+same place for the same reason: the insertion that landed *before* a phrase fought
+with the ordinary reading too often. Appending needs no part of speech, which is why
+dropping the tagger costs nothing here.
 
 **A dynamic stack.** *Done for enable, disable and solo.* Which dictionaries are
 answering is part of the frame, like the context and the carried state, so a stroke

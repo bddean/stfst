@@ -377,16 +377,13 @@ fn long_form(
             Case::UpperNext => "retro.upper",
             Case::LowerNext => "retro.lower",
         })]),
-        // `plover-semantic-suffixes`: inflect the previous word, or rewrite the
-        // clause. `retro` is renamed to `clause` here, because this record language
-        // already has `retro.cap` and the two are not the same kind of operation.
+        // `plover-semantic-suffixes`: inflect the previous word. Its clause
+        // rewrites, `{:retro:past}` and the rest, are deliberately not here, so an
+        // entry that asks for one is reported rather than carried: see
+        // docs/parity.md.
         ("infl", mode) => Ok(vec![Item::Meta {
             name: "infl".into(),
             arg: mode.to_string(),
-        }]),
-        ("retro", op) => Ok(vec![Item::Meta {
-            name: "clause".into(),
-            arg: op.to_string(),
         }]),
         ("retro_currency", format) => Ok(vec![Item::Meta {
             name: "retro.currency".into(),

@@ -73,10 +73,15 @@ pub const METAS: &[&str] = &[
     // where the argument is the mode. The regular cases are the orthography rules;
     // `run` to `ran` is a lexicon, and the right home for that is a morphology
     // transducer composed onto the window, which is what HFST is for.
+    //
+    // Inflection only. The plugin also chooses *words* by part of speech, so `-S`
+    // after an "of" word writes "of" and after a preposition writes "this", and it
+    // walks left to find a head that can take the suffix. None of that is here, and
+    // dropping it is what keeps the table honest: a tagger is a statistical model,
+    // so an artifact holding one could not be checked and would not be a function
+    // of its input. What a folded key adds, it appends, and appending needs no part
+    // of speech.
     "infl",
-    // `{:retro:past}`, from the same plugin: rewrite the clause. Declared and not
-    // implemented here, because it needs the same lexicon plus a parse.
-    "clause",
 ];
 
 pub fn command_tag(name: &str) -> String {
@@ -115,30 +120,17 @@ pub struct Capabilities {
     pub metas: Vec<String>,
 }
 
-/// Metas the reference host does not implement. Naming them here rather than
-/// leaving them out of the table is the difference between "no host can do this"
-/// and "this host cannot".
-const UNIMPLEMENTED: &[&str] = &["clause"];
-
 impl Capabilities {
-    /// Every command and meta in the tables. For a test, or a host that claims
-    /// everything.
+    /// Every command and meta in the tables, which is what the reference formatter
+    /// and CLI between them implement.
+    ///
+    /// There is no shorter list any more. While the tables held an operation nobody
+    /// had written, this had a sibling that filtered it out; a table entry nothing
+    /// implements is better deleted than declared.
     pub fn all() -> Capabilities {
         Capabilities {
             commands: COMMANDS.iter().map(|s| s.to_string()).collect(),
             metas: METAS.iter().map(|s| s.to_string()).collect(),
-        }
-    }
-
-    /// What the reference formatter and CLI between them actually do.
-    pub fn reference() -> Capabilities {
-        Capabilities {
-            metas: METAS
-                .iter()
-                .filter(|m| !UNIMPLEMENTED.contains(m))
-                .map(|s| s.to_string())
-                .collect(),
-            ..Capabilities::all()
         }
     }
 

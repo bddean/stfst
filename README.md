@@ -55,8 +55,9 @@ compiles in 36 seconds.
 text rather than writing a word, so the question a suggestion window asks has no
 answer for it. See `docs/retro.md`.
 
-`semantic-retro.json` is absent, and the absence is the load-time check working:
-it asks for an operation no host here implements. See `docs/parity.md`.
+`semantic-retro.json` is absent: its entries are clause rewrites over a part-of-speech
+tagger, which is the one thing this format deliberately cannot hold. See
+`docs/parity.md`.
 
 Nine entries in the whole set do not import, and each is named by
 `stfst import --report`: five hold a `{}` shape the record language has no meaning

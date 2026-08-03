@@ -28,10 +28,10 @@ pub fn run(
     quiet: bool,
 ) -> Result<()> {
     let system = System::load(system)?;
-    // This harness implements every command and meta in the tables, so it declares
-    // the lot. A host that implemented fewer would be refused the dictionaries that
-    // need them, which is the point of declaring.
-    let stack = Stack::open(artifacts, &system, &Capabilities::reference())?;
+    // This harness implements every command and meta in the tables. A host that
+    // implemented fewer would be refused the dictionaries that need them, which is
+    // the point of declaring.
+    let stack = Stack::open(artifacts, &system, &Capabilities::all())?;
     // One macro rather than a branch at every call: the harness prints six
     // different lines and each one is only for a reader.
     macro_rules! say {

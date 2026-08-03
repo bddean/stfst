@@ -275,7 +275,7 @@ fn main() -> Result<()> {
             limit,
         } => {
             let sys = System::load(&system)?;
-            let dict = stfst_dict::Dict::open(&artifact, &sys, &Capabilities::reference())?;
+            let dict = stfst_dict::Dict::open(&artifact, &sys, &Capabilities::all())?;
             for text in or_stdin(records)? {
                 let record = stfst_core::Record::parse_display(&text)?;
                 let found = dict.outlines(&record, limit)?;
