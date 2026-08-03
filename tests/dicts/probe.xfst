@@ -16,12 +16,17 @@ define Say(X)   [ 0 .x. X ] ;
 ! first letter accordingly. Nothing here reads host state: the slot is a symbol on
 ! the tape before the keys, and the compiler notices it and writes `context =
 ! ["CAP"]` into the manifest.
-! Declaring a slot means the host sends it before every stroke, so every entry
-! has to read it, including the ones that do not care what it says. That follows
-! from the manifest being derived: one entry that reads `CAP` makes `CAP` part of
-! this dictionary's tape.
-define Slot     [ Kill("[CAP=on]") | Kill("[CAP=off]") ] ;
-define Cap      [ Slot Kill(K) Kill(P) Kill(A) Say("[CAP_NEXT]") ] ;
+! Declaring a slot means the host sends it before every stroke, so every entry has
+! to read it, including the ones that do not care what it says. That follows from
+! the manifest being derived: one entry that reads `CAP` makes `CAP` part of this
+! dictionary's tape.
+!
+! The boilerplate for not caring is one token, and it is the *slot's* acceptor and
+! not the region's. `Kill(CtxCAP)` would consume whatever the host sent, and it would
+! also mention every slot in the table, which is how the manifest is derived: the
+! host would then send all of them and every branch here would have to read all of
+! them. Name the slot you want.
+define Cap      [ Kill(CtxCAP) Kill(K) Kill(P) Kill(A) Say("[CAP_NEXT]") ] ;
 define The      [ [ Kill("[CAP=on]") Kill(T) Say({The}) ]
                 | [ Kill("[CAP=off]") Kill(T) Say({the}) ] ] ;
 
@@ -33,9 +38,9 @@ define The      [ [ Kill("[CAP=on]") Kill(T) Say({The}) ]
 ! pop: undoing the `*` puts the first phrase back, along with the state that
 ! produced it.
 define State(S) [ Say("[STATE]") Say(S) Say("[END]") ] ;
-define Start    [ Slot Kill("+") Kill(T) Say({it's}) State({pres}) ] ;
+define Start    [ Kill(CtxCAP) Kill("+") Kill(T) Say({it's}) State({pres}) ] ;
 define Flip(In, Out, Text)
-    [ Kill("[STATE]") Kill(In) Kill("[END]") Slot Kill("*")
+    [ Kill("[STATE]") Kill(In) Kill("[END]") Kill(CtxCAP) Kill("*")
       Say(Text) Say("[REPLACE1]") State(Out) ] ;
 
 define Grammar  Canon([ Cap | The | Start

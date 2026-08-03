@@ -130,6 +130,35 @@ orthography. None of the three knows about the others.
 `suffix_keys` is system configuration, like the keys themselves, and it carries the
 local fork's `-T` so that `KAOEPT` reads as "keep the".
 
+## What a rule writer pays for the regions
+
+One tape, in regions, in a fixed order:
+
+```
+[STATE]…[END]   [CAP=off][W1=lower]   keys   [W] glyphs [/W]
+   state              context         keys        window
+```
+
+A dictionary that declares nothing sees exactly the keys and writes no boilerplate,
+which is every dictionary in the stack but two. A dictionary that declares a region
+must consume it in *every* entry, because the host sends what the manifest declares
+and the manifest is derived from the alphabet: one entry that reads `CAP` makes
+`CAP` part of that dictionary's tape.
+
+The boilerplate for not caring is one token, `Kill(CtxCAP)`, and the trap is
+reaching for the catch-all. `Kill(Ctx)` consumes whatever arrived *and* mentions
+every slot in the table, so the compiler declares them all, the host sends them all,
+and every branch has to read them all. Name the slot you want. The same holds for
+`Kill(Win)`.
+
+Forgetting the token is not silent. The entry becomes unreachable, and the outline
+check prints the tape that no longer parses, which is how the fixture caught a stale
+`Slot` the moment it was renamed.
+
+The practical rule is to keep a window dictionary separate rather than paying the
+region tax in a general one, which is what `retro-words` is: every entry there
+rewrites, so the region is the point rather than an overhead.
+
 ## Two things measured on the way
 
 **The hoist chain was a hidden `2^n`.** `Canonical` composed one hoist per flag
