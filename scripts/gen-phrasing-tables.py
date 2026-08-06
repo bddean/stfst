@@ -1,17 +1,20 @@
 #!/usr/bin/env python3
-"""Transcribe the phrasing tables from `phrasing.py` into xfst.
+"""Transcribe the phrasing *data* from `phrasing.py` into xfst.
 
-Two kinds of table live here, and neither is a rule:
+Only what is a finite map by nature lives here. The paradigm that reads these
+tables -- the auxiliary chain, do-support, agreement, the contraction modes --
+is hand-written in `phrasing.xfst`, because it is a rule.
 
 - The **subject map**, one row per left-key set. `PHRASING-DESIGN.md` §4.1 gives
   it as a sublanguage with growth, coordination, politeness order and a type
   shift, but every one of those is a finite map over subsets of five keys, so it
   precomputes away, which is what `FST-DICT-DESIGN.md` §7 item 1 says.
-- The **closed-class conjugation**, `be` and the modals. English's finite forms
-  are irregular, so this is data by nature: `am`/`is`/`are`/`was`/`were`, the
-  negatives, and which of them a subject may cliticize.
-
-The rules that read these tables are hand-written in `phrasing.xfst`.
+- The **right bank**: 658 chords naming a verb, a satellite and a tense, and 8
+  naming an adverb. Split by tense, so the grammar says the tense before it
+  reads the chord and the record keeps one order.
+- The **conjugation**, five forms of 107 verbs. English inflection is a rule and
+  `morphology/` has it, but this verb set is closed and its irregulars are the
+  common ones, so the table is smaller than the composition would be.
 
 Usage: scripts/gen-phrasing-tables.py > dictionaries/phrasing-tables.xfst
 """
@@ -24,8 +27,7 @@ import sys
 
 LEFT = "STKPWHR"
 AGR = {"1sg": '"[1sg]"', "3sg": '"[3sg]"', "pl": '"[pl]"'}
-HEADS = {None: '"[BE]"', "can": '"[CAN]"', "shall": '"[SHALL]"',
-         "will": '"[WILL]"'}
+FORMS = ("base", "3sg", "past", "prespart", "pastpart")
 
 
 def load(path):
@@ -61,108 +63,124 @@ def literal(text):
 
 def keys(left):
     """A left-key set as its tape symbols, in steno order."""
-    return " ".join('"%s"' % k for k in LEFT if k in left)
+    return " ".join('"%s"' % k for k in LEFT if k in left) or "0"
+
+
+def right(chord):
+    """A right-bank chord as its tape symbols, which are lower case."""
+    return " ".join('"%s"' % k.lower() for k in chord)
+
+
+def relation(name, rows, comment=""):
+    body = " |\n    ".join("[ [ %s ] .x. [ %s ] ]" % (i, o) for i, o in rows)
+    return "%sdefine %s [\n    %s ] ;\n" % (comment, name, body)
+
+
+def alphabet(name, symbols, comment=""):
+    body = " |\n    ".join(" | ".join(symbols[i:i + 6])
+                           for i in range(0, len(symbols), 6))
+    return "%sdefine %s [\n    %s ] ;\n" % (comment, name, body)
+
+
+def nominal(ph, subj):
+    """A subject bundle as record symbols.
+
+    A set with no referent and no `W` still heads a clause when the right bank
+    names a verb ("+EB" is "are adding"), so it has agreement and no subject
+    word. `phrasing.xfst` is what refuses it an empty verb slot.
+    """
+    if subj is None:
+        return '"[pl]"'
+    # A clausal "and" (§4.1a) precedes the whole clause, so it stays a marker of
+    # its own rather than folding into the subject word: an inverted question is
+    # "and am I", not "am and I".
+    conj = '"[AND]" ' if subj.get("conj_and") else ""
+    agr = AGR[ph._agr(subj["person"], subj["number"])]
+    if subj["kind"] == "inf":
+        return conj + '"[INF]" ' + agr
+    word = subj["word"]
+    clitic = ' "[C]"' if word in ph._CONTRACTIBLE_SUBJ else ""
+    return conj + '"[SUBJ]" %s "[/SUBJ]"%s %s' % (literal(word), clitic, agr)
 
 
 def subject_rows(ph):
-    """One row per left-key set that names a subject.
-
-    A set with no referent and no `W` is a modifier, not a clause (§4.1), so it
-    has no row and no entry: the stroke leaves this dictionary's language.
-    """
-    rows = []
+    """The nominal sublanguage (§4.1), one row per left-key set."""
+    named, bare = [], []
     for n in range(len(LEFT) + 1):
         for combo in itertools.combinations(LEFT, n):
-            left = set(combo)
-            subj = ph._subject(left)
-            if subj is None:
-                continue
-            if subj["kind"] == "inf":
-                # An infinitive has no subject word, so a clausal "and" has
-                # nothing to fold into and needs its own marker.
-                conj = '"[AND]" ' if subj.get("conj_and") else ""
-                rows.append((left, conj + '"[INF]" "[3sg]"'))
-                continue
-            word = subj["word"]
-            agr = AGR[ph._agr(subj["person"], subj["number"])]
-            # Contractibility is a fact about the pronoun, so a clausal "and I"
-            # reads it off the inner word, which is what `realize` does before it
-            # prepends the conjunction.
-            clitic = ' "[C]"' if word in ph._CONTRACTIBLE_SUBJ else ""
-            if subj.get("conj_and"):
-                word = "and " + word
-            rows.append((left, '"[SUBJ]" %s "[/SUBJ]"%s %s'
-                         % (literal(word), clitic, agr)))
-    return rows
+            s = ph._subject(set(combo))
+            (bare if s is None else named).append((keys(set(combo)),
+                                                   nominal(ph, s)))
+    return named, bare
 
 
-def finite_rows(ph):
-    """The finite word for each (agreement, head, tense), and its clitic.
+def verb_rows(ph):
+    """The right bank: one row per chord, split by the tense it names.
 
-    `realize` picks the clitic from the *affirmative* form whatever the polarity,
-    so the suffix table is keyed the same way as the words.
+    A satellite sits on the side of the verb it surfaces on, so the record needs
+    no rule to place it: a pre-satellite is written before the lemma and a
+    post-satellite after.
     """
-    aff, neg, suf, sep = [], [], [], []
-    for agr in AGR:
-        for modality, head in HEADS.items():
-            for tense, past in (("pres", ""), ("past", ' "[PAST]"')):
-                sel = "%s %s%s" % (AGR[agr], head, past)
-                if modality is None:
-                    a = ph._BE[tense][agr]
-                    n = ph._BE_NEG[tense][agr]
-                else:
-                    a = ph._MODAL[modality][tense == "past"]
-                    n = ph._MODAL_NEG[modality][tense == "past"]
-                aff.append((sel, a))
-                neg.append((sel, n))
-                if a in ph._AUX_SUFFIX:
-                    suf.append((sel, ph._AUX_SUFFIX[a]))
-                # A "negative" that is really two words is where the reduced mode
-                # falls back to the subject clitic: "am not" gives "I'm not".
-                if n == a + " not":
-                    sep.append(sel)
-    return aff, neg, suf, sep
-
-
-def relation(name, rows, comment):
-    body = " |\n    ".join("[ [ %s ] .x. [ %s ] ]" % (sel, out) for sel, out in rows)
-    return "%sdefine %s [\n    %s ] ;\n\n" % (comment, name, body)
+    rows = {"pres": [], "past": []}
+    sats = {"PRE": set(), "POST": set()}
+    lemmas = {"do"}                    # `@` reaches `do`, which has no chord (§5)
+    for chord, (lemma, sat, tense) in sorted(ph.RHS.items()):
+        lemmas.add(lemma)
+        out = ['"[V:%s]"' % lemma]
+        if sat:
+            s = ph.VERBS[lemma]["satellites"][sat - 1]
+            pos = s["pos"].upper()
+            tag = '"[%s:%s]"' % (pos, s["word"])
+            sats[pos].add((tag, s["word"]))
+            out.insert(0 if pos == "PRE" else 1, tag)
+        rows[tense].append((right(chord), " ".join(out)))
+    return rows, {k: sorted(v) for k, v in sats.items()}, sorted(lemmas)
 
 
 def main(path):
     ph = load(path)
-    out = [
-        "! Generated by scripts/gen-phrasing-tables.py from phrasing.py.",
-        "! Edit that, not this. The rules that read these tables are in",
-        "! phrasing.xfst.",
-        "",
-        "define Agr  [ \"[1sg]\" | \"[3sg]\" | \"[pl]\" ] ;",
-        "define Head [ \"[BE]\" | \"[CAN]\" | \"[SHALL]\" | \"[WILL]\" ] ;",
-        "define Sel  [ Agr Head (\"[PAST]\") ] ;",
-        "",
-    ]
+    out = ["! Generated by scripts/gen-phrasing-tables.py from phrasing.py and",
+           "! phrasing_table.json. Edit those, not this. Only finite maps live",
+           "! here; the paradigm that reads them is in phrasing.xfst.", ""]
+
+    named, bare = subject_rows(ph)
+    out.append(relation(
+        "Subjects", named,
+        "! Left keys to a subject and its agreement: %d of the %d sets name one.\n"
+        "! The other %d head a clause only when a verb follows.\n"
+        % (len(named), 2 ** len(LEFT), len(bare))))
+    out.append(relation("NoSubject", bare))
+
+    rows, sats, lemmas = verb_rows(ph)
+    out.append(alphabet("Lemma", ['"[V:%s]"' % v for v in lemmas],
+                        "\n! The verb set.\n"))
+    for pos in ("Pre", "Post"):
+        rs = sats[pos.upper()]
+        out.append(alphabet("Sat" + pos, [t for t, _ in rs],
+                            "\n! The %s-verb satellite words, a menu slot on the\n"
+                            "! chord (§4.5).\n" % pos.lower()))
+        out.append(relation("Sat%sW" % pos,
+                            [(t, literal(" " + w)) for t, w in rs]))
+    for tense in ("pres", "past"):
+        out.append(relation(
+            "Rhs" + tense.capitalize(), rows[tense],
+            "\n! The %d %s-tense verb chords.\n" % (len(rows[tense]), tense)))
+
+    advs = sorted(ph.ADV.items())
+    out.append(alphabet("Adv", ['"[ADV:%s]"' % w for _, w in advs],
+                        "\n! Adverb enders (§4.6): a verb-less clause launchpad.\n"))
+    out.append(relation("AdvChords",
+                        [(right(c), '"[ADV:%s]"' % w) for c, w in advs]))
+    out.append(relation("AdvW",
+                        [('"[ADV:%s]"' % w, literal(" " + w)) for _, w in advs]))
+
+    for form in FORMS:
+        name = "V" + form.capitalize()
+        out.append(relation(
+            name, [('"[V:%s]"' % v, literal(" " + ph._verbword(v, form)))
+                   for v in lemmas],
+            "\n! The %s form of each verb.\n" % form))
     print("\n".join(out))
-
-    rows = subject_rows(ph)
-    print(relation(
-        "Subjects",
-        [(keys(left), record) for left, record in rows],
-        "! The subject map: left keys to subject features (%d of the %d sets name\n"
-        "! a subject; the rest are modifiers, which this prototype does not have).\n"
-        % (len(rows), 2 ** len(LEFT)),
-    ), end="")
-
-    aff, neg, suf, sep = finite_rows(ph)
-    print(relation("AffW", [(s, literal(w)) for s, w in aff],
-                   "! The affirmative finite word.\n"), end="")
-    print(relation("NegW", [(s, literal(w)) for s, w in neg],
-                   "! The negative finite word, contracted where English has one.\n"),
-          end="")
-    print(relation("Suf", [(s, literal(w)) for s, w in suf],
-                   "! The clitic suffix, where the affirmative form has one.\n"), end="")
-    print("! Selectors whose negative is two words, so the reduced mode reduces the\n"
-          "! subject instead.\ndefine NegSep [\n    %s ] ;\n"
-          % " |\n    ".join("[ %s ]" % s for s in sep))
 
 
 if __name__ == "__main__":

@@ -220,20 +220,22 @@ same place for the same reason: the insertion that landed *before* a phrase foug
 with the ordinary reading too often. Appending needs no part of speech, which is why
 dropping the tagger costs nothing here.
 
-**The rest of the phrasing language.** The port is a slice: subject, modality,
-negation, tense and the contraction modes, 4,096 strokes checked exhaustively.
-Aspect, question, emphasis, the verb and adverb enders, satellites and the retro
-modifier layer are not written. Nothing is blocked, M4 unblocked the last of it, and
-`docs/phrasing.md` now carries the design: the five features the record grows, the
-nine generated word tables, the five arrangements that read them, and the retro
-layer as seven compositions of one small relation.
+**The phrasing retro modifier layer.** *The rest of phrasing is done.* The whole
+single-stroke language is ported and checked against `phrasing.py` over 238,138
+strokes with nothing differing: aspect, the question, emphasis, the 666 verb and
+adverb enders, satellites and the infinitive, on top of the slice that was there.
+One divergence is deliberate and asserted rather than ignored, and it is a bug
+fixed: an adverb launchpad with no auxiliary drops negation, the question and
+emphasis in the Python, and do-support is what English does there.
 
-It also carries the one place the port should *not* follow the Python. `@` on an
-empty predicate names the verb `do`, and under a question the Python then applies
-do-support to it and writes "do I do": 440 of the 32,256 clauses in the slice come
-out that way and none of them means anything. Do-support gives tense a word to sit
-on when the verb cannot carry it, so a `do` that is already the verb needs no
-second one, and the port writes "do I".
+What is not written is the retro layer, and it is a different mechanism rather than
+more of the same one. A modifier stroke is read after the clause it changes and the
+text is written before it, so a transducer has to guess the delta, and one stroke
+has 3,072 distinct effects. Measured, one composition step is 112,805 states and
+seven of them do not finish. `docs/phrasing.md` has the numbers and the two shapes
+that do fit: translation-unit state, which §7 item 6 built, and the window, which
+`retro-words` already uses and which reads the keys before the old text so nothing
+is guessed.
 
 **A dynamic stack.** *Done for enable, disable and solo.* Which dictionaries are
 answering is part of the frame, like the context and the carried state, so a stroke

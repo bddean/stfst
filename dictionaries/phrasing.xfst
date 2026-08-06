@@ -1,111 +1,328 @@
-! Phrasing: the §7 prototype. Subject, copula, negation, modality, tense, and
-! the contraction modes, ported from phrasing.py.
+! Phrasing: a generative clause engine on the `+` namespace, ported from
+! phrasing.py (PHRASING-DESIGN.md).
 !
-! This dictionary is the reason the format exists. Its full table is 2.7M single
-! strokes, about 3.9M translations, roughly 150MB of baked JSON, so it cannot be
-! a dictionary file. Here it is a grammar, and the prototype is the slice that
-! settles whether the grammar is pleasant to write: the empty verb slot, which
-! denotes the copula.
+! This dictionary is the reason the format exists. Its table is 21.9M chords, and
+! §7 measures a tenth of that at 150MB of baked JSON, so it cannot be a dictionary
+! file. Here it is a grammar.
 !
-! Out of the slice, and so out of the language: aspect (`E`/`U`), question (`#`),
-! emphasis (`@`), the verb and adverb enders, satellites, and the retroactive
-! modifier layer, which needs host contract item 6. A stroke holding any of them
-! has no entry here and falls through to the rest of the stack.
+! Three tapes, so that each layer names one thing and never the next one's
+! alphabet. The format owns the word "record", so the middle tapes here are the
+! feature *bundle* and the *chain*:
 !
-! Two tapes, three layers, as §7 sets out. `Chord` reads keys and writes a
-! feature record; `Realize` reads a feature record and writes English. Neither
-! knows the other's alphabet, which is the point: agreement, contraction and the
-! finite forms are all decided in `Realize`, over features, and never over keys.
+!   ^+T*   Chord    [FULL][SUBJ]it[/SUBJ][C][3sg][NOMOD][NEG][SIMPLE][PRES][V0]
+!          Chain    [FULL][SUBJ]it[/SUBJ][C][3sg][NEG][PRES][F:be]
+!          Arrange  it is not
 !
-!     ^+T*      ->  [SUBJ]it[/SUBJ][C][3sg][BE][NEG][FULL]  ->  it is not
+! `Chord` reads keys and writes a feature bundle. `Chain` reads a bundle and
+! builds the auxiliary chain: which auxiliary is finite, which are not, and what
+! form the main verb takes. `Arrange` reads a chain and writes English: agreement,
+! contraction and question inversion. Nothing in `Chain` mentions a key, and
+! nothing in `Arrange` mentions an aspect.
 !
-! The feature record is internal. Composition leaves its symbols in the
-! alphabet, and the compiler prunes them, so what reaches a host is keys to text.
-
-! ---- the feature record
+! Both middle tapes are internal. Composition leaves their symbols in the
+! alphabet and the compiler prunes them, so what reaches a host is keys to text.
 !
-! Canonical order, which is the order the keys arrive in, with two exceptions:
-! `^` is the first key and `[FULL]` is the last feature, and `*` comes before the
-! right bank while `[NEG]` comes after `[PAST]`. Both are hoists: the branch that
-! reads the key emits its feature after the rest of the body. Reading a feature
-! before the subject would mean guessing the subject, which is what the record
-! language's flag order avoids too (see docs/latency.md).
+! `phrasing-tables.xfst` holds what is a finite map by nature: the subject
+! sublanguage, the right bank, and the conjugation. Every rule is here.
 
 define Kill(X)  [ X .x. 0 ] ;
 define Say(X)   [ 0 .x. X ] ;
 define Sp       [ 0 .x. " " ] ;
-define SayNot   [ "[NEG]" .x. [ " " {not} ] ] ;
+define SayNot   [ 0 .x. [ " " {not} ] ] ;
 
-define Feature  [ "[SUBJ]" | "[/SUBJ]" | "[C]" | "[INF]" | "[AND]" | Agr | Head
-                | "[PAST]" | "[NEG]" | "[FULL]" ] ;
-! The subject word, copied through. Anything that is not a feature symbol.
+! ---- the two internal alphabets
+
+define Mode  [ "[RED]" | "[FULL]" ] ;
+define Agr   [ "[1sg]" | "[3sg]" | "[pl]" ] ;
+define Modl  [ "[NOMOD]" | "[CAN]" | "[SHALL]" | "[WILL]" ] ;
+define Pol   [ "[AFF]" | "[NEG]" ] ;
+define Asp   [ "[SIMPLE]" | "[PERF]" | "[PROG]" | "[PERFPROG]" ] ;
+define Tns   [ "[PRES]" | "[PAST]" ] ;
+define Fid   [ "[F:be]" | "[F:have]" | "[F:do]"
+             | "[F:can]" | "[F:shall]" | "[F:will]" ] ;
+define Mid   [ "[M:have]" | "[M:be]" | "[M:been]" ] ;
+
+define Feature  [ "[Q]" | "[EMPH]" | Mode | "[SUBJ]" | "[/SUBJ]" | "[C]" | "[AND]"
+                | "[INF]" | "[NOAUX]" | Agr | Modl | Pol | Asp | Tns | "[V0]"
+                | Lemma | SatPre | SatPost | Adv | Fid | Mid ] ;
+! Anything that is not a feature symbol: the subject word, and the verb words
+! that `Chain` has already spelled.
 define Word     [ \Feature ]+ ;
+define Chr      [ \Feature ] ;
 
-! ---- layer 1: keys to features
+! ============================================================== Chord: the keys
+!
+! The bundle is in key order, which is what keeps the lookup from guessing. Key
+! order on this board is `# @ ^ + S T K P W H R  A O  * E U` then the right
+! bank, and every feature is emitted where its key sits, so this layer needs no
+! hoist at all.
 
-! Modality on `A O`, the four corners of two keys (§4.2). No key is no modal, and
-! the head is then the copula, which is what the empty verb slot denotes.
-define Mid      [ [ [ "A" "O" ] .x. "[WILL]" ] | [ "A" .x. "[CAN]" ]
-                | [ "O" .x. "[SHALL]" ] | Say("[BE]") ] ;
+define ModKeys  [ [ [ "A" "O" ] .x. "[WILL]" ] | [ "A" .x. "[CAN]" ]
+                | [ "O" .x. "[SHALL]" ] | Say("[NOMOD]") ] ;
+define PolKey   [ [ "*" .x. "[NEG]" ] | Say("[AFF]") ] ;
+define AspKeys  [ [ [ "E" "U" ] .x. "[PERFPROG]" ] | [ "E" .x. "[PROG]" ]
+                | [ "U" .x. "[PERF]" ] | Say("[SIMPLE]") ] ;
 
-! The lone tense key past-shifts the head: `+T-D` is "it was", `+KAOD` is "I'd".
-! `D` sits in no verb chord, so nothing is shadowed.
-define Past     [ [ "d" .x. "[PAST]" ] | 0 ] ;
+! The empty verb slot denotes the copula (§5). The lone tense key past-shifts it
+! -- `+T-D` is "it was" -- and sits in no verb chord, so nothing is shadowed.
+define EmptySlot [ [ Say("[PRES]") | [ "d" .x. "[PAST]" ] ] Say("[V0]") ] ;
+define VerbEnd  [ [ Say("[PRES]") RhsPres ] | [ Say("[PAST]") RhsPast ] ] ;
+define AdvEnd   [ Say("[PRES]") AdvChords ] ;
 
-define Star(B)  [ [ Kill("*") B Say("[NEG]") ] | B ] ;
-define Full(B)  [ [ Kill("^") B Say("[FULL]") ] | B ] ;
+! A left-key set that names no subject still heads a clause when the right bank
+! names a verb: `+EB` is "are adding". It gets no empty slot and no adverb ender,
+! because those would leave nothing to say.
+define Cl(S, E)  [ S ModKeys PolKey AspKeys E ] ;
 
-define Chord    [ Full([ Kill("+") Subjects Mid Star(Past) ]) ] ;
+define Chord [ [ [ "#" .x. "[Q]" ] | 0 ]
+               [ [ "@" .x. "[EMPH]" ] | 0 ]
+               [ [ "^" .x. "[FULL]" ] | Say("[RED]") ]
+               Kill("+")
+               [ Cl(Subjects, [ EmptySlot | VerbEnd | AdvEnd ])
+               | Cl(NoSubject, VerbEnd) ] ] ;
 
-! ---- layer 2: features to English
+! `@` on an empty verb slot names the verb `do` (§5): the unmarked verb is `be`
+! and the key already says the word. Naming spends the bit, so what is left is an
+! ordinary clause with a lexical verb, and no rule after this has to know about
+! the interaction. Everywhere else `@` stays emphasis.
+define NameDo  [ [ ?* Kill("[EMPH]") ?* [ "[V0]" .x. "[V:do]" ] ]
+               | ~[ ?* "[EMPH]" ?* "[V0]" ?* ] ] ;
 
-! `there're` does not surface, so `there` keeps the full form with `are` and
+define Bundle  [ Chord .o. NameDo ] ;
+
+! =========================================================== Chain: the chain
+!
+! The chain is MODAL? (HAVE..en)? (BE..ing)? MAIN. The first element present is
+! finite, the rest are mids, and every non-finite form is fixed by what precedes
+! it -- so the corner that picks the finite auxiliary also picks the main verb's
+! form, which is why those two travel together on every line below.
+!
+! `Cls` reads the verb slot. An empty slot under an operator does not surface
+! (§7 scaffolding: "she would have"), an adverb ender is a launchpad and never
+! surfaces, and a lexical verb takes the form its corner chose.
+
+define KNo   Kill("[NOMOD]") ;
+define KV0   Kill("[V0]") ;
+define KSim  Kill("[SIMPLE]") ;
+define KPf   Kill("[PERF]") ;
+define KPg   Kill("[PROG]") ;
+define KPP   Kill("[PERFPROG]") ;
+
+define AnyMod(KA)  [ [ Agr Kill("[CAN]")   Pol KA Tns Say("[F:can]")   ]
+                   | [ Agr Kill("[SHALL]") Pol KA Tns Say("[F:shall]") ]
+                   | [ Agr Kill("[WILL]")  Pol KA Tns Say("[F:will]")  ] ] ;
+define NoMod(KA, F)  [ Agr KNo Pol KA Tns F ] ;
+define Cls(M, F)     [ [ M KV0 ] | [ AdvW M ] | [ M (SatPreW) F (SatPostW) ] ] ;
+
+define SHave  Say("[M:have]") ;
+define SBe    Say("[M:be]") ;
+define SBeen  Say("[M:been]") ;
+define SHvBn  Say([ "[M:have]" "[M:been]" ]) ;
+define FHave  Say("[F:have]") ;
+define FBe    Say("[F:be]") ;
+
+define Corners [
+    [ AnyMod(KSim)        Cls(0,     VBase)     ]      ! she would go
+  | [ AnyMod(KPf)         Cls(SHave, VPastpart) ]      ! she would have gone
+  | [ AnyMod(KPg)         Cls(SBe,   VPrespart) ]      ! she would be going
+  | [ AnyMod(KPP)         Cls(SHvBn, VPrespart) ]      ! she would have been going
+  | [ NoMod(KPf, FHave)   Cls(0,     VPastpart) ]      ! she has gone
+  | [ NoMod(KPg, FBe)     Cls(0,     VPrespart) ]      ! she is going
+  | [ NoMod(KPP, FHave)   Cls(SBeen, VPrespart) ] ] ;  ! she has been going
+
+! The one corner with no auxiliary of its own: no modal, simple aspect. An empty
+! slot there is the plain copula. Otherwise the clause has nothing for tense or
+! negation to sit on, so English supplies `do` -- but only when something needs
+! carrying, and that is negation, a question, or emphasis. Without one, the verb
+! carries its own tense and there is no operator at all.
+define Copula  [ NoMod(KSim, FBe) KV0 ] ;
+define DoSup(P)  [ Agr KNo P KSim Tns Say("[F:do]")
+                   [ AdvW | [ (SatPreW) VBase (SatPostW) ] ] ] ;
+define Bare(A, T)  [ Say("[NOAUX]") Kill(A) KNo Kill("[AFF]") KSim Kill(T) ] ;
+define NoAux [ [ Bare("[3sg]", "[PRES]")               (SatPreW) V3sg  (SatPostW) ]
+             | [ Bare([ "[1sg]" | "[pl]" ], "[PRES]")  (SatPreW) VBase (SatPostW) ]
+             | [ Bare(Agr, "[PAST]")                   (SatPreW) VPast (SatPostW) ]
+             | [ Bare(Agr, Tns) AdvW ] ] ;
+
+! A non-finite "to" clause (§4.1b) has no subject and no agreement, so modality,
+! tense and the question have nothing to inflect and are ignored. Negation is the
+! "not to" form, and a clausal "and" precedes both.
+define KV0Adv  [ KV0 | Kill(Adv) ] ;
+define Inf(A, S)  [ Kill(A) Kill(Tns) (SatPreW) S ] ;
+define Infinitive [ [ Kill("[Q]") | 0 ] [ Kill("[EMPH]") | 0 ] Kill(Mode)
+    [ [ "[AND]" .x. [ {and} " " ] ] | 0 ]
+    Kill("[INF]") Kill(Agr) Kill(Modl)
+    [ [ "[AFF]" .x. {to} ] | [ "[NEG]" .x. [ {not} " " {to} ] ] ]
+    [ [ Inf("[SIMPLE]", 0)
+        [ [ VBase     (SatPostW) ] | [ KV0Adv Say([ " " {be} ])    ] ] ]
+    | [ Inf("[PERF]", Say([ " " {have} ]))
+        [ [ VPastpart (SatPostW) ] | [ KV0Adv Say([ " " {been} ])  ] ] ]
+    | [ Inf("[PROG]", Say([ " " {be} ]))
+        [ [ VPrespart (SatPostW) ] | [ KV0Adv Say([ " " {being} ]) ] ] ]
+    | [ Inf("[PERFPROG]", Say([ " " {have} " " {been} ]))
+        [ [ VPrespart (SatPostW) ] | [ KV0Adv Say([ " " {being} ]) ] ] ] ] ] ;
+
+! Emphasis and the question are the two reasons for do-support that are read
+! before the subject, so the branch that needs one says so in its prefix.
+define SubjRec  [ [ "[AND]" | 0 ]
+                  [ [ "[SUBJ]" Word "[/SUBJ]" [ "[C]" | 0 ] ] | 0 ] ] ;
+define PfxAny   [ [ "[Q]" | 0 ] [ Kill("[EMPH]") | 0 ] Mode SubjRec ] ;
+define PfxTrig  [ [ [ "[Q]" [ Kill("[EMPH]") | 0 ] ] | Kill("[EMPH]") ]
+                  Mode SubjRec ] ;
+define PfxNoTrig [ Mode SubjRec ] ;
+
+define Chain [ [ PfxAny    Corners ]
+             | [ PfxAny    Copula ]
+             | [ PfxTrig   DoSup(Pol) ]
+             | [ PfxNoTrig DoSup("[NEG]") ]
+             | [ PfxNoTrig NoAux ]
+             | Infinitive ] ;
+
+! ========================================================== Arrange: English
+!
+! The closed-class irregulars, and nothing else is data here. Each table is keyed
+! by only what its word depends on -- agreement and tense for `be`, `have` and
+! `do`, tense alone for a modal -- which is what the projections below are for.
+
+define BeA    [ [ [ "[1sg]" "[PRES]" ] .x. {am}  ] | [ [ "[3sg]" "[PRES]" ] .x. {is}   ]
+              | [ [ "[pl]"  "[PRES]" ] .x. {are} ] | [ [ "[1sg]" "[PAST]" ] .x. {was}  ]
+              | [ [ "[3sg]" "[PAST]" ] .x. {was} ] | [ [ "[pl]"  "[PAST]" ] .x. {were} ] ] ;
+define BeN    [ [ [ "[3sg]" "[PRES]" ] .x. [ {isn}   "'" {t} ] ]
+              | [ [ "[pl]"  "[PRES]" ] .x. [ {aren}  "'" {t} ] ]
+              | [ [ "[1sg]" "[PAST]" ] .x. [ {wasn}  "'" {t} ] ]
+              | [ [ "[3sg]" "[PAST]" ] .x. [ {wasn}  "'" {t} ] ]
+              | [ [ "[pl]"  "[PAST]" ] .x. [ {weren} "'" {t} ] ] ] ;
+define BeS    [ [ [ "[1sg]" "[PRES]" ] .x. [ "'" {m}  ] ]
+              | [ [ "[3sg]" "[PRES]" ] .x. [ "'" {s}  ] ]
+              | [ [ "[pl]"  "[PRES]" ] .x. [ "'" {re} ] ] ] ;
+define HaveA  [ [ [ "[1sg]" "[PRES]" ] .x. {have} ] | [ [ "[3sg]" "[PRES]" ] .x. {has} ]
+              | [ [ "[pl]"  "[PRES]" ] .x. {have} ] | [ [ Agr     "[PAST]" ] .x. {had} ] ] ;
+define HaveN  [ [ [ "[1sg]" "[PRES]" ] .x. [ {haven} "'" {t} ] ]
+              | [ [ "[3sg]" "[PRES]" ] .x. [ {hasn}  "'" {t} ] ]
+              | [ [ "[pl]"  "[PRES]" ] .x. [ {haven} "'" {t} ] ]
+              | [ [ Agr     "[PAST]" ] .x. [ {hadn}  "'" {t} ] ] ] ;
+define HaveS  [ [ [ "[1sg]" "[PRES]" ] .x. [ "'" {ve} ] ]
+              | [ [ "[3sg]" "[PRES]" ] .x. [ "'" {s}  ] ]
+              | [ [ "[pl]"  "[PRES]" ] .x. [ "'" {ve} ] ]
+              | [ [ Agr     "[PAST]" ] .x. [ "'" {d}  ] ] ] ;
+define DoA    [ [ [ "[1sg]" "[PRES]" ] .x. {do}  ] | [ [ "[3sg]" "[PRES]" ] .x. {does} ]
+              | [ [ "[pl]"  "[PRES]" ] .x. {do}  ] | [ [ Agr     "[PAST]" ] .x. {did}  ] ] ;
+define DoN    [ [ [ "[1sg]" "[PRES]" ] .x. [ {don}   "'" {t} ] ]
+              | [ [ "[3sg]" "[PRES]" ] .x. [ {doesn} "'" {t} ] ]
+              | [ [ "[pl]"  "[PRES]" ] .x. [ {don}   "'" {t} ] ]
+              | [ [ Agr     "[PAST]" ] .x. [ {didn}  "'" {t} ] ] ] ;
+define CanA   [ [ "[PRES]" .x. {can}   ] | [ "[PAST]" .x. {could}  ] ] ;
+define CanN   [ [ "[PRES]" .x. [ {can}    "'" {t} ] ]
+              | [ "[PAST]" .x. [ {couldn} "'" {t} ] ] ] ;
+define ShallA [ [ "[PRES]" .x. {shall} ] | [ "[PAST]" .x. {should} ] ] ;
+define ShallN [ [ "[PAST]" .x. [ {shouldn} "'" {t} ] ] ] ;
+define WillA  [ [ "[PRES]" .x. {will}  ] | [ "[PAST]" .x. {would}  ] ] ;
+define WillN  [ [ "[PRES]" .x. [ {won}    "'" {t} ] ]
+              | [ "[PAST]" .x. [ {wouldn} "'" {t} ] ] ] ;
+define WillS  [ [ "[PRES]" .x. [ "'" {ll} ] ] | [ "[PAST]" .x. [ "'" {d} ] ] ] ;
+
+! The selector on the chain tape is `Agr Pol Tense Fid`. These drop what a word
+! does not depend on, so each table above stays as small as English made it.
+define PjAT   [ Agr Kill(Pol) Tns ] ;
+define PjT    [ Kill(Agr) Kill(Pol) Tns ] ;
+
+define AffW [ [ [ PjAT Kill("[F:be]")    ] .o. BeA    ]
+            | [ [ PjAT Kill("[F:have]")  ] .o. HaveA  ]
+            | [ [ PjAT Kill("[F:do]")    ] .o. DoA    ]
+            | [ [ PjT  Kill("[F:can]")   ] .o. CanA   ]
+            | [ [ PjT  Kill("[F:shall]") ] .o. ShallA ]
+            | [ [ PjT  Kill("[F:will]")  ] .o. WillA  ] ] ;
+! Partial by design: `am` and present `shall` have no contraction, so those
+! selectors fall through to the separate `not` below.
+define NegW [ [ [ PjAT Kill("[F:be]")    ] .o. BeN    ]
+            | [ [ PjAT Kill("[F:have]")  ] .o. HaveN  ]
+            | [ [ PjAT Kill("[F:do]")    ] .o. DoN    ]
+            | [ [ PjT  Kill("[F:can]")   ] .o. CanN   ]
+            | [ [ PjT  Kill("[F:shall]") ] .o. ShallN ]
+            | [ [ PjT  Kill("[F:will]")  ] .o. WillN  ] ] ;
+! Also partial: `was`, `did` and the `can`/`shall` modals do not cliticize, so
+! the contraction dimension is inert there and needs no marker to say so.
+define SufW [ [ [ PjAT Kill("[F:be]")   ] .o. BeS   ]
+            | [ [ PjAT Kill("[F:have]") ] .o. HaveS ]
+            | [ [ PjT  Kill("[F:will]") ] .o. WillS ] ] ;
+
+define IsAff  [ Agr "[AFF]" Tns Fid ] ;
+define IsNeg  [ Agr "[NEG]" Tns Fid ] ;
+
+! A reduced modal perfect merges into the auxiliary: "could've". Only these
+! three, because "can've" is not a word.
+define ModVe [ [ "[F:can]"   .x. [ {could}  "'" {ve} ] ]
+             | [ "[F:shall]" .x. [ {should} "'" {ve} ] ]
+             | [ "[F:will]"  .x. [ {would}  "'" {ve} ] ] ] ;
+define Merge [ Kill(Agr) Kill("[AFF]") Kill("[PAST]") ModVe Kill("[M:have]") ] ;
+
+! The mid slots, spelled. They are polarity-independent: only the finite head
+! ever takes a negative form, so negation never reaches them.
+define MidW  [ [ "[M:have]" .x. [ " " {have} ] ] | [ "[M:be]" .x. [ " " {be} ] ]
+             | [ "[M:been]" .x. [ " " {been} ] ] ] ;
+define Tail  [ [ Chr | MidW ]* ] ;
+
+! "there're" does not surface, so `there` keeps the full form with `are` and
 ! cliticizes everywhere else ("there's", "there'll"). The exception is about the
-! pair, not about the subject, so it is a rule and not a column in the table.
-define ThereRe    [ "[SUBJ]" {there} "[/SUBJ]" "[C]" "[pl]" "[BE]" ] ;
+! pair, not about the subject, so it is a rule and not a column in a table.
+define ThereRe    [ Mode "[SUBJ]" {there} "[/SUBJ]" "[C]" "[pl]" Pol "[PRES]" "[F:be]" ] ;
 define NoThereRe  ~[ ThereRe ?* ] ;
-
-define Subj(Tail)  [ Kill("[SUBJ]") Word Kill("[/SUBJ]") Tail ] ;
 
 ! Two shapes, and every mode is one of them. A clause says its finite word after
 ! the subject; a clitic hangs the word on the subject instead and leaves any
-! `not` behind. `Fin` is which table the word comes from, `Tail` what is left to
-! read once it is said.
-define Clause(Fin, Tail)  [ Subj([ Kill("[C]") | 0 ]) Sp Fin Tail ] ;
-define Clitic(Fin, Tail)  [ NoThereRe .o. [ Subj(Kill("[C]")) Fin Tail ] ] ;
+! `not` behind. A question inverts the two, which costs nothing on a tape where
+! the selector follows the subject. A clause with no subject at all -- "+EB" is
+! "are adding" -- is the same shapes with the head absent.
+define SubjA  [ Kill("[SUBJ]") Word Kill("[/SUBJ]") [ Kill("[C]") | 0 ] ] ;
+define SubjC  [ Kill("[SUBJ]") Word Kill("[/SUBJ]") Kill("[C]") ] ;
+define AndW  [ [ "[AND]" .x. [ {and} " " ] ] | 0 ] ;
+define Decl(F, T)  [ Kill(Mode) AndW [ [ SubjA Sp ] | 0 ] F T ] ;
+define Clit(F, T)  [ NoThereRe .o. [ Kill(Mode) AndW SubjC F T ] ] ;
 
-! Full mode (`^`): nothing reduces, and negation is a separate word. "it is",
-! "it is not". Modality is inert here, and so is the past copula: "I could" and
-! "I was" have no reduced form to differ from.
-define FullAff  Clause(AffW, Kill("[FULL]")) ;
-define FullNeg  Clause(AffW, [ SayNot Kill("[FULL]") ]) ;
+! Inversion moves the selector in front of the subject, one symbol at a time, so
+! that the same finite-word tables serve both orders. The transducer guesses each
+! symbol before reading the subject, which nondeterminism makes free -- the same
+! hoist the record language uses for its flags. A clausal "and" leads the whole
+! clause, inverted or not, so it comes along.
+define Pull(X)  [ [ 0 .x. X ] \X* [ X .x. 0 ] ?* ] ;
+define PullAgr [ Pull("[1sg]") | Pull("[3sg]") | Pull("[pl]") ] ;
+define PullPol [ Pull("[AFF]") | Pull("[NEG]") ] ;
+define PullTns [ Pull("[PRES]") | Pull("[PAST]") ] ;
+define PullFid [ Pull("[F:be]") | Pull("[F:have]")  | Pull("[F:do]")
+               | Pull("[F:can]") | Pull("[F:shall]") | Pull("[F:will]") ] ;
+define PullAnd [ Pull("[AND]") | ~[ ?* "[AND]" ?* ] ] ;
+define Invert  [ PullFid .o. PullTns .o. PullPol .o. PullAgr .o. PullAnd ] ;
 
-! Reduced mode, the default, the spoken form: the subject takes the clitic where
-! the affirmative form has one ("it's"), and otherwise the negative takes the aux
-! contraction ("it isn't").
-define RedClit  Clitic(Suf, 0) ;
-define RedAff   Clause(AffW, 0) ;
+define Ques(F, T)  [ Invert .o.
+                     [ AndW F Kill("[Q]") Kill(Mode) [ [ Sp SubjA ] | 0 ] T ] ] ;
 
-! Where the negative is two words there is no aux contraction to take, so the
-! reduction falls back to the subject: "am not" gives "I'm not", and `NegSep` is
-! the table of selectors that happens for.
-define RedClitNot  Clitic([ NegSep .o. Suf ], SayNot) ;
-define RedNeg      Clause(NegW, Kill("[NEG]")) ;
+! The contraction dimension is chosen absolutely, never cycled, so each mode is
+! a filter on the tape rather than a state.
+define Full(B)  [ [ [ "[Q]" | 0 ] "[FULL]" ?* ] .o. B ] ;
+define Red(B)   [ [ [ "[Q]" | 0 ] "[RED]" ?* ] .o. B ] ;
 
-! An infinitive has no subject and no agreement, so modality and tense have
-! nothing to inflect and are ignored (§4.1b). Negation is the "not to" form, and
-! a clausal "and" precedes both, so each branch says its words before reading the
-! keys that chose them.
-define And      [ [ "[AND]" .x. [ {and} " " ] ] | 0 ] ;
-define InfTail  [ Kill(Agr) Kill(Head) [ Kill("[PAST]") | 0 ] ] ;
-define Inf(Say1, Tail)  [ And Kill("[INF]") Say1 InfTail Tail [ Kill("[FULL]") | 0 ] ] ;
-define Infinitive  [ Inf(Say([ {to} " " {be} ]), 0)
-                   | Inf(Say([ {not} " " {to} " " {be} ]), Kill("[NEG]")) ] ;
+! Reduction is a preference, not a case: take the clitic where the tables allow
+! one, else the contracted negative, else the full form. That is a priority
+! union, and it is why the two modes need no marker to tell them apart.
+! `Chain` writes every word of a tail with the space that precedes it, which is
+! the subject's space when there is a subject and nobody's when there is not.
+define Arrange [
+    [ Kill(Mode) AndW SubjA Kill("[NOAUX]") Tail ]
+  | [ Kill(Mode) Kill("[NOAUX]") Kill(" ") Tail ]
+  | Tail
+  | Full(Decl([ IsAff .o. AffW ], Tail))
+  | Full(Decl([ IsNeg .o. AffW ], [ SayNot Tail ]))
+  | Full(Ques([ IsAff .o. AffW ], Tail))
+  | Full(Ques([ IsNeg .o. AffW ], [ SayNot Tail ]))
+  | Red(Ques([ IsAff .o. AffW ], Tail))
+  | Red(PU(Ques([ IsNeg .o. NegW ], Tail),
+           Ques([ IsNeg .o. AffW ], [ SayNot Tail ])))
+  | Red(PU(Clit([ IsAff .o. SufW ], Tail),
+           PU(Decl(Merge, Tail),
+              Decl([ IsAff .o. AffW ], Tail))))
+  | Red(PU(Decl([ IsNeg .o. NegW ], Tail),
+           PU(Clit([ IsNeg .o. SufW ], [ SayNot Tail ]),
+              Decl([ IsNeg .o. AffW ], [ SayNot Tail ]))))
+] ;
 
-! Reduction is a preference, not a case: reduce where the tables allow it, else
-! say the full form. That is a priority union, and it is why the two modes need
-! no marker to tell them apart.
-define Realize  [ Infinitive | FullAff | FullNeg
-                | PU(RedClit, RedAff) | PU(RedClitNot, RedNeg) ] ;
-
-define Grammar  Canon([ Chord .o. Realize ]) ;
+define Grammar  Canon([ Bundle .o. Chain .o. Arrange ]) ;

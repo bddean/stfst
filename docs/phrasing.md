@@ -1,236 +1,229 @@
-# The phrasing prototype
+# Phrasing
 
-`FST-DICT-DESIGN.md` §7 names the dictionary that the format exists for, and sets
-one question for a prototype: is the grammar pleasant to write, or do the mode
-dimension and the juncture rules fight? The slice it asks for is subject plus
-copula plus negation plus modality plus the contraction modes, both directions.
+`FST-DICT-DESIGN.md` §7 names the dictionary the format exists for, and it is the
+one that cannot be a dictionary file: 32,768 clause settings times 668 right-bank
+enders is 21.9M chords, and §7 measures a tenth of that at 150MB of baked JSON.
+Here it is a grammar, in 698KB, and the whole single-stroke language is ported
+from the user's `phrasing.py`.
 
-That slice is now `dictionaries/phrasing.xfst`, ported from the user's
-`phrasing.py`, and the answer is that it did not fight. What follows is what the
-port settled, and what it left.
+What is left is the retroactive modifier layer, which is a different mechanism
+rather than more of the same one. Its measurement is at the end of this file.
 
-## The layering held
-
-Two layers, composed, exactly as §7 sets out:
+## Three tapes, and who owns each
 
 ```
-^+T*   ->   [SUBJ]it[/SUBJ][C][3sg][BE][NEG][FULL]   ->   it is not
-       Chord                                    Realize
+^+T*   Chord    [FULL][SUBJ]it[/SUBJ][C][3sg][NOMOD][NEG][SIMPLE][PRES][V0]
+       Chain    [FULL][SUBJ]it[/SUBJ][C][3sg][NEG][PRES][F:be]
+       Arrange  it is not
 ```
 
-`Chord` reads keys and writes features. `Realize` reads features and writes
-English. Nothing in `Realize` mentions a key, and nothing in `Chord` mentions a
-word, so agreement, contraction and the finite forms are all decided over
-features. Composition leaves the feature symbols in the alphabet and the compiler
-prunes them, so a host sees keys to text and never learns the middle tape
-existed.
+`Chord` reads keys and writes a feature bundle. `Chain` reads a bundle and builds
+the auxiliary chain: which auxiliary is finite, which are not, and what form the
+main verb takes. `Arrange` reads a chain and writes English: agreement,
+contraction, and question inversion.
 
-The two halves also split by who owns them. `phrasing-tables.xfst` is generated
-from `phrasing.py`: the subject map, which is 126 rows because §4.1's growth,
-coordination, politeness order and type shift are all finite maps over subsets of
-five keys, and the closed-class conjugation, which is data because English's
-finite forms are irregular. The rules that read those tables are hand-written and
-fit on one screen.
+The split is what makes each layer small enough to read. Nothing in `Chain`
+mentions a key and nothing in `Arrange` mentions an aspect, so `Arrange` states
+the contraction rules once over six finite auxiliaries instead of once per corner
+of the aspect-by-modality space. Both middle tapes are internal; the compiler
+prunes their symbols, so a host sees keys to text.
 
-## Contraction is a priority union, not a mode flag
+`Chord` needs no hoist at all, which the prototype did. Its bundle is in key
+order, and the three mood keys `# @ ^` are the first keys, so they are the first
+features.
 
-The one thing §7 worried about is the mode dimension, and it turned out to be the
-cheapest part. Reduction is a preference: take the clitic where the tables allow
-one, else say the full form. That is `PU`, so the reduced and full modes need no
-marker to tell them apart and no rule fires twice:
+## The paradigm is a rule, not a table
 
-```
-define Realize  [ Infinitive | FullAff | FullNeg
-                | PU(RedClit, RedAff) | PU(RedClitNot, RedNeg) ] ;
-```
+The prototype generated the finite words as one table per surface form, keyed by
+the whole selector, and the extension of that was nine tables of up to 96 rows
+each. Those tables are the paradigm written out rather than stated, so the
+paradigm moved into `phrasing.xfst` instead, and the generator kept only what is a
+finite map by nature: the subject sublanguage (126 rows), the right bank (666
+chords), and the conjugation (108 verbs times five forms).
 
-Two shapes carry every mode. A clause says its finite word after the subject; a
-clitic hangs the word on the subject and leaves any `not` behind. The awkward
-cases stay small because of that: `am not` has no aux contraction, so the
-reduction falls back to the subject and gives "I'm not", which is one composition
-against the table of selectors where the negative is two words. `there're` does
-not surface, which is one subtraction, and it is a rule rather than a column in
-the table because the exception is about the pair `there` + `are` and not about
-`there`: "there'll" is fine.
-
-`PU` moved into the generated prelude for this, since Shrimple wants it too.
-
-## The tape order is the feature order, with two hoists
-
-The feature record is in the order the keys arrive in, which is what keeps the
-lookup from guessing. Two features arrive in the wrong place: `^` is the first key
-but `[FULL]` is the last feature, and `*` precedes the right bank while `[NEG]`
-must follow `[PAST]`. Both are the hoist the record language already uses: the
-branch that reads the key emits its feature after the rest of the body.
+The finite verb is now 47 hand-written rows -- `am`, `is`, `are`, `was`, `were`
+and their negatives and clitics, in tables keyed by only what each word depends
+on -- plus seven lines that say which auxiliary is finite:
 
 ```
-define Star(B)  [ [ Kill("*") B Say("[NEG]") ] | B ] ;
+  [ AnyMod(KSim) Cls(0, VBase) ]                                  she would go
+| [ AnyMod(KPf)  Cls(Say("[M:have]"), VPastpart) ]                she would have gone
+| [ NoMod(Kill("[PERF]"), Say("[F:have]")) Cls(0, VPastpart) ]    she has gone
+| ...
 ```
+
+Each line is one corner of modality by aspect. The two arguments travel together
+because they are one fact: the element that takes the finite form also fixes the
+form of everything after it, so the corner that picks `have` is the corner that
+makes the main verb a past participle.
+
+Three tables became rules on the way, and each was storing something the bundle
+already determined:
+
+- **The clitic** comes from the finite auxiliary, so it is `(Fid, Agr, Tense)`
+  and not a column. That deleted the `is_launch` special case: an adverb
+  launchpad takes no clitic because `do` has none, and the guard was asserting
+  what the table already said.
+- **Which negatives are two words** is `am` and present `shall`, so the negative
+  table is simply partial there and the separate `not` is what falls out. No set
+  of selectors to keep in step.
+- **The mids** are polarity-independent, because only the finite head takes a
+  negative form. One table of three, not two.
+
+## Contraction is a priority union
+
+Reduction is a preference, not a case: take the clitic where the tables allow
+one, else the contracted negative, else the full form. `PU` says that in the
+order it happens, and the two modes need no marker to tell them apart.
+
+```
+| Red(PU(Clit([ IsAff .o. SufW ], Tail),
+         PU(Decl(Merge, Tail),
+            Decl([ IsAff .o. AffW ], Tail))))
+```
+
+Three preferences deep, and the middle one is the modal perfect: "could've" when
+nothing else claimed the auxiliary, which is what `this could've` needs and
+`I'd have` does not.
+
+## Question inversion, on a tape where the selector comes after the subject
+
+The finite word leads a question and the selector that picks it is four symbols
+*after* the subject. That is a hoist, the same one the record language uses for
+its own flags: guess the symbol before the subject, read it after, and let
+nondeterminism make the guess free.
+
+```
+define Pull(X, P)  [ [ 0 .x. X ] P [ X .x. 0 ] ?* ] ;
+define Invert  [ PullFid .o. PullTns .o. PullPol .o. PullAgr .o. PullAnd ] ;
+```
+
+Four symbols, thirteen branches, composed. A clausal "and" comes along, because
+"and" leads the whole clause: `#+TK` is "and am I", not "am and I".
+
+## One deliberate divergence, and it is a bug fixed
+
+An adverb ender with no modal and no aspect leaves the clause with no auxiliary
+at all, and `phrasing.py` then drops negation, the question and emphasis on the
+floor. `+T*FBTS` is "it often", `#+TFBTS` is "it often", `@+TFBTS` is "it often".
+Three keys with nothing to write themselves onto.
+
+Do-support is exactly the rule for that case, and English applies it: the clause
+has nothing for tense or negation to sit on, so `do` arrives to carry them. So
+this port writes "it doesn't often", "does it often", "it does often", and the
+last one is the emphatic `do` the key asks for. 1,878 strokes differ, and
+`scripts/check-phrasing.py` asserts the list rather than ignoring it.
+
+Nothing else differs. In particular `@#+K` is "do I do" in both, and that is
+right: `@` names the verb `do`, and a question about it needs do-support like any
+other lexical verb. `do I do` reads oddly alone and correctly as the launchpad it
+is, and an earlier note in this file that called it a bug was wrong.
 
 ## Measured
 
-The slice is 4,032 entries over 1,361 distinct translations.
-
 | | |
 |---|---|
-| Artifact | 15,927 bytes forward, 13,835 reverse |
-| The same slice as baked JSON | 122,533 bytes |
-| Lookup | 2.5 µs median, 3.8 µs p95 |
-| Frontier | 7.9 paths per step, 33 at the widest |
+| Domain | 32,768 clause settings times 668 enders |
+| Artifact | 698KB forward, 589KB reverse |
+| Lookup | 19 µs median, 33 µs p95 |
+| Frontier | 52 paths per step on average, 665 at the widest |
+| Grammar | 25,907 states, 39,605 arcs |
 
-7.7× on a prototype is not the interesting number. The interesting one is that
-the ratio grows: the full dictionary multiplies this slice by 668 right-bank verb
-chords, and a table multiplies out where a grammar factors. §7 measures that end
-state at roughly 150MB of baked JSON, which is why the dictionary cannot be a
-dictionary file.
+The frontier is the interesting number and it is eight times the prototype's.
+Every branch that says a finite word before reading the ender that confirms it
+stays live until the ender arrives, and there are 666 enders. A stroke is 100ms
+of a writer's time, so 19 µs is not a problem, but it is the shape of the cost
+and the retro layer below is the same shape a thousand times over.
 
 ## Both directions
 
-Every one of §7's five examples reverses, which is the acceptance criterion:
-
 ```
 $ stfst reverse build/dicts/phrasing.stfst --system systems/stenotype-extended.toml
-it's         +T
-it is not    ^+T*
-I'm not      +K*
-it was       +T-D     ^+T-D
-we weren't   +SK*D
-not to be    +HR*     +HRO*   +HR*D   +HRA*   ^+HR*   ...
+it's             +T       +TU     +TE
+it is not        ^+T*     ^+T*E
+we weren't       +SK*D    +SK*ED
+not to be        +HR*     +HR*D   +HRA*   +HRO*   ^+HR*   ...
+does it not do   #@^+T*
+I don't often    +K*FBTS  @+K*FBTS
 ```
 
-Two of those say something. "it was" has two outlines because full mode is inert
-for `was`, so both strokes are entries and both are offered, correctly. And
-"not to be" shows §7 item 4 already satisfied for this slice: item 4 asks for a
-host-side sort putting the least-marked stroke first, and the cheapest-first
-search offers `+HR*` before `+HRA*` because it weighs a key at one. Fewest keys is
-fewest marked features here, so the sort may turn out to be free.
+Two of those say something. "it's" has three outlines because the progressive and
+the perfect scaffold to the same word, and both are real entries. And the
+cheapest-first search offers `+HR*` before `+HRA*`, so §7 item 4's host-side sort
+may turn out to be free: fewest keys is fewest marked features here.
 
-## Checked exhaustively
+## Checked
 
-The domain is 128 left-key sets times four modality corners times negation times
-tense times the two modes, which is 4,096 strokes, so `tests/golden/phrasing.tsv`
-is every one of them against `phrasing.py`. No sampling, and no judgement about
-which cases matter. A stroke with no subject is a modifier and not a clause, and
-the Python raises for it; those lines carry no expectation, which asserts the
-stronger thing: this dictionary has no entry, so the stack falls through.
+`scripts/check-phrasing.py`, 238,138 strokes, 0 differing. Coverage is split the
+way the grammar is:
 
-The port cost one bug, and the exhaustive file is what caught it: a clausal "and"
-plus an infinitive (`+THR`) lost its conjunction, because an infinitive has no
-subject word to fold the "and" into and needed a feature of its own.
+- **Exhaustive over the clause dimensions**, 196,608 strokes: every left-key set,
+  modality corner, polarity, aspect, tense, contraction mode, question and
+  emphasis, against one ender per shape the grammar distinguishes -- the empty
+  slot, the lone tense key, an adverb, and verbs with a pre-satellite, a
+  post-satellite and neither. That is the part with rules in it.
+- **Exhaustive over the enders**, all 666 of them against nine clause settings.
+  That is the part that is a table.
 
-## Left out
+The full cross product is 21.9M strokes, and there is no reason to walk it: the
+enders are a finite map, and a map is checked by reading every row of it once.
 
-Out of the slice, and so out of the language: aspect (`E`/`U`), question (`#`),
-emphasis (`@`), the verb and adverb enders, satellites, and the retroactive
-modifier layer. A stroke holding any of them has no entry here.
+The port cost four bugs and this file's coverage caught all four. The clausal
+"and" landed after an inverted finite word. The infinitive branch never consumed
+the mood flags, so `+HR*` had no entry. Questions had no entry at all until the
+selector hoist went in. And `define Record` in the grammar shadowed the prelude's
+own `Record`, which silently emptied the reverse direction -- the compiler now
+refuses a grammar that redefines a name a prelude macro reads, because `Fresh` is
+expanded after the grammar and read a name that no longer named a record.
 
-Nothing is blocked any more. The retro layer needed host contract item 6, and M4
-built it, so what is left is work rather than a question. The rest of this file is
-the design for that work, written down because it was worked out and is worth more
-on paper than in a commit message.
+## The retro modifier layer, measured and not built
 
-## The rest of the language, designed
-
-### The record grows five features
-
-Key order in this system is `# @ ^ + STKPWHR A O * E U` then the right bank, and
-each feature is emitted where the record wants it rather than where its key sits.
-A hoist does that: `Kill(key) Body Say(feature)` reads the key early and writes the
-feature late, which is how `^` and `*` already work.
+`lookup` takes a base clause plus up to seven modifier strokes, and each modifier
+is a delta on the feature bundle. That reads as composition, and it is, so the
+obvious shape is a base relation and one small relation per modifier:
 
 ```
-[SUBJ]w[/SUBJ] (C) Agr Head Asp (PAST) (NEG) (FULL) (EMPH) (Q)
+Records = [ Bundle Rest ] .o. Step .o. Step .o. ...     seven times
 ```
 
-`Asp` is one of `[SIMPLE]`, `[PERF]`, `[PROG]`, `[PERFPROG]` from `E`/`U`. `[EMPH]`
-comes from `@` and `[Q]` from `#`. The wrappers nest in key order, `#` outermost,
-so the emission order is the reverse and the three new flags land at the end:
+That does not fit, and the reason is worth writing down because it is a property
+of the mechanism rather than of this grammar.
 
-```
-Chord = Q(Emph(Full([ Kill("+") Subjects Mid Star(Asp Past) ])))
-```
+A modifier stroke is read *after* the bundle it changes, and the text is written
+before it. So the transducer has to guess the delta and let the keys confirm it,
+and the delta is wide: mode (3) times question (2) times emphasis (2) times growth
+(2) times modality (4) times polarity (2) times aspect (4) times tense (2), which
+is 3,072 distinct effects one stroke can have. Every one of them stays live across
+the whole bundle. Measured:
 
-`Sel = Agr Head Asp ("[PAST]")` stays contiguous, which is what lets a table be
-composed onto it. `[EMPH]` deliberately does not join the selector: it sits past
-the flags, so a rule requires or forbids it in the tail and there are two table
-sets rather than one twice as wide.
+| | |
+|---|---|
+| One `Step` | 112,805 states, 5.3M arcs |
+| `[ Bundle Rest ] .o. Step` | 1.9M states |
+| Seven of them | did not finish in eight minutes, 3.8GB resident |
 
-### What is data and what is rule
+Minimising between compositions changes nothing, because that size is minimal.
+Three thousand guesses times a 26,000-state grammar is the floor, and no ordering
+of the fields moves it: the keys are last on the tape and the text is first.
 
-The auxiliary chain is `MODAL? (HAVE..en)? (BE..ing)? MAIN`, and the finite forms
-of `be`, `have`, `do` and the modals are irregular, so the chain's *words* are
-data. Its *arrangement* is not. Nine tables over `Sel`, each at most 96 rows,
-generated from `_render_complex` exactly as the present two are:
+Two mechanisms do fit, and the choice between them is the next decision rather
+than the next commit.
 
-```
-FinAff  FinNeg  Rest  Suf  NegSep  Merged  RestVe        the copula paradigm
-FinAffDo  FinNegDo  RestDo  SufDo  NegSepDo  ...          the `do` paradigm
-InfText                                                   Asp to "to have been"
-```
+**Translation-unit state**, which is what §7 item 6 built and its own amendment
+points at. The bundle rides in `[STATE]…[END]`, one stroke is one step, and
+`[REPLACE1]` supersedes the previous record. That removes the sevenfold
+composition, so the cost is one `Step`-shaped relation instead of seven composed,
+but it does not remove the 3,072 guesses: the state is still first on the tape and
+the text still first on the output.
 
-`Rest` is the words after the finite one, and it is polarity-independent: in
-`_render_complex` only the head takes `negform`, so negation never reaches the
-mids. That is what keeps the table count down.
+**The window**, which is what `retro-words` uses. A dictionary that declares
+`words = N` sees the text the host already wrote, and it sees it *after* the keys.
+So the delta is known before the old clause is read, and nothing is guessed. The
+price is that re-realising means running the grammar backwards over the window --
+`Arrange` and `Chain` are relations, so they invert -- and then matching the word
+count that `[REPLACE1]` replaces.
 
-Five arrangements read them, and every mode is one of the five:
-
-```
-full, aff      subj " " FinAff Rest
-full, neg      subj " " FinAff " not" Rest
-question       Fin " " subj Rest, and Fin " " subj " not" Rest where NegSep
-clitic         subj Suf Rest, and subj Suf " not" Rest where NegSep
-clause         subj " " Fin Rest, when no clitic exists
-```
-
-The question inverts the finite word past the subject, and that is not a problem
-for a transducer even though the selector sits *after* the subject on the tape. The
-finite words are a closed set of about twenty, so the branch is
-`Say(word) SubjCopy Kill(Sel)` once per word, and the selector consumed at the end
-is what picks which branch survives. Same trick as the hoists.
-
-Reduction stays a priority union over the arrangements, as it is now: reduce where
-the tables allow it, else say the full form. That is why the modes need no marker.
-
-### One place to disagree with the Python
-
-`@` on an empty predicate names the verb `do`, because the unmarked verb is `be`
-and the key already says the word. Under a question the Python then applies
-do-support to that `do` and writes **"do I do"**: 440 of the 32,256 clauses in this
-slice come out that way, and none of them means anything. Do-support exists to give
-tense and negation a word to sit on when the lexical verb cannot carry them, and a
-`do` that is already the verb needs no second one.
-
-So the port writes `do I`, `don't I`, `does it not`. It is a divergence, it is
-deliberate, and the exhaustive check has to carry a list of the cases where the two
-disagree rather than assert equality everywhere.
-
-### The retro modifier layer is an iterated composition
-
-`lookup` takes a base clause stroke plus up to seven modifier strokes, and each
-modifier is a delta on the feature bundle. That is exactly composition. The base
-stroke maps to a record and the rest of the outline rides through unchanged; then
-one relation per modifier reads `record Sep stroke` and writes the record it
-becomes:
-
-```
-Chords = Base .o. ModStep .o. ModStep .o. ...     seven times, LONGEST_KEY - 1
-```
-
-`ModStep` is total, so an outline with fewer modifiers passes through the remaining
-steps untouched. Seven compositions of a small relation over a small record, and
-`_apply` is a dozen assignments, so the step is a table too. `+` bare selects the
-third contraction mode, which is the `subj` value the single-stroke language never
-reaches.
-
-### What the volume looks like
-
-658 right-bank chords name a verb, a satellite slot and a tense; 8 name an adverb.
-Both are generated tables over the right bank, and 107 verbs times five forms is
-the conjugation. The `Realize` side gains one concatenation, the main verb's word,
-whose *form* the chain already decided. That is the "mechanical volume" §7
-predicted, and it is mechanical only because the chain above it is written first.
-
-Checking cannot stay exhaustive over the whole language: 128 subject sets times the
-clause dimensions times 668 enders is tens of millions of strokes. It stays
-exhaustive over the clause dimensions with the enders fixed, which is the part with
-rules in it, and becomes a large sample over the enders, which are a table.
+The second is the cheaper shape and the first is the one the design document
+names. What settles it is whether the inverse of `Arrange` is a function on the
+texts this dictionary actually writes, and that is measurable: compose it and
+count where it is ambiguous.

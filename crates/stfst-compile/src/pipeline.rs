@@ -55,6 +55,36 @@ impl Checks {
     }
 }
 
+/// The first name inside a prelude macro that a grammar redefines, if any.
+///
+/// A macro body is expanded where it is *called*, and `Fresh` and `Canon` are
+/// called after the grammar, so a name they mention is a name the grammar must
+/// leave alone. Plain definitions capture their references when the prelude
+/// defines them, so shadowing one of those is only confusing, not wrong.
+fn shadowed(prelude: &str, bodies: &str) -> Option<String> {
+    let mut protected: Vec<&str> = Vec::new();
+    for line in prelude.lines() {
+        let Some(rest) = line.trim().strip_prefix("define ") else {
+            continue;
+        };
+        if !rest.split_whitespace().next().is_some_and(|n| n.contains('(')) {
+            continue;
+        }
+        let body = rest.split_once(')').map_or(rest, |(_, b)| b);
+        protected.extend(
+            body.split(|c: char| !c.is_alphanumeric() && c != '_')
+                .filter(|w| w.chars().next().is_some_and(char::is_uppercase)),
+        );
+    }
+    bodies
+        .lines()
+        .filter_map(|line| line.trim().strip_prefix("define "))
+        .filter_map(|rest| rest.split_whitespace().next())
+        .map(|name| name.split('(').next().unwrap_or(name))
+        .find(|name| protected.contains(name))
+        .map(str::to_string)
+}
+
 fn run(program: &str, args: &[&str]) -> Result<String> {
     let out = Command::new(program)
         .args(args)
@@ -98,6 +128,15 @@ pub fn compile_xfst(
         .filter(|tag| (host::is_command(tag) || host::is_meta(tag)) && bodies.contains(tag))
         .collect();
     let mut s = prelude::generate_for(system, Some(&used));
+    // `define Record` in a grammar cost the whole reverse direction, silently:
+    // `Fresh` is expanded below, after the grammar, so it read a name that no
+    // longer named a record and composed with nothing.
+    if let Some(name) = shadowed(&s, &bodies) {
+        bail!(
+            "{name} is used inside a prelude macro, which is expanded after this \
+             grammar, so redefining it changes what that macro means. Rename it."
+        );
+    }
     s.push_str(&bodies);
     s.push_str(&format!(
         "\npush Grammar\nsave stack {}\nclear stack\n",
@@ -471,4 +510,19 @@ fn quoted(names: &[String]) -> String {
 /// Where build products go for a dictionary.
 pub fn work_dir(root: &Path, name: &str) -> PathBuf {
     root.join(name)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::shadowed;
+
+    #[test]
+    fn a_name_inside_a_prelude_macro_is_protected() {
+        let prelude = "define Record [ Item* ] ;\ndefine Fresh(G) [ G .o. Record ] ;\n";
+        assert_eq!(shadowed(prelude, "define Record [ A ] ;").as_deref(), Some("Record"));
+        assert_eq!(shadowed(prelude, "define Bundle [ A ] ;"), None);
+        // A plain definition captures its references where the prelude writes
+        // them, so shadowing `Item` after the fact changes nothing.
+        assert_eq!(shadowed(prelude, "define Item [ A ] ;"), None);
+    }
 }

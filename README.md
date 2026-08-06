@@ -36,21 +36,21 @@ shadow a working entry.
 |---|---|---|---|
 | emily-symbols | xfst over a shared glyph table | 12,434 | 13,066 |
 | shrimple | xfst over a generated table | 97,084 | 107,940 |
-| user | JSON, imported | 19,118 | 19,264 |
+| user | JSON, imported | 20,137 | 20,103 |
 | phrases | JSON, imported | 11,752 | 11,958 |
-| commands | JSON, imported | 6,170 | 6,478 |
-| emily-modifiers | xfst over generated tables | 61,722 | 58,340 |
+| commands | JSON, imported | 5,605 | 5,949 |
+| emily-modifiers | xfst over generated tables | 61,920 | 58,304 |
 | semantic-suffixes | JSON, imported | 594 | 638 |
-| typey-type | JSON, imported | 6,247,472 | 6,512,692 |
+| typey-type | JSON, imported | 6,239,766 | 6,504,164 |
 | and-fold | JSON, imported | 40,093 | 38,241 |
-| phrasing | xfst, the §7 prototype slice | 16,065 | 13,775 |
+| phrasing | xfst, a clause grammar over 21.9M chords | 698,313 | 588,857 |
 | retro-words | xfst over a window of written text | 406,095 | none |
 | repeat-idioms | JSON, imported | 80,658 | 80,498 |
 | repeat-word | flat source in the record language | 1,311 | 1,247 |
 
-13.8 MB for both directions of everything, against 93.6 MB resident for the
+15.1 MB for both directions of everything, against 93.6 MB resident for the
 Plover-style dictionary and its reverse index in `docs/M0.md`. The whole stack
-compiles in 36 seconds.
+compiles in 51 seconds.
 
 `retro-words` has no reverse automaton, and that is not an omission: it rewrites
 text rather than writing a word, so the question a suggestion window asks has no
@@ -103,7 +103,7 @@ host with no lexicon refuses `{:infl:…}` rather than answering it with rules.
 | `docs/latency.md` | Per-lookup latency, and why the search frontier is wide. |
 | `docs/encoding.md` | What the artifact costs, why delayed alignment would cost more, and the exact size model. |
 | `docs/modifiers.md` | The `@` keysym namespace, and why a keystroke's modifiers are tags inside the item. |
-| `docs/phrasing.md` | The §7 phrasing prototype: what the port settled, and what it left. |
+| `docs/phrasing.md` | The §7 clause grammar: what is a rule and what is a table, and why the retro modifier layer needs a different mechanism. |
 | `docs/parity.md` | Plover's translation language operator by operator, what the record language says instead, and what it still cannot say. |
 | `docs/retro.md` | Rewriting text already written: why the window comes after the keys, why the tape carries character classes and not characters, and what is left in the host. |
 | `docs/translation.md` | The runtime: longest match without a declared longest key, what a dictionary is checked for at load, and why reverse lookup is a cheapest-first search. |
