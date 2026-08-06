@@ -60,9 +60,17 @@ answer for it. See `docs/retro.md`.
 tagger, which is the one thing this format deliberately cannot hold. See
 `docs/parity.md`.
 
-Nine entries in the whole set do not import, and each is named by
-`stfst import --report`: five hold a `{}` shape the record language has no meaning
-for, and four hold a control character, which neither `lexc` nor `xfst` can write.
+Thirty-one entries in the whole set do not import, and each is named by
+`stfst import --report`. All are brace atoms naming no operation (`{pgh}`, `{--}`,
+`{...}`, four unbalanced ones), and Plover types nothing for any of them, so they
+are dead entries in typey-type. A control character is no longer among them: text
+names one by its code point, `[U+]0A[END]`, which is what makes `commands.json`'s
+newline key an ordinary translation.
+
+What the whole set writes is checked against Plover's own formatter rather than
+against our last answer: `scripts/check-translate.py` renders every translation both
+ways and compares. 146,540 compared, none differ. See `docs/parity.md`, which also
+lists the five bugs that check found on its first run.
 
 ## Morphology, which is not a dictionary
 

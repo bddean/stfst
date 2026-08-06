@@ -1,12 +1,24 @@
 #!/usr/bin/env bash
 # Everything that can fail: unit tests, then the golden files against the
-# compiled artifacts. Needs `stfst compile recipe.toml` to have run.
+# compiled artifacts.
+#
+# It compiles first, and that is not a convenience. A stale artifact agrees with
+# the golden file that was generated from the same stale compiler, so the check
+# passes over a bug in both: `{^}` attached on the wrong side for two commits
+# because nothing here rebuilt. Set STFST_NO_COMPILE=1 to skip it when iterating
+# on a checker, and know what you are giving up.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
 cargo test --workspace
 cargo build --release -q
 B=./target/release/stfst
+
+if [ -z "${STFST_NO_COMPILE:-}" ]; then
+    echo "== compile"
+    $B compile recipe.toml > /dev/null
+    $B compile tests/recipe.toml --out build/test-dicts --work build/test-work > /dev/null
+fi
 
 # The two outline parsers have to agree, or a golden generator writes tapes that
 # are not the tapes the runtime looks up. Cheap to check over a real dictionary.
@@ -73,6 +85,11 @@ if [ -f build/morph/ortho.hfstol ] && [ -x "$PLOVER_PYTHON" ]; then
     "$PLOVER_PYTHON" scripts/check-ortho-rules.py build/morph/ortho.hfst 400
     "$PLOVER_PYTHON" scripts/check-ortho.py 4000
     "$PLOVER_PYTHON" scripts/check-infl.py 20000 | head -1
+    # The golden files cannot catch the importer and the formatter agreeing on the
+    # wrong thing, and for `{^}` they did not. This compares what lands in the
+    # document against what Plover puts there, for every entry in the stack.
+    echo "== translation against Plover"
+    "$PLOVER_PYTHON" scripts/check-translate.py
 else
     echo "skipped: no build/morph artifacts, or no Plover python"
 fi

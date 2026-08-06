@@ -272,10 +272,26 @@ impl Text {
     /// there is no gap, which covers both an attaching record and one item
     /// following another inside one record.
     fn write(&mut self, text: &str) {
-        for (n, (word, space)) in split_words(text).into_iter().enumerate() {
-            if n > 0 {
-                self.ortho = false;
-            }
+        // A space inside a translation is a space between words, so a mode that
+        // changed what goes between words changed this one too: under
+        // `{mode:snake}`, "a b" is "a_b". Per character, so two spaces stay two, and
+        // only a space, because a tab is not a word gap. The words stay separate
+        // cells either way, which is what lets camel case the second one.
+        let space_char = self.mode.space.clone();
+        let respace = |gap: String| match space_char == " " {
+            true => gap,
+            false => gap.replace(' ', &space_char),
+        };
+        for (n, (word, space)) in split_words(text)
+            .into_iter()
+            .map(|(w, s)| (w, respace(s)))
+            .enumerate()
+        {
+            // An orthographic join happens at one boundary, so it is spent on the
+            // first word and every word after it is a plain append. That holds across
+            // items too, which is what `{^ia}{,}` needs: the rule joins "ia" and the
+            // comma that follows is only a comma.
+            let joining = std::mem::take(&mut self.ortho) && n == 0;
             let join = n == 0
                 && self
                     .cells
@@ -283,7 +299,7 @@ impl Text {
                     .is_some_and(|c| c.space.is_empty() && !c.word.is_empty());
             match join {
                 true => {
-                    let rewritten = match (self.ortho, &self.morph) {
+                    let rewritten = match (joining, &self.morph) {
                         (true, Some(morph)) => {
                             Some(morph.join(&self.cells.last().expect("a cell").word, &word))
                         }
@@ -332,7 +348,10 @@ impl Text {
     /// A mode over every word from this position on, which is what a mode does
     /// that a pending case does not: it applies to all of them and it persists.
     fn apply_mode(&mut self, mode: ModeCase, at: usize, from: usize) {
-        let first_word = at == 0 && from == 0;
+        // Spent once. Camel's lowercase word is the first since the mode was set,
+        // so it belongs to the mode and not to the buffer: "run" then
+        // `{mode:camel}` then "one two" is "runoneTwo".
+        let first_word = std::mem::take(&mut self.mode.camel_first);
         for (n, cell) in self.cells[at..].iter_mut().enumerate() {
             let skip = if n == 0 { from } else { 0 };
             let head: String = cell.word.chars().take(skip).collect();
@@ -341,8 +360,8 @@ impl Text {
                 ModeCase::Caps => rest.to_uppercase(),
                 ModeCase::Lower => rest.to_lowercase(),
                 ModeCase::Title => title(&rest),
-                // Camel is title case with the very first word left alone, which is
-                // what makes the run read as one identifier.
+                // Camel is title case with its first word left alone, which is what
+                // makes the run read as one identifier.
                 ModeCase::Camel if first_word && n == 0 => rest,
                 ModeCase::Camel => title(&rest),
             };
@@ -380,6 +399,7 @@ impl Text {
         // both are a case and a space at once.
         if name == "mode.camel" {
             self.mode.space = String::new();
+            self.mode.camel_first = true;
         }
         true
     }

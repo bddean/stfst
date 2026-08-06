@@ -83,6 +83,10 @@ pub struct Mode {
     pub case: Option<ModeCase>,
     /// What goes between words. `{mode:snake}` makes it an underscore.
     pub space: String,
+    /// Camel case leaves its *first* word lowercase, and the first word is the
+    /// first one since the mode was set rather than the first in the buffer:
+    /// "run" then `{mode:camel}` then "one two" is "runoneTwo".
+    pub camel_first: bool,
 }
 
 impl Default for Mode {
@@ -90,6 +94,7 @@ impl Default for Mode {
         Mode {
             case: None,
             space: " ".to_string(),
+            camel_first: false,
         }
     }
 }

@@ -1,4 +1,4 @@
-! 219 cases from /Users/ben/.config/plover/user.json. A regression file for the import pipeline,
+! 230 cases from /Users/ben/.config/plover/user.json. A regression file for the import pipeline,
 ! not an oracle: the expectations come from our own translation
 ! grammar, which is unit tested separately.
 l	ly[ORTHO_L]
@@ -28,7 +28,7 @@ KAOEUpl	a couple
 KAOEUrpbd	kinder
 KAUl/KWRAOE	callee
 KAUrl	caller
-KH*p	Ch[ATTACH_L][ATTACH_R]
+KH*p	Ch[ATTACH_R]
 KPApbd	expand
 KPH*Er	Khmer
 KPHOUgt	coming out
@@ -39,7 +39,7 @@ KPObgt	expect to
 KPR	come from
 KPWErt	combinator
 KREblgt	correctly
-KRO	co^
+KRO	co[ATTACH_R]
 KWRAOEt	yeet
 KWROEUl	yellow
 KWRUp	yup
@@ -54,6 +54,7 @@ PHApbl	manual
 PHOEUrbg	micro-
 PHOr/PHOr	more and more
 PHRAErt	popularity
+PHRAfrpl	platform
 PHREfpblt	pleasantly
 POEpb	pony
 PREpbd	pretend
@@ -79,6 +80,7 @@ SK*Uft	disgust
 SKEUrpl	skirm
 SKPpbt	and then
 SKPAOEUl	and I'll
+SKPAt	and at
 SKPEpb	and then
 SKPEUpb	and in
 SKPHOU	and how
@@ -128,6 +130,7 @@ THAEUb	by the way
 THAOEUb	by the
 THAt	that the
 THEUb	think about
+THRAft	at last
 TKAOEt	detail
 TKHRAEUr	declare
 TKOEUpl	demo
@@ -144,12 +147,16 @@ TPE	if he
 TPEUrpbt	interface
 TPEUrplt	firmament
 TPHg	in a
+TPHAOEUgt	next time
+TPHAOUbt	knew about
 TPHAUrl	natural
 TPHOUrt	right now
 TPHRAfl	interactively
+TPHREUgs	physically
 TPHROEUf	in love with
 TPHROf	in love
 TPHRUrt	flutter
+TPHUfrpb	nurture
 TPOElg	topology
 TPOrgt	forgot
 TPOUrpb	for now
@@ -158,6 +165,7 @@ TPRAEUbt	for a bit
 TPRAOEUpb	frighten
 TPRAOUs	overuse
 TPRAUl	for all
+TPW	about it
 TPWRAEU	betray
 TPWUpbs	for once
 TRAEUpblt	transparently
@@ -194,6 +202,7 @@ WUft	one of the
 ^PHRAOEU	apply
 ^PHREfpblt	unpleasantly
 ^PHREfpbt	unpleasant
+^POpbd	respond
 ^PWHRAOEUpblg	oblige
 ^RAOEUf	arrive
 ^ROE	arrow
@@ -206,10 +215,12 @@ WUft	one of the
 ^SKWROEU	enjoy
 ^SKWRUft	adjust
 ^SPEbgt	inspect
+^SPErbl	especial
 ^SPHbl	assemble
 ^SRAblg	disadvantage
 ^ST	it is
 ^TEpbl	potential
+^THEr	they are
 ^THRs	there is
 ^TKPWRAOE	agree
 ^TPfrpbt	unfortunate

@@ -166,8 +166,17 @@ pub fn generate_for(system: &System, used: Option<&[String]>) -> String {
         .map(|n| format!("\"{}\"", copy_tag(n)))
         .collect();
     out.push_str(&format!("define CopyItem [ {} ] ;\n", copies.join(" | ")));
+    // A control character cannot ride a tape, so it names its code point instead.
+    // Two hex digits exactly, which is what makes the spelling unique: the
+    // characters that need escaping stop at U+009F.
+    out.push_str("define Hex [ \"0\"|1|2|3|4|5|6|7|8|9|A|B|C|D|E|F ] ;\n");
+    out.push_str(&format!(
+        "define EscItem [ \"{}\" Hex Hex \"[END]\" ] ;\n",
+        stfst_core::record::ESCAPE
+    ));
     out.push_str(
-        "define Item [ Text | AnyClass | Drop | KeyItem | CmdItem | MetaItem | CopyItem ] ;\n\n",
+        "define Item [ Text | AnyClass | Drop | KeyItem | CmdItem | MetaItem | CopyItem\n\
+         \x20            | EscItem ] ;\n\n",
     );
 
     let repeats: Vec<String> = (2..=MAX_COUNT)

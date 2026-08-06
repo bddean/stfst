@@ -154,6 +154,15 @@ enum Command {
         #[arg(long, default_value = "build/morph-work")]
         work: PathBuf,
     },
+    /// Render Plover translation strings the way this host would, for measuring the
+    /// translation language against Plover's own formatter. One translation per
+    /// line; each is written between "run" and "y" so both boundaries show.
+    Xlate {
+        #[arg(long)]
+        translations: PathBuf,
+        #[arg(long, default_value = "build/morph")]
+        morph: PathBuf,
+    },
     /// Emit the generated xfst prelude for a system.
     Prelude {
         #[arg(long)]
@@ -418,6 +427,39 @@ fn main() -> Result<()> {
         } => {
             for line in stfst_compile::pipeline::compile_morph(&rules, &lexicons, &work, &out)? {
                 println!("{line}");
+            }
+        }
+        Command::Xlate {
+            translations,
+            morph,
+        } => {
+            let text = std::fs::read_to_string(&translations)
+                .with_context(|| format!("reading {}", translations.display()))?;
+            let morph = std::sync::Arc::new(stfst_text::morph::Morph::open(&morph)?);
+            for line in text.lines() {
+                // A failed translation prints its reason, so a difference in the
+                // measurement can never be mistaken for a difference in output.
+                let record = match stfst_compile::translate::translate(line) {
+                    Ok(record) => record,
+                    Err(e) => {
+                        println!("!{e}");
+                        continue;
+                    }
+                };
+                let mut out = stfst_text::Text::with_morph(morph.clone());
+                let mut write = |r: &stfst_core::Record| {
+                    let registers = out.registers(9);
+                    out.apply(r, &registers).map(|_| ())
+                };
+                let flanked = [
+                    stfst_core::Record::text("run"),
+                    record,
+                    stfst_core::Record::text("y"),
+                ];
+                match flanked.iter().try_for_each(&mut write) {
+                    Ok(()) => println!("{}", out.to_string()),
+                    Err(e) => println!("!{e}"),
+                }
             }
         }
         Command::Prelude { system } => {

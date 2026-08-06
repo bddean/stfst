@@ -26,7 +26,8 @@ installed system's 38 orthography rules.
 | `{:infl:ed}` | `[META=infl]ed[END]`: a lexicon, no part of speech |
 | `{:retro:past}` | **not carried.** A clause rewrite over a tagger |
 | `{=regex/yes/no}` | **not expressible.** It reads the *next* translation |
-| `{}` cancel formatting | not implemented |
+| `{}` and any unknown brace atom | **refused.** Plover writes nothing for one |
+| a control character in text | `[U+]0A[END]`: the code point, two hex digits |
 
 Every name is a symbol from a table in `stfst-core::host`, not text. §3 had put
 commands and metas in the "open-ended, so delimit" column; a host implements a
@@ -40,6 +41,55 @@ loading and quietly doing nothing. The operation is now out of the table too, so
 those entries do not import at all and `stfst import --report` names each of the
 nineteen. That is the stronger statement: not "this host cannot", but "this format
 has no meaning for it".
+
+## Measured against Plover's formatter, not against our own last answer
+
+*Exact.* Every translation in the stack, written between "run" and "y" in Plover
+and here, and the two strings compared:
+
+```
+146571 translations, 31 refused, 0 of 146540 differ
+```
+
+This check exists because the golden files could not do its job, and one bug shows
+why. A golden file records what the importer said; regenerate it after changing the
+importer and it records the new answer, right or wrong. `{^}` was read as attaching
+on *both* sides for two commits, so 516 typey-type entries joined leftward where
+Plover joins rightward, and nothing noticed: the artifact on disk was stale too, so
+it agreed with the golden file that had been generated from the same mistake.
+`scripts/check.sh` now compiles before it checks, for that reason.
+
+What the comparison found, once it existed, was five separate bugs. Each is a case
+where Plover's model is per *atom* and a record's is per record, and they only line
+up at the edges:
+
+- **Attachment is positional.** The left edge is the first atom's caret and the
+  right edge is the last atom's. `co{^}` joins to what follows, not to what
+  precedes, so `x co{^} y` writes "x coy". An atom that writes no word, a keystroke
+  or a command, passes both along instead of deciding either.
+- **A word gap between atoms has to be spelled.** A record concatenates its items,
+  so `{,}and` needs the space written in: "run, and", not "run,and". 113 entries.
+- **A gap at the record's edge is not text.** Plover's word splitting drops it, so
+  `" gradients"` and `"world? "` lose theirs and the record's own flags decide.
+- **A pending capital can be spent inside the record.** `{.}so` is ". So". The
+  record language has one case flag for the whole record, so where the word is in
+  the same record the capital is applied there and the flag is not set.
+- **With carets peeled, the core is text.** Plover matches its whole-atom metas only
+  on an atom that has no carets, so `{^*^}` is an asterisk rather than the star
+  command and `{^-|^}` is two characters rather than a capital. The one exception is
+  `~|`, which does compose: `{^~|'^}` writes an apostrophe inside a word.
+
+And one that was ours rather than a misreading of Plover: `{^ia}{,}` merged into the
+single word "ia," before the orthography ran, so no rule could match it and `run`
+came out "runia" instead of "runnia". A record now keeps one item per atom, and an
+orthographic join is spent on the first word.
+
+The 31 refused are brace atoms naming no operation: `{pgh}`, `{--}`, `{...}` and
+four unbalanced ones. Plover types nothing for any of them, so they are dead entries
+in typey-type, and `stfst import --report` names each. Reading the core as text was
+this module guessing, and reproducing Plover's silence would be a different guess.
+
+## What a host must do when it cannot oblige
 
 The distinction between a command and a meta decides what happens when a host
 cannot oblige. A **command** is a request, so an unimplemented one is declined and

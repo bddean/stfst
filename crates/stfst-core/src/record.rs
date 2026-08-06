@@ -57,7 +57,45 @@ pub const FLAG_TAGS: &[&str] = &[
 /// Delimiters for the open-ended tags, whose values the host parses. `[STATE]`
 /// closes with the same `[END]`, and what it delimits is not part of the record;
 /// see `Emission`.
-pub const OPEN_TAGS: &[&str] = &["[KEY]", "[STATE]", "[END]"];
+pub const OPEN_TAGS: &[&str] = &["[KEY]", "[STATE]", "[END]", ESCAPE];
+
+/// A character the tape cannot carry, written as its code point: `[U+]0A[END]`
+/// is a newline.
+///
+/// Text, and not a new kind of item. A control character is a character, so the
+/// record's *meaning* is unchanged and only its spelling on the tape differs:
+/// `Item::Text` still holds the real string. That is what keeps `commands.json`'s
+/// newline key an ordinary translation rather than a special case.
+///
+/// Exactly two uppercase hex digits, so one character has one spelling and the
+/// record stays canonical. Two is enough because the characters that need this
+/// are the control characters, and the last of those is U+009F.
+pub const ESCAPE: &str = "[U+]";
+
+/// Whether a character has to be escaped to reach a tape.
+///
+/// `lexc` reads a newline as the end of an entry, so a translation holding one
+/// cannot be written literally, and the same is true of every other control
+/// character. Nothing else needs it. A bracket or a quote is a symbol like any
+/// other, and whatever escaping a *tool* wants is that tool's business.
+pub fn needs_escape(c: char) -> bool {
+    c.is_control()
+}
+
+/// Text as tape symbols, escaped where it has to be.
+pub fn text_symbols(text: &str) -> Vec<String> {
+    let mut out = Vec::new();
+    for c in text.chars() {
+        if !needs_escape(c) {
+            out.push(c.to_string());
+            continue;
+        }
+        out.push(ESCAPE.to_string());
+        out.extend(format!("{:02X}", c as u32).chars().map(|d| d.to_string()));
+        out.push("[END]".to_string());
+    }
+    out
+}
 
 /// Modifier tags, in canonical order, valid only inside a `[KEY]` item.
 ///
@@ -253,6 +291,8 @@ pub enum RecordError {
     ZeroCount(String),
     #[error("unterminated [STATE]")]
     UnterminatedState,
+    #[error("[U+]{0}[END] does not name a character that needs escaping")]
+    BadEscape(String),
 }
 
 impl Record {
@@ -379,13 +419,25 @@ impl Record {
                     });
                     i = next;
                 }
-                _ if is_tag(s) => return Err(RecordError::UnknownTag(s.to_string())),
+                _ if is_tag(s) && s != ESCAPE => {
+                    return Err(RecordError::UnknownTag(s.to_string()))
+                }
+                // Merge a run of characters into one text item. An escape is one
+                // of those characters, so it joins the run rather than breaking
+                // it: `a[U+]0A[END]b` is one item holding three characters.
                 _ => {
-                    // Merge a run of characters into one text item.
                     let mut text = String::new();
-                    while i < symbols.len() && !is_tag(symbols[i]) {
-                        text.push_str(symbols[i]);
-                        i += 1;
+                    while i < symbols.len() {
+                        if symbols[i] == ESCAPE {
+                            let (c, next) = take_escape(symbols, i + 1)?;
+                            text.push(c);
+                            i = next;
+                        } else if !is_tag(symbols[i]) {
+                            text.push_str(symbols[i]);
+                            i += 1;
+                        } else {
+                            break;
+                        }
                     }
                     body.push(Item::Text(text));
                 }
@@ -399,7 +451,7 @@ impl Record {
         let mut out: Vec<String> = Vec::new();
         for item in &self.body {
             match item {
-                Item::Text(t) => out.extend(t.chars().map(|c| c.to_string())),
+                Item::Text(t) => out.extend(text_symbols(t)),
                 Item::Key { name, mods } => {
                     out.push("[KEY]".into());
                     out.extend(name.chars().map(|c| c.to_string()));
@@ -616,6 +668,31 @@ fn take_key(symbols: &[&str], mut i: usize) -> Result<(String, Mods, usize), Rec
     Err(RecordError::Unterminated("[KEY]".into()))
 }
 
+/// The character an escape names: two hex digits, then `[END]`.
+///
+/// Only a character that needed escaping can be written this way. Otherwise one
+/// string would have many spellings, and the record check exists to say that it
+/// does not.
+fn take_escape(symbols: &[&str], i: usize) -> Result<(char, usize), RecordError> {
+    // Two digits and the terminator, so the whole item is a fixed three symbols.
+    if symbols.get(i + 2) != Some(&"[END]") {
+        return Err(RecordError::Unterminated(ESCAPE.to_string()));
+    }
+    let digits: String = symbols[i..i + 2].concat();
+    // Uppercase only, because lowercase would be a second spelling of the same
+    // character and the record language has one spelling for one meaning.
+    let upper = digits
+        .chars()
+        .all(|d| d.is_ascii_digit() || ('A'..='F').contains(&d));
+    let c = u32::from_str_radix(&digits, 16)
+        .ok()
+        .filter(|_| upper)
+        .and_then(char::from_u32)
+        .filter(|c| needs_escape(*c))
+        .ok_or_else(|| RecordError::BadEscape(digits))?;
+    Ok((c, i + 3))
+}
+
 /// The text up to `[END]`, which is how an argument delimits.
 fn take_until(
     symbols: &[&str],
@@ -668,6 +745,23 @@ mod tests {
         assert_eq!(r.flags.case, Some(Case::Next));
         assert_eq!(r.body, vec![Item::Text("ing".into())]);
         assert_eq!(r.to_string(), "ing[ATTACH_L][CAP_NEXT]");
+    }
+
+    #[test]
+    fn a_control_character_names_its_code_point() {
+        // `commands.json`'s newline key. The character is text, so it merges with
+        // the text around it and the record holds the real string.
+        let r = Record::parse_display("a[U+]0A[END]b[ATTACH_L][ATTACH_R]").unwrap();
+        assert_eq!(r.body, vec![Item::Text("a\nb".to_string())]);
+        assert_eq!(r.to_string(), "a[U+]0A[END]b[ATTACH_L][ATTACH_R]");
+        assert_eq!(Record::text("\u{99}").to_string(), "[U+]99[END]");
+
+        // One spelling per character, or the record check has nothing to check.
+        // A character that rides a tape unescaped must not be written this way,
+        // lowercase hex is a second spelling, and the width is fixed at two.
+        for bad in ["[U+]41[END]", "[U+]0a[END]", "[U+]A[END]", "[U+]00A[END]"] {
+            assert!(Record::parse_display(bad).is_err(), "{bad} parsed");
+        }
     }
 
     #[test]

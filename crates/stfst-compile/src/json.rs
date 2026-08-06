@@ -95,9 +95,11 @@ pub fn import(raw: &BTreeMap<String, String>, system: &System, align: Align) -> 
             }
         };
         // Neither lexc nor xfst can write a control character: lexc reads `\n` as
-        // two characters and a literal newline inside a quoted symbol crashes
-        // hfst-xfst. Three entries in `commands.json` are a newline or a
-        // paragraph break, so they are reported rather than silently mangled.
+        // the end of an entry, and a literal newline inside a quoted symbol crashes
+        // hfst-xfst. In text it no longer has to, because `[U+]0A[END]` names the
+        // character instead, which is what makes `commands.json`'s newline key
+        // importable. What is left is a control character in a keysym or a command
+        // argument, which no escape covers and nothing writes, so it is reported.
         if let Some(c) = control_char(&record) {
             report.bad_translations.push((
                 outline.clone(),

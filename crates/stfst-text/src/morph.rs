@@ -95,7 +95,14 @@ impl Morph {
     pub fn join(&self, word: &str, suffix: &str) -> String {
         let lower = word.to_lowercase();
         let (rule, joined) = self.join_lower(&lower, &suffix.to_lowercase());
-        match_case(&joined, word, rule == Some(DOUBLING))
+        match rule {
+            // No rule fired, so the answer is the two strings as they were written.
+            // Taking them back verbatim is what keeps `{^-Z}` from becoming `-z`:
+            // the rules run over a lowercase pair and only a rule's own output is
+            // the rules' to spell.
+            None => format!("{word}{suffix}"),
+            Some(rule) => match_case(&joined, word, rule == DOUBLING),
+        }
     }
 
     /// `{:infl:mode}`: the inflected form, or `None` for a mode that is not one.

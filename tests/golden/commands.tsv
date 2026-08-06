@@ -1,11 +1,11 @@
-! 50 cases from /Users/ben/.config/plover/commands.json. A regression file for the import pipeline,
+! 53 cases from /Users/ben/.config/plover/commands.json. A regression file for the import pipeline,
 ! not an oracle: the expectations come from our own translation
 ! grammar, which is unit tested separately.
 *Upd	[META=retro.upper][END]
-HRO*Er	MODE:LOWER
-Kbgs	MODE:CAMEL
+HRO*Er	[CMD=mode.lower][END]
+Kbgs	[CMD=mode.camel][END]
 KA*pd	[META=retro.cap][END]
-KA*ps	MODE:CAPS
+KA*ps	[CMD=mode.caps][END]
 KHO*rd	[CMD=plover.steno_chords][END]
 KHR*bg	[KEY]k[CTRL][END]
 KHR*f	[KEY]v[CTRL][END]
@@ -24,15 +24,18 @@ PHROlg	[CMD=plover.toggle][END]
 PRO*bgs	proxy
 PW*fp	[KEY]BackSpace[END]
 PWfp	[KEY]BackSpace[END]
-R*Eft	MODE:RESET
+R*Eft	[CMD=mode.reset][END]
 R*fts	Reftest
 R*r	[KEY]Return[END][ATTACH_L][ATTACH_R]
 Rfts	reftest
+Rr	[U+]0A[END][ATTACH_L][ATTACH_R][CARRY_CAP]
 SHft	[KEY]Home[CTRL][END][ATTACH_L][ATTACH_R]
 SKAEbg	[KEY]Escape[END][CMD=stack.solo]+kak.py,+suppress_untranslates.py[END]
 SKPEpbt	extent
 SKWbgs	[KEY]Return[END][ATTACH_L][ATTACH_R]
-SPAO*EUpbl	MODE:LOWER MODE:SET_SPACE:-
+SKWRAEUrbgs	[U+]0A[END][U+]0A[END][ATTACH_L][ATTACH_R][CAP_NEXT]
+SKWRAUrbgs	[U+]0A[END][U+]0A[END][ATTACH_L][ATTACH_R][CAP_NEXT]
+SPAO*EUpbl	[CMD=mode.lower][END][CMD=mode.set_space]-[END]
 SRrs	[KEY]End[CTRL][END][ATTACH_L][ATTACH_R]
 STPHb	[KEY]Down[END][ATTACH_L][ATTACH_R]
 STPHbg	[KEY]Right[CTRL][END][ATTACH_L][ATTACH_R]
@@ -40,11 +43,11 @@ STPHg	[KEY]Right[END][ATTACH_L][ATTACH_R]
 STPHp	[KEY]Up[END][ATTACH_L][ATTACH_R]
 STPHr	[KEY]Left[END][ATTACH_L][ATTACH_R]
 STPHrb	[KEY]Left[CTRL][END][ATTACH_L][ATTACH_R]
-STPHA*EUbg	MODE:SNAKE
+STPHA*EUbg	[CMD=mode.snake][END]
 TA*b	[KEY]Tab[END][ATTACH_L][ATTACH_R]
 TA*bt	[KEY]Tab[ALT][END][KEY]Tab[ALT][END]
 TK*El	[KEY]Delete[END]
-TKO*ts	MODE:LOWER MODE:SET_SPACE:.
+TKO*ts	[CMD=mode.lower][END][CMD=mode.set_space].[END]
 TKPR*Es	express
 TKUpt	[CMD=plover.add_translation][END]
 TPEfbg	[KEY]Escape[END]
