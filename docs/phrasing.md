@@ -124,9 +124,113 @@ Out of the slice, and so out of the language: aspect (`E`/`U`), question (`#`),
 emphasis (`@`), the verb and adverb enders, satellites, and the retroactive
 modifier layer. A stroke holding any of them has no entry here.
 
-Only the last one is blocked rather than merely unwritten. The retro layer edits
-the clause already on screen, which is host contract item 6, and a dictionary
-declaring item 6 is refused at load until M4. The rest is the "mechanical volume"
-§7 predicted: the verb lexicon is 668 more generated rows against the same
-`Realize`, whose auxiliary chain `MODAL? (HAVE..en)? (BE..ing)? MAIN` is the part
-this prototype did not need to write.
+Nothing is blocked any more. The retro layer needed host contract item 6, and M4
+built it, so what is left is work rather than a question. The rest of this file is
+the design for that work, written down because it was worked out and is worth more
+on paper than in a commit message.
+
+## The rest of the language, designed
+
+### The record grows five features
+
+Key order in this system is `# @ ^ + STKPWHR A O * E U` then the right bank, and
+each feature is emitted where the record wants it rather than where its key sits.
+A hoist does that: `Kill(key) Body Say(feature)` reads the key early and writes the
+feature late, which is how `^` and `*` already work.
+
+```
+[SUBJ]w[/SUBJ] (C) Agr Head Asp (PAST) (NEG) (FULL) (EMPH) (Q)
+```
+
+`Asp` is one of `[SIMPLE]`, `[PERF]`, `[PROG]`, `[PERFPROG]` from `E`/`U`. `[EMPH]`
+comes from `@` and `[Q]` from `#`. The wrappers nest in key order, `#` outermost,
+so the emission order is the reverse and the three new flags land at the end:
+
+```
+Chord = Q(Emph(Full([ Kill("+") Subjects Mid Star(Asp Past) ])))
+```
+
+`Sel = Agr Head Asp ("[PAST]")` stays contiguous, which is what lets a table be
+composed onto it. `[EMPH]` deliberately does not join the selector: it sits past
+the flags, so a rule requires or forbids it in the tail and there are two table
+sets rather than one twice as wide.
+
+### What is data and what is rule
+
+The auxiliary chain is `MODAL? (HAVE..en)? (BE..ing)? MAIN`, and the finite forms
+of `be`, `have`, `do` and the modals are irregular, so the chain's *words* are
+data. Its *arrangement* is not. Nine tables over `Sel`, each at most 96 rows,
+generated from `_render_complex` exactly as the present two are:
+
+```
+FinAff  FinNeg  Rest  Suf  NegSep  Merged  RestVe        the copula paradigm
+FinAffDo  FinNegDo  RestDo  SufDo  NegSepDo  ...          the `do` paradigm
+InfText                                                   Asp to "to have been"
+```
+
+`Rest` is the words after the finite one, and it is polarity-independent: in
+`_render_complex` only the head takes `negform`, so negation never reaches the
+mids. That is what keeps the table count down.
+
+Five arrangements read them, and every mode is one of the five:
+
+```
+full, aff      subj " " FinAff Rest
+full, neg      subj " " FinAff " not" Rest
+question       Fin " " subj Rest, and Fin " " subj " not" Rest where NegSep
+clitic         subj Suf Rest, and subj Suf " not" Rest where NegSep
+clause         subj " " Fin Rest, when no clitic exists
+```
+
+The question inverts the finite word past the subject, and that is not a problem
+for a transducer even though the selector sits *after* the subject on the tape. The
+finite words are a closed set of about twenty, so the branch is
+`Say(word) SubjCopy Kill(Sel)` once per word, and the selector consumed at the end
+is what picks which branch survives. Same trick as the hoists.
+
+Reduction stays a priority union over the arrangements, as it is now: reduce where
+the tables allow it, else say the full form. That is why the modes need no marker.
+
+### One place to disagree with the Python
+
+`@` on an empty predicate names the verb `do`, because the unmarked verb is `be`
+and the key already says the word. Under a question the Python then applies
+do-support to that `do` and writes **"do I do"**: 440 of the 32,256 clauses in this
+slice come out that way, and none of them means anything. Do-support exists to give
+tense and negation a word to sit on when the lexical verb cannot carry them, and a
+`do` that is already the verb needs no second one.
+
+So the port writes `do I`, `don't I`, `does it not`. It is a divergence, it is
+deliberate, and the exhaustive check has to carry a list of the cases where the two
+disagree rather than assert equality everywhere.
+
+### The retro modifier layer is an iterated composition
+
+`lookup` takes a base clause stroke plus up to seven modifier strokes, and each
+modifier is a delta on the feature bundle. That is exactly composition. The base
+stroke maps to a record and the rest of the outline rides through unchanged; then
+one relation per modifier reads `record Sep stroke` and writes the record it
+becomes:
+
+```
+Chords = Base .o. ModStep .o. ModStep .o. ...     seven times, LONGEST_KEY - 1
+```
+
+`ModStep` is total, so an outline with fewer modifiers passes through the remaining
+steps untouched. Seven compositions of a small relation over a small record, and
+`_apply` is a dozen assignments, so the step is a table too. `+` bare selects the
+third contraction mode, which is the `subj` value the single-stroke language never
+reaches.
+
+### What the volume looks like
+
+658 right-bank chords name a verb, a satellite slot and a tense; 8 name an adverb.
+Both are generated tables over the right bank, and 107 verbs times five forms is
+the conjugation. The `Realize` side gains one concatenation, the main verb's word,
+whose *form* the chain already decided. That is the "mechanical volume" §7
+predicted, and it is mechanical only because the chain above it is written first.
+
+Checking cannot stay exhaustive over the whole language: 128 subject sets times the
+clause dimensions times 668 enders is tens of millions of strokes. It stays
+exhaustive over the clause dimensions with the enders fixed, which is the part with
+rules in it, and becomes a large sample over the enders, which are a table.

@@ -220,6 +220,21 @@ same place for the same reason: the insertion that landed *before* a phrase foug
 with the ordinary reading too often. Appending needs no part of speech, which is why
 dropping the tagger costs nothing here.
 
+**The rest of the phrasing language.** The port is a slice: subject, modality,
+negation, tense and the contraction modes, 4,096 strokes checked exhaustively.
+Aspect, question, emphasis, the verb and adverb enders, satellites and the retro
+modifier layer are not written. Nothing is blocked, M4 unblocked the last of it, and
+`docs/phrasing.md` now carries the design: the five features the record grows, the
+nine generated word tables, the five arrangements that read them, and the retro
+layer as seven compositions of one small relation.
+
+It also carries the one place the port should *not* follow the Python. `@` on an
+empty predicate names the verb `do`, and under a question the Python then applies
+do-support to it and writes "do I do": 440 of the 32,256 clauses in the slice come
+out that way and none of them means anything. Do-support gives tense a word to sit
+on when the verb cannot carry it, so a `do` that is already the verb needs no
+second one, and the port writes "do I".
+
 **A dynamic stack.** *Done for enable, disable and solo.* Which dictionaries are
 answering is part of the frame, like the context and the carried state, so a stroke
 can change it and undo puts it back. Plover's dictionary commands have no undo at
