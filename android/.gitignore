@@ -1,0 +1,8 @@
+# Built, not committed: the dictionaries come from `stfst compile` and the native
+# library from `build-native.sh`.
+.gradle/
+build/
+app/build/
+app/src/main/assets/
+app/src/main/jniLibs/
+local.properties

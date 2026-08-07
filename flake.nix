@@ -20,6 +20,9 @@
 
         rust = pkgs.rust-bin.stable.latest.default.override {
           extensions = [ "rust-src" "rust-analyzer" "clippy" "rustfmt" ];
+          # The keyboard links stfst-ol into an Android .so, so the shell needs
+          # the cross std. The SDK and NDK stay outside nix; see android/README.md.
+          targets = [ "aarch64-linux-android" "armv7-linux-androideabi" ];
         };
 
         # The HFST pipeline is a build-machine dependency only. It is GPLv3, and

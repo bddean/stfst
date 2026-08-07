@@ -72,6 +72,17 @@ against our last answer: `scripts/check-translate.py` renders every translation 
 ways and compares. 146,540 compared, none differ. See `docs/parity.md`, which also
 lists the five bugs that check found on its first run.
 
+## The keyboard
+
+`android/` is an Android input method over these artifacts: two thumbs, each
+sliding through its own half of the steno order, with the layout fixed by that
+order rather than by the dictionary. `stfst-jni` links `stfst-ol` into the app, so
+the whole 15 MB stack answers on the phone and nothing is re-implemented in
+Kotlin. See `android/README.md` for the gesture and `docs/radial.md` for what
+building it changed here.
+
+The host loop both it and `stfst translate` drive is `stfst-board`.
+
 ## Morphology, which is not a dictionary
 
 `{^ing}` is not "close the gap": Plover's English system carries 38 rewrite rules
