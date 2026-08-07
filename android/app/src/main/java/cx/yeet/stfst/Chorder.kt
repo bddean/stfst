@@ -116,10 +116,9 @@ class Chorder(private val ring: Ring, private val config: Config, private val wr
     }
 
     /**
-     * Return the pivot to the field's home point without writing anything.
+     * Send the ring back to the field's home point, writing nothing.
      *
-     * What a thumb does when it has drifted and wants its bearings back, and the
-     * reason a long chord does not walk off the glass.
+     * What a thumb does when it has drifted and wants its bearings back.
      */
     fun stall(bank: Bank) {
         thumb(bank).home()

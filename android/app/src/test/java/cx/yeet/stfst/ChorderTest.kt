@@ -30,7 +30,7 @@ class ChorderTest {
     private fun keys(bank: Bank) =
         chorder.thumb(bank).keys.map { ORDER[it] }.joinToString("")
 
-    /** Slide a thumb that is already down, measured from its own pivot. */
+    /** Slide a thumb that is already down, measured from its own mark. */
     private fun slide(bank: Bank, angle: Float, distance: Float) {
         val thumb = chorder.thumb(bank)
         val radians = Math.toRadians(angle.toDouble())

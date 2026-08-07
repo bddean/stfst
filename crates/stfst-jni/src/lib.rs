@@ -204,7 +204,7 @@ pub extern "system" fn Java_cx_yeet_stfst_Native_order(
     handle: jlong,
 ) -> jstring {
     match unsafe { host(handle) } {
-        Some(host) => give(&mut env, &host.order.clone()),
+        Some(host) => give(&mut env, &host.order),
         None => give(&mut env, ""),
     }
 }

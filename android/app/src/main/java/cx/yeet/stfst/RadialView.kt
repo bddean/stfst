@@ -10,7 +10,9 @@ import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
+import kotlin.math.atan2
 import kotlin.math.cos
+import kotlin.math.hypot
 import kotlin.math.min
 import kotlin.math.sin
 
@@ -26,14 +28,13 @@ import kotlin.math.sin
 class RadialView(
     context: Context,
     private var config: Config,
-    order: String,
+    private val order: String,
     private val onStroke: (Long) -> Unit,
     private val onKey: (Int, Int) -> Unit,
 ) : View(context) {
 
     private var ring = Ring(order, config)
     private var chorder = Chorder(ring, config) { onStroke(it) }
-    private var order = order
 
     /** Sticky modifiers a long press has turned on, as a `KeyEvent` meta mask. */
     private var meta = 0
@@ -82,9 +83,9 @@ class RadialView(
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) = layoutFields()
 
     /**
-     * Each field's home point, which is where a fan is measured from and where a
-     * stalled pivot returns to. Low in the field, because that is where a thumb
-     * reaches from.
+     * Each field's home point, which is where the first slide is measured from and
+     * where a stalled ring returns to. Low in the field, because that is where a
+     * thumb reaches from.
      */
     private fun layoutFields() {
         val edge = width * config.fieldSplit
@@ -92,6 +93,10 @@ class RadialView(
         chorder.place(Bank.LEFT, edge * 0.5f, height * 0.62f)
         chorder.place(Bank.RIGHT, edge + (width - edge) * 0.5f, height * 0.62f)
     }
+
+    /** How far from the mark a ring is drawn, and picked at. */
+    private fun reach(radius: Radius): Float =
+        config.farRadius * unit * if (radius == Radius.FAR) 1.35f else 0.62f
 
     private fun bankAt(x: Float) = if (x < width * config.fieldSplit) Bank.LEFT else Bank.RIGHT
 
@@ -144,7 +149,7 @@ class RadialView(
         return true
     }
 
-    /** A pivot that has drifted goes home when the thumb holds still. */
+    /** A ring that has drifted goes home when the thumb holds still. */
     private fun armStall(bank: Bank) {
         stalls.remove(bank)?.let { removeCallbacks(it) }
         val task = Runnable {
@@ -175,13 +180,14 @@ class RadialView(
     private fun pickModifier(thumb: Thumb, x: Float, y: Float) {
         val dx = x - thumb.markX
         val dy = y - thumb.markY
-        val distance = kotlin.math.hypot(dx, dy)
+        val distance = hypot(dx, dy)
         if (distance < config.minSlide * unit) return
-        val heading = Math.toDegrees(kotlin.math.atan2(dy.toDouble(), dx.toDouble())).toFloat()
-        val near = distance < config.farRadius * unit
+        val heading = Math.toDegrees(atan2(dy.toDouble(), dx.toDouble())).toFloat()
+        val band = if (distance < config.farRadius * unit) Radius.NEAR else Radius.FAR
+        val near = band == Radius.NEAR
         val items: List<Pair<String, Int>> = if (near) modifiers else specials
         val step = 360f / items.size
-        val start = if (near) config.startNearLeft else config.startFarLeft
+        val start = config.startAngle(thumb.bank, band)
         var best = 0
         var bestOff = Float.MAX_VALUE
         for (i in items.indices) {
@@ -232,14 +238,14 @@ class RadialView(
         for (bank in Bank.values()) {
             val thumb = chorder.thumb(bank)
             if (modifying == bank) {
-                drawItems(canvas, thumb, modifiers, config.farRadius * unit * 0.62f, radius, face, edge, text, hot, true)
-                drawItems(canvas, thumb, specials, config.farRadius * unit * 1.35f, radius, face, edge, text, hot, false)
+                drawItems(canvas, thumb, modifiers, Radius.NEAR, radius, face, edge, text, hot)
+                drawItems(canvas, thumb, specials, Radius.FAR, radius, face, edge, text, hot)
                 continue
             }
             val live = ring.live(bank, thumb.after)
             val dead = if (config.showDeadSlots) ring.keys(bank).filter { it <= thumb.after } else emptyList()
-            for (key in dead) drawKey(canvas, thumb, key, radius, face, edge, edge, false)
-            for (key in live) drawKey(canvas, thumb, key, radius, face, edge, text, false)
+            for (key in dead) drawKey(canvas, thumb, key, radius, face, edge, edge)
+            for (key in live) drawKey(canvas, thumb, key, radius, face, edge, text)
             // The pivot, and what this thumb has taken so far.
             ink.style = Paint.Style.FILL
             ink.color = if (thumb.down) hot else edge
@@ -273,16 +279,14 @@ class RadialView(
         face: Int,
         edge: Int,
         label: Int,
-        highlight: Boolean,
     ) {
         val slot = ring.slotOf(key) ?: return
-        val distance = if (slot.radius == Radius.FAR) config.farRadius * unit * 1.35f
-        else config.farRadius * unit * 0.62f
+        val distance = reach(slot.radius)
         val radians = Math.toRadians(slot.angle.toDouble())
         val x = thumb.markX + (cos(radians) * distance).toFloat()
         val y = thumb.markY + (sin(radians) * distance).toFloat()
         ink.style = Paint.Style.FILL
-        ink.color = if (highlight) label else face
+        ink.color = face
         canvas.drawCircle(x, y, radius, ink)
         ink.style = Paint.Style.STROKE
         ink.color = edge
@@ -297,16 +301,17 @@ class RadialView(
         canvas: Canvas,
         thumb: Thumb,
         items: List<Pair<String, Int>>,
-        distance: Float,
+        band: Radius,
         radius: Float,
         face: Int,
         edge: Int,
         label: Int,
         hot: Int,
-        sticky: Boolean,
     ) {
+        val distance = reach(band)
+        val sticky = band == Radius.NEAR
         val step = 360f / items.size
-        val start = if (sticky) config.startNearLeft else config.startFarLeft
+        val start = config.startAngle(thumb.bank, band)
         for (i in items.indices) {
             val radians = Math.toRadians((start + i * step).toDouble())
             val x = thumb.markX + (cos(radians) * distance).toFloat()
