@@ -1,0 +1,14 @@
+# The retro modifier fold, on its own, because it is not part of the stack yet: a
+# host that hands a dictionary its own run newest-first does not exist, and a writer
+# strokes the clause first. The grammar is checked without one, since a reversed run
+# is an ordinary multi-stroke outline. See docs/phrasing.md.
+system = "systems/stenotype-extended.toml"
+
+[[dict]]
+name = "phrasing-retro"
+priority = 9
+xfst = [
+    "dictionaries/phrasing-tables.xfst",
+    "dictionaries/phrasing.xfst",
+    "dictionaries/phrasing-retro.xfst",
+]

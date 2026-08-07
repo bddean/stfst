@@ -1,30 +1,23 @@
 #!/usr/bin/env python3
-"""Check the retro modifier layer against phrasing.py, end to end.
+"""Check the retro modifier layer against phrasing.py.
 
-A golden file over strokes is not enough, because what can go wrong is the *fold*,
-and the fold reads the clause back off the window. So this seeds the buffer with a
-clause, strokes a modifier at it, and compares the finished buffer with what
-`phrasing.py` gives for the same two-stroke run.
+`phrasing.py` takes a clause stroke and up to seven modifiers after it, and
+re-realizes the whole run. This dictionary does the same thing over the same run
+written newest-first, so a run the writer strokes as
 
-Seeding rather than stroking the base clause is deliberate: it puts the clause in
-the window without the base dictionary in the way, so a failure here is the fold's
-and not the clause grammar's.
+    +T  then  +*  then  ^+
 
-Two divergences are expected, and both are the window carrying text where the
-Python carries strokes. They are asserted rather than ignored:
+is the outline `^+/+*/+T` here. That reversal is the whole reason it is affordable,
+and it is why this checker can run with no host change at all: the reversed run is
+an ordinary multi-stroke outline, so `stfst lookup` answers it. What the host still
+has to learn is to hand a dictionary its own run in that order.
 
-- **The reading.** Text does not determine the bundle: `+T`, `+TU` and `+TE` all
-  write "it's", and negating them gives "it isn't", "it hasn't" and "it isn't". The
-  parse takes the least-marked reading, so an aspect or a contraction mode the
-  surface hid is lost.
-- **The span.** The fold takes the longest suffix of the window that reads as a
-  clause, which may be more than the last stroke wrote. That is the only thing a
-  window *can* do, and it is usually the better answer.
+Coverage is the product of the dimensions a modifier can touch, because that is
+where the rules are: every field of the delta, alone and in the combinations that
+interact. Runs of one, two and three modifiers, against clauses that reach every
+shape the fold has to read back.
 
-And one thing left out rather than diverging: a bare `+` selects a third
-contraction mode in the Python and folds nothing here.
-
-Usage: scripts/check-phrasing-retro.py <retro artifact> <phrasing artifact>
+Usage: scripts/check-phrasing-retro.py <retro artifact>
 """
 import collections
 import contextlib
@@ -35,13 +28,15 @@ import os
 import subprocess
 import sys
 
-LEFT = "STKPWHR"
 HERE = os.path.dirname(os.path.abspath(__file__))
 SYSTEM = os.path.join(HERE, "..", "systems", "stenotype-extended.toml")
 STFST = os.path.join(HERE, "..", "target", "release", "stfst")
+
+# One modifier per field of the delta, plus the ones that interact: `A O` is set
+# absolutely so the last wins, `*` and `#` toggle, and `@` counts.
 MODS = ["+*", "+-D", "+A", "+O", "+AO", "+E", "+U", "+S", "#+", "@+", "^+", "+",
-        "+-G", "+-Z", "+*E", "^+*", "+AO*"]
-BASES = ["K", "T", "PW", "SK", "TK", "W", "SW", "R", "PH", "TKPW"]
+        "+-G", "+-Z", "+*E", "^+*", "+AO*", "#+*"]
+BASES = ["K", "T", "PW", "SK", "TK", "W", "SW", "R", "PH", "TKPW", "HR", ""]
 
 
 def load(path):
@@ -52,82 +47,101 @@ def load(path):
     return module
 
 
-def readings(ph):
-    """Every clause text, and how many strokes write it.
-
-    A text more than one stroke writes is one whose surface hides part of its own
-    bundle, and the fold cannot recover what the surface did not show.
-    """
-    count = collections.Counter()
-    for n in range(len(LEFT) + 1):
-        for combo in itertools.combinations(LEFT, n):
-            for ao in ("", "A", "O", "AO"):
-                for star in ("", "*"):
-                    for eu in ("", "E", "U", "EU"):
-                        for full in ("", "^"):
-                            for e in ("", "D", "G", "B", "FBTS", "BDZ"):
-                                s = full + "+" + "".join(combo) + ao + star + eu + e
-                                try:
-                                    text = ph.lookup((s,))
-                                except (KeyError, IndexError):
-                                    continue
-                                if text:
-                                    count[text] += 1
-    return count
-
-
-def main(retro, phrasing):
-    ph = load(os.path.expanduser("~/.config/plover/phrasing.py"))
-    hidden = readings(ph)
-
-    lines, keep = [], []
+def clauses():
     for combo in BASES:
         for ao in ("", "A", "AO"):
             for star in ("", "*"):
                 for eu in ("", "E", "U", "EU"):
                     for full in ("", "^"):
                         for ender in ("", "D", "G", "B", "FBTS"):
-                            base = full + "+" + combo + ao + star + eu + ender
-                            for mod in MODS:
-                                try:
-                                    first = ph.lookup((base,))
-                                    want = ph.lookup((base, mod))
-                                except (KeyError, IndexError):
-                                    continue
-                                if not first or not want:
-                                    continue
-                                lines += ["!buffer " + first, mod]
-                                keep.append((base, mod, first, want))
+                            yield full + "+" + combo + ao + star + eu + ender
 
-    out = subprocess.run([STFST, "translate", retro, phrasing, "--system", SYSTEM],
-                         input="\n".join(lines) + "\n", capture_output=True,
+
+def runs(ph):
+    """Every (run, expected) pair, the run oldest-first as the writer strokes it."""
+    out = []
+    for base in clauses():
+        try:
+            if not ph.lookup((base,)):
+                continue
+        except (KeyError, IndexError):
+            continue
+        for one in MODS:
+            out.append((base, (one,)))
+        for a, b in itertools.combinations(MODS, 2):
+            out.append((base, (a, b)))
+        for a in ("+*", "@+", "+A"):
+            for b in ("^+", "+E", "#+"):
+                out.append((base, (a, b, "+-D")))
+    return out
+
+
+def main(retro):
+    ph = load(os.path.expanduser("~/.config/plover/phrasing.py"))
+    cases, want = [], []
+    for base, mods in runs(ph):
+        try:
+            text = ph.lookup((base,) + mods)
+        except (KeyError, IndexError):
+            text = None
+        if not text:
+            continue
+        # Newest-first, so the clause is last and the delta is known before it.
+        cases.append("/".join(reversed((base,) + mods)))
+        want.append(text)
+
+    out = subprocess.run([STFST, "lookup", retro, "--system", SYSTEM],
+                         input="\n".join(cases) + "\n", capture_output=True,
                          text=True, check=True).stdout
-    # Two lines per run: the seed, then the modifier. The buffer is the last field.
-    got = [line.split("\t")[-1].strip('"')
-           for line in out.splitlines()
-           if not line.startswith("! ")][1::2]
+    got = {}
+    for line in out.splitlines():
+        f = line.split("\t")
+        got[f[0]] = None if len(f) < 3 or f[2] == "-" else f[2]
 
     tally = collections.Counter()
     show = collections.defaultdict(list)
-    for (base, mod, first, want), have in zip(keep, got):
-        kind = ("exact" if have == want
-                else "reading" if hidden[first] > 1
-                else "bare +" if mod == "+"
-                else "OTHER")
+    for outline, expected in zip(cases, want):
+        have = got.get(outline)
+        if have == expected:
+            tally["exact"] += 1
+            continue
+        # The clause grammar's one deliberate divergence reaches here too: an
+        # adverb launchpad with no auxiliary drops negation, the question and
+        # emphasis in the Python, and do-support is what English does. See
+        # docs/phrasing.md.
+        kind = "launchpad" if _launchpad(ph, outline) else "OTHER"
         tally[kind] += 1
-        if kind != "exact" and len(show[kind]) < 6:
-            show[kind].append((base + "/" + mod, first, want, have))
+        if len(show[kind]) < 6:
+            show[kind].append((outline, expected, have))
 
     total = sum(tally.values())
-    print("phrasing-retro: %d folds, %d exact (%.1f%%)"
+    print("phrasing-retro: %d runs, %d exact (%.1f%%)"
           % (total, tally["exact"], 100 * tally["exact"] / max(total, 1)))
-    for kind in ("reading", "bare +", "OTHER"):
+    for kind in ("launchpad", "OTHER"):
         if tally[kind]:
             print("  %s: %d" % (kind, tally[kind]))
             for row in show[kind]:
-                print("    %-14s %-24s want %-26s got %s" % row)
+                print("    %-22s want %-24s got %s" % row)
     return 1 if tally["OTHER"] else 0
 
 
+def _launchpad(ph, outline):
+    """Is the clause an adverb launchpad the run leaves without an auxiliary?
+
+    The Python has nothing for negation, the question or emphasis to sit on there
+    and drops them; this supplies `do`, which is what English does.
+    """
+    strokes = outline.split("/")
+    base = ph._parse(strokes[-1])
+    if base is None or base["right"] not in ph.ADV:
+        return False
+    fields = [base] + [ph._parse(s) for s in strokes[:-1]]
+    if any(f is None for f in fields):
+        return False
+    if any(f["A"] or f["O"] or f["E"] or f["U"] for f in fields):
+        return False
+    return any(f["neg"] or f["question"] or f["emph"] for f in fields)
+
+
 if __name__ == "__main__":
-    sys.exit(main(sys.argv[1], sys.argv[2]))
+    sys.exit(main(sys.argv[1]))

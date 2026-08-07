@@ -177,168 +177,91 @@ own `Record`, which silently emptied the reverse direction -- the compiler now
 refuses a grammar that redefines a name a prelude macro reads, because `Fresh` is
 expanded after the grammar and read a name that no longer named a record.
 
-## The retro modifier layer goes through the window
+## The retro modifier layer, and the tape order that pays for it
 
-`lookup` takes a base clause plus up to seven modifier strokes, and each modifier
-is a delta on the feature bundle. That reads as composition, and it is, so the
-obvious shape is a base relation and one small relation per modifier:
+`lookup` takes a base clause plus a run of modifier strokes, and each modifier is
+a delta on the feature bundle. The whole difficulty is the order the run arrives
+in.
 
-```
-Records = [ Bundle Rest ] .o. Step .o. Step .o. ...     seven times
-```
-
-That does not fit, and the reason is a property of the mechanism rather than of
-this grammar. A modifier stroke is read *after* the bundle it changes, and the
-text is written before it, so the transducer has to guess the delta and let the
-keys confirm it. The delta is wide: mode (3) times question (2) times emphasis (2)
-times growth (2) times modality (4) times polarity (2) times aspect (4) times
-tense (2) is 3,072 distinct effects one stroke can have, and every one of them
-stays live across the whole bundle.
-
-| | |
-|---|---|
-| One `Step` | 112,805 states, 5.3M arcs |
-| One modifier, end to end | 1.4M states |
-| Seven of them | did not finish in eight minutes, 3.8GB resident |
-
-Minimising between compositions changes nothing, because that size is minimal.
-
-The window is the way round it, and it is the same insight `docs/retro.md` already
-draws: **a transducer cannot buffer a string before it knows what to do with it,
-so the string has to arrive after the keys.** A dictionary that declares
-`words = N` is shown the text the host already wrote, *after* the keys. So the
-delta is known before the clause is read, and nothing is guessed.
-
-Re-realising means running the clause grammar backwards, and it is a relation, so
-it inverts. `Spell` is `Chain .o. Arrange`; its inverse reads a clause into a
-bundle, the deltas edit the bundle, and `Spell` writes it out again:
-
-| | |
-|---|---|
-| `Spell`, bundle to text | 3,261 states |
-| The whole fold, every delta at once | 16,640 states |
-
-Three orders of magnitude under the outline route, for the same nine deltas. The
-fold was never the expensive part; getting the bundle to it was.
-
-### What the window costs
-
-**The reading.** Text does not determine the bundle. `+T`, `+TU` and `+TE` all
-write "it's", and the same `+*` after them gives "it isn't", "it hasn't" and "it
-isn't". A clause with no contractible spot also hides its contraction mode: `+G`
-and `^+G` both write "go". So the parse takes the least-marked reading -- the one
-a writer who never struck `^` or `@` would have meant. Measured against every
-reading of every clause text, that is right for 95.2% of folds, and three quarters
-of the rest is the contraction mode.
-
-**The span.** The fold takes the longest suffix of the window that reads as a
-clause. It has to be the longest: two thirds of clause texts have a shorter suffix
-that also reads as a clause, so "I can add" ends in "can add" and in "add", and
-folding a fragment would strand the rest. Where that suffix is more than the last
-stroke wrote, the window and the Python part company, and the window is usually
-right: "I can " typed separately, then `+B` and `+*`, gives "I can't add" here and
-"I can don't add" there.
-
-**A third mode left out.** `phrasing.py` gives a bare `+` a subject-clitic mode,
-"it's not" where the reduced form says "it isn't". Carrying a third mode through
-`Arrange` cost more in the composition than the mode is worth, so a bare `+` folds
-nothing.
-
-Both divergences are asserted rather than ignored, by
-`scripts/check-phrasing-retro.py`, which seeds the buffer with a clause, strokes a
-modifier at it, and compares the finished buffer.
-
-### The tape order is the whole problem, and reversing it is the answer
-
-Everything above is a way round the *order* of the chronological tape, and the
-cheap answer is to reverse it. A modifier is a delta on the clause, so hand the
-dictionary the run newest-first and the delta is known before the clause is read:
-
-```
-+*  /  +T     ->   it isn't
-     the modifier first, so the replay emits incrementally, as a single stroke does
-```
+Chronological order is the expensive one. A modifier is read *after* the clause it
+changes and the text is written before it, so the transducer has to guess the
+delta, and one stroke has 3,072 distinct effects: mode (3) times question (2) times
+emphasis (3) times growth (2) times modality (4) times polarity (2) times aspect
+(4) times tense (2). Every one of them stays live across the whole clause.
 
 | route, one modifier | |
 |---|---|
 | Chronological outline, `+T/+*` | 1.4M states |
-| Window | over 6.8GB, never finished |
-| **Reversed, `+*/+T`** | **355,479 states, 606,818 arcs** |
+| A window over the written text | over 6.8GB, never finished |
+| **Newest-first, `+*/+T`** | **362,491 states** |
 
-And it is exact, because it reads strokes rather than text. No least-marked
-reading, no longest-suffix span, no capitalisation:
+Reversing it is not a trick. It is the same rule `docs/retro.md` already draws for
+the window: **a transducer cannot buffer a string before it knows what to do with
+it, so the string has to arrive after the operator.** The window applies that to
+text. This applies it to the run.
 
-```
-+*/+T    it isn't
-+S/+K    we're
-#+/+TU   has it        the window cannot get this: "it's" hides the perfect
-```
-
-This needs no new tape region. The prior strokes *are* a multi-stroke outline, so
-what a dictionary has to be able to say is "feed me this one reversed", which is a
-bit in the manifest and the harvest path the window already uses. Translation-unit
-state would carry the same information, and it is worse: the transducer would have
-to *write* the bundle out, and the emission order puts the state after the record,
-so it would have to hold the whole bundle across the text. State makes the
-transducer pay to remember. Reversed strokes make the host pay, and the host has
-already paid.
-
-**Stacking does not come free, and the reason is worth keeping.** `Peel` is one
-modifier off the run, 12,676 states, and peeling twice is one composition of it
-against the 355,479-state replay. That passed 6GB. The deltas do form a monoid, so
-the *answer* for seven modifiers is no bigger than for one, but repeated
-composition is the wrong way to reach it: it builds the product and minimises
-afterwards.
-
-The construction that matches the monoid is to accumulate first and apply once:
+### Two relations, and the run length does not matter
 
 ```
-Net    : the modifier strokes  ->  one net delta      small: 3,072 values
-Apply  : net delta, bundle     ->  bundle
-Retro  = [ Net Bundle ] .o. Apply .o. Spell
+Net    a whole run to one net delta        15,839 states
+Apply  a delta and a clause to a clause   13,882 states
 ```
 
-`Net` composes over a tiny alphabet, so stacking is cheap there, and `Apply` runs
-once whatever the run length. That should put seven modifiers at about the cost of
-one. It is not built.
+`Net` is the load-bearing half. The deltas compose, so a run of any length
+collapses into one of 3,072 effects *before* the clause is read, and `Run` is a
+Kleene star: this dictionary declares no longest key, where `phrasing.py` needs
+`LONGEST_KEY = 8`.
 
-### Where the window version stands, and what stopped it
+Getting `Net` small took two goes, and the failure is instructive. Absorbing one
+stroke at a time costs 3,072 states per absorber, because there the stroke is read
+before the delta it edits and the decision has to wait; composing seven of those
+against the replay passed 6GB. Accumulating per *field* instead costs one or two
+bits each: `^` anywhere is full mode, `*` an odd number of times is negation, and
+the newest stroke carrying `A` or `O` sets the modality. Nine relations over a bit
+apiece, and the run collapses in one pass.
 
-Every stage works, checked on concrete input:
+The other half of that lesson is composition order. `[ clause ] .o. Net .o. Apply`
+folds the 362,491-state replay in at step one and then composes *that* with each
+absorber, which is the product every time. The small relations have to meet each
+other first.
 
-```
-Parse    +*[W][=i][=t][='][=s][/W]  ->  +*[RED][SUBJ]it[/SUBJ][C][3sg][NOMOD][AFF][SIMPLE][PRES][V0]
-Deltas                              ->  ...[NEG]...
-WriteCl                             ->  [=i][=t][= ][=i][=s][=n][='][=t]
-```
+### Why the strokes and not the features
 
-Composing the three into one artifact does not fit. `Parse` is 196,174 states and
-3.8M arcs, `Parse .o. Deltas` is 254,866 and 5.0M, and the last composition plus
-`Canon` passed 6.8GB resident before it was stopped. So `phrasing-retro.xfst` is
-here and is *not* in `recipe.toml`.
+Translation-unit state would carry the same information, and it is worse. The
+transducer would have to *write* the bundle out, and the emission order puts the
+state after the record, so it would hold the whole bundle across emitting the text.
+State makes the transducer pay to remember. The run makes the host pay, and the
+host has already paid: it has those strokes because that is how longest match
+works.
 
-The cause is identifiable and it is not the fold. Three character-level machines
-end up in one chain: the split that finds the clause in the window, the inverse
-grammar that reads it, and the forward grammar that writes it. Each is over the
-59-symbol window alphabet, and composing them multiplies.
+It also needs no new region in the end. The prior run *is* a multi-stroke outline,
+so what a dictionary has to be able to say is "feed me mine newest-first", and that
+drops into the harvest path the window already uses. The live cursor still reads one
+stroke, so longest match is untouched.
 
-Two of the three come from the split, and the split is there only because `words`
-is fixed. The host already shows the last N words; what it cannot do is let a
-dictionary say how many of them its answer consumed. Given that -- the same shape
-as `[REPLACE1]`, and a smaller ask -- the window would be exactly the clause, the
-head and the marking would both go, and the chain would be `ReadCl .o. Deltas .o.
-WriteCl`: the 16,640-state fold and nothing else.
+### Checked
 
-That is the next move, and it is a host contract item rather than more grammar.
+`scripts/check-phrasing-retro.py`, 492,480 runs, **490,720 exact**. Coverage is the
+product of the dimensions a modifier can touch, which is where the rules are: every
+field of the delta alone, every pair, and the three-deep runs that make the
+order-sensitive fields disagree.
 
-### One thing the window made visible
+The remaining 1,760 are the clause grammar's own deliberate divergence reaching
+here, the adverb launchpad with no auxiliary, and nothing else differs. In
+particular the modes, the toggles, the counts and the last-writer fields all agree:
+`+*/+*/^+/+A/+K` is "I can", `@+/@+/+K` is "I do do", `+E/+U/+K` is "I've been".
 
-The window carries a character as its *class* unless the grammar names it, which
-is what lets `retro.case` recase `RÉSUMÉ` without a case table. Reading a clause
-back needs the letters themselves, so this is the first dictionary to name the
-alphabet, and the set is derived from the clause vocabulary rather than declared: a
-verb with a new letter in it cannot forget to make that letter visible.
+The port cost two bugs and both were only reachable from here. The last-writer
+fields read the *oldest* stroke, because "last" on a newest-first tape is the
+leftmost, not the rightmost. And the modal perfect would not merge across an adverb
+-- "I could've often", not "I could often have" -- which one stroke cannot reach at
+all, because the past tense and an adverb ender both want the right bank.
 
-Naming both cases is what handles a clause the formatter capitalised. `[CAP]`
-carries that fact across the fold, so "It's" reads as "it's", folds, and comes back
-"It isn't" -- one symbol rather than two of everything.
+### What is left
+
+`phrasing-retro.xfst` is not in `recipe.toml`, because a host that hands a
+dictionary its own run newest-first does not exist yet. The grammar is checked
+without one, since a reversed run is an ordinary outline and `stfst lookup` answers
+it, but a writer strokes the clause first. That is one manifest bit and the harvest
+path, and it is the only thing between this and a working retro layer.
+

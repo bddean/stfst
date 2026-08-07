@@ -228,21 +228,19 @@ One divergence is deliberate and asserted rather than ignored, and it is a bug
 fixed: an adverb launchpad with no auxiliary drops negation, the question and
 emphasis in the Python, and do-support is what English does there.
 
-The retro modifier layer is a different mechanism rather than more of the same one,
-and it goes through the window. As a multi-stroke outline it cannot work: the
-modifier is read after the clause it changes and the text is written before it, so
-a transducer has to guess the delta, and one stroke has 3,072 distinct effects --
-112,805 states for one composition step, and seven do not finish. The window
-arrives *after* the keys, which is the whole point of where §5 item 5 put it, so
-the delta is known before the clause is read and nothing is guessed. The clause
-grammar is a relation, so it inverts: 16,640 states for every delta at once.
+The retro modifier layer is written and checked: 492,480 runs, 490,720 exact, and
+the rest is the launchpad divergence above. What it needed was not more grammar but
+the run in the other order. Chronologically the modifier is read after the clause it
+changes and the text is written before it, so a transducer has to guess the delta,
+and one stroke has 3,072 distinct effects: 1.4M states for one modifier, and a
+window over the written text passed 6.8GB and lost 4.8% of its answers because text
+does not determine a bundle. Newest-first the delta is known first, the deltas
+compose so the run length stops mattering, and the whole fold is 362,491 states with
+no longest key declared.
 
-Two divergences, both the window carrying text where the Python carries strokes,
-and both asserted rather than ignored. The text does not determine the bundle --
-`+T`, `+TU` and `+TE` all write "it's" -- so the parse takes the least-marked
-reading, which is right for 95.2% of folds. And the fold takes the longest suffix
-of the window that reads as a clause, which is sometimes more than the last stroke
-wrote, and is usually the better answer for it. See `docs/phrasing.md`.
+What is left is a host that hands a dictionary its own run newest-first, which is one
+manifest bit and the harvest path the window already uses. Until then
+`phrasing-retro.xfst` is out of `recipe.toml`. See `docs/phrasing.md`.
 
 **A dynamic stack.** *Done for enable, disable and solo.* Which dictionaries are
 answering is part of the frame, like the context and the carried state, so a stroke

@@ -94,6 +94,17 @@ else
     echo "skipped: no build/morph artifacts, or no Plover python"
 fi
 
+# The retro fold is not in `recipe.toml`, because no host yet hands a dictionary its
+# own run newest-first, so `build/dicts` never holds it and the loop above cannot
+# reach it. Its grammar is checked all the same, and building it costs a quarter of
+# an hour, so it is opt-in.
+if [ -n "${STFST_RETRO:-}" ]; then
+    echo "== phrasing-retro"
+    $B compile recipe-retro.toml --out build/retro-dicts --work build/retro-work \
+        > /dev/null
+    "$PLOVER_PYTHON" scripts/check-phrasing-retro.py build/retro-dicts/phrasing-retro.stfst
+fi
+
 # Translation is not a per-tape question, so it needs its own fixture: a stroke
 # stream through the whole stack, where the answer depends on the history.
 echo "== translate"

@@ -32,7 +32,7 @@ define SayNot   [ 0 .x. [ " " {not} ] ] ;
 
 ! ---- the two internal alphabets
 
-define Mode  [ "[RED]" | "[FULL]" ] ;
+define Mode  [ "[RED]" | "[FULL]" | "[SCLIT]" ] ;
 define Agr   [ "[1sg]" | "[3sg]" | "[pl]" ] ;
 define Modl  [ "[NOMOD]" | "[CAN]" | "[SHALL]" | "[WILL]" ] ;
 define Pol   [ "[AFF]" | "[NEG]" ] ;
@@ -254,7 +254,11 @@ define IsNeg  [ Agr "[NEG]" Tns Fid ] ;
 define ModVe [ [ "[F:can]"   .x. [ {could}  "'" {ve} ] ]
              | [ "[F:shall]" .x. [ {should} "'" {ve} ] ]
              | [ "[F:will]"  .x. [ {would}  "'" {ve} ] ] ] ;
-define Merge [ Kill(Agr) Kill("[AFF]") Kill("[PAST]") ModVe Kill("[M:have]") ] ;
+! An adverb ender sits between the finite word and the mids, so the `have` this
+! swallows is not always the next symbol: "I could've often", not "I could often
+! have". One stroke cannot reach that, because the past tense and an adverb both
+! want the right bank, but a retro `+-D` can.
+define Merge [ Kill(Agr) Kill("[AFF]") Kill("[PAST]") ModVe Chr* Kill("[M:have]") ] ;
 
 ! The mid slots, spelled. They are polarity-independent: only the finite head
 ! ever takes a negative form, so negation never reaches them.
@@ -300,10 +304,15 @@ define Ques(F, T)  [ Invert .o.
 ! a filter on the tape rather than a state.
 define Full(B)    [ [ [ "[Q]" | 0 ] "[FULL]" ?* ] .o. B ] ;
 define Red(B)     [ [ [ "[Q]" | 0 ] "[RED]" ?* ] .o. B ] ;
+define Sclit(B)   [ [ [ "[Q]" | 0 ] "[SCLIT]" ?* ] .o. B ] ;
+define Spoken(B)  [ [ [ "[Q]" | 0 ] [ "[RED]" | "[SCLIT]" ] ?* ] .o. B ] ;
 
 ! Reduction is a preference, not a case: take the clitic where the tables allow
 ! one, else the contracted negative, else the full form. That is a priority
-! union, and it is why the two modes need no marker to tell them apart.
+! union, and it is why the modes need no marker to tell them apart. The two spoken
+! modes differ only in where the clitic sits in that order: `[SCLIT]` prefers
+! "it's not" and `[RED]` prefers "it isn't". Only a retro bare `+` reaches
+! `[SCLIT]`, so see phrasing-retro.xfst for what sets it.
 ! `Chain` writes every word of a tail with the space that precedes it, which is
 ! the subject's space when there is a subject and nobody's when there is not.
 define Arrange [
@@ -314,15 +323,18 @@ define Arrange [
   | Full(Decl([ IsNeg .o. AffW ], [ SayNot Tail ]))
   | Full(Ques([ IsAff .o. AffW ], Tail))
   | Full(Ques([ IsNeg .o. AffW ], [ SayNot Tail ]))
-  | Red(Ques([ IsAff .o. AffW ], Tail))
-  | Red(PU(Ques([ IsNeg .o. NegW ], Tail),
-           Ques([ IsNeg .o. AffW ], [ SayNot Tail ])))
-  | Red(PU(Clit([ IsAff .o. SufW ], Tail),
-           PU(Decl(Merge, Tail),
-              Decl([ IsAff .o. AffW ], Tail))))
+  | Spoken(Ques([ IsAff .o. AffW ], Tail))
+  | Spoken(PU(Ques([ IsNeg .o. NegW ], Tail),
+              Ques([ IsNeg .o. AffW ], [ SayNot Tail ])))
+  | Spoken(PU(Clit([ IsAff .o. SufW ], Tail),
+              PU(Decl(Merge, Tail),
+                 Decl([ IsAff .o. AffW ], Tail))))
   | Red(PU(Decl([ IsNeg .o. NegW ], Tail),
            PU(Clit([ IsNeg .o. SufW ], [ SayNot Tail ]),
               Decl([ IsNeg .o. AffW ], [ SayNot Tail ]))))
+  | Sclit(PU(Clit([ IsNeg .o. SufW ], [ SayNot Tail ]),
+             PU(Decl([ IsNeg .o. NegW ], Tail),
+                Decl([ IsNeg .o. AffW ], [ SayNot Tail ]))))
 ] ;
 
 define Grammar  Canon([ Bundle .o. Chain .o. Arrange ]) ;
