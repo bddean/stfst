@@ -1,0 +1,14 @@
+[package]
+name = "stfst-board"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+stfst-core.workspace = true
+stfst-dict.workspace = true
+stfst-text.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+stfst-ol.workspace = true

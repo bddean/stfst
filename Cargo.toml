@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["crates/stfst-core", "crates/stfst-ol", "crates/stfst-dict", "crates/stfst-text", "crates/stfst-compile", "crates/stfst-cli"]
+members = ["crates/stfst-core", "crates/stfst-ol", "crates/stfst-dict", "crates/stfst-text", "crates/stfst-board", "crates/stfst-jni", "crates/stfst-compile", "crates/stfst-cli"]
 
 [workspace.package]
 version = "0.1.0"
@@ -13,6 +13,7 @@ stfst-core = { path = "crates/stfst-core" }
 stfst-ol = { path = "crates/stfst-ol" }
 stfst-dict = { path = "crates/stfst-dict" }
 stfst-text = { path = "crates/stfst-text" }
+stfst-board = { path = "crates/stfst-board" }
 stfst-compile = { path = "crates/stfst-compile" }
 
 anyhow = "1"
