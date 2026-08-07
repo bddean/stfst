@@ -7,7 +7,8 @@ Here it is a grammar, in 698KB, and the whole single-stroke language is ported
 from the user's `phrasing.py`.
 
 What is left is the retroactive modifier layer, which is a different mechanism
-rather than more of the same one. Its measurement is at the end of this file.
+rather than more of the same one. What it needs is not more grammar but a tape in
+the other order, and the measurements are at the end of this file.
 
 ## Three tapes, and who owns each
 
@@ -247,7 +248,61 @@ Both divergences are asserted rather than ignored, by
 `scripts/check-phrasing-retro.py`, which seeds the buffer with a clause, strokes a
 modifier at it, and compares the finished buffer.
 
-### Where it stands, and what the last obstacle is
+### The tape order is the whole problem, and reversing it is the answer
+
+Everything above is a way round the *order* of the chronological tape, and the
+cheap answer is to reverse it. A modifier is a delta on the clause, so hand the
+dictionary the run newest-first and the delta is known before the clause is read:
+
+```
++*  /  +T     ->   it isn't
+     the modifier first, so the replay emits incrementally, as a single stroke does
+```
+
+| route, one modifier | |
+|---|---|
+| Chronological outline, `+T/+*` | 1.4M states |
+| Window | over 6.8GB, never finished |
+| **Reversed, `+*/+T`** | **355,479 states, 606,818 arcs** |
+
+And it is exact, because it reads strokes rather than text. No least-marked
+reading, no longest-suffix span, no capitalisation:
+
+```
++*/+T    it isn't
++S/+K    we're
+#+/+TU   has it        the window cannot get this: "it's" hides the perfect
+```
+
+This needs no new tape region. The prior strokes *are* a multi-stroke outline, so
+what a dictionary has to be able to say is "feed me this one reversed", which is a
+bit in the manifest and the harvest path the window already uses. Translation-unit
+state would carry the same information, and it is worse: the transducer would have
+to *write* the bundle out, and the emission order puts the state after the record,
+so it would have to hold the whole bundle across the text. State makes the
+transducer pay to remember. Reversed strokes make the host pay, and the host has
+already paid.
+
+**Stacking does not come free, and the reason is worth keeping.** `Peel` is one
+modifier off the run, 12,676 states, and peeling twice is one composition of it
+against the 355,479-state replay. That passed 6GB. The deltas do form a monoid, so
+the *answer* for seven modifiers is no bigger than for one, but repeated
+composition is the wrong way to reach it: it builds the product and minimises
+afterwards.
+
+The construction that matches the monoid is to accumulate first and apply once:
+
+```
+Net    : the modifier strokes  ->  one net delta      small: 3,072 values
+Apply  : net delta, bundle     ->  bundle
+Retro  = [ Net Bundle ] .o. Apply .o. Spell
+```
+
+`Net` composes over a tiny alphabet, so stacking is cheap there, and `Apply` runs
+once whatever the run length. That should put seven modifiers at about the cost of
+one. It is not built.
+
+### Where the window version stands, and what stopped it
 
 Every stage works, checked on concrete input:
 
