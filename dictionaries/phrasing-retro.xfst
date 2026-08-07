@@ -1,0 +1,174 @@
+! Phrasing, retroactively: a modifier stroke edits the clause already written.
+!
+! `phrasing.py` §8 stacks up to seven modifier strokes after a clause and
+! re-realizes the whole run on every lookup. A transducer cannot do that as a
+! multi-stroke outline: the modifier is read after the clause it changes and the
+! text is written before it, so the delta has to be guessed, and one stroke has
+! 3,072 distinct effects. Measured, that costs 1.4M states for a single modifier
+! and does not finish for seven. See docs/phrasing.md.
+!
+! The window is the way round it, because the window arrives *after* the keys. So
+! the delta is known before the clause is read, and nothing is guessed:
+!
+!   +*   [W] [=i][=t][='][=s] [/W]   ->   it isn't
+!        keys       window                 the whole span, rewritten
+!
+! `Spell` is the clause grammar of phrasing.xfst read in both directions: its
+! inverse reads a clause back into a feature bundle, the deltas edit the bundle,
+! and `Spell` writes it out again. That is 17,000 states for every delta at once,
+! against 1.4M for one as an outline.
+!
+! What it costs is that the window carries text and text does not determine the
+! bundle: `+T`, `+TU` and `+TE` all write "it's", and negating them gives "it
+! isn't", "it hasn't" and "it isn't". So the parse takes the least-marked reading,
+! and `scripts/check-phrasing-retro.py` counts where that differs from the Python.
+!
+! NOT IN `recipe.toml`, because the three stages do not compose within memory:
+! `Parse` is 196,174 states, `Parse .o. Deltas` is 254,866, and the last step
+! passed 6.8GB. Every stage is right on its own -- the fold is 16,640 states -- and
+! what is in the way is that two of the three character-level machines exist only
+! to find the clause inside a fixed-width window. `docs/phrasing.md` has the
+! numbers and names the host contract item that removes them.
+
+! ---- the window
+!
+! `SigChar` is generated from the clause vocabulary, so a verb with a new letter
+! in it cannot forget to make that letter visible.
+define Char   Glyph(SigChar) ;
+define Blank  [ "[= ]" | Sp ] ;
+define Solid  [ Char - Blank ] ;
+define Wd     [ Solid+ ] ;
+define Gap    [ Blank+ ] ;
+! Everything before the clause. A language stands for the identity relation, so
+! nothing here has to say "copy".
+define Glyphs [ Char* ] ;
+
+! ---- the clause, read backwards
+!
+! `Spell` is bundle to text. Its inverse is text to bundle, and it is not a
+! function: a clause with no contractible spot hides its contraction mode, and a
+! scaffolded one hides its aspect. So the preference below takes the least-marked
+! reading, which is the one a writer who never struck `^` or `@` would have meant.
+define Spell    [ Chain .o. Arrange ] ;
+define Loud     [ ?* [ "[FULL]" | "[EMPH]" | "[PERF]" | "[PROG]" | "[PERFPROG]" ] ?* ] ;
+define Plainest [ Spell.i .o. ~Loud ] ;
+define Reading  PU(Plainest, Spell.i) ;
+
+! A clause may arrive capitalised, because the formatter may have capitalised the
+! sentence it opened. `[CAP]` remembers that across the fold, which is cheaper
+! than two of everything.
+define ReadLo   [ [ Unsig* ] .o. Reading ] ;
+define ReadCap  [ Say("[CAP]") [ [ Uncap Char* ] .o. [ Unsig* ] .o. Reading ] ] ;
+define ReadCl   [ ReadLo | ReadCap ] ;
+define Resig    [ Unsig.i ] ;
+define WriteCl  [ [ [ Kill("[CAP]") [ Spell .o. Resig* ] ] .o. [ Uncap.i Char* ] ]
+                | [ Spell .o. Resig* ] ] ;
+
+! ---- the modifier stroke
+!
+! A modifier carries no referent and no verb, which leaves these keys.
+define MStroke  [ ("#") ("@") ("^") "+" ("S") ("A") ("O") ("*") ("E") ("U")
+                  ("g") ("s") ("d") ("z") ] ;
+define Has(K)   [ MStroke & [ ?* K ?* ] ] ;
+define Lacks(K) [ MStroke & ~[ ?* K ?* ] ] ;
+
+! ---- the bundle, edited
+!
+! One relation per feature, each total: a modifier without the key leaves the
+! bundle alone, so they compose in any order. `At` names the new value and the
+! bundle language places it, because each field has its own alphabet.
+! The verb slot: empty (the copula), an adverb launchpad, or a lexical verb with
+! at most one satellite, on the side it surfaces on.
+define SlotV  [ Adv | [ (SatPre) Lemma (SatPost) ] ] ;
+define Slot   [ "[V0]" | SlotV ] ;
+define Bun    [ ("[CAP]") ("[Q]") ("[EMPH]") Mode ("[AND]")
+                [ [ "[SUBJ]" Word "[/SUBJ]" ("[C]") ] | "[INF]" | 0 ] Agr
+                Modl Pol Asp Tns Slot ] ;
+! `?*` and not `Feature*`: the subject word is text, so a bundle is not all
+! feature symbols. `Bun` is what pins where the new value goes.
+define At(R)  [ Bun .o. [ ?* R ?* ] ] ;
+define On(A, K)  [ [ Has(K) Glyphs A ] | [ Lacks(K) Glyphs Bun ] ] ;
+
+define DPol  On(At([ [ "[AFF]" .x. "[NEG]" ] | [ "[NEG]" .x. "[AFF]" ] ]), "*") ;
+define DTns  On(At([ Tns .x. "[PAST]" ]), "d") ;
+! `^` in any modifier is full mode. `phrasing.py` also gives a bare `+` a third
+! contraction mode, "it's not" where the reduced form says "it isn't"; that is left
+! out, because carrying a third mode through `Arrange` cost more in the composition
+! below than the mode is worth. A bare `+` folds nothing.
+define DMode On(At([ Mode .x. "[FULL]" ]), "^") ;
+! Modality is set absolutely, never toggled, so the four corners of `A O` are the
+! four cases.
+define DModl [ [ [ Has("A")   & Has("O")   ] Glyphs At([ Modl .x. "[WILL]" ])  ]
+             | [ [ Has("A")   & Lacks("O") ] Glyphs At([ Modl .x. "[CAN]" ])   ]
+             | [ [ Lacks("A") & Has("O")   ] Glyphs At([ Modl .x. "[SHALL]" ]) ]
+             | [ [ Lacks("A") & Lacks("O") ] Glyphs Bun ] ] ;
+! Aspect accumulates: adding the progressive to a perfect gives both. `G` is the
+! mnemonic for the progressive on the right bank.
+define AddPg [ [ "[SIMPLE]" .x. "[PROG]" ] | [ "[PROG]"     .x. "[PROG]" ]
+             | [ "[PERF]"   .x. "[PERFPROG]" ] | [ "[PERFPROG]" .x. "[PERFPROG]" ] ] ;
+define AddPf [ [ "[SIMPLE]" .x. "[PERF]" ] | [ "[PERF]"     .x. "[PERF]" ]
+             | [ "[PROG]"   .x. "[PERFPROG]" ] | [ "[PERFPROG]" .x. "[PERFPROG]" ] ] ;
+define DProg [ [ [ Has("E") | Has("g") ] Glyphs At(AddPg) ]
+             | [ [ Lacks("E") & Lacks("g") ] Glyphs Bun ] ] ;
+define DPerf On(At(AddPf), "U") ;
+! The question toggles, so it is added or removed rather than replaced.
+define DQ    [ [ Has("#") Glyphs [ ("[CAP]")
+                 [ [ "[Q]" .x. 0 ] | [ 0 .x. "[Q]" ] ]
+                 ("[EMPH]") Mode ("[AND]")
+                 [ [ "[SUBJ]" Word "[/SUBJ]" ("[C]") ] | "[INF]" | 0 ] Agr
+                 Modl Pol Asp Tns Slot ] ]
+             | [ Lacks("#") Glyphs Bun ] ] ;
+! `@` on an empty verb slot names the verb `do`, exactly as an inline `@` does; a
+! second one finds a verb and becomes emphasis.
+define DEmph [ [ Has("@") Glyphs At([ "[V0]" .x. "[V:do]" ]) ]
+             | [ Has("@") Glyphs [ ("[CAP]") ("[Q]")
+                 [ [ 0 .x. "[EMPH]" ] | "[EMPH]" ] Mode ("[AND]")
+                 [ [ "[SUBJ]" Word "[/SUBJ]" ("[C]") ] | "[INF]" | 0 ] Agr
+                 Modl Pol Asp Tns SlotV ] ]
+             | [ Lacks("@") Glyphs Bun ] ] ;
+! `S` broadens, as everywhere: the pronoun pluralizes and agreement follows.
+! "those" does not cliticize where "that" does, so the marker goes with the word.
+define Grown [ [ [ [ {I} .x. {we} ] | [ [ {he} | {she} | {it} ] .x. {they} ] ] "[C]" ]
+             | [ [ {that} .x. {those} ] Kill("[C]") ]
+             | [ [ {this} .x. {these} ] ]
+             | [ [ Word - {I} - {he} - {she} - {it} - {this} - {that} ] ("[C]") ] ] ;
+define DGrow [ [ [ Has("S") | Has("s") | Has("z") ] Glyphs
+                 [ ("[CAP]") ("[Q]") ("[EMPH]") Mode ("[AND]")
+                   [ [ "[SUBJ]" Grown "[/SUBJ]" ] | "[INF]" | 0 ] [ Agr .x. "[pl]" ]
+                   Modl Pol Asp Tns Slot ] ]
+             | [ [ Lacks("S") & Lacks("s") & Lacks("z") ] Glyphs Bun ] ] ;
+
+define Deltas [ DMode .o. DQ .o. DEmph .o. DGrow .o. DModl .o. DPol .o. DTns
+                .o. DProg .o. DPerf ] ;
+
+! ---- the span, rewritten
+!
+! The window is the last N words and the host replaces exactly those, so the words
+! before the clause are copied and the clause is folded. Which words are the clause
+! is a longest match: two thirds of clause texts have a shorter suffix that also
+! reads as a clause -- "I can add" ends in "can add" and in "add" -- so the first
+! match rather than the longest would fold a fragment and leave the rest stranded.
+!
+! The mark goes as early as it can, which is one preference per word of head:
+! take the whole window if it reads as a clause, else drop a word and try again.
+! A `@->` longest-match rule says the same thing in one line and built a machine
+! forty times the size, because a replace rule is a construction over the whole
+! alphabet and this is nine copies of an 822-state language.
+define ClauseText  ReadCl.u ;
+define In(H)  [ H [ 0 .x. "[|]" ] ClauseText ] ;
+define W1  [ Wd Gap ] ;
+define W2  [ W1 W1 ] ;
+define W4  [ W2 W2 ] ;
+define Mark   PU(In(0),
+              PU(In(W1),
+              PU(In(W2),
+              PU(In([ W2 W1 ]),
+              PU(In(W4),
+              PU(In([ W4 W1 ]),
+              PU(In([ W4 W2 ]),
+              PU(In([ W4 W2 W1 ]),
+                 In([ W4 W4 ]))))))))) ;
+define Split  [ Mark .o. [ Glyphs Kill("[|]") ReadCl ] ] ;
+define Parse  [ MStroke Kill(WinOpen) Split Kill(WinEnd) ] ;
+
+define Grammar  Canon([ Parse .o. Deltas .o. [ Kill(MStroke) Glyphs WriteCl ] ]) ;

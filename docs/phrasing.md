@@ -176,7 +176,7 @@ own `Record`, which silently emptied the reverse direction -- the compiler now
 refuses a grammar that redefines a name a prelude macro reads, because `Fresh` is
 expanded after the grammar and read a name that no longer named a record.
 
-## The retro modifier layer, measured and not built
+## The retro modifier layer goes through the window
 
 `lookup` takes a base clause plus up to seven modifier strokes, and each modifier
 is a delta on the feature bundle. That reads as composition, and it is, so the
@@ -186,44 +186,104 @@ obvious shape is a base relation and one small relation per modifier:
 Records = [ Bundle Rest ] .o. Step .o. Step .o. ...     seven times
 ```
 
-That does not fit, and the reason is worth writing down because it is a property
-of the mechanism rather than of this grammar.
-
-A modifier stroke is read *after* the bundle it changes, and the text is written
-before it. So the transducer has to guess the delta and let the keys confirm it,
-and the delta is wide: mode (3) times question (2) times emphasis (2) times growth
-(2) times modality (4) times polarity (2) times aspect (4) times tense (2), which
-is 3,072 distinct effects one stroke can have. Every one of them stays live across
-the whole bundle. Measured:
+That does not fit, and the reason is a property of the mechanism rather than of
+this grammar. A modifier stroke is read *after* the bundle it changes, and the
+text is written before it, so the transducer has to guess the delta and let the
+keys confirm it. The delta is wide: mode (3) times question (2) times emphasis (2)
+times growth (2) times modality (4) times polarity (2) times aspect (4) times
+tense (2) is 3,072 distinct effects one stroke can have, and every one of them
+stays live across the whole bundle.
 
 | | |
 |---|---|
 | One `Step` | 112,805 states, 5.3M arcs |
-| `[ Bundle Rest ] .o. Step` | 1.9M states |
+| One modifier, end to end | 1.4M states |
 | Seven of them | did not finish in eight minutes, 3.8GB resident |
 
 Minimising between compositions changes nothing, because that size is minimal.
-Three thousand guesses times a 26,000-state grammar is the floor, and no ordering
-of the fields moves it: the keys are last on the tape and the text is first.
 
-Two mechanisms do fit, and the choice between them is the next decision rather
-than the next commit.
+The window is the way round it, and it is the same insight `docs/retro.md` already
+draws: **a transducer cannot buffer a string before it knows what to do with it,
+so the string has to arrive after the keys.** A dictionary that declares
+`words = N` is shown the text the host already wrote, *after* the keys. So the
+delta is known before the clause is read, and nothing is guessed.
 
-**Translation-unit state**, which is what §7 item 6 built and its own amendment
-points at. The bundle rides in `[STATE]…[END]`, one stroke is one step, and
-`[REPLACE1]` supersedes the previous record. That removes the sevenfold
-composition, so the cost is one `Step`-shaped relation instead of seven composed,
-but it does not remove the 3,072 guesses: the state is still first on the tape and
-the text still first on the output.
+Re-realising means running the clause grammar backwards, and it is a relation, so
+it inverts. `Spell` is `Chain .o. Arrange`; its inverse reads a clause into a
+bundle, the deltas edit the bundle, and `Spell` writes it out again:
 
-**The window**, which is what `retro-words` uses. A dictionary that declares
-`words = N` sees the text the host already wrote, and it sees it *after* the keys.
-So the delta is known before the old clause is read, and nothing is guessed. The
-price is that re-realising means running the grammar backwards over the window --
-`Arrange` and `Chain` are relations, so they invert -- and then matching the word
-count that `[REPLACE1]` replaces.
+| | |
+|---|---|
+| `Spell`, bundle to text | 3,261 states |
+| The whole fold, every delta at once | 16,640 states |
 
-The second is the cheaper shape and the first is the one the design document
-names. What settles it is whether the inverse of `Arrange` is a function on the
-texts this dictionary actually writes, and that is measurable: compose it and
-count where it is ambiguous.
+Three orders of magnitude under the outline route, for the same nine deltas. The
+fold was never the expensive part; getting the bundle to it was.
+
+### What the window costs
+
+**The reading.** Text does not determine the bundle. `+T`, `+TU` and `+TE` all
+write "it's", and the same `+*` after them gives "it isn't", "it hasn't" and "it
+isn't". A clause with no contractible spot also hides its contraction mode: `+G`
+and `^+G` both write "go". So the parse takes the least-marked reading -- the one
+a writer who never struck `^` or `@` would have meant. Measured against every
+reading of every clause text, that is right for 95.2% of folds, and three quarters
+of the rest is the contraction mode.
+
+**The span.** The fold takes the longest suffix of the window that reads as a
+clause. It has to be the longest: two thirds of clause texts have a shorter suffix
+that also reads as a clause, so "I can add" ends in "can add" and in "add", and
+folding a fragment would strand the rest. Where that suffix is more than the last
+stroke wrote, the window and the Python part company, and the window is usually
+right: "I can " typed separately, then `+B` and `+*`, gives "I can't add" here and
+"I can don't add" there.
+
+**A third mode left out.** `phrasing.py` gives a bare `+` a subject-clitic mode,
+"it's not" where the reduced form says "it isn't". Carrying a third mode through
+`Arrange` cost more in the composition than the mode is worth, so a bare `+` folds
+nothing.
+
+Both divergences are asserted rather than ignored, by
+`scripts/check-phrasing-retro.py`, which seeds the buffer with a clause, strokes a
+modifier at it, and compares the finished buffer.
+
+### Where it stands, and what the last obstacle is
+
+Every stage works, checked on concrete input:
+
+```
+Parse    +*[W][=i][=t][='][=s][/W]  ->  +*[RED][SUBJ]it[/SUBJ][C][3sg][NOMOD][AFF][SIMPLE][PRES][V0]
+Deltas                              ->  ...[NEG]...
+WriteCl                             ->  [=i][=t][= ][=i][=s][=n][='][=t]
+```
+
+Composing the three into one artifact does not fit. `Parse` is 196,174 states and
+3.8M arcs, `Parse .o. Deltas` is 254,866 and 5.0M, and the last composition plus
+`Canon` passed 6.8GB resident before it was stopped. So `phrasing-retro.xfst` is
+here and is *not* in `recipe.toml`.
+
+The cause is identifiable and it is not the fold. Three character-level machines
+end up in one chain: the split that finds the clause in the window, the inverse
+grammar that reads it, and the forward grammar that writes it. Each is over the
+59-symbol window alphabet, and composing them multiplies.
+
+Two of the three come from the split, and the split is there only because `words`
+is fixed. The host already shows the last N words; what it cannot do is let a
+dictionary say how many of them its answer consumed. Given that -- the same shape
+as `[REPLACE1]`, and a smaller ask -- the window would be exactly the clause, the
+head and the marking would both go, and the chain would be `ReadCl .o. Deltas .o.
+WriteCl`: the 16,640-state fold and nothing else.
+
+That is the next move, and it is a host contract item rather than more grammar.
+
+### One thing the window made visible
+
+The window carries a character as its *class* unless the grammar names it, which
+is what lets `retro.case` recase `RÉSUMÉ` without a case table. Reading a clause
+back needs the letters themselves, so this is the first dictionary to name the
+alphabet, and the set is derived from the clause vocabulary rather than declared: a
+verb with a new letter in it cannot forget to make that letter visible.
+
+Naming both cases is what handles a clause the formatter capitalised. `[CAP]`
+carries that fact across the fold, so "It's" reads as "it's", folds, and comes back
+"It isn't" -- one symbol rather than two of everything.

@@ -27,7 +27,7 @@
 
 define Kill(X)  [ X .x. 0 ] ;
 define Say(X)   [ 0 .x. X ] ;
-define Sp       [ 0 .x. " " ] ;
+define SaySp    [ 0 .x. " " ] ;
 define SayNot   [ 0 .x. [ " " {not} ] ] ;
 
 ! ---- the two internal alphabets
@@ -276,7 +276,7 @@ define NoThereRe  ~[ ThereRe ?* ] ;
 define SubjA  [ Kill("[SUBJ]") Word Kill("[/SUBJ]") [ Kill("[C]") | 0 ] ] ;
 define SubjC  [ Kill("[SUBJ]") Word Kill("[/SUBJ]") Kill("[C]") ] ;
 define AndW  [ [ "[AND]" .x. [ {and} " " ] ] | 0 ] ;
-define Decl(F, T)  [ Kill(Mode) AndW [ [ SubjA Sp ] | 0 ] F T ] ;
+define Decl(F, T)  [ Kill(Mode) AndW [ [ SubjA SaySp ] | 0 ] F T ] ;
 define Clit(F, T)  [ NoThereRe .o. [ Kill(Mode) AndW SubjC F T ] ] ;
 
 ! Inversion moves the selector in front of the subject, one symbol at a time, so
@@ -294,12 +294,12 @@ define PullAnd [ Pull("[AND]") | ~[ ?* "[AND]" ?* ] ] ;
 define Invert  [ PullFid .o. PullTns .o. PullPol .o. PullAgr .o. PullAnd ] ;
 
 define Ques(F, T)  [ Invert .o.
-                     [ AndW F Kill("[Q]") Kill(Mode) [ [ Sp SubjA ] | 0 ] T ] ] ;
+                     [ AndW F Kill("[Q]") Kill(Mode) [ [ SaySp SubjA ] | 0 ] T ] ] ;
 
 ! The contraction dimension is chosen absolutely, never cycled, so each mode is
 ! a filter on the tape rather than a state.
-define Full(B)  [ [ [ "[Q]" | 0 ] "[FULL]" ?* ] .o. B ] ;
-define Red(B)   [ [ [ "[Q]" | 0 ] "[RED]" ?* ] .o. B ] ;
+define Full(B)    [ [ [ "[Q]" | 0 ] "[FULL]" ?* ] .o. B ] ;
+define Red(B)     [ [ [ "[Q]" | 0 ] "[RED]" ?* ] .o. B ] ;
 
 ! Reduction is a preference, not a case: take the clitic where the tables allow
 ! one, else the contracted negative, else the full form. That is a priority

@@ -228,14 +228,21 @@ One divergence is deliberate and asserted rather than ignored, and it is a bug
 fixed: an adverb launchpad with no auxiliary drops negation, the question and
 emphasis in the Python, and do-support is what English does there.
 
-What is not written is the retro layer, and it is a different mechanism rather than
-more of the same one. A modifier stroke is read after the clause it changes and the
-text is written before it, so a transducer has to guess the delta, and one stroke
-has 3,072 distinct effects. Measured, one composition step is 112,805 states and
-seven of them do not finish. `docs/phrasing.md` has the numbers and the two shapes
-that do fit: translation-unit state, which §7 item 6 built, and the window, which
-`retro-words` already uses and which reads the keys before the old text so nothing
-is guessed.
+The retro modifier layer is a different mechanism rather than more of the same one,
+and it goes through the window. As a multi-stroke outline it cannot work: the
+modifier is read after the clause it changes and the text is written before it, so
+a transducer has to guess the delta, and one stroke has 3,072 distinct effects --
+112,805 states for one composition step, and seven do not finish. The window
+arrives *after* the keys, which is the whole point of where §5 item 5 put it, so
+the delta is known before the clause is read and nothing is guessed. The clause
+grammar is a relation, so it inverts: 16,640 states for every delta at once.
+
+Two divergences, both the window carrying text where the Python carries strokes,
+and both asserted rather than ignored. The text does not determine the bundle --
+`+T`, `+TU` and `+TE` all write "it's" -- so the parse takes the least-marked
+reading, which is right for 95.2% of folds. And the fold takes the longest suffix
+of the window that reads as a clause, which is sometimes more than the last stroke
+wrote, and is usually the better answer for it. See `docs/phrasing.md`.
 
 **A dynamic stack.** *Done for enable, disable and solo.* Which dictionaries are
 answering is part of the frame, like the context and the carried state, so a stroke
