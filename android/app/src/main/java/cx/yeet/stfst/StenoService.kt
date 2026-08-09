@@ -27,6 +27,8 @@ class StenoService : InputMethodService() {
     private var handle = 0L
     private var sent = ""
     private var order = ""
+    /** Why the runtime did not start, for the bar to show instead of dying. */
+    private var trouble = ""
     private lateinit var config: Config
     private var view: RadialView? = null
     private var status: TextView? = null
@@ -34,17 +36,22 @@ class StenoService : InputMethodService() {
     override fun onCreate() {
         super.onCreate()
         config = Prefs.load(getSharedPreferences(PREFS, MODE_PRIVATE))
-        val root = Assets.unpack(this)
-        handle = Native.open(
-            File(root, "dicts").absolutePath,
-            File(root, "stenotype-extended.toml").absolutePath,
-            File(root, "morph").absolutePath,
-        )
-        if (handle == 0L) {
-            Log.e(TAG, "the dictionary stack did not open: ${Native.lastError()}")
-        } else {
-            order = Native.order(handle)
+        // Unpacking is 22 MB of copying and the library may not load at all, and
+        // an input method that throws in `onCreate` takes the text field with it.
+        // A keyboard that cannot start is still better than no keyboard.
+        try {
+            val root = Assets.unpack(this)
+            handle = Native.open(
+                File(root, "dicts").absolutePath,
+                File(root, "stenotype-extended.toml").absolutePath,
+                File(root, "morph").absolutePath,
+            )
+            if (handle == 0L) trouble = Native.lastError()
+            else order = Native.order(handle)
+        } catch (e: Throwable) {
+            trouble = "${e.javaClass.simpleName}: ${e.message}"
         }
+        if (trouble.isNotEmpty()) Log.e(TAG, "the runtime did not start: $trouble")
     }
 
     override fun onDestroy() {
@@ -70,7 +77,7 @@ class StenoService : InputMethodService() {
             setPadding(24, 12, 12, 12)
             textSize = 13f
             setTextColor(Color.GRAY)
-            text = if (handle == 0L) "no dictionaries: ${Native.lastError()}" else ""
+            text = if (handle == 0L) "not started: $trouble" else ""
             layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
         }
         status = text

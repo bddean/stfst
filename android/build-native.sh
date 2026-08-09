@@ -27,7 +27,11 @@ for abi in $ABIS; do
     target=${TARGET[$abi]}
     linker=$TOOLS/${CLANG[$abi]}$API-clang
     upper=$(echo "$target" | tr 'a-z-' 'A-Z_')
+    # A 16 KB page device refuses a library whose segments are aligned to 4 KB,
+    # which is what this NDK's linker does by default. Aligning wider costs a few
+    # kilobytes and loads on either.
     env "CARGO_TARGET_${upper}_LINKER=$linker" \
+        "CARGO_TARGET_${upper}_RUSTFLAGS=-C link-arg=-Wl,-z,max-page-size=16384" \
         "CC_${target//-/_}=$linker" \
         "AR_${target//-/_}=$TOOLS/llvm-ar" \
         nix develop --command cargo build -p stfst-jni --release --target "$target"

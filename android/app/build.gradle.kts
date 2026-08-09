@@ -22,6 +22,12 @@ android {
         noCompress += listOf("hfstol", "toml", "txt")
     }
 
+    packaging {
+        // Unpacked to disk at install time. Mapping it straight out of the APK
+        // needs the zip aligned to the device's page size as well as the library.
+        jniLibs.useLegacyPackaging = true
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
