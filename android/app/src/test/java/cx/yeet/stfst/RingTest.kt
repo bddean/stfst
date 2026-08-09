@@ -17,6 +17,8 @@ class RingTest {
 
     private val config = Config()
     private val ring = Ring(ORDER, config)
+    private val far = config.reach(Radius.FAR) * UNIT
+    private val near = config.reach(Radius.NEAR) * UNIT
 
     private fun key(symbol: Char) = ORDER.indexOf(symbol)
 
@@ -86,19 +88,35 @@ class RingTest {
     }
 
     @Test
-    fun the_far_ring_needs_a_longer_slide_than_the_near_one() {
+    fun a_slide_to_where_a_key_is_drawn_takes_that_key() {
         // Straight up is S on the far ring and nothing on the near one, so a short
         // slide up falls through to the far key rather than choosing at random.
-        assertEquals(key('S'), slide(Bank.LEFT, -1, -90f, config.farRadius * UNIT + 30f))
-        assertEquals(key('A'), slide(Bank.LEFT, -1, 0f, config.farRadius * UNIT - 30f))
-        assertEquals(key('K'), slide(Bank.LEFT, -1, 0f, config.farRadius * UNIT + 30f))
+        assertEquals(key('S'), slide(Bank.LEFT, -1, -90f, far))
+        assertEquals(key('A'), slide(Bank.LEFT, -1, 0f, near))
+        assertEquals(key('K'), slide(Bank.LEFT, -1, 0f, far))
+    }
+
+    /**
+     * The boundary sits between the rings, not on one of them, so a slide that
+     * falls short of a far key still reads as far and not as its near neighbour.
+     *
+     * Undershooting was what made the consonants unreachable: after one consonant
+     * the near ring holds only the vowels, so every short flick became A or O.
+     */
+    @Test
+    fun a_slide_most_of_the_way_to_a_far_key_is_still_far() {
+        assertEquals(key('P'), slide(Bank.LEFT, key('K'), 45f, config.ringSplit() * UNIT + 1f))
+        assertEquals(key('O'), slide(Bank.LEFT, key('K'), 45f, config.ringSplit() * UNIT - 1f))
+        // Two thirds of the way to a far key is a far key, so a thumb aiming at a
+        // consonant has room to fall short of it.
+        assertTrue("the boundary is too far out", config.ringSplit() < config.farReach * 0.7f)
+        assertEquals(key('W'), slide(Bank.LEFT, key('K'), 90f, far * 0.7f))
+        assertEquals(key('R'), slide(Bank.LEFT, key('K'), 180f, far * 2f))
     }
 
     /** `KAOEPT` writes "keep the", and this is the six slides that make it. */
     @Test
     fun the_worked_example_from_the_design() {
-        val far = config.farRadius * UNIT + 30f
-        val near = config.farRadius * UNIT - 30f
         var after = -1
         for ((angle, distance, expected) in listOf(
             Triple(0f, far, 'K'),

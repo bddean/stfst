@@ -95,8 +95,7 @@ class RadialView(
     }
 
     /** How far from the mark a ring is drawn, and picked at. */
-    private fun reach(radius: Radius): Float =
-        config.farRadius * unit * if (radius == Radius.FAR) 1.35f else 0.62f
+    private fun reach(radius: Radius): Float = config.reach(radius) * unit
 
     private fun bankAt(x: Float) = if (x < width * config.fieldSplit) Bank.LEFT else Bank.RIGHT
 
@@ -183,7 +182,7 @@ class RadialView(
         val distance = hypot(dx, dy)
         if (distance < config.minSlide * unit) return
         val heading = Math.toDegrees(atan2(dy.toDouble(), dx.toDouble())).toFloat()
-        val band = if (distance < config.farRadius * unit) Radius.NEAR else Radius.FAR
+        val band = if (distance < config.ringSplit() * unit) Radius.NEAR else Radius.FAR
         val near = band == Radius.NEAR
         val items: List<Pair<String, Int>> = if (near) modifiers else specials
         val step = 360f / items.size
@@ -242,22 +241,13 @@ class RadialView(
                 drawItems(canvas, thumb, specials, Radius.FAR, radius, face, edge, text, hot)
                 continue
             }
-            val live = ring.live(bank, thumb.after)
-            val dead = if (config.showDeadSlots) ring.keys(bank).filter { it <= thumb.after } else emptyList()
-            for (key in dead) drawKey(canvas, thumb, key, radius, face, edge, edge)
-            for (key in live) drawKey(canvas, thumb, key, radius, face, edge, text)
-            // The pivot, and what this thumb has taken so far.
-            ink.style = Paint.Style.FILL
-            ink.color = if (thumb.down) hot else edge
-            canvas.drawCircle(thumb.markX, thumb.markY, radius * 0.28f, ink)
-            if (thumb.keys.isNotEmpty()) {
-                ink.color = text
-                canvas.drawText(
-                    thumb.keys.map { order[it] }.joinToString(""),
-                    thumb.markX,
-                    thumb.markY - config.farRadius * unit - radius * 1.6f,
-                    ink
-                )
+            drawRing(canvas, thumb, thumb.markX, thumb.markY, 1f, radius, face, edge, text, hot)
+            // The same ring again, clear of the thumb that is covering the first.
+            if (config.mirror) {
+                val lift = config.mirrorLift * unit
+                val room = reach(Radius.FAR) * config.mirrorScale + radius
+                val y = (thumb.markY - lift).coerceAtLeast(room)
+                drawRing(canvas, thumb, thumb.markX, y, config.mirrorScale, radius, face, edge, text, hot)
             }
         }
         if (meta != 0) {
@@ -271,9 +261,52 @@ class RadialView(
         }
     }
 
-    private fun drawKey(
+    /**
+     * One thumb's ring, around a centre that is not always the thumb's own.
+     *
+     * `scale` is what makes the copy above the thumb a copy: same keys, same
+     * angles, same order, at whatever size there is room for.
+     */
+    private fun drawRing(
         canvas: Canvas,
         thumb: Thumb,
+        cx: Float,
+        cy: Float,
+        scale: Float,
+        radius: Float,
+        face: Int,
+        edge: Int,
+        text: Int,
+        hot: Int,
+    ) {
+        val key = radius * scale
+        if (config.showDeadSlots) {
+            for (k in ring.keys(thumb.bank).filter { it <= thumb.after }) {
+                drawKey(canvas, cx, cy, scale, k, key, face, edge, edge)
+            }
+        }
+        for (k in ring.live(thumb.bank, thumb.after)) {
+            drawKey(canvas, cx, cy, scale, k, key, face, edge, text)
+        }
+        ink.style = Paint.Style.FILL
+        ink.color = if (thumb.down) hot else edge
+        canvas.drawCircle(cx, cy, key * 0.28f, ink)
+        if (thumb.keys.isNotEmpty()) {
+            ink.color = hot
+            canvas.drawText(
+                thumb.keys.map { order[it] }.joinToString(""),
+                cx,
+                cy - reach(Radius.FAR) * scale - key * 1.2f,
+                ink
+            )
+        }
+    }
+
+    private fun drawKey(
+        canvas: Canvas,
+        cx: Float,
+        cy: Float,
+        scale: Float,
         key: Int,
         radius: Float,
         face: Int,
@@ -281,10 +314,10 @@ class RadialView(
         label: Int,
     ) {
         val slot = ring.slotOf(key) ?: return
-        val distance = reach(slot.radius)
+        val distance = reach(slot.radius) * scale
         val radians = Math.toRadians(slot.angle.toDouble())
-        val x = thumb.markX + (cos(radians) * distance).toFloat()
-        val y = thumb.markY + (sin(radians) * distance).toFloat()
+        val x = cx + (cos(radians) * distance).toFloat()
+        val y = cy + (sin(radians) * distance).toFloat()
         ink.style = Paint.Style.FILL
         ink.color = face
         canvas.drawCircle(x, y, radius, ink)

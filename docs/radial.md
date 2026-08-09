@@ -45,6 +45,19 @@ where the last key was taken, and drift is handled by the stall alone.
 
 `ChorderTest.one_flick_takes_one_key` is the regression.
 
+## Two more the phone found
+
+A lift wrote whatever both thumbs held, so the second thumb's lift wrote its held
+keys a second time and `Rr` was impossible to type. Holding keys is not asking for
+a stroke. A lift writes only when a key has been taken since the last one.
+
+The drawn radii were multipliers of the hit boundary, so the boundary was a number
+the drawing did not use, and it sat far enough out that a thumb aiming at a
+consonant and falling short got a vowel instead. After one consonant the near ring
+holds only A and O, so this was most of the left bank being unreachable. The two
+radii are the parameters now, the boundary is derived from them, and it is biased
+toward the near ring.
+
 ## What is not covered
 
 `engine.undo`, `engine.repeat_stroke` and `engine.toggle_star` moved into

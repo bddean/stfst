@@ -62,7 +62,7 @@ class Ring(val order: String, val config: Config) {
         val dy = py - oy
         val distance = hypot(dx, dy)
         if (distance < config.minSlide * unit) return null
-        val wanted = if (distance < config.farRadius * unit) Radius.NEAR else Radius.FAR
+        val wanted = if (distance < config.ringSplit() * unit) Radius.NEAR else Radius.FAR
         val heading = Math.toDegrees(atan2(dy.toDouble(), dx.toDouble())).toFloat()
         val live = live(bank, after)
         // The wanted ring first, so a short flick cannot be stolen by a far key at

@@ -46,8 +46,8 @@ class ChorderTest {
         chorder.down(bank, pointer, x, y, UNIT)
     }
 
-    private val far = config.farRadius * UNIT + 30f
-    private val near = config.farRadius * UNIT - 30f
+    private val far = config.reach(Radius.FAR) * UNIT
+    private val near = config.reach(Radius.NEAR) * UNIT
 
     /** `KAOEPT`, written the way two thumbs write it. */
     private fun keepThe() {
@@ -91,13 +91,26 @@ class ChorderTest {
         assertEquals(listOf(mask("KAOEpt"), mask("SEpt")), written)
     }
 
+    /**
+     * The bug that made `Rr` impossible: the second thumb still holds its keys
+     * when it lifts, and holding keys is not asking for another stroke.
+     */
     @Test
-    fun lifting_the_last_thumb_clears_both() {
+    fun lifting_the_second_thumb_writes_nothing() {
         keepThe()
         chorder.up(0)
         chorder.up(1)
         assertEquals("", keys(Bank.RIGHT))
-        assertEquals(listOf(mask("KAOEpt"), mask("Ept")), written)
+        assertEquals(listOf(mask("KAOEpt")), written)
+    }
+
+    @Test
+    fun a_two_key_chord_is_one_stroke_whichever_thumb_lifts_first() {
+        touch(Bank.LEFT, 0, 180f, far)     // R
+        touch(Bank.RIGHT, 1, 180f, far)    // t
+        assertEquals(mask("Rt"), chorder.up(0))
+        assertEquals(0L, chorder.up(1))
+        assertEquals(listOf(mask("Rt")), written)
     }
 
     @Test

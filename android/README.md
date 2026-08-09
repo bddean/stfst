@@ -16,6 +16,15 @@ design:
 The dictionary is not asked. A key sits at a fixed angle on a fixed ring whatever
 is loaded, because a layout that moved with the dictionary could not be learned.
 
+Each ring's keys are drawn where a slide has to reach to take them, and the
+boundary between them is derived from those two numbers rather than set on its
+own. It sits about a third of the way out from the near ring, because
+undershooting is what a thumb does, and after one consonant the near ring holds
+only the vowels: a boundary too far out turns every short flick into A or O.
+
+The ring is drawn a second time above the thumb, where the thumb is not covering
+it. Same keys, same angles, smaller.
+
 ```
    ⌫      S      T        far ring, long slide:  S T K P W H R
        +                  near ring, short slide: A O # @ ^ +
@@ -37,6 +46,11 @@ Lifting either thumb writes the stroke, and **the thumb still down keeps its
 keys**. Spelling a run of words that share a right-hand shape therefore costs one
 right-hand motion, not one per word. `Write on the first lift` turns this off and
 waits for both.
+
+A lift writes only when a key has been taken since the last stroke. Keeping keys
+and asking for a stroke are different things, and only the second is what a lift
+can mean: otherwise the second thumb's own lift writes its held keys again, and
+`Rr` comes out as `Rr` and then `r`.
 
 The measuring origin is the fingertip where the last key was taken, and the ring
 is drawn there too. One point for both, which is not a detail: any offset between

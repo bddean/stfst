@@ -22,7 +22,9 @@ object Prefs {
             putFloat("startFarRight", startFarRight)
             putFloat("startNearRight", startNearRight)
             putFloat("minSlide", minSlide)
-            putFloat("farRadius", farRadius)
+            putFloat("nearReach", nearReach)
+            putFloat("farReach", farReach)
+            putFloat("ringSplitAt", ringSplitAt)
             putFloat("snapDegrees", snapDegrees)
             putLong("stallMs", stallMs)
             putBoolean("commitOnFirstLift", commitOnFirstLift)
@@ -31,6 +33,9 @@ object Prefs {
             putBoolean("haptics", haptics)
             putBoolean("showDeadSlots", showDeadSlots)
             putBoolean("showLabels", showLabels)
+            putBoolean("mirror", mirror)
+            putFloat("mirrorLift", mirrorLift)
+            putFloat("mirrorScale", mirrorScale)
             putFloat("fieldSplit", fieldSplit)
             putFloat("keyRadius", keyRadius)
             putFloat("labelSp", labelSp)
@@ -53,7 +58,9 @@ object Prefs {
             startFarRight = prefs.getFloat("startFarRight", d.startFarRight),
             startNearRight = prefs.getFloat("startNearRight", d.startNearRight),
             minSlide = prefs.getFloat("minSlide", d.minSlide),
-            farRadius = prefs.getFloat("farRadius", d.farRadius),
+            nearReach = prefs.getFloat("nearReach", d.nearReach),
+            farReach = prefs.getFloat("farReach", d.farReach),
+            ringSplitAt = prefs.getFloat("ringSplitAt", d.ringSplitAt),
             snapDegrees = prefs.getFloat("snapDegrees", d.snapDegrees),
             stallMs = prefs.getLong("stallMs", d.stallMs),
             commitOnFirstLift = prefs.getBoolean("commitOnFirstLift", d.commitOnFirstLift),
@@ -62,6 +69,9 @@ object Prefs {
             haptics = prefs.getBoolean("haptics", d.haptics),
             showDeadSlots = prefs.getBoolean("showDeadSlots", d.showDeadSlots),
             showLabels = prefs.getBoolean("showLabels", d.showLabels),
+            mirror = prefs.getBoolean("mirror", d.mirror),
+            mirrorLift = prefs.getFloat("mirrorLift", d.mirrorLift),
+            mirrorScale = prefs.getFloat("mirrorScale", d.mirrorScale),
             fieldSplit = prefs.getFloat("fieldSplit", d.fieldSplit),
             keyRadius = prefs.getFloat("keyRadius", d.keyRadius),
             labelSp = prefs.getFloat("labelSp", d.labelSp),

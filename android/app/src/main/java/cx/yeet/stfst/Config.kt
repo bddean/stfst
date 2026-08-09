@@ -28,9 +28,23 @@ data class Config(
     var startNearRight: Float = -90f,
 
     /** Shorter than this and a slide has not chosen anything yet. */
-    var minSlide: Float = 0.07f,
-    /** The boundary between the two rings. */
-    var farRadius: Float = 0.17f,
+    var minSlide: Float = 0.06f,
+    /**
+     * How far out each ring sits. These are where the keys are drawn *and* what a
+     * slide is measured against, and the boundary between them is derived rather
+     * than set: a boundary of its own is a boundary that can disagree with what
+     * the thumb was aiming at.
+     */
+    var nearReach: Float = 0.13f,
+    var farReach: Float = 0.30f,
+    /**
+     * Where between the two rings the boundary sits, as a fraction of the gap.
+     *
+     * Low, because undershooting is what a thumb does. Halfway means a slide has
+     * to cover seven tenths of the distance to a far key to count as one, and a
+     * thumb that falls short of a consonant gets a vowel instead.
+     */
+    var ringSplitAt: Float = 0.35f,
     /** How far off a slot's angle a slide may be. 180 always takes the nearest. */
     var snapDegrees: Float = 180f,
 
@@ -58,6 +72,13 @@ data class Config(
     /** Draw the keys steno order has passed, faded. */
     var showDeadSlots: Boolean = true,
     var showLabels: Boolean = true,
+    /**
+     * Repeat the ring above the thumb, where the thumb is not covering it.
+     */
+    var mirror: Boolean = true,
+    /** How far above the thumb the copy sits. */
+    var mirrorLift: Float = 0.42f,
+    var mirrorScale: Float = 0.75f,
 
     /** Where the left field ends and the right begins. */
     var fieldSplit: Float = 0.5f,
@@ -68,6 +89,12 @@ data class Config(
     fun far(bank: Bank) = if (bank == Bank.LEFT) farLeft else farRight
     fun near(bank: Bank) = if (bank == Bank.LEFT) nearLeft else nearRight
     fun slots(radius: Radius) = if (radius == Radius.FAR) slotsFar else slotsNear
+
+    /** Where a ring's keys sit, as a fraction of the field's short side. */
+    fun reach(radius: Radius) = if (radius == Radius.FAR) farReach else nearReach
+
+    /** Longer than this and a slide wanted the far ring. */
+    fun ringSplit() = nearReach + (farReach - nearReach) * ringSplitAt
 
     fun startAngle(bank: Bank, radius: Radius): Float = when {
         bank == Bank.LEFT && radius == Radius.FAR -> startFarLeft

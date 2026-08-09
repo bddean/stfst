@@ -46,6 +46,16 @@ class Chorder(private val ring: Ring, private val config: Config, private val wr
     val left = Thumb(Bank.LEFT)
     val right = Thumb(Bank.RIGHT)
 
+    /**
+     * Whether a key has been taken since the last stroke was written.
+     *
+     * A thumb that stays down keeps its keys, so without this the lift of that
+     * thumb writes them a second time: two strokes from one chord, and `Rr` comes
+     * out as `Rr` and then `r`. Keeping the keys and asking for a stroke are
+     * different things, and only the second one a lift can mean.
+     */
+    private var pending = false
+
     fun thumb(bank: Bank) = if (bank == Bank.LEFT) left else right
 
     fun forPointer(pointer: Int): Thumb? = when (pointer) {
@@ -92,7 +102,8 @@ class Chorder(private val ring: Ring, private val config: Config, private val wr
         thumb.home()
         val other = if (thumb === left) right else left
         if (!config.commitOnFirstLift && other.down) return 0L
-        val stroke = mask()
+        val stroke = if (pending) mask() else 0L
+        pending = false
         thumb.keys.clear()
         if (!other.down) other.keys.clear()
         if (stroke != 0L) write(stroke)
@@ -101,6 +112,7 @@ class Chorder(private val ring: Ring, private val config: Config, private val wr
 
     /** Give up everything, for a keyboard that is going away. */
     fun reset() {
+        pending = false
         for (thumb in listOf(left, right)) {
             thumb.pointer = Thumb.NONE
             thumb.keys.clear()
@@ -131,6 +143,7 @@ class Chorder(private val ring: Ring, private val config: Config, private val wr
         thumb.keys.add(key)
         thumb.markX = x
         thumb.markY = y
+        pending = true
         return true
     }
 }
