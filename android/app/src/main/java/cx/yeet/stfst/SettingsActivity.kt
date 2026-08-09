@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.text.InputType
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -48,7 +49,13 @@ class SettingsActivity : Activity() {
         note: String = "",
     ) : Knob(label, note)
 
+    /** A heading, so the list reads as sections rather than as thirty sliders. */
+    private class Section(label: String, note: String = "") : Knob(label, note)
+
     private val knobs: List<Knob> = listOf(
+        Section("Which key is where",
+            "One character per key, in steno order. The far ring is the long slide " +
+                "and the near ring the short one. Slots run clockwise from the start angle."),
         Text("Left far ring", { it.farLeft }, { c, v -> c.farLeft = v },
             "keys on the long slide, in steno order, clockwise from the start angle"),
         Text("Left near ring", { it.nearLeft }, { c, v -> c.nearLeft = v }),
@@ -66,6 +73,9 @@ class SettingsActivity : Activity() {
         Range("Right far start angle", -180f, 180f, { it.startFarRight }, { c, v -> c.startFarRight = v }),
         Range("Right near start angle", -180f, 180f, { it.startNearRight }, { c, v -> c.startNearRight = v }),
 
+        Section("How far a slide has to go",
+            "All lengths are fractions of the thumb field's short side, so they mean " +
+                "the same thing on any screen."),
         Range("Minimum slide", 0.01f, 0.25f, { it.minSlide }, { c, v -> c.minSlide = v },
             "shorter than this and a slide means nothing"),
         Range("Near ring reach", 0.05f, 0.3f, { it.nearReach }, { c, v -> c.nearReach = v },
@@ -74,17 +84,27 @@ class SettingsActivity : Activity() {
             "the same for the long-slide keys"),
         Range("Ring boundary", 0.1f, 0.9f, { it.ringSplitAt }, { c, v -> c.ringSplitAt = v },
             "where between the rings a slide stops being short; low favours the far ring"),
+        Section("How a slide is read"),
         Range("Snap limit", 10f, 180f, { it.snapDegrees }, { c, v -> c.snapDegrees = v },
             "how far off a slot's angle a slide may be; 180 always takes the nearest"),
+        Range("Settle (ms)", 0f, 300f, { it.settleMs.toFloat() }, { c, v -> c.settleMs = v.toLong() },
+            "how long a near-ring key waits before it is taken. A thumb reaching for " +
+                "a consonant crosses the near ring on the way, and this is what stops " +
+                "it collecting a vowel. Zero takes both rings at once"),
+        Range("Turn needed (degrees)", 0f, 44f, { it.turnDegrees }, { c, v -> c.turnDegrees = v },
+            "how far a slide must turn before it takes another far key, so one long " +
+                "reach is one key. Keep it under 45, the angle between two slots"),
         Range("Stall (ms)", 200f, 3000f, { it.stallMs.toFloat() }, { c, v -> c.stallMs = v.toLong() },
             "hold still this long and the ring goes home"),
 
+        Section("When a stroke is written"),
         Flag("Write on the first lift", { it.commitOnFirstLift }, { c, v -> c.commitOnFirstLift = v },
             "the thumb still down keeps its keys, so a shared right hand is stroked once"),
         Flag("Long press for modifiers", { it.longPress }, { c, v -> c.longPress = v },
             "off by default: a hold is easy to do by accident while learning"),
         Range("Long press (ms)", 150f, 1200f, { it.longPressMs.toFloat() }, { c, v -> c.longPressMs = v.toLong() }),
 
+        Section("Look and feel"),
         Flag("Haptics", { it.haptics }, { c, v -> c.haptics = v }),
         Flag("Show keys already passed", { it.showDeadSlots }, { c, v -> c.showDeadSlots = v }),
         Flag("Show labels", { it.showLabels }, { c, v -> c.showLabels = v }),
@@ -92,6 +112,8 @@ class SettingsActivity : Activity() {
             "so the thumb is not covering the keys it is choosing between"),
         Range("Copy height", 0.15f, 0.8f, { it.mirrorLift }, { c, v -> c.mirrorLift = v }),
         Range("Copy scale", 0.4f, 1.2f, { it.mirrorScale }, { c, v -> c.mirrorScale = v }),
+        Range("Copy fade", 0.2f, 1f, { it.mirrorDim }, { c, v -> c.mirrorDim = v },
+            "one is as strong as the ring under the thumb"),
 
         Range("Field split", 0.2f, 0.8f, { it.fieldSplit }, { c, v -> c.fieldSplit = v },
             "where the left field ends"),
@@ -111,6 +133,13 @@ class SettingsActivity : Activity() {
         column.addView(heading("Radial steno"))
         column.addView(note("Enable the keyboard in Settings, Languages and input. Changes here " +
             "apply the next time the keyboard opens."))
+        column.addView(Button(this).apply {
+            setText("Restore defaults")
+            setOnClickListener {
+                Prefs.save(Config(), prefs)
+                recreate()
+            }
+        })
         for (knob in knobs) column.addView(row(knob, prefs))
         setContentView(ScrollView(this).apply { addView(column) })
     }
@@ -140,6 +169,12 @@ class SettingsActivity : Activity() {
         fun keep() = Prefs.save(config, prefs)
 
         when (knob) {
+            is Section -> {
+                title.text = knob.label
+                title.textSize = 18f
+                box.setPadding(0, 48, 0, 0)
+            }
+
             is Range -> {
                 title.text = "${knob.label}: ${pretty(knob.get(config))}"
                 box.addView(SeekBar(this).apply {

@@ -58,6 +58,26 @@ holds only A and O, so this was most of the left bank being unreachable. The two
 radii are the parameters now, the boundary is derived from them, and it is biased
 toward the near ring.
 
+## The vowels again, and what was actually wrong
+
+Moving the ring boundary did not fix the unreachable consonants, because the
+boundary was never the mechanism. A key was taken the moment its threshold was
+crossed, and a thumb reaching outward crosses the near band on the way, so the
+vowels fired before the thumb had gone anywhere near a consonant. No boundary can
+fix that: the near band is on the path.
+
+What decides it is when a flick is finished, not where the rings are. A far key has
+nothing beyond it, so crossing its threshold is an answer. A near key might be a
+thumb still travelling, so it waits.
+
+Fixing that exposed the other half. Reaching outward clears the far threshold again
+from every new mark, so one long drag took a second and a third key along the same
+ray. A new key means a new direction, and the turn has to stay under the angle
+between two slots or the neighbouring key becomes unreachable.
+
+Both were found by a test that samples a drag every 8 ms, which is the thing to
+write first next time: a single `move` per key never reaches either bug.
+
 ## What is not covered
 
 `engine.undo`, `engine.repeat_stroke` and `engine.toggle_star` moved into

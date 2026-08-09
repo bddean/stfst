@@ -42,6 +42,19 @@ Touch down: where the thumb lands relative to the field's home point is already 
 slide, so the first key needs no second layout. Then flick per key. Angle chooses
 the key, distance chooses the ring.
 
+Two rules decide when a flick has finished, and both exist because reaching for one
+key passes through the answer to another:
+
+- A **far** key is taken at once, since nothing lies beyond it, but only if the
+  slide has turned by `Turn needed` since the last key. Going further along the
+  same ray is the same reach, not another one.
+- A **near** key waits `Settle`. A thumb on its way out to a consonant crosses the
+  near ring, and after one consonant the near ring holds only the vowels, so taking
+  it on the way through is how every reach became A or O.
+
+The key a thumb would take if it stopped now is drawn in the accent colour, so a
+wait looks like a wait rather than like nothing happening.
+
 Lifting either thumb writes the stroke, and **the thumb still down keeps its
 keys**. Spelling a run of words that share a right-hand shape therefore costs one
 right-hand motion, not one per word. `Write on the first lift` turns this off and

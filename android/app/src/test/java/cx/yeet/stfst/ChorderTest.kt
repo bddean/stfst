@@ -30,20 +30,37 @@ class ChorderTest {
     private fun keys(bank: Bank) =
         chorder.thumb(bank).keys.map { ORDER[it] }.joinToString("")
 
-    /** Slide a thumb that is already down, measured from its own mark. */
+    /** A clock the test moves on purpose, because a near key waits on one. */
+    private var now = 0L
+
+    private fun from(ox: Float, oy: Float, angle: Float, distance: Float): Pair<Float, Float> {
+        val radians = Math.toRadians(angle.toDouble())
+        return Pair(ox + (cos(radians) * distance).toFloat(), oy + (sin(radians) * distance).toFloat())
+    }
+
+    /**
+     * Slide, then stop there long enough for a near key to be taken.
+     *
+     * What a thumb aiming at one key does. A thumb on its way past does not stop,
+     * which is what `crossing_the_near_ring_takes_no_vowel` does instead.
+     */
     private fun slide(bank: Bank, angle: Float, distance: Float) {
         val thumb = chorder.thumb(bank)
-        val radians = Math.toRadians(angle.toDouble())
-        val x = thumb.markX + (cos(radians) * distance).toFloat()
-        val y = thumb.markY + (sin(radians) * distance).toFloat()
-        chorder.move(thumb.pointer, x, y, UNIT)
+        val (x, y) = from(thumb.markX, thumb.markY, angle, distance)
+        chorder.move(thumb.pointer, x, y, UNIT, now)
+        rest(bank)
     }
 
     private fun touch(bank: Bank, pointer: Int, angle: Float, distance: Float) {
-        val radians = Math.toRadians(angle.toDouble())
-        val x = (cos(radians) * distance).toFloat()
-        val y = (sin(radians) * distance).toFloat()
-        chorder.down(bank, pointer, x, y, UNIT)
+        val (x, y) = from(0f, 0f, angle, distance)
+        chorder.down(bank, pointer, x, y, UNIT, now)
+        rest(bank)
+    }
+
+    /** Hold still until whatever was waiting has been taken. */
+    private fun rest(bank: Bank) {
+        now += config.settleMs + 1
+        chorder.settle(bank, UNIT, now)
     }
 
     private val far = config.reach(Radius.FAR) * UNIT
@@ -125,6 +142,44 @@ class ChorderTest {
         assertEquals("", keys(Bank.RIGHT))
     }
 
+    /**
+     * The bug that made the consonants unreachable: reaching for one crosses the
+     * near ring, and a thumb that does not stop there has not asked for a vowel.
+     */
+    @Test
+    fun crossing_the_near_ring_takes_no_vowel() {
+        touch(Bank.LEFT, 0, 0f, far)
+        assertEquals("K", keys(Bank.LEFT))
+        // Out again in the same direction, sampled every 8 ms as a finger is, from
+        // inside the near band to past the boundary.
+        for (distance in listOf(near * 0.6f, near, config.ringSplit() * UNIT * 1.1f, far)) {
+            val thumb = chorder.thumb(Bank.LEFT)
+            val (x, y) = from(thumb.markX, thumb.markY, 45f, distance)
+            now += 8
+            chorder.move(thumb.pointer, x, y, UNIT, now)
+        }
+        assertEquals("the vowels were collected on the way out", "KP", keys(Bank.LEFT))
+    }
+
+    @Test
+    fun stopping_on_the_near_ring_takes_the_vowel() {
+        touch(Bank.LEFT, 0, 0f, far)
+        val thumb = chorder.thumb(Bank.LEFT)
+        val (x, y) = from(thumb.markX, thumb.markY, 0f, near)
+        now += 8
+        chorder.move(thumb.pointer, x, y, UNIT, now)
+        assertEquals("not yet: the thumb may be going further", "K", keys(Bank.LEFT))
+        rest(Bank.LEFT)
+        assertEquals("KA", keys(Bank.LEFT))
+    }
+
+    @Test
+    fun a_far_key_is_taken_at_once() {
+        config.settleMs = 500L
+        touch(Bank.LEFT, 0, -90f, far)
+        assertEquals("S", keys(Bank.LEFT))
+    }
+
     @Test
     fun a_thumb_with_no_keys_writes_nothing() {
         touch(Bank.LEFT, 0, 0f, 1f)
@@ -149,7 +204,7 @@ class ChorderTest {
         val thumb = chorder.thumb(Bank.LEFT)
         assertEquals(0f, hypot(thumb.markX - far, thumb.markY), 0.001f)
         // The same position again is no movement at all, so it takes nothing.
-        chorder.move(0, far, 0f, UNIT)
+        chorder.move(0, far, 0f, UNIT, now)
         assertEquals("K", keys(Bank.LEFT))
     }
 

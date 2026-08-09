@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.os.SystemClock
 import android.util.TypedValue
 import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
@@ -43,6 +44,7 @@ class RadialView(
 
     private val ink = Paint(Paint.ANTI_ALIAS_FLAG)
     private val stalls = mutableMapOf<Bank, Runnable>()
+    private val settles = mutableMapOf<Bank, Runnable>()
     private val holds = mutableMapOf<Int, Runnable>()
 
     private var unit = 1f
@@ -105,8 +107,9 @@ class RadialView(
                 val at = event.actionIndex
                 val pointer = event.getPointerId(at)
                 val bank = bankAt(event.getX(at))
-                if (chorder.down(bank, pointer, event.getX(at), event.getY(at), unit)) buzz()
+                if (chorder.down(bank, pointer, event.getX(at), event.getY(at), unit, event.eventTime)) buzz()
                 armStall(bank)
+                armSettle(bank)
                 armHold(bank, pointer)
             }
 
@@ -121,8 +124,9 @@ class RadialView(
                         pickModifier(thumb, event.getX(at), event.getY(at))
                         continue
                     }
-                    if (chorder.move(pointer, event.getX(at), event.getY(at), unit)) buzz()
+                    if (chorder.move(pointer, event.getX(at), event.getY(at), unit, event.eventTime)) buzz()
                     armStall(thumb.bank)
+                    armSettle(thumb.bank)
                 }
             }
 
@@ -157,6 +161,21 @@ class RadialView(
         }
         stalls[bank] = task
         postDelayed(task, config.stallMs)
+    }
+
+    /**
+     * A thumb that has stopped sends no more events, so the wait a near key serves
+     * has to be ended here.
+     */
+    private fun armSettle(bank: Bank) {
+        settles.remove(bank)?.let { removeCallbacks(it) }
+        if (config.settleMs <= 0) return
+        val task = Runnable {
+            if (chorder.settle(bank, unit, SystemClock.uptimeMillis())) buzz()
+            invalidate()
+        }
+        settles[bank] = task
+        postDelayed(task, config.settleMs + 8)
     }
 
     private fun armHold(bank: Bank, pointer: Int) {
@@ -208,6 +227,12 @@ class RadialView(
         }
     }
 
+    /** The same colour, weaker, for the copy that is not being aimed at. */
+    private fun fade(color: Int, dim: Float): Int =
+        if (dim >= 1f) color else Color.argb(
+            (Color.alpha(color) * dim).toInt(), Color.red(color), Color.green(color), Color.blue(color)
+        )
+
     private fun buzz() {
         if (config.haptics) performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
     }
@@ -241,13 +266,17 @@ class RadialView(
                 drawItems(canvas, thumb, specials, Radius.FAR, radius, face, edge, text, hot)
                 continue
             }
-            drawRing(canvas, thumb, thumb.markX, thumb.markY, 1f, radius, face, edge, text, hot)
-            // The same ring again, clear of the thumb that is covering the first.
+            drawRing(canvas, thumb, thumb.markX, thumb.markY, 1f, 1f, radius, face, edge, text, hot)
+            // The same ring again, clear of the thumb that is covering the first,
+            // and faded so it reads as a copy rather than as more keys.
             if (config.mirror) {
                 val lift = config.mirrorLift * unit
                 val room = reach(Radius.FAR) * config.mirrorScale + radius
                 val y = (thumb.markY - lift).coerceAtLeast(room)
-                drawRing(canvas, thumb, thumb.markX, y, config.mirrorScale, radius, face, edge, text, hot)
+                drawRing(
+                    canvas, thumb, thumb.markX, y, config.mirrorScale, config.mirrorDim,
+                    radius, face, edge, text, hot
+                )
             }
         }
         if (meta != 0) {
@@ -273,6 +302,7 @@ class RadialView(
         cx: Float,
         cy: Float,
         scale: Float,
+        dim: Float,
         radius: Float,
         face: Int,
         edge: Int,
@@ -282,17 +312,21 @@ class RadialView(
         val key = radius * scale
         if (config.showDeadSlots) {
             for (k in ring.keys(thumb.bank).filter { it <= thumb.after }) {
-                drawKey(canvas, cx, cy, scale, k, key, face, edge, edge)
+                drawKey(canvas, cx, cy, scale, k, key, fade(face, dim), fade(edge, dim), fade(edge, dim))
             }
         }
+        val waiting = chorder.waiting(thumb.bank)
         for (k in ring.live(thumb.bank, thumb.after)) {
-            drawKey(canvas, cx, cy, scale, k, key, face, edge, text)
+            // The key a thumb would take if it stopped here, so the wait is visible
+            // rather than looking like nothing happened.
+            val label = if (k == waiting) hot else text
+            drawKey(canvas, cx, cy, scale, k, key, fade(face, dim), fade(edge, dim), fade(label, dim))
         }
         ink.style = Paint.Style.FILL
-        ink.color = if (thumb.down) hot else edge
+        ink.color = fade(if (thumb.down) hot else edge, dim)
         canvas.drawCircle(cx, cy, key * 0.28f, ink)
         if (thumb.keys.isNotEmpty()) {
-            ink.color = hot
+            ink.color = fade(hot, dim)
             canvas.drawText(
                 thumb.keys.map { order[it] }.joinToString(""),
                 cx,

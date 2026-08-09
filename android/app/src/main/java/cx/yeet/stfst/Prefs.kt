@@ -25,6 +25,8 @@ object Prefs {
             putFloat("nearReach", nearReach)
             putFloat("farReach", farReach)
             putFloat("ringSplitAt", ringSplitAt)
+            putLong("settleMs", settleMs)
+            putFloat("turnDegrees", turnDegrees)
             putFloat("snapDegrees", snapDegrees)
             putLong("stallMs", stallMs)
             putBoolean("commitOnFirstLift", commitOnFirstLift)
@@ -36,6 +38,7 @@ object Prefs {
             putBoolean("mirror", mirror)
             putFloat("mirrorLift", mirrorLift)
             putFloat("mirrorScale", mirrorScale)
+            putFloat("mirrorDim", mirrorDim)
             putFloat("fieldSplit", fieldSplit)
             putFloat("keyRadius", keyRadius)
             putFloat("labelSp", labelSp)
@@ -61,6 +64,8 @@ object Prefs {
             nearReach = prefs.getFloat("nearReach", d.nearReach),
             farReach = prefs.getFloat("farReach", d.farReach),
             ringSplitAt = prefs.getFloat("ringSplitAt", d.ringSplitAt),
+            settleMs = prefs.getLong("settleMs", d.settleMs),
+            turnDegrees = prefs.getFloat("turnDegrees", d.turnDegrees),
             snapDegrees = prefs.getFloat("snapDegrees", d.snapDegrees),
             stallMs = prefs.getLong("stallMs", d.stallMs),
             commitOnFirstLift = prefs.getBoolean("commitOnFirstLift", d.commitOnFirstLift),
@@ -72,6 +77,7 @@ object Prefs {
             mirror = prefs.getBoolean("mirror", d.mirror),
             mirrorLift = prefs.getFloat("mirrorLift", d.mirrorLift),
             mirrorScale = prefs.getFloat("mirrorScale", d.mirrorScale),
+            mirrorDim = prefs.getFloat("mirrorDim", d.mirrorDim),
             fieldSplit = prefs.getFloat("fieldSplit", d.fieldSplit),
             keyRadius = prefs.getFloat("keyRadius", d.keyRadius),
             labelSp = prefs.getFloat("labelSp", d.labelSp),

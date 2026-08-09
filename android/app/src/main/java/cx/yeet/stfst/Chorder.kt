@@ -1,5 +1,7 @@
 package cx.yeet.stfst
 
+import kotlin.math.atan2
+
 /** One thumb's progress through its own bank. */
 class Thumb(val bank: Bank) {
     var pointer: Int = NONE
@@ -17,6 +19,17 @@ class Thumb(val bank: Bank) {
     var markY: Float = 0f
     val keys: MutableList<Int> = mutableListOf()
 
+    /** Where the thumb is now, so a settling key can be taken without a new event. */
+    var atX: Float = 0f
+    var atY: Float = 0f
+
+    /** The near key under consideration, and since when. */
+    var waiting: Int = NO_KEY
+    var waitingSince: Long = 0L
+
+    /** Which way the last key was taken, or NaN before the first one. */
+    var heading: Float = Float.NaN
+
     val down: Boolean get() = pointer != NONE
 
     /** The last key taken, or -1. Steno order can only go up from here. */
@@ -25,10 +38,15 @@ class Thumb(val bank: Bank) {
     fun home() {
         markX = homeX
         markY = homeY
+        atX = homeX
+        atY = homeY
+        waiting = NO_KEY
+        heading = Float.NaN
     }
 
     companion object {
         const val NONE = -1
+        const val NO_KEY = -1
     }
 }
 
@@ -76,19 +94,34 @@ class Chorder(private val ring: Ring, private val config: Config, private val wr
      * A thumb touches down. Where it lands relative to the field's home point is
      * already a slide, so the first key needs no separate layout.
      */
-    fun down(bank: Bank, pointer: Int, x: Float, y: Float, unit: Float): Boolean {
+    fun down(bank: Bank, pointer: Int, x: Float, y: Float, unit: Float, now: Long): Boolean {
         val thumb = thumb(bank)
         if (thumb.down) return false
         thumb.pointer = pointer
         thumb.home()
-        return advance(thumb, x, y, unit)
+        return advance(thumb, x, y, unit, now)
     }
 
     /** A thumb slides. True when it took at least one more key. */
-    fun move(pointer: Int, x: Float, y: Float, unit: Float): Boolean {
+    fun move(pointer: Int, x: Float, y: Float, unit: Float, now: Long): Boolean {
         val thumb = forPointer(pointer) ?: return false
-        return advance(thumb, x, y, unit)
+        return advance(thumb, x, y, unit, now)
     }
+
+    /**
+     * Ask again at the position the thumb is already at.
+     *
+     * A thumb that has stopped sends no more events, so the wait a near key serves
+     * has to be ended by a clock rather than by movement.
+     */
+    fun settle(bank: Bank, unit: Float, now: Long): Boolean {
+        val thumb = thumb(bank)
+        if (!thumb.down) return false
+        return advance(thumb, thumb.atX, thumb.atY, unit, now)
+    }
+
+    /** The key a thumb would take if it stopped here, for the ring to show. */
+    fun waiting(bank: Bank): Int = thumb(bank).waiting
 
     /**
      * A thumb lifts. Returns the stroke written, or zero.
@@ -136,13 +169,45 @@ class Chorder(private val ring: Ring, private val config: Config, private val wr
         thumb(bank).home()
     }
 
-    /** Take the key this position has moved far enough to choose, if any. */
-    private fun advance(thumb: Thumb, x: Float, y: Float, unit: Float): Boolean {
+    /**
+     * Take the key this position has chosen, if it has chosen one for long enough.
+     *
+     * A far key is taken at once, because nothing lies further out for the thumb to
+     * be on its way to, but only if the slide has turned since the last key: going
+     * further along the same ray is the same reach, not another one. A near key has
+     * to still be the answer after `settleMs`, which is what lets a thumb cross the
+     * near band on the way to a consonant without collecting a vowel.
+     */
+    private fun advance(thumb: Thumb, x: Float, y: Float, unit: Float, now: Long): Boolean {
+        thumb.atX = x
+        thumb.atY = y
         val key = ring.pick(thumb.bank, thumb.after, thumb.markX, thumb.markY, x, y, unit)
-            ?: return false
+        if (key == null) {
+            thumb.waiting = Thumb.NO_KEY
+            return false
+        }
+        val heading = Math.toDegrees(
+            atan2((y - thumb.markY).toDouble(), (x - thumb.markX).toDouble())
+        ).toFloat()
+        val near = ring.slotOf(key)?.radius == Radius.NEAR
+        if (!near && !thumb.heading.isNaN() &&
+            Ring.separation(heading, thumb.heading) < config.turnDegrees
+        ) {
+            return false
+        }
+        if (near && config.settleMs > 0) {
+            if (key != thumb.waiting) {
+                thumb.waiting = key
+                thumb.waitingSince = now
+                return false
+            }
+            if (now - thumb.waitingSince < config.settleMs) return false
+        }
         thumb.keys.add(key)
         thumb.markX = x
         thumb.markY = y
+        thumb.heading = heading
+        thumb.waiting = Thumb.NO_KEY
         pending = true
         return true
     }

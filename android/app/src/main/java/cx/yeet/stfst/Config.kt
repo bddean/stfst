@@ -45,6 +45,25 @@ data class Config(
      * thumb that falls short of a consonant gets a vowel instead.
      */
     var ringSplitAt: Float = 0.35f,
+    /**
+     * How long a near-ring key has to stay the best answer before it is taken.
+     *
+     * A thumb reaching for a consonant crosses the near band on the way out, and a
+     * key taken the moment its threshold is crossed is a vowel the thumb never
+     * asked for. A far key has nothing beyond it, so it is taken at once; a near
+     * key waits to see whether the thumb was going further. Zero takes both at
+     * once, which is the behaviour that made the consonants unreachable.
+     */
+    var settleMs: Long = 70L,
+    /**
+     * How far a slide has to turn before it can take another far key.
+     *
+     * Reaching outward clears the far threshold again from every new mark, so a
+     * single long drag would take a second and a third key along the same ray. A
+     * new key means a new direction. Under the angle between two slots, or the
+     * neighbouring key becomes unreachable.
+     */
+    var turnDegrees: Float = 30f,
     /** How far off a slot's angle a slide may be. 180 always takes the nearest. */
     var snapDegrees: Float = 180f,
 
@@ -79,6 +98,8 @@ data class Config(
     /** How far above the thumb the copy sits. */
     var mirrorLift: Float = 0.42f,
     var mirrorScale: Float = 0.75f,
+    /** How much weaker the copy is drawn, so it reads as a copy. */
+    var mirrorDim: Float = 0.5f,
 
     /** Where the left field ends and the right begins. */
     var fieldSplit: Float = 0.5f,
