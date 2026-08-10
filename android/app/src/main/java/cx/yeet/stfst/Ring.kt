@@ -212,16 +212,67 @@ class Ring(val order: String, val config: Config) {
     fun entry(bank: Bank, field: Field): List<Cell> {
         val keys = keys(bank).toList()
         val rows = rowSizes(keys.size)
-        val pitch = field.width / config.entryCols.coerceAtLeast(1)
-        val depth = field.height / rows.size
-        val places = mutableListOf<Pair<Float, Float>>()
+        val pitch = field.width / config.entryCols.coerceAtLeast(1) * config.entryWide
+        val depth = field.height / rows.size * config.entryTall
+        val middle = field.top + field.height * config.entryAt
+        val top = middle - (rows.size - 1) * 0.5f * depth
+        val places = mutableListOf<Point>()
         for (r in rowOrder(rows.size)) {
-            val y = field.top + (r + 0.5f) * depth
+            val y = top + r * depth
             for (c in 0 until rows[r]) {
-                places.add(Pair(field.centerX + (c - (rows[r] - 1) * 0.5f) * pitch, y))
+                places.add(Point(field.centerX + (c - (rows[r] - 1) * 0.5f) * pitch, y))
             }
         }
-        return keys.mapIndexed { i, key -> Cell(key, places[i].first, places[i].second, pitch, depth) }
+        return keys.mapIndexed { i, key -> Cell(key, places[i].x, places[i].y) }
+    }
+
+    /**
+     * The ground a cell owns, as a polygon, or null for a key a tap cannot answer
+     * with.
+     *
+     * The field clipped by the bisector against every rival, which is the definition
+     * of the cell rather than a drawing of it. Worked out this way it stays right for
+     * any lattice, and it covers the whole field however small the lattice is: shrink
+     * the rows and the cells at the edge grow, because a tap out there is still
+     * nearest the key it was always nearest.
+     */
+    fun cellOf(key: Int, bank: Bank, field: Field, after: Int): List<Point>? {
+        val cells = entry(bank, field).filter { it.key > after && rings[it.key] != null }
+        val mine = cells.firstOrNull { it.key == key } ?: return null
+        var polygon = listOf(
+            Point(field.left, field.top), Point(field.right, field.top),
+            Point(field.right, field.bottom), Point(field.left, field.bottom),
+        )
+        for (rival in cells) {
+            if (rival.key == key) continue
+            polygon = nearer(polygon, mine, rival)
+            if (polygon.isEmpty()) break
+        }
+        return polygon
+    }
+
+    /** The part of a polygon nearer `mine` than `rival`. */
+    private fun nearer(polygon: List<Point>, mine: Cell, rival: Cell): List<Point> {
+        // Positive on our side of the bisector. The squared distances differ by a
+        // linear expression, so the boundary is a straight edge and this is a clip.
+        fun side(p: Point): Float {
+            val ours = (p.x - mine.x) * (p.x - mine.x) + (p.y - mine.y) * (p.y - mine.y)
+            val theirs = (p.x - rival.x) * (p.x - rival.x) + (p.y - rival.y) * (p.y - rival.y)
+            return theirs - ours
+        }
+        val kept = mutableListOf<Point>()
+        for (i in polygon.indices) {
+            val a = polygon[i]
+            val b = polygon[(i + 1) % polygon.size]
+            val sa = side(a)
+            val sb = side(b)
+            if (sa >= 0f) kept.add(a)
+            if ((sa < 0f) != (sb < 0f)) {
+                val t = sa / (sa - sb)
+                kept.add(Point(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t))
+            }
+        }
+        return kept
     }
 
     /**
@@ -282,8 +333,10 @@ data class Slot(val radius: Radius, val angle: Float)
 /** A run of directions that all take the same key, on one of the two rings. */
 data class Sector(val radius: Radius, val from: Float, val to: Float, val key: Int)
 
-/** A key's place on the tap layout, with the lattice spacing its cell fills. */
-data class Cell(val key: Int, val x: Float, val y: Float, val pitch: Float, val depth: Float)
+/** A key's place on the tap layout. [Ring.cellOf] is the ground it owns. */
+data class Cell(val key: Int, val x: Float, val y: Float)
+
+data class Point(val x: Float, val y: Float)
 
 /** One thumb's half of the keyboard. */
 data class Field(val left: Float, val top: Float, val right: Float, val bottom: Float) {

@@ -47,6 +47,20 @@ data class Config(
      */
     var entryCols: Int = 3,
     /**
+     * How wide and how tall a cell is, against a honeycomb that fills the field.
+     *
+     * One fills it. Less packs the keys closer together, which is what a thumb that
+     * cannot reach the top of the field wants, and the cells at the edge then grow
+     * to cover the field the lattice no longer reaches: a cell is the ground nearer
+     * that key than any other, and shrinking the lattice does not change what a tap
+     * out there means. Row and column separately, because a field taller than it is
+     * wide gives cells taller than they are wide.
+     */
+    var entryWide: Float = 1f,
+    var entryTall: Float = 1f,
+    /** Where the middle of the honeycomb sits, as a fraction down the field. */
+    var entryAt: Float = 0.5f,
+    /**
      * Fill the middle rows of the honeycomb first, so the earliest keys sit there.
      *
      * An early key is where the sliding starts, since most of the stroke is still

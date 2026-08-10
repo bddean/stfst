@@ -64,6 +64,15 @@ class SettingsActivity : Activity() {
             { c, v -> c.entryCols = v.toInt() },
             "the widest row of the honeycomb. Three puts thirteen keys in rows of " +
                 "3 2 3 2 3. More columns make every cell smaller", unit = "columns"),
+        Range("Cell width", 0.3f, 1.2f, { it.entryWide }, { c, v -> c.entryWide = v },
+            "against a honeycomb that fills the field. One fills it", unit = "×"),
+        Range("Cell height", 0.3f, 1.2f, { it.entryTall }, { c, v -> c.entryTall = v },
+            "the same for the rows. Less packs the keys within reach, and the cells " +
+                "at the edge grow to cover the field the lattice no longer reaches, " +
+                "because a tap out there is still nearest the key it always was",
+            unit = "×"),
+        Range("Honeycomb position", 0.2f, 0.8f, { it.entryAt }, { c, v -> c.entryAt = v },
+            "where its middle sits, measured down the field", unit = "down the field"),
         Flag("Early keys in the middle rows", { it.entryCentral }, { c, v -> c.entryCentral = v },
             "an early key is where the sliding starts, so it sits in the middle of " +
                 "the field with room to slide. Off is plain reading order"),

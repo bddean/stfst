@@ -19,6 +19,9 @@ object Prefs {
             putInt("slotsFar", slotsFar)
             putInt("slotsNear", slotsNear)
             putInt("entryCols", entryCols)
+            putFloat("entryWide", entryWide)
+            putFloat("entryTall", entryTall)
+            putFloat("entryAt", entryAt)
             putBoolean("entryCentral", entryCentral)
             putFloat("startFarLeft", startFarLeft)
             putFloat("startNearLeft", startNearLeft)
@@ -73,6 +76,9 @@ object Prefs {
             slotsFar = prefs.getInt("slotsFar", d.slotsFar),
             slotsNear = prefs.getInt("slotsNear", d.slotsNear),
             entryCols = prefs.getInt("entryCols", d.entryCols),
+            entryWide = prefs.getFloat("entryWide", d.entryWide),
+            entryTall = prefs.getFloat("entryTall", d.entryTall),
+            entryAt = prefs.getFloat("entryAt", d.entryAt),
             entryCentral = prefs.getBoolean("entryCentral", d.entryCentral),
             startFarLeft = prefs.getFloat("startFarLeft", d.startFarLeft),
             startNearLeft = prefs.getFloat("startNearLeft", d.startNearLeft),

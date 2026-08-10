@@ -377,13 +377,16 @@ class RadialView(
             val on = cell.key in live
             if (!on && !config.showDeadSlots) continue
             val dim = if (on) 1f else 0.45f
-            ink.style = Paint.Style.FILL
-            ink.color = fade(paint.face, dim)
-            val hex = hexagon(cell, thumb.field)
-            canvas.drawPath(hex, ink)
-            ink.style = Paint.Style.STROKE
-            ink.color = fade(paint.edge, dim)
-            canvas.drawPath(hex, ink)
+            // A key steno order has passed owns no ground, so it gets no shape.
+            ring.cellOf(cell.key, thumb.bank, thumb.field, thumb.after)?.let { polygon ->
+                val path = shrink(polygon, cell)
+                ink.style = Paint.Style.FILL
+                ink.color = fade(paint.face, dim)
+                canvas.drawPath(path, ink)
+                ink.style = Paint.Style.STROKE
+                ink.color = fade(paint.edge, dim)
+                canvas.drawPath(path, ink)
+            }
             if (!config.showLabels) continue
             ink.style = Paint.Style.FILL
             ink.color = fade(paint.text, dim)
@@ -391,32 +394,15 @@ class RadialView(
         }
     }
 
-    /**
-     * A cell's own polygon, which for an offset lattice is a hexagon: the pitch
-     * bounds it sideways and the rows above and below cut its corners.
-     *
-     * The top and bottom rows reach past the field, since a tap above the first row
-     * still belongs to it. Drawn flat there, because a cell is only a picture of
-     * where a tap goes and the field is all there is to tap in.
-     */
-    private fun hexagon(cell: Cell, field: Field): Path {
-        val half = cell.pitch * 0.5f
-        val depth = cell.depth
-        val point = (half * half + depth * depth) / (2f * depth)
-        val side = ((depth * depth - half * half) / (2f * depth)).coerceIn(0f, point)
-        val inset = 0.93f
+    /** The cell, pulled in a little toward its own centre, so two cells read as two. */
+    private fun shrink(polygon: List<Point>, cell: Cell): Path {
         val path = Path()
-        fun corner(dx: Float, dy: Float, first: Boolean = false) {
-            val x = cell.x + dx * inset
-            val y = (cell.y + dy * inset).coerceIn(field.top, field.bottom)
-            if (first) path.moveTo(x, y) else path.lineTo(x, y)
+        val inset = 0.97f
+        polygon.forEachIndexed { i, p ->
+            val x = cell.x + (p.x - cell.x) * inset
+            val y = cell.y + (p.y - cell.y) * inset
+            if (i == 0) path.moveTo(x, y) else path.lineTo(x, y)
         }
-        corner(0f, -point, first = true)
-        corner(half, -side)
-        corner(half, side)
-        corner(0f, point)
-        corner(-half, side)
-        corner(-half, -side)
         path.close()
         return path
     }

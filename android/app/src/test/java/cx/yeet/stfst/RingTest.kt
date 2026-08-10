@@ -317,6 +317,41 @@ class RingTest {
         }
     }
 
+    /**
+     * The drawn cell is the target, so a tap has to land inside the shape it is
+     * answered by. Over a shrunken lattice too, where the cells at the edge grow to
+     * cover the field the lattice no longer reaches.
+     */
+    @Test
+    fun a_tap_lands_inside_the_cell_it_is_answered_by() {
+        for (tall in listOf(1f, 0.5f)) {
+            val r = Ring(ORDER, Config().also { it.entryTall = tall })
+            for (x in 4 until field.width.toInt() step 13) {
+                for (y in 4 until field.height.toInt() step 17) {
+                    val at = Point(x.toFloat(), y.toFloat())
+                    val got = r.entryAt(Bank.LEFT, field, at.x, at.y, -1)
+                    assertNotNull("nothing at $x $y", got)
+                    val cell = r.cellOf(got!!, Bank.LEFT, field, -1)!!
+                    assertTrue("$x $y is outside ${ORDER[got]} at tall $tall", inside(cell, at))
+                }
+            }
+        }
+    }
+
+    /** Convex, and wound one way, so one side of every edge is the inside. */
+    private fun inside(polygon: List<Point>, at: Point): Boolean {
+        var sign = 0
+        for (i in polygon.indices) {
+            val a = polygon[i]
+            val b = polygon[(i + 1) % polygon.size]
+            val cross = (b.x - a.x) * (at.y - a.y) - (b.y - a.y) * (at.x - a.x)
+            val side = if (cross > 0.01f) 1 else if (cross < -0.01f) -1 else 0
+            if (side == 0) continue
+            if (sign == 0) sign = side else if (sign != side) return false
+        }
+        return true
+    }
+
     /** Fixed positions, but steno order still decides what a tap may answer with. */
     @Test
     fun a_tap_cannot_go_back_in_steno_order() {

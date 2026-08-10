@@ -85,9 +85,18 @@ cell by its distance from the middle gives the earliest keys the most central
 cells and leaves the layout scattered, and thirteen keys nobody can find are worse
 than thirteen keys with less room.
 
-A cell is as small as thirteen keys tiling a field can be, and three columns is
-already the squarest packing for a field this shape. To make the cells smaller,
-make the field smaller with `Keyboard height`.
+`Cell width` and `Cell height` size the lattice against a honeycomb that fills the
+field, one being that honeycomb. Less packs the keys within reach of a thumb, and
+the cells at the edge then grow to cover the field the lattice no longer reaches:
+a cell is the ground nearer that key than any other, and shrinking the lattice does
+not change what a tap out there means. Row and column separately, because a field
+taller than it is wide gives cells taller than they are wide.
+
+Which is why a cell is drawn as the field clipped by the bisector against every
+rival, rather than as a hexagon from the lattice spacing. That is the definition of
+the cell and not a picture of it, so it stays right for any lattice and covers the
+whole field for every setting. `RingTest.a_tap_lands_inside_the_cell_it_is_answered_by`
+is the claim, over a shrunken lattice as well as a full one.
 
 Every slide after that reads the rings.
 
