@@ -78,6 +78,45 @@ between two slots or the neighbouring key becomes unreachable.
 Both were found by a test that samples a drag every 8 ms, which is the thing to
 write first next time: a single `move` per key never reaches either bug.
 
+## One question was two
+
+The touch-down was read as a slide from the field's home point, on the grounds
+that the first key then needed no second layout. That is true and it was still
+wrong: a tap has no direction to read, and reading one anyway put all thirteen
+keys of a bank within a thumb's length of one point. The first key of a stroke was
+the hardest one to hit.
+
+A tap and a slide are different questions, so they get different layouts. The tap
+layout is a honeycomb over the whole field, and its cell is the set of points
+nearer that key than any other. The ring is for slides only. Positions on the
+honeycomb stay fixed whatever the stroke holds, because a tap is aimed before the
+thumb lands, and steno order is applied by the pick rather than by the layout.
+
+## The picture was the problem
+
+"Getting the right angle is hard" was not about the angles. `Snap limit` is 180, so
+the nearest live slot always wins and a live key already owned every direction
+closer to it than to any other live key: after one consonant each vowel owned half
+the near ring. What was drawn was a small circle at the slot, so the generosity was
+invisible and the ring read as eight targets to hit precisely.
+
+So a key is drawn as the whole region that takes it, and the regions are asked of
+the decision function rather than worked out from the slot angles. A drawing
+derived from the same numbers can still disagree with the code; a drawing that
+probes the code cannot. The earlier version of this bug is two paragraphs up: the
+drawn radii were multipliers of a boundary the drawing never used.
+
+`RingTest.a_region_is_where_a_slide_of_its_angle_goes` is the claim, over every
+state both banks can be in.
+
+## The stall had the same fault as the pivot
+
+A stall moved the mark to the field's home point while the thumb was still down,
+which is the deleted pivot bug wearing a different hat: the mark is the measuring
+origin, so a mark where the thumb is not counts the gap between them as a slide,
+and the next twitch spends it on a key. The stall brings the ring to the thumb
+now. A thumb that is up has no position, so that one still goes home.
+
 ## What is not covered
 
 `engine.undo`, `engine.repeat_stroke` and `engine.toggle_star` moved into

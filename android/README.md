@@ -22,8 +22,9 @@ own. It sits about a third of the way out from the near ring, because
 undershooting is what a thumb does, and after one consonant the near ring holds
 only the vowels: a boundary too far out turns every short flick into A or O.
 
-The ring is drawn a second time above the thumb, where the thumb is not covering
-it. Same keys, same angles, smaller.
+The ring is drawn a second time in the clear, where the thumb is not covering it.
+Same keys, same angles, smaller. It is fixed in the field, so a thumb that has
+slid to the edge cannot drag the copy off the screen with it.
 
 ```
    ⌫      S      T        far ring, long slide:  S T K P W H R
@@ -36,11 +37,43 @@ R     ^   ●   A     K     ● is the thumb
 Sixteen slots against thirteen keys a bank, so every key still available always
 has a slot of its own. `RingTest.live_keys_never_share_a_slot` is that claim.
 
+## Two layouts, because a tap is not a slide
+
+A touch-down has a whole field to aim at and no direction to read. A slide has a
+direction and one point to measure from. Reading the touch-down as a slide from
+the field's home point made these one question, and it crowded thirteen keys
+around a single point: the first key of a stroke was the hardest one to hit.
+
+So a touch-down reads a honeycomb over the whole field, in steno order, three
+columns wide. Thirteen keys fall into rows of 3 2 3 2 3, and a cell is a target
+about a finger across. Positions are fixed whatever the stroke has taken already,
+because a tap has to be aimed before the thumb lands; steno order still applies,
+and a tap will not answer with a key the stroke has passed.
+
+Every slide after that reads the rings.
+
+## Every key is drawn as the region that takes it
+
+Not as a circle at its slot. A live key owns every direction closer to its slot
+than to any other live slot, and that is usually far wider than the slot: after
+one consonant the two vowels own half the near ring each, and four live consonants
+own about ninety degrees apiece. Drawn as circles, that generosity was invisible
+and the ring looked like eight small targets to be hit precisely.
+
+The regions are asked of the decision function rather than worked out from the
+slot angles, so the picture cannot disagree with what a slide will do. Same for
+the honeycomb: a cell is the set of points nearer that key than any other, which
+is what `entryAt` answers with.
+
+Three more things are drawn for the same reason. The fingertip, live, so a slide
+shows before it is read. A line from the mark to the fingertip, which is the slide
+being measured. And the region under the fingertip, filled, which is the key a
+lift or a pause would take.
+
 ## Writing a stroke
 
-Touch down: where the thumb lands relative to the field's home point is already a
-slide, so the first key needs no second layout. Then flick per key. Angle chooses
-the key, distance chooses the ring.
+Touch down on the key you want. Then flick per key: angle chooses the key,
+distance chooses the ring.
 
 Two rules decide when a flick has finished, and both exist because reaching for one
 key passes through the answer to another:
@@ -70,8 +103,19 @@ is drawn there too. One point for both, which is not a detail: any offset betwee
 them leaves the distance already travelled sitting above the slide threshold, and
 the next touch sample spends it on a key nobody asked for.
 
-Drift is handled by holding still. After `Stall`, the ring goes back to the home
-point with nothing written.
+Drift is handled by holding still. After `Stall`, the ring comes to the thumb with
+nothing written. To the thumb and not to the field's home point, for the reason
+above: a mark left where the thumb is not counts the gap between them as a slide,
+and the next twitch spends it.
+
+## What the touch panel reports
+
+Every sample of the contact is drawn, faint, at the size and shape the driver
+gives it, and the numbers behind it are printed: pressure, size, and the two axes
+of the contact ellipse. Whether a hard press can be told from a light one is a
+question about the hardware, so it is on the screen rather than guessed at. Most
+panels report a constant pressure and a real contact area, which means a firm
+press shows up as a bigger ellipse and not as more pressure.
 
 ## Long press
 

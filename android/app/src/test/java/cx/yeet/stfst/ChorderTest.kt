@@ -18,8 +18,8 @@ class ChorderTest {
     private val chorder = Chorder(ring, config) { written.add(it) }
 
     init {
-        chorder.place(Bank.LEFT, 0f, 0f)
-        chorder.place(Bank.RIGHT, 0f, 0f)
+        chorder.place(Bank.LEFT, Field(0f, 0f, 400f, 900f))
+        chorder.place(Bank.RIGHT, Field(400f, 0f, 800f, 900f))
     }
 
     private fun key(symbol: Char) = ORDER.indexOf(symbol)
@@ -51,10 +51,14 @@ class ChorderTest {
         rest(bank)
     }
 
-    private fun touch(bank: Bank, pointer: Int, angle: Float, distance: Float) {
-        val (x, y) = from(0f, 0f, angle, distance)
-        chorder.down(bank, pointer, x, y, UNIT, now)
-        rest(bank)
+    /** Where a key sits on the tap layout, which is what a touch-down aims at. */
+    private fun cell(bank: Bank, symbol: Char): Cell =
+        ring.entry(bank, chorder.thumb(bank).field).first { ORDER[it.key] == symbol }
+
+    /** Tap a key. A touch-down takes the key it lands on, whatever the rings say. */
+    private fun touch(bank: Bank, pointer: Int, symbol: Char) {
+        val cell = cell(bank, symbol)
+        chorder.down(bank, pointer, cell.x, cell.y)
     }
 
     /** Hold still until whatever was waiting has been taken. */
@@ -66,12 +70,12 @@ class ChorderTest {
     private val far = config.reach(Radius.FAR) * UNIT
     private val near = config.reach(Radius.NEAR) * UNIT
 
-    /** `KAOEPT`, written the way two thumbs write it. */
+    /** `KAOEPT`, written the way two thumbs write it: a tap then slides. */
     private fun keepThe() {
-        touch(Bank.LEFT, 0, 0f, far)      // K
+        touch(Bank.LEFT, 0, 'K')
         slide(Bank.LEFT, 0f, near)        // A
         slide(Bank.LEFT, 45f, near)       // O
-        touch(Bank.RIGHT, 1, -45f, near)  // E
+        touch(Bank.RIGHT, 1, 'E')
         slide(Bank.RIGHT, 0f, far)        // p
         slide(Bank.RIGHT, 180f, far)      // t
     }
@@ -103,7 +107,7 @@ class ChorderTest {
         assertEquals("", keys(Bank.LEFT))
         assertEquals("Ept", keys(Bank.RIGHT))
 
-        touch(Bank.LEFT, 2, -90f, far)    // S
+        touch(Bank.LEFT, 2, 'S')
         chorder.up(2)
         assertEquals(listOf(mask("KAOEpt"), mask("SEpt")), written)
     }
@@ -123,8 +127,8 @@ class ChorderTest {
 
     @Test
     fun a_two_key_chord_is_one_stroke_whichever_thumb_lifts_first() {
-        touch(Bank.LEFT, 0, 180f, far)     // R
-        touch(Bank.RIGHT, 1, 180f, far)    // t
+        touch(Bank.LEFT, 0, 'R')
+        touch(Bank.RIGHT, 1, 't')
         assertEquals(mask("Rt"), chorder.up(0))
         assertEquals(0L, chorder.up(1))
         assertEquals(listOf(mask("Rt")), written)
@@ -148,7 +152,7 @@ class ChorderTest {
      */
     @Test
     fun crossing_the_near_ring_takes_no_vowel() {
-        touch(Bank.LEFT, 0, 0f, far)
+        touch(Bank.LEFT, 0, 'K')
         assertEquals("K", keys(Bank.LEFT))
         // Out again in the same direction, sampled every 8 ms as a finger is, from
         // inside the near band to past the boundary.
@@ -163,7 +167,7 @@ class ChorderTest {
 
     @Test
     fun stopping_on_the_near_ring_takes_the_vowel() {
-        touch(Bank.LEFT, 0, 0f, far)
+        touch(Bank.LEFT, 0, 'K')
         val thumb = chorder.thumb(Bank.LEFT)
         val (x, y) = from(thumb.markX, thumb.markY, 0f, near)
         now += 8
@@ -176,20 +180,30 @@ class ChorderTest {
     @Test
     fun a_far_key_is_taken_at_once() {
         config.settleMs = 500L
-        touch(Bank.LEFT, 0, -90f, far)
-        assertEquals("S", keys(Bank.LEFT))
+        touch(Bank.LEFT, 0, 'S')
+        val thumb = chorder.thumb(Bank.LEFT)
+        val (x, y) = from(thumb.markX, thumb.markY, 0f, far)
+        chorder.move(0, x, y, UNIT, now)
+        assertEquals("SK", keys(Bank.LEFT))
     }
 
+    /**
+     * A tap takes the key it lands on, and the tap layout is the whole field, so
+     * every key of a bank can start a stroke without a slide.
+     */
     @Test
-    fun a_thumb_with_no_keys_writes_nothing() {
-        touch(Bank.LEFT, 0, 0f, 1f)
-        assertEquals(0L, chorder.up(0))
-        assertTrue(written.isEmpty())
+    fun a_tap_takes_the_key_it_lands_on() {
+        for (symbol in "#@^+STKPWHRAO") {
+            chorder.reset()
+            touch(Bank.LEFT, 0, symbol)
+            assertEquals(symbol.toString(), keys(Bank.LEFT))
+            chorder.up(0)
+        }
     }
 
     @Test
     fun a_tap_is_a_one_key_stroke() {
-        touch(Bank.RIGHT, 0, 180f, far)
+        touch(Bank.RIGHT, 0, 't')
         assertEquals(mask("t"), chorder.up(0))
     }
 
@@ -199,36 +213,72 @@ class ChorderTest {
      */
     @Test
     fun one_flick_takes_one_key() {
-        touch(Bank.LEFT, 0, 0f, far)
-        assertEquals("K", keys(Bank.LEFT))
+        touch(Bank.LEFT, 0, 'S')
         val thumb = chorder.thumb(Bank.LEFT)
-        assertEquals(0f, hypot(thumb.markX - far, thumb.markY), 0.001f)
+        val (x, y) = from(thumb.markX, thumb.markY, 0f, far)
+        now += 8
+        chorder.move(0, x, y, UNIT, now)
+        assertEquals("SK", keys(Bank.LEFT))
+        assertEquals(0f, hypot(thumb.markX - x, thumb.markY - y), 0.001f)
         // The same position again is no movement at all, so it takes nothing.
-        chorder.move(0, far, 0f, UNIT, now)
-        assertEquals("K", keys(Bank.LEFT))
+        chorder.move(0, x, y, UNIT, now)
+        assertEquals("SK", keys(Bank.LEFT))
     }
 
     /** A long slide is still one key, however far past the ring it goes. */
     @Test
     fun a_long_flick_takes_one_key() {
-        touch(Bank.LEFT, 0, 0f, far * 4f)
-        assertEquals("K", keys(Bank.LEFT))
+        touch(Bank.LEFT, 0, 'S')
+        val thumb = chorder.thumb(Bank.LEFT)
+        val (x, y) = from(thumb.markX, thumb.markY, 0f, far * 4f)
+        chorder.move(0, x, y, UNIT, now)
+        assertEquals("SK", keys(Bank.LEFT))
     }
 
     @Test
-    fun six_keys_walk_the_thumb_no_further_than_six_slides() {
+    fun the_slides_of_one_stroke_do_not_walk_the_thumb_far() {
+        val start = cell(Bank.LEFT, 'K')
         keepThe()
         val thumb = chorder.thumb(Bank.LEFT)
-        val travel = hypot(thumb.markX - thumb.homeX, thumb.markY - thumb.homeY)
+        val travel = hypot(thumb.markX - start.x, thumb.markY - start.y)
         assertTrue("drifted $travel", travel <= 3f * far)
     }
 
     @Test
-    fun a_stall_puts_the_ring_back_home() {
-        chorder.place(Bank.LEFT, 100f, 200f)
-        touch(Bank.LEFT, 0, 0f, far)
+    fun a_stall_brings_the_ring_to_the_resting_thumb() {
+        touch(Bank.LEFT, 0, 'S')
+        val thumb = chorder.thumb(Bank.LEFT)
+        // Halfway to a far key and stopped there, which takes nothing on its own.
+        val (x, y) = from(thumb.markX, thumb.markY, 0f, config.ringSplit() * UNIT * 0.9f)
+        now += 8
+        chorder.move(0, x, y, UNIT, now)
         chorder.stall(Bank.LEFT)
-        assertEquals(100f, chorder.thumb(Bank.LEFT).markX, 0.001f)
-        assertEquals(200f, chorder.thumb(Bank.LEFT).markY, 0.001f)
+        assertEquals(x, thumb.markX, 0.001f)
+        assertEquals(y, thumb.markY, 0.001f)
+        // And the gap it closed cannot be spent: the thumb is on its own mark now.
+        chorder.move(0, x, y, UNIT, now)
+        assertEquals("S", keys(Bank.LEFT))
+    }
+
+    /** A thumb that is up has no position, so its ring waits at the field's home. */
+    @Test
+    fun a_stall_with_the_thumb_up_goes_home() {
+        chorder.place(Bank.LEFT, Field(0f, 100f, 200f, 300f))
+        chorder.stall(Bank.LEFT)
+        val thumb = chorder.thumb(Bank.LEFT)
+        assertEquals(100f, thumb.markX, 0.001f)
+        assertEquals(100f + 200f * config.homeAt, thumb.markY, 0.001f)
+    }
+
+    /** What the ring lights up: the key a slide would take if it stopped now. */
+    @Test
+    fun the_hover_key_is_shown_before_it_is_taken() {
+        touch(Bank.LEFT, 0, 'K')
+        val thumb = chorder.thumb(Bank.LEFT)
+        val (x, y) = from(thumb.markX, thumb.markY, 0f, near)
+        now += 8
+        chorder.move(0, x, y, UNIT, now)
+        assertEquals("K", keys(Bank.LEFT))
+        assertEquals(key('A'), chorder.hover(Bank.LEFT, UNIT))
     }
 }

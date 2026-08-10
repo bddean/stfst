@@ -17,6 +17,7 @@ object Prefs {
             putString("nearRight", nearRight)
             putInt("slotsFar", slotsFar)
             putInt("slotsNear", slotsNear)
+            putInt("entryCols", entryCols)
             putFloat("startFarLeft", startFarLeft)
             putFloat("startNearLeft", startNearLeft)
             putFloat("startFarRight", startFarRight)
@@ -29,18 +30,25 @@ object Prefs {
             putFloat("turnDegrees", turnDegrees)
             putFloat("snapDegrees", snapDegrees)
             putLong("stallMs", stallMs)
+            putFloat("homeAt", homeAt)
             putBoolean("commitOnFirstLift", commitOnFirstLift)
             putBoolean("longPress", longPress)
             putLong("longPressMs", longPressMs)
             putBoolean("haptics", haptics)
             putBoolean("showDeadSlots", showDeadSlots)
             putBoolean("showLabels", showLabels)
+            putFloat("sectorStep", sectorStep)
+            putFloat("farEdge", farEdge)
             putBoolean("mirror", mirror)
-            putFloat("mirrorLift", mirrorLift)
+            putFloat("mirrorAt", mirrorAt)
             putFloat("mirrorScale", mirrorScale)
             putFloat("mirrorDim", mirrorDim)
+            putBoolean("cloud", cloud)
+            putInt("cloudSamples", cloudSamples)
+            putFloat("cloudAlpha", cloudAlpha)
+            putBoolean("touchReadout", touchReadout)
             putFloat("fieldSplit", fieldSplit)
-            putFloat("keyRadius", keyRadius)
+            putFloat("markRadius", markRadius)
             putFloat("labelSp", labelSp)
             putFloat("keyboardHeight", keyboardHeight)
         }.apply()
@@ -56,6 +64,7 @@ object Prefs {
             nearRight = prefs.getString("nearRight", d.nearRight)!!,
             slotsFar = prefs.getInt("slotsFar", d.slotsFar),
             slotsNear = prefs.getInt("slotsNear", d.slotsNear),
+            entryCols = prefs.getInt("entryCols", d.entryCols),
             startFarLeft = prefs.getFloat("startFarLeft", d.startFarLeft),
             startNearLeft = prefs.getFloat("startNearLeft", d.startNearLeft),
             startFarRight = prefs.getFloat("startFarRight", d.startFarRight),
@@ -68,18 +77,25 @@ object Prefs {
             turnDegrees = prefs.getFloat("turnDegrees", d.turnDegrees),
             snapDegrees = prefs.getFloat("snapDegrees", d.snapDegrees),
             stallMs = prefs.getLong("stallMs", d.stallMs),
+            homeAt = prefs.getFloat("homeAt", d.homeAt),
             commitOnFirstLift = prefs.getBoolean("commitOnFirstLift", d.commitOnFirstLift),
             longPress = prefs.getBoolean("longPress", d.longPress),
             longPressMs = prefs.getLong("longPressMs", d.longPressMs),
             haptics = prefs.getBoolean("haptics", d.haptics),
             showDeadSlots = prefs.getBoolean("showDeadSlots", d.showDeadSlots),
             showLabels = prefs.getBoolean("showLabels", d.showLabels),
+            sectorStep = prefs.getFloat("sectorStep", d.sectorStep),
+            farEdge = prefs.getFloat("farEdge", d.farEdge),
             mirror = prefs.getBoolean("mirror", d.mirror),
-            mirrorLift = prefs.getFloat("mirrorLift", d.mirrorLift),
+            mirrorAt = prefs.getFloat("mirrorAt", d.mirrorAt),
             mirrorScale = prefs.getFloat("mirrorScale", d.mirrorScale),
             mirrorDim = prefs.getFloat("mirrorDim", d.mirrorDim),
+            cloud = prefs.getBoolean("cloud", d.cloud),
+            cloudSamples = prefs.getInt("cloudSamples", d.cloudSamples),
+            cloudAlpha = prefs.getFloat("cloudAlpha", d.cloudAlpha),
+            touchReadout = prefs.getBoolean("touchReadout", d.touchReadout),
             fieldSplit = prefs.getFloat("fieldSplit", d.fieldSplit),
-            keyRadius = prefs.getFloat("keyRadius", d.keyRadius),
+            markRadius = prefs.getFloat("markRadius", d.markRadius),
             labelSp = prefs.getFloat("labelSp", d.labelSp),
             keyboardHeight = prefs.getFloat("keyboardHeight", d.keyboardHeight),
         )

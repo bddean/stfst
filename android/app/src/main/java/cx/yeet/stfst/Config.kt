@@ -21,6 +21,15 @@ data class Config(
     var slotsFar: Int = 8,
     var slotsNear: Int = 8,
 
+    /**
+     * How many columns the widest row of the tap layout has.
+     *
+     * The tap layout owes the rings nothing: a touch-down has no direction to
+     * read, so it is a honeycomb over the whole field and the thumb only has to
+     * find the key. Three columns put thirteen keys in rows of 3 2 3 2 3.
+     */
+    var entryCols: Int = 3,
+
     /** Where each ring's first key sits. -90 is straight up, 0 is right. */
     var startFarLeft: Float = -90f,
     var startNearLeft: Float = 0f,
@@ -76,6 +85,9 @@ data class Config(
      */
     var stallMs: Long = 900L,
 
+    /** Where in its field a thumb's home point sits, as a fraction from the top. */
+    var homeAt: Float = 0.62f,
+
     /**
      * Lifting one thumb writes the stroke, and the thumb still down keeps its
      * keys. That is what spares the right hand from repeating itself while the
@@ -91,19 +103,46 @@ data class Config(
     /** Draw the keys steno order has passed, faded. */
     var showDeadSlots: Boolean = true,
     var showLabels: Boolean = true,
+
     /**
-     * Repeat the ring above the thumb, where the thumb is not covering it.
+     * How finely the drawn sectors are probed, in degrees.
+     *
+     * The picture asks the decision function which key each direction takes, so
+     * this is the only thing that separates the two. Small is exact and cheap.
+     */
+    var sectorStep: Float = 2f,
+    /** How far out the far ring's sectors are drawn. Beyond it is the same key. */
+    var farEdge: Float = 0.46f,
+
+    /**
+     * Repeat the ring where the thumb is not covering it.
+     *
+     * Fixed in the field rather than carried above the thumb, so a ring that has
+     * drifted to the edge still has its copy in full view.
      */
     var mirror: Boolean = true,
-    /** How far above the thumb the copy sits. */
-    var mirrorLift: Float = 0.42f,
-    var mirrorScale: Float = 0.75f,
+    /** Where in the field the copy's centre sits, as a fraction from the top. */
+    var mirrorAt: Float = 0.28f,
+    var mirrorScale: Float = 0.62f,
     /** How much weaker the copy is drawn, so it reads as a copy. */
     var mirrorDim: Float = 0.5f,
 
+    /**
+     * Draw every touch sample, so the shape and size of the contact is visible.
+     *
+     * What the hardware reports about a touch beyond its centre, which is what a
+     * hard and light press would have to be told apart by.
+     */
+    var cloud: Boolean = true,
+    var cloudSamples: Int = 400,
+    var cloudAlpha: Float = 0.1f,
+    /** Print what the driver says about the live touch: pressure, size, axes. */
+    var touchReadout: Boolean = true,
+
     /** Where the left field ends and the right begins. */
     var fieldSplit: Float = 0.5f,
-    var keyRadius: Float = 0.055f,
+    /** The thumb marks: where the last key was taken, and where the thumb is now. */
+    var markRadius: Float = 0.022f,
     var labelSp: Float = 15f,
     var keyboardHeight: Float = 0.42f,
 ) {
@@ -116,6 +155,15 @@ data class Config(
 
     /** Longer than this and a slide wanted the far ring. */
     fun ringSplit() = nearReach + (farReach - nearReach) * ringSplitAt
+
+    /**
+     * The band of distances a ring answers to, which is what a key's region fills.
+     *
+     * The far ring has no outer edge, so the drawn one is where the picture stops
+     * rather than where the answer changes.
+     */
+    fun bounds(radius: Radius): ClosedFloatingPointRange<Float> =
+        if (radius == Radius.NEAR) minSlide..ringSplit() else ringSplit()..farEdge
 
     fun startAngle(bank: Bank, radius: Radius): Float = when {
         bank == Bank.LEFT && radius == Radius.FAR -> startFarLeft

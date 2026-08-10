@@ -5,6 +5,8 @@ import kotlin.math.atan2
 /** One thumb's progress through its own bank. */
 class Thumb(val bank: Bank) {
     var pointer: Int = NONE
+    /** The half of the keyboard this thumb taps in. */
+    var field: Field = Field(0f, 0f, 0f, 0f)
     var homeX: Float = 0f
     var homeY: Float = 0f
     /**
@@ -82,24 +84,37 @@ class Chorder(private val ring: Ring, private val config: Config, private val wr
         else -> null
     }
 
-    /** Place a field's home point. The fan is measured from it. */
-    fun place(bank: Bank, x: Float, y: Float) {
+    /** Give a thumb its half of the keyboard. The home point follows from it. */
+    fun place(bank: Bank, field: Field) {
         val thumb = thumb(bank)
-        thumb.homeX = x
-        thumb.homeY = y
+        thumb.field = field
+        thumb.homeX = field.centerX
+        thumb.homeY = field.top + field.height * config.homeAt
         if (!thumb.down) thumb.home()
     }
 
     /**
-     * A thumb touches down. Where it lands relative to the field's home point is
-     * already a slide, so the first key needs no separate layout.
+     * A thumb touches down, and takes the key it landed on.
+     *
+     * The tap layout, not the ring: a touch-down has no direction to read, so
+     * reading it as a slide from the field's home point crowded thirteen keys
+     * around one point and made the first key the hardest one.
+     *
+     * Nothing here is measured or timed, which is what the missing scale and clock
+     * say: a cell is where it is, and a tap on one is finished.
      */
-    fun down(bank: Bank, pointer: Int, x: Float, y: Float, unit: Float, now: Long): Boolean {
+    fun down(bank: Bank, pointer: Int, x: Float, y: Float): Boolean {
         val thumb = thumb(bank)
         if (thumb.down) return false
         thumb.pointer = pointer
         thumb.home()
-        return advance(thumb, x, y, unit, now)
+        thumb.markX = x
+        thumb.markY = y
+        thumb.atX = x
+        thumb.atY = y
+        val key = ring.entryAt(bank, thumb.field, x, y, thumb.after) ?: return false
+        take(thumb, key, Float.NaN)
+        return true
     }
 
     /** A thumb slides. True when it took at least one more key. */
@@ -122,6 +137,19 @@ class Chorder(private val ring: Ring, private val config: Config, private val wr
 
     /** The key a thumb would take if it stopped here, for the ring to show. */
     fun waiting(bank: Bank): Int = thumb(bank).waiting
+
+    /**
+     * The key the thumb is over right now, gated by nothing.
+     *
+     * What the ring lights up. Aiming is the hard part of a slide, and a sector
+     * that lights before the key is taken is the answer to it.
+     */
+    fun hover(bank: Bank, unit: Float): Int {
+        val thumb = thumb(bank)
+        if (!thumb.down) return Thumb.NO_KEY
+        return ring.pick(thumb.bank, thumb.after, thumb.markX, thumb.markY, thumb.atX, thumb.atY, unit)
+            ?: Thumb.NO_KEY
+    }
 
     /**
      * A thumb lifts. Returns the stroke written, or zero.
@@ -161,12 +189,23 @@ class Chorder(private val ring: Ring, private val config: Config, private val wr
     }
 
     /**
-     * Send the ring back to the field's home point, writing nothing.
+     * Bring the ring to the thumb, writing nothing.
      *
-     * What a thumb does when it has drifted and wants its bearings back.
+     * What a thumb does when it has drifted and wants its bearings back. To the
+     * thumb and not to the field's home point, because the mark is the measuring
+     * origin: a mark left where the thumb is not counts the gap between them as a
+     * slide, and the next twitch spends it on a key nobody asked for.
      */
     fun stall(bank: Bank) {
-        thumb(bank).home()
+        val thumb = thumb(bank)
+        if (!thumb.down) {
+            thumb.home()
+            return
+        }
+        thumb.markX = thumb.atX
+        thumb.markY = thumb.atY
+        thumb.waiting = Thumb.NO_KEY
+        thumb.heading = Float.NaN
     }
 
     /**
@@ -203,12 +242,22 @@ class Chorder(private val ring: Ring, private val config: Config, private val wr
             }
             if (now - thumb.waitingSince < config.settleMs) return false
         }
-        thumb.keys.add(key)
         thumb.markX = x
         thumb.markY = y
+        take(thumb, key, heading)
+        return true
+    }
+
+    /**
+     * Add a key and start the next slide from here.
+     *
+     * A NaN heading means there is no direction to turn away from, which is what a
+     * touch-down leaves behind: the first slide of a stroke may go any way.
+     */
+    private fun take(thumb: Thumb, key: Int, heading: Float) {
+        thumb.keys.add(key)
         thumb.heading = heading
         thumb.waiting = Thumb.NO_KEY
         pending = true
-        return true
     }
 }

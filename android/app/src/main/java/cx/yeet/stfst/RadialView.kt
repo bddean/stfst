@@ -5,6 +5,8 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Path
+import android.graphics.RectF
 import android.os.SystemClock
 import android.util.TypedValue
 import android.view.HapticFeedbackConstants
@@ -18,12 +20,12 @@ import kotlin.math.min
 import kotlin.math.sin
 
 /**
- * The keyboard itself: two thumb fields, a ring around each thumb, and the touch
- * handling that turns slides into strokes.
+ * The keyboard itself: two thumb fields, a layout in each, and the touch handling
+ * that turns taps and slides into strokes.
  *
- * Drawing reads the chorder and decides nothing. Where a key sits comes from
- * `Ring`, so a setting changed in the panel moves the key and the drawing follows
- * without knowing why.
+ * Drawing reads the chorder and decides nothing. What is drawn is asked of `Ring`,
+ * including which directions belong to which key, so the picture is the decision
+ * function and cannot drift from it.
  */
 @SuppressLint("ViewConstructor")
 class RadialView(
@@ -48,6 +50,22 @@ class RadialView(
     private val holds = mutableMapOf<Int, Runnable>()
 
     private var unit = 1f
+
+    /** What the driver reported about one touch sample. */
+    private class Touch(
+        val x: Float,
+        val y: Float,
+        val major: Float,
+        val minor: Float,
+        val orientation: Float,
+        val pressure: Float,
+        val size: Float,
+    )
+
+    /** Every sample of the press in progress, per thumb. */
+    private val clouds = mapOf(
+        Bank.LEFT to ArrayDeque<Touch>(), Bank.RIGHT to ArrayDeque<Touch>()
+    )
 
     /** What a long press offers: a sticky modifier, or a key to send. */
     private val modifiers = listOf(
@@ -85,15 +103,15 @@ class RadialView(
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) = layoutFields()
 
     /**
-     * Each field's home point, which is where the first slide is measured from and
-     * where a stalled ring returns to. Low in the field, because that is where a
-     * thumb reaches from.
+     * The two fields. A field is where its thumb's keys are laid out for a tap, and
+     * where its home point and its copy of the ring sit.
      */
     private fun layoutFields() {
         val edge = width * config.fieldSplit
         unit = min(min(edge, width - edge), height.toFloat())
-        chorder.place(Bank.LEFT, edge * 0.5f, height * 0.62f)
-        chorder.place(Bank.RIGHT, edge + (width - edge) * 0.5f, height * 0.62f)
+        val top = if (config.touchReadout) unit * 0.09f else 0f
+        chorder.place(Bank.LEFT, Field(0f, top, edge, height.toFloat()))
+        chorder.place(Bank.RIGHT, Field(edge, top, width.toFloat(), height.toFloat()))
     }
 
     /** How far from the mark a ring is drawn, and picked at. */
@@ -107,7 +125,9 @@ class RadialView(
                 val at = event.actionIndex
                 val pointer = event.getPointerId(at)
                 val bank = bankAt(event.getX(at))
-                if (chorder.down(bank, pointer, event.getX(at), event.getY(at), unit, event.eventTime)) buzz()
+                clouds[bank]?.clear()
+                record(event, at, bank)
+                if (chorder.down(bank, pointer, event.getX(at), event.getY(at))) buzz()
                 armStall(bank)
                 armSettle(bank)
                 armHold(bank, pointer)
@@ -117,6 +137,7 @@ class RadialView(
                 for (at in 0 until event.pointerCount) {
                     val pointer = event.getPointerId(at)
                     val thumb = chorder.forPointer(pointer) ?: continue
+                    record(event, at, thumb.bank)
                     // Any real movement means the press is a slide, not a hold.
                     holds.remove(pointer)?.let { removeCallbacks(it) }
                     val bank = modifying
@@ -150,6 +171,33 @@ class RadialView(
         }
         invalidate()
         return true
+    }
+
+    /**
+     * A move event carries the samples taken between frames, so reading the history
+     * gives the whole touched path and not one point per frame.
+     */
+    private fun record(event: MotionEvent, at: Int, bank: Bank) {
+        if (!config.cloud && !config.touchReadout) return
+        val cloud = clouds[bank] ?: return
+        for (h in 0 until event.historySize) {
+            cloud.addLast(
+                Touch(
+                    event.getHistoricalX(at, h), event.getHistoricalY(at, h),
+                    event.getHistoricalTouchMajor(at, h), event.getHistoricalTouchMinor(at, h),
+                    event.getHistoricalOrientation(at, h), event.getHistoricalPressure(at, h),
+                    event.getHistoricalSize(at, h),
+                )
+            )
+        }
+        cloud.addLast(
+            Touch(
+                event.getX(at), event.getY(at),
+                event.getTouchMajor(at), event.getTouchMinor(at),
+                event.getOrientation(at), event.getPressure(at), event.getSize(at),
+            )
+        )
+        while (cloud.size > config.cloudSamples.coerceAtLeast(1)) cloud.removeFirst()
     }
 
     /** A ring that has drifted goes home when the thumb holds still. */
@@ -237,50 +285,60 @@ class RadialView(
         if (config.haptics) performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
     }
 
+    private class Palette(
+        val face: Int,
+        val edge: Int,
+        val text: Int,
+        val hot: Int,
+        val warm: Int,
+    )
+
     override fun onDraw(canvas: Canvas) {
         val dark = (resources.configuration.uiMode and
             android.content.res.Configuration.UI_MODE_NIGHT_MASK) ==
             android.content.res.Configuration.UI_MODE_NIGHT_YES
         val back = if (dark) Color.rgb(18, 18, 20) else Color.rgb(246, 246, 248)
-        val face = if (dark) Color.rgb(38, 40, 46) else Color.WHITE
-        val edge = if (dark) Color.rgb(70, 74, 84) else Color.rgb(206, 210, 218)
-        val text = if (dark) Color.rgb(232, 234, 238) else Color.rgb(24, 26, 30)
-        val hot = Color.rgb(64, 132, 240)
+        val paint = Palette(
+            face = if (dark) Color.rgb(38, 40, 46) else Color.WHITE,
+            edge = if (dark) Color.rgb(70, 74, 84) else Color.rgb(206, 210, 218),
+            text = if (dark) Color.rgb(232, 234, 238) else Color.rgb(24, 26, 30),
+            hot = Color.rgb(64, 132, 240),
+            warm = if (dark) Color.rgb(30, 58, 104) else Color.rgb(206, 226, 255),
+        )
         canvas.drawColor(back)
 
-        ink.style = Paint.Style.STROKE
-        ink.strokeWidth = 1f
-        ink.color = edge
-        canvas.drawLine(width * config.fieldSplit, 0f, width * config.fieldSplit, height.toFloat(), ink)
-
-        val radius = config.keyRadius * unit
         ink.textSize = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_SP, config.labelSp, resources.displayMetrics
         )
         ink.textAlign = Paint.Align.CENTER
 
+        ink.style = Paint.Style.STROKE
+        ink.strokeWidth = 1f
+        ink.color = paint.edge
+        canvas.drawLine(width * config.fieldSplit, 0f, width * config.fieldSplit, height.toFloat(), ink)
+
         for (bank in Bank.values()) {
             val thumb = chorder.thumb(bank)
-            if (modifying == bank) {
-                drawItems(canvas, thumb, modifiers, Radius.NEAR, radius, face, edge, text, hot)
-                drawItems(canvas, thumb, specials, Radius.FAR, radius, face, edge, text, hot)
-                continue
+            if (config.cloud) drawCloud(canvas, bank, paint)
+            when {
+                modifying == bank -> {
+                    drawItems(canvas, thumb, modifiers, Radius.NEAR, paint)
+                    drawItems(canvas, thumb, specials, Radius.FAR, paint)
+                }
+                // The layout the next touch will be read against, whichever that is.
+                !thumb.down -> drawEntry(canvas, thumb, paint)
+                else -> {
+                    drawRing(canvas, thumb, thumb.markX, thumb.markY, 1f, 1f, paint)
+                    if (config.mirror) drawCopy(canvas, thumb, paint)
+                }
             }
-            drawRing(canvas, thumb, thumb.markX, thumb.markY, 1f, 1f, radius, face, edge, text, hot)
-            // The same ring again, clear of the thumb that is covering the first,
-            // and faded so it reads as a copy rather than as more keys.
-            if (config.mirror) {
-                val lift = config.mirrorLift * unit
-                val room = reach(Radius.FAR) * config.mirrorScale + radius
-                val y = (thumb.markY - lift).coerceAtLeast(room)
-                drawRing(
-                    canvas, thumb, thumb.markX, y, config.mirrorScale, config.mirrorDim,
-                    radius, face, edge, text, hot
-                )
-            }
+            drawTaken(canvas, thumb, paint)
+            drawThumb(canvas, thumb, paint)
         }
+        if (config.touchReadout) drawReadout(canvas, paint)
         if (meta != 0) {
-            ink.color = hot
+            ink.style = Paint.Style.FILL
+            ink.color = paint.hot
             canvas.drawText(
                 modifiers.filter { meta and it.second != 0 }.joinToString(" ") { it.first },
                 width * 0.5f,
@@ -291,10 +349,64 @@ class RadialView(
     }
 
     /**
-     * One thumb's ring, around a centre that is not always the thumb's own.
+     * A cell is the set of points nearer this key's centre than any other, so the
+     * drawn polygon is the target and every part of the field belongs to some key.
+     */
+    private fun drawEntry(canvas: Canvas, thumb: Thumb, paint: Palette) {
+        val live = ring.live(thumb.bank, thumb.after)
+        for (cell in ring.entry(thumb.bank, thumb.field)) {
+            val on = cell.key in live
+            if (!on && !config.showDeadSlots) continue
+            val dim = if (on) 1f else 0.45f
+            ink.style = Paint.Style.FILL
+            ink.color = fade(paint.face, dim)
+            val hex = hexagon(cell, thumb.field)
+            canvas.drawPath(hex, ink)
+            ink.style = Paint.Style.STROKE
+            ink.color = fade(paint.edge, dim)
+            canvas.drawPath(hex, ink)
+            if (!config.showLabels) continue
+            ink.style = Paint.Style.FILL
+            ink.color = fade(paint.text, dim)
+            canvas.drawText(order[cell.key].toString(), cell.x, cell.y + ink.textSize * 0.35f, ink)
+        }
+    }
+
+    /**
+     * A cell's own polygon, which for an offset lattice is a hexagon: the pitch
+     * bounds it sideways and the rows above and below cut its corners.
      *
-     * `scale` is what makes the copy above the thumb a copy: same keys, same
-     * angles, same order, at whatever size there is room for.
+     * The top and bottom rows reach past the field, since a tap above the first row
+     * still belongs to it. Drawn flat there, because a cell is only a picture of
+     * where a tap goes and the field is all there is to tap in.
+     */
+    private fun hexagon(cell: Cell, field: Field): Path {
+        val half = cell.pitch * 0.5f
+        val depth = cell.depth
+        val point = (half * half + depth * depth) / (2f * depth)
+        val side = ((depth * depth - half * half) / (2f * depth)).coerceIn(0f, point)
+        val inset = 0.93f
+        val path = Path()
+        fun corner(dx: Float, dy: Float, first: Boolean = false) {
+            val x = cell.x + dx * inset
+            val y = (cell.y + dy * inset).coerceIn(field.top, field.bottom)
+            if (first) path.moveTo(x, y) else path.lineTo(x, y)
+        }
+        corner(0f, -point, first = true)
+        corner(half, -side)
+        corner(half, side)
+        corner(0f, point)
+        corner(-half, side)
+        corner(-half, -side)
+        path.close()
+        return path
+    }
+
+    /**
+     * One thumb's ring, as the directions each key owns rather than as circles.
+     *
+     * `scale` is what makes the copy a copy: the same sectors at whatever size
+     * there is room for.
      */
     private fun drawRing(
         canvas: Canvas,
@@ -303,65 +415,152 @@ class RadialView(
         cy: Float,
         scale: Float,
         dim: Float,
-        radius: Float,
-        face: Int,
-        edge: Int,
-        text: Int,
-        hot: Int,
+        paint: Palette,
     ) {
-        val key = radius * scale
-        if (config.showDeadSlots) {
-            for (k in ring.keys(thumb.bank).filter { it <= thumb.after }) {
-                drawKey(canvas, cx, cy, scale, k, key, fade(face, dim), fade(edge, dim), fade(edge, dim))
-            }
-        }
+        val hover = chorder.hover(thumb.bank, unit)
         val waiting = chorder.waiting(thumb.bank)
-        for (k in ring.live(thumb.bank, thumb.after)) {
-            // The key a thumb would take if it stopped here, so the wait is visible
-            // rather than looking like nothing happened.
-            val label = if (k == waiting) hot else text
-            drawKey(canvas, cx, cy, scale, k, key, fade(face, dim), fade(edge, dim), fade(label, dim))
-        }
-        ink.style = Paint.Style.FILL
-        ink.color = fade(if (thumb.down) hot else edge, dim)
-        canvas.drawCircle(cx, cy, key * 0.28f, ink)
-        if (thumb.keys.isNotEmpty()) {
-            ink.color = fade(hot, dim)
+        // Nothing is chosen inside this, which is why a short slide costs nothing.
+        ink.style = Paint.Style.STROKE
+        ink.color = fade(paint.edge, dim * 0.6f)
+        canvas.drawCircle(cx, cy, config.minSlide * unit * scale, ink)
+
+        for (sector in ring.sectors(thumb.bank, thumb.after)) {
+            val band = config.bounds(sector.radius)
+            val path = wedge(
+                cx, cy, band.start * unit * scale, band.endInclusive * unit * scale,
+                sector.from, sector.to - sector.from
+            )
+            ink.style = Paint.Style.FILL
+            ink.color = fade(if (sector.key == hover) paint.warm else paint.face, dim)
+            canvas.drawPath(path, ink)
+            ink.style = Paint.Style.STROKE
+            ink.color = fade(if (sector.key == hover) paint.hot else paint.edge, dim)
+            canvas.drawPath(path, ink)
+            if (!config.showLabels) continue
+            val mid = Math.toRadians(((sector.from + sector.to) * 0.5f).toDouble())
+            val at = reach(sector.radius) * scale
+            ink.style = Paint.Style.FILL
+            // The key a wait is waiting on, so the pause reads as a pause.
+            ink.color = fade(if (sector.key == waiting) paint.hot else paint.text, dim)
             canvas.drawText(
-                thumb.keys.map { order[it] }.joinToString(""),
-                cx,
-                cy - reach(Radius.FAR) * scale - key * 1.2f,
+                order[sector.key].toString(),
+                cx + (cos(mid) * at).toFloat(),
+                cy + (sin(mid) * at).toFloat() + ink.textSize * 0.35f,
                 ink
             )
         }
     }
 
-    private fun drawKey(
-        canvas: Canvas,
-        cx: Float,
-        cy: Float,
-        scale: Float,
-        key: Int,
-        radius: Float,
-        face: Int,
-        edge: Int,
-        label: Int,
-    ) {
-        val slot = ring.slotOf(key) ?: return
-        val distance = reach(slot.radius) * scale
-        val radians = Math.toRadians(slot.angle.toDouble())
-        val x = cx + (cos(radians) * distance).toFloat()
-        val y = cy + (sin(radians) * distance).toFloat()
+    /**
+     * The same ring again, in the clear.
+     *
+     * Fixed in the field, not carried above the thumb: a copy that follows a thumb
+     * which has slid to the edge goes off the screen with it.
+     */
+    private fun drawCopy(canvas: Canvas, thumb: Thumb, paint: Palette) {
+        val room = config.farEdge * unit * config.mirrorScale + ink.textSize * 1.6f
+        val cx = thumb.field.centerX.coerceIn(
+            min(room, width * 0.5f), width - min(room, width * 0.5f)
+        )
+        val cy = (thumb.field.top + thumb.field.height * config.mirrorAt)
+            .coerceIn(min(room, height * 0.5f), height - min(room, height * 0.5f))
+        drawRing(canvas, thumb, cx, cy, config.mirrorScale, config.mirrorDim, paint)
+    }
+
+    /** An annular sector: the part of one ring a key owns. */
+    private fun wedge(cx: Float, cy: Float, inner: Float, outer: Float, from: Float, sweep: Float): Path {
+        val path = Path()
+        if (sweep >= 359.5f) {
+            path.addCircle(cx, cy, outer, Path.Direction.CW)
+            path.addCircle(cx, cy, inner, Path.Direction.CCW)
+            return path
+        }
+        // A hair off each edge, so two sectors read as two.
+        val gap = if (sweep > 6f) 1.5f else 0f
+        val start = from + gap * 0.5f
+        val span = sweep - gap
+        path.arcTo(RectF(cx - outer, cy - outer, cx + outer, cy + outer), start, span, true)
+        path.arcTo(RectF(cx - inner, cy - inner, cx + inner, cy + inner), start + span, -span, false)
+        path.close()
+        return path
+    }
+
+    /** Where the last key was taken, where the thumb is now, and the slide between. */
+    private fun drawThumb(canvas: Canvas, thumb: Thumb, paint: Palette) {
+        val dot = config.markRadius * unit
+        if (thumb.down) {
+            ink.style = Paint.Style.STROKE
+            ink.strokeWidth = 2f
+            ink.color = paint.hot
+            canvas.drawLine(thumb.markX, thumb.markY, thumb.atX, thumb.atY, ink)
+            ink.strokeWidth = 1f
+        }
         ink.style = Paint.Style.FILL
-        ink.color = face
-        canvas.drawCircle(x, y, radius, ink)
+        ink.color = if (thumb.down) paint.hot else paint.edge
+        canvas.drawCircle(thumb.markX, thumb.markY, dot * 0.6f, ink)
+        if (!thumb.down) return
+        // The fingertip, live, so a slide that has not been read yet still shows.
         ink.style = Paint.Style.STROKE
-        ink.color = edge
-        canvas.drawCircle(x, y, radius, ink)
-        if (!config.showLabels) return
+        ink.strokeWidth = 3f
+        ink.color = paint.hot
+        canvas.drawCircle(thumb.atX, thumb.atY, dot, ink)
+        ink.strokeWidth = 1f
+    }
+
+    /** The keys this thumb holds, at the top of its field where nothing covers them. */
+    private fun drawTaken(canvas: Canvas, thumb: Thumb, paint: Palette) {
+        if (thumb.keys.isEmpty()) return
         ink.style = Paint.Style.FILL
-        ink.color = label
-        canvas.drawText(order[key].toString(), x, y + ink.textSize * 0.35f, ink)
+        ink.color = paint.hot
+        canvas.drawText(
+            thumb.keys.map { order[it] }.joinToString(""),
+            thumb.field.centerX,
+            thumb.field.top + ink.textSize,
+            ink
+        )
+    }
+
+    private fun drawCloud(canvas: Canvas, bank: Bank, paint: Palette) {
+        val cloud = clouds[bank] ?: return
+        ink.style = Paint.Style.FILL
+        ink.color = fade(paint.hot, config.cloudAlpha)
+        for (touch in cloud) {
+            // Panels report one, the other, or neither. Fall through to the dot size.
+            val major = when {
+                touch.major > 1f -> touch.major
+                touch.size > 0f -> touch.size * unit
+                else -> config.markRadius * unit
+            }
+            val a = major * 0.5f
+            val b = (if (touch.minor > 1f) touch.minor else major) * 0.5f
+            canvas.save()
+            canvas.rotate(Math.toDegrees(touch.orientation.toDouble()).toFloat(), touch.x, touch.y)
+            canvas.drawOval(touch.x - b, touch.y - a, touch.x + b, touch.y + a, ink)
+            canvas.restore()
+        }
+    }
+
+    /**
+     * What the driver says about the live touch.
+     *
+     * Many panels report a constant pressure and a real contact size, so whether a
+     * firm press can be told from a light one is a question these numbers answer.
+     */
+    private fun drawReadout(canvas: Canvas, paint: Palette) {
+        ink.style = Paint.Style.FILL
+        ink.color = fade(paint.text, 0.65f)
+        for (bank in Bank.values()) {
+            val touch = clouds[bank]?.lastOrNull() ?: continue
+            val field = chorder.thumb(bank).field
+            canvas.drawText(
+                "p %.2f  sz %.2f  maj %.0f  min %.0f".format(
+                    touch.pressure, touch.size, touch.major, touch.minor
+                ),
+                field.centerX,
+                ink.textSize,
+                ink
+            )
+        }
     }
 
     private fun drawItems(
@@ -369,13 +568,10 @@ class RadialView(
         thumb: Thumb,
         items: List<Pair<String, Int>>,
         band: Radius,
-        radius: Float,
-        face: Int,
-        edge: Int,
-        label: Int,
-        hot: Int,
+        paint: Palette,
     ) {
         val distance = reach(band)
+        val radius = config.markRadius * unit * 2f
         val sticky = band == Radius.NEAR
         val step = 360f / items.size
         val start = config.startAngle(thumb.bank, band)
@@ -385,13 +581,13 @@ class RadialView(
             val y = thumb.markY + (sin(radians) * distance).toFloat()
             val on = sticky && (meta and items[i].second) != 0
             ink.style = Paint.Style.FILL
-            ink.color = if (on) hot else face
+            ink.color = if (on) paint.hot else paint.face
             canvas.drawCircle(x, y, radius, ink)
             ink.style = Paint.Style.STROKE
-            ink.color = edge
+            ink.color = paint.edge
             canvas.drawCircle(x, y, radius, ink)
             ink.style = Paint.Style.FILL
-            ink.color = if (on) Color.WHITE else label
+            ink.color = if (on) Color.WHITE else paint.text
             canvas.drawText(items[i].first, x, y + ink.textSize * 0.35f, ink)
         }
     }

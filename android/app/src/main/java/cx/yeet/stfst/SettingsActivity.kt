@@ -54,8 +54,13 @@ class SettingsActivity : Activity() {
 
     private val knobs: List<Knob> = listOf(
         Section("Which key is where",
-            "One character per key, in steno order. The far ring is the long slide " +
-                "and the near ring the short one. Slots run clockwise from the start angle."),
+            "Two layouts. A touch-down reads the honeycomb over the whole field, " +
+                "because a tap has no direction to it. Every slide after that reads " +
+                "the two rings around the last key: the far ring is the long slide " +
+                "and the near ring the short one, clockwise from the start angle."),
+        Range("Tap layout columns", 2f, 6f, { it.entryCols.toFloat() },
+            { c, v -> c.entryCols = v.toInt() },
+            "the widest row of the honeycomb. Three puts thirteen keys in rows of 3 2 3 2 3"),
         Text("Left far ring", { it.farLeft }, { c, v -> c.farLeft = v },
             "keys on the long slide, in steno order, clockwise from the start angle"),
         Text("Left near ring", { it.nearLeft }, { c, v -> c.nearLeft = v }),
@@ -96,6 +101,8 @@ class SettingsActivity : Activity() {
                 "reach is one key. Keep it under 45, the angle between two slots"),
         Range("Stall (ms)", 200f, 3000f, { it.stallMs.toFloat() }, { c, v -> c.stallMs = v.toLong() },
             "hold still this long and the ring goes home"),
+        Range("Home point", 0.2f, 0.95f, { it.homeAt }, { c, v -> c.homeAt = v },
+            "where in the field a stalled ring returns to, measured from the top"),
 
         Section("When a stroke is written"),
         Flag("Write on the first lift", { it.commitOnFirstLift }, { c, v -> c.commitOnFirstLift = v },
@@ -104,20 +111,42 @@ class SettingsActivity : Activity() {
             "off by default: a hold is easy to do by accident while learning"),
         Range("Long press (ms)", 150f, 1200f, { it.longPressMs.toFloat() }, { c, v -> c.longPressMs = v.toLong() }),
 
-        Section("Look and feel"),
+        Section("Look and feel",
+            "Each key is drawn as the whole region that takes it, so the target is " +
+                "the shape on the screen and not a point inside it."),
         Flag("Haptics", { it.haptics }, { c, v -> c.haptics = v }),
-        Flag("Show keys already passed", { it.showDeadSlots }, { c, v -> c.showDeadSlots = v }),
+        Flag("Show keys already passed", { it.showDeadSlots }, { c, v -> c.showDeadSlots = v },
+            "on the tap layout; a slide has no region for a key steno order has passed"),
         Flag("Show labels", { it.showLabels }, { c, v -> c.showLabels = v }),
-        Flag("Copy the ring above the thumb", { it.mirror }, { c, v -> c.mirror = v },
+        Range("Region outer edge", 0.3f, 0.8f, { it.farEdge }, { c, v -> c.farEdge = v },
+            "how far out the far ring is drawn. Past it the same key is still taken"),
+        Range("Region step (degrees)", 0.5f, 10f, { it.sectorStep }, { c, v -> c.sectorStep = v },
+            "how finely the drawn regions are measured. Smaller is more exact"),
+        Flag("Copy the ring in the clear", { it.mirror }, { c, v -> c.mirror = v },
             "so the thumb is not covering the keys it is choosing between"),
-        Range("Copy height", 0.15f, 0.8f, { it.mirrorLift }, { c, v -> c.mirrorLift = v }),
-        Range("Copy scale", 0.4f, 1.2f, { it.mirrorScale }, { c, v -> c.mirrorScale = v }),
+        Range("Copy position", 0.05f, 0.6f, { it.mirrorAt }, { c, v -> c.mirrorAt = v },
+            "where in the field the copy sits, from the top. It stays put, so it " +
+                "cannot follow a thumb off the screen"),
+        Range("Copy scale", 0.3f, 1f, { it.mirrorScale }, { c, v -> c.mirrorScale = v }),
         Range("Copy fade", 0.2f, 1f, { it.mirrorDim }, { c, v -> c.mirrorDim = v },
             "one is as strong as the ring under the thumb"),
 
+        Section("What the touch panel reports"),
+        Flag("Draw the touched area", { it.cloud }, { c, v -> c.cloud = v },
+            "every sample of the contact, at the size and shape the driver gives it"),
+        Range("Samples kept", 20f, 1200f, { it.cloudSamples.toFloat() },
+            { c, v -> c.cloudSamples = v.toInt() }),
+        Range("Touch fade", 0.02f, 0.5f, { it.cloudAlpha }, { c, v -> c.cloudAlpha = v }),
+        Flag("Print the touch numbers", { it.touchReadout }, { c, v -> c.touchReadout = v },
+            "pressure, size and the two contact axes. Whether a hard press can be " +
+                "told from a light one is a question about the hardware, and these " +
+                "are the numbers that answer it"),
+
+        Section("Sizes"),
         Range("Field split", 0.2f, 0.8f, { it.fieldSplit }, { c, v -> c.fieldSplit = v },
             "where the left field ends"),
-        Range("Key size", 0.02f, 0.12f, { it.keyRadius }, { c, v -> c.keyRadius = v }),
+        Range("Thumb mark size", 0.008f, 0.06f, { it.markRadius }, { c, v -> c.markRadius = v },
+            "the dot at the last key and the ring at the fingertip"),
         Range("Label size (sp)", 8f, 28f, { it.labelSp }, { c, v -> c.labelSp = v }),
         Range("Keyboard height", 0.2f, 0.7f, { it.keyboardHeight }, { c, v -> c.keyboardHeight = v }),
     )
