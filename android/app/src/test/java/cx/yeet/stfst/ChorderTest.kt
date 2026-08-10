@@ -12,14 +12,33 @@ private const val UNIT = 1000f
 
 class ChorderTest {
 
-    private val config = Config()
-    private val ring = Ring(ORDER, config)
+    private var config = Config()
+    private var ring = Ring(ORDER, config)
     private val written = mutableListOf<Long>()
-    private val chorder = Chorder(ring, config) { written.add(it) }
+    private var chorder = Chorder(ring, config) { written.add(it) }
 
     init {
+        place()
+    }
+
+    private fun place() {
         chorder.place(Bank.LEFT, Field(0f, 0f, 400f, 900f))
         chorder.place(Bank.RIGHT, Field(400f, 0f, 800f, 900f))
+    }
+
+    /**
+     * Ask for the two ring layout, which the default is not any more.
+     *
+     * A short slide and a long one meant different keys, and metering a distance
+     * under a thumb is the channel that went wrong. What the tests below hold on to
+     * is that the layout still works when it is asked for.
+     */
+    private fun twoRings() {
+        config.farLeft = "STKPWHR"
+        config.nearLeft = "AO#@^+"
+        ring = Ring(ORDER, config)
+        chorder = Chorder(ring, config) { written.add(it) }
+        place()
     }
 
     private fun key(symbol: Char) = ORDER.indexOf(symbol)
@@ -164,6 +183,7 @@ class ChorderTest {
      */
     @Test
     fun crossing_the_near_ring_takes_no_vowel() {
+        twoRings()
         touch(Bank.LEFT, 0, 'K')
         assertEquals("K", keys(Bank.LEFT))
         // Out again toward P, sampled every 8 ms as a finger is, from inside the
@@ -180,6 +200,7 @@ class ChorderTest {
 
     @Test
     fun stopping_on_the_near_ring_takes_the_vowel() {
+        twoRings()
         touch(Bank.LEFT, 0, 'K')
         val thumb = chorder.thumb(Bank.LEFT)
         val (x, y) = from(thumb.markX, thumb.markY, 0f, near)
@@ -266,8 +287,8 @@ class ChorderTest {
     fun a_stall_brings_the_ring_to_the_resting_thumb() {
         touch(Bank.LEFT, 0, 'S')
         val thumb = chorder.thumb(Bank.LEFT)
-        // Halfway to a far key and stopped there, which takes nothing on its own.
-        val (x, y) = from(thumb.markX, thumb.markY, 0f, config.ringSplit() * UNIT * 0.9f)
+        // Not far enough to have asked for anything, and stopped there.
+        val (x, y) = from(thumb.markX, thumb.markY, 0f, config.minSlide * UNIT * 0.8f)
         now += 8
         chorder.move(0, x, y, UNIT, now)
         chorder.stall(Bank.LEFT)
@@ -291,12 +312,15 @@ class ChorderTest {
     /** What the ring lights up: the key a slide would take if it stopped now. */
     @Test
     fun the_hover_key_is_shown_before_it_is_taken() {
-        touch(Bank.LEFT, 0, 'K')
+        touch(Bank.LEFT, 0, 'S')
+        slideTo(Bank.LEFT, 'K')
         val thumb = chorder.thumb(Bank.LEFT)
-        val (x, y) = from(thumb.markX, thumb.markY, 0f, near)
+        // Further out along the same ray, which is the same reach and not another
+        // one, so the turn rule holds the key back. It is still shown.
+        val (x, y) = from(thumb.markX, thumb.markY, thumb.heading, config.farReach * UNIT)
         now += 8
         chorder.move(0, x, y, UNIT, now)
-        assertEquals("K", keys(Bank.LEFT))
-        assertEquals(key('A'), chorder.hover(Bank.LEFT))
+        assertEquals("SK", keys(Bank.LEFT))
+        assertTrue("nothing to show", chorder.hover(Bank.LEFT) != Thumb.NO_KEY)
     }
 }

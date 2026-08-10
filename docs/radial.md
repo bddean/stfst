@@ -144,6 +144,32 @@ key. Cheap, and the reason to mention it is that the probe pattern is what made 
 O(1) lookup worth having: a derived drawing asks far more questions than a drawing
 that is told the answer.
 
+## Is there a stationary layout that does better?
+
+Asked whether the keys could stand still and every chord still be one flick per key,
+with hexagons, holes, or a key repeated at several places. The answer is no, and the
+reason is a counting one rather than a geometric one.
+
+A slide from key i is read as a direction, so every key after i in the steno order
+needs a direction of its own. Twelve keys follow the first of a bank, so those
+twelve directions share 360 degrees: **30 degrees is the ceiling for any layout**.
+Repeats and holes change which directions are free and cannot change how many are
+needed, so neither lowers the ceiling.
+
+Stationary positions cannot even reach it. From key i the successors want to be
+evenly spread, and that has to hold from every key at once. It does not: three keys
+after i want their directions 120 degrees apart, which for the next key along means
+it sits between the two after it on a line, and a point off that line sees three
+collinear points inside a half turn, never 240 degrees of it. Four keys already
+cannot do it. A hill climb over thirteen keys gets the worst target to 28 degrees,
+and that is the worst target in every state, not only the crowded ones.
+
+Sharing the ring out between the live keys hits 360 over the count exactly, in every
+state: 45 degrees after S, 60 after K, 90 after W. Which is the answer to why the
+layout moves. Stationary keys are worth having, but not through a direction; they
+need the finger read by where it is rather than by where it went, and that is a
+different gesture from this one.
+
 ## What is not covered
 
 `engine.undo`, `engine.repeat_stroke` and `engine.toggle_star` moved into

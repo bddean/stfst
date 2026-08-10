@@ -11,12 +11,29 @@ data class Config(
     /** The first key of the right thumb's bank. Everything before it is the left's. */
     var splitKey: Char = '*',
 
-    /** Keys on the long-slide ring, in steno order, one character per key. */
-    var farLeft: String = "STKPWHR",
-    var farRight: String = "frpblgts",
-    /** Keys on the short-slide ring. A key on neither ring cannot be stroked. */
-    var nearLeft: String = "AO#@^+",
-    var nearRight: String = "*EUdz",
+    /**
+     * Which keys sit on which ring, in steno order, one character per key.
+     *
+     * Every key on one ring by default, and the near ring empty, so a slide is read
+     * by direction alone and how far it went means nothing beyond `Minimum slide`.
+     * Metering a distance under a thumb without looking is the hard channel: two
+     * rings ask for it on every flick, and the answer to "how far" was wrong far more
+     * often than the answer to "which way".
+     *
+     * Nothing is lost by it. The narrowest target a key can ever have is set by how
+     * many keys still follow it, not by the layout: twelve keys follow the first, so
+     * 30 degrees is the ceiling for any arrangement of them, and one shared ring
+     * reaches that ceiling in every state. Two rings bought room by adding a channel
+     * that cost more than the room was worth.
+     *
+     * Put keys in a near string and the short slide comes back, along with `Settle`
+     * and the ring boundary.
+     */
+    var farLeft: String = "#@^+STKPWHRAO",
+    var farRight: String = "*EUfrpblgtsdz",
+    /** A key on neither ring cannot be stroked. */
+    var nearLeft: String = "",
+    var nearRight: String = "",
 
     /**
      * Share each ring out evenly between the keys still live on it.
@@ -86,8 +103,14 @@ data class Config(
     var startFarRight: Float = -90f,
     var startNearRight: Float = -90f,
 
-    /** Shorter than this and a slide has not chosen anything yet. */
-    var minSlide: Float = 0.06f,
+    /**
+     * Shorter than this and a slide has not chosen anything yet.
+     *
+     * The only thing distance decides, once there is one ring. It is the whole guard
+     * against a resting thumb taking keys, so it is longer than it was when a short
+     * slide had a meaning of its own.
+     */
+    var minSlide: Float = 0.085f,
     /**
      * How far out each ring sits. These are where the keys are drawn *and* what a
      * slide is measured against, and the boundary between them is derived rather
@@ -247,8 +270,13 @@ data class Config(
      * The far ring has no outer edge, so the drawn one is where the picture stops
      * rather than where the answer changes.
      */
-    fun bounds(radius: Radius): ClosedFloatingPointRange<Float> =
-        if (radius == Radius.NEAR) minSlide..ringSplit() else ringSplit()..farEdge
+    fun bounds(bank: Bank, radius: Radius): ClosedFloatingPointRange<Float> = when {
+        radius == Radius.NEAR -> minSlide..ringSplit()
+        // One ring, so it owns every distance a slide can be. The boundary between
+        // the rings is not a fact about this layout, and drawing one would invent it.
+        near(bank).isEmpty() -> minSlide..farEdge
+        else -> ringSplit()..farEdge
+    }
 
     fun startAngle(bank: Bank, radius: Radius): Float = when {
         bank == Bank.LEFT && radius == Radius.FAR -> startFarLeft

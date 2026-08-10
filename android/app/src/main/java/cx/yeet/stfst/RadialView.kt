@@ -457,7 +457,7 @@ class RadialView(
         canvas.drawCircle(cx, cy, config.minSlide * unit * scale, ink)
 
         for (sector in ring.sectors(thumb.bank, thumb.after)) {
-            val band = config.bounds(sector.radius)
+            val band = config.bounds(thumb.bank, sector.radius)
             val path = wedge(
                 cx, cy, band.start * unit * scale, band.endInclusive * unit * scale,
                 sector.from, sector.to - sector.from

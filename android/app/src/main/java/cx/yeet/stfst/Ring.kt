@@ -168,7 +168,12 @@ class Ring(val order: String, val config: Config) {
      * them however tight their slots are.
      */
     fun sectors(bank: Bank, after: Int): List<Sector> =
-        Radius.values().flatMap { band(bank, after, it) }
+        // A ring with no keys of its own gets no band. Otherwise a slide short of the
+        // boundary would be drawn as a ring of the same keys it already fell through
+        // to, which is two pictures of one answer.
+        Radius.values()
+            .filter { config.keys(bank, it).isNotEmpty() }
+            .flatMap { band(bank, after, it) }
 
     private fun band(bank: Bank, after: Int, radius: Radius): List<Sector> {
         val distance = config.reach(radius)

@@ -16,11 +16,36 @@ design:
 The dictionary is not asked. A key sits at a fixed angle on a fixed ring whatever
 is loaded, because a layout that moved with the dictionary could not be learned.
 
-Each ring's keys are drawn where a slide has to reach to take them, and the
-boundary between them is derived from those two numbers rather than set on its
-own. It sits about a third of the way out from the near ring, because
-undershooting is what a thumb does, and after one consonant the near ring holds
-only the vowels: a boundary too far out turns every short flick into A or O.
+## One ring, read by direction
+
+A slide is read by its direction. How far it went decides nothing beyond whether
+it happened at all, which `Minimum slide` sets.
+
+There were two rings, and how far you slid chose between them. Metering a distance
+under a thumb without looking is the weak channel: the answer to "how far" was
+wrong far more often than the answer to "which way", and two rings asked for it on
+every flick. Every rule that went wrong on this keyboard came from that one choice.
+`Settle` exists because a thumb reaching outward crosses the near ring on the way,
+and the vowel it collected there was the bug that took three attempts to find.
+
+Nothing was lost by dropping it. **The narrowest target a key can have is set by
+how many keys still follow it, not by the layout.** Twelve keys follow the first of
+a bank, so 30 degrees is the ceiling for any arrangement of them, and a single
+shared ring reaches that ceiling in every state:
+
+| after | keys still live | each holds |
+|---|---|---|
+| S | 8 | 45° |
+| T | 7 | 51° |
+| K | 6 | 60° |
+| P | 5 | 72° |
+| W | 4 | 90° |
+| H | 3 | 120° |
+| R | 2 | 180° |
+
+The second ring bought room by adding a channel that cost more than the room was
+worth. Put keys in a near string and the short slide comes back, with `Settle` and
+the ring boundary.
 
 The ring is drawn a second time in the clear, where the thumb is not covering it.
 Same keys, same angles, smaller. See "Where the copy goes" below.
@@ -143,21 +168,15 @@ content hidden behind it, and the bar is opaque.
 
 ## Writing a stroke
 
-Touch down on the key you want. Then flick per key: angle chooses the key,
-distance chooses the ring.
+Touch down on the key you want, then flick once per key. The direction of the flick
+is the whole of what it says.
 
-Two rules decide when a flick has finished, and both exist because reaching for one
-key passes through the answer to another:
+A key is taken as soon as the flick clears `Minimum slide`, but only if the slide
+has turned by `Turn needed` since the last key. Going further along the same ray is
+the same reach, not another one, or a single long drag would take a second and a
+third key along it.
 
-- A **far** key is taken at once, since nothing lies beyond it, but only if the
-  slide has turned by `Turn needed` since the last key. Going further along the
-  same ray is the same reach, not another one.
-- A **near** key waits `Settle`. A thumb on its way out to a consonant crosses the
-  near ring, and after one consonant the near ring holds only the vowels, so taking
-  it on the way through is how every reach became A or O.
-
-The key a thumb would take if it stopped now is drawn in the accent colour, so a
-wait looks like a wait rather than like nothing happening.
+`Settle` applies to a near ring, so it does nothing until you configure one.
 
 Lifting either thumb writes the stroke, and **the thumb still down keeps its
 keys**. Spelling a run of words that share a right-hand shape therefore costs one
