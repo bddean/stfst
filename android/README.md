@@ -50,6 +50,17 @@ about a finger across. Positions are fixed whatever the stroke has taken already
 because a tap has to be aimed before the thumb lands; steno order still applies,
 and a tap will not answer with a key the stroke has passed.
 
+Steno order fills the middle row first, then outward. An early key is where the
+sliding starts, since most of the stroke is still ahead of it, and a thumb at the
+edge of the glass has nowhere to slide to. By row and not by cell: ranking every
+cell by its distance from the middle gives the earliest keys the most central
+cells and leaves the layout scattered, and thirteen keys nobody can find are worse
+than thirteen keys with less room.
+
+A cell is as small as thirteen keys tiling a field can be, and three columns is
+already the squarest packing for a field this shape. To make the cells smaller,
+make the field smaller with `Keyboard height`.
+
 Every slide after that reads the rings.
 
 ## Every key is drawn as the region that takes it
@@ -69,6 +80,9 @@ Three more things are drawn for the same reason. The fingertip, live, so a slide
 shows before it is read. A line from the mark to the fingertip, which is the slide
 being measured. And the region under the fingertip, filled, which is the key a
 lift or a pause would take.
+
+The copy in the clear shows all of that too, at its own scale, so a thumb covering
+the real ring costs nothing.
 
 ## Writing a stroke
 

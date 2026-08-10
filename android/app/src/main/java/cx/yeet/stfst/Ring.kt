@@ -143,17 +143,32 @@ class Ring(val order: String, val config: Config) {
         val rows = rowSizes(keys.size)
         val pitch = field.width / config.entryCols.coerceAtLeast(1)
         val depth = field.height / rows.size
-        val cells = ArrayList<Cell>(keys.size)
-        var i = 0
-        for ((r, size) in rows.withIndex()) {
+        val places = mutableListOf<Pair<Float, Float>>()
+        for (r in rowOrder(rows.size)) {
             val y = field.top + (r + 0.5f) * depth
-            for (c in 0 until size) {
-                val x = field.centerX + (c - (size - 1) * 0.5f) * pitch
-                cells.add(Cell(keys[i++], x, y, pitch, depth))
+            for (c in 0 until rows[r]) {
+                places.add(Pair(field.centerX + (c - (rows[r] - 1) * 0.5f) * pitch, y))
             }
         }
-        return cells
+        return keys.mapIndexed { i, key -> Cell(key, places[i].first, places[i].second, pitch, depth) }
     }
+
+    /**
+     * Which row steno order fills first.
+     *
+     * The middle row outward, so the earliest keys land in the middle of the field.
+     * An early key is where the sliding starts, since most of the stroke is still
+     * ahead of it, and a thumb at the edge of the glass has nowhere to slide to. A
+     * late key ends the stroke and slides nowhere, so the edge costs it nothing.
+     *
+     * By row and not by cell. Ranking every cell by its distance from the middle
+     * gives the earliest keys the most central cells and leaves the layout
+     * scattered, and thirteen keys nobody can find are worse than thirteen keys
+     * with less room. A row still reads left to right.
+     */
+    private fun rowOrder(rows: Int): List<Int> =
+        if (!config.entryCentral) (0 until rows).toList()
+        else (0 until rows).sortedBy { abs(it - (rows - 1) * 0.5f) }
 
     private fun rowSizes(count: Int): List<Int> {
         val wide = config.entryCols.coerceAtLeast(1)

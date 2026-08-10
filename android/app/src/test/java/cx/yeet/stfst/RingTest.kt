@@ -1,5 +1,6 @@
 package cx.yeet.stfst
 
+import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.sin
 import org.junit.Assert.assertEquals
@@ -162,13 +163,42 @@ class RingTest {
 
     @Test
     fun the_tap_layout_is_a_honeycomb() {
-        val rows = ring.entry(Bank.LEFT, field).groupBy { it.y }
-        assertEquals(listOf(3, 2, 3, 2, 3), rows.values.map { it.size })
+        val rows = ring.entry(Bank.LEFT, field)
+            .groupBy { it.y }
+            .toSortedMap()
+            .values
+            .map { row -> row.map { it.x }.sorted() }
+        assertEquals(listOf(3, 2, 3, 2, 3), rows.map { it.size })
         // A row of two sits between the columns of a row of three, half a pitch over.
-        val wide = rows.values.first().map { it.x }
-        val narrow = rows.values.toList()[1].map { it.x }
         val pitch = field.width / config.entryCols
-        assertEquals(wide[0] + pitch * 0.5f, narrow[0], 0.001f)
+        assertEquals(rows[0][0] + pitch * 0.5f, rows[1][0], 0.001f)
+    }
+
+    /**
+     * An early key is where the sliding starts, so it gets a middle row. A late key
+     * ends the stroke and slides nowhere, so the edge costs it nothing.
+     */
+    @Test
+    fun the_middle_rows_go_to_the_earliest_keys() {
+        val cells = ring.entry(Bank.LEFT, field).associateBy { it.key }
+        val middle = field.top + field.height * 0.5f
+        fun row(symbol: Char) = abs(cells.getValue(key(symbol)).y - middle)
+
+        // Row by row, each one no further from the middle than the next.
+        val rows = "#@^+STKPWHRAO".map { row(it) }
+        assertEquals(rows, rows.sorted())
+        assertTrue("the earliest key is not in a middle row", row('#') < row('O'))
+
+        // And a row still reads left to right, which is what makes a key findable.
+        val top = cells.values.filter { it.y == cells.getValue(key('#')).y }
+        assertEquals(top.sortedBy { it.x }, top.sortedBy { it.key })
+    }
+
+    @Test
+    fun reading_order_fills_from_the_top() {
+        val plain = Ring(ORDER, Config().also { it.entryCentral = false })
+        val cells = plain.entry(Bank.LEFT, field)
+        assertEquals(cells.map { it.y }, cells.map { it.y }.sorted())
     }
 
     @Test

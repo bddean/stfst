@@ -29,6 +29,14 @@ data class Config(
      * find the key. Three columns put thirteen keys in rows of 3 2 3 2 3.
      */
     var entryCols: Int = 3,
+    /**
+     * Fill the middle rows of the honeycomb first, so the earliest keys sit there.
+     *
+     * An early key is where the sliding starts, since most of the stroke is still
+     * ahead of it, and a thumb at the edge of the glass has nowhere to slide to.
+     * Off fills the rows from the top, which is plain reading order.
+     */
+    var entryCentral: Boolean = true,
 
     /** Where each ring's first key sits. -90 is straight up, 0 is right. */
     var startFarLeft: Float = -90f,

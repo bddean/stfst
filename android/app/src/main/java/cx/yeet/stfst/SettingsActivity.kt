@@ -33,6 +33,8 @@ class SettingsActivity : Activity() {
         val get: (Config) -> Float,
         val set: (Config, Float) -> Unit,
         note: String = "",
+        /** Printed after the value, because a bare 0.13 says nothing. */
+        val unit: String = "",
     ) : Knob(label, note)
 
     private class Flag(
@@ -60,7 +62,11 @@ class SettingsActivity : Activity() {
                 "and the near ring the short one, clockwise from the start angle."),
         Range("Tap layout columns", 2f, 6f, { it.entryCols.toFloat() },
             { c, v -> c.entryCols = v.toInt() },
-            "the widest row of the honeycomb. Three puts thirteen keys in rows of 3 2 3 2 3"),
+            "the widest row of the honeycomb. Three puts thirteen keys in rows of " +
+                "3 2 3 2 3. More columns make every cell smaller", unit = "columns"),
+        Flag("Early keys in the middle rows", { it.entryCentral }, { c, v -> c.entryCentral = v },
+            "an early key is where the sliding starts, so it sits in the middle of " +
+                "the field with room to slide. Off is plain reading order"),
         Text("Left far ring", { it.farLeft }, { c, v -> c.farLeft = v },
             "keys on the long slide, in steno order, clockwise from the start angle"),
         Text("Left near ring", { it.nearLeft }, { c, v -> c.nearLeft = v }),
@@ -70,46 +76,46 @@ class SettingsActivity : Activity() {
             { c, v -> v.firstOrNull()?.let { c.splitKey = it } },
             "the first key the right thumb owns"),
 
-        Range("Far ring slots", 4f, 12f, { it.slotsFar.toFloat() }, { c, v -> c.slotsFar = v.toInt() }),
-        Range("Near ring slots", 4f, 12f, { it.slotsNear.toFloat() }, { c, v -> c.slotsNear = v.toInt() }),
+        Range("Far ring slots", 4f, 12f, { it.slotsFar.toFloat() }, { c, v -> c.slotsFar = v.toInt() }, unit = "slots"),
+        Range("Near ring slots", 4f, 12f, { it.slotsNear.toFloat() }, { c, v -> c.slotsNear = v.toInt() }, unit = "slots"),
         Range("Left far start angle", -180f, 180f, { it.startFarLeft }, { c, v -> c.startFarLeft = v },
-            "-90 is straight up"),
-        Range("Left near start angle", -180f, 180f, { it.startNearLeft }, { c, v -> c.startNearLeft = v }),
-        Range("Right far start angle", -180f, 180f, { it.startFarRight }, { c, v -> c.startFarRight = v }),
-        Range("Right near start angle", -180f, 180f, { it.startNearRight }, { c, v -> c.startNearRight = v }),
+            "-90 is straight up", unit = "°"),
+        Range("Left near start angle", -180f, 180f, { it.startNearLeft }, { c, v -> c.startNearLeft = v }, unit = "°"),
+        Range("Right far start angle", -180f, 180f, { it.startFarRight }, { c, v -> c.startFarRight = v }, unit = "°"),
+        Range("Right near start angle", -180f, 180f, { it.startNearRight }, { c, v -> c.startNearRight = v }, unit = "°"),
 
         Section("How far a slide has to go",
             "All lengths are fractions of the thumb field's short side, so they mean " +
                 "the same thing on any screen."),
         Range("Minimum slide", 0.01f, 0.25f, { it.minSlide }, { c, v -> c.minSlide = v },
-            "shorter than this and a slide means nothing"),
+            "shorter than this and a slide means nothing", unit = "× field"),
         Range("Near ring reach", 0.05f, 0.3f, { it.nearReach }, { c, v -> c.nearReach = v },
-            "how far out the short-slide keys sit, and what a short slide is"),
+            "how far out the short-slide keys sit, and what a short slide is", unit = "× field"),
         Range("Far ring reach", 0.15f, 0.6f, { it.farReach }, { c, v -> c.farReach = v },
-            "the same for the long-slide keys"),
+            "the same for the long-slide keys", unit = "× field"),
         Range("Ring boundary", 0.1f, 0.9f, { it.ringSplitAt }, { c, v -> c.ringSplitAt = v },
-            "where between the rings a slide stops being short; low favours the far ring"),
+            "where between the rings a slide stops being short; low favours the far ring", unit = "of the gap"),
         Section("How a slide is read"),
         Range("Snap limit", 10f, 180f, { it.snapDegrees }, { c, v -> c.snapDegrees = v },
-            "how far off a slot's angle a slide may be; 180 always takes the nearest"),
+            "how far off a slot's angle a slide may be; 180 always takes the nearest", unit = "°"),
         Range("Settle (ms)", 0f, 300f, { it.settleMs.toFloat() }, { c, v -> c.settleMs = v.toLong() },
             "how long a near-ring key waits before it is taken. A thumb reaching for " +
                 "a consonant crosses the near ring on the way, and this is what stops " +
-                "it collecting a vowel. Zero takes both rings at once"),
+                "it collecting a vowel. Zero takes both rings at once", unit = "ms"),
         Range("Turn needed (degrees)", 0f, 44f, { it.turnDegrees }, { c, v -> c.turnDegrees = v },
             "how far a slide must turn before it takes another far key, so one long " +
-                "reach is one key. Keep it under 45, the angle between two slots"),
+                "reach is one key. Keep it under 45, the angle between two slots", unit = "°"),
         Range("Stall (ms)", 200f, 3000f, { it.stallMs.toFloat() }, { c, v -> c.stallMs = v.toLong() },
-            "hold still this long and the ring goes home"),
+            "hold still this long and the ring goes home", unit = "ms"),
         Range("Home point", 0.2f, 0.95f, { it.homeAt }, { c, v -> c.homeAt = v },
-            "where in the field a stalled ring returns to, measured from the top"),
+            "where in the field a stalled ring returns to, measured from the top", unit = "down the field"),
 
         Section("When a stroke is written"),
         Flag("Write on the first lift", { it.commitOnFirstLift }, { c, v -> c.commitOnFirstLift = v },
             "the thumb still down keeps its keys, so a shared right hand is stroked once"),
         Flag("Long press for modifiers", { it.longPress }, { c, v -> c.longPress = v },
             "off by default: a hold is easy to do by accident while learning"),
-        Range("Long press (ms)", 150f, 1200f, { it.longPressMs.toFloat() }, { c, v -> c.longPressMs = v.toLong() }),
+        Range("Long press (ms)", 150f, 1200f, { it.longPressMs.toFloat() }, { c, v -> c.longPressMs = v.toLong() }, unit = "ms"),
 
         Section("Look and feel",
             "Each key is drawn as the whole region that takes it, so the target is " +
@@ -119,24 +125,24 @@ class SettingsActivity : Activity() {
             "on the tap layout; a slide has no region for a key steno order has passed"),
         Flag("Show labels", { it.showLabels }, { c, v -> c.showLabels = v }),
         Range("Region outer edge", 0.3f, 0.8f, { it.farEdge }, { c, v -> c.farEdge = v },
-            "how far out the far ring is drawn. Past it the same key is still taken"),
+            "how far out the far ring is drawn. Past it the same key is still taken", unit = "× field"),
         Range("Region step (degrees)", 0.5f, 10f, { it.sectorStep }, { c, v -> c.sectorStep = v },
-            "how finely the drawn regions are measured. Smaller is more exact"),
+            "how finely the drawn regions are measured. Smaller is more exact", unit = "°"),
         Flag("Copy the ring in the clear", { it.mirror }, { c, v -> c.mirror = v },
             "so the thumb is not covering the keys it is choosing between"),
         Range("Copy position", 0.05f, 0.6f, { it.mirrorAt }, { c, v -> c.mirrorAt = v },
             "where in the field the copy sits, from the top. It stays put, so it " +
-                "cannot follow a thumb off the screen"),
-        Range("Copy scale", 0.3f, 1f, { it.mirrorScale }, { c, v -> c.mirrorScale = v }),
+                "cannot follow a thumb off the screen", unit = "down the field"),
+        Range("Copy scale", 0.3f, 1f, { it.mirrorScale }, { c, v -> c.mirrorScale = v }, unit = "×"),
         Range("Copy fade", 0.2f, 1f, { it.mirrorDim }, { c, v -> c.mirrorDim = v },
-            "one is as strong as the ring under the thumb"),
+            "one is as strong as the ring under the thumb", unit = "×"),
 
         Section("What the touch panel reports"),
         Flag("Draw the touched area", { it.cloud }, { c, v -> c.cloud = v },
             "every sample of the contact, at the size and shape the driver gives it"),
         Range("Samples kept", 20f, 1200f, { it.cloudSamples.toFloat() },
-            { c, v -> c.cloudSamples = v.toInt() }),
-        Range("Touch fade", 0.02f, 0.5f, { it.cloudAlpha }, { c, v -> c.cloudAlpha = v }),
+            { c, v -> c.cloudSamples = v.toInt() }, unit = "samples"),
+        Range("Touch fade", 0.02f, 0.5f, { it.cloudAlpha }, { c, v -> c.cloudAlpha = v }, unit = "×"),
         Flag("Print the touch numbers", { it.touchReadout }, { c, v -> c.touchReadout = v },
             "pressure, size and the two contact axes. Whether a hard press can be " +
                 "told from a light one is a question about the hardware, and these " +
@@ -144,11 +150,11 @@ class SettingsActivity : Activity() {
 
         Section("Sizes"),
         Range("Field split", 0.2f, 0.8f, { it.fieldSplit }, { c, v -> c.fieldSplit = v },
-            "where the left field ends"),
+            "where the left field ends", unit = "of the width"),
         Range("Thumb mark size", 0.008f, 0.06f, { it.markRadius }, { c, v -> c.markRadius = v },
-            "the dot at the last key and the ring at the fingertip"),
-        Range("Label size (sp)", 8f, 28f, { it.labelSp }, { c, v -> c.labelSp = v }),
-        Range("Keyboard height", 0.2f, 0.7f, { it.keyboardHeight }, { c, v -> c.keyboardHeight = v }),
+            "the dot at the last key and the ring at the fingertip", unit = "× field"),
+        Range("Label size (sp)", 8f, 28f, { it.labelSp }, { c, v -> c.labelSp = v }, unit = "sp"),
+        Range("Keyboard height", 0.2f, 0.7f, { it.keyboardHeight }, { c, v -> c.keyboardHeight = v }, unit = "of the screen"),
     )
 
     override fun onCreate(state: Bundle?) {
@@ -162,6 +168,9 @@ class SettingsActivity : Activity() {
         column.addView(heading("Radial steno"))
         column.addView(note("Enable the keyboard in Settings, Languages and input. Changes here " +
             "apply the next time the keyboard opens."))
+        column.addView(note("Every value says its unit. × field is a fraction of the thumb " +
+            "field's short side, so a length means the same thing on any screen. " +
+            "° is degrees clockwise, and -90 points straight up."))
         column.addView(Button(this).apply {
             setText("Restore defaults")
             setOnClickListener {
@@ -205,7 +214,7 @@ class SettingsActivity : Activity() {
             }
 
             is Range -> {
-                title.text = "${knob.label}: ${pretty(knob.get(config))}"
+                title.text = show(knob)
                 box.addView(SeekBar(this).apply {
                     max = 1000
                     progress = (((knob.get(config) - knob.min) / (knob.max - knob.min)) * 1000).toInt()
@@ -213,7 +222,7 @@ class SettingsActivity : Activity() {
                         override fun onProgressChanged(bar: SeekBar?, at: Int, byUser: Boolean) {
                             val value = knob.min + (knob.max - knob.min) * at / 1000f
                             knob.set(config, value)
-                            title.text = "${knob.label}: ${pretty(knob.get(config))}"
+                            title.text = show(knob)
                         }
 
                         override fun onStartTrackingTouch(bar: SeekBar?) = Unit
@@ -250,6 +259,10 @@ class SettingsActivity : Activity() {
         return box
     }
 
-    private fun pretty(value: Float): String =
-        if (value >= 10f) value.toInt().toString() else String.format("%.3f", value)
+    private fun show(knob: Range): String {
+        val value = knob.get(config)
+        val pretty = if (value >= 10f) value.toInt().toString() else String.format("%.3f", value)
+        return if (knob.unit.isEmpty()) "${knob.label}: $pretty"
+        else "${knob.label}: $pretty ${knob.unit}"
+    }
 }

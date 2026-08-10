@@ -333,7 +333,6 @@ class RadialView(
                 }
             }
             drawTaken(canvas, thumb, paint)
-            drawThumb(canvas, thumb, paint)
         }
         if (config.touchReadout) drawReadout(canvas, paint)
         if (meta != 0) {
@@ -449,6 +448,38 @@ class RadialView(
                 ink
             )
         }
+        drawThumb(canvas, thumb, cx, cy, scale, dim, paint)
+    }
+
+    /**
+     * Where the last key was taken, where the thumb is now, and the slide between.
+     *
+     * Drawn per copy of the ring, at that copy's centre and scale, so the copy shows
+     * the slide as it happens and not just the keys it could reach.
+     */
+    private fun drawThumb(
+        canvas: Canvas,
+        thumb: Thumb,
+        cx: Float,
+        cy: Float,
+        scale: Float,
+        dim: Float,
+        paint: Palette,
+    ) {
+        val dot = config.markRadius * unit * scale
+        val x = cx + (thumb.atX - thumb.markX) * scale
+        val y = cy + (thumb.atY - thumb.markY) * scale
+        ink.style = Paint.Style.STROKE
+        ink.strokeWidth = 2f
+        ink.color = fade(paint.hot, dim)
+        canvas.drawLine(cx, cy, x, y, ink)
+        ink.style = Paint.Style.FILL
+        canvas.drawCircle(cx, cy, dot * 0.6f, ink)
+        // The fingertip, live, so a slide that has not been read yet still shows.
+        ink.style = Paint.Style.STROKE
+        ink.strokeWidth = 3f
+        canvas.drawCircle(x, y, dot, ink)
+        ink.strokeWidth = 1f
     }
 
     /**
@@ -483,28 +514,6 @@ class RadialView(
         path.arcTo(RectF(cx - inner, cy - inner, cx + inner, cy + inner), start + span, -span, false)
         path.close()
         return path
-    }
-
-    /** Where the last key was taken, where the thumb is now, and the slide between. */
-    private fun drawThumb(canvas: Canvas, thumb: Thumb, paint: Palette) {
-        val dot = config.markRadius * unit
-        if (thumb.down) {
-            ink.style = Paint.Style.STROKE
-            ink.strokeWidth = 2f
-            ink.color = paint.hot
-            canvas.drawLine(thumb.markX, thumb.markY, thumb.atX, thumb.atY, ink)
-            ink.strokeWidth = 1f
-        }
-        ink.style = Paint.Style.FILL
-        ink.color = if (thumb.down) paint.hot else paint.edge
-        canvas.drawCircle(thumb.markX, thumb.markY, dot * 0.6f, ink)
-        if (!thumb.down) return
-        // The fingertip, live, so a slide that has not been read yet still shows.
-        ink.style = Paint.Style.STROKE
-        ink.strokeWidth = 3f
-        ink.color = paint.hot
-        canvas.drawCircle(thumb.atX, thumb.atY, dot, ink)
-        ink.strokeWidth = 1f
     }
 
     /** The keys this thumb holds, at the top of its field where nothing covers them. */
