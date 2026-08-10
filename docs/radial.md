@@ -117,6 +117,33 @@ origin, so a mark where the thumb is not counts the gap between them as a slide,
 and the next twitch spends it on a key. The stall brings the ring to the thumb
 now. A thumb that is up has no position, so that one still goes home.
 
+## A picture that was right, and a claim about it that was not
+
+I told the user the labels sat at their slot angles, so aiming at a key meant
+aiming near the edge of its region. The labels were already drawn at the middle of
+each region, because that fell out of drawing the regions at all. The report was
+wrong and the code was right.
+
+What the report was reaching for turned out to be real, and it is about size rather
+than position. Fixed slots leave the average region at 360 over the live count and
+the worst one much smaller: a key with a live neighbour on each side gets only the
+gap between them, 45 degrees against 157 for each neighbour. Sharing the ring out
+evenly between the live keys raises the floor to the average. Steno order still
+decides the order round the ring, so nothing here reaches for the dictionary.
+
+## What the drawing cost, once it was probed
+
+The regions are probed from the decision function, so drawing a ring asks it a few
+hundred questions a frame, and each question asks about every live key. Sharing the
+ring out made a slot angle depend on the live set, so every one of those questions
+rebuilt a list. That is thousands of allocations a frame for a picture that changes
+only when a key is taken.
+
+The live sets are worked out once per state now and the ring a key sits on once per
+key. Cheap, and the reason to mention it is that the probe pattern is what made an
+O(1) lookup worth having: a derived drawing asks far more questions than a drawing
+that is told the answer.
+
 ## What is not covered
 
 `engine.undo`, `engine.repeat_stroke` and `engine.toggle_star` moved into

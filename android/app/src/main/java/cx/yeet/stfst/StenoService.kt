@@ -7,8 +7,10 @@ import android.os.SystemClock
 import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -32,6 +34,10 @@ class StenoService : InputMethodService() {
     private lateinit var config: Config
     private var view: RadialView? = null
     private var status: TextView? = null
+    /** The field's own action key, renamed for whatever field is in front of us. */
+    private var actionKey: Button? = null
+    /** The running repeat of a held button, if any. */
+    private var repeat: Runnable? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -81,22 +87,20 @@ class StenoService : InputMethodService() {
             layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
         }
         status = text
-        val undo = Button(this).apply {
-            setText("⌫")
-            setOnClickListener { if (handle != 0L) show(Native.undo(handle)) }
-        }
-        val settings = Button(this).apply {
-            setText("⚙")
-            setOnClickListener {
-                startActivity(
-                    Intent(this@StenoService, SettingsActivity::class.java)
-                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                )
-            }
-        }
         bar.addView(text)
-        bar.addView(undo)
-        bar.addView(settings)
+        bar.addView(button("⚙") {
+            startActivity(
+                Intent(this@StenoService, SettingsActivity::class.java)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            )
+        })
+        bar.addView(button("⌄") { requestHideSelf(0) })
+        // Undoing a stroke and deleting a character are different things, and the
+        // one button used to be labelled as the other.
+        bar.addView(button("↶") { if (handle != 0L) show(Native.undo(handle)) })
+        bar.addView(repeating(button("⌫", null)) { erase() })
+        actionKey = button("⏎") { act() }
+        bar.addView(actionKey)
 
         val radial = RadialView(this, config, order, ::stroke, ::key)
         view = radial
@@ -106,11 +110,107 @@ class StenoService : InputMethodService() {
     }
 
     /** A fresh field means a fresh buffer: the old text belongs to the old field. */
-    override fun onStartInputView(info: android.view.inputmethod.EditorInfo?, restarting: Boolean) {
+    override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
         super.onStartInputView(info, restarting)
+        forget()
+        actionKey?.text = actionName(info) ?: "⏎"
+        view?.apply(Prefs.load(getSharedPreferences(PREFS, MODE_PRIVATE)))
+    }
+
+    private fun button(label: String, click: (() -> Unit)?) = Button(this).apply {
+        text = label
+        minWidth = 0
+        minimumWidth = 0
+        setPadding(26, 8, 26, 8)
+        click?.let { what -> setOnClickListener { what() } }
+    }
+
+    /**
+     * Hold the button and it keeps going.
+     *
+     * A backspace that fires once per tap is no way to clear a field. The first hit
+     * lands on the press, so a tap is still one of whatever this does.
+     */
+    private fun repeating(button: Button, what: () -> Unit): Button {
+        button.setOnTouchListener { view, event ->
+            when (event.actionMasked) {
+                MotionEvent.ACTION_DOWN -> {
+                    what()
+                    val tick = object : Runnable {
+                        override fun run() {
+                            what()
+                            view.postDelayed(this, 55L)
+                        }
+                    }
+                    repeat = tick
+                    view.postDelayed(tick, 320L)
+                }
+
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    repeat?.let { view.removeCallbacks(it) }
+                    repeat = null
+                }
+            }
+            true
+        }
+        return button
+    }
+
+    /**
+     * What this field calls its action key, or null when it has none.
+     *
+     * The app may name it itself, and a browser usually does not, so the name comes
+     * from the action it asked for.
+     */
+    private fun actionName(info: EditorInfo?): String? {
+        info?.actionLabel?.let { if (it.isNotEmpty()) return it.toString() }
+        return when (info?.imeOptions?.and(EditorInfo.IME_MASK_ACTION)) {
+            EditorInfo.IME_ACTION_GO -> "Go"
+            EditorInfo.IME_ACTION_SEARCH -> "Search"
+            EditorInfo.IME_ACTION_SEND -> "Send"
+            EditorInfo.IME_ACTION_NEXT -> "Next"
+            EditorInfo.IME_ACTION_DONE -> "Done"
+            EditorInfo.IME_ACTION_PREVIOUS -> "Back"
+            else -> null
+        }
+    }
+
+    /**
+     * Ask the field to do its own thing: submit the form, run the search, move on.
+     *
+     * A chord writes text and has no way to ask for this, so a browser field was a
+     * dead end. A field with no action of its own gets a plain Enter.
+     */
+    private fun act() {
+        val editor = currentInputConnection ?: return
+        val action = currentInputEditorInfo?.imeOptions?.and(EditorInfo.IME_MASK_ACTION)
+        if (action == null || action == EditorInfo.IME_ACTION_UNSPECIFIED ||
+            action == EditorInfo.IME_ACTION_NONE
+        ) {
+            key(KeyEvent.KEYCODE_ENTER, 0)
+            return
+        }
+        editor.performEditorAction(action)
+        forget()
+    }
+
+    /** One character, and by code point, so a pair is not cut in half. */
+    private fun erase() {
+        currentInputConnection?.deleteSurroundingTextInCodePoints(1, 0) ?: return
+        forget()
+    }
+
+    /**
+     * Give up the tracked buffer.
+     *
+     * What reaches the editor is the difference between the runtime's buffer and
+     * what was last sent, so an edit made any other way leaves that difference
+     * describing text nobody has. The next stroke then starts from the field as it
+     * now is, which is what losing the context means.
+     */
+    private fun forget() {
         if (handle != 0L) Native.reset(handle)
         sent = ""
-        view?.apply(Prefs.load(getSharedPreferences(PREFS, MODE_PRIVATE)))
     }
 
     private fun stroke(keys: Long) {
@@ -141,10 +241,7 @@ class StenoService : InputMethodService() {
         }
         // The editor may have moved or deleted text of its own, so the buffer this
         // keyboard is tracking is no longer what is on screen.
-        if (code == KeyEvent.KEYCODE_DEL || code == KeyEvent.KEYCODE_ENTER) {
-            if (handle != 0L) Native.reset(handle)
-            sent = ""
-        }
+        if (code == KeyEvent.KEYCODE_DEL || code == KeyEvent.KEYCODE_ENTER) forget()
     }
 
     companion object {

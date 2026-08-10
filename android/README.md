@@ -34,8 +34,36 @@ R     ^   ●   A     K     ● is the thumb
    H      W      P        from each ring's start angle
 ```
 
-Sixteen slots against thirteen keys a bank, so every key still available always
-has a slot of its own. `RingTest.live_keys_never_share_a_slot` is that claim.
+## The live keys share each ring out between them
+
+A ring is divided evenly between the keys still live on it: the earliest sits at
+the start angle and the rest follow clockwise, so the order round the ring is the
+order of the chord. The dictionary is still not asked, and the layout still follows
+from the keys taken and nothing else.
+
+The average region is 360 degrees over the count however the slots are placed, so
+what this buys is the worst one. With fixed slots a key with a live neighbour on
+each side is squeezed to the gap between them: after E, the right near ring holds
+U, d and z, and d gets 45 degrees against 157 for each of its neighbours. Shared
+out, all three hold 120. `RingTest.sharing_the_ring_out_widens_the_smallest_region`
+is that claim, and `a_slide_to_where_a_key_is_drawn_takes_that_key` is the contract
+it rests on, over every state both banks can be in.
+
+The cost is that a key's direction depends on what the stroke has taken. The thing
+to learn is "the second key still available is up-right", not "K is at 0". `Share
+each ring out evenly` turns it off and restores fixed slots.
+
+The left near ring starts on the diagonal, not at 0. After any consonant it holds A
+and O alone, so their boundary is a quarter turn from each: at 0 that boundary is
+straight up and straight down, which is where the consonants are, and an undershot
+reach upward would pick a vowel by coin toss.
+
+## A boundary is sticky
+
+A thumb resting between two keys is nearer first one and then the other on every
+touch sample, so the highlight and the buzz would swap back and forth and neither
+would say anything. The key already chosen keeps the answer until a rival beats it
+by `Hold on to a key`, six degrees by default.
 
 ## Two layouts, because a tap is not a slide
 
@@ -122,6 +150,27 @@ nothing written. To the thumb and not to the field's home point, for the reason
 above: a mark left where the thumb is not counts the gap between them as a slide,
 and the next twitch spends it.
 
+## The buzzes
+
+A buzz when a key is taken says a key was taken, which is a thing you can already
+see. The buzz that matters is on the **change of key under the thumb**, because
+that is what turns the aim of a slide into something to feel instead of something
+to read.
+
+The two thumbs get buzzes that feel different, and this is where the hardware sets
+the limit. A phone has one vibration motor, so there is no left channel and no
+right channel, and no frequency to set. What there is, in the order the code asks
+for it:
+
+1. more than one motor, on the few devices that have them, addressed separately
+2. composition primitives, where `PRIMITIVE_LOW_TICK` against `PRIMITIVE_TICK`
+   feels like two pitches from the same motor
+3. amplitude control, so weak against strong
+4. none of those, so one pulse against two, because rhythm always survives
+
+The settings screen prints which one this device got, under the switch that asks
+for it. Guessing at hardware is what the touch readout exists to avoid.
+
 ## What the touch panel reports
 
 Every sample of the contact is drawn, faint, at the size and shape the driver
@@ -130,6 +179,28 @@ of the contact ellipse. Whether a hard press can be told from a light one is a
 question about the hardware, so it is on the screen rather than guessed at. Most
 panels report a constant pressure and a real contact area, which means a firm
 press shows up as a bigger ellipse and not as more pressure.
+
+## The bar
+
+The steno keys write text and can ask for nothing else, so a field with a submit
+button of its own was a dead end. The bar above the keyboard carries what the
+editor owns, right to left in reach order:
+
+| | |
+|---|---|
+| the field's action | Go, Search, Send, Next, Done, or whatever the app calls it. A field with no action of its own gets a plain Enter |
+| `⌫` | one character, by code point. Hold it and it repeats |
+| `↶` | undo one stroke, which is not the same thing |
+| `⌄` | put the keyboard away |
+| `⚙` | the settings |
+
+The action key is renamed for whatever field is in front of it, out of the
+`EditorInfo` the app supplies.
+
+Any edit made through the bar gives up the tracked buffer. What reaches the editor
+is the difference between the runtime's buffer and what was last sent, so an edit
+made another way would leave that difference describing text nobody has. The next
+stroke starts from the field as it now is.
 
 ## Long press
 

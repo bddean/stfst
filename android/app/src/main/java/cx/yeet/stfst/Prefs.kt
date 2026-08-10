@@ -15,6 +15,7 @@ object Prefs {
             putString("farRight", farRight)
             putString("nearLeft", nearLeft)
             putString("nearRight", nearRight)
+            putBoolean("spread", spread)
             putInt("slotsFar", slotsFar)
             putInt("slotsNear", slotsNear)
             putInt("entryCols", entryCols)
@@ -30,12 +31,17 @@ object Prefs {
             putLong("settleMs", settleMs)
             putFloat("turnDegrees", turnDegrees)
             putFloat("snapDegrees", snapDegrees)
+            putFloat("hysteresisDegrees", hysteresisDegrees)
             putLong("stallMs", stallMs)
             putFloat("homeAt", homeAt)
             putBoolean("commitOnFirstLift", commitOnFirstLift)
             putBoolean("longPress", longPress)
             putLong("longPressMs", longPressMs)
             putBoolean("haptics", haptics)
+            putBoolean("hapticTicks", hapticTicks)
+            putBoolean("hapticSplit", hapticSplit)
+            putFloat("hapticStrength", hapticStrength)
+            putLong("hapticGapMs", hapticGapMs)
             putBoolean("showDeadSlots", showDeadSlots)
             putBoolean("showLabels", showLabels)
             putFloat("sectorStep", sectorStep)
@@ -63,6 +69,7 @@ object Prefs {
             farRight = prefs.getString("farRight", d.farRight)!!,
             nearLeft = prefs.getString("nearLeft", d.nearLeft)!!,
             nearRight = prefs.getString("nearRight", d.nearRight)!!,
+            spread = prefs.getBoolean("spread", d.spread),
             slotsFar = prefs.getInt("slotsFar", d.slotsFar),
             slotsNear = prefs.getInt("slotsNear", d.slotsNear),
             entryCols = prefs.getInt("entryCols", d.entryCols),
@@ -78,12 +85,17 @@ object Prefs {
             settleMs = prefs.getLong("settleMs", d.settleMs),
             turnDegrees = prefs.getFloat("turnDegrees", d.turnDegrees),
             snapDegrees = prefs.getFloat("snapDegrees", d.snapDegrees),
+            hysteresisDegrees = prefs.getFloat("hysteresisDegrees", d.hysteresisDegrees),
             stallMs = prefs.getLong("stallMs", d.stallMs),
             homeAt = prefs.getFloat("homeAt", d.homeAt),
             commitOnFirstLift = prefs.getBoolean("commitOnFirstLift", d.commitOnFirstLift),
             longPress = prefs.getBoolean("longPress", d.longPress),
             longPressMs = prefs.getLong("longPressMs", d.longPressMs),
             haptics = prefs.getBoolean("haptics", d.haptics),
+            hapticTicks = prefs.getBoolean("hapticTicks", d.hapticTicks),
+            hapticSplit = prefs.getBoolean("hapticSplit", d.hapticSplit),
+            hapticStrength = prefs.getFloat("hapticStrength", d.hapticStrength),
+            hapticGapMs = prefs.getLong("hapticGapMs", d.hapticGapMs),
             showDeadSlots = prefs.getBoolean("showDeadSlots", d.showDeadSlots),
             showLabels = prefs.getBoolean("showLabels", d.showLabels),
             sectorStep = prefs.getFloat("sectorStep", d.sectorStep),

@@ -30,9 +30,21 @@ class RingTest {
     }
 
     /** Slide from the origin at a heading and see which key it takes. */
-    private fun slide(bank: Bank, after: Int, angle: Float, distance: Float): Int? {
+    private fun slide(bank: Bank, after: Int, angle: Float, distance: Float, held: Int = -1): Int? {
         val (x, y) = at(angle, distance)
-        return ring.pick(bank, after, 0f, 0f, x, y, UNIT)
+        return ring.pick(bank, after, 0f, 0f, x, y, UNIT, held)
+    }
+
+    /**
+     * Slide toward where a key is drawn.
+     *
+     * Which angle that is depends on what the stroke has taken, because the live
+     * keys share the ring out between them. Asking the ring is the contract: aim at
+     * a key and you get that key.
+     */
+    private fun toward(bank: Bank, after: Int, symbol: Char): Int? {
+        val slot = ring.slotOf(key(symbol), after)!!
+        return slide(bank, after, slot.angle, config.reach(slot.radius) * UNIT)
     }
 
     @Test
@@ -44,9 +56,9 @@ class RingTest {
     }
 
     @Test
-    fun every_key_has_a_slot() {
+    fun every_key_is_on_a_ring() {
         for (k in ORDER.indices) {
-            assertNotNull("no slot for ${ORDER[k]}", ring.slotOf(k))
+            assertNotNull("no ring for ${ORDER[k]}", ring.ringOf(k))
         }
     }
 
@@ -61,7 +73,7 @@ class RingTest {
             for (after in -1 until ORDER.length) {
                 val taken = mutableSetOf<Pair<Radius, Float>>()
                 for (k in ring.live(bank, after)) {
-                    val slot = ring.slotOf(k)!!
+                    val slot = ring.slotOf(k, after)!!
                     val at = Pair(slot.radius, ((slot.angle % 360f) + 360f) % 360f)
                     assertTrue("$bank after $after: ${ORDER[k]} collides at $at", taken.add(at))
                 }
@@ -90,11 +102,90 @@ class RingTest {
 
     @Test
     fun a_slide_to_where_a_key_is_drawn_takes_that_key() {
-        // Straight up is S on the far ring and nothing on the near one, so a short
-        // slide up falls through to the far key rather than choosing at random.
-        assertEquals(key('S'), slide(Bank.LEFT, -1, -90f, far))
-        assertEquals(key('A'), slide(Bank.LEFT, -1, 0f, near))
-        assertEquals(key('K'), slide(Bank.LEFT, -1, 0f, far))
+        for (after in -1 until ORDER.length) {
+            for (bank in Bank.values()) {
+                for (k in ring.live(bank, after)) {
+                    assertEquals(
+                        "$bank after $after aiming at ${ORDER[k]}",
+                        k, toward(bank, after, ORDER[k])
+                    )
+                }
+            }
+        }
+    }
+
+    /** The earliest live key of a ring sits at that ring's start angle. */
+    @Test
+    fun a_ring_starts_at_its_start_angle() {
+        assertEquals(key('S'), slide(Bank.LEFT, -1, config.startFarLeft, far))
+        assertEquals(key('#'), slide(Bank.LEFT, -1, config.startNearLeft, near))
+        // After one consonant the near ring holds only the vowels, so A takes the
+        // start angle and O the far side of the circle.
+        assertEquals(key('A'), slide(Bank.LEFT, key('K'), config.startNearLeft, near))
+        assertEquals(key('O'), slide(Bank.LEFT, key('K'), config.startNearLeft + 180f, near))
+    }
+
+    /**
+     * Every live key of a ring holds the same slice of it, clockwise in steno order
+     * from the start angle.
+     */
+    @Test
+    fun a_shared_ring_is_shared_evenly() {
+        for (after in -1 until ORDER.length) {
+            for (bank in Bank.values()) {
+                for (radius in Radius.values()) {
+                    val band = ring.live(bank, after).filter { ring.ringOf(it) == radius }
+                    if (band.isEmpty()) continue
+                    val step = 360f / band.size
+                    band.forEachIndexed { i, k ->
+                        assertEquals(
+                            "$bank $radius after $after: ${ORDER[k]}",
+                            config.startAngle(bank, radius) + i * step,
+                            ring.slotOf(k, after)!!.angle,
+                            0.001f,
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * What sharing the ring out buys. The average region is 360 over the count
+     * either way, so the gain is in the worst one: a key with a live neighbour on
+     * each side is squeezed to the gap between them when the slots are fixed.
+     */
+    @Test
+    fun sharing_the_ring_out_widens_the_smallest_region() {
+        val fixed = Ring(ORDER, Config().also { it.spread = false })
+        fun smallest(r: Ring): Float = r.sectors(Bank.RIGHT, key('E'))
+            .filter { it.radius == Radius.NEAR }
+            .minOf { it.to - it.from }
+
+        // After E the near ring holds U, d and z, and d has a live neighbour on
+        // each side of it.
+        assertEquals(45f, smallest(fixed), 2f)
+        assertEquals(120f, smallest(ring), 2f)
+    }
+
+    /**
+     * A thumb resting on a boundary is nearer one key and then the other on every
+     * touch sample. The key already chosen keeps the answer inside the margin.
+     */
+    @Test
+    fun the_key_already_chosen_survives_a_wobble() {
+        val after = key('K')
+        val a = key('A')
+        val o = key('O')
+        // A holds the start angle and O the far side of the circle, so the boundary
+        // between them is a quarter turn from either.
+        val edge = ring.slotOf(a, after)!!.angle + 90f
+        assertEquals(a, slide(Bank.LEFT, after, edge - 1f, near))
+        assertEquals(o, slide(Bank.LEFT, after, edge + 1f, near))
+        // Holding A, a wobble past the boundary is still A.
+        assertEquals(a, slide(Bank.LEFT, after, edge + 1f, near, held = a))
+        // A real turn is not a wobble.
+        assertEquals(o, slide(Bank.LEFT, after, edge + config.hysteresisDegrees + 2f, near, held = a))
     }
 
     /**
@@ -106,13 +197,16 @@ class RingTest {
      */
     @Test
     fun a_slide_most_of_the_way_to_a_far_key_is_still_far() {
-        assertEquals(key('P'), slide(Bank.LEFT, key('K'), 45f, config.ringSplit() * UNIT + 1f))
-        assertEquals(key('O'), slide(Bank.LEFT, key('K'), 45f, config.ringSplit() * UNIT - 1f))
+        val after = key('K')
+        val p = ring.slotOf(key('P'), after)!!.angle
+        assertEquals(key('P'), slide(Bank.LEFT, after, p, config.ringSplit() * UNIT + 1f))
         // Two thirds of the way to a far key is a far key, so a thumb aiming at a
         // consonant has room to fall short of it.
         assertTrue("the boundary is too far out", config.ringSplit() < config.farReach * 0.7f)
-        assertEquals(key('W'), slide(Bank.LEFT, key('K'), 90f, far * 0.7f))
-        assertEquals(key('R'), slide(Bank.LEFT, key('K'), 180f, far * 2f))
+        assertEquals(key('P'), slide(Bank.LEFT, after, p, far * 0.7f))
+        assertEquals(key('P'), slide(Bank.LEFT, after, p, far * 2f))
+        // Short of the boundary is the near ring, whatever the thumb was aiming at.
+        assertEquals(Radius.NEAR, ring.ringOf(slide(Bank.LEFT, after, p, config.ringSplit() * UNIT - 1f)!!))
     }
 
     /**
@@ -122,21 +216,15 @@ class RingTest {
     @Test
     fun the_worked_example_from_the_design() {
         var after = key('K')
-        for ((angle, distance, expected) in listOf(
-            Triple(0f, near, 'A'),
-            Triple(45f, near, 'O'),
-        )) {
-            val got = slide(Bank.LEFT, after, angle, distance)
-            assertEquals("left wanted $expected", key(expected), got)
+        for (wanted in "AO") {
+            val got = toward(Bank.LEFT, after, wanted)
+            assertEquals("left wanted $wanted", key(wanted), got)
             after = got!!
         }
         after = key('E')
-        for ((angle, distance, expected) in listOf(
-            Triple(0f, far, 'p'),
-            Triple(180f, far, 't'),
-        )) {
-            val got = slide(Bank.RIGHT, after, angle, distance)
-            assertEquals("right wanted $expected", key(expected), got)
+        for (wanted in "pt") {
+            val got = toward(Bank.RIGHT, after, wanted)
+            assertEquals("right wanted $wanted", key(wanted), got)
             after = got!!
         }
     }

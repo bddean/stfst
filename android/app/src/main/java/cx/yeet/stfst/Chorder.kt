@@ -29,6 +29,14 @@ class Thumb(val bank: Bank) {
     var waiting: Int = NO_KEY
     var waitingSince: Long = 0L
 
+    /**
+     * The key this slide chose a moment ago, taken or not.
+     *
+     * What the ring highlights, what the tick reports, and what a rival key has to
+     * beat by a margin to take over.
+     */
+    var hovering: Int = NO_KEY
+
     /** Which way the last key was taken, or NaN before the first one. */
     var heading: Float = Float.NaN
 
@@ -43,6 +51,7 @@ class Thumb(val bank: Bank) {
         atX = homeX
         atY = homeY
         waiting = NO_KEY
+        hovering = NO_KEY
         heading = Float.NaN
     }
 
@@ -141,15 +150,10 @@ class Chorder(private val ring: Ring, private val config: Config, private val wr
     /**
      * The key the thumb is over right now, gated by nothing.
      *
-     * What the ring lights up. Aiming is the hard part of a slide, and a sector
-     * that lights before the key is taken is the answer to it.
+     * What the ring lights up and what the tick reports. Aiming is the hard part of
+     * a slide, and an answer that shows before the key is taken is the answer to it.
      */
-    fun hover(bank: Bank, unit: Float): Int {
-        val thumb = thumb(bank)
-        if (!thumb.down) return Thumb.NO_KEY
-        return ring.pick(thumb.bank, thumb.after, thumb.markX, thumb.markY, thumb.atX, thumb.atY, unit)
-            ?: Thumb.NO_KEY
-    }
+    fun hover(bank: Bank): Int = thumb(bank).hovering
 
     /**
      * A thumb lifts. Returns the stroke written, or zero.
@@ -205,6 +209,7 @@ class Chorder(private val ring: Ring, private val config: Config, private val wr
         thumb.markX = thumb.atX
         thumb.markY = thumb.atY
         thumb.waiting = Thumb.NO_KEY
+        thumb.hovering = Thumb.NO_KEY
         thumb.heading = Float.NaN
     }
 
@@ -220,7 +225,10 @@ class Chorder(private val ring: Ring, private val config: Config, private val wr
     private fun advance(thumb: Thumb, x: Float, y: Float, unit: Float, now: Long): Boolean {
         thumb.atX = x
         thumb.atY = y
-        val key = ring.pick(thumb.bank, thumb.after, thumb.markX, thumb.markY, x, y, unit)
+        val key = ring.pick(
+            thumb.bank, thumb.after, thumb.markX, thumb.markY, x, y, unit, thumb.hovering
+        )
+        thumb.hovering = key ?: Thumb.NO_KEY
         if (key == null) {
             thumb.waiting = Thumb.NO_KEY
             return false
@@ -228,7 +236,7 @@ class Chorder(private val ring: Ring, private val config: Config, private val wr
         val heading = Math.toDegrees(
             atan2((y - thumb.markY).toDouble(), (x - thumb.markX).toDouble())
         ).toFloat()
-        val near = ring.slotOf(key)?.radius == Radius.NEAR
+        val near = ring.ringOf(key) == Radius.NEAR
         if (!near && !thumb.heading.isNaN() &&
             Ring.separation(heading, thumb.heading) < config.turnDegrees
         ) {
@@ -258,6 +266,7 @@ class Chorder(private val ring: Ring, private val config: Config, private val wr
         thumb.keys.add(key)
         thumb.heading = heading
         thumb.waiting = Thumb.NO_KEY
+        thumb.hovering = Thumb.NO_KEY
         pending = true
     }
 }

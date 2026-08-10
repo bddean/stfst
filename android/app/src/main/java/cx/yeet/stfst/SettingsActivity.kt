@@ -76,7 +76,13 @@ class SettingsActivity : Activity() {
             { c, v -> v.firstOrNull()?.let { c.splitKey = it } },
             "the first key the right thumb owns"),
 
-        Range("Far ring slots", 4f, 12f, { it.slotsFar.toFloat() }, { c, v -> c.slotsFar = v.toInt() }, unit = "slots"),
+        Flag("Share each ring out evenly", { it.spread }, { c, v -> c.spread = v },
+            "the keys still live on a ring divide it between them, earliest at the " +
+                "start angle. Fixed slots squeeze a key with a live neighbour on each " +
+                "side: three live keys on eight slots can leave the middle one 45 " +
+                "degrees against 157 each. Even, all three hold 120"),
+        Range("Far ring slots", 4f, 12f, { it.slotsFar.toFloat() }, { c, v -> c.slotsFar = v.toInt() },
+            "only when the ring is not shared out evenly", unit = "slots"),
         Range("Near ring slots", 4f, 12f, { it.slotsNear.toFloat() }, { c, v -> c.slotsNear = v.toInt() }, unit = "slots"),
         Range("Left far start angle", -180f, 180f, { it.startFarLeft }, { c, v -> c.startFarLeft = v },
             "-90 is straight up", unit = "°"),
@@ -98,6 +104,10 @@ class SettingsActivity : Activity() {
         Section("How a slide is read"),
         Range("Snap limit", 10f, 180f, { it.snapDegrees }, { c, v -> c.snapDegrees = v },
             "how far off a slot's angle a slide may be; 180 always takes the nearest", unit = "°"),
+        Range("Hold on to a key", 0f, 30f, { it.hysteresisDegrees }, { c, v -> c.hysteresisDegrees = v },
+            "how much better a rival has to be before the answer changes. A thumb " +
+                "resting on a boundary is nearer one key and then the other on every " +
+                "touch sample, and this is what stops the answer swapping with it", unit = "°"),
         Range("Settle (ms)", 0f, 300f, { it.settleMs.toFloat() }, { c, v -> c.settleMs = v.toLong() },
             "how long a near-ring key waits before it is taken. A thumb reaching for " +
                 "a consonant crosses the near ring on the way, and this is what stops " +
@@ -120,7 +130,19 @@ class SettingsActivity : Activity() {
         Section("Look and feel",
             "Each key is drawn as the whole region that takes it, so the target is " +
                 "the shape on the screen and not a point inside it."),
+        Section("Buzzes"),
         Flag("Haptics", { it.haptics }, { c, v -> c.haptics = v }),
+        Flag("Buzz on every change of key", { it.hapticTicks }, { c, v -> c.hapticTicks = v },
+            "not only when a key is taken, so the aim of a slide is something to feel " +
+                "rather than something to read"),
+        Flag("A different buzz per thumb", { it.hapticSplit }, { c, v -> c.hapticSplit = v },
+            "one motor cannot be on the left and on the right, so this is two voices " +
+                "from the same motor. What is available is printed below"),
+        Range("Buzz strength", 0.05f, 1f, { it.hapticStrength }, { c, v -> c.hapticStrength = v },
+            unit = "×"),
+        Range("Shortest gap between buzzes", 5f, 120f, { it.hapticGapMs.toFloat() },
+            { c, v -> c.hapticGapMs = v.toLong() },
+            "or a slide across several keys is one long buzz", unit = "ms"),
         Flag("Show keys already passed", { it.showDeadSlots }, { c, v -> c.showDeadSlots = v },
             "on the tap layout; a slide has no region for a key steno order has passed"),
         Flag("Show labels", { it.showLabels }, { c, v -> c.showLabels = v }),
@@ -178,7 +200,14 @@ class SettingsActivity : Activity() {
                 recreate()
             }
         })
-        for (knob in knobs) column.addView(row(knob, prefs))
+        for (knob in knobs) {
+            column.addView(row(knob, prefs))
+            // What the motor can do is a fact about the phone, so it is printed
+            // rather than promised, next to the switch that asks for it.
+            if (knob is Flag && knob.label == "A different buzz per thumb") {
+                column.addView(note("On this device: ${Haptics(this, config).report()}"))
+            }
+        }
         setContentView(ScrollView(this).apply { addView(column) })
     }
 

@@ -51,6 +51,18 @@ class ChorderTest {
         rest(bank)
     }
 
+    /**
+     * Slide toward where a key is drawn on the ring, then stop there.
+     *
+     * Which angle that is depends on what the stroke has taken, because the live
+     * keys share the ring out between them. Aim at a key and you get that key.
+     */
+    private fun slideTo(bank: Bank, symbol: Char) {
+        val thumb = chorder.thumb(bank)
+        val slot = ring.slotOf(key(symbol), thumb.after)!!
+        slide(bank, slot.angle, config.reach(slot.radius) * UNIT)
+    }
+
     /** Where a key sits on the tap layout, which is what a touch-down aims at. */
     private fun cell(bank: Bank, symbol: Char): Cell =
         ring.entry(bank, chorder.thumb(bank).field).first { ORDER[it.key] == symbol }
@@ -73,11 +85,11 @@ class ChorderTest {
     /** `KAOEPT`, written the way two thumbs write it: a tap then slides. */
     private fun keepThe() {
         touch(Bank.LEFT, 0, 'K')
-        slide(Bank.LEFT, 0f, near)        // A
-        slide(Bank.LEFT, 45f, near)       // O
+        slideTo(Bank.LEFT, 'A')
+        slideTo(Bank.LEFT, 'O')
         touch(Bank.RIGHT, 1, 'E')
-        slide(Bank.RIGHT, 0f, far)        // p
-        slide(Bank.RIGHT, 180f, far)      // t
+        slideTo(Bank.RIGHT, 'p')
+        slideTo(Bank.RIGHT, 't')
     }
 
     @Test
@@ -154,11 +166,12 @@ class ChorderTest {
     fun crossing_the_near_ring_takes_no_vowel() {
         touch(Bank.LEFT, 0, 'K')
         assertEquals("K", keys(Bank.LEFT))
-        // Out again in the same direction, sampled every 8 ms as a finger is, from
-        // inside the near band to past the boundary.
+        // Out again toward P, sampled every 8 ms as a finger is, from inside the
+        // near band to past the boundary.
+        val out = ring.slotOf(key('P'), key('K'))!!.angle
         for (distance in listOf(near * 0.6f, near, config.ringSplit() * UNIT * 1.1f, far)) {
             val thumb = chorder.thumb(Bank.LEFT)
-            val (x, y) = from(thumb.markX, thumb.markY, 45f, distance)
+            val (x, y) = from(thumb.markX, thumb.markY, out, distance)
             now += 8
             chorder.move(thumb.pointer, x, y, UNIT, now)
         }
@@ -181,10 +194,16 @@ class ChorderTest {
     fun a_far_key_is_taken_at_once() {
         config.settleMs = 500L
         touch(Bank.LEFT, 0, 'S')
-        val thumb = chorder.thumb(Bank.LEFT)
-        val (x, y) = from(thumb.markX, thumb.markY, 0f, far)
+        val (x, y) = toward(Bank.LEFT, 'K', far)
         chorder.move(0, x, y, UNIT, now)
         assertEquals("SK", keys(Bank.LEFT))
+    }
+
+    /** A point that far from the mark, in the direction a key is drawn. */
+    private fun toward(bank: Bank, symbol: Char, distance: Float): Pair<Float, Float> {
+        val thumb = chorder.thumb(bank)
+        val slot = ring.slotOf(key(symbol), thumb.after)!!
+        return from(thumb.markX, thumb.markY, slot.angle, distance)
     }
 
     /**
@@ -215,7 +234,7 @@ class ChorderTest {
     fun one_flick_takes_one_key() {
         touch(Bank.LEFT, 0, 'S')
         val thumb = chorder.thumb(Bank.LEFT)
-        val (x, y) = from(thumb.markX, thumb.markY, 0f, far)
+        val (x, y) = toward(Bank.LEFT, 'K', far)
         now += 8
         chorder.move(0, x, y, UNIT, now)
         assertEquals("SK", keys(Bank.LEFT))
@@ -229,8 +248,7 @@ class ChorderTest {
     @Test
     fun a_long_flick_takes_one_key() {
         touch(Bank.LEFT, 0, 'S')
-        val thumb = chorder.thumb(Bank.LEFT)
-        val (x, y) = from(thumb.markX, thumb.markY, 0f, far * 4f)
+        val (x, y) = toward(Bank.LEFT, 'K', far * 4f)
         chorder.move(0, x, y, UNIT, now)
         assertEquals("SK", keys(Bank.LEFT))
     }
@@ -279,6 +297,6 @@ class ChorderTest {
         now += 8
         chorder.move(0, x, y, UNIT, now)
         assertEquals("K", keys(Bank.LEFT))
-        assertEquals(key('A'), chorder.hover(Bank.LEFT, UNIT))
+        assertEquals(key('A'), chorder.hover(Bank.LEFT))
     }
 }

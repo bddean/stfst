@@ -30,21 +30,55 @@ class Ring(val order: String, val config: Config) {
     fun keys(bank: Bank): IntRange =
         if (bank == Bank.LEFT) 0 until split else split until order.length
 
-    /** A key's slot, or null for a key the configuration left off both rings. */
-    fun slotOf(key: Int): Slot? {
+    /**
+     * Which ring each key sits on, worked out once.
+     *
+     * The drawing probes the decision function a few hundred times a frame, and each
+     * probe asks about every live key, so none of this can afford to be a search.
+     */
+    private val rings: Array<Radius?> = Array(order.length) { key ->
         val bank = bankOf(key)
         val symbol = order[key]
-        val far = config.far(bank).indexOf(symbol)
-        if (far >= 0) return Slot(Radius.FAR, angle(bank, Radius.FAR, far))
-        val near = config.near(bank).indexOf(symbol)
-        if (near >= 0) return Slot(Radius.NEAR, angle(bank, Radius.NEAR, near))
-        return null
+        when {
+            config.far(bank).indexOf(symbol) >= 0 -> Radius.FAR
+            config.near(bank).indexOf(symbol) >= 0 -> Radius.NEAR
+            else -> null
+        }
     }
 
-    /** Slots run clockwise in steno order from the ring's start angle. */
-    private fun angle(bank: Bank, radius: Radius, index: Int): Float {
-        val slots = config.slots(radius)
-        return config.startAngle(bank, radius) + index * (360f / slots)
+    /** The live keys of one bank, and of one ring of one bank, per state. */
+    private val lives = HashMap<Int, List<Int>>()
+    private val bands = HashMap<Int, List<Int>>()
+
+    /** Which ring a key sits on, or null for a key the configuration left off both. */
+    fun ringOf(key: Int): Radius? = rings[key]
+
+    /**
+     * A key's ring and the angle it answers to, given what the stroke has taken.
+     *
+     * Spread, the live keys of a ring share it evenly: the earliest sits at the
+     * start angle and the rest follow clockwise. That is what keeps the smallest
+     * target from being small. Fixed slots give each key a permanent angle, and a
+     * key with a live neighbour on each side is then squeezed to the gap between
+     * them: three live keys on an eight slot ring can leave the middle one 45
+     * degrees while its neighbours hold 157 each. Even spreading gives all three
+     * 120. The average is 360 over the count either way, so what spreading buys is
+     * the worst case, not the mean.
+     *
+     * Clockwise in steno order from the start angle, spread or not, so the order
+     * round the ring is the order of the chord.
+     */
+    fun slotOf(key: Int, after: Int): Slot? {
+        val radius = ringOf(key) ?: return null
+        val bank = bankOf(key)
+        if (!config.spread) {
+            val index = config.keys(bank, radius).indexOf(order[key])
+            return Slot(radius, config.startAngle(bank, radius) + index * (360f / config.slots(radius)))
+        }
+        val band = liveOn(bank, radius, after)
+        val index = band.indexOf(key)
+        if (index < 0) return null
+        return Slot(radius, config.startAngle(bank, radius) + index * (360f / band.size))
     }
 
     /**
@@ -52,13 +86,36 @@ class Ring(val order: String, val config: Config) {
      * what an empty ring tells the thumb.
      */
     fun live(bank: Bank, after: Int): List<Int> =
-        keys(bank).filter { it > after && slotOf(it) != null }
+        lives.getOrPut(at(bank, after)) { keys(bank).filter { it > after && rings[it] != null } }
+
+    /** The live keys of one ring of one bank, in steno order. */
+    private fun liveOn(bank: Bank, radius: Radius, after: Int): List<Int> =
+        bands.getOrPut(at(bank, after) * Radius.values().size + radius.ordinal) {
+            live(bank, after).filter { rings[it] == radius }
+        }
+
+    /** One number per (bank, state), so the caches can be plain maps. */
+    private fun at(bank: Bank, after: Int) = (after + 1) * 2 + bank.ordinal
 
     /**
      * The key a slide from (ox, oy) to (px, py) chooses, or null when the slide is
      * too short to mean anything.
+     *
+     * `held` is the key this slide chose a moment ago, and it keeps the answer
+     * unless another one beats it by more than `Hold on to a key`. A thumb resting
+     * on a boundary would otherwise swap between two keys on every touch sample,
+     * and the highlight and the tick would swap with it.
      */
-    fun pick(bank: Bank, after: Int, ox: Float, oy: Float, px: Float, py: Float, unit: Float): Int? {
+    fun pick(
+        bank: Bank,
+        after: Int,
+        ox: Float,
+        oy: Float,
+        px: Float,
+        py: Float,
+        unit: Float,
+        held: Int = NONE,
+    ): Int? {
         val dx = px - ox
         val dy = py - oy
         val distance = hypot(dx, dy)
@@ -69,14 +126,15 @@ class Ring(val order: String, val config: Config) {
         // The wanted ring first, so a short flick cannot be stolen by a far key at
         // a slightly better angle. Falling through to the other ring is what keeps
         // a live key reachable when its own ring is empty.
-        return nearest(live, wanted, heading) ?: nearest(live, null, heading)
+        val best = nearest(live, wanted, after, heading) ?: nearest(live, null, after, heading)
+        return steady(best, held, live, after, heading)
     }
 
-    private fun nearest(live: List<Int>, radius: Radius?, heading: Float): Int? {
+    private fun nearest(live: List<Int>, radius: Radius?, after: Int, heading: Float): Int? {
         var best: Int? = null
         var bestOff = Float.MAX_VALUE
         for (key in live) {
-            val slot = slotOf(key) ?: continue
+            val slot = slotOf(key, after) ?: continue
             if (radius != null && slot.radius != radius) continue
             val off = separation(slot.angle, heading)
             if (off < bestOff && off <= config.snapDegrees) {
@@ -85,6 +143,19 @@ class Ring(val order: String, val config: Config) {
             }
         }
         return best
+    }
+
+    /** The held key wins ties and near ties, which is what stops the flicker. */
+    private fun steady(best: Int?, held: Int, live: List<Int>, after: Int, heading: Float): Int? {
+        if (best == null || held == NONE || held == best || held !in live) return best
+        val margin = config.hysteresisDegrees
+        if (margin <= 0f) return best
+        val a = slotOf(held, after) ?: return best
+        val b = slotOf(best, after) ?: return best
+        // Only against a rival on the same ring: crossing between rings is a
+        // distance the thumb travelled on purpose, not a wobble at a boundary.
+        if (a.radius != b.radius) return best
+        return if (separation(a.angle, heading) <= separation(b.angle, heading) + margin) held else best
     }
 
     /**
@@ -186,11 +257,14 @@ class Ring(val order: String, val config: Config) {
     /** The live key whose cell holds this point, which is the nearest centre. */
     fun entryAt(bank: Bank, field: Field, x: Float, y: Float, after: Int): Int? =
         entry(bank, field)
-            .filter { it.key > after && slotOf(it.key) != null }
+            .filter { it.key > after && ringOf(it.key) != null }
             .minByOrNull { hypot(it.x - x, it.y - y) }
             ?.key
 
     companion object {
+        /** No key. What `held` is when a slide has not chosen anything yet. */
+        const val NONE = -1
+
         /** The smaller of the two ways round, in degrees. */
         fun separation(a: Float, b: Float): Float {
             val d = abs((a - b) % 360f)

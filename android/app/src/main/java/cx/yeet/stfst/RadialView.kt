@@ -9,7 +9,6 @@ import android.graphics.Path
 import android.graphics.RectF
 import android.os.SystemClock
 import android.util.TypedValue
-import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -38,6 +37,10 @@ class RadialView(
 
     private var ring = Ring(order, config)
     private var chorder = Chorder(ring, config) { onStroke(it) }
+    private val haptics = Haptics(context, config)
+
+    /** The last key each thumb was told about, so a tick reports a change only. */
+    private val told = mutableMapOf(Bank.LEFT to Thumb.NO_KEY, Bank.RIGHT to Thumb.NO_KEY)
 
     /** Sticky modifiers a long press has turned on, as a `KeyEvent` meta mask. */
     private var meta = 0
@@ -89,6 +92,7 @@ class RadialView(
         config = fresh
         ring = Ring(order, fresh)
         chorder = Chorder(ring, fresh) { onStroke(it) }
+        haptics.apply(fresh)
         layoutFields()
         requestLayout()
         invalidate()
@@ -127,7 +131,8 @@ class RadialView(
                 val bank = bankAt(event.getX(at))
                 clouds[bank]?.clear()
                 record(event, at, bank)
-                if (chorder.down(bank, pointer, event.getX(at), event.getY(at))) buzz()
+                if (chorder.down(bank, pointer, event.getX(at), event.getY(at))) haptics.take(bank)
+                tell(bank)
                 armStall(bank)
                 armSettle(bank)
                 armHold(bank, pointer)
@@ -145,7 +150,10 @@ class RadialView(
                         pickModifier(thumb, event.getX(at), event.getY(at))
                         continue
                     }
-                    if (chorder.move(pointer, event.getX(at), event.getY(at), unit, event.eventTime)) buzz()
+                    if (chorder.move(pointer, event.getX(at), event.getY(at), unit, event.eventTime)) {
+                        haptics.take(thumb.bank)
+                    }
+                    tell(thumb.bank)
                     armStall(thumb.bank)
                     armSettle(thumb.bank)
                 }
@@ -160,7 +168,7 @@ class RadialView(
                     chorder.thumb(thumb.bank).keys.clear()
                     chorder.up(pointer)
                 } else if (chorder.up(pointer) != 0L) {
-                    buzz()
+                    haptics.stroke(thumb?.bank ?: Bank.LEFT)
                 }
             }
 
@@ -219,7 +227,8 @@ class RadialView(
         settles.remove(bank)?.let { removeCallbacks(it) }
         if (config.settleMs <= 0) return
         val task = Runnable {
-            if (chorder.settle(bank, unit, SystemClock.uptimeMillis())) buzz()
+            if (chorder.settle(bank, unit, SystemClock.uptimeMillis())) haptics.take(bank)
+            tell(bank)
             invalidate()
         }
         settles[bank] = task
@@ -231,7 +240,7 @@ class RadialView(
         val task = Runnable {
             modifying = bank
             chorder.thumb(bank).keys.clear()
-            buzz()
+            haptics.stroke(bank)
             invalidate()
         }
         holds[pointer] = task
@@ -265,7 +274,7 @@ class RadialView(
         }
         thumb.markX = x
         thumb.markY = y
-        buzz()
+        haptics.take(thumb.bank)
         if (near) {
             meta = meta xor items[best].second
         } else {
@@ -281,8 +290,19 @@ class RadialView(
             (Color.alpha(color) * dim).toInt(), Color.red(color), Color.green(color), Color.blue(color)
         )
 
-    private fun buzz() {
-        if (config.haptics) performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+    /**
+     * Report the key under a thumb, once per change.
+     *
+     * The aim of a slide becomes something to feel rather than something to read,
+     * which is what using this without looking needs. Nothing is reported when the
+     * thumb is over no key, or the tick would fire twice for one flick: a key is
+     * taken and the mark moves to the fingertip, which is over nothing at all.
+     */
+    private fun tell(bank: Bank) {
+        val hover = chorder.hover(bank)
+        if (told[bank] == hover) return
+        told[bank] = hover
+        if (hover != Thumb.NO_KEY) haptics.tick(bank)
     }
 
     private class Palette(
@@ -416,7 +436,7 @@ class RadialView(
         dim: Float,
         paint: Palette,
     ) {
-        val hover = chorder.hover(thumb.bank, unit)
+        val hover = chorder.hover(thumb.bank)
         val waiting = chorder.waiting(thumb.bank)
         // Nothing is chosen inside this, which is why a short slide costs nothing.
         ink.style = Paint.Style.STROKE

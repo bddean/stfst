@@ -18,6 +18,23 @@ data class Config(
     var nearLeft: String = "AO#@^+",
     var nearRight: String = "*EUdz",
 
+    /**
+     * Share each ring out evenly between the keys still live on it.
+     *
+     * The earliest sits at the start angle and the rest follow clockwise, so the
+     * order round the ring is still the order of the chord and still owes the
+     * dictionary nothing. What it buys is the worst target: with fixed slots, a key
+     * with a live neighbour on each side is squeezed to the gap between them, and
+     * three live keys on an eight slot ring can leave the middle one 45 degrees
+     * against 157 for each neighbour. Spread, all three hold 120.
+     *
+     * The cost is that a key's direction depends on what the stroke has taken, so
+     * the thing to learn is "the third key still available is down-left" rather
+     * than "K is at 0". Off restores fixed slots, and [slotsFar] and [slotsNear].
+     */
+    var spread: Boolean = true,
+
+    /** Slots per ring, when [spread] is off. Ignored when it is on. */
     var slotsFar: Int = 8,
     var slotsNear: Int = 8,
 
@@ -40,7 +57,18 @@ data class Config(
 
     /** Where each ring's first key sits. -90 is straight up, 0 is right. */
     var startFarLeft: Float = -90f,
-    var startNearLeft: Float = 0f,
+    /**
+     * Off the axes, because after any consonant this ring holds A and O alone.
+     *
+     * Two keys put their boundary at the start angle plus and minus 90, and at 0
+     * that is straight up and straight down, where the consonants are: an undershot
+     * reach upward then lands on the boundary and picks a vowel by coin toss. On the
+     * diagonal the boundary misses the consonants of every common state.
+     *
+     * The right near ring holds three keys after E, so its boundaries move with the
+     * count and no one offset clears them. It keeps the plain angle.
+     */
+    var startNearLeft: Float = -45f,
     var startFarRight: Float = -90f,
     var startNearRight: Float = -90f,
 
@@ -83,6 +111,15 @@ data class Config(
     var turnDegrees: Float = 30f,
     /** How far off a slot's angle a slide may be. 180 always takes the nearest. */
     var snapDegrees: Float = 180f,
+    /**
+     * How much better a rival key has to be before a slide changes its answer.
+     *
+     * A thumb resting on the boundary between two keys is nearer first one and then
+     * the other on every touch sample, so the highlight and the tick swap back and
+     * forth and neither says anything. The key already chosen keeps the answer
+     * inside this margin. Zero takes the nearest every time.
+     */
+    var hysteresisDegrees: Float = 6f,
 
     /**
      * Hold still this long and the ring returns to the field's home point.
@@ -108,6 +145,27 @@ data class Config(
     var longPressMs: Long = 400L,
 
     var haptics: Boolean = true,
+    /**
+     * Buzz when the key under the thumb changes, not only when one is taken.
+     *
+     * The aim of a slide is a thing you can then feel instead of read, which is
+     * what a keyboard used without looking needs.
+     */
+    var hapticTicks: Boolean = true,
+    /**
+     * Give the two thumbs buzzes that feel different.
+     *
+     * A phone has one vibrator, so this is not a left channel and a right channel.
+     * It is two voices from the same motor, and which two depends on what the
+     * hardware offers: two motors if the device has them, else a low tick against a
+     * sharp one, else a weak buzz against a strong one, else one pulse against two.
+     * The settings screen prints what this device actually did.
+     */
+    var hapticSplit: Boolean = true,
+    /** How hard, where the motor allows a choice. */
+    var hapticStrength: Float = 0.55f,
+    /** No two ticks closer together than this, or a slide is one long buzz. */
+    var hapticGapMs: Long = 28L,
     /** Draw the keys steno order has passed, faded. */
     var showDeadSlots: Boolean = true,
     var showLabels: Boolean = true,
@@ -156,6 +214,10 @@ data class Config(
 ) {
     fun far(bank: Bank) = if (bank == Bank.LEFT) farLeft else farRight
     fun near(bank: Bank) = if (bank == Bank.LEFT) nearLeft else nearRight
+
+    /** The keys on one ring of one bank, in steno order. */
+    fun keys(bank: Bank, radius: Radius) = if (radius == Radius.FAR) far(bank) else near(bank)
+
     fun slots(radius: Radius) = if (radius == Radius.FAR) slotsFar else slotsNear
 
     /** Where a ring's keys sit, as a fraction of the field's short side. */
