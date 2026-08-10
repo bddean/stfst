@@ -49,7 +49,7 @@ object Prefs {
             putBoolean("showLabels", showLabels)
             putFloat("sectorStep", sectorStep)
             putFloat("farEdge", farEdge)
-            putBoolean("mirror", mirror)
+            putString("preview", preview.name)
             putFloat("mirrorAt", mirrorAt)
             putFloat("mirrorScale", mirrorScale)
             putFloat("mirrorDim", mirrorDim)
@@ -106,7 +106,8 @@ object Prefs {
             showLabels = prefs.getBoolean("showLabels", d.showLabels),
             sectorStep = prefs.getFloat("sectorStep", d.sectorStep),
             farEdge = prefs.getFloat("farEdge", d.farEdge),
-            mirror = prefs.getBoolean("mirror", d.mirror),
+            preview = prefs.getString("preview", null)
+                ?.let { name -> Preview.values().firstOrNull { it.name == name } } ?: d.preview,
             mirrorAt = prefs.getFloat("mirrorAt", d.mirrorAt),
             mirrorScale = prefs.getFloat("mirrorScale", d.mirrorScale),
             mirrorDim = prefs.getFloat("mirrorDim", d.mirrorDim),

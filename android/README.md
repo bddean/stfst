@@ -23,8 +23,7 @@ undershooting is what a thumb does, and after one consonant the near ring holds
 only the vowels: a boundary too far out turns every short flick into A or O.
 
 The ring is drawn a second time in the clear, where the thumb is not covering it.
-Same keys, same angles, smaller. It is fixed in the field, so a thumb that has
-slid to the edge cannot drag the copy off the screen with it.
+Same keys, same angles, smaller. See "Where the copy goes" below.
 
 ```
    ⌫      S      T        far ring, long slide:  S T K P W H R
@@ -120,6 +119,27 @@ lift or a pause would take.
 
 The copy in the clear shows all of that too, at its own scale, so a thumb covering
 the real ring costs nothing.
+
+## Where the copy goes
+
+The copy has to sit somewhere the thumb is not, and the field stopped being that
+place once the honeycomb filled it. `Copy of the ring` has four answers:
+
+- **Floating over the app**, the default. The keyboard's window reaches above the
+  keys, and `onComputeInsets` tells the app to lay out underneath, so the strip
+  takes no room from it. The strip is transparent and holds nothing while both
+  thumbs are up, and it is outside the touchable region, so a tap there reaches the
+  app. It only ever covers what is being read while a slide is happening.
+- **In a strip above the keys**, which takes the room instead and pushes the app up.
+- **In the thumb field**, which is where it used to be.
+- **Off**.
+
+The strip is measured from the ring it has to hold rather than set by a parameter,
+and the keys decide the scale, so a copy that would not fit cannot be asked for.
+
+The bar sits under the keys because of this. The inset that lets the app lay out
+underneath is a single line, so anything drawn above the strip would have app
+content hidden behind it, and the bar is opaque.
 
 ## Writing a stroke
 

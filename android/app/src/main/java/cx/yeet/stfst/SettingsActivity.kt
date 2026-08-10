@@ -3,13 +3,17 @@ package cx.yeet.stfst
 import android.app.Activity
 import android.os.Bundle
 import android.text.InputType
+import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.SeekBar
+import android.widget.Spinner
 import android.widget.TextView
 
 /**
@@ -48,6 +52,15 @@ class SettingsActivity : Activity() {
         label: String,
         val get: (Config) -> String,
         val set: (Config, String) -> Unit,
+        note: String = "",
+    ) : Knob(label, note)
+
+    /** One of a short, closed set of values. */
+    private class Choice(
+        label: String,
+        val names: List<String>,
+        val get: (Config) -> Int,
+        val set: (Config, Int) -> Unit,
         note: String = "",
     ) : Knob(label, note)
 
@@ -159,8 +172,12 @@ class SettingsActivity : Activity() {
             "how far out the far ring is drawn. Past it the same key is still taken", unit = "× field"),
         Range("Region step (degrees)", 0.5f, 10f, { it.sectorStep }, { c, v -> c.sectorStep = v },
             "how finely the drawn regions are measured. Smaller is more exact", unit = "°"),
-        Flag("Copy the ring in the clear", { it.mirror }, { c, v -> c.mirror = v },
-            "so the thumb is not covering the keys it is choosing between"),
+        Choice("Copy of the ring", Preview.values().map { it.label },
+            { it.preview.ordinal }, { c, v -> c.preview = Preview.values()[v] },
+            "the thumb covers the ring it is choosing from, so the copy goes " +
+                "somewhere the thumb is not. Floating over the app costs the app no " +
+                "room: the strip is empty and untouchable until a thumb is down. A " +
+                "strip above the keys takes the room instead and pushes the app up"),
         Range("Copy position", 0.05f, 0.6f, { it.mirrorAt }, { c, v -> c.mirrorAt = v },
             "where in the field the copy sits, from the top. It stays put, so it " +
                 "cannot follow a thumb off the screen", unit = "down the field"),
@@ -266,6 +283,26 @@ class SettingsActivity : Activity() {
                         override fun onStartTrackingTouch(bar: SeekBar?) = Unit
                         override fun onStopTrackingTouch(bar: SeekBar?) = keep()
                     })
+                })
+            }
+
+            is Choice -> {
+                title.text = knob.label
+                box.addView(Spinner(this).apply {
+                    adapter = ArrayAdapter(
+                        this@SettingsActivity,
+                        android.R.layout.simple_spinner_dropdown_item,
+                        knob.names,
+                    )
+                    setSelection(knob.get(config))
+                    onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(p: AdapterView<*>?, v: View?, at: Int, id: Long) {
+                            knob.set(config, at)
+                            keep()
+                        }
+
+                        override fun onNothingSelected(p: AdapterView<*>?) = Unit
+                    }
                 })
             }
 

@@ -3,6 +3,7 @@ package cx.yeet.stfst
 import android.content.Intent
 import android.graphics.Color
 import android.inputmethodservice.InputMethodService
+import android.inputmethodservice.InputMethodService.Insets
 import android.os.SystemClock
 import android.util.Log
 import android.view.Gravity
@@ -104,8 +105,13 @@ class StenoService : InputMethodService() {
 
         val radial = RadialView(this, config, order, ::stroke, ::key)
         view = radial
-        column.addView(bar)
+        // The keys first, because the copy of the ring sits in a strip at the top of
+        // them and that strip has to be the topmost thing in the window: the inset
+        // that lets the app lay out underneath is one line, so anything above the
+        // strip would hide app content behind it. A bar under the keys is also the
+        // easier one to reach.
         column.addView(radial)
+        column.addView(bar)
         return column
     }
 
@@ -115,6 +121,23 @@ class StenoService : InputMethodService() {
         forget()
         actionKey?.text = actionName(info) ?: "⏎"
         view?.apply(Prefs.load(getSharedPreferences(PREFS, MODE_PRIVATE)))
+    }
+
+    /**
+     * Let the app lay out underneath the floating part of the keyboard.
+     *
+     * The window reaches above the keys so the copy of the ring has somewhere to go.
+     * Without this the app would be pushed up by the whole window and the strip would
+     * cost it the room it was meant to save, and every touch in the strip would be
+     * swallowed by a keyboard that draws nothing there.
+     */
+    override fun onComputeInsets(outInsets: Insets) {
+        super.onComputeInsets(outInsets)
+        val floating = view?.floating() ?: 0
+        if (floating <= 0) return
+        outInsets.contentTopInsets += floating
+        outInsets.visibleTopInsets += floating
+        outInsets.touchableInsets = Insets.TOUCHABLE_INSETS_CONTENT
     }
 
     private fun button(label: String, click: (() -> Unit)?) = Button(this).apply {

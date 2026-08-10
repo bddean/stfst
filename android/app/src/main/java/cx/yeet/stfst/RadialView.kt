@@ -54,6 +54,14 @@ class RadialView(
 
     private var unit = 1f
 
+    /**
+     * The strip above the keys the copy of the ring sits in, in pixels.
+     *
+     * Zero unless the copy asked for one. Over the app it is transparent and no
+     * thumb can reach it, so it costs the app nothing until a slide is happening.
+     */
+    private var strip = 0f
+
     /** What the driver reported about one touch sample. */
     private class Touch(
         val x: Float,
@@ -100,9 +108,20 @@ class RadialView(
 
     override fun onMeasure(widthSpec: Int, heightSpec: Int) {
         val width = MeasureSpec.getSize(widthSpec)
-        val screen = resources.displayMetrics.heightPixels
-        setMeasuredDimension(width, (screen * config.keyboardHeight).toInt())
+        val keys = resources.displayMetrics.heightPixels * config.keyboardHeight
+        // The keys decide the scale, so the strip can be measured from the ring it
+        // has to hold rather than guessed at with a parameter of its own.
+        val edge = width * config.fieldSplit
+        unit = min(min(edge, width - edge), keys)
+        strip = if (config.preview.strip) room().coerceAtMost(keys * 0.6f) else 0f
+        setMeasuredDimension(width, (keys + strip).toInt())
     }
+
+    /** What the copy needs: its own diameter, and the keys it holds above itself. */
+    private fun room(): Float = (config.farEdge * config.mirrorScale * 2f + 0.09f) * unit
+
+    /** How much of this view floats over the app rather than displacing it. */
+    fun floating(): Int = if (config.preview == Preview.OVER) strip.toInt() else 0
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) = layoutFields()
 
@@ -112,8 +131,7 @@ class RadialView(
      */
     private fun layoutFields() {
         val edge = width * config.fieldSplit
-        unit = min(min(edge, width - edge), height.toFloat())
-        val top = if (config.touchReadout) unit * 0.09f else 0f
+        val top = strip + if (config.touchReadout) unit * 0.09f else 0f
         chorder.place(Bank.LEFT, Field(0f, top, edge, height.toFloat()))
         chorder.place(Bank.RIGHT, Field(edge, top, width.toFloat(), height.toFloat()))
     }
@@ -127,6 +145,7 @@ class RadialView(
         when (event.actionMasked) {
             MotionEvent.ACTION_DOWN, MotionEvent.ACTION_POINTER_DOWN -> {
                 val at = event.actionIndex
+                if (event.getY(at) < strip) return true
                 val pointer = event.getPointerId(at)
                 val bank = bankAt(event.getX(at))
                 clouds[bank]?.clear()
@@ -325,7 +344,15 @@ class RadialView(
             hot = Color.rgb(64, 132, 240),
             warm = if (dark) Color.rgb(30, 58, 104) else Color.rgb(206, 226, 255),
         )
-        canvas.drawColor(back)
+        // Only the keys get a background. A strip that floats over the app has to
+        // let the app through, and one that took the room is part of the keyboard.
+        if (config.preview == Preview.OVER) {
+            ink.style = Paint.Style.FILL
+            ink.color = back
+            canvas.drawRect(0f, strip, width.toFloat(), height.toFloat(), ink)
+        } else {
+            canvas.drawColor(back)
+        }
 
         ink.textSize = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_SP, config.labelSp, resources.displayMetrics
@@ -335,7 +362,7 @@ class RadialView(
         ink.style = Paint.Style.STROKE
         ink.strokeWidth = 1f
         ink.color = paint.edge
-        canvas.drawLine(width * config.fieldSplit, 0f, width * config.fieldSplit, height.toFloat(), ink)
+        canvas.drawLine(width * config.fieldSplit, strip, width * config.fieldSplit, height.toFloat(), ink)
 
         for (bank in Bank.values()) {
             val thumb = chorder.thumb(bank)
@@ -349,7 +376,7 @@ class RadialView(
                 !thumb.down -> drawEntry(canvas, thumb, paint)
                 else -> {
                     drawRing(canvas, thumb, thumb.markX, thumb.markY, 1f, 1f, paint)
-                    if (config.mirror) drawCopy(canvas, thumb, paint)
+                    drawCopy(canvas, thumb, paint)
                 }
             }
             drawTaken(canvas, thumb, paint)
@@ -491,16 +518,26 @@ class RadialView(
     /**
      * The same ring again, in the clear.
      *
-     * Fixed in the field, not carried above the thumb: a copy that follows a thumb
-     * which has slid to the edge goes off the screen with it.
+     * Somewhere the thumb is not, which is what a copy is for. A strip above the
+     * keys is the only place that stays clear now the honeycomb fills the field, and
+     * over the app it takes nothing from either.
      */
     private fun drawCopy(canvas: Canvas, thumb: Thumb, paint: Palette) {
-        val room = config.farEdge * unit * config.mirrorScale + ink.textSize * 1.6f
-        val cx = thumb.field.centerX.coerceIn(
-            min(room, width * 0.5f), width - min(room, width * 0.5f)
-        )
-        val cy = (thumb.field.top + thumb.field.height * config.mirrorAt)
-            .coerceIn(min(room, height * 0.5f), height - min(room, height * 0.5f))
+        val room = room() * 0.5f
+        val cx: Float
+        val cy: Float
+        if (config.preview.strip) {
+            cx = thumb.field.centerX
+            cy = strip * 0.5f
+        } else if (config.preview == Preview.FIELD) {
+            cx = thumb.field.centerX.coerceIn(
+                min(room, width * 0.5f), width - min(room, width * 0.5f)
+            )
+            cy = (thumb.field.top + thumb.field.height * config.mirrorAt)
+                .coerceIn(strip + min(room, height * 0.5f), height - min(room, height * 0.5f))
+        } else {
+            return
+        }
         drawRing(canvas, thumb, cx, cy, config.mirrorScale, config.mirrorDim, paint)
     }
 
@@ -572,7 +609,7 @@ class RadialView(
                     touch.pressure, touch.size, touch.major, touch.minor
                 ),
                 field.centerX,
-                ink.textSize,
+                strip + ink.textSize,
                 ink
             )
         }

@@ -195,13 +195,14 @@ data class Config(
     var farEdge: Float = 0.46f,
 
     /**
-     * Repeat the ring where the thumb is not covering it.
+     * Where the copy of the ring goes.
      *
-     * Fixed in the field rather than carried above the thumb, so a ring that has
-     * drifted to the edge still has its copy in full view.
+     * It has to go somewhere the thumb is not, and the field is no longer that
+     * somewhere: a honeycomb that fills the field leaves nothing for a copy to sit
+     * on top of.
      */
-    var mirror: Boolean = true,
-    /** Where in the field the copy's centre sits, as a fraction from the top. */
+    var preview: Preview = Preview.OVER,
+    /** Where in the field the copy sits, when it sits in the field. */
     var mirrorAt: Float = 0.28f,
     var mirrorScale: Float = 0.62f,
     /** How much weaker the copy is drawn, so it reads as a copy. */
@@ -255,4 +256,23 @@ data class Config(
         radius == Radius.FAR -> startFarRight
         else -> startNearRight
     }
+}
+
+/**
+ * Where the copy of the ring goes.
+ *
+ * [OVER] floats it over the app instead of taking room from it: the keyboard's
+ * window reaches above the keys, and the app is told to lay out underneath, so the
+ * strip costs nothing while no thumb is down and covers nothing that is being read.
+ * [BAND] takes the room instead, and pushes the app up out of the way.
+ */
+enum class Preview(val label: String) {
+    OFF("Off"),
+    FIELD("In the thumb field"),
+    BAND("In a strip above the keys"),
+    OVER("Floating over the app"),
+    ;
+
+    /** Whether the copy gets a strip of its own above the keys. */
+    val strip: Boolean get() = this == BAND || this == OVER
 }
