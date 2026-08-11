@@ -269,6 +269,18 @@ cd android && gradle :app:testDebugUnitTest :app:assembleRelease
 The APK is debug-signed on purpose: it is a sideloaded prototype, and a real
 signing key would have to live somewhere.
 
+## Releasing
+
+```sh
+android/release.sh 0.12 "one line of what changed" [notes.md]
+```
+
+The GitHub release is the deployment: the phone installs from the release
+page, so a build that only lands in `app/build/outputs` has not shipped.
+The script tests, builds, and publishes tag `radial-v<version>` with the
+APK attached, and refuses a dirty or unpushed tree. Without a notes file it
+lets GitHub generate the notes; the hand-written ones read better.
+
 `build-native.sh` wants an NDK, named by `ANDROID_NDK` or found at
 `~/Library/Android/sdk/ndk/26.3.11579264`. The cross std comes from the flake,
 which is why cargo runs inside `nix develop`.
