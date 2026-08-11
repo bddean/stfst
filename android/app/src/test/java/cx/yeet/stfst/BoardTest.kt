@@ -40,60 +40,73 @@ class BoardTest {
         assertEquals(Bank.LEFT, board.bankOf(key('#')))
     }
 
+    private fun taken(symbols: String) = symbols.map { key(it) }
+
     /**
-     * Take order, not steno order: the left vowels come first, so the island is
-     * dead for the whole consonant walk and its cells can be doorways.
+     * The island is unordered, the way the machine's thumb cluster is pressed:
+     * before the ring its keys go in any order, and only a repeat is barred.
      */
     @Test
-    fun the_left_vowels_come_first() {
-        assertTrue(board.live(key('S'), key('O')))
-        assertFalse(board.live(key('A'), key('S')))
-        assertTrue(board.live(key('#'), key('A')))
-        assertFalse(board.live(key('A'), key('O')))
+    fun the_island_is_unordered() {
+        assertTrue(board.live(key('A'), taken("O")))
+        assertTrue(board.live(key('O'), taken("A")))
+        assertFalse(board.live(key('A'), taken("A")))
+        assertEquals(key('A'), board.resolve(key('A'), taken("O")))
+        assertTrue(board.live(key('*'), taken("EU")))
+    }
+
+    @Test
+    fun the_first_ring_key_closes_the_island() {
+        assertFalse(board.live(key('A'), taken("S")))
+        assertFalse(board.live(key('O'), taken("#")))
+        assertFalse(board.live(key('*'), taken("Ef")))
+        // And the ring itself is still a rising run.
+        assertTrue(board.live(key('K'), taken("AOS")))
+        assertFalse(board.live(key('S'), taken("T")))
     }
 
     @Test
     fun everything_is_live_at_the_start() {
         for (bank in Bank.values()) {
             for (k in board.keys(bank)) {
-                assertTrue("${ORDER[k]} is dead at the start", board.live(k, -1))
+                assertTrue("${ORDER[k]} is dead at the start", board.live(k, emptyList()))
             }
         }
     }
 
     @Test
     fun a_live_cell_yields_itself() {
-        assertEquals(key('K'), board.resolve(key('K'), key('T')))
-        assertEquals(key('A'), board.resolve(key('A'), -1))
+        assertEquals(key('K'), board.resolve(key('K'), taken("T")))
+        assertEquals(key('A'), board.resolve(key('A'), emptyList()))
     }
 
     @Test
     fun a_dead_island_cell_yields_its_doorway_key() {
-        // After S the left island is dead, and A's doorway leads to R.
-        assertEquals(key('R'), board.resolve(key('A'), key('S')))
-        assertEquals(key('H'), board.resolve(key('O'), key('S')))
+        // After S the left island is closed, and A's doorway leads to R.
+        assertEquals(key('R'), board.resolve(key('A'), taken("S")))
+        assertEquals(key('H'), board.resolve(key('O'), taken("S")))
         // The right island, once the walk is on the ring.
-        assertEquals(key('d'), board.resolve(key('E'), key('f')))
-        assertEquals(key('g'), board.resolve(key('U'), key('f')))
+        assertEquals(key('d'), board.resolve(key('E'), taken("Ef")))
+        assertEquals(key('g'), board.resolve(key('U'), taken("f")))
     }
 
     @Test
     fun a_doorway_shuts_when_its_key_is_spent() {
-        assertNull(board.resolve(key('A'), key('R')))
-        assertNull(board.resolve(key('O'), key('H')))
+        assertNull(board.resolve(key('A'), taken("R")))
+        assertNull(board.resolve(key('O'), taken("H")))
     }
 
     @Test
     fun a_dead_cell_with_no_doorway_is_plain_ground() {
-        assertNull(board.resolve(key('+'), key('S')))
-        assertNull(board.resolve(key('T'), key('K')))
+        assertNull(board.resolve(key('+'), taken("S")))
+        assertNull(board.resolve(key('T'), taken("K")))
     }
 
     /** A doorway across the banks would hand one thumb the other's key. */
     @Test
     fun a_doorway_cannot_cross_the_banks() {
         val crossed = Board(ORDER, Config().also { it.boardPortals = "A>t" })
-        assertNull(crossed.resolve(ORDER.indexOf('A'), ORDER.indexOf('S')))
+        assertNull(crossed.resolve(ORDER.indexOf('A'), listOf(ORDER.indexOf('S'))))
     }
 
     // The geometry: a ring of discs around the island, ground between them.
@@ -216,6 +229,19 @@ class BoardChorderTest {
         slideTo(Bank.LEFT, 'O')
         slideTo(Bank.LEFT, 'K')
         assertEquals("AOK", keys(Bank.LEFT))
+    }
+
+    /**
+     * `WAO`, as in `WAOEUL` = while. Ending the island on A puts the walk on
+     * the ring's left side, where W is, so the vowels go O then A.
+     */
+    @Test
+    fun the_island_may_be_walked_in_either_order() {
+        touch(Bank.LEFT, 0, 'O')
+        slideTo(Bank.LEFT, 'A')
+        slideTo(Bank.LEFT, 'W')
+        assertEquals("OAW", keys(Bank.LEFT))
+        assertEquals(mask("WAO"), chorder.mask())
     }
 
     /** The stroke is a set, so the walked order spells the same outline. */

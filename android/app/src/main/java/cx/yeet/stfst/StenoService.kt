@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.inputmethodservice.InputMethodService
 import android.inputmethodservice.InputMethodService.Insets
 import android.os.SystemClock
+import android.text.TextUtils
 import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
@@ -84,6 +85,9 @@ class StenoService : InputMethodService() {
             setPadding(24, 12, 12, 12)
             textSize = 13f
             setTextColor(Color.GRAY)
+            // One line, newest end visible: the bar must not grow into the app.
+            setSingleLine(true)
+            ellipsize = TextUtils.TruncateAt.START
             text = if (handle == 0L) "not started: $trouble" else ""
             layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
         }
@@ -238,6 +242,12 @@ class StenoService : InputMethodService() {
 
     private fun stroke(keys: Long) {
         if (handle == 0L) return
+        // A bare star is the undo stroke, as on any steno machine.
+        val star = order.indexOf('*')
+        if (star >= 0 && keys == 1L shl star) {
+            show(Native.undo(handle))
+            return
+        }
         show(Native.push(handle, keys))
     }
 

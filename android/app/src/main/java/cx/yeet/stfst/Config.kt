@@ -36,14 +36,15 @@ data class Config(
      */
     var board: Boolean = true,
     /**
-     * Each bank of the board: an island of cells inside a ring of cells, both
-     * written in take order, island first.
+     * Each bank of the board: an island of cells inside a ring of cells, in
+     * take order, island first.
      *
-     * The ring keeps steno order, so a skip along it crosses exactly the keys
-     * the chord passed over, which are dead and safe. The island holds the keys
-     * the bank takes first, and that is its point: the first key is a tap in
-     * the middle, the island dies with it, and the middle becomes ground every
-     * skip can cross.
+     * The island is unordered, the way a machine's thumb cluster is pressed
+     * together: its keys go in any order, and the first ring key closes it.
+     * That is its point: the walk starts in the middle, leaves toward the ring
+     * from whichever island cell faces the exit, and the vacated middle is the
+     * road every skip crosses, since a skipped ring key is still live and has
+     * to be gone around.
      *
      * The left island is the one deviation from steno order: the vowels come
      * last in the outline, and an island that stays live until then blocks the

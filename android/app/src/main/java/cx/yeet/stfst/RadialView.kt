@@ -404,8 +404,10 @@ class RadialView(
 
     /**
      * Every cell of one bank, live or dead. A dead cell stays on screen because
-     * it is still ground, and a doorway shows the key it now takes, marked as a
-     * copy the way the mirrored ring is.
+     * it is still ground. An island cell carries both its glyphs the whole
+     * time, key above and doorway below, and the open one is the bright one:
+     * before the stroke the key glows and the doorway waits dim, and once the
+     * ring closes the island they trade places.
      */
     private fun drawBoardAt(
         canvas: Canvas,
@@ -421,26 +423,31 @@ class RadialView(
         for (cell in board.cells(thumb.bank, field)) {
             val x = at.x + (cell.x - middle.x) * scale
             val y = at.y + (cell.y - middle.y) * scale
-            val yields = board.resolve(cell.key, thumb.after)
+            val yields = board.resolve(cell.key, thumb.keys)
             val live = yields == cell.key
-            val dimmed = dim * if (live) 1f else 0.45f
+            val doorway = board.portal(cell.key)
+            val open = doorway != null && yields == doorway
+            val dimmed = dim * if (live || open) 1f else 0.45f
             ink.style = Paint.Style.FILL
-            ink.color = fade(paint.face, dimmed)
+            ink.color = fade(if (open) paint.warm else paint.face, dimmed)
             canvas.drawCircle(x, y, radius, ink)
             ink.style = Paint.Style.STROKE
-            ink.color = fade(paint.edge, dimmed)
+            ink.color = fade(if (open) paint.hot else paint.edge, dimmed)
             canvas.drawCircle(x, y, radius, ink)
             if (!config.showLabels) continue
             ink.style = Paint.Style.FILL
-            ink.color = fade(paint.text, dimmed)
-            canvas.drawText(order[cell.key].toString(), x, y + ink.textSize * 0.35f, ink)
-            if (yields != null && !live) {
-                val size = ink.textSize
-                ink.textSize = size * 0.75f
-                ink.color = fade(paint.hot, dim * config.mirrorDim)
-                canvas.drawText(order[yields].toString(), x + radius * 0.45f, y - radius * 0.3f, ink)
-                ink.textSize = size
+            if (doorway == null) {
+                ink.color = fade(paint.text, dimmed)
+                canvas.drawText(order[cell.key].toString(), x, y + ink.textSize * 0.35f, ink)
+                continue
             }
+            val size = ink.textSize
+            ink.color = fade(paint.text, dim * if (live) 1f else 0.3f)
+            canvas.drawText(order[cell.key].toString(), x, y - radius * 0.12f, ink)
+            ink.textSize = size * 0.72f
+            ink.color = fade(paint.hot, dim * if (open) 1f else 0.35f)
+            canvas.drawText(order[doorway].toString(), x, y + radius * 0.72f, ink)
+            ink.textSize = size
         }
     }
 

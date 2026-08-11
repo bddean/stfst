@@ -72,15 +72,16 @@ class SettingsActivity : Activity() {
             "The default layout: fixed cells, read by where the thumb is. Each " +
                 "bank is a ring in take order around an island of the keys taken " +
                 "first, and any cell the thumb enters is taken. A spent cell is " +
-                "ground, the space between cells takes nothing, and a dead island " +
-                "cell is a doorway to the key after its '>'."),
+                "ground, the space between cells takes nothing, and once the ring " +
+                "closes the island a dead island cell is a doorway to the key " +
+                "after its '>'."),
         Flag("Fixed board", { it.board }, { c, v -> c.board = v },
             "off falls back to the radial layout below, which reads slides by " +
                 "direction instead"),
         Text("Left island", { it.boardIslandLeft }, { c, v -> c.boardIslandLeft = v },
-            "taken before the ring: the vowels, so the middle opens with the first " +
-                "key. A stroke is a set of keys, so the outline stays steno order " +
-                "whatever order the thumb walked"),
+            "taken before the ring, in any order, like the machine's thumb " +
+                "cluster. A stroke is a set of keys, so the outline stays steno " +
+                "order whatever order the thumb walked"),
         Text("Left board ring", { it.boardRingLeft }, { c, v -> c.boardRingLeft = v },
             "clockwise from the board start angle"),
         Text("Right island", { it.boardIslandRight }, { c, v -> c.boardIslandRight = v }),

@@ -13,11 +13,13 @@ import kotlin.math.sin
  * that visits its keys. Three kinds of ground make every walk possible. A live
  * cell is a key. A dead cell is ground, or a doorway when [config]'s portals
  * give it a destination that is still takeable. Between the discs is ground
- * that takes nothing, which is what a walk crosses to skip a live key.
+ * that takes nothing.
  *
- * The ring is take order, so a skip along the ring only crosses cells the
- * chord passed over, which are dead. The island is the take order's front, so
- * it is dead from the first key on, and the middle of the ring is the road.
+ * A skipped key is still ahead in take order, so it is live, and a skip has to
+ * go around it: through the ground between the discs, or across the middle,
+ * which the island vacates. The island is the take order's front and it is
+ * unordered, the way a machine's thumb cluster is pressed: its keys may be
+ * walked in any order, and the first ring key closes it.
  */
 class Board(val order: String, val config: Config) {
 
@@ -65,13 +67,32 @@ class Board(val order: String, val config: Config) {
         islandSpots(island) + ringSpots(ring, start)
     }
 
+    /** How many island cells a bank has: the unordered front of its take order. */
+    private val islands: Map<Bank, Int> = sides.mapValues { (_, side) ->
+        side.first.count { order.indexOf(it) >= 0 }
+    }
+
     fun keys(bank: Bank): List<Int> = takes.getValue(bank)
 
     fun bankOf(key: Int): Bank? = banks[key]
 
-    /** Whether a key can still be taken, `after` being the last key taken or -1. */
-    fun live(key: Int, after: Int): Boolean =
-        rank[key] >= 0 && rank[key] > (if (after < 0) -1 else rank[after])
+    /**
+     * Whether a key can still be taken, given the keys this thumb has taken.
+     *
+     * An island key is live until it is taken or any ring key is: within the
+     * island there is no order, only the boundary. A ring key is live while it
+     * is later than every ring key taken, which is the rising run as before.
+     */
+    fun live(key: Int, taken: List<Int>): Boolean {
+        val bank = banks[key] ?: return false
+        val island = islands.getValue(bank)
+        var ring = -1
+        for (k in taken) {
+            if (banks[k] == bank && rank[k] >= island) ring = maxOf(ring, rank[k])
+        }
+        return if (rank[key] < island) ring < 0 && key !in taken
+        else rank[key] > ring
+    }
 
     fun portal(key: Int): Int? = portals[key].takeIf { it >= 0 }
 
@@ -79,9 +100,9 @@ class Board(val order: String, val config: Config) {
      * The key entering this cell takes now: its own while live, its doorway's
      * while that one is, and nothing once both are spent.
      */
-    fun resolve(cell: Int, after: Int): Int? = when {
-        live(cell, after) -> cell
-        else -> portal(cell)?.takeIf { live(it, after) }
+    fun resolve(cell: Int, taken: List<Int>): Int? = when {
+        live(cell, taken) -> cell
+        else -> portal(cell)?.takeIf { live(it, taken) }
     }
 
     /** One cell pitch: the distance between two neighbouring cell centres. */

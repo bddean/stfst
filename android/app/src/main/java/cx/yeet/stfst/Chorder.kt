@@ -135,7 +135,7 @@ class Chorder(
             // whole field, so no tap lands on nothing.
             val cell = board.nearest(bank, thumb.field, x, y) ?: return false
             thumb.cell = cell
-            val key = board.resolve(cell, thumb.after) ?: return false
+            val key = board.resolve(cell, thumb.keys) ?: return false
             take(thumb, key, Float.NaN)
             return true
         }
@@ -234,7 +234,7 @@ class Chorder(
         }
         if (cell == thumb.cell) return false
         thumb.cell = cell
-        val key = board.resolve(cell, thumb.after) ?: return false
+        val key = board.resolve(cell, thumb.keys) ?: return false
         thumb.markX = x
         thumb.markY = y
         take(thumb, key, Float.NaN)
