@@ -12,48 +12,73 @@ data class Config(
     var splitKey: Char = '*',
 
     /**
-     * Which keys sit on which ring, in steno order, one character per key.
+     * Each bank's keys on the direction-read ring, in steno order.
      *
-     * Every key on one ring by default, and the near ring empty, so a slide is read
-     * by direction alone and how far it went means nothing beyond `Minimum slide`.
-     * Metering a distance under a thumb without looking is the hard channel: two
-     * rings ask for it on every flick, and the answer to "how far" was wrong far more
-     * often than the answer to "which way".
-     *
-     * Nothing is lost by it. The narrowest target a key can ever have is set by how
-     * many keys still follow it, not by the layout: twelve keys follow the first, so
-     * 30 degrees is the ceiling for any arrangement of them, and one shared ring
-     * reaches that ceiling in every state. Two rings bought room by adding a channel
-     * that cost more than the room was worth.
-     *
-     * Put keys in a near string and the short slide comes back, along with `Settle`
-     * and the ring boundary.
+     * One ring per thumb, so a slide is read by direction alone and how far it
+     * went means nothing beyond `Minimum slide`. Metering a distance under a
+     * thumb without looking is the hard channel, and the answer to "how far" was
+     * wrong far more often than the answer to "which way". A key in neither
+     * string cannot be stroked in this layout.
      */
     var farLeft: String = "#@^+STKPWHRAO",
     var farRight: String = "*EUfrpblgtsdz",
-    /** A key on neither ring cannot be stroked. */
-    var nearLeft: String = "",
-    var nearRight: String = "",
 
     /**
-     * Share each ring out evenly between the keys still live on it.
+     * Read every touch against fixed cells, by where it is rather than by where
+     * it went.
      *
-     * The earliest sits at the start angle and the rest follow clockwise, so the
-     * order round the ring is still the order of the chord and still owes the
-     * dictionary nothing. What it buys is the worst target: with fixed slots, a key
-     * with a live neighbour on each side is squeezed to the gap between them, and
-     * three live keys on an eight slot ring can leave the middle one 45 degrees
-     * against 157 for each neighbour. Spread, all three hold 120.
-     *
-     * The cost is that a key's direction depends on what the stroke has taken, so
-     * the thing to learn is "the third key still available is down-left" rather
-     * than "K is at 0". Off restores fixed slots, and [slotsFar] and [slotsNear].
+     * The direction-read ring caps a key's target by how many keys follow it:
+     * twelve after the first means 30 degrees is the ceiling. A fixed cell pays
+     * in area instead of angle, and area the field has plenty of. What position
+     * reading needs in exchange is a rule with no gate in it, and take-on-entry
+     * is that rule: any cell the thumb enters is taken, a spent cell is ground,
+     * and the ground between cells takes nothing.
      */
-    var spread: Boolean = true,
-
-    /** Slots per ring, when [spread] is off. Ignored when it is on. */
-    var slotsFar: Int = 8,
-    var slotsNear: Int = 8,
+    var board: Boolean = true,
+    /**
+     * Each bank of the board: an island of cells inside a ring of cells, both
+     * written in take order, island first.
+     *
+     * The ring keeps steno order, so a skip along it crosses exactly the keys
+     * the chord passed over, which are dead and safe. The island holds the keys
+     * the bank takes first, and that is its point: the first key is a tap in
+     * the middle, the island dies with it, and the middle becomes ground every
+     * skip can cross.
+     *
+     * The left island is the one deviation from steno order: the vowels come
+     * last in the outline, and an island that stays live until then blocks the
+     * middle for the whole consonant walk. Taking them first costs nothing the
+     * dictionary can see, because a stroke is a set of keys and the outline
+     * spelling stays steno order whatever order the thumb walked.
+     */
+    var boardIslandLeft: String = "AO",
+    var boardRingLeft: String = "#^+STKPWHR",
+    /** The right island is steno order already: @ * E U are its first keys. */
+    var boardIslandRight: String = "@*EU",
+    var boardRingRight: String = "frpblgtsdz",
+    /**
+     * Doorways. `A>R` means a dead A cell takes R, for as long as R can still
+     * be taken; after that it is plain ground. Dead island cells are ground the
+     * walk crosses anyway, and a destination on one shortens the worst hops of
+     * the bank: each pair here is the far ring key its cell's chords most often
+     * still owe, measured over the dictionary.
+     */
+    var boardPortals: String = "A>R O>H @>s *>t E>d U>g",
+    /** Cell pitches across the field's short side. Fewer means bigger cells. */
+    var boardSpan: Float = 4.2f,
+    /**
+     * A cell's radius, as a fraction of the pitch.
+     *
+     * Under a half, so ground is left between the cells. The ground is the
+     * board's whole guard: nothing waits on time or turning, so the only way to
+     * cross the field without taking is between the discs.
+     */
+    var boardCell: Float = 0.42f,
+    /** Where the middle of the board sits, as a fraction down the field. */
+    var boardAt: Float = 0.5f,
+    /** Where each board ring's first key sits. -90 is straight up. */
+    var boardStartLeft: Float = -90f,
+    var boardStartRight: Float = -90f,
 
     /**
      * How many columns the widest row of the tap layout has.
@@ -88,66 +113,29 @@ data class Config(
 
     /** Where each ring's first key sits. -90 is straight up, 0 is right. */
     var startFarLeft: Float = -90f,
-    /**
-     * Off the axes, because after any consonant this ring holds A and O alone.
-     *
-     * Two keys put their boundary at the start angle plus and minus 90, and at 0
-     * that is straight up and straight down, where the consonants are: an undershot
-     * reach upward then lands on the boundary and picks a vowel by coin toss. On the
-     * diagonal the boundary misses the consonants of every common state.
-     *
-     * The right near ring holds three keys after E, so its boundaries move with the
-     * count and no one offset clears them. It keeps the plain angle.
-     */
-    var startNearLeft: Float = -45f,
     var startFarRight: Float = -90f,
-    var startNearRight: Float = -90f,
 
     /**
      * Shorter than this and a slide has not chosen anything yet.
      *
-     * The only thing distance decides, once there is one ring. It is the whole guard
-     * against a resting thumb taking keys, so it is longer than it was when a short
-     * slide had a meaning of its own.
+     * The only thing distance decides on the ring. It is the whole guard against
+     * a resting thumb taking keys.
      */
     var minSlide: Float = 0.085f,
     /**
-     * How far out each ring sits. These are where the keys are drawn *and* what a
-     * slide is measured against, and the boundary between them is derived rather
-     * than set: a boundary of its own is a boundary that can disagree with what
-     * the thumb was aiming at.
+     * How far out the ring sits: where the keys are drawn *and* what a slide is
+     * measured against.
      */
-    var nearReach: Float = 0.13f,
     var farReach: Float = 0.30f,
     /**
-     * Where between the two rings the boundary sits, as a fraction of the gap.
+     * How far a slide has to turn before it can take another key.
      *
-     * Low, because undershooting is what a thumb does. Halfway means a slide has
-     * to cover seven tenths of the distance to a far key to count as one, and a
-     * thumb that falls short of a consonant gets a vowel instead.
-     */
-    var ringSplitAt: Float = 0.35f,
-    /**
-     * How long a near-ring key has to stay the best answer before it is taken.
-     *
-     * A thumb reaching for a consonant crosses the near band on the way out, and a
-     * key taken the moment its threshold is crossed is a vowel the thumb never
-     * asked for. A far key has nothing beyond it, so it is taken at once; a near
-     * key waits to see whether the thumb was going further. Zero takes both at
-     * once, which is the behaviour that made the consonants unreachable.
-     */
-    var settleMs: Long = 70L,
-    /**
-     * How far a slide has to turn before it can take another far key.
-     *
-     * Reaching outward clears the far threshold again from every new mark, so a
+     * Reaching outward clears the threshold again from every new mark, so a
      * single long drag would take a second and a third key along the same ray. A
      * new key means a new direction. Under the angle between two slots, or the
      * neighbouring key becomes unreachable.
      */
     var turnDegrees: Float = 30f,
-    /** How far off a slot's angle a slide may be. 180 always takes the nearest. */
-    var snapDegrees: Float = 180f,
     /**
      * How much better a rival key has to be before a slide changes its answer.
      *
@@ -251,39 +239,16 @@ data class Config(
     var keyboardHeight: Float = 0.42f,
 ) {
     fun far(bank: Bank) = if (bank == Bank.LEFT) farLeft else farRight
-    fun near(bank: Bank) = if (bank == Bank.LEFT) nearLeft else nearRight
-
-    /** The keys on one ring of one bank, in steno order. */
-    fun keys(bank: Bank, radius: Radius) = if (radius == Radius.FAR) far(bank) else near(bank)
-
-    fun slots(radius: Radius) = if (radius == Radius.FAR) slotsFar else slotsNear
-
-    /** Where a ring's keys sit, as a fraction of the field's short side. */
-    fun reach(radius: Radius) = if (radius == Radius.FAR) farReach else nearReach
-
-    /** Longer than this and a slide wanted the far ring. */
-    fun ringSplit() = nearReach + (farReach - nearReach) * ringSplitAt
 
     /**
-     * The band of distances a ring answers to, which is what a key's region fills.
-     *
-     * The far ring has no outer edge, so the drawn one is where the picture stops
-     * rather than where the answer changes.
+     * The band of distances the ring answers to, which is what a key's region
+     * fills. The ring has no outer edge, so the drawn one is where the picture
+     * stops rather than where the answer changes.
      */
-    fun bounds(bank: Bank, radius: Radius): ClosedFloatingPointRange<Float> = when {
-        radius == Radius.NEAR -> minSlide..ringSplit()
-        // One ring, so it owns every distance a slide can be. The boundary between
-        // the rings is not a fact about this layout, and drawing one would invent it.
-        near(bank).isEmpty() -> minSlide..farEdge
-        else -> ringSplit()..farEdge
-    }
+    fun bounds(): ClosedFloatingPointRange<Float> = minSlide..farEdge
 
-    fun startAngle(bank: Bank, radius: Radius): Float = when {
-        bank == Bank.LEFT && radius == Radius.FAR -> startFarLeft
-        bank == Bank.LEFT -> startNearLeft
-        radius == Radius.FAR -> startFarRight
-        else -> startNearRight
-    }
+    fun startAngle(bank: Bank): Float =
+        if (bank == Bank.LEFT) startFarLeft else startFarRight
 }
 
 /**

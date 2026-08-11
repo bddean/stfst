@@ -18,7 +18,7 @@ import kotlin.math.sin
  * Two layouts, because a touch-down and a slide are different questions. A
  * touch-down has a whole field to aim at and no direction to read, so the keys
  * are spread over it as a honeycomb. A slide has a direction and one point to
- * measure from, so the keys sit on two rings around that point.
+ * measure from, so the keys sit on a ring around that point.
  */
 class Ring(val order: String, val config: Config) {
 
@@ -30,55 +30,31 @@ class Ring(val order: String, val config: Config) {
     fun keys(bank: Bank): IntRange =
         if (bank == Bank.LEFT) 0 until split else split until order.length
 
-    /**
-     * Which ring each key sits on, worked out once.
-     *
-     * The drawing probes the decision function a few hundred times a frame, and each
-     * probe asks about every live key, so none of this can afford to be a search.
-     */
-    private val rings: Array<Radius?> = Array(order.length) { key ->
-        val bank = bankOf(key)
-        val symbol = order[key]
-        when {
-            config.far(bank).indexOf(symbol) >= 0 -> Radius.FAR
-            config.near(bank).indexOf(symbol) >= 0 -> Radius.NEAR
-            else -> null
-        }
+    /** Whether a key is in its bank's ring string. Off it, it cannot be stroked. */
+    private val on = BooleanArray(order.length) { key ->
+        config.far(bankOf(key)).indexOf(order[key]) >= 0
     }
 
-    /** The live keys of one bank, and of one ring of one bank, per state. */
+    /** The live keys of one bank, per state. */
     private val lives = HashMap<Int, List<Int>>()
-    private val bands = HashMap<Int, List<Int>>()
 
-    /** Which ring a key sits on, or null for a key the configuration left off both. */
-    fun ringOf(key: Int): Radius? = rings[key]
+    fun on(key: Int): Boolean = on[key]
 
     /**
-     * A key's ring and the angle it answers to, given what the stroke has taken.
+     * The angle a key answers to, given what the stroke has taken, or null for
+     * a key that is off the ring or spent.
      *
-     * Spread, the live keys of a ring share it evenly: the earliest sits at the
-     * start angle and the rest follow clockwise. That is what keeps the smallest
-     * target from being small. Fixed slots give each key a permanent angle, and a
-     * key with a live neighbour on each side is then squeezed to the gap between
-     * them: three live keys on an eight slot ring can leave the middle one 45
-     * degrees while its neighbours hold 157 each. Even spreading gives all three
-     * 120. The average is 360 over the count either way, so what spreading buys is
+     * The live keys share the ring evenly: the earliest sits at the start angle
+     * and the rest follow clockwise, so the order round the ring is the order of
+     * the chord. Sharing is what keeps the smallest target from being small: the
+     * average is 360 over the count however the slots sit, so what it buys is
      * the worst case, not the mean.
-     *
-     * Clockwise in steno order from the start angle, spread or not, so the order
-     * round the ring is the order of the chord.
      */
-    fun slotOf(key: Int, after: Int): Slot? {
-        val radius = ringOf(key) ?: return null
-        val bank = bankOf(key)
-        if (!config.spread) {
-            val index = config.keys(bank, radius).indexOf(order[key])
-            return Slot(radius, config.startAngle(bank, radius) + index * (360f / config.slots(radius)))
-        }
-        val band = liveOn(bank, radius, after)
+    fun slotOf(key: Int, after: Int): Float? {
+        val band = live(bankOf(key), after)
         val index = band.indexOf(key)
         if (index < 0) return null
-        return Slot(radius, config.startAngle(bank, radius) + index * (360f / band.size))
+        return config.startAngle(bankOf(key)) + index * (360f / band.size)
     }
 
     /**
@@ -86,16 +62,9 @@ class Ring(val order: String, val config: Config) {
      * what an empty ring tells the thumb.
      */
     fun live(bank: Bank, after: Int): List<Int> =
-        lives.getOrPut(at(bank, after)) { keys(bank).filter { it > after && rings[it] != null } }
-
-    /** The live keys of one ring of one bank, in steno order. */
-    private fun liveOn(bank: Bank, radius: Radius, after: Int): List<Int> =
-        bands.getOrPut(at(bank, after) * Radius.values().size + radius.ordinal) {
-            live(bank, after).filter { rings[it] == radius }
+        lives.getOrPut((after + 1) * 2 + bank.ordinal) {
+            keys(bank).filter { it > after && on[it] }
         }
-
-    /** One number per (bank, state), so the caches can be plain maps. */
-    private fun at(bank: Bank, after: Int) = (after + 1) * 2 + bank.ordinal
 
     /**
      * The key a slide from (ox, oy) to (px, py) chooses, or null when the slide is
@@ -118,31 +87,20 @@ class Ring(val order: String, val config: Config) {
     ): Int? {
         val dx = px - ox
         val dy = py - oy
-        val distance = hypot(dx, dy)
-        if (distance < config.minSlide * unit) return null
-        val wanted = if (distance < config.ringSplit() * unit) Radius.NEAR else Radius.FAR
+        if (hypot(dx, dy) < config.minSlide * unit) return null
         val heading = Math.toDegrees(atan2(dy.toDouble(), dx.toDouble())).toFloat()
         val live = live(bank, after)
-        // The wanted ring first, so a short flick cannot be stolen by a far key at
-        // a slightly better angle. Falling through to the other ring is what keeps
-        // a live key reachable when its own ring is empty.
-        val best = nearest(live, wanted, after, heading) ?: nearest(live, null, after, heading)
-        return steady(best, held, live, after, heading)
-    }
-
-    private fun nearest(live: List<Int>, radius: Radius?, after: Int, heading: Float): Int? {
         var best: Int? = null
         var bestOff = Float.MAX_VALUE
         for (key in live) {
-            val slot = slotOf(key, after) ?: continue
-            if (radius != null && slot.radius != radius) continue
-            val off = separation(slot.angle, heading)
-            if (off < bestOff && off <= config.snapDegrees) {
+            val angle = slotOf(key, after) ?: continue
+            val off = separation(angle, heading)
+            if (off < bestOff) {
                 best = key
                 bestOff = off
             }
         }
-        return best
+        return steady(best, held, live, after, heading)
     }
 
     /** The held key wins ties and near ties, which is what stops the flicker. */
@@ -152,10 +110,7 @@ class Ring(val order: String, val config: Config) {
         if (margin <= 0f) return best
         val a = slotOf(held, after) ?: return best
         val b = slotOf(best, after) ?: return best
-        // Only against a rival on the same ring: crossing between rings is a
-        // distance the thumb travelled on purpose, not a wobble at a boundary.
-        if (a.radius != b.radius) return best
-        return if (separation(a.angle, heading) <= separation(b.angle, heading) + margin) held else best
+        return if (separation(a, heading) <= separation(b, heading) + margin) held else best
     }
 
     /**
@@ -163,20 +118,11 @@ class Ring(val order: String, val config: Config) {
      *
      * Probed from [pick] rather than worked out from the slot angles, so the
      * picture cannot disagree with the decision. A live key owns every direction
-     * closer to its slot than to any other live slot, and that is usually far
-     * wider than the slot itself: three live keys share the whole circle between
-     * them however tight their slots are.
+     * closer to its slot than to any other live slot: three live keys share the
+     * whole circle between them however tight their slots are.
      */
-    fun sectors(bank: Bank, after: Int): List<Sector> =
-        // A ring with no keys of its own gets no band. Otherwise a slide short of the
-        // boundary would be drawn as a ring of the same keys it already fell through
-        // to, which is two pictures of one answer.
-        Radius.values()
-            .filter { config.keys(bank, it).isNotEmpty() }
-            .flatMap { band(bank, after, it) }
-
-    private fun band(bank: Bank, after: Int, radius: Radius): List<Sector> {
-        val distance = config.reach(radius)
+    fun sectors(bank: Bank, after: Int): List<Sector> {
+        val distance = config.farReach
         val step = config.sectorStep.coerceIn(0.25f, 30f)
         val runs = mutableListOf<Sector>()
         var key: Int? = null
@@ -189,18 +135,18 @@ class Ring(val order: String, val config: Config) {
                 (cos(radians) * distance).toFloat(), (sin(radians) * distance).toFloat(), 1f
             )
             if (here != key) {
-                key?.let { runs.add(Sector(radius, from, angle, it)) }
+                key?.let { runs.add(Sector(from, angle, it)) }
                 key = here
                 from = angle
             }
             angle += step
         }
-        key?.let { runs.add(Sector(radius, from, 360f, it)) }
+        key?.let { runs.add(Sector(from, 360f, it)) }
         // A run across zero is one sector, not the first one and the last one.
         if (runs.size > 1 && runs.first().key == runs.last().key) {
             val first = runs.removeAt(0)
             val last = runs.removeAt(runs.size - 1)
-            runs.add(Sector(radius, last.from, first.to + 360f, first.key))
+            runs.add(Sector(last.from, first.to + 360f, first.key))
         }
         return runs
     }
@@ -242,7 +188,7 @@ class Ring(val order: String, val config: Config) {
      * nearest the key it was always nearest.
      */
     fun cellOf(key: Int, bank: Bank, field: Field, after: Int): List<Point>? {
-        val cells = entry(bank, field).filter { it.key > after && rings[it.key] != null }
+        val cells = entry(bank, field).filter { it.key > after && on[it.key] }
         val mine = cells.firstOrNull { it.key == key } ?: return null
         var polygon = listOf(
             Point(field.left, field.top), Point(field.right, field.top),
@@ -313,7 +259,7 @@ class Ring(val order: String, val config: Config) {
     /** The live key whose cell holds this point, which is the nearest centre. */
     fun entryAt(bank: Bank, field: Field, x: Float, y: Float, after: Int): Int? =
         entry(bank, field)
-            .filter { it.key > after && ringOf(it.key) != null }
+            .filter { it.key > after && on[it.key] }
             .minByOrNull { hypot(it.x - x, it.y - y) }
             ?.key
 
@@ -331,14 +277,10 @@ class Ring(val order: String, val config: Config) {
 
 enum class Bank { LEFT, RIGHT }
 
-enum class Radius { NEAR, FAR }
+/** A run of directions that all take the same key. */
+data class Sector(val from: Float, val to: Float, val key: Int)
 
-data class Slot(val radius: Radius, val angle: Float)
-
-/** A run of directions that all take the same key, on one of the two rings. */
-data class Sector(val radius: Radius, val from: Float, val to: Float, val key: Int)
-
-/** A key's place on the tap layout. [Ring.cellOf] is the ground it owns. */
+/** A key's place on a fixed layout: the honeycomb, or the board. */
 data class Cell(val key: Int, val x: Float, val y: Float)
 
 data class Point(val x: Float, val y: Float)

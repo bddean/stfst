@@ -7,7 +7,6 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.RectF
-import android.os.SystemClock
 import android.util.TypedValue
 import android.view.KeyEvent
 import android.view.MotionEvent
@@ -36,7 +35,8 @@ class RadialView(
 ) : View(context) {
 
     private var ring = Ring(order, config)
-    private var chorder = Chorder(ring, config) { onStroke(it) }
+    private var board = Board(order, config)
+    private var chorder = Chorder(ring, board, config) { onStroke(it) }
     private val haptics = Haptics(context, config)
 
     /** The last key each thumb was told about, so a tick reports a change only. */
@@ -49,7 +49,6 @@ class RadialView(
 
     private val ink = Paint(Paint.ANTI_ALIAS_FLAG)
     private val stalls = mutableMapOf<Bank, Runnable>()
-    private val settles = mutableMapOf<Bank, Runnable>()
     private val holds = mutableMapOf<Int, Runnable>()
 
     private var unit = 1f
@@ -99,7 +98,8 @@ class RadialView(
     fun apply(fresh: Config) {
         config = fresh
         ring = Ring(order, fresh)
-        chorder = Chorder(ring, fresh) { onStroke(it) }
+        board = Board(order, fresh)
+        chorder = Chorder(ring, board, fresh) { onStroke(it) }
         haptics.apply(fresh)
         layoutFields()
         requestLayout()
@@ -118,7 +118,13 @@ class RadialView(
     }
 
     /** What the copy needs: its own diameter, and the keys it holds above itself. */
-    private fun room(): Float = (config.farEdge * config.mirrorScale * 2f + 0.09f) * unit
+    private fun room(): Float {
+        // The board's reach in field units: a ten cell ring plus the cell on it.
+        val reach = if (config.board) {
+            (0.5f / sin(Math.PI / 10).toFloat() + config.boardCell) / config.boardSpan
+        } else config.farEdge
+        return (reach * config.mirrorScale * 2f + 0.09f) * unit
+    }
 
     /** How much of this view floats over the app rather than displacing it. */
     fun floating(): Int = if (config.preview == Preview.OVER) strip.toInt() else 0
@@ -136,8 +142,8 @@ class RadialView(
         chorder.place(Bank.RIGHT, Field(edge, top, width.toFloat(), height.toFloat()))
     }
 
-    /** How far from the mark a ring is drawn, and picked at. */
-    private fun reach(radius: Radius): Float = config.reach(radius) * unit
+    /** How far from the mark the ring is drawn, and picked at. */
+    private fun reach(): Float = config.farReach * unit
 
     private fun bankAt(x: Float) = if (x < width * config.fieldSplit) Bank.LEFT else Bank.RIGHT
 
@@ -153,7 +159,6 @@ class RadialView(
                 if (chorder.down(bank, pointer, event.getX(at), event.getY(at))) haptics.take(bank)
                 tell(bank)
                 armStall(bank)
-                armSettle(bank)
                 armHold(bank, pointer)
             }
 
@@ -169,12 +174,21 @@ class RadialView(
                         pickModifier(thumb, event.getX(at), event.getY(at))
                         continue
                     }
-                    if (chorder.move(pointer, event.getX(at), event.getY(at), unit, event.eventTime)) {
-                        haptics.take(thumb.bank)
+                    var took = false
+                    // Every sample, not one per frame: take-on-entry reads the
+                    // path itself, and a fast sweep crosses a cell between frames.
+                    if (config.board) {
+                        for (h in 0 until event.historySize) {
+                            took = chorder.move(
+                                pointer, event.getHistoricalX(at, h),
+                                event.getHistoricalY(at, h), unit
+                            ) || took
+                        }
                     }
+                    took = chorder.move(pointer, event.getX(at), event.getY(at), unit) || took
+                    if (took) haptics.take(thumb.bank)
                     tell(thumb.bank)
                     armStall(thumb.bank)
-                    armSettle(thumb.bank)
                 }
             }
 
@@ -238,22 +252,6 @@ class RadialView(
         postDelayed(task, config.stallMs)
     }
 
-    /**
-     * A thumb that has stopped sends no more events, so the wait a near key serves
-     * has to be ended here.
-     */
-    private fun armSettle(bank: Bank) {
-        settles.remove(bank)?.let { removeCallbacks(it) }
-        if (config.settleMs <= 0) return
-        val task = Runnable {
-            if (chorder.settle(bank, unit, SystemClock.uptimeMillis())) haptics.take(bank)
-            tell(bank)
-            invalidate()
-        }
-        settles[bank] = task
-        postDelayed(task, config.settleMs + 8)
-    }
-
     private fun armHold(bank: Bank, pointer: Int) {
         if (!config.longPress) return
         val task = Runnable {
@@ -277,11 +275,12 @@ class RadialView(
         val distance = hypot(dx, dy)
         if (distance < config.minSlide * unit) return
         val heading = Math.toDegrees(atan2(dy.toDouble(), dx.toDouble())).toFloat()
-        val band = if (distance < config.ringSplit() * unit) Radius.NEAR else Radius.FAR
-        val near = band == Radius.NEAR
+        // Two bands of its own: the sticky modifiers on a short reach, the keys
+        // on the long one, split where the short band's targets end.
+        val near = distance < reach() * 0.62f
         val items: List<Pair<String, Int>> = if (near) modifiers else specials
         val step = 360f / items.size
-        val start = config.startAngle(thumb.bank, band)
+        val start = config.startAngle(thumb.bank)
         var best = 0
         var bestOff = Float.MAX_VALUE
         for (i in items.indices) {
@@ -369,9 +368,10 @@ class RadialView(
             if (config.cloud) drawCloud(canvas, bank, paint)
             when {
                 modifying == bank -> {
-                    drawItems(canvas, thumb, modifiers, Radius.NEAR, paint)
-                    drawItems(canvas, thumb, specials, Radius.FAR, paint)
+                    drawItems(canvas, thumb, modifiers, reach() * 0.45f, sticky = true, paint)
+                    drawItems(canvas, thumb, specials, reach(), sticky = false, paint)
                 }
+                config.board -> drawBoard(canvas, thumb, paint)
                 // The layout the next touch will be read against, whichever that is.
                 !thumb.down -> drawEntry(canvas, thumb, paint)
                 else -> {
@@ -392,6 +392,87 @@ class RadialView(
                 ink
             )
         }
+    }
+
+    /** The board where it is read, and while a thumb is down, its copy in the clear. */
+    private fun drawBoard(canvas: Canvas, thumb: Thumb, paint: Palette) {
+        drawBoardAt(canvas, thumb, board.center(thumb.field), 1f, 1f, paint)
+        if (!thumb.down) return
+        drawThumb(canvas, thumb, thumb.markX, thumb.markY, 1f, 1f, paint)
+        drawBoardCopy(canvas, thumb, paint)
+    }
+
+    /**
+     * Every cell of one bank, live or dead. A dead cell stays on screen because
+     * it is still ground, and a doorway shows the key it now takes, marked as a
+     * copy the way the mirrored ring is.
+     */
+    private fun drawBoardAt(
+        canvas: Canvas,
+        thumb: Thumb,
+        at: Point,
+        scale: Float,
+        dim: Float,
+        paint: Palette,
+    ) {
+        val field = thumb.field
+        val middle = board.center(field)
+        val radius = board.radius(field) * scale
+        for (cell in board.cells(thumb.bank, field)) {
+            val x = at.x + (cell.x - middle.x) * scale
+            val y = at.y + (cell.y - middle.y) * scale
+            val yields = board.resolve(cell.key, thumb.after)
+            val live = yields == cell.key
+            val dimmed = dim * if (live) 1f else 0.45f
+            ink.style = Paint.Style.FILL
+            ink.color = fade(paint.face, dimmed)
+            canvas.drawCircle(x, y, radius, ink)
+            ink.style = Paint.Style.STROKE
+            ink.color = fade(paint.edge, dimmed)
+            canvas.drawCircle(x, y, radius, ink)
+            if (!config.showLabels) continue
+            ink.style = Paint.Style.FILL
+            ink.color = fade(paint.text, dimmed)
+            canvas.drawText(order[cell.key].toString(), x, y + ink.textSize * 0.35f, ink)
+            if (yields != null && !live) {
+                val size = ink.textSize
+                ink.textSize = size * 0.75f
+                ink.color = fade(paint.hot, dim * config.mirrorDim)
+                canvas.drawText(order[yields].toString(), x + radius * 0.45f, y - radius * 0.3f, ink)
+                ink.textSize = size
+            }
+        }
+    }
+
+    /** The board again in the clear, with the slide mapped onto it. */
+    private fun drawBoardCopy(canvas: Canvas, thumb: Thumb, paint: Palette) {
+        val field = thumb.field
+        val middle = board.center(field)
+        val reach = board.cells(thumb.bank, field)
+            .maxOf { hypot(it.x - middle.x, it.y - middle.y) } + board.radius(field)
+        val room = room() * 0.5f
+        val cx: Float
+        val cy: Float
+        if (config.preview.strip) {
+            cx = field.centerX
+            cy = strip * 0.5f
+        } else if (config.preview == Preview.FIELD) {
+            cx = field.centerX.coerceIn(
+                min(room, width * 0.5f), width - min(room, width * 0.5f)
+            )
+            cy = (field.top + field.height * config.mirrorAt)
+                .coerceIn(strip + min(room, height * 0.5f), height - min(room, height * 0.5f))
+        } else {
+            return
+        }
+        val scale = ((if (config.preview.strip) strip * 0.46f else room) / reach).coerceAtMost(1f)
+        drawBoardAt(canvas, thumb, Point(cx, cy), scale, config.mirrorDim, paint)
+        drawThumb(
+            canvas, thumb,
+            cx + (thumb.markX - middle.x) * scale,
+            cy + (thumb.markY - middle.y) * scale,
+            scale, config.mirrorDim, paint,
+        )
     }
 
     /**
@@ -450,14 +531,13 @@ class RadialView(
         paint: Palette,
     ) {
         val hover = chorder.hover(thumb.bank)
-        val waiting = chorder.waiting(thumb.bank)
         // Nothing is chosen inside this, which is why a short slide costs nothing.
         ink.style = Paint.Style.STROKE
         ink.color = fade(paint.edge, dim * 0.6f)
         canvas.drawCircle(cx, cy, config.minSlide * unit * scale, ink)
 
         for (sector in ring.sectors(thumb.bank, thumb.after)) {
-            val band = config.bounds(thumb.bank, sector.radius)
+            val band = config.bounds()
             val path = wedge(
                 cx, cy, band.start * unit * scale, band.endInclusive * unit * scale,
                 sector.from, sector.to - sector.from
@@ -470,10 +550,9 @@ class RadialView(
             canvas.drawPath(path, ink)
             if (!config.showLabels) continue
             val mid = Math.toRadians(((sector.from + sector.to) * 0.5f).toDouble())
-            val at = reach(sector.radius) * scale
+            val at = reach() * scale
             ink.style = Paint.Style.FILL
-            // The key a wait is waiting on, so the pause reads as a pause.
-            ink.color = fade(if (sector.key == waiting) paint.hot else paint.text, dim)
+            ink.color = fade(paint.text, dim)
             canvas.drawText(
                 order[sector.key].toString(),
                 cx + (cos(mid) * at).toFloat(),
@@ -564,8 +643,9 @@ class RadialView(
         if (thumb.keys.isEmpty()) return
         ink.style = Paint.Style.FILL
         ink.color = paint.hot
+        // In steno order, not take order, so what is shown is the outline's spelling.
         canvas.drawText(
-            thumb.keys.map { order[it] }.joinToString(""),
+            thumb.keys.sorted().joinToString("") { order[it].toString() },
             thumb.field.centerX,
             thumb.field.top + ink.textSize,
             ink
@@ -619,14 +699,13 @@ class RadialView(
         canvas: Canvas,
         thumb: Thumb,
         items: List<Pair<String, Int>>,
-        band: Radius,
+        distance: Float,
+        sticky: Boolean,
         paint: Palette,
     ) {
-        val distance = reach(band)
         val radius = config.markRadius * unit * 2f
-        val sticky = band == Radius.NEAR
         val step = 360f / items.size
-        val start = config.startAngle(thumb.bank, band)
+        val start = config.startAngle(thumb.bank)
         for (i in items.indices) {
             val radians = Math.toRadians((start + i * step).toDouble())
             val x = thumb.markX + (cos(radians) * distance).toFloat()

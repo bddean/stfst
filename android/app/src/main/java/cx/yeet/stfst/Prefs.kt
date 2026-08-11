@@ -13,27 +13,27 @@ object Prefs {
             putString("splitKey", splitKey.toString())
             putString("farLeft", farLeft)
             putString("farRight", farRight)
-            putString("nearLeft", nearLeft)
-            putString("nearRight", nearRight)
-            putBoolean("spread", spread)
-            putInt("slotsFar", slotsFar)
-            putInt("slotsNear", slotsNear)
+            putBoolean("board", board)
+            putString("boardIslandLeft", boardIslandLeft)
+            putString("boardRingLeft", boardRingLeft)
+            putString("boardIslandRight", boardIslandRight)
+            putString("boardRingRight", boardRingRight)
+            putString("boardPortals", boardPortals)
+            putFloat("boardSpan", boardSpan)
+            putFloat("boardCell", boardCell)
+            putFloat("boardAt", boardAt)
+            putFloat("boardStartLeft", boardStartLeft)
+            putFloat("boardStartRight", boardStartRight)
             putInt("entryCols", entryCols)
             putFloat("entryWide", entryWide)
             putFloat("entryTall", entryTall)
             putFloat("entryAt", entryAt)
             putBoolean("entryCentral", entryCentral)
             putFloat("startFarLeft", startFarLeft)
-            putFloat("startNearLeft", startNearLeft)
             putFloat("startFarRight", startFarRight)
-            putFloat("startNearRight", startNearRight)
             putFloat("minSlide", minSlide)
-            putFloat("nearReach", nearReach)
             putFloat("farReach", farReach)
-            putFloat("ringSplitAt", ringSplitAt)
-            putLong("settleMs", settleMs)
             putFloat("turnDegrees", turnDegrees)
-            putFloat("snapDegrees", snapDegrees)
             putFloat("hysteresisDegrees", hysteresisDegrees)
             putLong("stallMs", stallMs)
             putFloat("homeAt", homeAt)
@@ -70,27 +70,27 @@ object Prefs {
             splitKey = prefs.getString("splitKey", null)?.firstOrNull() ?: d.splitKey,
             farLeft = prefs.getString("farLeft", d.farLeft)!!,
             farRight = prefs.getString("farRight", d.farRight)!!,
-            nearLeft = prefs.getString("nearLeft", d.nearLeft)!!,
-            nearRight = prefs.getString("nearRight", d.nearRight)!!,
-            spread = prefs.getBoolean("spread", d.spread),
-            slotsFar = prefs.getInt("slotsFar", d.slotsFar),
-            slotsNear = prefs.getInt("slotsNear", d.slotsNear),
+            board = prefs.getBoolean("board", d.board),
+            boardIslandLeft = prefs.getString("boardIslandLeft", d.boardIslandLeft)!!,
+            boardRingLeft = prefs.getString("boardRingLeft", d.boardRingLeft)!!,
+            boardIslandRight = prefs.getString("boardIslandRight", d.boardIslandRight)!!,
+            boardRingRight = prefs.getString("boardRingRight", d.boardRingRight)!!,
+            boardPortals = prefs.getString("boardPortals", d.boardPortals)!!,
+            boardSpan = prefs.getFloat("boardSpan", d.boardSpan),
+            boardCell = prefs.getFloat("boardCell", d.boardCell),
+            boardAt = prefs.getFloat("boardAt", d.boardAt),
+            boardStartLeft = prefs.getFloat("boardStartLeft", d.boardStartLeft),
+            boardStartRight = prefs.getFloat("boardStartRight", d.boardStartRight),
             entryCols = prefs.getInt("entryCols", d.entryCols),
             entryWide = prefs.getFloat("entryWide", d.entryWide),
             entryTall = prefs.getFloat("entryTall", d.entryTall),
             entryAt = prefs.getFloat("entryAt", d.entryAt),
             entryCentral = prefs.getBoolean("entryCentral", d.entryCentral),
             startFarLeft = prefs.getFloat("startFarLeft", d.startFarLeft),
-            startNearLeft = prefs.getFloat("startNearLeft", d.startNearLeft),
             startFarRight = prefs.getFloat("startFarRight", d.startFarRight),
-            startNearRight = prefs.getFloat("startNearRight", d.startNearRight),
             minSlide = prefs.getFloat("minSlide", d.minSlide),
-            nearReach = prefs.getFloat("nearReach", d.nearReach),
             farReach = prefs.getFloat("farReach", d.farReach),
-            ringSplitAt = prefs.getFloat("ringSplitAt", d.ringSplitAt),
-            settleMs = prefs.getLong("settleMs", d.settleMs),
             turnDegrees = prefs.getFloat("turnDegrees", d.turnDegrees),
-            snapDegrees = prefs.getFloat("snapDegrees", d.snapDegrees),
             hysteresisDegrees = prefs.getFloat("hysteresisDegrees", d.hysteresisDegrees),
             stallMs = prefs.getLong("stallMs", d.stallMs),
             homeAt = prefs.getFloat("homeAt", d.homeAt),

@@ -21,13 +21,9 @@ class Thumb(val bank: Bank) {
     var markY: Float = 0f
     val keys: MutableList<Int> = mutableListOf()
 
-    /** Where the thumb is now, so a settling key can be taken without a new event. */
+    /** Where the thumb is now. */
     var atX: Float = 0f
     var atY: Float = 0f
-
-    /** The near key under consideration, and since when. */
-    var waiting: Int = NO_KEY
-    var waitingSince: Long = 0L
 
     /**
      * The key this slide chose a moment ago, taken or not.
@@ -36,6 +32,14 @@ class Thumb(val bank: Bank) {
      * beat by a margin to take over.
      */
     var hovering: Int = NO_KEY
+
+    /**
+     * The board cell the thumb is in, or NO_KEY on the ground between cells.
+     *
+     * What makes entering an event: a cell answers when the thumb comes in, not
+     * on every sample it stays.
+     */
+    var cell: Int = NO_KEY
 
     /** Which way the last key was taken, or NaN before the first one. */
     var heading: Float = Float.NaN
@@ -50,8 +54,8 @@ class Thumb(val bank: Bank) {
         markY = homeY
         atX = homeX
         atY = homeY
-        waiting = NO_KEY
         hovering = NO_KEY
+        cell = NO_KEY
         heading = Float.NaN
     }
 
@@ -70,7 +74,12 @@ class Thumb(val bank: Bank) {
  * motion, not one per word. Both-up is the other option and only changes when
  * the write happens.
  */
-class Chorder(private val ring: Ring, private val config: Config, private val write: (Long) -> Unit) {
+class Chorder(
+    private val ring: Ring,
+    private val board: Board,
+    private val config: Config,
+    private val write: (Long) -> Unit,
+) {
 
     val left = Thumb(Bank.LEFT)
     val right = Thumb(Bank.RIGHT)
@@ -121,31 +130,26 @@ class Chorder(private val ring: Ring, private val config: Config, private val wr
         thumb.markY = y
         thumb.atX = x
         thumb.atY = y
+        if (config.board) {
+            // The nearest cell, not the entered one: a touch-down is an aim at a
+            // whole field, so no tap lands on nothing.
+            val cell = board.nearest(bank, thumb.field, x, y) ?: return false
+            thumb.cell = cell
+            val key = board.resolve(cell, thumb.after) ?: return false
+            take(thumb, key, Float.NaN)
+            return true
+        }
         val key = ring.entryAt(bank, thumb.field, x, y, thumb.after) ?: return false
         take(thumb, key, Float.NaN)
         return true
     }
 
     /** A thumb slides. True when it took at least one more key. */
-    fun move(pointer: Int, x: Float, y: Float, unit: Float, now: Long): Boolean {
+    fun move(pointer: Int, x: Float, y: Float, unit: Float): Boolean {
         val thumb = forPointer(pointer) ?: return false
-        return advance(thumb, x, y, unit, now)
+        if (config.board) return enter(thumb, x, y)
+        return advance(thumb, x, y, unit)
     }
-
-    /**
-     * Ask again at the position the thumb is already at.
-     *
-     * A thumb that has stopped sends no more events, so the wait a near key serves
-     * has to be ended by a clock rather than by movement.
-     */
-    fun settle(bank: Bank, unit: Float, now: Long): Boolean {
-        val thumb = thumb(bank)
-        if (!thumb.down) return false
-        return advance(thumb, thumb.atX, thumb.atY, unit, now)
-    }
-
-    /** The key a thumb would take if it stopped here, for the ring to show. */
-    fun waiting(bank: Bank): Int = thumb(bank).waiting
 
     /**
      * The key the thumb is over right now, gated by nothing.
@@ -208,47 +212,57 @@ class Chorder(private val ring: Ring, private val config: Config, private val wr
         }
         thumb.markX = thumb.atX
         thumb.markY = thumb.atY
-        thumb.waiting = Thumb.NO_KEY
         thumb.hovering = Thumb.NO_KEY
         thumb.heading = Float.NaN
     }
 
     /**
-     * Take the key this position has chosen, if it has chosen one for long enough.
+     * The board's whole slide rule: entering a cell takes what it yields.
      *
-     * A far key is taken at once, because nothing lies further out for the thumb to
-     * be on its way to, but only if the slide has turned since the last key: going
-     * further along the same ray is the same reach, not another one. A near key has
-     * to still be the answer after `settleMs`, which is what lets a thumb cross the
-     * near band on the way to a consonant without collecting a vowel.
+     * No gate waits on time or turning. The ground between the discs is the
+     * guard instead: crossing the field without taking is done between the
+     * cells, and a spent cell is itself ground. Asked once per entry, not per
+     * sample, so standing in a doorway does not take through it twice.
      */
-    private fun advance(thumb: Thumb, x: Float, y: Float, unit: Float, now: Long): Boolean {
+    private fun enter(thumb: Thumb, x: Float, y: Float): Boolean {
+        thumb.atX = x
+        thumb.atY = y
+        val cell = board.hit(thumb.bank, thumb.field, x, y)
+        if (cell == null) {
+            thumb.cell = Thumb.NO_KEY
+            return false
+        }
+        if (cell == thumb.cell) return false
+        thumb.cell = cell
+        val key = board.resolve(cell, thumb.after) ?: return false
+        thumb.markX = x
+        thumb.markY = y
+        take(thumb, key, Float.NaN)
+        return true
+    }
+
+    /**
+     * Take the key this position has chosen.
+     *
+     * At once, because nothing lies further out for the thumb to be on its way
+     * to, but only if the slide has turned since the last key: going further
+     * along the same ray is the same reach, not another one.
+     */
+    private fun advance(thumb: Thumb, x: Float, y: Float, unit: Float): Boolean {
         thumb.atX = x
         thumb.atY = y
         val key = ring.pick(
             thumb.bank, thumb.after, thumb.markX, thumb.markY, x, y, unit, thumb.hovering
         )
         thumb.hovering = key ?: Thumb.NO_KEY
-        if (key == null) {
-            thumb.waiting = Thumb.NO_KEY
-            return false
-        }
+        if (key == null) return false
         val heading = Math.toDegrees(
             atan2((y - thumb.markY).toDouble(), (x - thumb.markX).toDouble())
         ).toFloat()
-        val near = ring.ringOf(key) == Radius.NEAR
-        if (!near && !thumb.heading.isNaN() &&
+        if (!thumb.heading.isNaN() &&
             Ring.separation(heading, thumb.heading) < config.turnDegrees
         ) {
             return false
-        }
-        if (near && config.settleMs > 0) {
-            if (key != thumb.waiting) {
-                thumb.waiting = key
-                thumb.waitingSince = now
-                return false
-            }
-            if (now - thumb.waitingSince < config.settleMs) return false
         }
         thumb.markX = x
         thumb.markY = y
@@ -265,7 +279,6 @@ class Chorder(private val ring: Ring, private val config: Config, private val wr
     private fun take(thumb: Thumb, key: Int, heading: Float) {
         thumb.keys.add(key)
         thumb.heading = heading
-        thumb.waiting = Thumb.NO_KEY
         thumb.hovering = Thumb.NO_KEY
         pending = true
     }

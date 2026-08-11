@@ -10,35 +10,17 @@ import org.junit.Test
 private const val ORDER = "#@^+STKPWHRAO*EUfrpblgtsdz"
 private const val UNIT = 1000f
 
+/** The radial layout's chording. The board's is [BoardTest]'s to hold. */
 class ChorderTest {
 
-    private var config = Config()
-    private var ring = Ring(ORDER, config)
+    private val config = Config().also { it.board = false }
+    private val ring = Ring(ORDER, config)
     private val written = mutableListOf<Long>()
-    private var chorder = Chorder(ring, config) { written.add(it) }
+    private val chorder = Chorder(ring, Board(ORDER, config), config) { written.add(it) }
 
     init {
-        place()
-    }
-
-    private fun place() {
         chorder.place(Bank.LEFT, Field(0f, 0f, 400f, 900f))
         chorder.place(Bank.RIGHT, Field(400f, 0f, 800f, 900f))
-    }
-
-    /**
-     * Ask for the two ring layout, which the default is not any more.
-     *
-     * A short slide and a long one meant different keys, and metering a distance
-     * under a thumb is the channel that went wrong. What the tests below hold on to
-     * is that the layout still works when it is asked for.
-     */
-    private fun twoRings() {
-        config.farLeft = "STKPWHR"
-        config.nearLeft = "AO#@^+"
-        ring = Ring(ORDER, config)
-        chorder = Chorder(ring, config) { written.add(it) }
-        place()
     }
 
     private fun key(symbol: Char) = ORDER.indexOf(symbol)
@@ -49,57 +31,40 @@ class ChorderTest {
     private fun keys(bank: Bank) =
         chorder.thumb(bank).keys.map { ORDER[it] }.joinToString("")
 
-    /** A clock the test moves on purpose, because a near key waits on one. */
-    private var now = 0L
-
     private fun from(ox: Float, oy: Float, angle: Float, distance: Float): Pair<Float, Float> {
         val radians = Math.toRadians(angle.toDouble())
         return Pair(ox + (cos(radians) * distance).toFloat(), oy + (sin(radians) * distance).toFloat())
     }
 
-    /**
-     * Slide, then stop there long enough for a near key to be taken.
-     *
-     * What a thumb aiming at one key does. A thumb on its way past does not stop,
-     * which is what `crossing_the_near_ring_takes_no_vowel` does instead.
-     */
     private fun slide(bank: Bank, angle: Float, distance: Float) {
         val thumb = chorder.thumb(bank)
         val (x, y) = from(thumb.markX, thumb.markY, angle, distance)
-        chorder.move(thumb.pointer, x, y, UNIT, now)
-        rest(bank)
+        chorder.move(thumb.pointer, x, y, UNIT)
     }
 
     /**
-     * Slide toward where a key is drawn on the ring, then stop there.
+     * Slide toward where a key is drawn on the ring.
      *
      * Which angle that is depends on what the stroke has taken, because the live
      * keys share the ring out between them. Aim at a key and you get that key.
      */
     private fun slideTo(bank: Bank, symbol: Char) {
         val thumb = chorder.thumb(bank)
-        val slot = ring.slotOf(key(symbol), thumb.after)!!
-        slide(bank, slot.angle, config.reach(slot.radius) * UNIT)
+        val angle = ring.slotOf(key(symbol), thumb.after)!!
+        slide(bank, angle, far)
     }
 
     /** Where a key sits on the tap layout, which is what a touch-down aims at. */
     private fun cell(bank: Bank, symbol: Char): Cell =
         ring.entry(bank, chorder.thumb(bank).field).first { ORDER[it.key] == symbol }
 
-    /** Tap a key. A touch-down takes the key it lands on, whatever the rings say. */
+    /** Tap a key. A touch-down takes the key it lands on, whatever the ring says. */
     private fun touch(bank: Bank, pointer: Int, symbol: Char) {
         val cell = cell(bank, symbol)
         chorder.down(bank, pointer, cell.x, cell.y)
     }
 
-    /** Hold still until whatever was waiting has been taken. */
-    private fun rest(bank: Bank) {
-        now += config.settleMs + 1
-        chorder.settle(bank, UNIT, now)
-    }
-
-    private val far = config.reach(Radius.FAR) * UNIT
-    private val near = config.reach(Radius.NEAR) * UNIT
+    private val far = config.farReach * UNIT
 
     /** `KAOEPT`, written the way two thumbs write it: a tap then slides. */
     private fun keepThe() {
@@ -177,54 +142,11 @@ class ChorderTest {
         assertEquals("", keys(Bank.RIGHT))
     }
 
-    /**
-     * The bug that made the consonants unreachable: reaching for one crosses the
-     * near ring, and a thumb that does not stop there has not asked for a vowel.
-     */
-    @Test
-    fun crossing_the_near_ring_takes_no_vowel() {
-        twoRings()
-        touch(Bank.LEFT, 0, 'K')
-        assertEquals("K", keys(Bank.LEFT))
-        // Out again toward P, sampled every 8 ms as a finger is, from inside the
-        // near band to past the boundary.
-        val out = ring.slotOf(key('P'), key('K'))!!.angle
-        for (distance in listOf(near * 0.6f, near, config.ringSplit() * UNIT * 1.1f, far)) {
-            val thumb = chorder.thumb(Bank.LEFT)
-            val (x, y) = from(thumb.markX, thumb.markY, out, distance)
-            now += 8
-            chorder.move(thumb.pointer, x, y, UNIT, now)
-        }
-        assertEquals("the vowels were collected on the way out", "KP", keys(Bank.LEFT))
-    }
-
-    @Test
-    fun stopping_on_the_near_ring_takes_the_vowel() {
-        twoRings()
-        touch(Bank.LEFT, 0, 'K')
-        val thumb = chorder.thumb(Bank.LEFT)
-        val (x, y) = from(thumb.markX, thumb.markY, 0f, near)
-        now += 8
-        chorder.move(thumb.pointer, x, y, UNIT, now)
-        assertEquals("not yet: the thumb may be going further", "K", keys(Bank.LEFT))
-        rest(Bank.LEFT)
-        assertEquals("KA", keys(Bank.LEFT))
-    }
-
-    @Test
-    fun a_far_key_is_taken_at_once() {
-        config.settleMs = 500L
-        touch(Bank.LEFT, 0, 'S')
-        val (x, y) = toward(Bank.LEFT, 'K', far)
-        chorder.move(0, x, y, UNIT, now)
-        assertEquals("SK", keys(Bank.LEFT))
-    }
-
     /** A point that far from the mark, in the direction a key is drawn. */
     private fun toward(bank: Bank, symbol: Char, distance: Float): Pair<Float, Float> {
         val thumb = chorder.thumb(bank)
-        val slot = ring.slotOf(key(symbol), thumb.after)!!
-        return from(thumb.markX, thumb.markY, slot.angle, distance)
+        val angle = ring.slotOf(key(symbol), thumb.after)!!
+        return from(thumb.markX, thumb.markY, angle, distance)
     }
 
     /**
@@ -256,12 +178,11 @@ class ChorderTest {
         touch(Bank.LEFT, 0, 'S')
         val thumb = chorder.thumb(Bank.LEFT)
         val (x, y) = toward(Bank.LEFT, 'K', far)
-        now += 8
-        chorder.move(0, x, y, UNIT, now)
+        chorder.move(0, x, y, UNIT)
         assertEquals("SK", keys(Bank.LEFT))
         assertEquals(0f, hypot(thumb.markX - x, thumb.markY - y), 0.001f)
         // The same position again is no movement at all, so it takes nothing.
-        chorder.move(0, x, y, UNIT, now)
+        chorder.move(0, x, y, UNIT)
         assertEquals("SK", keys(Bank.LEFT))
     }
 
@@ -270,7 +191,7 @@ class ChorderTest {
     fun a_long_flick_takes_one_key() {
         touch(Bank.LEFT, 0, 'S')
         val (x, y) = toward(Bank.LEFT, 'K', far * 4f)
-        chorder.move(0, x, y, UNIT, now)
+        chorder.move(0, x, y, UNIT)
         assertEquals("SK", keys(Bank.LEFT))
     }
 
@@ -289,13 +210,12 @@ class ChorderTest {
         val thumb = chorder.thumb(Bank.LEFT)
         // Not far enough to have asked for anything, and stopped there.
         val (x, y) = from(thumb.markX, thumb.markY, 0f, config.minSlide * UNIT * 0.8f)
-        now += 8
-        chorder.move(0, x, y, UNIT, now)
+        chorder.move(0, x, y, UNIT)
         chorder.stall(Bank.LEFT)
         assertEquals(x, thumb.markX, 0.001f)
         assertEquals(y, thumb.markY, 0.001f)
         // And the gap it closed cannot be spent: the thumb is on its own mark now.
-        chorder.move(0, x, y, UNIT, now)
+        chorder.move(0, x, y, UNIT)
         assertEquals("S", keys(Bank.LEFT))
     }
 
@@ -318,8 +238,7 @@ class ChorderTest {
         // Further out along the same ray, which is the same reach and not another
         // one, so the turn rule holds the key back. It is still shown.
         val (x, y) = from(thumb.markX, thumb.markY, thumb.heading, config.farReach * UNIT)
-        now += 8
-        chorder.move(0, x, y, UNIT, now)
+        chorder.move(0, x, y, UNIT)
         assertEquals("SK", keys(Bank.LEFT))
         assertTrue("nothing to show", chorder.hover(Bank.LEFT) != Thumb.NO_KEY)
     }

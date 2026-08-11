@@ -68,11 +68,46 @@ class SettingsActivity : Activity() {
     private class Section(label: String, note: String = "") : Knob(label, note)
 
     private val knobs: List<Knob> = listOf(
-        Section("Which key is where",
-            "Two layouts. A touch-down reads the honeycomb over the whole field, " +
+        Section("The board",
+            "The default layout: fixed cells, read by where the thumb is. Each " +
+                "bank is a ring in take order around an island of the keys taken " +
+                "first, and any cell the thumb enters is taken. A spent cell is " +
+                "ground, the space between cells takes nothing, and a dead island " +
+                "cell is a doorway to the key after its '>'."),
+        Flag("Fixed board", { it.board }, { c, v -> c.board = v },
+            "off falls back to the radial layout below, which reads slides by " +
+                "direction instead"),
+        Text("Left island", { it.boardIslandLeft }, { c, v -> c.boardIslandLeft = v },
+            "taken before the ring: the vowels, so the middle opens with the first " +
+                "key. A stroke is a set of keys, so the outline stays steno order " +
+                "whatever order the thumb walked"),
+        Text("Left board ring", { it.boardRingLeft }, { c, v -> c.boardRingLeft = v },
+            "clockwise from the board start angle"),
+        Text("Right island", { it.boardIslandRight }, { c, v -> c.boardIslandRight = v }),
+        Text("Right board ring", { it.boardRingRight }, { c, v -> c.boardRingRight = v }),
+        Text("Doorways", { it.boardPortals }, { c, v -> c.boardPortals = v },
+            "pairs like A>R: a dead A cell takes R, for as long as R can still be " +
+                "taken"),
+        Range("Board span", 3f, 7f, { it.boardSpan }, { c, v -> c.boardSpan = v },
+            "cell pitches across the field's short side; fewer means bigger cells",
+            unit = "pitches"),
+        Range("Board cell size", 0.25f, 0.5f, { it.boardCell }, { c, v -> c.boardCell = v },
+            "a cell's radius against the pitch. Under a half leaves ground between " +
+                "the cells, which is the only way across without taking",
+            unit = "× pitch"),
+        Range("Board position", 0.2f, 0.8f, { it.boardAt }, { c, v -> c.boardAt = v },
+            "where the middle of the board sits", unit = "down the field"),
+        Range("Left board start", -180f, 180f, { it.boardStartLeft },
+            { c, v -> c.boardStartLeft = v },
+            "where the ring's first key sits; -90 is straight up", unit = "°"),
+        Range("Right board start", -180f, 180f, { it.boardStartRight },
+            { c, v -> c.boardStartRight = v }, unit = "°"),
+
+        Section("The radial layout",
+            "The fallback. A touch-down reads the honeycomb over the whole field, " +
                 "because a tap has no direction to it. Every slide after that reads " +
-                "the two rings around the last key: the far ring is the long slide " +
-                "and the near ring the short one, clockwise from the start angle."),
+                "the ring around the last key: which way, never how far, clockwise " +
+                "from the start angle."),
         Range("Tap layout columns", 2f, 6f, { it.entryCols.toFloat() },
             { c, v -> c.entryCols = v.toInt() },
             "the widest row of the honeycomb. Three puts thirteen keys in rows of " +
@@ -89,54 +124,30 @@ class SettingsActivity : Activity() {
         Flag("Early keys in the middle rows", { it.entryCentral }, { c, v -> c.entryCentral = v },
             "an early key is where the sliding starts, so it sits in the middle of " +
                 "the field with room to slide. Off is plain reading order"),
-        Text("Left far ring", { it.farLeft }, { c, v -> c.farLeft = v },
-            "keys on the long slide, in steno order, clockwise from the start angle"),
-        Text("Left near ring", { it.nearLeft }, { c, v -> c.nearLeft = v }),
-        Text("Right far ring", { it.farRight }, { c, v -> c.farRight = v }),
-        Text("Right near ring", { it.nearRight }, { c, v -> c.nearRight = v }),
+        Text("Left ring", { it.farLeft }, { c, v -> c.farLeft = v },
+            "the slide keys, in steno order, clockwise from the start angle"),
+        Text("Right ring", { it.farRight }, { c, v -> c.farRight = v }),
         Text("Bank split key", { it.splitKey.toString() },
             { c, v -> v.firstOrNull()?.let { c.splitKey = it } },
             "the first key the right thumb owns"),
-
-        Flag("Share each ring out evenly", { it.spread }, { c, v -> c.spread = v },
-            "the keys still live on a ring divide it between them, earliest at the " +
-                "start angle. Fixed slots squeeze a key with a live neighbour on each " +
-                "side: three live keys on eight slots can leave the middle one 45 " +
-                "degrees against 157 each. Even, all three hold 120"),
-        Range("Far ring slots", 4f, 12f, { it.slotsFar.toFloat() }, { c, v -> c.slotsFar = v.toInt() },
-            "only when the ring is not shared out evenly", unit = "slots"),
-        Range("Near ring slots", 4f, 12f, { it.slotsNear.toFloat() }, { c, v -> c.slotsNear = v.toInt() }, unit = "slots"),
-        Range("Left far start angle", -180f, 180f, { it.startFarLeft }, { c, v -> c.startFarLeft = v },
+        Range("Left start angle", -180f, 180f, { it.startFarLeft }, { c, v -> c.startFarLeft = v },
             "-90 is straight up", unit = "°"),
-        Range("Left near start angle", -180f, 180f, { it.startNearLeft }, { c, v -> c.startNearLeft = v }, unit = "°"),
-        Range("Right far start angle", -180f, 180f, { it.startFarRight }, { c, v -> c.startFarRight = v }, unit = "°"),
-        Range("Right near start angle", -180f, 180f, { it.startNearRight }, { c, v -> c.startNearRight = v }, unit = "°"),
+        Range("Right start angle", -180f, 180f, { it.startFarRight }, { c, v -> c.startFarRight = v }, unit = "°"),
 
-        Section("How far a slide has to go",
+        Section("How a slide is read",
             "All lengths are fractions of the thumb field's short side, so they mean " +
                 "the same thing on any screen."),
         Range("Minimum slide", 0.01f, 0.25f, { it.minSlide }, { c, v -> c.minSlide = v },
             "shorter than this and a slide means nothing", unit = "× field"),
-        Range("Near ring reach", 0.05f, 0.3f, { it.nearReach }, { c, v -> c.nearReach = v },
-            "how far out the short-slide keys sit, and what a short slide is", unit = "× field"),
-        Range("Far ring reach", 0.15f, 0.6f, { it.farReach }, { c, v -> c.farReach = v },
-            "the same for the long-slide keys", unit = "× field"),
-        Range("Ring boundary", 0.1f, 0.9f, { it.ringSplitAt }, { c, v -> c.ringSplitAt = v },
-            "where between the rings a slide stops being short; low favours the far ring", unit = "of the gap"),
-        Section("How a slide is read"),
-        Range("Snap limit", 10f, 180f, { it.snapDegrees }, { c, v -> c.snapDegrees = v },
-            "how far off a slot's angle a slide may be; 180 always takes the nearest", unit = "°"),
+        Range("Ring reach", 0.15f, 0.6f, { it.farReach }, { c, v -> c.farReach = v },
+            "how far out the keys sit", unit = "× field"),
         Range("Hold on to a key", 0f, 30f, { it.hysteresisDegrees }, { c, v -> c.hysteresisDegrees = v },
             "how much better a rival has to be before the answer changes. A thumb " +
                 "resting on a boundary is nearer one key and then the other on every " +
                 "touch sample, and this is what stops the answer swapping with it", unit = "°"),
-        Range("Settle (ms)", 0f, 300f, { it.settleMs.toFloat() }, { c, v -> c.settleMs = v.toLong() },
-            "how long a near-ring key waits before it is taken. A thumb reaching for " +
-                "a consonant crosses the near ring on the way, and this is what stops " +
-                "it collecting a vowel. Zero takes both rings at once", unit = "ms"),
         Range("Turn needed (degrees)", 0f, 44f, { it.turnDegrees }, { c, v -> c.turnDegrees = v },
-            "how far a slide must turn before it takes another far key, so one long " +
-                "reach is one key. Keep it under 45, the angle between two slots", unit = "°"),
+            "how far a slide must turn before it takes another key, so one long " +
+                "reach is one key", unit = "°"),
         Range("Stall (ms)", 200f, 3000f, { it.stallMs.toFloat() }, { c, v -> c.stallMs = v.toLong() },
             "hold still this long and the ring goes home", unit = "ms"),
         Range("Home point", 0.2f, 0.95f, { it.homeAt }, { c, v -> c.homeAt = v },

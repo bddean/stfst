@@ -18,23 +18,7 @@ class RingTest {
 
     private val config = Config()
     private val ring = Ring(ORDER, config)
-    private val far = config.reach(Radius.FAR) * UNIT
-    private val near = config.reach(Radius.NEAR) * UNIT
-
-    /**
-     * The two ring layout, which the default is not any more.
-     *
-     * A short slide and a long one meant different keys, and metering a distance
-     * under a thumb is the channel that went wrong. What these tests hold on to is
-     * that the layout still works when it is asked for.
-     */
-    private fun twoRings(also: (Config) -> Unit = {}) = Config().also {
-        it.farLeft = "STKPWHR"
-        it.nearLeft = "AO#@^+"
-        it.farRight = "frpblgts"
-        it.nearRight = "*EUdz"
-        also(it)
-    }
+    private val far = config.farReach * UNIT
 
     private fun key(symbol: Char) = ORDER.indexOf(symbol)
 
@@ -58,8 +42,8 @@ class RingTest {
      * a key and you get that key.
      */
     private fun toward(bank: Bank, after: Int, symbol: Char): Int? {
-        val slot = ring.slotOf(key(symbol), after)!!
-        return slide(bank, after, slot.angle, config.reach(slot.radius) * UNIT)
+        val angle = ring.slotOf(key(symbol), after)!!
+        return slide(bank, after, angle, far)
     }
 
     @Test
@@ -71,9 +55,9 @@ class RingTest {
     }
 
     @Test
-    fun every_key_is_on_a_ring() {
+    fun every_key_is_on_the_ring() {
         for (k in ORDER.indices) {
-            assertNotNull("no ring for ${ORDER[k]}", ring.ringOf(k))
+            assertTrue("no place for ${ORDER[k]}", ring.on(k))
         }
     }
 
@@ -86,10 +70,10 @@ class RingTest {
     fun live_keys_never_share_a_slot() {
         for (bank in Bank.values()) {
             for (after in -1 until ORDER.length) {
-                val taken = mutableSetOf<Pair<Radius, Float>>()
+                val taken = mutableSetOf<Float>()
                 for (k in ring.live(bank, after)) {
-                    val slot = ring.slotOf(k, after)!!
-                    val at = Pair(slot.radius, ((slot.angle % 360f) + 360f) % 360f)
+                    val angle = ring.slotOf(k, after)!!
+                    val at = ((angle % 360f) + 360f) % 360f
                     assertTrue("$bank after $after: ${ORDER[k]} collides at $at", taken.add(at))
                 }
             }
@@ -129,9 +113,9 @@ class RingTest {
         }
     }
 
-    /** The earliest live key of a ring sits at that ring's start angle. */
+    /** The earliest live key sits at the ring's start angle. */
     @Test
-    fun a_ring_starts_at_its_start_angle() {
+    fun the_ring_starts_at_its_start_angle() {
         assertEquals(key('#'), slide(Bank.LEFT, -1, config.startFarLeft, far))
         assertEquals(key('P'), slide(Bank.LEFT, key('K'), config.startFarLeft, far))
         // Six keys follow K, so the second of them is a sixth of the way round.
@@ -139,16 +123,16 @@ class RingTest {
     }
 
     /**
-     * One ring, so how far a slide went says nothing beyond whether it happened.
+     * How far a slide went says nothing beyond whether it happened.
      *
      * Distance was the channel that went wrong. Angle answers on its own, and the
      * only thing a length decides now is that a resting thumb has not asked for
      * anything.
      */
     @Test
-    fun with_one_ring_only_the_angle_decides() {
+    fun only_the_angle_decides() {
         val after = key('K')
-        val p = ring.slotOf(key('P'), after)!!.angle
+        val p = ring.slotOf(key('P'), after)!!
         assertNull(slide(Bank.LEFT, after, p, config.minSlide * UNIT - 1f))
         for (reach in listOf(1.01f, 1.5f, 3f, 8f, 30f)) {
             assertEquals(
@@ -159,45 +143,26 @@ class RingTest {
     }
 
     /**
-     * Every live key of a ring holds the same slice of it, clockwise in steno order
+     * Every live key holds the same slice of the ring, clockwise in steno order
      * from the start angle.
      */
     @Test
-    fun a_shared_ring_is_shared_evenly() {
+    fun the_ring_is_shared_evenly() {
         for (after in -1 until ORDER.length) {
             for (bank in Bank.values()) {
-                for (radius in Radius.values()) {
-                    val band = ring.live(bank, after).filter { ring.ringOf(it) == radius }
-                    if (band.isEmpty()) continue
-                    val step = 360f / band.size
-                    band.forEachIndexed { i, k ->
-                        assertEquals(
-                            "$bank $radius after $after: ${ORDER[k]}",
-                            config.startAngle(bank, radius) + i * step,
-                            ring.slotOf(k, after)!!.angle,
-                            0.001f,
-                        )
-                    }
+                val band = ring.live(bank, after)
+                if (band.isEmpty()) continue
+                val step = 360f / band.size
+                band.forEachIndexed { i, k ->
+                    assertEquals(
+                        "$bank after $after: ${ORDER[k]}",
+                        config.startAngle(bank) + i * step,
+                        ring.slotOf(k, after)!!,
+                        0.001f,
+                    )
                 }
             }
         }
-    }
-
-    /**
-     * What sharing the ring out buys. The average region is 360 over the count
-     * either way, so the gain is in the worst one: a key with a live neighbour on
-     * each side is squeezed to the gap between them when the slots are fixed.
-     */
-    @Test
-    fun sharing_the_ring_out_widens_the_smallest_region() {
-        fun smallest(r: Ring): Float = r.sectors(Bank.RIGHT, key('E'))
-            .filter { it.radius == Radius.NEAR }
-            .minOf { it.to - it.from }
-
-        // After E the near ring holds U, d and z, and d has a live neighbour on
-        // each side of it.
-        assertEquals(45f, smallest(Ring(ORDER, twoRings { it.spread = false })), 2f)
-        assertEquals(120f, smallest(Ring(ORDER, twoRings())), 2f)
     }
 
     /**
@@ -210,38 +175,13 @@ class RingTest {
         val p = key('P')
         val w = key('W')
         // Two keys next to each other on the ring, and the boundary between them.
-        val edge = (ring.slotOf(p, after)!!.angle + ring.slotOf(w, after)!!.angle) * 0.5f
+        val edge = (ring.slotOf(p, after)!! + ring.slotOf(w, after)!!) * 0.5f
         assertEquals(p, slide(Bank.LEFT, after, edge - 1f, far))
         assertEquals(w, slide(Bank.LEFT, after, edge + 1f, far))
         // Holding P, a wobble past the boundary is still P.
         assertEquals(p, slide(Bank.LEFT, after, edge + 1f, far, held = p))
         // A real turn is not a wobble.
         assertEquals(w, slide(Bank.LEFT, after, edge + config.hysteresisDegrees + 2f, far, held = p))
-    }
-
-    /**
-     * The boundary sits between the rings, not on one of them, so a slide that
-     * falls short of a far key still reads as far and not as its near neighbour.
-     *
-     * Undershooting was what made the consonants unreachable: after one consonant
-     * the near ring holds only the vowels, so every short flick became A or O.
-     */
-    /** With two rings asked for, the boundary is biased toward the far one. */
-    @Test
-    fun a_slide_most_of_the_way_to_a_far_key_is_still_far() {
-        val two = twoRings()
-        val r = Ring(ORDER, two)
-        val after = key('K')
-        val p = r.slotOf(key('P'), after)!!.angle
-        fun slide(distance: Float): Int? {
-            val (x, y) = at(p, distance)
-            return r.pick(Bank.LEFT, after, 0f, 0f, x, y, UNIT)
-        }
-        assertTrue("the boundary is too far out", two.ringSplit() < two.farReach * 0.7f)
-        assertEquals(key('P'), slide(two.ringSplit() * UNIT + 1f))
-        assertEquals(key('P'), slide(two.farReach * UNIT * 0.7f))
-        // Short of the boundary is the near ring, whatever the thumb was aiming at.
-        assertEquals(Radius.NEAR, r.ringOf(slide(two.ringSplit() * UNIT - 1f)!!))
     }
 
     /**
@@ -269,7 +209,7 @@ class RingTest {
         for (bank in Bank.values()) {
             for (after in -1 until ORDER.length) {
                 for (angle in 0 until 360 step 15) {
-                    for (distance in listOf(80f, 150f, 250f, 600f)) {
+                    for (distance in listOf(150f, 250f, 600f)) {
                         val got = slide(bank, after, angle.toFloat(), distance) ?: continue
                         assertTrue("$bank after $after took $got", got > after)
                         assertTrue("$bank took a key of the other bank", ring.bankOf(got) == bank)
@@ -280,7 +220,7 @@ class RingTest {
     }
 
     // The tap layout. A touch-down has a field to aim at and no direction to read,
-    // so it is a honeycomb over the field and owes the rings nothing.
+    // so it is a honeycomb over the field and owes the ring nothing.
 
     private val field = Field(0f, 0f, 420f, 900f)
 
@@ -404,16 +344,9 @@ class RingTest {
 
     @Test
     fun the_regions_cover_every_direction() {
-        for (rings in listOf(config, twoRings())) {
-            val r = Ring(ORDER, rings)
-            for (radius in Radius.values()) {
-                if (rings.keys(Bank.LEFT, radius).isEmpty()) continue
-                val sweep = r.sectors(Bank.LEFT, key('K'))
-                    .filter { it.radius == radius }
-                    .sumOf { (it.to - it.from).toDouble() }
-                assertEquals("$radius", 360.0, sweep, 0.001)
-            }
-        }
+        val sweep = ring.sectors(Bank.LEFT, key('K'))
+            .sumOf { (it.to - it.from).toDouble() }
+        assertEquals(360.0, sweep, 0.001)
     }
 
     /**
@@ -422,18 +355,15 @@ class RingTest {
      */
     @Test
     fun a_region_is_where_a_slide_of_its_angle_goes() {
-        for (rings in listOf(config, twoRings())) {
-            val r = Ring(ORDER, rings)
-            for (after in -1 until ORDER.length) {
-                for (bank in Bank.values()) {
-                    for (sector in r.sectors(bank, after)) {
-                        val mid = (sector.from + sector.to) * 0.5f
-                        val (x, y) = at(mid, rings.reach(sector.radius) * UNIT)
-                        assertEquals(
-                            "$bank after $after at $mid",
-                            sector.key, r.pick(bank, after, 0f, 0f, x, y, UNIT)
-                        )
-                    }
+        for (after in -1 until ORDER.length) {
+            for (bank in Bank.values()) {
+                for (sector in ring.sectors(bank, after)) {
+                    val mid = (sector.from + sector.to) * 0.5f
+                    val (x, y) = at(mid, far)
+                    assertEquals(
+                        "$bank after $after at $mid",
+                        sector.key, ring.pick(bank, after, 0f, 0f, x, y, UNIT)
+                    )
                 }
             }
         }
