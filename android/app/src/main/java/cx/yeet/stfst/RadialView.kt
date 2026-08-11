@@ -119,10 +119,7 @@ class RadialView(
 
     /** What the copy needs: its own diameter, and the keys it holds above itself. */
     private fun room(): Float {
-        // The board's reach in field units: a ten cell ring plus the cell on it.
-        val reach = if (config.board) {
-            (0.5f / sin(Math.PI / 10).toFloat() + config.boardCell) / config.boardSpan
-        } else config.farEdge
+        val reach = if (config.board) config.boardOuter / config.boardSpan else config.farEdge
         return (reach * config.mirrorScale * 2f + 0.09f) * unit
     }
 
@@ -403,11 +400,16 @@ class RadialView(
     }
 
     /**
-     * Every cell of one bank, live or dead. A dead cell stays on screen because
-     * it is still ground. An island cell carries both its glyphs the whole
-     * time, key above and doorway below, and the open one is the bright one:
-     * before the stroke the key glows and the doorway waits dim, and once the
-     * ring closes the island they trade places.
+     * Every cell of one bank, live or dead: the ring as contiguous slices, the
+     * island as discs. A dead cell stays on screen because it is still ground.
+     * An island cell carries both its glyphs the whole time, key above and
+     * doorway below, and the open one is the bright one: before the stroke the
+     * key glows and the doorway waits dim, and once the ring closes the island
+     * they trade places.
+     *
+     * Glyphs are capped by the geometry they sit in, so no setting can make two
+     * labels overlap: a disc bounds its stack, a slice bounds its glyph by arc
+     * and depth.
      */
     private fun drawBoardAt(
         canvas: Canvas,
@@ -420,6 +422,12 @@ class RadialView(
         val field = thumb.field
         val middle = board.center(field)
         val radius = board.radius(field) * scale
+        val inner = board.inner(field) * scale
+        val outer = board.outer(field) * scale
+        val step = board.step(thumb.bank)
+        val label = (inner + outer) * 0.5f
+        val wanted = ink.textSize
+        val arc = (2f * Math.PI * label * step / 360f).toFloat()
         for (cell in board.cells(thumb.bank, field)) {
             val x = at.x + (cell.x - middle.x) * scale
             val y = at.y + (cell.y - middle.y) * scale
@@ -428,6 +436,25 @@ class RadialView(
             val doorway = board.portal(cell.key)
             val open = doorway != null && yields == doorway
             val dimmed = dim * if (live || open) 1f else 0.45f
+            if (!board.island(cell.key)) {
+                val angle = Math.toDegrees(
+                    atan2((cell.y - middle.y).toDouble(), (cell.x - middle.x).toDouble())
+                ).toFloat()
+                val path = wedge(at.x, at.y, inner, outer, angle - step * 0.5f, step)
+                ink.style = Paint.Style.FILL
+                ink.color = fade(paint.face, dimmed)
+                canvas.drawPath(path, ink)
+                ink.style = Paint.Style.STROKE
+                ink.color = fade(paint.edge, dimmed)
+                canvas.drawPath(path, ink)
+                if (!config.showLabels) continue
+                ink.style = Paint.Style.FILL
+                ink.color = fade(paint.text, dimmed)
+                ink.textSize = minOf(wanted, arc * 0.62f, (outer - inner) * 0.7f)
+                canvas.drawText(order[cell.key].toString(), x, y + ink.textSize * 0.35f, ink)
+                ink.textSize = wanted
+                continue
+            }
             ink.style = Paint.Style.FILL
             ink.color = fade(if (open) paint.warm else paint.face, dimmed)
             canvas.drawCircle(x, y, radius, ink)
@@ -438,25 +465,31 @@ class RadialView(
             ink.style = Paint.Style.FILL
             if (doorway == null) {
                 ink.color = fade(paint.text, dimmed)
+                ink.textSize = minOf(wanted, radius * 1.2f)
                 canvas.drawText(order[cell.key].toString(), x, y + ink.textSize * 0.35f, ink)
-                continue
+            } else {
+                ink.color = fade(paint.text, dim * if (live) 1f else 0.3f)
+                ink.textSize = minOf(wanted, radius * 0.95f)
+                canvas.drawText(order[cell.key].toString(), x, y - radius * 0.12f, ink)
+                ink.textSize = minOf(wanted, radius * 0.95f) * 0.72f
+                ink.color = fade(paint.hot, dim * if (open) 1f else 0.35f)
+                canvas.drawText(order[doorway].toString(), x, y + radius * 0.72f, ink)
             }
-            val size = ink.textSize
-            ink.color = fade(paint.text, dim * if (live) 1f else 0.3f)
-            canvas.drawText(order[cell.key].toString(), x, y - radius * 0.12f, ink)
-            ink.textSize = size * 0.72f
-            ink.color = fade(paint.hot, dim * if (open) 1f else 0.35f)
-            canvas.drawText(order[doorway].toString(), x, y + radius * 0.72f, ink)
-            ink.textSize = size
+            ink.textSize = wanted
         }
     }
 
-    /** The board again in the clear, with the slide mapped onto it. */
+    /**
+     * The board again in the clear, with the slide mapped onto it.
+     *
+     * At `Copy scale` always, whatever the board's own knobs say, so the copy
+     * is a steady picture the eye can learn; it shrinks only when the strip
+     * cannot hold it.
+     */
     private fun drawBoardCopy(canvas: Canvas, thumb: Thumb, paint: Palette) {
         val field = thumb.field
         val middle = board.center(field)
-        val reach = board.cells(thumb.bank, field)
-            .maxOf { hypot(it.x - middle.x, it.y - middle.y) } + board.radius(field)
+        val reach = board.outer(field)
         val room = room() * 0.5f
         val cx: Float
         val cy: Float
@@ -472,7 +505,8 @@ class RadialView(
         } else {
             return
         }
-        val scale = ((if (config.preview.strip) strip * 0.46f else room) / reach).coerceAtMost(1f)
+        val fit = (if (config.preview.strip) strip * 0.48f else room) / reach
+        val scale = min(config.mirrorScale, fit)
         drawBoardAt(canvas, thumb, Point(cx, cy), scale, config.mirrorDim, paint)
         drawThumb(
             canvas, thumb,

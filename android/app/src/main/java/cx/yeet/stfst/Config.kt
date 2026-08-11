@@ -65,16 +65,24 @@ data class Config(
      * still owe, measured over the dictionary.
      */
     var boardPortals: String = "A>R O>H @>s *>t E>d U>g",
-    /** Cell pitches across the field's short side. Fewer means bigger cells. */
-    var boardSpan: Float = 4.2f,
     /**
-     * A cell's radius, as a fraction of the pitch.
-     *
-     * Under a half, so ground is left between the cells. The ground is the
-     * board's whole guard: nothing waits on time or turning, so the only way to
-     * cross the field without taking is between the discs.
+     * Cell pitches across the field's short side. Fewer means a bigger board.
+     * The radii below are all in pitches, so this is the one scale knob.
      */
+    var boardSpan: Float = 4.8f,
+    /** An island disc's radius, in pitches. */
     var boardCell: Float = 0.42f,
+    /**
+     * The ring's inner edge, in pitches.
+     *
+     * The gap between it and the island discs is the corridor, and the corridor
+     * is the board's whole guard: nothing waits on time or turning, so a walk
+     * gets past a live slice by going inside it. Outward the ring has no edge a
+     * slice can be missed over; only undershooting misses.
+     */
+    var boardInner: Float = 1.5f,
+    /** Where the ring is drawn to. The answer does not change past it. */
+    var boardOuter: Float = 2.3f,
     /** Where the middle of the board sits, as a fraction down the field. */
     var boardAt: Float = 0.5f,
     /** Where each board ring's first key sits. -90 is straight up. */

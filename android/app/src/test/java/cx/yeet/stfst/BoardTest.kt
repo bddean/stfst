@@ -109,33 +109,69 @@ class BoardTest {
         assertNull(crossed.resolve(ORDER.indexOf('A'), listOf(ORDER.indexOf('S'))))
     }
 
-    // The geometry: a ring of discs around the island, ground between them.
+    // The geometry: contiguous slices around a corridor around the island.
 
+    /** The slices leave no gap: past the inner edge every direction is a key. */
     @Test
-    fun neighbouring_ring_cells_sit_one_pitch_apart() {
-        val pitch = board.pitch(field)
-        val ring = config.boardRingLeft.map { cell(Bank.LEFT, it) }
-        for (i in ring.indices) {
-            val a = ring[i]
-            val b = ring[(i + 1) % ring.size]
-            assertEquals("${ORDER[a.key]} to ${ORDER[b.key]}", pitch, hypot(a.x - b.x, a.y - b.y), pitch * 0.01f)
+    fun the_slices_cover_every_direction() {
+        val middle = board.center(field)
+        for (bank in Bank.values()) {
+            for (tenth in 0 until 3600) {
+                val angle = Math.toRadians(tenth / 10.0)
+                val r = board.inner(field) * 1.2f
+                val got = board.hit(
+                    bank, field,
+                    middle.x + (Math.cos(angle) * r).toFloat(),
+                    middle.y + (Math.sin(angle) * r).toFloat(),
+                )
+                assertTrue("nothing at ${tenth / 10f}", got != null && !board.island(got))
+            }
         }
     }
 
+    @Test
+    fun a_slice_is_centred_on_its_reference_point() {
+        for (bank in Bank.values()) {
+            for (cell in board.cells(bank, field).filter { !board.island(it.key) }) {
+                assertEquals(cell.key, board.hit(bank, field, cell.x, cell.y))
+            }
+        }
+    }
+
+    /** Outward the ring has no edge: only undershooting misses a slice. */
+    @Test
+    fun past_the_outer_edge_is_still_the_slice() {
+        val middle = board.center(field)
+        val k = cell(Bank.LEFT, 'K')
+        val far = 4f
+        assertEquals(
+            key('K'),
+            board.hit(
+                Bank.LEFT, field,
+                middle.x + (k.x - middle.x) * far, middle.y + (k.y - middle.y) * far,
+            )
+        )
+    }
+
     /**
-     * The ground is the board's whole guard: no cell touches another, so every
-     * key can be walked around.
+     * The corridor is the board's whole guard: it circles the island, so every
+     * live slice can be walked around, and the island discs never touch.
      */
     @Test
-    fun ground_separates_every_pair_of_cells() {
+    fun a_corridor_separates_the_island_from_the_ring() {
         for (bank in Bank.values()) {
-            val cells = board.cells(bank, field)
+            val middle = board.center(field)
             val radius = board.radius(field)
-            for (i in cells.indices) {
-                for (j in i + 1 until cells.size) {
-                    val gap = hypot(cells[i].x - cells[j].x, cells[i].y - cells[j].y)
+            val discs = board.cells(bank, field).filter { board.island(it.key) }
+            for (disc in discs) {
+                val reach = hypot(disc.x - middle.x, disc.y - middle.y) + radius
+                assertTrue("${ORDER[disc.key]} crowds the ring", reach < board.inner(field))
+            }
+            for (i in discs.indices) {
+                for (j in i + 1 until discs.size) {
+                    val gap = hypot(discs[i].x - discs[j].x, discs[i].y - discs[j].y)
                     assertTrue(
-                        "${ORDER[cells[i].key]} and ${ORDER[cells[j].key]} touch",
+                        "${ORDER[discs[i].key]} and ${ORDER[discs[j].key]} touch",
                         gap > 2f * radius
                     )
                 }
@@ -144,19 +180,12 @@ class BoardTest {
     }
 
     @Test
-    fun a_cell_centre_hits_its_own_cell() {
-        for (bank in Bank.values()) {
-            for (cell in board.cells(bank, field)) {
-                assertEquals(cell.key, board.hit(bank, field, cell.x, cell.y))
-            }
-        }
-    }
-
-    @Test
-    fun the_ground_between_two_cells_hits_nothing() {
-        val s = cell(Bank.LEFT, 'S')
-        val t = cell(Bank.LEFT, 'T')
-        assertNull(board.hit(Bank.LEFT, field, (s.x + t.x) * 0.5f, (s.y + t.y) * 0.5f))
+    fun the_corridor_hits_nothing() {
+        val middle = board.center(field)
+        // Straight down from the middle: the left island lies east-west, so this
+        // radius is corridor from the discs' edge to the slices' inner edge.
+        val r = (board.inner(field) + board.radius(field)) * 0.5f
+        assertNull(board.hit(Bank.LEFT, field, middle.x, middle.y + r))
     }
 
     /** A touch-down reads the nearest cell instead, so no tap lands on nothing. */
@@ -171,17 +200,31 @@ class BoardTest {
         }
     }
 
+    /** An undershot tap short of a slice still reads as that slice. */
+    @Test
+    fun a_tap_just_short_of_a_slice_reads_as_the_slice() {
+        val middle = board.center(field)
+        val k = cell(Bank.LEFT, 'K')
+        val angle = Math.atan2((k.y - middle.y).toDouble(), (k.x - middle.x).toDouble())
+        val r = board.inner(field) * 0.9f
+        assertEquals(
+            key('K'),
+            board.nearest(
+                Bank.LEFT, field,
+                middle.x + (Math.cos(angle) * r).toFloat(),
+                middle.y + (Math.sin(angle) * r).toFloat(),
+            )
+        )
+    }
+
     @Test
     fun the_board_stays_inside_its_field() {
-        for (bank in Bank.values()) {
-            val radius = board.radius(field)
-            for (cell in board.cells(bank, field)) {
-                assertTrue("${ORDER[cell.key]} leaks left", cell.x - radius >= field.left)
-                assertTrue("${ORDER[cell.key]} leaks right", cell.x + radius <= field.right)
-                assertTrue("${ORDER[cell.key]} leaks up", cell.y - radius >= field.top)
-                assertTrue("${ORDER[cell.key]} leaks down", cell.y + radius <= field.bottom)
-            }
-        }
+        val middle = board.center(field)
+        val outer = board.outer(field)
+        assertTrue(middle.x - outer >= field.left)
+        assertTrue(middle.x + outer <= field.right)
+        assertTrue(middle.y - outer >= field.top)
+        assertTrue(middle.y + outer <= field.bottom)
     }
 }
 
@@ -256,14 +299,25 @@ class BoardChorderTest {
         assertEquals(mask("KAOEpt"), chorder.up(0))
     }
 
+    /**
+     * The skip `SK` over a live T: dip into the corridor, run past T, come out
+     * into K. The corridor takes nothing on the way.
+     */
     @Test
-    fun the_ground_between_cells_takes_nothing() {
+    fun the_corridor_carries_a_skip_past_a_live_slice() {
         touch(Bank.LEFT, 0, 'S')
-        val s = cell(Bank.LEFT, 'S')
+        val f = chorder.thumb(Bank.LEFT).field
+        val middle = board.center(f)
+        val road = (board.inner(f) + board.radius(f)) * 0.5f
         val t = cell(Bank.LEFT, 'T')
-        chorder.move(0, (s.x + t.x) * 0.5f, (s.y + t.y) * 0.5f, UNIT)
-        assertEquals("S", keys(Bank.LEFT))
-        // And crossing it into a live cell takes that cell.
+        val angle = Math.atan2((t.y - middle.y).toDouble(), (t.x - middle.x).toDouble())
+        chorder.move(
+            0,
+            middle.x + (Math.cos(angle) * road).toFloat(),
+            middle.y + (Math.sin(angle) * road).toFloat(),
+            UNIT,
+        )
+        assertEquals("the corridor took something", "S", keys(Bank.LEFT))
         slideTo(Bank.LEFT, 'K')
         assertEquals("SK", keys(Bank.LEFT))
     }
@@ -312,17 +366,13 @@ class BoardChorderTest {
         assertEquals("ST", keys(Bank.LEFT))
     }
 
-    /** A tap is read as the nearest cell, so the ground swallows no touch-down. */
+    /** A tap is read as the nearest cell, so the corridor swallows no touch-down. */
     @Test
-    fun a_tap_on_ground_takes_the_nearest_cell() {
-        val k = cell(Bank.LEFT, 'K')
-        val p = cell(Bank.LEFT, 'P')
-        // Just outside K's disc, on the way to P, still nearer K.
+    fun a_tap_in_the_corridor_takes_the_nearest_cell() {
+        val a = cell(Bank.LEFT, 'A')
         val radius = board.radius(chorder.thumb(Bank.LEFT).field)
-        val x = k.x + (p.x - k.x) / hypot(p.x - k.x, p.y - k.y) * radius * 1.1f
-        val y = k.y + (p.y - k.y) / hypot(p.x - k.x, p.y - k.y) * radius * 1.1f
-        chorder.down(Bank.LEFT, 0, x, y)
-        assertEquals("K", keys(Bank.LEFT))
+        chorder.down(Bank.LEFT, 0, a.x - radius * 1.3f, a.y)
+        assertEquals("A", keys(Bank.LEFT))
     }
 
     @Test
