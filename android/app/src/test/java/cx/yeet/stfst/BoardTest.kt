@@ -86,20 +86,37 @@ class BoardTest {
         assertEquals(key('A'), board.resolve(key('A'), emptyList()))
     }
 
+    /** The doorway fallback, alive only while the tombstone is off. */
+    private val doors = Board(ORDER, Config().also { it.boardTomb = 0f })
+
     @Test
     fun a_dead_island_cell_yields_its_doorway_key() {
         // After S the left island is closed, and A's doorway leads to R.
-        assertEquals(key('R'), board.resolve(key('A'), taken("S")))
-        assertEquals(key('H'), board.resolve(key('O'), taken("S")))
+        assertEquals(key('R'), doors.resolve(key('A'), taken("S")))
+        assertEquals(key('H'), doors.resolve(key('O'), taken("S")))
         // The right island, once the walk is on the ring.
-        assertEquals(key('d'), board.resolve(key('E'), taken("Ef")))
-        assertEquals(key('g'), board.resolve(key('U'), taken("f")))
+        assertEquals(key('d'), doors.resolve(key('E'), taken("Ef")))
+        assertEquals(key('g'), doors.resolve(key('U'), taken("f")))
     }
 
     @Test
     fun a_doorway_shuts_when_its_key_is_spent() {
-        assertNull(board.resolve(key('A'), taken("R")))
-        assertNull(board.resolve(key('O'), taken("H")))
+        assertNull(doors.resolve(key('A'), taken("R")))
+        assertNull(doors.resolve(key('O'), taken("H")))
+    }
+
+    /** With the tombstone on, a dead island cell is plain ground. */
+    @Test
+    fun the_tombstone_replaces_the_doorways() {
+        assertNull(board.portal(key('A')))
+        assertNull(board.resolve(key('A'), taken("S")))
+    }
+
+    /** A tombstone that swallowed the ring would teleport on every approach. */
+    @Test
+    fun the_tombstone_never_reaches_the_ring() {
+        val wild = Board(ORDER, Config().also { it.boardTomb = 9f })
+        assertTrue(wild.tomb(field) <= wild.inner(field))
     }
 
     @Test
@@ -111,7 +128,10 @@ class BoardTest {
     /** A doorway across the banks would hand one thumb the other's key. */
     @Test
     fun a_doorway_cannot_cross_the_banks() {
-        val crossed = Board(ORDER, Config().also { it.boardPortals = "A>t" })
+        val crossed = Board(ORDER, Config().also {
+            it.boardPortals = "A>t"
+            it.boardTomb = 0f
+        })
         assertNull(crossed.resolve(ORDER.indexOf('A'), listOf(ORDER.indexOf('S'))))
     }
 
@@ -356,7 +376,8 @@ class BoardChorderTest {
         touch(Bank.LEFT, 0, 'S')
         val f = chorder.thumb(Bank.LEFT).field
         val middle = board.center(f)
-        val road = (board.inner(f) + board.radius(f)) * 0.5f
+        // Between the tombstone and the inner edge: the corridor that is left.
+        val road = (board.inner(f) + board.tomb(f)) * 0.5f
         val t = cell(Bank.LEFT, 'T')
         val angle = Math.atan2((t.y - middle.y).toDouble(), (t.x - middle.x).toDouble())
         chorder.move(
@@ -465,28 +486,75 @@ class BoardChorderTest {
         assertEquals("SK", keys(Bank.LEFT))
     }
 
-    /** The measured win of the vowels-first order: doorways mid-walk. */
-    @Test
-    fun a_dead_island_cell_takes_through_its_doorway() {
-        touch(Bank.LEFT, 0, 'S')
-        slideTo(Bank.LEFT, 'A')
-        assertEquals("SR", keys(Bank.LEFT))
+    /** One sample this many pitches from the board's middle, in field px. */
+    private fun slideBy(bank: Bank, dx: Double, dy: Double) {
+        val f = chorder.thumb(bank).field
+        val middle = board.center(f)
+        val pitch = board.pitch(f)
+        chorder.move(
+            chorder.thumb(bank).pointer,
+            middle.x + (dx * pitch).toFloat(),
+            middle.y + (dy * pitch).toFloat(),
+            UNIT,
+        )
     }
 
-    @Test
-    fun a_doorway_shuts_when_its_key_is_spent() {
-        touch(Bank.LEFT, 0, 'R')
-        slideTo(Bank.LEFT, 'A')
-        assertEquals("R", keys(Bank.LEFT))
+    private fun ray(angle: Double, r: Double): Pair<Double, Double> {
+        val a = Math.toRadians(angle)
+        return Math.cos(a) * r to Math.sin(a) * r
     }
 
-    /** Leaving and coming back is a new entry, and the cell answers afresh. */
+    /**
+     * `-BD` as in fibbed: the far key is a dip through the island. Crossing
+     * the tombstone throws the focus across the middle and takes nothing, and
+     * pushing on walks the focus out into d, at 18 + 180 degrees.
+     */
     @Test
-    fun reentering_a_cell_asks_again() {
-        touch(Bank.RIGHT, 1, 'E')
-        slideTo(Bank.RIGHT, 'f')
-        slideTo(Bank.RIGHT, 'E')
-        assertEquals("Efd", keys(Bank.RIGHT))
+    fun the_tombstone_throws_the_focus_across() {
+        touch(Bank.RIGHT, 1, 'b')
+        val (ix, iy) = ray(18.0, 1.0)
+        slideBy(Bank.RIGHT, ix, iy)
+        assertEquals("the crossing took something", "b", keys(Bank.RIGHT))
+        slideBy(Bank.RIGHT, 0.0, 0.0)
+        assertEquals("bd", keys(Bank.RIGHT))
+    }
+
+    /** Going back through the island throws the focus home again. */
+    @Test
+    fun the_tunnel_works_both_ways() {
+        touch(Bank.RIGHT, 1, 'b')
+        val (ix, iy) = ray(18.0, 1.0)
+        slideBy(Bank.RIGHT, ix, iy)
+        slideBy(Bank.RIGHT, 0.0, 0.0)
+        assertEquals("bd", keys(Bank.RIGHT))
+        // The thumb reaches on outward; the focus, two pitches behind it,
+        // re-enters the tombstone and flips back to the near side.
+        val (bx, by) = ray(18.0, 2.5)
+        slideBy(Bank.RIGHT, bx, by)
+        assertEquals("the return crossing took something", "bd", keys(Bank.RIGHT))
+        // Now offset three pitches: putting the focus in l takes l.
+        val (lx, ly) = ray(54.0, 2.0)
+        val (ox, oy) = ray(18.0, 3.0)
+        slideBy(Bank.RIGHT, lx + ox, ly + oy)
+        assertEquals("bdl", keys(Bank.RIGHT))
+    }
+
+    /** With the tombstone off, the doorways still serve as before. */
+    @Test
+    fun the_doorways_return_when_the_tombstone_is_off() {
+        val config = Config().also { it.boardTomb = 0f }
+        val fallback = Board(ORDER, config)
+        val walker = Chorder(Ring(ORDER, config), fallback, config) {}
+        val field = Field(0f, 0f, 400f, 900f)
+        walker.place(Bank.LEFT, field)
+        fun spot(symbol: Char) =
+            fallback.cells(Bank.LEFT, field).first { it.key == key(symbol) }
+        walker.down(Bank.LEFT, 0, spot('S').x, spot('S').y)
+        walker.move(0, spot('A').x, spot('A').y, UNIT)
+        assertEquals(
+            "SR",
+            walker.thumb(Bank.LEFT).keys.map { ORDER[it] }.joinToString("")
+        )
     }
 
     /** Staying inside a cell is one entry, however many samples arrive. */

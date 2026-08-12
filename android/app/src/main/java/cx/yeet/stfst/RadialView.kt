@@ -403,10 +403,10 @@ class RadialView(
      * Every cell of one bank, live or dead: the ring as staggered wedges, one
      * per key with every other one further out, the island as discs. A dead
      * cell stays on screen because it is still ground.
-     * An island cell carries both its glyphs the whole time, key above and
-     * doorway below, and the open one is the bright one: before the stroke the
-     * key glows and the doorway waits dim, and once the ring closes the island
-     * they trade places.
+     * Once the ring closes the island, the discs give way to the tombstone.
+     * With the tombstone off and doorways on instead, an island cell carries
+     * both its glyphs the whole time, key above and doorway below, and the
+     * open one is the bright one.
      *
      * Glyphs are capped by the geometry they sit in, so no setting can make two
      * labels overlap: a disc bounds its stack, a slice bounds its glyph by arc
@@ -426,6 +426,8 @@ class RadialView(
         val pitch = board.pitch(field) * scale
         val step = board.step(thumb.bank)
         val wanted = ink.textSize
+        val buried = board.tomb(field) > 0f && board.closed(thumb.bank, thumb.keys)
+        if (buried) drawTomb(canvas, thumb, at, scale, dim, paint)
         for (cell in board.cells(thumb.bank, field)) {
             val x = at.x + (cell.x - middle.x) * scale
             val y = at.y + (cell.y - middle.y) * scale
@@ -460,6 +462,7 @@ class RadialView(
                 ink.textSize = wanted
                 continue
             }
+            if (buried) continue
             ink.style = Paint.Style.FILL
             ink.color = fade(if (open) paint.warm else paint.face, dimmed)
             canvas.drawCircle(x, y, radius, ink)
@@ -482,6 +485,52 @@ class RadialView(
             }
             ink.textSize = wanted
         }
+    }
+
+    /**
+     * The dead island as one circle, and inside its rim the reflection the
+     * teleport makes true: each ring key's glyph sits mirrored through the
+     * middle, so the glyph in front of the thumb is the key that pushing
+     * through here leads to.
+     */
+    private fun drawTomb(
+        canvas: Canvas,
+        thumb: Thumb,
+        at: Point,
+        scale: Float,
+        dim: Float,
+        paint: Palette,
+    ) {
+        val field = thumb.field
+        val middle = board.center(field)
+        val tomb = board.tomb(field) * scale
+        ink.style = Paint.Style.FILL
+        ink.color = fade(paint.warm, dim * 0.5f)
+        canvas.drawCircle(at.x, at.y, tomb, ink)
+        ink.style = Paint.Style.STROKE
+        ink.color = fade(paint.hot, dim * 0.6f)
+        canvas.drawCircle(at.x, at.y, tomb, ink)
+        if (!config.showLabels) return
+        val wanted = ink.textSize
+        val size = minOf(wanted, tomb * 0.34f)
+        val r = tomb - size * 0.9f
+        ink.style = Paint.Style.FILL
+        ink.textSize = size
+        for (cell in board.cells(thumb.bank, field)) {
+            if (board.island(cell.key)) continue
+            val angle = atan2(
+                (cell.y - middle.y).toDouble(), (cell.x - middle.x).toDouble()
+            ) + Math.PI
+            val live = board.live(cell.key, thumb.keys)
+            ink.color = fade(paint.text, dim * if (live) 0.8f else 0.3f)
+            canvas.drawText(
+                order[cell.key].toString(),
+                at.x + (cos(angle) * r).toFloat(),
+                at.y + (sin(angle) * r).toFloat() + size * 0.35f,
+                ink
+            )
+        }
+        ink.textSize = wanted
     }
 
     /**
@@ -610,10 +659,12 @@ class RadialView(
     }
 
     /**
-     * Where the last key was taken, where the thumb is now, and the slide between.
+     * Where the last key was taken, where the focus is now, and the slide
+     * between. The focus is the thumb until a teleport parts them; after one
+     * the thumb is drawn too, faint, tied to the focus that left it.
      *
-     * Drawn per copy of the ring, at that copy's centre and scale, so the copy shows
-     * the slide as it happens and not just the keys it could reach.
+     * Drawn per copy of the ring, at that copy's centre and scale, so the copy
+     * shows the slide as it happens and not just the keys it could reach.
      */
     private fun drawThumb(
         canvas: Canvas,
@@ -625,19 +676,26 @@ class RadialView(
         paint: Palette,
     ) {
         val dot = config.markRadius * unit * scale
-        val x = cx + (thumb.atX - thumb.markX) * scale
-        val y = cy + (thumb.atY - thumb.markY) * scale
+        val x = cx + (thumb.focusX - thumb.markX) * scale
+        val y = cy + (thumb.focusY - thumb.markY) * scale
         ink.style = Paint.Style.STROKE
         ink.strokeWidth = 2f
         ink.color = fade(paint.hot, dim)
         canvas.drawLine(cx, cy, x, y, ink)
         ink.style = Paint.Style.FILL
         canvas.drawCircle(cx, cy, dot * 0.6f, ink)
-        // The fingertip, live, so a slide that has not been read yet still shows.
+        // The focus, live, so a slide that has not been read yet still shows.
         ink.style = Paint.Style.STROKE
         ink.strokeWidth = 3f
         canvas.drawCircle(x, y, dot, ink)
         ink.strokeWidth = 1f
+        if (thumb.offX != 0f || thumb.offY != 0f) {
+            val tx = cx + (thumb.atX - thumb.markX) * scale
+            val ty = cy + (thumb.atY - thumb.markY) * scale
+            ink.color = fade(paint.hot, dim * 0.35f)
+            canvas.drawLine(x, y, tx, ty, ink)
+            canvas.drawCircle(tx, ty, dot * 0.7f, ink)
+        }
     }
 
     /**

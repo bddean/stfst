@@ -82,11 +82,13 @@ class SettingsActivity : Activity() {
                 "sweep along either one crosses every other key, a machine " +
                 "row. Any cell the thumb enters is taken, in any order, and a " +
                 "taken cell is ground. Island keys go before the ring, and " +
-                "once the ring closes the island a dead island cell is a " +
-                "doorway to the key after its '>'. The corridor inside the " +
-                "ring and the field past its outer edge take nothing: they " +
-                "are the roads past a live key. All radii are in pitches, and " +
-                "the span sets what a pitch is."),
+                "once the ring closes the island it becomes the tombstone: a " +
+                "circle that throws the focus reading the keys straight " +
+                "across the middle, so a far key is a short dip instead of a " +
+                "trip around. The corridor inside the ring and the field past " +
+                "its outer edge take nothing: they are the roads past a live " +
+                "key. All radii are in pitches, and the span sets what a " +
+                "pitch is."),
         Flag("Fixed board", { it.board }, { c, v -> c.board = v },
             "off falls back to the radial layout below, which reads slides by " +
                 "direction instead"),
@@ -99,8 +101,9 @@ class SettingsActivity : Activity() {
         Text("Right island", { it.boardIslandRight }, { c, v -> c.boardIslandRight = v }),
         Text("Right board ring", { it.boardRingRight }, { c, v -> c.boardRingRight = v }),
         Text("Doorways", { it.boardPortals }, { c, v -> c.boardPortals = v },
-            "pairs like A>R: a dead A cell takes R, for as long as R can still be " +
-                "taken"),
+            "the fallback the tombstone replaced, working only while its size " +
+                "is zero. Pairs like A>R: a dead A cell takes R, for as long " +
+                "as R can still be taken"),
         Range("Board span", 3f, 7f, { it.boardSpan }, { c, v -> c.boardSpan = v },
             "pitches across the field's short side; fewer means a bigger board",
             unit = "pitches"),
@@ -120,6 +123,11 @@ class SettingsActivity : Activity() {
                 "slices; off swaps the alternation"),
         Range("Island cell size", 0.25f, 0.5f, { it.boardCell }, { c, v -> c.boardCell = v },
             "an island disc's radius", unit = "pitches"),
+        Range("Tombstone size", 0f, 1.3f, { it.boardTomb }, { c, v -> c.boardTomb = v },
+            "the circle a dead island becomes. Crossing it throws the focus " +
+                "out the other side, and the glyph in front of the thumb says " +
+                "where. Zero turns the teleport off and the doorways back on",
+            unit = "pitches"),
         Range("Board position", 0.2f, 0.8f, { it.boardAt }, { c, v -> c.boardAt = v },
             "where the middle of the board sits", unit = "down the field"),
         Range("Left board start", -180f, 180f, { it.boardStartLeft },

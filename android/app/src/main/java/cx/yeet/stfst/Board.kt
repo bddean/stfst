@@ -21,8 +21,12 @@ import kotlin.math.sin
  * Entering a cell takes its key, and a taken cell is ground: there is no order
  * on the ring, as there is none on the machine. The island is the exception
  * that pays for the middle: its keys go in any order but before the ring, and
- * the first ring key closes it. A closed island cell is ground, or a doorway
- * when [config]'s portals give it a destination that is still takeable.
+ * the first ring key closes it. A closed island becomes the tombstone: a
+ * circle that throws the focus reading the keys to the point straight across
+ * the board's middle, so a key on the far side of the ring is a short dip
+ * through the island instead of a trip around it. With the tombstone off,
+ * a closed island cell is a doorway when [config]'s portals give it a
+ * destination that is still takeable.
  *
  * Two roads carry every skip past a live key: the corridor between island and
  * ring, and the open field past the outer edge. A cell is only the button that
@@ -80,6 +84,10 @@ class Board(val order: String, val config: Config) {
         return rank[key] < islandKeys.getValue(bank).size
     }
 
+    /** Whether this bank's island is closed: any ring key taken shuts it. */
+    fun closed(bank: Bank, taken: List<Int>): Boolean =
+        taken.any { banks[it] == bank && !island(it) }
+
     /**
      * Whether a key can still be taken, given the keys this thumb has taken.
      *
@@ -92,10 +100,12 @@ class Board(val order: String, val config: Config) {
         val bank = banks[key] ?: return false
         if (key in taken) return false
         if (!island(key)) return true
-        return taken.none { banks[it] == bank && !island(it) }
+        return !closed(bank, taken)
     }
 
-    fun portal(key: Int): Int? = portals[key].takeIf { it >= 0 }
+    /** Where a dead cell leads, or null. The tombstone replaces the doorways. */
+    fun portal(key: Int): Int? =
+        portals[key].takeIf { it >= 0 && config.boardTomb <= 0f }
 
     /**
      * The key entering this cell takes now: its own while live, its doorway's
@@ -111,6 +121,10 @@ class Board(val order: String, val config: Config) {
 
     /** An island disc's radius. */
     fun radius(field: Field): Float = pitch(field) * config.boardCell
+
+    /** The tombstone's radius: the circle a closed island becomes. */
+    fun tomb(field: Field): Float =
+        pitch(field) * config.boardTomb.coerceIn(0f, config.boardInner)
 
     /** The ring's inner edge. Between it and the island is the corridor. */
     fun inner(field: Field): Float = pitch(field) * config.boardInner

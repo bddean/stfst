@@ -47,8 +47,8 @@ data class Config(
      *
      * The island's keys go in any order too, but before the ring, and the first
      * ring key closes it. That is what pays for the middle: the island dies
-     * early, the corridor stays road, and its cells become doorways instead of
-     * vowels a crossing would collect.
+     * early, the corridor stays road, and the dead island becomes the tombstone
+     * the teleport reads, instead of vowels a crossing would collect.
      *
      * The left island holds the vowels although the outline spells them late.
      * It costs nothing the dictionary can see: a stroke is a set of keys, and
@@ -60,13 +60,24 @@ data class Config(
     var boardIslandRight: String = "@*EU",
     var boardRingRight: String = "frpblgtsdz",
     /**
-     * Doorways. `A>R` means a dead A cell takes R, for as long as R can still
-     * be taken; after that it is plain ground. Dead island cells are ground the
-     * walk crosses anyway, and a destination on one shortens the worst hops of
-     * the bank: each pair here is the far ring key its cell's chords most often
-     * still owe, measured over the dictionary.
+     * Doorways, the fallback the tombstone replaced: they work only while
+     * [boardTomb] is zero. `A>R` means a dead A cell takes R, for as long as R
+     * can still be taken; after that it is plain ground. Each pair here is the
+     * far ring key its cell's chords most often still owe, measured over the
+     * dictionary.
      */
     var boardPortals: String = "A>R O>H @>s *>t E>d U>g",
+    /**
+     * The tombstone's radius, in pitches: the circle a closed island becomes.
+     *
+     * The keys are read at a focus that follows the thumb. Crossing into the
+     * tombstone throws the focus to the point straight across the board's
+     * middle, and the offset holds until the thumb lifts, so a key on the far
+     * side of the ring is a short dip through the island. The crossing itself
+     * takes nothing, going back through throws the focus home again, and zero
+     * turns the teleport off and the doorways back on.
+     */
+    var boardTomb: Float = 1.1f,
     /**
      * Cell pitches across the field's short side. Fewer means a bigger board.
      * The radii below are all in pitches, so this is the one scale knob.

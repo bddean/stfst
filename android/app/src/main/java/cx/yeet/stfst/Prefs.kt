@@ -19,6 +19,7 @@ object Prefs {
             putString("boardIslandRight", boardIslandRight)
             putString("boardRingRight", boardRingRight)
             putString("boardPortals", boardPortals)
+            putFloat("boardTomb", boardTomb)
             putFloat("boardSpan", boardSpan)
             putFloat("boardCell", boardCell)
             putFloat("boardInner", boardInner)
@@ -80,6 +81,7 @@ object Prefs {
             boardIslandRight = prefs.getString("boardIslandRight", d.boardIslandRight)!!,
             boardRingRight = prefs.getString("boardRingRight", d.boardRingRight)!!,
             boardPortals = prefs.getString("boardPortals", d.boardPortals)!!,
+            boardTomb = prefs.getFloat("boardTomb", d.boardTomb),
             boardSpan = prefs.getFloat("boardSpan", d.boardSpan),
             boardCell = prefs.getFloat("boardCell", d.boardCell),
             boardInner = prefs.getFloat("boardInner", d.boardInner),

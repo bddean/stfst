@@ -1,6 +1,7 @@
 package cx.yeet.stfst
 
 import kotlin.math.atan2
+import kotlin.math.hypot
 
 /** One thumb's progress through its own bank. */
 class Thumb(val bank: Bank) {
@@ -41,6 +42,19 @@ class Thumb(val bank: Bank) {
      */
     var cell: Int = NO_KEY
 
+    /**
+     * How far the focus that reads the keys sits from the thumb. Zero until a
+     * teleport parts them, and until the thumb lifts after one.
+     */
+    var offX: Float = 0f
+    var offY: Float = 0f
+
+    /** Whether the focus is inside the tombstone, so crossing in fires once. */
+    var inTomb: Boolean = false
+
+    val focusX: Float get() = atX + offX
+    val focusY: Float get() = atY + offY
+
     /** Which way the last key was taken, or NaN before the first one. */
     var heading: Float = Float.NaN
 
@@ -56,6 +70,9 @@ class Thumb(val bank: Bank) {
         atY = homeY
         hovering = NO_KEY
         cell = NO_KEY
+        offX = 0f
+        offY = 0f
+        inTomb = false
         heading = Float.NaN
     }
 
@@ -219,24 +236,43 @@ class Chorder(
     /**
      * The board's whole slide rule: entering a cell takes what it yields.
      *
-     * No gate waits on time or turning. The ground between the discs is the
-     * guard instead: crossing the field without taking is done between the
-     * cells, and a spent cell is itself ground. Asked once per entry, not per
-     * sample, so standing in a doorway does not take through it twice.
+     * No gate waits on time or turning. The ground between the cells is the
+     * guard instead: crossing the field without taking is done between them,
+     * and a spent cell is itself ground. Asked once per entry, not per sample,
+     * so standing in a cell does not take through it twice.
+     *
+     * Read at the focus, not the thumb, and they part at the tombstone:
+     * crossing into it throws the focus straight across the board's middle,
+     * and the offset holds until the lift, so the far side of the ring is a
+     * dip through the island. The crossing takes nothing, and going back
+     * through throws the focus home again.
      */
     private fun enter(thumb: Thumb, x: Float, y: Float): Boolean {
         thumb.atX = x
         thumb.atY = y
-        val cell = board.hit(thumb.bank, thumb.field, x, y)
+        var crossed = false
+        val tomb = board.tomb(thumb.field)
+        if (tomb > 0f && board.closed(thumb.bank, thumb.keys)) {
+            val middle = board.center(thumb.field)
+            val inside =
+                hypot(thumb.focusX - middle.x, thumb.focusY - middle.y) <= tomb
+            if (inside && !thumb.inTomb) {
+                thumb.offX = 2f * middle.x - thumb.focusX - x
+                thumb.offY = 2f * middle.y - thumb.focusY - y
+                crossed = true
+            }
+            thumb.inTomb = inside
+        }
+        val cell = board.hit(thumb.bank, thumb.field, thumb.focusX, thumb.focusY)
         if (cell == null) {
             thumb.cell = Thumb.NO_KEY
-            return false
+            return crossed
         }
-        if (cell == thumb.cell) return false
+        if (cell == thumb.cell) return crossed
         thumb.cell = cell
-        val key = board.resolve(cell, thumb.keys) ?: return false
-        thumb.markX = x
-        thumb.markY = y
+        val key = board.resolve(cell, thumb.keys) ?: return crossed
+        thumb.markX = thumb.focusX
+        thumb.markY = thumb.focusY
         take(thumb, key, Float.NaN)
         return true
     }
