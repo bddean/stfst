@@ -241,38 +241,6 @@ class Board(val order: String, val config: Config) {
         return null
     }
 
-    /**
-     * What a touch-down reads, so no tap lands on nothing: the cell hit, or
-     * the nearest of the slice this direction owns, the floats, and the
-     * island sector.
-     */
-    fun nearest(bank: Bank, field: Field, x: Float, y: Float): Int? {
-        hit(bank, field, x, y)?.let { return it }
-        val middle = center(field)
-        val dx = x - middle.x
-        val dy = y - middle.y
-        val r = hypot(dx, dy) / pitch(field)
-        val angle = Math.toDegrees(atan2(dy.toDouble(), dx.toDouble())).toFloat()
-        val options = mutableListOf<Pair<Int, Float>>()
-        sliceAt(bank, dx, dy)?.let { key ->
-            val span = radiiOf(key)
-            options += key to maxOf(span.start - r, r - span.endInclusive, 0f)
-        }
-        for (key in haloKeys.getValue(bank)) {
-            val span = radiiOf(key)
-            val outward = maxOf(span.start - r, r - span.endInclusive, 0f)
-            val excess = (Ring.separation(haloAngle(key), angle) - config.boardArcSweep * 0.5f)
-                .coerceAtLeast(0f)
-            val around = (Math.toRadians(excess.toDouble()) * r).toFloat()
-            options += key to hypot(outward, around)
-        }
-        islandAt(bank, dx, dy)?.let { key ->
-            options += key to (r - config.boardIsle.coerceIn(0f, config.boardInner))
-                .coerceAtLeast(0f)
-        }
-        return options.minByOrNull { it.second }?.first
-    }
-
     /** The ring key whose slice this direction from the middle belongs to. */
     private fun sliceAt(bank: Bank, dx: Float, dy: Float): Int? {
         val ring = ringKeys.getValue(bank)

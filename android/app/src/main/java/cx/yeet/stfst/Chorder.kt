@@ -157,9 +157,9 @@ class Chorder(
         thumb.atX = x
         thumb.atY = y
         if (config.board) {
-            // The nearest cell, not the entered one: a touch-down is an aim at a
-            // whole field, so no tap lands on nothing.
-            val cell = board.nearest(bank, thumb.field, x, y) ?: return false
+            // A key is tappable exactly where it is drawn. A touch on ground
+            // takes nothing and is the start of a slide from there.
+            val cell = board.hit(bank, thumb.field, x, y) ?: return false
             thumb.cell = cell
             val key = board.resolve(cell, thumb.keys) ?: return false
             take(thumb, key, Float.NaN)

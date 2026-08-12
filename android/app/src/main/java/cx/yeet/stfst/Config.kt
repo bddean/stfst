@@ -82,12 +82,13 @@ data class Config(
      */
     var boardPortals: String = "A>R O>H @>s *>t E>d U>g",
     /**
-     * The key a double tap arms, per side, for the stroke being formed.
+     * The key a double tap adds, per side, on top of the key under it.
      *
      * Two quick taps close together stand in for a trip to the sunken arc,
-     * which is the board's farthest reach. The armed key joins whatever the
-     * next lift writes, so a double tap on the free thumb's side lands its
-     * key in the stroke the other thumb is holding.
+     * which is the board's farthest reach. The second tap still strokes as
+     * itself, so tap tap on `-T` releases as `-*T`, and the armed key joins
+     * whatever the next lift writes: a double tap on the free thumb's side
+     * lands its key in the stroke the other thumb is holding.
      */
     var doubleTapLeft: Char = '+',
     var doubleTapRight: Char = '*',
@@ -107,7 +108,7 @@ data class Config(
      * among the island's keys while it lives, the tombstone once the ring
      * closes it. More island keys divide the pie further.
      */
-    var boardIsle: Float = 1.0f,
+    var boardIsle: Float = 0.9f,
     /**
      * Teleport through the dead island: crossing into it throws the focus
      * that presses the keys to the point straight across the board's middle,

@@ -57,9 +57,6 @@ class RadialView(
     private val downs = mutableMapOf<Int, Tap>()
     private val lastTaps = mutableMapOf<Bank, Tap>()
 
-    /** Pointers spent as the second tap of a double tap: they stroke nothing. */
-    private val gestures = mutableSetOf<Int>()
-
     /** The one timer that sends a held tap on when its window closes. */
     private var flusher: Runnable? = null
 
@@ -171,17 +168,18 @@ class RadialView(
                 val bank = bankAt(x)
                 clouds[bank]?.clear()
                 record(event, at, bank)
-                if (doubleTap(bank, x, y, event.eventTime)) {
-                    gestures.add(pointer)
-                } else {
+                // A double tap arms the side's key and then goes down as a
+                // normal touch, so tap tap on -T releases as -*T. Its own
+                // lift is not recorded as a tap, which writes it at once.
+                if (!doubleTap(bank, x, y, event.eventTime)) {
                     // A new touch ends any held tap's window: order is kept.
                     chorder.flush()
                     downs[pointer] = Tap(x, y, event.eventTime)
-                    if (chorder.down(bank, pointer, x, y)) haptics.take(bank)
-                    tell(bank)
-                    armStall(bank)
-                    armHold(bank, pointer)
                 }
+                if (chorder.down(bank, pointer, x, y)) haptics.take(bank)
+                tell(bank)
+                armStall(bank)
+                armHold(bank, pointer)
             }
 
             MotionEvent.ACTION_MOVE -> {
@@ -223,21 +221,20 @@ class RadialView(
                 holds.remove(pointer)?.let { removeCallbacks(it) }
                 val down = downs.remove(pointer)
                 val thumb = chorder.forPointer(pointer)
-                if (gestures.remove(pointer)) {
-                    // The second tap of a double tap already did its work.
-                } else if (thumb != null && modifying == thumb.bank) {
+                if (thumb != null && modifying == thumb.bank) {
                     modifying = null
                     chorder.thumb(thumb.bank).keys.clear()
                     chorder.up(pointer)
                 } else {
                     val tap = config.board && config.doubleTapMs > 0 && down != null &&
                         event.eventTime - down.time <= config.doubleTapMs
-                    if (chorder.up(pointer, tap) != 0L) {
-                        haptics.stroke(thumb?.bank ?: Bank.LEFT)
-                        if (tap && thumb != null) {
-                            lastTaps[thumb.bank] = Tap(down!!.x, down.y, event.eventTime)
-                            armFlush()
-                        }
+                    val stroke = chorder.up(pointer, tap)
+                    if (stroke != 0L) haptics.stroke(thumb?.bank ?: Bank.LEFT)
+                    // Even a tap on ground counts: tap tap there writes the
+                    // side's key bare.
+                    if (tap && thumb != null) {
+                        lastTaps[thumb.bank] = Tap(down!!.x, down.y, event.eventTime)
+                        if (stroke != 0L) armFlush()
                     }
                 }
             }
@@ -246,7 +243,6 @@ class RadialView(
                 modifying = null
                 downs.clear()
                 lastTaps.clear()
-                gestures.clear()
                 chorder.reset()
             }
         }
@@ -283,7 +279,8 @@ class RadialView(
 
     /**
      * A second quick tap close to the first arms the side's double-tap key
-     * for the stroke being formed, and unwrites the first tap's held stroke.
+     * and unwrites the first tap's held stroke; the second tap then strokes
+     * as itself, so its release writes both, `-*T` from tap tap on `-T`.
      * Not over a float: tapping a float twice means sending it.
      */
     private fun doubleTap(bank: Bank, x: Float, y: Float, now: Long): Boolean {

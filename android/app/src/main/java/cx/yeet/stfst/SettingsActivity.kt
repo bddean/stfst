@@ -125,9 +125,9 @@ class SettingsActivity : Activity() {
             unit = "pitches"),
         Text("Left double tap", { it.doubleTapLeft.toString() },
             { c, v -> v.firstOrNull()?.let { c.doubleTapLeft = it } },
-            "the key two quick taps on this side arm, for the stroke being " +
-                "formed; a double tap on the free thumb's side lands its key " +
-                "in the stroke the other thumb is holding"),
+            "the key two quick taps add on top of the key under them: tap " +
+                "tap on -T releases as -*T. On the free thumb's side it " +
+                "lands in the stroke the other thumb is holding"),
         Text("Right double tap", { it.doubleTapRight.toString() },
             { c, v -> v.firstOrNull()?.let { c.doubleTapRight = it } }),
         Range("Double tap window (ms)", 0f, 500f, { it.doubleTapMs.toFloat() },

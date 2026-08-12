@@ -240,8 +240,6 @@ class BoardTest {
         val x = middle.x + (Math.cos(angle) * r).toFloat()
         val y = middle.y + (Math.sin(angle) * r).toFloat()
         assertNull(board.hit(Bank.LEFT, field, x, y))
-        // A tap out there still reads as the slice alongside.
-        assertEquals(key('K'), board.nearest(Bank.LEFT, field, x, y))
     }
 
     /**
@@ -283,35 +281,6 @@ class BoardTest {
         // The gap between the outer edge and an arc is still road.
         val road = (board.outer(field) + board.pitch(field) * (config.boardOuter + 0.12f)) * 0.5f
         assertNull(board.hit(Bank.LEFT, field, middle.x, middle.y - road))
-    }
-
-    /** A touch-down reads the nearest cell instead, so no tap lands on nothing. */
-    @Test
-    fun a_touch_down_misses_nothing() {
-        for (x in 0 until field.width.toInt() step 13) {
-            for (y in 0 until field.height.toInt() step 17) {
-                val got = board.nearest(Bank.LEFT, field, x.toFloat(), y.toFloat())
-                assertTrue("nothing at $x $y", got != null)
-                assertEquals(Bank.LEFT, board.bankOf(got!!))
-            }
-        }
-    }
-
-    /** An undershot tap short of the ring reads as the slice alongside. */
-    @Test
-    fun a_tap_just_short_of_the_ring_reads_as_the_slice_alongside() {
-        val middle = board.center(field)
-        val t = cell(Bank.LEFT, 'T')
-        val angle = Math.atan2((t.y - middle.y).toDouble(), (t.x - middle.x).toDouble())
-        val r = board.inner(field) * 0.9f
-        assertEquals(
-            key('T'),
-            board.nearest(
-                Bank.LEFT, field,
-                middle.x + (Math.cos(angle) * r).toFloat(),
-                middle.y + (Math.sin(angle) * r).toFloat(),
-            )
-        )
     }
 
     @Test
@@ -597,12 +566,15 @@ class BoardChorderTest {
         assertEquals("ST", keys(Bank.LEFT))
     }
 
-    /** A tap is read as the nearest cell, so the corridor swallows no touch-down. */
+    /** A key is tappable where it is drawn: a tap on ground starts a slide. */
     @Test
-    fun a_tap_in_the_corridor_takes_the_nearest_cell() {
+    fun a_tap_on_ground_takes_nothing_but_starts_the_slide() {
         val f = chorder.thumb(Bank.LEFT).field
         val middle = board.center(f)
-        chorder.down(Bank.LEFT, 0, middle.x - board.isle(f) * 1.05f, middle.y)
+        val corridor = (board.isle(f) + board.inner(f)) * 0.5f
+        chorder.down(Bank.LEFT, 0, middle.x - corridor, middle.y)
+        assertEquals("", keys(Bank.LEFT))
+        slideTo(Bank.LEFT, 'A')
         assertEquals("A", keys(Bank.LEFT))
     }
 
