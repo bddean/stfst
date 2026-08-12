@@ -55,36 +55,68 @@ data class Config(
      * the outline spelling stays steno order whatever order the thumb walked.
      */
     var boardIslandLeft: String = "AO",
-    var boardRingLeft: String = "#^+STKPWHR",
-    /** The right island is steno order already: @ * E U are its first keys. */
-    var boardIslandRight: String = "@*EU",
+    var boardRingLeft: String = "^STKPWHR",
+    var boardIslandRight: String = "EU",
     var boardRingRight: String = "frpblgtsdz",
     /**
-     * Doorways, the fallback the tombstone replaced: they work only while
-     * [boardTomb] is zero. `A>R` means a dead A cell takes R, for as long as R
-     * can still be taken; after that it is plain ground. Each pair here is the
-     * far ring key its cell's chords most often still owe, measured over the
-     * dictionary.
+     * Each bank's floating keys: the first floats above the ring, the second
+     * sinks below it, as arcs wrapping the outer edge. A key here is dropped
+     * from the island and ring strings, so an old saved layout keeps working.
+     *
+     * A float is taken like any other cell, and it does not close the island.
+     * A tap that lifts on floats alone arms them for the next stroke instead
+     * of writing; tapping again sends them alone.
+     */
+    var boardArcsLeft: String = "#+",
+    var boardArcsRight: String = "@*",
+    /** Degrees a floating arc wraps around the ring. */
+    var boardArcSweep: Float = 70f,
+    /** A floating arc's radial depth, in pitches. */
+    var boardArcWide: Float = 0.5f,
+    /**
+     * Doorways, the fallback the teleport replaced: they work only while
+     * [boardTeleport] is off. `A>R` means a dead A cell takes R, for as long
+     * as R can still be taken; after that it is plain ground. Each pair here
+     * is the far ring key its cell's chords most often still owe, measured
+     * over the dictionary.
      */
     var boardPortals: String = "A>R O>H @>s *>t E>d U>g",
     /**
-     * The tombstone's radius, in pitches: the circle a closed island becomes.
+     * The key a double tap arms, per side, for the stroke being formed.
      *
-     * The keys are read at a focus that follows the thumb. Crossing into the
-     * tombstone throws the focus to the point straight across the board's
-     * middle, and the offset holds until the thumb lifts, so a key on the far
-     * side of the ring is a short dip through the island. The crossing itself
-     * takes nothing, going back through throws the focus home again, and zero
-     * turns the teleport off and the doorways back on.
+     * Two quick taps close together stand in for a trip to the sunken arc,
+     * which is the board's farthest reach. The armed key joins whatever the
+     * next lift writes, so a double tap on the free thumb's side lands its
+     * key in the stroke the other thumb is holding.
      */
-    var boardTomb: Float = 1.1f,
+    var doubleTapLeft: Char = '+',
+    var doubleTapRight: Char = '*',
+    /**
+     * Two taps this close together are a double tap. A quick tap's stroke
+     * waits this long before it goes out, which is what a second tap can
+     * still cancel. Zero turns double taps off, and quick taps stop waiting.
+     */
+    var doubleTapMs: Long = 250L,
     /**
      * Cell pitches across the field's short side. Fewer means a bigger board.
      * The radii below are all in pitches, so this is the one scale knob.
      */
     var boardSpan: Float = 5.4f,
-    /** An island disc's radius, in pitches. */
-    var boardCell: Float = 0.42f,
+    /**
+     * The island circle's radius, in pitches. One circle, one size: a pie cut
+     * among the island's keys while it lives, the tombstone once the ring
+     * closes it. More island keys divide the pie further.
+     */
+    var boardIsle: Float = 1.0f,
+    /**
+     * Teleport through the dead island: crossing into it throws the focus
+     * that presses the keys to the point straight across the board's middle,
+     * and the offset holds until the thumb lifts, so a key on the far side of
+     * the ring is a short dip through the island. The crossing itself takes
+     * nothing, and going back through throws the focus home again. Off turns
+     * the doorways back on.
+     */
+    var boardTeleport: Boolean = true,
     /**
      * The ring's edges, in pitches. Every slice spans their gap minus the
      * stagger.
@@ -277,6 +309,9 @@ data class Config(
     var keyboardHeight: Float = 0.42f,
 ) {
     fun far(bank: Bank) = if (bank == Bank.LEFT) farLeft else farRight
+
+    fun doubleTap(bank: Bank): Char =
+        if (bank == Bank.LEFT) doubleTapLeft else doubleTapRight
 
     /**
      * The band of distances the ring answers to, which is what a key's region

@@ -19,9 +19,16 @@ object Prefs {
             putString("boardIslandRight", boardIslandRight)
             putString("boardRingRight", boardRingRight)
             putString("boardPortals", boardPortals)
-            putFloat("boardTomb", boardTomb)
+            putString("boardArcsLeft", boardArcsLeft)
+            putString("boardArcsRight", boardArcsRight)
+            putFloat("boardArcSweep", boardArcSweep)
+            putFloat("boardArcWide", boardArcWide)
+            putFloat("boardIsle", boardIsle)
+            putBoolean("boardTeleport", boardTeleport)
+            putString("doubleTapLeft", doubleTapLeft.toString())
+            putString("doubleTapRight", doubleTapRight.toString())
+            putLong("doubleTapMs", doubleTapMs)
             putFloat("boardSpan", boardSpan)
-            putFloat("boardCell", boardCell)
             putFloat("boardInner", boardInner)
             putFloat("boardOuter", boardOuter)
             putFloat("boardStagger", boardStagger)
@@ -81,9 +88,18 @@ object Prefs {
             boardIslandRight = prefs.getString("boardIslandRight", d.boardIslandRight)!!,
             boardRingRight = prefs.getString("boardRingRight", d.boardRingRight)!!,
             boardPortals = prefs.getString("boardPortals", d.boardPortals)!!,
-            boardTomb = prefs.getFloat("boardTomb", d.boardTomb),
+            boardArcsLeft = prefs.getString("boardArcsLeft", d.boardArcsLeft)!!,
+            boardArcsRight = prefs.getString("boardArcsRight", d.boardArcsRight)!!,
+            boardArcSweep = prefs.getFloat("boardArcSweep", d.boardArcSweep),
+            boardArcWide = prefs.getFloat("boardArcWide", d.boardArcWide),
+            boardIsle = prefs.getFloat("boardIsle", d.boardIsle),
+            boardTeleport = prefs.getBoolean("boardTeleport", d.boardTeleport),
+            doubleTapLeft = prefs.getString("doubleTapLeft", null)?.firstOrNull()
+                ?: d.doubleTapLeft,
+            doubleTapRight = prefs.getString("doubleTapRight", null)?.firstOrNull()
+                ?: d.doubleTapRight,
+            doubleTapMs = prefs.getLong("doubleTapMs", d.doubleTapMs),
             boardSpan = prefs.getFloat("boardSpan", d.boardSpan),
-            boardCell = prefs.getFloat("boardCell", d.boardCell),
             boardInner = prefs.getFloat("boardInner", d.boardInner),
             boardOuter = prefs.getFloat("boardOuter", d.boardOuter),
             boardStagger = prefs.getFloat("boardStagger", d.boardStagger),

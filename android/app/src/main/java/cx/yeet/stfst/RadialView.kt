@@ -51,6 +51,18 @@ class RadialView(
     private val stalls = mutableMapOf<Bank, Runnable>()
     private val holds = mutableMapOf<Int, Runnable>()
 
+    /** Where and when a touch went down, to tell a quick tap from a slide. */
+    private class Tap(val x: Float, val y: Float, val time: Long)
+
+    private val downs = mutableMapOf<Int, Tap>()
+    private val lastTaps = mutableMapOf<Bank, Tap>()
+
+    /** Pointers spent as the second tap of a double tap: they stroke nothing. */
+    private val gestures = mutableSetOf<Int>()
+
+    /** The one timer that sends a held tap on when its window closes. */
+    private var flusher: Runnable? = null
+
     private var unit = 1f
 
     /**
@@ -119,7 +131,11 @@ class RadialView(
 
     /** What the copy needs: its own diameter, and the keys it holds above itself. */
     private fun room(): Float {
-        val reach = if (config.board) config.boardOuter / config.boardSpan else config.farEdge
+        val reach = if (config.board) {
+            (config.boardOuter + 0.12f + config.boardArcWide) / config.boardSpan
+        } else {
+            config.farEdge
+        }
         return (reach * config.mirrorScale * 2f + 0.09f) * unit
     }
 
@@ -150,13 +166,22 @@ class RadialView(
                 val at = event.actionIndex
                 if (event.getY(at) < strip) return true
                 val pointer = event.getPointerId(at)
-                val bank = bankAt(event.getX(at))
+                val x = event.getX(at)
+                val y = event.getY(at)
+                val bank = bankAt(x)
                 clouds[bank]?.clear()
                 record(event, at, bank)
-                if (chorder.down(bank, pointer, event.getX(at), event.getY(at))) haptics.take(bank)
-                tell(bank)
-                armStall(bank)
-                armHold(bank, pointer)
+                if (doubleTap(bank, x, y, event.eventTime)) {
+                    gestures.add(pointer)
+                } else {
+                    // A new touch ends any held tap's window: order is kept.
+                    chorder.flush()
+                    downs[pointer] = Tap(x, y, event.eventTime)
+                    if (chorder.down(bank, pointer, x, y)) haptics.take(bank)
+                    tell(bank)
+                    armStall(bank)
+                    armHold(bank, pointer)
+                }
             }
 
             MotionEvent.ACTION_MOVE -> {
@@ -164,6 +189,10 @@ class RadialView(
                     val pointer = event.getPointerId(at)
                     val thumb = chorder.forPointer(pointer) ?: continue
                     record(event, at, thumb.bank)
+                    downs[pointer]?.let {
+                        val far = hypot(event.getX(at) - it.x, event.getY(at) - it.y)
+                        if (far > unit * 0.1f) downs.remove(pointer)
+                    }
                     // Any real movement means the press is a slide, not a hold.
                     holds.remove(pointer)?.let { removeCallbacks(it) }
                     val bank = modifying
@@ -192,18 +221,32 @@ class RadialView(
             MotionEvent.ACTION_UP, MotionEvent.ACTION_POINTER_UP -> {
                 val pointer = event.getPointerId(event.actionIndex)
                 holds.remove(pointer)?.let { removeCallbacks(it) }
+                val down = downs.remove(pointer)
                 val thumb = chorder.forPointer(pointer)
-                if (thumb != null && modifying == thumb.bank) {
+                if (gestures.remove(pointer)) {
+                    // The second tap of a double tap already did its work.
+                } else if (thumb != null && modifying == thumb.bank) {
                     modifying = null
                     chorder.thumb(thumb.bank).keys.clear()
                     chorder.up(pointer)
-                } else if (chorder.up(pointer) != 0L) {
-                    haptics.stroke(thumb?.bank ?: Bank.LEFT)
+                } else {
+                    val tap = config.board && config.doubleTapMs > 0 && down != null &&
+                        event.eventTime - down.time <= config.doubleTapMs
+                    if (chorder.up(pointer, tap) != 0L) {
+                        haptics.stroke(thumb?.bank ?: Bank.LEFT)
+                        if (tap && thumb != null) {
+                            lastTaps[thumb.bank] = Tap(down!!.x, down.y, event.eventTime)
+                            armFlush()
+                        }
+                    }
                 }
             }
 
             MotionEvent.ACTION_CANCEL -> {
                 modifying = null
+                downs.clear()
+                lastTaps.clear()
+                gestures.clear()
                 chorder.reset()
             }
         }
@@ -236,6 +279,36 @@ class RadialView(
             )
         )
         while (cloud.size > config.cloudSamples.coerceAtLeast(1)) cloud.removeFirst()
+    }
+
+    /**
+     * A second quick tap close to the first arms the side's double-tap key
+     * for the stroke being formed, and unwrites the first tap's held stroke.
+     * Not over a float: tapping a float twice means sending it.
+     */
+    private fun doubleTap(bank: Bank, x: Float, y: Float, now: Long): Boolean {
+        if (!config.board || config.doubleTapMs <= 0) return false
+        val tap = lastTaps.remove(bank) ?: return false
+        if (now - tap.time > config.doubleTapMs) return false
+        if (hypot(x - tap.x, y - tap.y) > unit * 0.2f) return false
+        val field = chorder.thumb(bank).field
+        if (board.hit(bank, field, x, y)?.let { board.halo(it) } == true) return false
+        val key = order.indexOf(config.doubleTap(bank))
+        if (key < 0) return false
+        chorder.cancelHeld()
+        chorder.stick(key)
+        haptics.take(bank)
+        return true
+    }
+
+    private fun armFlush() {
+        flusher?.let { removeCallbacks(it) }
+        val task = Runnable {
+            chorder.flush()
+            invalidate()
+        }
+        flusher = task
+        postDelayed(task, config.doubleTapMs)
     }
 
     /** A ring that has drifted goes home when the thumb holds still. */
@@ -401,16 +474,17 @@ class RadialView(
 
     /**
      * Every cell of one bank, live or dead: the ring as staggered wedges, one
-     * per key with every other one further out, the island as discs. A dead
-     * cell stays on screen because it is still ground.
-     * Once the ring closes the island, the discs give way to the tombstone.
-     * With the tombstone off and doorways on instead, an island cell carries
-     * both its glyphs the whole time, key above and doorway below, and the
+     * per key with every other one further out, the floats as arcs past the
+     * outer edge, the island as one pie. A dead cell stays on screen because
+     * it is still ground, an armed float glows warm until its stroke goes.
+     * Once the ring closes the island, the pie gives way to the tombstone.
+     * With the teleport off and doorways on instead, an island sector carries
+     * both its glyphs, key outward and doorway toward the middle, and the
      * open one is the bright one.
      *
      * Glyphs are capped by the geometry they sit in, so no setting can make two
-     * labels overlap: a disc bounds its stack, a slice bounds its glyph by arc
-     * and depth.
+     * labels overlap: the pie bounds its sectors, a slice bounds its glyph by
+     * arc and depth.
      */
     private fun drawBoardAt(
         canvas: Canvas,
@@ -422,11 +496,12 @@ class RadialView(
     ) {
         val field = thumb.field
         val middle = board.center(field)
-        val radius = board.radius(field) * scale
+        val isle = board.isle(field) * scale
         val pitch = board.pitch(field) * scale
         val step = board.step(thumb.bank)
         val wanted = ink.textSize
-        val buried = board.tomb(field) > 0f && board.closed(thumb.bank, thumb.keys)
+        val buried = config.boardTeleport && isle > 0f &&
+            board.closed(thumb.bank, thumb.keys)
         if (buried) drawTomb(canvas, thumb, at, scale, dim, paint)
         for (cell in board.cells(thumb.bank, field)) {
             val x = at.x + (cell.x - middle.x) * scale
@@ -435,25 +510,27 @@ class RadialView(
             val live = yields == cell.key
             val doorway = board.portal(cell.key)
             val open = doorway != null && yields == doorway
-            val dimmed = dim * if (live || open) 1f else 0.45f
+            val armed = cell.key in chorder.sticky
+            val dimmed = dim * if (live || open || armed) 1f else 0.45f
             if (!board.island(cell.key)) {
                 val span = board.radiiOf(cell.key)
+                val sweep = if (board.halo(cell.key)) config.boardArcSweep else step
                 val angle = Math.toDegrees(
                     atan2((cell.y - middle.y).toDouble(), (cell.x - middle.x).toDouble())
                 ).toFloat()
                 val path = wedge(
                     at.x, at.y, span.start * pitch, span.endInclusive * pitch,
-                    angle - step * 0.5f, step
+                    angle - sweep * 0.5f, sweep
                 )
                 ink.style = Paint.Style.FILL
-                ink.color = fade(paint.face, dimmed)
+                ink.color = fade(if (armed) paint.warm else paint.face, dimmed)
                 canvas.drawPath(path, ink)
                 ink.style = Paint.Style.STROKE
-                ink.color = fade(paint.edge, dimmed)
+                ink.color = fade(if (armed) paint.hot else paint.edge, dimmed)
                 canvas.drawPath(path, ink)
                 if (!config.showLabels) continue
                 val mid = (span.start + span.endInclusive) * 0.5f * pitch
-                val arc = (2f * Math.PI * mid * step / 360f).toFloat()
+                val arc = (2f * Math.PI * mid * sweep / 360f).toFloat()
                 val depth = (span.endInclusive - span.start) * pitch
                 ink.style = Paint.Style.FILL
                 ink.color = fade(paint.text, dimmed)
@@ -463,25 +540,34 @@ class RadialView(
                 continue
             }
             if (buried) continue
+            val sweep = board.islandStep(thumb.bank)
+            val angle = board.islandAngle(cell.key)
+            val path = wedge(at.x, at.y, 0f, isle, angle - sweep * 0.5f, sweep)
             ink.style = Paint.Style.FILL
             ink.color = fade(if (open) paint.warm else paint.face, dimmed)
-            canvas.drawCircle(x, y, radius, ink)
+            canvas.drawPath(path, ink)
             ink.style = Paint.Style.STROKE
             ink.color = fade(if (open) paint.hot else paint.edge, dimmed)
-            canvas.drawCircle(x, y, radius, ink)
+            canvas.drawPath(path, ink)
             if (!config.showLabels) continue
             ink.style = Paint.Style.FILL
             if (doorway == null) {
                 ink.color = fade(paint.text, dimmed)
-                ink.textSize = minOf(wanted, radius * 1.2f)
+                ink.textSize = minOf(wanted, isle * 0.42f)
                 canvas.drawText(order[cell.key].toString(), x, y + ink.textSize * 0.35f, ink)
             } else {
                 ink.color = fade(paint.text, dim * if (live) 1f else 0.3f)
-                ink.textSize = minOf(wanted, radius * 0.95f)
-                canvas.drawText(order[cell.key].toString(), x, y - radius * 0.12f, ink)
-                ink.textSize = minOf(wanted, radius * 0.95f) * 0.72f
+                ink.textSize = minOf(wanted, isle * 0.38f)
+                canvas.drawText(order[cell.key].toString(), x, y + ink.textSize * 0.35f, ink)
+                // The doorway glyph, on the same ray but near the middle.
+                ink.textSize = minOf(wanted, isle * 0.38f) * 0.72f
                 ink.color = fade(paint.hot, dim * if (open) 1f else 0.35f)
-                canvas.drawText(order[doorway].toString(), x, y + radius * 0.72f, ink)
+                canvas.drawText(
+                    order[doorway].toString(),
+                    at.x + (x - at.x) * 0.4f,
+                    at.y + (y - at.y) * 0.4f + ink.textSize * 0.35f,
+                    ink
+                )
             }
             ink.textSize = wanted
         }
@@ -503,7 +589,7 @@ class RadialView(
     ) {
         val field = thumb.field
         val middle = board.center(field)
-        val tomb = board.tomb(field) * scale
+        val tomb = board.isle(field) * scale
         ink.style = Paint.Style.FILL
         ink.color = fade(paint.warm, dim * 0.5f)
         canvas.drawCircle(at.x, at.y, tomb, ink)
@@ -543,7 +629,7 @@ class RadialView(
     private fun drawBoardCopy(canvas: Canvas, thumb: Thumb, paint: Palette) {
         val field = thumb.field
         val middle = board.center(field)
-        val reach = board.outer(field)
+        val reach = board.reach(field)
         val room = room() * 0.5f
         val cx: Float
         val cy: Float
@@ -742,14 +828,16 @@ class RadialView(
         return path
     }
 
-    /** The keys this thumb holds, at the top of its field where nothing covers them. */
+    /** The keys this thumb holds, armed ones included, where nothing covers them. */
     private fun drawTaken(canvas: Canvas, thumb: Thumb, paint: Palette) {
-        if (thumb.keys.isEmpty()) return
+        val armed = chorder.sticky.filter { board.bankOf(it) == thumb.bank }
+        val keys = (thumb.keys + armed).distinct()
+        if (keys.isEmpty()) return
         ink.style = Paint.Style.FILL
         ink.color = paint.hot
         // In steno order, not take order, so what is shown is the outline's spelling.
         canvas.drawText(
-            thumb.keys.sorted().joinToString("") { order[it].toString() },
+            keys.sorted().joinToString("") { order[it].toString() },
             thumb.field.centerX,
             thumb.field.top + ink.textSize,
             ink

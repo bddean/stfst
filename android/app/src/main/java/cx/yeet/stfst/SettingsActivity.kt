@@ -29,9 +29,20 @@ class SettingsActivity : Activity() {
 
     /** The keyboard itself, pinned under the knobs, redrawn on every change. */
     private var preview: RadialView? = null
+    private var previewToggle: CheckBox? = null
 
     private fun refresh() {
         preview?.apply(config)
+    }
+
+    /**
+     * Show or hide the preview. `editing` overrides the toggle while a text
+     * field has focus, so the soft keyboard and the preview never fight for
+     * the same room.
+     */
+    private fun previewRoom(editing: Boolean) {
+        preview?.visibility =
+            if (!editing && previewToggle?.isChecked != false) View.VISIBLE else View.GONE
     }
 
     /** A parameter, and the two halves of getting at it. */
@@ -81,14 +92,16 @@ class SettingsActivity : Activity() {
                 "every other slice sits further out, which opens two lanes: a " +
                 "sweep along either one crosses every other key, a machine " +
                 "row. Any cell the thumb enters is taken, in any order, and a " +
-                "taken cell is ground. Island keys go before the ring, and " +
-                "once the ring closes the island it becomes the tombstone: a " +
-                "circle that throws the focus reading the keys straight " +
-                "across the middle, so a far key is a short dip instead of a " +
-                "trip around. The corridor inside the ring and the field past " +
-                "its outer edge take nothing: they are the roads past a live " +
-                "key. All radii are in pitches, and the span sets what a " +
-                "pitch is."),
+                "taken cell is ground. The island is one pie of keys that go " +
+                "before the ring; once the ring closes it, it becomes the " +
+                "tombstone: crossing it throws the focus reading the keys " +
+                "straight across the middle, so a far key is a short dip " +
+                "instead of a trip around. The floats hang past the outer " +
+                "edge: a tap arms one for the next stroke, a second tap sends " +
+                "it alone, and a double tap anywhere stands in for the sunken " +
+                "one. The corridor inside the ring and the field past its " +
+                "outer edge take nothing: they are the roads past a live key. " +
+                "All radii are in pitches, and the span sets what a pitch is."),
         Flag("Fixed board", { it.board }, { c, v -> c.board = v },
             "off falls back to the radial layout below, which reads slides by " +
                 "direction instead"),
@@ -100,6 +113,28 @@ class SettingsActivity : Activity() {
             "in steno order, one slice per key, clockwise from the start angle"),
         Text("Right island", { it.boardIslandRight }, { c, v -> c.boardIslandRight = v }),
         Text("Right board ring", { it.boardRingRight }, { c, v -> c.boardRingRight = v }),
+        Text("Left floats", { it.boardArcsLeft }, { c, v -> c.boardArcsLeft = v },
+            "the arcs past the outer edge: the first floats on top, the " +
+                "second sinks below. A tap arms one to join the next stroke; " +
+                "tapping it again sends it alone. A float never closes the " +
+                "island"),
+        Text("Right floats", { it.boardArcsRight }, { c, v -> c.boardArcsRight = v }),
+        Range("Float sweep", 20f, 140f, { it.boardArcSweep }, { c, v -> c.boardArcSweep = v },
+            "how far each floating arc wraps around the ring", unit = "°"),
+        Range("Float depth", 0.25f, 0.9f, { it.boardArcWide }, { c, v -> c.boardArcWide = v },
+            unit = "pitches"),
+        Text("Left double tap", { it.doubleTapLeft.toString() },
+            { c, v -> v.firstOrNull()?.let { c.doubleTapLeft = it } },
+            "the key two quick taps on this side arm, for the stroke being " +
+                "formed; a double tap on the free thumb's side lands its key " +
+                "in the stroke the other thumb is holding"),
+        Text("Right double tap", { it.doubleTapRight.toString() },
+            { c, v -> v.firstOrNull()?.let { c.doubleTapRight = it } }),
+        Range("Double tap window (ms)", 0f, 500f, { it.doubleTapMs.toFloat() },
+            { c, v -> c.doubleTapMs = v.toLong() },
+            "two taps this close together are a double tap, so a quick tap's " +
+                "stroke waits this long. Zero turns double taps off and the " +
+                "wait with them", unit = "ms"),
         Text("Doorways", { it.boardPortals }, { c, v -> c.boardPortals = v },
             "the fallback the tombstone replaced, working only while its size " +
                 "is zero. Pairs like A>R: a dead A cell takes R, for as long " +
@@ -121,13 +156,15 @@ class SettingsActivity : Activity() {
         Flag("Top row inside", { it.boardTopIn }, { c, v -> c.boardTopIn = v },
             "the machine's top row (T P H, and F P L T D) on the inward " +
                 "slices; off swaps the alternation"),
-        Range("Island cell size", 0.25f, 0.5f, { it.boardCell }, { c, v -> c.boardCell = v },
-            "an island disc's radius", unit = "pitches"),
-        Range("Tombstone size", 0f, 1.3f, { it.boardTomb }, { c, v -> c.boardTomb = v },
-            "the circle a dead island becomes. Crossing it throws the focus " +
-                "out the other side, and the glyph in front of the thumb says " +
-                "where. Zero turns the teleport off and the doorways back on",
-            unit = "pitches"),
+        Range("Island size", 0.5f, 1.35f, { it.boardIsle }, { c, v -> c.boardIsle = v },
+            "one circle, one size: the vowels' pie while it lives, the " +
+                "tombstone once the ring closes it. The gap up to the inner " +
+                "edge is the corridor", unit = "pitches"),
+        Flag("Teleport through the dead island", { it.boardTeleport },
+            { c, v -> c.boardTeleport = v },
+            "crossing the dead island throws the focus out the other side, " +
+                "and the glyph in front of the thumb says where. Off turns " +
+                "the doorways back on"),
         Range("Board position", 0.2f, 0.8f, { it.boardAt }, { c, v -> c.boardAt = v },
             "where the middle of the board sits", unit = "down the field"),
         Range("Left board start", -180f, 180f, { it.boardStartLeft },
@@ -279,6 +316,12 @@ class SettingsActivity : Activity() {
         // geometry only, so it does not need the engine.
         val view = RadialView(this, config, "#@^+STKPWHRAO*EUfrpblgtsdz", {}, { _, _ -> })
         preview = view
+        val toggle = CheckBox(this).apply {
+            text = "Show the preview"
+            isChecked = true
+            setOnCheckedChangeListener { _, _ -> previewRoom(editing = false) }
+        }
+        previewToggle = toggle
         setContentView(LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             addView(
@@ -287,6 +330,7 @@ class SettingsActivity : Activity() {
                     LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f
                 )
             )
+            addView(toggle.apply { setPadding(32, 8, 32, 8) })
             addView(view)
         })
     }
@@ -382,6 +426,8 @@ class SettingsActivity : Activity() {
                     inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
                     setText(knob.get(config))
                     setOnFocusChangeListener { _, focused ->
+                        // The soft keyboard needs the preview's room.
+                        previewRoom(editing = focused)
                         if (!focused) {
                             knob.set(config, text.toString())
                             keep()

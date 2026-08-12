@@ -12,7 +12,7 @@ private const val UNIT = 1000f
 
 /**
  * The board: fixed cells read by position, take order with the island first,
- * and dead island cells as doorways.
+ * floats past the outer edge, and the dead island as the teleport.
  */
 class BoardTest {
 
@@ -29,8 +29,21 @@ class BoardTest {
 
     @Test
     fun the_board_strings_are_the_banks() {
-        assertEquals("AO#^+STKPWHR", takes(Bank.LEFT))
-        assertEquals("@*EUfrpblgtsdz", takes(Bank.RIGHT))
+        assertEquals("AO^STKPWHR#+", takes(Bank.LEFT))
+        assertEquals("EUfrpblgtsdz@*", takes(Bank.RIGHT))
+    }
+
+    /** A key named as a float leaves the ring, so old saved layouts keep working. */
+    @Test
+    fun a_float_wins_a_key_named_twice() {
+        val stale = Board(ORDER, Config().also {
+            it.boardIslandRight = "@*EU"
+            it.boardRingLeft = "#^+STKPWHR"
+        })
+        assertEquals("AO^STKPWHR#+", stale.keys(Bank.LEFT).map { ORDER[it] }.joinToString(""))
+        assertTrue(stale.halo(ORDER.indexOf('#')))
+        assertTrue(stale.halo(ORDER.indexOf('*')))
+        assertFalse(stale.island(ORDER.indexOf('@')))
     }
 
     /** Moved from the left, where the machine's number bar is not. */
@@ -58,8 +71,15 @@ class BoardTest {
     @Test
     fun the_first_ring_key_closes_the_island() {
         assertFalse(board.live(key('A'), taken("S")))
-        assertFalse(board.live(key('O'), taken("#")))
-        assertFalse(board.live(key('*'), taken("Ef")))
+        assertFalse(board.live(key('O'), taken("T")))
+        assertFalse(board.live(key('U'), taken("Ef")))
+    }
+
+    /** The number bar joins whenever the machine's would: floats never close it. */
+    @Test
+    fun a_float_does_not_close_the_island() {
+        assertTrue(board.live(key('A'), taken("#")))
+        assertTrue(board.live(key('E'), taken("@*")))
     }
 
     /** The machine presses everything together, so the ring has no order. */
@@ -86,8 +106,8 @@ class BoardTest {
         assertEquals(key('A'), board.resolve(key('A'), emptyList()))
     }
 
-    /** The doorway fallback, alive only while the tombstone is off. */
-    private val doors = Board(ORDER, Config().also { it.boardTomb = 0f })
+    /** The doorway fallback, alive only while the teleport is off. */
+    private val doors = Board(ORDER, Config().also { it.boardTeleport = false })
 
     @Test
     fun a_dead_island_cell_yields_its_doorway_key() {
@@ -105,18 +125,18 @@ class BoardTest {
         assertNull(doors.resolve(key('O'), taken("H")))
     }
 
-    /** With the tombstone on, a dead island cell is plain ground. */
+    /** With the teleport on, a dead island cell is plain ground. */
     @Test
-    fun the_tombstone_replaces_the_doorways() {
+    fun the_teleport_replaces_the_doorways() {
         assertNull(board.portal(key('A')))
         assertNull(board.resolve(key('A'), taken("S")))
     }
 
-    /** A tombstone that swallowed the ring would teleport on every approach. */
+    /** An island that swallowed the ring would teleport on every approach. */
     @Test
-    fun the_tombstone_never_reaches_the_ring() {
-        val wild = Board(ORDER, Config().also { it.boardTomb = 9f })
-        assertTrue(wild.tomb(field) <= wild.inner(field))
+    fun the_island_never_reaches_the_ring() {
+        val wild = Board(ORDER, Config().also { it.boardIsle = 9f })
+        assertTrue(wild.isle(field) <= wild.inner(field))
     }
 
     @Test
@@ -130,7 +150,7 @@ class BoardTest {
     fun a_doorway_cannot_cross_the_banks() {
         val crossed = Board(ORDER, Config().also {
             it.boardPortals = "A>t"
-            it.boardTomb = 0f
+            it.boardTeleport = false
         })
         assertNull(crossed.resolve(ORDER.indexOf('A'), listOf(ORDER.indexOf('S'))))
     }
@@ -193,12 +213,15 @@ class BoardTest {
         for ((top, bottom) in listOf('T' to 'K', 'P' to 'W', 'H' to 'R')) {
             val a = cell(Bank.LEFT, top)
             val b = cell(Bank.LEFT, bottom)
-            val at = Math.atan2((a.y - middle.y).toDouble(), (a.x - middle.x).toDouble())
-            val bt = Math.atan2((b.y - middle.y).toDouble(), (b.x - middle.x).toDouble())
+            val at = Math.toDegrees(
+                Math.atan2((a.y - middle.y).toDouble(), (a.x - middle.x).toDouble())
+            ).toFloat()
+            val bt = Math.toDegrees(
+                Math.atan2((b.y - middle.y).toDouble(), (b.x - middle.x).toDouble())
+            ).toFloat()
             assertEquals(
                 "$top and $bottom are not one step apart",
-                Math.toRadians(board.step(Bank.LEFT).toDouble()),
-                Math.abs(bt - at), 0.001
+                board.step(Bank.LEFT), Ring.separation(at, bt), 0.1f
             )
             assertTrue(
                 "$top is not the inward slice",
@@ -222,38 +245,44 @@ class BoardTest {
     }
 
     /**
-     * The corridor is the board's whole guard: it circles the island, so every
-     * live slice can be walked around, and the island discs never touch.
+     * The corridor is a road all the way around: the island's rim stays short
+     * of the inner edge, so every live slice can be walked past.
      */
     @Test
     fun a_corridor_separates_the_island_from_the_ring() {
-        for (bank in Bank.values()) {
-            val middle = board.center(field)
-            val radius = board.radius(field)
-            val discs = board.cells(bank, field).filter { board.island(it.key) }
-            for (disc in discs) {
-                val reach = hypot(disc.x - middle.x, disc.y - middle.y) + radius
-                assertTrue("${ORDER[disc.key]} crowds the ring", reach < board.inner(field))
-            }
-            for (i in discs.indices) {
-                for (j in i + 1 until discs.size) {
-                    val gap = hypot(discs[i].x - discs[j].x, discs[i].y - discs[j].y)
-                    assertTrue(
-                        "${ORDER[discs[i].key]} and ${ORDER[discs[j].key]} touch",
-                        gap > 2f * radius
-                    )
-                }
-            }
-        }
+        assertTrue(board.isle(field) < board.inner(field))
     }
 
     @Test
     fun the_corridor_hits_nothing() {
         val middle = board.center(field)
-        // Straight down from the middle: the left island lies east-west, so this
-        // radius is corridor from the discs' edge to the slices' inner edge.
-        val r = (board.inner(field) + board.radius(field)) * 0.5f
+        val r = (board.inner(field) + board.isle(field)) * 0.5f
         assertNull(board.hit(Bank.LEFT, field, middle.x, middle.y + r))
+    }
+
+    /** The island is one pie: every point inside it belongs to a sector. */
+    @Test
+    fun the_island_is_a_pie_of_its_keys() {
+        val middle = board.center(field)
+        val r = board.isle(field) * 0.6f
+        assertEquals(key('A'), board.hit(Bank.LEFT, field, middle.x - r, middle.y))
+        assertEquals(key('O'), board.hit(Bank.LEFT, field, middle.x + r, middle.y))
+        assertEquals(key('E'), board.hit(Bank.RIGHT, field, middle.x - r, middle.y))
+        assertEquals(key('U'), board.hit(Bank.RIGHT, field, middle.x + r, middle.y))
+    }
+
+    /** The floats hang past the outer edge, the first on top, the second below. */
+    @Test
+    fun the_floats_hang_past_the_outer_edge() {
+        val middle = board.center(field)
+        val sharp = cell(Bank.LEFT, '#')
+        val plus = cell(Bank.LEFT, '+')
+        assertTrue(sharp.y < middle.y)
+        assertTrue(plus.y > middle.y)
+        assertTrue(hypot(sharp.x - middle.x, sharp.y - middle.y) > board.outer(field))
+        // The gap between the outer edge and an arc is still road.
+        val road = (board.outer(field) + board.pitch(field) * (config.boardOuter + 0.12f)) * 0.5f
+        assertNull(board.hit(Bank.LEFT, field, middle.x, middle.y - road))
     }
 
     /** A touch-down reads the nearest cell instead, so no tap lands on nothing. */
@@ -376,8 +405,8 @@ class BoardChorderTest {
         touch(Bank.LEFT, 0, 'S')
         val f = chorder.thumb(Bank.LEFT).field
         val middle = board.center(f)
-        // Between the tombstone and the inner edge: the corridor that is left.
-        val road = (board.inner(f) + board.tomb(f)) * 0.5f
+        // Between the island's rim and the inner edge: the corridor.
+        val road = (board.inner(f) + board.isle(f)) * 0.5f
         val t = cell(Bank.LEFT, 'T')
         val angle = Math.atan2((t.y - middle.y).toDouble(), (t.x - middle.x).toDouble())
         chorder.move(
@@ -512,7 +541,7 @@ class BoardChorderTest {
     @Test
     fun the_tombstone_throws_the_focus_across() {
         touch(Bank.RIGHT, 1, 'b')
-        val (ix, iy) = ray(18.0, 1.0)
+        val (ix, iy) = ray(18.0, 0.85)
         slideBy(Bank.RIGHT, ix, iy)
         assertEquals("the crossing took something", "b", keys(Bank.RIGHT))
         slideBy(Bank.RIGHT, 0.0, 0.0)
@@ -523,26 +552,26 @@ class BoardChorderTest {
     @Test
     fun the_tunnel_works_both_ways() {
         touch(Bank.RIGHT, 1, 'b')
-        val (ix, iy) = ray(18.0, 1.0)
+        val (ix, iy) = ray(18.0, 0.85)
         slideBy(Bank.RIGHT, ix, iy)
         slideBy(Bank.RIGHT, 0.0, 0.0)
         assertEquals("bd", keys(Bank.RIGHT))
-        // The thumb reaches on outward; the focus, two pitches behind it,
-        // re-enters the tombstone and flips back to the near side.
+        // The thumb reaches on outward; the focus, 1.7 pitches behind it,
+        // re-enters the island and flips back to the near side.
         val (bx, by) = ray(18.0, 2.5)
         slideBy(Bank.RIGHT, bx, by)
         assertEquals("the return crossing took something", "bd", keys(Bank.RIGHT))
-        // Now offset three pitches: putting the focus in l takes l.
+        // The offset is now 3.3 pitches: putting the focus in l takes l.
         val (lx, ly) = ray(54.0, 2.0)
-        val (ox, oy) = ray(18.0, 3.0)
+        val (ox, oy) = ray(18.0, 3.3)
         slideBy(Bank.RIGHT, lx + ox, ly + oy)
         assertEquals("bdl", keys(Bank.RIGHT))
     }
 
-    /** With the tombstone off, the doorways still serve as before. */
+    /** With the teleport off, the doorways still serve as before. */
     @Test
-    fun the_doorways_return_when_the_tombstone_is_off() {
-        val config = Config().also { it.boardTomb = 0f }
+    fun the_doorways_return_when_the_teleport_is_off() {
+        val config = Config().also { it.boardTeleport = false }
         val fallback = Board(ORDER, config)
         val walker = Chorder(Ring(ORDER, config), fallback, config) {}
         val field = Field(0f, 0f, 400f, 900f)
@@ -571,10 +600,55 @@ class BoardChorderTest {
     /** A tap is read as the nearest cell, so the corridor swallows no touch-down. */
     @Test
     fun a_tap_in_the_corridor_takes_the_nearest_cell() {
-        val a = cell(Bank.LEFT, 'A')
-        val radius = board.radius(chorder.thumb(Bank.LEFT).field)
-        chorder.down(Bank.LEFT, 0, a.x - radius * 1.3f, a.y)
+        val f = chorder.thumb(Bank.LEFT).field
+        val middle = board.center(f)
+        chorder.down(Bank.LEFT, 0, middle.x - board.isle(f) * 1.05f, middle.y)
         assertEquals("A", keys(Bank.LEFT))
+    }
+
+    /** A tap that lifts on a float alone arms it for the next stroke. */
+    @Test
+    fun a_tapped_float_joins_the_next_stroke() {
+        touch(Bank.LEFT, 0, '#')
+        chorder.up(0)
+        assertEquals("the tap wrote a stroke", 0, written.size)
+        touch(Bank.LEFT, 0, 'T')
+        chorder.up(0)
+        assertEquals(listOf(mask("#T")), written)
+    }
+
+    /** Lifting on an armed float again sends it alone. */
+    @Test
+    fun a_second_tap_sends_the_float_alone() {
+        touch(Bank.LEFT, 0, '#')
+        chorder.up(0)
+        touch(Bank.LEFT, 0, '#')
+        chorder.up(0)
+        assertEquals(listOf(mask("#")), written)
+    }
+
+    /** What a double tap does: the armed key rides the stroke being formed. */
+    @Test
+    fun an_armed_key_rides_the_other_thumbs_stroke() {
+        touch(Bank.LEFT, 0, 'T')
+        chorder.stick(key('*'))
+        chorder.up(0)
+        assertEquals(listOf(mask("T*")), written)
+    }
+
+    /** A held tap goes out when flushed, and a cancel forgets it. */
+    @Test
+    fun a_held_tap_waits_for_its_window() {
+        touch(Bank.LEFT, 0, 'T')
+        chorder.up(0, tap = true)
+        assertEquals("the held stroke went out early", 0, written.size)
+        chorder.flush()
+        assertEquals(listOf(mask("T")), written)
+        touch(Bank.LEFT, 0, 'P')
+        chorder.up(0, tap = true)
+        chorder.cancelHeld()
+        chorder.flush()
+        assertEquals(listOf(mask("T")), written)
     }
 
     @Test

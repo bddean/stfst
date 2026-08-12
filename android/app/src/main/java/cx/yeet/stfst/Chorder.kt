@@ -102,6 +102,15 @@ class Chorder(
     val right = Thumb(Bank.RIGHT)
 
     /**
+     * Keys armed to join the next stroke: a tapped float, or a double tap's
+     * key. Cleared when a stroke goes out.
+     */
+    val sticky = mutableSetOf<Int>()
+
+    /** A quick tap's stroke, waiting out the double-tap window. */
+    private var held = 0L
+
+    /**
      * Whether a key has been taken since the last stroke was written.
      *
      * A thumb that stays down keeps its keys, so without this the lift of that
@@ -177,28 +186,73 @@ class Chorder(
     fun hover(bank: Bank): Int = thumb(bank).hovering
 
     /**
-     * A thumb lifts. Returns the stroke written, or zero.
+     * A thumb lifts. Returns the stroke written or held, or zero.
      *
      * The lifted thumb always gives up its keys. Whether the other one does is
      * the difference between the two commit rules.
+     *
+     * A lift that took floats and nothing else arms them instead of writing:
+     * they join the next stroke, and lifting on them again sends them alone.
+     * `tap` marks a quick touch, whose stroke waits out the double-tap window
+     * in [held] for [flush], so a second tap can still cancel it.
      */
-    fun up(pointer: Int): Long {
+    fun up(pointer: Int, tap: Boolean = false): Long {
         val thumb = forPointer(pointer) ?: return 0L
         thumb.pointer = Thumb.NONE
         thumb.home()
         val other = if (thumb === left) right else left
+        if (config.board && thumb.keys.isNotEmpty() && other.keys.isEmpty() &&
+            thumb.keys.all { board.halo(it) }
+        ) {
+            val again = thumb.keys.all { it in sticky }
+            sticky.addAll(thumb.keys)
+            thumb.keys.clear()
+            if (!again) return 0L
+        }
         if (!config.commitOnFirstLift && other.down) return 0L
         val stroke = if (pending) mask() else 0L
         pending = false
         thumb.keys.clear()
         if (!other.down) other.keys.clear()
-        if (stroke != 0L) write(stroke)
+        if (stroke != 0L) {
+            if (tap) {
+                flush()
+                held = stroke
+            } else {
+                emit(stroke)
+            }
+        }
         return stroke
+    }
+
+    /** Arm a key to join the next stroke, the way a tapped float does. */
+    fun stick(key: Int) {
+        sticky.add(key)
+        pending = true
+    }
+
+    /** Send the held stroke on, its double-tap window over. */
+    fun flush() {
+        val stroke = held
+        held = 0L
+        if (stroke != 0L) emit(stroke)
+    }
+
+    /** Forget the held stroke: its tap was the start of a double tap. */
+    fun cancelHeld() {
+        held = 0L
+    }
+
+    private fun emit(stroke: Long) {
+        sticky.clear()
+        write(stroke)
     }
 
     /** Give up everything, for a keyboard that is going away. */
     fun reset() {
         pending = false
+        held = 0L
+        sticky.clear()
         for (thumb in listOf(left, right)) {
             thumb.pointer = Thumb.NONE
             thumb.keys.clear()
@@ -206,10 +260,10 @@ class Chorder(
         }
     }
 
-    /** Both banks as one bit per key, which is what a stroke is. */
+    /** Both banks as one bit per key, plus the armed keys: what a stroke is. */
     fun mask(): Long {
         var bits = 0L
-        for (key in left.keys + right.keys) bits = bits or (1L shl key)
+        for (key in left.keys + right.keys + sticky) bits = bits or (1L shl key)
         return bits
     }
 
@@ -251,11 +305,11 @@ class Chorder(
         thumb.atX = x
         thumb.atY = y
         var crossed = false
-        val tomb = board.tomb(thumb.field)
-        if (tomb > 0f && board.closed(thumb.bank, thumb.keys)) {
+        val isle = board.isle(thumb.field)
+        if (config.boardTeleport && isle > 0f && board.closed(thumb.bank, thumb.keys)) {
             val middle = board.center(thumb.field)
             val inside =
-                hypot(thumb.focusX - middle.x, thumb.focusY - middle.y) <= tomb
+                hypot(thumb.focusX - middle.x, thumb.focusY - middle.y) <= isle
             if (inside && !thumb.inTomb) {
                 thumb.offX = 2f * middle.x - thumb.focusX - x
                 thumb.offY = 2f * middle.y - thumb.focusY - y
