@@ -36,21 +36,21 @@ data class Config(
      */
     var board: Boolean = true,
     /**
-     * Each bank of the board: an island of cells inside a ring of cells, in
-     * take order, island first.
+     * Each bank of the board: an island of cells inside a ring of cells, both
+     * written in steno order, island first.
      *
-     * The island is unordered, the way a machine's thumb cluster is pressed
-     * together: its keys go in any order, and the first ring key closes it.
-     * That is its point: the walk starts in the middle, leaves toward the ring
-     * from whichever island cell faces the exit, and the vacated middle is the
-     * road every skip crosses, since a skipped ring key is still live and has
-     * to be gone around.
+     * The ring string's consecutive pairs are the machine's columns, bent round
+     * the circle, its two rows as two bands. No order is enforced on the ring:
+     * the machine presses everything together, and a taken cell is dead.
      *
-     * The left island is the one deviation from steno order: the vowels come
-     * last in the outline, and an island that stays live until then blocks the
-     * middle for the whole consonant walk. Taking them first costs nothing the
-     * dictionary can see, because a stroke is a set of keys and the outline
-     * spelling stays steno order whatever order the thumb walked.
+     * The island's keys go in any order too, but before the ring, and the first
+     * ring key closes it. That is what pays for the middle: the island dies
+     * early, the corridor stays road, and its cells become doorways instead of
+     * vowels a crossing would collect.
+     *
+     * The left island holds the vowels although the outline spells them late.
+     * It costs nothing the dictionary can see: a stroke is a set of keys, and
+     * the outline spelling stays steno order whatever order the thumb walked.
      */
     var boardIslandLeft: String = "AO",
     var boardRingLeft: String = "#^+STKPWHR",
@@ -69,20 +69,26 @@ data class Config(
      * Cell pitches across the field's short side. Fewer means a bigger board.
      * The radii below are all in pitches, so this is the one scale knob.
      */
-    var boardSpan: Float = 4.8f,
+    var boardSpan: Float = 5.4f,
     /** An island disc's radius, in pitches. */
     var boardCell: Float = 0.42f,
     /**
-     * The ring's inner edge, in pitches.
+     * The ring's edges, in pitches. Between them, split evenly, sit the two
+     * bands that are the machine's two rows.
      *
-     * The gap between it and the island discs is the corridor, and the corridor
-     * is the board's whole guard: nothing waits on time or turning, so a walk
-     * gets past a live slice by going inside it. Outward the ring has no edge a
-     * slice can be missed over; only undershooting misses.
+     * A cell is only the button that is drawn. Inside the inner edge the
+     * corridor circles the island, past the outer edge is the open field, and
+     * neither takes: they are the two roads, and a walk gets past a live key
+     * on one of them. The roads are the board's whole guard, since nothing
+     * waits on time or turning.
      */
-    var boardInner: Float = 1.5f,
-    /** Where the ring is drawn to. The answer does not change past it. */
-    var boardOuter: Float = 2.3f,
+    var boardInner: Float = 1.4f,
+    var boardOuter: Float = 2.6f,
+    /**
+     * Put each column's machine-top-row key in the inner band. Off swaps the
+     * rows. Which way round reads better is a fact about thumbs, not layouts.
+     */
+    var boardTopIn: Boolean = true,
     /** Where the middle of the board sits, as a fraction down the field. */
     var boardAt: Float = 0.5f,
     /** Where each board ring's first key sits. -90 is straight up. */

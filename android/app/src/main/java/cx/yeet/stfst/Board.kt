@@ -7,24 +7,28 @@ import kotlin.math.min
 import kotlin.math.sin
 
 /**
- * The fixed layout: each bank is a ring of slices around an island of discs,
- * and a touch is read by where it is, never by where it went.
+ * The fixed layout: the steno machine bent round an island, read by where the
+ * thumb is, never by where it went.
  *
- * Entering a cell takes its key, so a chord is a walk that visits its keys.
- * The ring is contiguous: one annular slice per key, open outward, so a slice
- * is missed only inward. Inside the ring, a corridor of ground circles the
- * island and takes nothing: a skipped ring key is still ahead in take order,
- * so it is live, and the corridor is how a walk gets past it. The island discs
- * are the only cells a walk can also go *between*.
+ * Steno order alternates the machine's two rows, so consecutive pairs of the
+ * ring string are the machine's columns. Each bank bends them round a circle:
+ * a column is 360 over their count of arc, and the two rows are two bands, one
+ * inside the other. A machine row is then a sweep along one band, a column is
+ * one radial step, and a roll is the zigzag between them.
  *
- * The island is the take order's front and it is unordered, the way a
- * machine's thumb cluster is pressed: its keys may be walked in any order, and
+ * Entering a cell takes its key, and a taken cell is ground: there is no order
+ * on the ring, as there is none on the machine. The island is the exception
+ * that pays for the middle: its keys go in any order but before the ring, and
  * the first ring key closes it. A closed island cell is ground, or a doorway
  * when [config]'s portals give it a destination that is still takeable.
+ *
+ * Two roads carry every skip past a live key: the corridor between island and
+ * ring, and the open field past the outer edge. A cell is only the button that
+ * is drawn; beyond the outer edge nothing takes.
  */
 class Board(val order: String, val config: Config) {
 
-    /** Each bank's two strings: the island, then the ring, in take order. */
+    /** Each bank's two strings: the island, then the ring, in steno order. */
     private val sides: Map<Bank, Pair<String, String>> = mapOf(
         Bank.LEFT to (config.boardIslandLeft to config.boardRingLeft),
         Bank.RIGHT to (config.boardIslandRight to config.boardRingRight),
@@ -37,18 +41,23 @@ class Board(val order: String, val config: Config) {
         side.second.mapNotNull { c -> order.indexOf(c).takeIf { it >= 0 } }
     }
 
-    /** Each bank's keys in take order. A key in neither string is off the board. */
+    /** Each bank's keys, island first. A key in neither string is off the board. */
     private val takes: Map<Bank, List<Int>> = Bank.values().associateWith {
         islandKeys.getValue(it) + ringKeys.getValue(it)
     }
 
-    /** A key's place in its bank's take order, or -1 for a key off the board. */
+    /** A key's place in its bank's strings, or -1 for a key off the board. */
     private val rank = IntArray(order.length) { -1 }.also {
         for (keys in takes.values) keys.forEachIndexed { i, k -> it[k] = i }
     }
 
     private val banks = arrayOfNulls<Bank>(order.length).also {
         for ((bank, keys) in takes) for (k in keys) it[k] = bank
+    }
+
+    /** The machine's columns: consecutive pairs of the ring, top key first. */
+    private val columns: Map<Bank, List<List<Int>>> = ringKeys.mapValues { (_, ring) ->
+        ring.chunked(2)
     }
 
     /** Where a dead cell leads, or -1. Parsed from pairs like `A>R`. */
@@ -64,16 +73,6 @@ class Board(val order: String, val config: Config) {
         }
     }
 
-    /**
-     * Cell reference points in pitch units around the bank's middle: island
-     * centres, then each slice's label point. Island first, matching [takes].
-     */
-    private val spots: Map<Bank, List<Point>> = Bank.values().associateWith { bank ->
-        val label = (config.boardInner + config.boardOuter) * 0.5f
-        islandSpots(islandKeys.getValue(bank).size) +
-            ringSpots(ringKeys.getValue(bank).size, start(bank), label)
-    }
-
     fun keys(bank: Bank): List<Int> = takes.getValue(bank)
 
     fun bankOf(key: Int): Bank? = banks[key]
@@ -87,19 +86,16 @@ class Board(val order: String, val config: Config) {
     /**
      * Whether a key can still be taken, given the keys this thumb has taken.
      *
-     * An island key is live until it is taken or any ring key is: within the
-     * island there is no order, only the boundary. A ring key is live while it
-     * is later than every ring key taken, which is the rising run as before.
+     * Taken is dead, and that is the whole rule on the ring: the machine
+     * presses everything together, so no order is enforced there. An island
+     * key also dies when any ring key is taken, which is what turns the middle
+     * into road and its cells into doorways for the rest of the stroke.
      */
     fun live(key: Int, taken: List<Int>): Boolean {
         val bank = banks[key] ?: return false
-        val island = islandKeys.getValue(bank).size
-        var ring = -1
-        for (k in taken) {
-            if (banks[k] == bank && rank[k] >= island) ring = maxOf(ring, rank[k])
-        }
-        return if (rank[key] < island) ring < 0 && key !in taken
-        else rank[key] > ring
+        if (key in taken) return false
+        if (!island(key)) return true
+        return taken.none { banks[it] == bank && !island(it) }
     }
 
     fun portal(key: Int): Int? = portals[key].takeIf { it >= 0 }
@@ -119,14 +115,14 @@ class Board(val order: String, val config: Config) {
     /** An island disc's radius. */
     fun radius(field: Field): Float = pitch(field) * config.boardCell
 
-    /** The ring's inner edge. Inside it, only the island discs take. */
+    /** The ring's inner edge. Between it and the island is the corridor. */
     fun inner(field: Field): Float = pitch(field) * config.boardInner
 
-    /** Where the ring is drawn to. The answer does not change past it. */
+    /** The ring's outer edge. Past it is the outer road: nothing takes. */
     fun outer(field: Field): Float = pitch(field) * config.boardOuter
 
-    /** Degrees of ring one key owns. */
-    fun step(bank: Bank): Float = 360f / ringKeys.getValue(bank).size.coerceAtLeast(1)
+    /** Degrees of ring one column owns. */
+    fun step(bank: Bank): Float = 360f / columns.getValue(bank).size.coerceAtLeast(1)
 
     fun start(bank: Bank): Float =
         if (bank == Bank.LEFT) config.boardStartLeft else config.boardStartRight
@@ -134,26 +130,53 @@ class Board(val order: String, val config: Config) {
     fun center(field: Field): Point =
         Point(field.centerX, field.top + field.height * config.boardAt)
 
+    /**
+     * A ring key's band, as radii in pitches. The top-row key of a column takes
+     * the inner band when [Config.boardTopIn] says so, the outer band otherwise,
+     * and a key alone in its column takes the full depth.
+     */
+    fun radiiOf(key: Int): ClosedFloatingPointRange<Float> {
+        val bank = banks[key] ?: return 0f..0f
+        val at = rank[key] - islandKeys.getValue(bank).size
+        val mid = (config.boardInner + config.boardOuter) * 0.5f
+        val alone = at or 1 >= ringKeys.getValue(bank).size
+        return when {
+            alone -> config.boardInner..config.boardOuter
+            (at % 2 == 0) == config.boardTopIn -> config.boardInner..mid
+            else -> mid..config.boardOuter
+        }
+    }
+
     fun cells(bank: Bank, field: Field): List<Cell> {
         val pitch = pitch(field)
         val middle = center(field)
-        return keys(bank).zip(spots.getValue(bank)) { key, at ->
+        val island = islandKeys.getValue(bank)
+        val spots = islandSpots(island.size) + ringKeys.getValue(bank).map { key ->
+            val angle = Math.toRadians(
+                (start(bank) + (rank[key] - island.size) / 2 * step(bank)).toDouble()
+            )
+            val at = (radiiOf(key).start + radiiOf(key).endInclusive) * 0.5f
+            Point((cos(angle) * at).toFloat(), (sin(angle) * at).toFloat())
+        }
+        return keys(bank).zip(spots) { key, at ->
             Cell(key, middle.x + at.x * pitch, middle.y + at.y * pitch)
         }
     }
 
     /**
-     * The cell this point is inside, or null for the ground.
-     *
-     * Outside the ring's inner edge every direction belongs to a slice, however
-     * far out, so a slice can only be missed inward. Inside are the island
-     * discs and the corridor between them and the ring.
+     * The cell this point is inside, or null for the ground: the corridor, the
+     * outer road, or the space between island discs.
      */
     fun hit(bank: Bank, field: Field, x: Float, y: Float): Int? {
         val middle = center(field)
         val dx = x - middle.x
         val dy = y - middle.y
-        if (hypot(dx, dy) >= inner(field)) return slice(bank, dx, dy)
+        val r = hypot(dx, dy) / pitch(field)
+        if (r > config.boardOuter) return null
+        if (r >= config.boardInner) {
+            val column = columnAt(bank, dx, dy) ?: return null
+            return column.firstOrNull { r <= radiiOf(it).endInclusive }
+        }
         val radius = radius(field)
         return cells(bank, field).take(islandKeys.getValue(bank).size)
             .firstOrNull { hypot(it.x - x, it.y - y) <= radius }?.key
@@ -161,37 +184,39 @@ class Board(val order: String, val config: Config) {
 
     /**
      * What a touch-down reads, so no tap lands on nothing: the cell hit, or
-     * from the corridor whichever is closer, the slice just outward or the
-     * nearest island disc.
+     * from either road whichever is closer, the band alongside or the nearest
+     * island disc.
      */
     fun nearest(bank: Bank, field: Field, x: Float, y: Float): Int? {
         hit(bank, field, x, y)?.let { return it }
         val middle = center(field)
         val dx = x - middle.x
         val dy = y - middle.y
-        val toRing = inner(field) - hypot(dx, dy)
+        val r = hypot(dx, dy) / pitch(field)
+        val column = columnAt(bank, dx, dy)
+        val band = when {
+            column == null -> null
+            r > config.boardOuter -> column.lastOrNull()
+            else -> column.firstOrNull()
+        }
+        val toBand = if (r > config.boardOuter) r - config.boardOuter else config.boardInner - r
         val disc = cells(bank, field).take(islandKeys.getValue(bank).size)
             .minByOrNull { hypot(it.x - x, it.y - y) }
-        val toDisc = disc?.let { hypot(it.x - x, it.y - y) - radius(field) }
-        if (toDisc != null && toDisc <= toRing) return disc.key
-        return slice(bank, dx, dy) ?: disc?.key
-    }
-
-    /** The ring key whose slice this direction from the middle belongs to. */
-    private fun slice(bank: Bank, dx: Float, dy: Float): Int? {
-        val ring = ringKeys.getValue(bank)
-        if (ring.isEmpty()) return null
-        val angle = Math.toDegrees(atan2(dy.toDouble(), dx.toDouble())).toFloat()
-        return ring[Math.floorMod(Math.round((angle - start(bank)) / step(bank)), ring.size)]
-    }
-
-    /** Points at one radius, [step] degrees apart, clockwise from [from]. */
-    private fun ringSpots(count: Int, from: Float, radius: Float): List<Point> {
-        if (count == 0) return emptyList()
-        return (0 until count).map {
-            val a = Math.toRadians((from + it * 360f / count).toDouble())
-            Point((cos(a) * radius).toFloat(), (sin(a) * radius).toFloat())
+        val toDisc = disc?.let { (hypot(it.x - x, it.y - y) - radius(field)) / pitch(field) }
+        return when {
+            band == null -> disc?.key
+            toDisc != null && toDisc <= toBand -> disc.key
+            else -> band
         }
+    }
+
+    /** The column this direction from the middle belongs to, inner key first. */
+    private fun columnAt(bank: Bank, dx: Float, dy: Float): List<Int>? {
+        val columns = columns.getValue(bank)
+        if (columns.isEmpty()) return null
+        val angle = Math.toDegrees(atan2(dy.toDouble(), dx.toDouble())).toFloat()
+        val at = Math.floorMod(Math.round((angle - start(bank)) / step(bank)), columns.size)
+        return columns[at].sortedBy { radiiOf(it).start }
     }
 
     /**
@@ -205,6 +230,9 @@ class Board(val order: String, val config: Config) {
         2 -> listOf(Point(-0.5f, 0f), Point(0.5f, 0f))
         3 -> listOf(Point(0f, -0.58f), Point(-0.5f, 0.29f), Point(0.5f, 0.29f))
         4 -> listOf(Point(0f, -0.7f), Point(0f, 0.7f), Point(-0.5f, 0f), Point(0.5f, 0f))
-        else -> ringSpots(count, -90f, 0.7f)
+        else -> (0 until count).map {
+            val a = Math.toRadians((-90.0 + it * 360.0 / count))
+            Point((cos(a) * 0.7f).toFloat(), (sin(a) * 0.7f).toFloat())
+        }
     }
 }

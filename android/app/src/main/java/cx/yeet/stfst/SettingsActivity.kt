@@ -69,14 +69,16 @@ class SettingsActivity : Activity() {
 
     private val knobs: List<Knob> = listOf(
         Section("The board",
-            "The default layout: fixed cells, read by where the thumb is. Each " +
-                "bank is a ring of slices in take order around an island of the " +
-                "keys taken first, and any cell the thumb enters is taken. A " +
-                "spent cell is ground. The corridor between the island and the " +
-                "ring takes nothing, which is how a walk gets past a live slice. " +
-                "Once the ring closes the island, a dead island cell is a " +
-                "doorway to the key after its '>'. All radii are in pitches, and " +
-                "the span sets what a pitch is."),
+            "The default layout: the steno machine bent round an island, read " +
+                "by where the thumb is. Pairs of the ring string are the " +
+                "machine's columns; its two rows are the two bands. Any cell " +
+                "the thumb enters is taken, in any order, and a taken cell is " +
+                "ground. Island keys go before the ring, and once the ring " +
+                "closes the island a dead island cell is a doorway to the key " +
+                "after its '>'. The corridor inside the ring and the field past " +
+                "its outer edge take nothing: they are the roads past a live " +
+                "key. All radii are in pitches, and the span sets what a pitch " +
+                "is."),
         Flag("Fixed board", { it.board }, { c, v -> c.board = v },
             "off falls back to the radial layout below, which reads slides by " +
                 "direction instead"),
@@ -85,7 +87,8 @@ class SettingsActivity : Activity() {
                 "cluster. A stroke is a set of keys, so the outline stays steno " +
                 "order whatever order the thumb walked"),
         Text("Left board ring", { it.boardRingLeft }, { c, v -> c.boardRingLeft = v },
-            "clockwise from the board start angle"),
+            "in steno order; consecutive pairs are the columns, clockwise from " +
+                "the start angle"),
         Text("Right island", { it.boardIslandRight }, { c, v -> c.boardIslandRight = v }),
         Text("Right board ring", { it.boardRingRight }, { c, v -> c.boardRingRight = v }),
         Text("Doorways", { it.boardPortals }, { c, v -> c.boardPortals = v },
@@ -95,12 +98,15 @@ class SettingsActivity : Activity() {
             "pitches across the field's short side; fewer means a bigger board",
             unit = "pitches"),
         Range("Ring inner edge", 1.0f, 2.2f, { it.boardInner }, { c, v -> c.boardInner = v },
-            "where the slices begin. The gap between it and the island is the " +
-                "corridor, so lower is fatter slices and a narrower road",
+            "where the bands begin. The gap between it and the island is the " +
+                "corridor, so lower is deeper bands and a narrower road",
             unit = "pitches"),
         Range("Ring outer edge", 1.5f, 3.2f, { it.boardOuter }, { c, v -> c.boardOuter = v },
-            "where the slices are drawn to. Past it the same key is still taken",
+            "where the bands end. Past it is the outer road: nothing takes",
             unit = "pitches"),
+        Flag("Top row inside", { it.boardTopIn }, { c, v -> c.boardTopIn = v },
+            "the machine's top row (T P H, and F P L T D) as the inner band; " +
+                "off swaps the rows"),
         Range("Island cell size", 0.25f, 0.5f, { it.boardCell }, { c, v -> c.boardCell = v },
             "an island disc's radius", unit = "pitches"),
         Range("Board position", 0.2f, 0.8f, { it.boardAt }, { c, v -> c.boardAt = v },

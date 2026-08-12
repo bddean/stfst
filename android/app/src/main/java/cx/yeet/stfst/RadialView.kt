@@ -400,8 +400,9 @@ class RadialView(
     }
 
     /**
-     * Every cell of one bank, live or dead: the ring as contiguous slices, the
-     * island as discs. A dead cell stays on screen because it is still ground.
+     * Every cell of one bank, live or dead: the ring as two bands of wedges,
+     * the machine's rows and columns bent round, the island as discs. A dead
+     * cell stays on screen because it is still ground.
      * An island cell carries both its glyphs the whole time, key above and
      * doorway below, and the open one is the bright one: before the stroke the
      * key glows and the doorway waits dim, and once the ring closes the island
@@ -422,12 +423,9 @@ class RadialView(
         val field = thumb.field
         val middle = board.center(field)
         val radius = board.radius(field) * scale
-        val inner = board.inner(field) * scale
-        val outer = board.outer(field) * scale
+        val pitch = board.pitch(field) * scale
         val step = board.step(thumb.bank)
-        val label = (inner + outer) * 0.5f
         val wanted = ink.textSize
-        val arc = (2f * Math.PI * label * step / 360f).toFloat()
         for (cell in board.cells(thumb.bank, field)) {
             val x = at.x + (cell.x - middle.x) * scale
             val y = at.y + (cell.y - middle.y) * scale
@@ -437,10 +435,14 @@ class RadialView(
             val open = doorway != null && yields == doorway
             val dimmed = dim * if (live || open) 1f else 0.45f
             if (!board.island(cell.key)) {
+                val band = board.radiiOf(cell.key)
                 val angle = Math.toDegrees(
                     atan2((cell.y - middle.y).toDouble(), (cell.x - middle.x).toDouble())
                 ).toFloat()
-                val path = wedge(at.x, at.y, inner, outer, angle - step * 0.5f, step)
+                val path = wedge(
+                    at.x, at.y, band.start * pitch, band.endInclusive * pitch,
+                    angle - step * 0.5f, step
+                )
                 ink.style = Paint.Style.FILL
                 ink.color = fade(paint.face, dimmed)
                 canvas.drawPath(path, ink)
@@ -448,9 +450,12 @@ class RadialView(
                 ink.color = fade(paint.edge, dimmed)
                 canvas.drawPath(path, ink)
                 if (!config.showLabels) continue
+                val mid = (band.start + band.endInclusive) * 0.5f * pitch
+                val arc = (2f * Math.PI * mid * step / 360f).toFloat()
+                val depth = (band.endInclusive - band.start) * pitch
                 ink.style = Paint.Style.FILL
                 ink.color = fade(paint.text, dimmed)
-                ink.textSize = minOf(wanted, arc * 0.62f, (outer - inner) * 0.7f)
+                ink.textSize = minOf(wanted, arc * 0.62f, depth * 0.75f)
                 canvas.drawText(order[cell.key].toString(), x, y + ink.textSize * 0.35f, ink)
                 ink.textSize = wanted
                 continue

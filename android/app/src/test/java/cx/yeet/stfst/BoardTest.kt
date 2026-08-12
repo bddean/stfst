@@ -60,9 +60,15 @@ class BoardTest {
         assertFalse(board.live(key('A'), taken("S")))
         assertFalse(board.live(key('O'), taken("#")))
         assertFalse(board.live(key('*'), taken("Ef")))
-        // And the ring itself is still a rising run.
+    }
+
+    /** The machine presses everything together, so the ring has no order. */
+    @Test
+    fun the_ring_has_no_order() {
+        assertTrue(board.live(key('S'), taken("T")))
+        assertTrue(board.live(key('f'), taken("z")))
         assertTrue(board.live(key('K'), taken("AOS")))
-        assertFalse(board.live(key('S'), taken("T")))
+        assertFalse(board.live(key('T'), taken("T")))
     }
 
     @Test
@@ -97,9 +103,9 @@ class BoardTest {
     }
 
     @Test
-    fun a_dead_cell_with_no_doorway_is_plain_ground() {
-        assertNull(board.resolve(key('+'), taken("S")))
-        assertNull(board.resolve(key('T'), taken("K")))
+    fun a_taken_cell_with_no_doorway_is_plain_ground() {
+        assertNull(board.resolve(key('T'), taken("T")))
+        assertNull(board.resolve(key('+'), taken("+S")))
     }
 
     /** A doorway across the banks would hand one thumb the other's key. */
@@ -109,48 +115,67 @@ class BoardTest {
         assertNull(crossed.resolve(ORDER.indexOf('A'), listOf(ORDER.indexOf('S'))))
     }
 
-    // The geometry: contiguous slices around a corridor around the island.
+    // The geometry: the machine's rows as two bands round a corridor round the
+    // island, roads inside and outside.
 
-    /** The slices leave no gap: past the inner edge every direction is a key. */
+    /** The bands leave no gap: between the edges every direction is a key. */
     @Test
-    fun the_slices_cover_every_direction() {
+    fun the_bands_cover_every_direction() {
         val middle = board.center(field)
+        val mid = (board.inner(field) + board.outer(field)) * 0.5f
         for (bank in Bank.values()) {
-            for (tenth in 0 until 3600) {
-                val angle = Math.toRadians(tenth / 10.0)
-                val r = board.inner(field) * 1.2f
-                val got = board.hit(
-                    bank, field,
-                    middle.x + (Math.cos(angle) * r).toFloat(),
-                    middle.y + (Math.sin(angle) * r).toFloat(),
-                )
-                assertTrue("nothing at ${tenth / 10f}", got != null && !board.island(got))
+            for (r in listOf((board.inner(field) + mid) * 0.5f, (mid + board.outer(field)) * 0.5f)) {
+                for (tenth in 0 until 3600 step 5) {
+                    val angle = Math.toRadians(tenth / 10.0)
+                    val got = board.hit(
+                        bank, field,
+                        middle.x + (Math.cos(angle) * r).toFloat(),
+                        middle.y + (Math.sin(angle) * r).toFloat(),
+                    )
+                    assertTrue("nothing at ${tenth / 10f} r $r", got != null && !board.island(got))
+                }
             }
         }
     }
 
     @Test
-    fun a_slice_is_centred_on_its_reference_point() {
+    fun a_cell_holds_its_own_reference_point() {
         for (bank in Bank.values()) {
-            for (cell in board.cells(bank, field).filter { !board.island(it.key) }) {
+            for (cell in board.cells(bank, field)) {
                 assertEquals(cell.key, board.hit(bank, field, cell.x, cell.y))
             }
         }
     }
 
-    /** Outward the ring has no edge: only undershooting misses a slice. */
+    /** A column is the machine's: its two keys share an angle, stacked. */
     @Test
-    fun past_the_outer_edge_is_still_the_slice() {
+    fun a_column_stacks_its_machine_pair() {
+        val middle = board.center(field)
+        for ((top, bottom) in listOf('T' to 'K', 'P' to 'W', 'H' to 'R')) {
+            val a = cell(Bank.LEFT, top)
+            val b = cell(Bank.LEFT, bottom)
+            val at = Math.atan2((a.y - middle.y).toDouble(), (a.x - middle.x).toDouble())
+            val bt = Math.atan2((b.y - middle.y).toDouble(), (b.x - middle.x).toDouble())
+            assertEquals("$top and $bottom split", at, bt, 0.001)
+            assertTrue(
+                "$top is not the inner key",
+                hypot(a.x - middle.x, a.y - middle.y) < hypot(b.x - middle.x, b.y - middle.y)
+            )
+        }
+    }
+
+    /** A cell is only the button that is drawn: past the outer edge is road. */
+    @Test
+    fun past_the_outer_edge_is_ground() {
         val middle = board.center(field)
         val k = cell(Bank.LEFT, 'K')
-        val far = 4f
-        assertEquals(
-            key('K'),
-            board.hit(
-                Bank.LEFT, field,
-                middle.x + (k.x - middle.x) * far, middle.y + (k.y - middle.y) * far,
-            )
-        )
+        val angle = Math.atan2((k.y - middle.y).toDouble(), (k.x - middle.x).toDouble())
+        val r = board.outer(field) * 1.15f
+        val x = middle.x + (Math.cos(angle) * r).toFloat()
+        val y = middle.y + (Math.sin(angle) * r).toFloat()
+        assertNull(board.hit(Bank.LEFT, field, x, y))
+        // A tap out there still reads as the band alongside.
+        assertEquals(key('K'), board.nearest(Bank.LEFT, field, x, y))
     }
 
     /**
@@ -200,15 +225,15 @@ class BoardTest {
         }
     }
 
-    /** An undershot tap short of a slice still reads as that slice. */
+    /** An undershot tap short of the ring reads as the inner band alongside. */
     @Test
-    fun a_tap_just_short_of_a_slice_reads_as_the_slice() {
+    fun a_tap_just_short_of_the_ring_reads_as_the_inner_band() {
         val middle = board.center(field)
-        val k = cell(Bank.LEFT, 'K')
-        val angle = Math.atan2((k.y - middle.y).toDouble(), (k.x - middle.x).toDouble())
+        val t = cell(Bank.LEFT, 'T')
+        val angle = Math.atan2((t.y - middle.y).toDouble(), (t.x - middle.x).toDouble())
         val r = board.inner(field) * 0.9f
         assertEquals(
-            key('K'),
+            key('T'),
             board.nearest(
                 Bank.LEFT, field,
                 middle.x + (Math.cos(angle) * r).toFloat(),
@@ -323,12 +348,59 @@ class BoardChorderTest {
     }
 
     @Test
-    fun a_dead_cell_is_safe_ground() {
+    fun a_taken_cell_is_safe_ground() {
         touch(Bank.LEFT, 0, 'S')
-        slideTo(Bank.LEFT, '+')
-        assertEquals("the walk crossed a spent key", "S", keys(Bank.LEFT))
         slideTo(Bank.LEFT, 'T')
-        assertEquals("ST", keys(Bank.LEFT))
+        slideTo(Bank.LEFT, 'S')
+        assertEquals("the walk retook a spent key", "ST", keys(Bank.LEFT))
+        slideTo(Bank.LEFT, 'K')
+        assertEquals("STK", keys(Bank.LEFT))
+    }
+
+    /** `TPH-` is a machine row: three consecutive columns, one band, one sweep. */
+    @Test
+    fun a_machine_row_is_one_band() {
+        touch(Bank.LEFT, 0, 'T')
+        slideTo(Bank.LEFT, 'P')
+        slideTo(Bank.LEFT, 'H')
+        assertEquals("TPH", keys(Bank.LEFT))
+    }
+
+    /** `TK-` is a machine column: the same angle, one radial step. */
+    @Test
+    fun a_machine_column_is_one_step() {
+        touch(Bank.LEFT, 0, 'T')
+        slideTo(Bank.LEFT, 'K')
+        assertEquals("TK", keys(Bank.LEFT))
+    }
+
+    /** No order on the ring: a row sweeps as well backward as forward. */
+    @Test
+    fun the_ring_may_be_walked_backward() {
+        touch(Bank.LEFT, 0, 'H')
+        slideTo(Bank.LEFT, 'P')
+        slideTo(Bank.LEFT, 'T')
+        assertEquals(mask("TPH"), chorder.mask())
+    }
+
+    /** The outer road: past the outer edge nothing takes, in any state. */
+    @Test
+    fun the_outer_road_takes_nothing() {
+        touch(Bank.LEFT, 0, 'S')
+        val f = chorder.thumb(Bank.LEFT).field
+        val middle = board.center(f)
+        val k = cell(Bank.LEFT, 'K')
+        val angle = Math.atan2((k.y - middle.y).toDouble(), (k.x - middle.x).toDouble())
+        val r = board.outer(f) * 1.2f
+        chorder.move(
+            0,
+            middle.x + (Math.cos(angle) * r).toFloat(),
+            middle.y + (Math.sin(angle) * r).toFloat(),
+            UNIT,
+        )
+        assertEquals("the road took something", "S", keys(Bank.LEFT))
+        slideTo(Bank.LEFT, 'K')
+        assertEquals("SK", keys(Bank.LEFT))
     }
 
     /** The measured win of the vowels-first order: doorways mid-walk. */

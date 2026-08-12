@@ -23,6 +23,7 @@ object Prefs {
             putFloat("boardCell", boardCell)
             putFloat("boardInner", boardInner)
             putFloat("boardOuter", boardOuter)
+            putBoolean("boardTopIn", boardTopIn)
             putFloat("boardAt", boardAt)
             putFloat("boardStartLeft", boardStartLeft)
             putFloat("boardStartRight", boardStartRight)
@@ -82,6 +83,7 @@ object Prefs {
             boardCell = prefs.getFloat("boardCell", d.boardCell),
             boardInner = prefs.getFloat("boardInner", d.boardInner),
             boardOuter = prefs.getFloat("boardOuter", d.boardOuter),
+            boardTopIn = prefs.getBoolean("boardTopIn", d.boardTopIn),
             boardAt = prefs.getFloat("boardAt", d.boardAt),
             boardStartLeft = prefs.getFloat("boardStartLeft", d.boardStartLeft),
             boardStartRight = prefs.getFloat("boardStartRight", d.boardStartRight),
