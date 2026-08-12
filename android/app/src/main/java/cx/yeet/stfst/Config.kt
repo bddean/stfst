@@ -39,9 +39,11 @@ data class Config(
      * Each bank of the board: an island of cells inside a ring of cells, both
      * written in steno order, island first.
      *
-     * The ring string's consecutive pairs are the machine's columns, bent round
-     * the circle, its two rows as two bands. No order is enforced on the ring:
-     * the machine presses everything together, and a taken cell is dead.
+     * Each ring key is one slice, in ring order round the circle, every other
+     * slice staggered outward. Steno order alternates the machine's rows, so
+     * a sweep along either lane the stagger opens is a machine row. No order
+     * is enforced on the ring: the machine presses everything together, and a
+     * taken cell is dead.
      *
      * The island's keys go in any order too, but before the ring, and the first
      * ring key closes it. That is what pays for the middle: the island dies
@@ -73,8 +75,8 @@ data class Config(
     /** An island disc's radius, in pitches. */
     var boardCell: Float = 0.42f,
     /**
-     * The ring's edges, in pitches. Between them, split evenly, sit the two
-     * bands that are the machine's two rows.
+     * The ring's edges, in pitches. Every slice spans their gap minus the
+     * stagger.
      *
      * A cell is only the button that is drawn. Inside the inner edge the
      * corridor circles the island, past the outer edge is the open field, and
@@ -85,8 +87,18 @@ data class Config(
     var boardInner: Float = 1.4f,
     var boardOuter: Float = 2.6f,
     /**
-     * Put each column's machine-top-row key in the inner band. Off swaps the
-     * rows. Which way round reads better is a fact about thumbs, not layouts.
+     * How much further out every other slice sits, in pitches.
+     *
+     * The stagger is what opens the two lanes: a notch of ground above every
+     * inward slice and below every outward one, so a sweep along one lane
+     * crosses every other key — a machine row. Zero is a plain ring of full
+     * slices, and no lanes.
+     */
+    var boardStagger: Float = 0.4f,
+    /**
+     * Put the machine's top row (T P H, and F P L T D) on the inward slices.
+     * Off swaps the alternation. Which way round reads better is a fact about
+     * thumbs, not layouts.
      */
     var boardTopIn: Boolean = true,
     /** Where the middle of the board sits, as a fraction down the field. */

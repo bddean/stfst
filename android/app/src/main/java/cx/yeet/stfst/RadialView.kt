@@ -400,8 +400,8 @@ class RadialView(
     }
 
     /**
-     * Every cell of one bank, live or dead: the ring as two bands of wedges,
-     * the machine's rows and columns bent round, the island as discs. A dead
+     * Every cell of one bank, live or dead: the ring as staggered wedges, one
+     * per key with every other one further out, the island as discs. A dead
      * cell stays on screen because it is still ground.
      * An island cell carries both its glyphs the whole time, key above and
      * doorway below, and the open one is the bright one: before the stroke the
@@ -435,12 +435,12 @@ class RadialView(
             val open = doorway != null && yields == doorway
             val dimmed = dim * if (live || open) 1f else 0.45f
             if (!board.island(cell.key)) {
-                val band = board.radiiOf(cell.key)
+                val span = board.radiiOf(cell.key)
                 val angle = Math.toDegrees(
                     atan2((cell.y - middle.y).toDouble(), (cell.x - middle.x).toDouble())
                 ).toFloat()
                 val path = wedge(
-                    at.x, at.y, band.start * pitch, band.endInclusive * pitch,
+                    at.x, at.y, span.start * pitch, span.endInclusive * pitch,
                     angle - step * 0.5f, step
                 )
                 ink.style = Paint.Style.FILL
@@ -450,9 +450,9 @@ class RadialView(
                 ink.color = fade(paint.edge, dimmed)
                 canvas.drawPath(path, ink)
                 if (!config.showLabels) continue
-                val mid = (band.start + band.endInclusive) * 0.5f * pitch
+                val mid = (span.start + span.endInclusive) * 0.5f * pitch
                 val arc = (2f * Math.PI * mid * step / 360f).toFloat()
-                val depth = (band.endInclusive - band.start) * pitch
+                val depth = (span.endInclusive - span.start) * pitch
                 ink.style = Paint.Style.FILL
                 ink.color = fade(paint.text, dimmed)
                 ink.textSize = minOf(wanted, arc * 0.62f, depth * 0.75f)

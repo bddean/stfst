@@ -27,6 +27,13 @@ class SettingsActivity : Activity() {
 
     private lateinit var config: Config
 
+    /** The keyboard itself, pinned under the knobs, redrawn on every change. */
+    private var preview: RadialView? = null
+
+    private fun refresh() {
+        preview?.apply(config)
+    }
+
     /** A parameter, and the two halves of getting at it. */
     private sealed class Knob(val label: String, val note: String = "")
 
@@ -69,16 +76,17 @@ class SettingsActivity : Activity() {
 
     private val knobs: List<Knob> = listOf(
         Section("The board",
-            "The default layout: the steno machine bent round an island, read " +
-                "by where the thumb is. Pairs of the ring string are the " +
-                "machine's columns; its two rows are the two bands. Any cell " +
-                "the thumb enters is taken, in any order, and a taken cell is " +
-                "ground. Island keys go before the ring, and once the ring " +
-                "closes the island a dead island cell is a doorway to the key " +
-                "after its '>'. The corridor inside the ring and the field past " +
-                "its outer edge take nothing: they are the roads past a live " +
-                "key. All radii are in pitches, and the span sets what a pitch " +
-                "is."),
+            "The default layout: a staggered ring of slices round an island, " +
+                "read by where the thumb is. Each ring key is one slice, and " +
+                "every other slice sits further out, which opens two lanes: a " +
+                "sweep along either one crosses every other key, a machine " +
+                "row. Any cell the thumb enters is taken, in any order, and a " +
+                "taken cell is ground. Island keys go before the ring, and " +
+                "once the ring closes the island a dead island cell is a " +
+                "doorway to the key after its '>'. The corridor inside the " +
+                "ring and the field past its outer edge take nothing: they " +
+                "are the roads past a live key. All radii are in pitches, and " +
+                "the span sets what a pitch is."),
         Flag("Fixed board", { it.board }, { c, v -> c.board = v },
             "off falls back to the radial layout below, which reads slides by " +
                 "direction instead"),
@@ -87,8 +95,7 @@ class SettingsActivity : Activity() {
                 "cluster. A stroke is a set of keys, so the outline stays steno " +
                 "order whatever order the thumb walked"),
         Text("Left board ring", { it.boardRingLeft }, { c, v -> c.boardRingLeft = v },
-            "in steno order; consecutive pairs are the columns, clockwise from " +
-                "the start angle"),
+            "in steno order, one slice per key, clockwise from the start angle"),
         Text("Right island", { it.boardIslandRight }, { c, v -> c.boardIslandRight = v }),
         Text("Right board ring", { it.boardRingRight }, { c, v -> c.boardRingRight = v }),
         Text("Doorways", { it.boardPortals }, { c, v -> c.boardPortals = v },
@@ -98,15 +105,19 @@ class SettingsActivity : Activity() {
             "pitches across the field's short side; fewer means a bigger board",
             unit = "pitches"),
         Range("Ring inner edge", 1.0f, 2.2f, { it.boardInner }, { c, v -> c.boardInner = v },
-            "where the bands begin. The gap between it and the island is the " +
-                "corridor, so lower is deeper bands and a narrower road",
+            "where the slices begin. The gap between it and the island is the " +
+                "corridor, so lower is deeper slices and a narrower road",
             unit = "pitches"),
         Range("Ring outer edge", 1.5f, 3.2f, { it.boardOuter }, { c, v -> c.boardOuter = v },
-            "where the bands end. Past it is the outer road: nothing takes",
+            "where the slices end. Past it is the outer road: nothing takes",
+            unit = "pitches"),
+        Range("Stagger", 0f, 0.8f, { it.boardStagger }, { c, v -> c.boardStagger = v },
+            "how much further out every other slice sits. The stagger is the " +
+                "height of the two lanes, and zero is a plain ring with none",
             unit = "pitches"),
         Flag("Top row inside", { it.boardTopIn }, { c, v -> c.boardTopIn = v },
-            "the machine's top row (T P H, and F P L T D) as the inner band; " +
-                "off swaps the rows"),
+            "the machine's top row (T P H, and F P L T D) on the inward " +
+                "slices; off swaps the alternation"),
         Range("Island cell size", 0.25f, 0.5f, { it.boardCell }, { c, v -> c.boardCell = v },
             "an island disc's radius", unit = "pitches"),
         Range("Board position", 0.2f, 0.8f, { it.boardAt }, { c, v -> c.boardAt = v },
@@ -236,6 +247,8 @@ class SettingsActivity : Activity() {
         column.addView(heading("Radial steno"))
         column.addView(note("Enable the keyboard in Settings, Languages and input. Changes here " +
             "apply the next time the keyboard opens."))
+        column.addView(note("The keyboard at the bottom is a live preview: it follows every " +
+            "change as it happens, and what it strokes goes nowhere."))
         column.addView(note("Every value says its unit. × field is a fraction of the thumb " +
             "field's short side, so a length means the same thing on any screen. " +
             "° is degrees clockwise, and -90 points straight up."))
@@ -254,7 +267,20 @@ class SettingsActivity : Activity() {
                 column.addView(note("On this device: ${Haptics(this, config).report()}"))
             }
         }
-        setContentView(ScrollView(this).apply { addView(column) })
+        // The engine's steno order. The preview draws glyphs and geometry only,
+        // so it does not need the runtime the real keyboard asks for it.
+        val view = RadialView(this, config, "#@^+STKPWHRAO*EUfrpblgtsdz", {}, { _, _ -> })
+        preview = view
+        setContentView(LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            addView(
+                ScrollView(this@SettingsActivity).apply { addView(column) },
+                LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f
+                )
+            )
+            addView(view)
+        })
     }
 
     private fun heading(what: String) = TextView(this).apply {
@@ -279,7 +305,10 @@ class SettingsActivity : Activity() {
         box.addView(title)
         if (knob.note.isNotEmpty()) box.addView(note(knob.note))
 
-        fun keep() = Prefs.save(config, prefs)
+        fun keep() {
+            Prefs.save(config, prefs)
+            refresh()
+        }
 
         when (knob) {
             is Section -> {
@@ -298,6 +327,8 @@ class SettingsActivity : Activity() {
                             val value = knob.min + (knob.max - knob.min) * at / 1000f
                             knob.set(config, value)
                             title.text = show(knob)
+                            // Mid-drag too, which is what makes the preview live.
+                            refresh()
                         }
 
                         override fun onStartTrackingTouch(bar: SeekBar?) = Unit

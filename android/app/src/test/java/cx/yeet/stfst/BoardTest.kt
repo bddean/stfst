@@ -115,26 +115,42 @@ class BoardTest {
         assertNull(crossed.resolve(ORDER.indexOf('A'), listOf(ORDER.indexOf('S'))))
     }
 
-    // The geometry: the machine's rows as two bands round a corridor round the
-    // island, roads inside and outside.
+    // The geometry: one staggered ring of slices round a corridor round the
+    // island, roads inside and outside, lanes in the stagger.
 
-    /** The bands leave no gap: between the edges every direction is a key. */
-    @Test
-    fun the_bands_cover_every_direction() {
+    private fun sweep(bank: Bank, r: Float): Set<Char> {
         val middle = board.center(field)
+        val got = mutableSetOf<Char>()
+        for (tenth in 0 until 3600 step 5) {
+            val angle = Math.toRadians(tenth / 10.0)
+            board.hit(
+                bank, field,
+                middle.x + (Math.cos(angle) * r).toFloat(),
+                middle.y + (Math.sin(angle) * r).toFloat(),
+            )?.let { got.add(ORDER[it]) }
+        }
+        return got
+    }
+
+    /** Mid ring the slices overlap: every direction is a key, none an island's. */
+    @Test
+    fun the_middle_of_the_ring_covers_every_direction() {
         val mid = (board.inner(field) + board.outer(field)) * 0.5f
-        for (bank in Bank.values()) {
-            for (r in listOf((board.inner(field) + mid) * 0.5f, (mid + board.outer(field)) * 0.5f)) {
-                for (tenth in 0 until 3600 step 5) {
-                    val angle = Math.toRadians(tenth / 10.0)
-                    val got = board.hit(
-                        bank, field,
-                        middle.x + (Math.cos(angle) * r).toFloat(),
-                        middle.y + (Math.sin(angle) * r).toFloat(),
-                    )
-                    assertTrue("nothing at ${tenth / 10f} r $r", got != null && !board.island(got))
-                }
-            }
+        assertEquals(config.boardRingLeft.toSet(), sweep(Bank.LEFT, mid))
+        assertEquals(config.boardRingRight.toSet(), sweep(Bank.RIGHT, mid))
+    }
+
+    /** A sweep along a lane crosses every other key, which is a machine row. */
+    @Test
+    fun each_lane_takes_every_other_key() {
+        val notch = config.boardStagger * board.pitch(field) * 0.5f
+        for ((bank, ring) in listOf(
+            Bank.LEFT to config.boardRingLeft, Bank.RIGHT to config.boardRingRight
+        )) {
+            val inward = ring.filterIndexed { i, _ -> i % 2 == 0 }.toSet()
+            val outward = ring.filterIndexed { i, _ -> i % 2 == 1 }.toSet()
+            assertEquals(inward, sweep(bank, board.inner(field) + notch))
+            assertEquals(outward, sweep(bank, board.outer(field) - notch))
         }
     }
 
@@ -147,18 +163,25 @@ class BoardTest {
         }
     }
 
-    /** A column is the machine's: its two keys share an angle, stacked. */
+    /**
+     * No two slices share an angle, and neighbours alternate radius, so no
+     * cell ever blocks the radial way in or out of another.
+     */
     @Test
-    fun a_column_stacks_its_machine_pair() {
+    fun alternate_slices_stagger() {
         val middle = board.center(field)
         for ((top, bottom) in listOf('T' to 'K', 'P' to 'W', 'H' to 'R')) {
             val a = cell(Bank.LEFT, top)
             val b = cell(Bank.LEFT, bottom)
             val at = Math.atan2((a.y - middle.y).toDouble(), (a.x - middle.x).toDouble())
             val bt = Math.atan2((b.y - middle.y).toDouble(), (b.x - middle.x).toDouble())
-            assertEquals("$top and $bottom split", at, bt, 0.001)
+            assertEquals(
+                "$top and $bottom are not one step apart",
+                Math.toRadians(board.step(Bank.LEFT).toDouble()),
+                Math.abs(bt - at), 0.001
+            )
             assertTrue(
-                "$top is not the inner key",
+                "$top is not the inward slice",
                 hypot(a.x - middle.x, a.y - middle.y) < hypot(b.x - middle.x, b.y - middle.y)
             )
         }
@@ -174,7 +197,7 @@ class BoardTest {
         val x = middle.x + (Math.cos(angle) * r).toFloat()
         val y = middle.y + (Math.sin(angle) * r).toFloat()
         assertNull(board.hit(Bank.LEFT, field, x, y))
-        // A tap out there still reads as the band alongside.
+        // A tap out there still reads as the slice alongside.
         assertEquals(key('K'), board.nearest(Bank.LEFT, field, x, y))
     }
 
@@ -225,9 +248,9 @@ class BoardTest {
         }
     }
 
-    /** An undershot tap short of the ring reads as the inner band alongside. */
+    /** An undershot tap short of the ring reads as the slice alongside. */
     @Test
-    fun a_tap_just_short_of_the_ring_reads_as_the_inner_band() {
+    fun a_tap_just_short_of_the_ring_reads_as_the_slice_alongside() {
         val middle = board.center(field)
         val t = cell(Bank.LEFT, 'T')
         val angle = Math.atan2((t.y - middle.y).toDouble(), (t.x - middle.x).toDouble())
@@ -357,21 +380,60 @@ class BoardChorderTest {
         assertEquals("STK", keys(Bank.LEFT))
     }
 
-    /** `TPH-` is a machine row: three consecutive columns, one band, one sweep. */
+    /** `TPH-` is a machine row: every other slice, one sweep along a lane. */
     @Test
-    fun a_machine_row_is_one_band() {
+    fun a_machine_row_is_one_lane() {
         touch(Bank.LEFT, 0, 'T')
         slideTo(Bank.LEFT, 'P')
         slideTo(Bank.LEFT, 'H')
         assertEquals("TPH", keys(Bank.LEFT))
     }
 
-    /** `TK-` is a machine column: the same angle, one radial step. */
+    /** `TK-` is a machine column: one zigzag step across the stagger. */
     @Test
     fun a_machine_column_is_one_step() {
         touch(Bank.LEFT, 0, 'T')
         slideTo(Bank.LEFT, 'K')
         assertEquals("TK", keys(Bank.LEFT))
+    }
+
+    /**
+     * The stagger's whole point: `K` and `P` are neighbours across it, so the
+     * chord the stacked columns made impossible is one short diagonal.
+     */
+    @Test
+    fun no_slice_blocks_the_way_out_of_another() {
+        touch(Bank.LEFT, 0, 'K')
+        slideTo(Bank.LEFT, 'P')
+        assertEquals("KP", keys(Bank.LEFT))
+    }
+
+    /** A point on a lane, at this key's angle: over its notch, not in it. */
+    private fun laneOver(bank: Bank, symbol: Char) {
+        val f = chorder.thumb(bank).field
+        val middle = board.center(f)
+        val c = cell(bank, symbol)
+        val angle = Math.atan2((c.y - middle.y).toDouble(), (c.x - middle.x).toDouble())
+        val notch = config.boardStagger * board.pitch(f) * 0.5f
+        val inward = hypot(c.x - middle.x, c.y - middle.y) <
+            (board.inner(f) + board.outer(f)) * 0.5f
+        val r = if (inward) board.outer(f) - notch else board.inner(f) + notch
+        chorder.move(
+            chorder.thumb(bank).pointer,
+            middle.x + (Math.cos(angle) * r).toFloat(),
+            middle.y + (Math.sin(angle) * r).toFloat(),
+            UNIT,
+        )
+    }
+
+    /** `SK` along the outer lane: the notch over the live T takes nothing. */
+    @Test
+    fun a_lane_carries_a_sweep_past_the_other_alternation() {
+        touch(Bank.LEFT, 0, 'S')
+        laneOver(Bank.LEFT, 'T')
+        assertEquals("the notch took something", "S", keys(Bank.LEFT))
+        slideTo(Bank.LEFT, 'K')
+        assertEquals("SK", keys(Bank.LEFT))
     }
 
     /** No order on the ring: a row sweeps as well backward as forward. */
