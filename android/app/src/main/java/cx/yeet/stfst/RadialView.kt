@@ -120,16 +120,34 @@ class RadialView(
         val keys = resources.displayMetrics.heightPixels * config.keyboardHeight
         // The keys decide the scale, so the strip can be measured from the ring it
         // has to hold rather than guessed at with a parameter of its own.
-        val edge = width * config.fieldSplit
-        unit = min(min(edge, width - edge), keys)
+        val (left, right) = spans(width.toFloat())
+        unit = min(min(left.endInclusive - left.start, right.endInclusive - right.start), keys)
         strip = if (config.preview.strip) room().coerceAtMost(keys * 0.6f) else 0f
         setMeasuredDimension(width, (keys + strip).toInt())
+    }
+
+    /**
+     * The horizontal run each thumb's field covers. Portrait splits the whole
+     * width; in landscape each field hugs its own side of the glass and the
+     * ground between them belongs to neither.
+     */
+    private fun spans(
+        width: Float,
+    ): Pair<ClosedFloatingPointRange<Float>, ClosedFloatingPointRange<Float>> {
+        val landscape = resources.configuration.orientation ==
+            android.content.res.Configuration.ORIENTATION_LANDSCAPE
+        if (landscape) {
+            val wide = width * config.splitLandscape.coerceIn(0.15f, 0.5f)
+            return (0f..wide) to ((width - wide)..width)
+        }
+        val edge = width * config.fieldSplit
+        return (0f..edge) to (edge..width)
     }
 
     /** What the copy needs: its own diameter, and the keys it holds above itself. */
     private fun room(): Float {
         val reach = if (config.board) {
-            (config.boardOuter + 0.12f + config.boardArcWide) / config.boardSpan
+            board.reachPitches() / config.boardSpan
         } else {
             config.farEdge
         }
@@ -146,16 +164,24 @@ class RadialView(
      * where its home point and its copy of the ring sit.
      */
     private fun layoutFields() {
-        val edge = width * config.fieldSplit
+        val (left, right) = spans(width.toFloat())
         val top = strip + if (config.touchReadout) unit * 0.09f else 0f
-        chorder.place(Bank.LEFT, Field(0f, top, edge, height.toFloat()))
-        chorder.place(Bank.RIGHT, Field(edge, top, width.toFloat(), height.toFloat()))
+        chorder.place(Bank.LEFT, Field(left.start, top, left.endInclusive, height.toFloat()))
+        chorder.place(Bank.RIGHT, Field(right.start, top, right.endInclusive, height.toFloat()))
     }
 
     /** How far from the mark the ring is drawn, and picked at. */
     private fun reach(): Float = config.farReach * unit
 
-    private fun bankAt(x: Float) = if (x < width * config.fieldSplit) Bank.LEFT else Bank.RIGHT
+    /** The field under this x, or null on the dead ground between split fields. */
+    private fun bankAt(x: Float): Bank? {
+        val (left, right) = spans(width.toFloat())
+        return when {
+            x <= left.endInclusive -> Bank.LEFT
+            x >= right.start -> Bank.RIGHT
+            else -> null
+        }
+    }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         when (event.actionMasked) {
@@ -165,7 +191,8 @@ class RadialView(
                 val pointer = event.getPointerId(at)
                 val x = event.getX(at)
                 val y = event.getY(at)
-                val bank = bankAt(x)
+                // A touch on the dead ground between split fields means nothing.
+                val bank = bankAt(x) ?: return true
                 clouds[bank]?.clear()
                 record(event, at, bank)
                 // A double tap arms the side's key and then goes down as a
@@ -428,7 +455,12 @@ class RadialView(
         ink.style = Paint.Style.STROKE
         ink.strokeWidth = 1f
         ink.color = paint.edge
-        canvas.drawLine(width * config.fieldSplit, strip, width * config.fieldSplit, height.toFloat(), ink)
+        // The seam between the fields; two seams when a gap parts them.
+        val (leftSpan, rightSpan) = spans(width.toFloat())
+        canvas.drawLine(leftSpan.endInclusive, strip, leftSpan.endInclusive, height.toFloat(), ink)
+        if (rightSpan.start > leftSpan.endInclusive) {
+            canvas.drawLine(rightSpan.start, strip, rightSpan.start, height.toFloat(), ink)
+        }
 
         for (bank in Bank.values()) {
             val thumb = chorder.thumb(bank)
@@ -510,15 +542,35 @@ class RadialView(
             val armed = cell.key in chorder.sticky
             val dimmed = dim * if (live || open || armed) 1f else 0.45f
             if (!board.island(cell.key)) {
-                val span = board.radiiOf(cell.key)
-                val sweep = if (board.halo(cell.key)) config.boardArcSweep else step
-                val angle = Math.toDegrees(
-                    atan2((cell.y - middle.y).toDouble(), (cell.x - middle.x).toDouble())
-                ).toFloat()
-                val path = wedge(
-                    at.x, at.y, span.start * pitch, span.endInclusive * pitch,
-                    angle - sweep * 0.5f, sweep
-                )
+                // A float is its bend, at whatever curvature; a slice is a
+                // wedge of the ring. Both are annular sectors, drawn round
+                // the shape's own centre.
+                val path: Path
+                val arc: Float
+                val depth: Float
+                if (board.halo(cell.key)) {
+                    val b = board.bend(cell.key)
+                    path = wedge(
+                        at.x + b.cx * pitch, at.y + b.cy * pitch,
+                        b.inner * pitch, b.outer * pitch,
+                        b.angle - b.halfSweep, b.halfSweep * 2f
+                    )
+                    val mid = (b.inner + b.outer) * 0.5f * pitch
+                    arc = (2f * Math.PI * mid * b.halfSweep * 2f / 360f).toFloat()
+                    depth = (b.outer - b.inner) * pitch
+                } else {
+                    val span = board.radiiOf(cell.key)
+                    val angle = Math.toDegrees(
+                        atan2((cell.y - middle.y).toDouble(), (cell.x - middle.x).toDouble())
+                    ).toFloat()
+                    path = wedge(
+                        at.x, at.y, span.start * pitch, span.endInclusive * pitch,
+                        angle - step * 0.5f, step
+                    )
+                    val mid = (span.start + span.endInclusive) * 0.5f * pitch
+                    arc = (2f * Math.PI * mid * step / 360f).toFloat()
+                    depth = (span.endInclusive - span.start) * pitch
+                }
                 ink.style = Paint.Style.FILL
                 ink.color = fade(if (armed) paint.warm else paint.face, dimmed)
                 canvas.drawPath(path, ink)
@@ -526,9 +578,6 @@ class RadialView(
                 ink.color = fade(if (armed) paint.hot else paint.edge, dimmed)
                 canvas.drawPath(path, ink)
                 if (!config.showLabels) continue
-                val mid = (span.start + span.endInclusive) * 0.5f * pitch
-                val arc = (2f * Math.PI * mid * sweep / 360f).toFloat()
-                val depth = (span.endInclusive - span.start) * pitch
                 ink.style = Paint.Style.FILL
                 ink.color = fade(paint.text, dimmed)
                 ink.textSize = minOf(wanted, arc * 0.62f, depth * 0.75f)

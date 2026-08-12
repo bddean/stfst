@@ -245,6 +245,23 @@ editor owns, right to left in reach order:
 The action key is renamed for whatever field is in front of it, out of the
 `EditorInfo` the app supplies.
 
+## The hints bar
+
+After every stroke the runtime reads the trailing one to four words backwards
+through every dictionary that carries a `reverse.hfstol`, phrases included.
+When an outline writes the same text in fewer strokes, `text=OUTLINE` joins a
+rolling row between the keys and the bar: eight entries, oldest out first,
+gone after a quiet minute and while it has nothing to say. A phrase is only
+worth showing when it saves strokes; a single word also when an outline no
+longer than what was stroked differs from it. The lookups run off the stroke's
+thread, so the editor never waits on them.
+
+## Landscape
+
+In landscape each thumb's field hugs its own side of the glass and the ground
+between them belongs to neither: a touch there reaches nothing. `Landscape
+field width` sets each field's share of the width, and 0.5 closes the gap.
+
 Any edit made through the bar gives up the tracked buffer. What reaches the editor
 is the difference between the runtime's buffer and what was last sent, so an edit
 made another way would leave that difference describing text nobody has. The next

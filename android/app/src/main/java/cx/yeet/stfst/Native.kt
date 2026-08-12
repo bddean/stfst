@@ -16,6 +16,12 @@ object Native {
     external fun undo(handle: Long): String
     external fun text(handle: Long): String
 
+    /**
+     * Briefer outlines for what was just written, one `text=OUTLINE` line per
+     * trailing word or phrase. Empty when nothing saves strokes.
+     */
+    external fun hints(handle: Long): String
+
     /** The key symbols in steno order, one character each. */
     external fun order(handle: Long): String
 

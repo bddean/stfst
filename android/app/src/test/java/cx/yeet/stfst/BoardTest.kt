@@ -279,8 +279,72 @@ class BoardTest {
         assertTrue(plus.y > middle.y)
         assertTrue(hypot(sharp.x - middle.x, sharp.y - middle.y) > board.outer(field))
         // The gap between the outer edge and an arc is still road.
-        val road = (board.outer(field) + board.pitch(field) * (config.boardOuter + 0.12f)) * 0.5f
+        val road = (board.outer(field) +
+            board.pitch(field) * (config.boardOuter + config.boardArcGap)) * 0.5f
         assertNull(board.hit(Bank.LEFT, field, middle.x, middle.y - road))
+    }
+
+    /** The gap knob is the floats' distance: more gap, farther floats. */
+    @Test
+    fun the_float_gap_pushes_the_floats_out() {
+        val near = Board(ORDER, Config().also { it.boardArcGap = 0.1f })
+        val far = Board(ORDER, Config().also { it.boardArcGap = 0.8f })
+        val middle = near.center(field)
+        fun distance(b: Board): Float {
+            val c = b.cells(Bank.LEFT, field).first { it.key == key('#') }
+            return hypot(c.x - middle.x, c.y - middle.y)
+        }
+        assertEquals(0.7f * near.pitch(field), distance(far) - distance(near), 0.5f)
+        // Both keep their own reference point.
+        for (b in listOf(near, far)) {
+            val c = b.cells(Bank.LEFT, field).first { it.key == key('#') }
+            assertEquals(key('#'), b.hit(Bank.LEFT, field, c.x, c.y))
+        }
+    }
+
+    /**
+     * At low curvature a float is as good as a straight bar: hit along its
+     * whole length, and gone from the circle the full arc used to cover.
+     */
+    @Test
+    fun a_straightened_float_is_a_bar() {
+        val config = Config().also { it.boardArcCurve = 0.05f }
+        val flat = Board(ORDER, config)
+        val middle = flat.center(field)
+        val pitch = flat.pitch(field)
+        val mid = config.boardOuter + config.boardArcGap + config.boardArcWide * 0.5f
+        // The bar keeps the arc's length, laid out tangent at its middle.
+        val length = (mid * Math.toRadians(config.boardArcSweep.toDouble())).toFloat()
+        val y = middle.y - mid * pitch
+        for (dx in listOf(-0.45f, 0f, 0.45f)) {
+            assertEquals(
+                key('#'),
+                flat.hit(Bank.LEFT, field, middle.x + dx * length * pitch, y)
+            )
+        }
+        // Where the wrapped arc used to reach, 30 degrees round the ring, the
+        // bar does not: the full-curvature board still answers there.
+        val angle = Math.toRadians(-60.0)
+        val x = middle.x + (Math.cos(angle) * mid * pitch).toFloat()
+        val bent = middle.y + (Math.sin(angle) * mid * pitch).toFloat()
+        assertNull(flat.hit(Bank.LEFT, field, x, bent))
+        assertEquals(key('#'), board.hit(Bank.LEFT, field, x, bent))
+    }
+
+    /** Every cell still holds its reference point at any curvature. */
+    @Test
+    fun a_bent_cell_holds_its_own_reference_point() {
+        for (curve in listOf(0.05f, 0.4f, 1f)) {
+            val bent = Board(ORDER, Config().also { it.boardArcCurve = curve })
+            for (bank in Bank.values()) {
+                for (cell in bent.cells(bank, field)) {
+                    assertEquals(
+                        "${ORDER[cell.key]} at curvature $curve",
+                        cell.key, bent.hit(bank, field, cell.x, cell.y)
+                    )
+                }
+            }
+        }
     }
 
     @Test

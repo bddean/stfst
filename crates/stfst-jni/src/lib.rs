@@ -183,6 +183,26 @@ pub extern "system" fn Java_cx_yeet_stfst_Native_undo(
     give(&mut env, &host.board.text())
 }
 
+/// Briefer outlines for what was just written, one `text=OUTLINE` entry per
+/// line, trailing single words and phrases both. Empty when nothing is briefer.
+#[no_mangle]
+pub extern "system" fn Java_cx_yeet_stfst_Native_hints(
+    mut env: JNIEnv,
+    _class: JClass,
+    handle: jlong,
+) -> jstring {
+    let Some(host) = (unsafe { host(handle) }) else {
+        return give(&mut env, "");
+    };
+    let lines: Vec<String> = host
+        .board
+        .hints(4)
+        .iter()
+        .map(|h| format!("{}={}", h.text, h.outline))
+        .collect();
+    give(&mut env, &lines.join("\n"))
+}
+
 #[no_mangle]
 pub extern "system" fn Java_cx_yeet_stfst_Native_text(
     mut env: JNIEnv,

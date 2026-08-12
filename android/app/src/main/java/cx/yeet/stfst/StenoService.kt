@@ -17,6 +17,8 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import java.io.File
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 /**
  * The keyboard. It owns the editor and the native handle, and nothing else.
@@ -41,6 +43,18 @@ class StenoService : InputMethodService() {
     /** The running repeat of a held button, if any. */
     private var repeat: Runnable? = null
 
+    /** The hints bar: recent briefer outlines for what was just written. */
+    private var hintsBar: TextView? = null
+    private val recentHints = ArrayDeque<String>()
+    private var hintsClear: Runnable? = null
+    /**
+     * The reverse lookups run here, off the stroke's path to the editor.
+     * Every native call holds [runtime], because the handle is one mutable
+     * board and a lookup racing a stroke would read it mid-write.
+     */
+    private val hinter: ExecutorService = Executors.newSingleThreadExecutor()
+    private val runtime = Any()
+
     override fun onCreate() {
         super.onCreate()
         config = Prefs.load(getSharedPreferences(PREFS, MODE_PRIVATE))
@@ -63,8 +77,11 @@ class StenoService : InputMethodService() {
     }
 
     override fun onDestroy() {
-        if (handle != 0L) Native.close(handle)
-        handle = 0L
+        hinter.shutdownNow()
+        synchronized(runtime) {
+            if (handle != 0L) Native.close(handle)
+            handle = 0L
+        }
         super.onDestroy()
     }
 
@@ -102,10 +119,27 @@ class StenoService : InputMethodService() {
         bar.addView(button("⌄") { requestHideSelf(0) })
         // Undoing a stroke and deleting a character are different things, and the
         // one button used to be labelled as the other.
-        bar.addView(button("↶") { if (handle != 0L) show(Native.undo(handle)) })
+        bar.addView(button("↶") {
+            if (handle != 0L) {
+                show(synchronized(runtime) { Native.undo(handle) })
+                suggest()
+            }
+        })
         bar.addView(repeating(button("⌫", null)) { erase() })
         actionKey = button("⏎") { act() }
         bar.addView(actionKey)
+
+        // Briefer outlines for what was just written, rolling, newest at the
+        // right. Gone while it has nothing to say, so it costs no room.
+        val hints = TextView(this).apply {
+            setPadding(24, 6, 24, 6)
+            textSize = 13f
+            setTextColor(Color.GRAY)
+            setSingleLine(true)
+            ellipsize = TextUtils.TruncateAt.START
+            visibility = View.GONE
+        }
+        hintsBar = hints
 
         val radial = RadialView(this, config, order, ::stroke, ::key)
         view = radial
@@ -115,6 +149,7 @@ class StenoService : InputMethodService() {
         // strip would hide app content behind it. A bar under the keys is also the
         // easier one to reach.
         column.addView(radial)
+        column.addView(hints)
         column.addView(bar)
         return column
     }
@@ -236,7 +271,7 @@ class StenoService : InputMethodService() {
      * now is, which is what losing the context means.
      */
     private fun forget() {
-        if (handle != 0L) Native.reset(handle)
+        if (handle != 0L) synchronized(runtime) { Native.reset(handle) }
         sent = ""
     }
 
@@ -245,10 +280,51 @@ class StenoService : InputMethodService() {
         // A bare star is the undo stroke, as on any steno machine.
         val star = order.indexOf('*')
         if (star >= 0 && keys == 1L shl star) {
-            show(Native.undo(handle))
-            return
+            show(synchronized(runtime) { Native.undo(handle) })
+        } else {
+            show(synchronized(runtime) { Native.push(handle, keys) })
         }
-        show(Native.push(handle, keys))
+        suggest()
+    }
+
+    /**
+     * Ask the runtime for briefer outlines for what was just written, and fold
+     * them into the hints bar: the trailing word and the trailing phrases both,
+     * so a two-word brief is offered even when each word was stroked alone.
+     *
+     * Off the stroke's thread, because the reverse lookups walk every
+     * dictionary backwards and the editor should not wait on them.
+     */
+    private fun suggest() {
+        if (hinter.isShutdown) return
+        hinter.execute {
+            val found = synchronized(runtime) {
+                if (handle == 0L) "" else Native.hints(handle)
+            }
+            hintsBar?.post { absorb(found) }
+        }
+    }
+
+    /** Newest at the right, no repeats, at most [HINTS] entries. */
+    private fun absorb(found: String) {
+        for (entry in found.lines()) {
+            if (entry.isEmpty() || entry in recentHints) continue
+            recentHints.addLast(entry)
+            while (recentHints.size > HINTS) recentHints.removeFirst()
+        }
+        val bar = hintsBar ?: return
+        bar.text = recentHints.joinToString("   ")
+        bar.visibility = if (recentHints.isEmpty()) View.GONE else View.VISIBLE
+        // The buffer clears after a quiet minute: a hint is about what was
+        // just written, and an hour-old one no longer is.
+        hintsClear?.let { bar.removeCallbacks(it) }
+        val clear = Runnable {
+            recentHints.clear()
+            bar.text = ""
+            bar.visibility = View.GONE
+        }
+        hintsClear = clear
+        bar.postDelayed(clear, HINTS_IDLE_MS)
     }
 
     /**
@@ -280,5 +356,8 @@ class StenoService : InputMethodService() {
     companion object {
         const val TAG = "stfst"
         const val PREFS = "radial"
+        /** How many hints the bar holds, and how long a quiet spell keeps them. */
+        const val HINTS = 8
+        const val HINTS_IDLE_MS = 60_000L
     }
 }

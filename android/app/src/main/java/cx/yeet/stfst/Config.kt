@@ -69,10 +69,18 @@ data class Config(
      */
     var boardArcsLeft: String = "#+",
     var boardArcsRight: String = "@*",
-    /** Degrees a floating arc wraps around the ring. */
+    /** Degrees a floating arc wraps around the ring, at full curvature. */
     var boardArcSweep: Float = 70f,
     /** A floating arc's radial depth, in pitches. */
     var boardArcWide: Float = 0.5f,
+    /** How far past the outer edge the floats sit, in pitches. */
+    var boardArcGap: Float = 0.12f,
+    /**
+     * How hard a float bends. One wraps the ring; toward zero the bend
+     * straightens into a bar of the same length and depth, still centred where
+     * the arc was.
+     */
+    var boardArcCurve: Float = 1f,
     /**
      * Doorways, the fallback the teleport replaced: they work only while
      * [boardTeleport] is off. `A>R` means a dead A cell takes R, for as long
@@ -304,6 +312,11 @@ data class Config(
 
     /** Where the left field ends and the right begins. */
     var fieldSplit: Float = 0.5f,
+    /**
+     * Each field's share of the width in landscape, anchored to its own side,
+     * with dead ground between. 0.5 closes the gap, which is the portrait rule.
+     */
+    var splitLandscape: Float = 0.36f,
     /** The thumb marks: where the last key was taken, and where the thumb is now. */
     var markRadius: Float = 0.022f,
     var labelSp: Float = 15f,

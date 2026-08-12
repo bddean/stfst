@@ -123,6 +123,12 @@ class SettingsActivity : Activity() {
             "how far each floating arc wraps around the ring", unit = "°"),
         Range("Float depth", 0.25f, 0.9f, { it.boardArcWide }, { c, v -> c.boardArcWide = v },
             unit = "pitches"),
+        Range("Float gap", 0.02f, 1.2f, { it.boardArcGap }, { c, v -> c.boardArcGap = v },
+            "how far past the outer edge the floats sit; the ground between " +
+                "is still road", unit = "pitches"),
+        Range("Float curvature", 0f, 1f, { it.boardArcCurve }, { c, v -> c.boardArcCurve = v },
+            "one wraps the ring; toward zero the float straightens into a " +
+                "bar of the same length and depth", unit = "×"),
         Text("Left double tap", { it.doubleTapLeft.toString() },
             { c, v -> v.firstOrNull()?.let { c.doubleTapLeft = it } },
             "the key two quick taps add on top of the key under them: tap " +
@@ -218,6 +224,11 @@ class SettingsActivity : Activity() {
         Range("Keyboard height", 0.2f, 0.7f, { it.keyboardHeight }, { c, v -> c.keyboardHeight = v }, unit = "of the screen"),
         Range("Field split", 0.2f, 0.8f, { it.fieldSplit }, { c, v -> c.fieldSplit = v },
             "where the left field ends", unit = "of the width"),
+        Range("Landscape field width", 0.15f, 0.5f, { it.splitLandscape },
+            { c, v -> c.splitLandscape = v },
+            "in landscape each field hugs its own side and takes this much of " +
+                "the width; the ground between them takes nothing. 0.5 closes " +
+                "the gap", unit = "of the width"),
         Range("Thumb mark size", 0.008f, 0.06f, { it.markRadius }, { c, v -> c.markRadius = v },
             "the dot at the last key and the ring at the fingertip", unit = "\u00d7 field"),
 

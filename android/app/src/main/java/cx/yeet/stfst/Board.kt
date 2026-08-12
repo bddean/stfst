@@ -5,6 +5,7 @@ import kotlin.math.cos
 import kotlin.math.hypot
 import kotlin.math.min
 import kotlin.math.sin
+import kotlin.math.sqrt
 
 /**
  * The fixed layout: one staggered ring of slices round an island, floating
@@ -146,8 +147,22 @@ class Board(val order: String, val config: Config) {
     /** The ring's outer edge. Past it, around the floats, nothing takes. */
     fun outer(field: Field): Float = pitch(field) * config.boardOuter
 
-    /** The board's outermost radius: the floats' outer rim. */
-    fun reach(field: Field): Float = pitch(field) * haloBand().endInclusive
+    /** The board's outermost radius, in pitches: the floats' farthest corner.
+     *  A straightened float swings its ends outward past the arc's rim. */
+    fun reachPitches(): Float {
+        val floats = haloKeys.values.flatten()
+        if (floats.isEmpty()) return config.boardOuter
+        return floats.maxOf { key ->
+            val b = bend(key)
+            val off = hypot(b.cx, b.cy)
+            val spread = Math.toRadians(b.halfSweep.toDouble())
+            // The band's end corner, by the law of cosines round the bend centre.
+            sqrt(off * off + b.outer * b.outer - 2f * off * b.outer * cos(spread).toFloat())
+        }
+    }
+
+    /** The board's outermost radius: the floats' farthest corner. */
+    fun reach(field: Field): Float = pitch(field) * reachPitches()
 
     /** Degrees of ring one slice owns. */
     fun step(bank: Bank): Float = 360f / ringKeys.getValue(bank).size.coerceAtLeast(1)
@@ -162,10 +177,38 @@ class Board(val order: String, val config: Config) {
     fun center(field: Field): Point =
         Point(field.centerX, field.top + field.height * config.boardAt)
 
-    /** The floats' band, in pitches: just past the outer edge. */
+    /** The floats' band, in pitches: the configured gap past the outer edge. */
     private fun haloBand(): ClosedFloatingPointRange<Float> {
-        val at = config.boardOuter + 0.12f
+        val at = config.boardOuter + config.boardArcGap.coerceAtLeast(0.02f)
         return at..(at + config.boardArcWide)
+    }
+
+    /**
+     * A float's shape: a band bent round a centre of its own. At full curvature
+     * the centre is the board's middle and the band is the halo arc; as the
+     * curvature drops the centre recedes and the radius grows, arc length and
+     * depth staying put, until the band is as good as a straight bar. One
+     * shape for every setting, so the hit test and the drawing share it.
+     *
+     * Everything is in pitches from the board's middle.
+     */
+    fun bend(key: Int): Bend {
+        val band = haloBand()
+        val mid = (band.start + band.endInclusive) * 0.5f
+        val curve = config.boardArcCurve.coerceIn(0.04f, 1f)
+        val radius = mid / curve
+        val angle = haloAngle(key)
+        val radians = Math.toRadians(angle.toDouble())
+        val off = mid - radius
+        return Bend(
+            cx = (cos(radians) * off).toFloat(),
+            cy = (sin(radians) * off).toFloat(),
+            inner = radius - (mid - band.start),
+            outer = radius + (band.endInclusive - mid),
+            angle = angle,
+            // The arc keeps its length: a wider radius holds it in less sweep.
+            halfSweep = config.boardArcSweep * curve * 0.5f,
+        )
     }
 
     /** Where a float's arc is centred: the first on top, the second below. */
@@ -227,10 +270,11 @@ class Board(val order: String, val config: Config) {
      */
     fun hit(bank: Bank, field: Field, x: Float, y: Float): Int? {
         val middle = center(field)
+        val pitch = pitch(field)
         val dx = x - middle.x
         val dy = y - middle.y
-        val r = hypot(dx, dy) / pitch(field)
-        if (r > config.boardOuter) return haloAt(bank, r, dx, dy)
+        val r = hypot(dx, dy) / pitch
+        if (r > config.boardOuter) return haloAt(bank, dx / pitch, dy / pitch)
         if (r >= config.boardInner) {
             val key = sliceAt(bank, dx, dy) ?: return null
             return key.takeIf { r in radiiOf(it) }
@@ -259,13 +303,28 @@ class Board(val order: String, val config: Config) {
         return island[at]
     }
 
-    /** The float this point is inside, or null. */
-    private fun haloAt(bank: Bank, r: Float, dx: Float, dy: Float): Int? {
-        val band = haloBand()
-        if (r < band.start || r > band.endInclusive) return null
-        val angle = Math.toDegrees(atan2(dy.toDouble(), dx.toDouble())).toFloat()
-        return haloKeys.getValue(bank).firstOrNull {
-            Ring.separation(haloAngle(it), angle) <= config.boardArcSweep * 0.5f
+    /** The float this point (in pitches from the middle) is inside, or null. */
+    private fun haloAt(bank: Bank, nx: Float, ny: Float): Int? =
+        haloKeys.getValue(bank).firstOrNull { key ->
+            val b = bend(key)
+            val d = hypot(nx - b.cx, ny - b.cy)
+            val at = Math.toDegrees(
+                atan2((ny - b.cy).toDouble(), (nx - b.cx).toDouble())
+            ).toFloat()
+            d >= b.inner && d <= b.outer && Ring.separation(at, b.angle) <= b.halfSweep
         }
-    }
 }
+
+/**
+ * A band bent round its own centre: where the centre sits (in pitches from the
+ * board's middle), the radii of its edges, and how far it runs to each side of
+ * [angle]. A float is drawn and hit as one of these at any curvature.
+ */
+data class Bend(
+    val cx: Float,
+    val cy: Float,
+    val inner: Float,
+    val outer: Float,
+    val angle: Float,
+    val halfSweep: Float,
+)

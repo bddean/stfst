@@ -23,6 +23,8 @@ object Prefs {
             putString("boardArcsRight", boardArcsRight)
             putFloat("boardArcSweep", boardArcSweep)
             putFloat("boardArcWide", boardArcWide)
+            putFloat("boardArcGap", boardArcGap)
+            putFloat("boardArcCurve", boardArcCurve)
             putFloat("boardIsle", boardIsle)
             putBoolean("boardTeleport", boardTeleport)
             putString("doubleTapLeft", doubleTapLeft.toString())
@@ -70,6 +72,7 @@ object Prefs {
             putFloat("cloudAlpha", cloudAlpha)
             putBoolean("touchReadout", touchReadout)
             putFloat("fieldSplit", fieldSplit)
+            putFloat("splitLandscape", splitLandscape)
             putFloat("markRadius", markRadius)
             putFloat("labelSp", labelSp)
             putFloat("keyboardHeight", keyboardHeight)
@@ -92,6 +95,8 @@ object Prefs {
             boardArcsRight = prefs.getString("boardArcsRight", d.boardArcsRight)!!,
             boardArcSweep = prefs.getFloat("boardArcSweep", d.boardArcSweep),
             boardArcWide = prefs.getFloat("boardArcWide", d.boardArcWide),
+            boardArcGap = prefs.getFloat("boardArcGap", d.boardArcGap),
+            boardArcCurve = prefs.getFloat("boardArcCurve", d.boardArcCurve),
             boardIsle = prefs.getFloat("boardIsle", d.boardIsle),
             boardTeleport = prefs.getBoolean("boardTeleport", d.boardTeleport),
             doubleTapLeft = prefs.getString("doubleTapLeft", null)?.firstOrNull()
@@ -142,6 +147,7 @@ object Prefs {
             cloudAlpha = prefs.getFloat("cloudAlpha", d.cloudAlpha),
             touchReadout = prefs.getBoolean("touchReadout", d.touchReadout),
             fieldSplit = prefs.getFloat("fieldSplit", d.fieldSplit),
+            splitLandscape = prefs.getFloat("splitLandscape", d.splitLandscape),
             markRadius = prefs.getFloat("markRadius", d.markRadius),
             labelSp = prefs.getFloat("labelSp", d.labelSp),
             keyboardHeight = prefs.getFloat("keyboardHeight", d.keyboardHeight),

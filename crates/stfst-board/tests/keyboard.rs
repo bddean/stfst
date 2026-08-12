@@ -73,6 +73,41 @@ fn a_bitmask_from_two_thumbs_writes_the_word() {
     assert_eq!("", board.text());
 }
 
+/// Writing a phrase the long way surfaces the brief for it, and writing the
+/// brief itself surfaces nothing: a hint has to save strokes.
+#[test]
+fn hints_offer_a_briefer_outline_for_the_trailing_phrase() {
+    let Some(dicts) = dicts() else {
+        eprintln!("skipped: no build/dicts");
+        return;
+    };
+    let system = system();
+    let stack = Stack::open(&dicts, &system, &Capabilities::all()).expect("opening the stack");
+    let mut board = Board::new(&system, &stack, None);
+
+    // "little one" in two strokes; the phrases dictionary holds it in one.
+    board.push(stroke(bits(&system, "HREUl"))).expect("a stroke");
+    board.push(stroke(bits(&system, "WUpb"))).expect("a stroke");
+    assert_eq!("little one", board.text().trim());
+    let hints = board.hints(4);
+    assert!(
+        hints
+            .iter()
+            .any(|h| h.text == "little one" && h.outline == "HR*EUPB"),
+        "wanted little one=HR*EUPB, got {:?}",
+        hints
+            .iter()
+            .map(|h| format!("{}={}", h.text, h.outline))
+            .collect::<Vec<_>>()
+    );
+
+    // Undo one stroke: the phrase is gone, and "little" already used its
+    // shortest outline, so nothing is worth saying.
+    board.undo();
+    assert_eq!("little", board.text().trim());
+    assert!(board.hints(4).iter().all(|h| h.text != "little one"));
+}
+
 /// A key order the phone reads out of the system file, so the ring is built from
 /// the same string the tapes are.
 #[test]
