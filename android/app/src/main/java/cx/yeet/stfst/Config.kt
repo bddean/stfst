@@ -91,8 +91,8 @@ data class Config(
      *
      * The stagger is what opens the two lanes: a notch of ground above every
      * inward slice and below every outward one, so a sweep along one lane
-     * crosses every other key — a machine row. Zero is a plain ring of full
-     * slices, and no lanes.
+     * crosses every other key, which is a machine row. Zero is a plain ring
+     * of full slices, and no lanes.
      */
     var boardStagger: Float = 0.4f,
     /**

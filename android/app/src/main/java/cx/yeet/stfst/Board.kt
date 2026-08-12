@@ -15,7 +15,7 @@ import kotlin.math.sin
  * angle, so no cell ever blocks the radial way in or out of another. The
  * stagger opens two lanes of ground inside the ring: a sweep along the outer
  * lane crosses the outward slices only, one along the inner lane the inward
- * ones — every other key in steno order, which is a machine row. Mid ring the
+ * ones: every other key in steno order, which is a machine row. Mid ring the
  * slices overlap, so consecutive keys are one short zigzag apart.
  *
  * Entering a cell takes its key, and a taken cell is ground: there is no order

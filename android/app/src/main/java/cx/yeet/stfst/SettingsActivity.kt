@@ -267,8 +267,8 @@ class SettingsActivity : Activity() {
                 column.addView(note("On this device: ${Haptics(this, config).report()}"))
             }
         }
-        // The engine's steno order. The preview draws glyphs and geometry only,
-        // so it does not need the runtime the real keyboard asks for it.
+        // The engine's steno order, spelled out: the preview draws glyphs and
+        // geometry only, so it does not need the engine.
         val view = RadialView(this, config, "#@^+STKPWHRAO*EUfrpblgtsdz", {}, { _, _ -> })
         preview = view
         setContentView(LinearLayout(this).apply {
