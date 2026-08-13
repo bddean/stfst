@@ -23,16 +23,17 @@ import kotlin.math.sqrt
  * as keys and all four are portals, the two holding already-passed keys
  * included.
  *
- * A button standing clear of the chain is a float, and order says nothing
- * about one: it is takeable whenever the thumb reaches it. That is what the
- * modifiers are, and it is read off the grid rather than declared.
+ * A key that does not touch the next key of the walk is a float, and order
+ * says nothing about one: it is takeable whenever the thumb reaches it. That
+ * is what the modifiers are, and it is read off the grid rather than declared.
  *
  * A portal carries a stride rather than a destination. The four strides are
  * the same for every key on the board, so there are four numbers to learn and
  * not one per side per key. Where a stride lands is derived: early in the
- * order the ground between key `i+k` and `i+k+1` is still open and the focus
- * lands there taking nothing, with two keys then one hop away; late in the
- * order that ground is gone and the jump lands on the key and takes it.
+ * order there is open ground beside key `i+k` and the focus rests there taking
+ * nothing, with several keys then one hop away; late in the order that ground
+ * is gone and the jump lands on the key and takes it. The four are chosen
+ * together, so no two rest on the same cell or on touching ones.
  */
 class Comb(val order: String, val config: Config) {
 
@@ -92,37 +93,38 @@ class Comb(val order: String, val config: Config) {
     }
 
     /**
-     * The keys off the walk: a key none of whose cells touch another key.
+     * The walk of one bank, and the keys left off it.
      *
-     * A modifier a chord wants alongside a whole outline has to be reachable
-     * whenever the thumb wants it, and steno order would forbid that. Standing
-     * a button clear of the chain says exactly this, so a float is a fact of
-     * the grid rather than a flag beside it: nothing joins it to the walk, so
-     * the walk cannot pass it.
+     * The walk is what a rising run can trace, so each key on it touches the
+     * next one on it. Read the order backwards: the last key of a bank is on
+     * the walk, and a key joins when it touches the next key already on. What
+     * cannot join is a float, and steno order says nothing about a float,
+     * because nothing joins it to the walk for the walk to pass.
+     *
+     * That is what the modifiers are. Reading it off the successor rather than
+     * off every neighbour is what lets a float sit against the end cluster and
+     * still be a float.
      */
-    val floats: Map<Bank, Set<Int>> = spots.mapValues { (bank, _) ->
+    private val walked: Map<Bank, Pair<List<Int>, Set<Int>>> = spots.mapValues { (bank, list) ->
         val cells = byCell.getValue(bank)
-        buttons.getValue(bank)
-            .filter { it.key >= 0 }
-            .groupBy { it.key }
-            .filterValues { group ->
-                group.all { button ->
-                    button.spots.all { s ->
-                        Side.values().none { side ->
-                            val n = cells[at(step(s, side))]
-                            n != null && keyOf(n) >= 0 && n.v != s.v
-                        }
-                    }
+        fun touches(key: Int, other: Int): Boolean =
+            buttons.getValue(bank).filter { it.key == key }.any { button ->
+                button.spots.any { s ->
+                    Side.values().any { keyOf(cells[at(step(s, it))] ?: return@any false) == other }
                 }
             }
-            .keys
+        val keys = list.map { keyOf(it) }.filter { it >= 0 }.distinct().sorted()
+        val walk = ArrayDeque<Int>()
+        for (key in keys.asReversed()) {
+            if (walk.isEmpty() || touches(key, walk.first())) walk.addFirst(key)
+        }
+        walk.toList() to keys.minus(walk.toSet()).toSet()
     }
 
     /** The keys of one bank on the walk, in steno order. Floats are not on it. */
-    val chain: Map<Bank, List<Int>> = spots.mapValues { (bank, list) ->
-        val loose = floats.getValue(bank)
-        list.map { keyOf(it) }.filter { it >= 0 && it !in loose }.distinct().sorted()
-    }
+    val chain: Map<Bank, List<Int>> = walked.mapValues { it.value.first }
+
+    val floats: Map<Bank, Set<Int>> = walked.mapValues { it.value.second }
 
     private val rank: Map<Bank, Map<Int, Int>> =
         chain.mapValues { (_, keys) -> keys.withIndex().associate { (i, k) -> k to i } }
@@ -351,7 +353,8 @@ class Comb(val order: String, val config: Config) {
         val here = rank.getValue(bank)[key] ?: return null
         val cells = byCell.getValue(bank)
         val ahead = { s: Spot -> resolve(s, taken) != null }
-        val sides = Side.values().toList()
+        // A side with no cell beyond it is never crossed, so it carries nothing.
+        val sides = Side.values().filter { cells[at(step(from, it))] != null }
         val forward = sides.filter { cells[at(step(from, it))]?.let(ahead) == true }
         if (side in forward) return null
         val heading = walkAngle(bank, from, here)
@@ -364,37 +367,113 @@ class Comb(val order: String, val config: Config) {
         )
         val slot = portals.indexOf(side)
         if (slot < 0) return null
-        return landing(bank, here, strides[min(slot, strides.size - 1)])
+        return jumps(bank, here).getOrNull(min(slot, strides.size - 1))
+    }
+
+    private val jumped = HashMap<Pair<Bank, Int>, List<Landing?>>()
+
+    /**
+     * Where all four strides out of one rank land, chosen together.
+     *
+     * Two portals that come to rest on the same cell, or on touching ones,
+     * spend two sides of the comb on one place. So this is an allocation and
+     * not four separate answers: every way of filling the strides is tried and
+     * the best is kept, with no two resting places closer than one cell apart.
+     *
+     * A landing that takes a key is exempt, because a key names itself and
+     * nothing can be confused with it. A stride that aims where an earlier one
+     * already aims is dead: there is nothing left for it to mean.
+     */
+    private fun jumps(bank: Bank, here: Int): List<Landing?> = jumped.getOrPut(bank to here) {
+        val keys = chain.getValue(bank)
+        val aimed = mutableSetOf<Int>()
+        val choices = strides.map { stride ->
+            val aim = keys.getOrNull(min(here + stride, keys.size - 1))
+                ?.takeIf { (rank.getValue(bank)[it] ?: -1) > here && aimed.add(it) }
+            if (aim == null) listOf(null) else options(bank, here, aim)
+        }
+        spread(choices)
     }
 
     /**
-     * The cell a stride from rank `here` lands on.
+     * Where one stride could land: the open ground beside the key it aims at,
+     * each worth the keys it leaves one hop away, and the key itself.
      *
-     * The open ground beside key `i+k` that touches the most keys still ahead,
-     * so the jump buys a choice rather than one key: it takes nothing and
-     * several keys are then one hop away. Ground worth only one key is not
-     * worth the hop, and late in the order there is no such ground left at all,
-     * so the jump lands on the key and takes it.
+     * Ground worth only one key is not worth the hop. Late in the order there
+     * is none worth it at all, which is why the jump can end on the key and
+     * take it: one hop instead of a choice.
      */
-    private fun landing(bank: Bank, here: Int, stride: Int): Landing? {
-        val keys = chain.getValue(bank)
-        val a = keys.getOrNull(min(here + stride, keys.size - 1)) ?: return null
+    private fun options(bank: Bank, here: Int, aim: Int): List<Pair<Landing, Int>?> {
         val cells = byCell.getValue(bank)
-        val mine = buttons.getValue(bank).filter { it.key == a }
+        val mine = buttons.getValue(bank).filter { it.key == aim }
         val ranks = rank.getValue(bank)
+        val loose = floats.getValue(bank)
         fun reach(ground: Spot): Int = Side.values()
             .mapNotNull { cells[at(step(ground, it))] }
-            .mapNotNull { ranks[keyOf(it)] }
-            .filter { it > here }
+            .map { keyOf(it) }
+            .filter { it >= 0 && (it in loose || (ranks[it] ?: -1) > here) }
             .distinct().size
-        val best = mine.asSequence()
+        val rests = mine.asSequence()
             .flatMap { it.spots.asSequence() }
             .flatMap { spot -> Side.values().asSequence().mapNotNull { cells[at(step(spot, it))] } }
             .filter { it.v == GROUND || it.v == HOLE }
             .distinct()
-            .maxWithOrNull(compareBy({ reach(it) }, { -it.row }, { -it.col }))
-        if (best != null && reach(best) >= 2) return Landing(best, a, false)
-        return mine.firstOrNull()?.spots?.firstOrNull()?.let { Landing(it, a, true) }
+            .map { it to reach(it) }
+            .filter { it.second >= 2 }
+            .sortedWith(compareByDescending<Pair<Spot, Int>> { it.second }
+                .thenBy { it.first.row }.thenBy { it.first.col })
+            .map { (spot, worth) -> Landing(spot, aim, false) to worth }
+            .toList()
+        val onKey = mine.firstOrNull()?.spots?.firstOrNull()
+            ?.let { Landing(it, aim, true) to 1 }
+        return rests + listOfNotNull(onKey)
+    }
+
+    /**
+     * The best way to fill the strides: most worth, resting places kept apart.
+     *
+     * A handful of strides over a handful of cells each, so the whole product
+     * is a few hundred arrangements and the exact answer is cheaper than a rule
+     * for picking one greedily. Filling them in turn is what put two portals on
+     * one cell: an early stride would take the only ground a later one had.
+     */
+    private fun spread(choices: List<List<Pair<Landing, Int>?>>): List<Landing?> {
+        var best: List<Landing?> = choices.map { null }
+        var most = -1
+        fun walk(i: Int, sofar: List<Landing?>, rests: List<Spot>, worth: Int) {
+            if (i == choices.size) {
+                if (worth > most) { most = worth; best = sofar }
+                return
+            }
+            val open = choices[i].ifEmpty { listOf(null) }
+            var any = false
+            for (option in open) {
+                val land = option?.first
+                if (land != null && !land.onKey && rests.any { hops(it, land.spot) < 2 }) continue
+                any = true
+                walk(
+                    i + 1, sofar + land,
+                    if (land != null && !land.onKey) rests + land.spot else rests,
+                    worth + (option?.second ?: 0),
+                )
+            }
+            // Every resting place was too close to one already placed. The side
+            // goes dead rather than doubling up on a cell.
+            if (!any) walk(i + 1, sofar + null, rests, worth)
+        }
+        walk(0, emptyList(), emptyList(), 0)
+        return best
+    }
+
+    /** How many cells apart two spots are, which the odd-column offset hides. */
+    fun hops(a: Spot, b: Spot): Int {
+        fun cube(s: Spot): Triple<Int, Int, Int> {
+            val z = s.row - (s.col - (s.col and 1)) / 2
+            return Triple(s.col, -s.col - z, z)
+        }
+        val (ax, ay, az) = cube(a)
+        val (bx, by, bz) = cube(b)
+        return (abs(ax - bx) + abs(ay - by) + abs(az - bz)) / 2
     }
 
     /** Which way the walk is heading out of this cell: toward the key two on. */

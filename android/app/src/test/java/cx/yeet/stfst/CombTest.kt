@@ -59,8 +59,9 @@ class CombTest {
     }
 
     /**
-     * A button touching no other key is a float, and steno order says nothing
-     * about one: the modifiers stay takeable however far the walk has gone.
+     * A key that does not touch the next key of the walk is a float, and steno
+     * order says nothing about one: the modifiers stay takeable however far the
+     * walk has gone, even where a float sits against the end cluster.
      */
     @Test
     fun a_button_clear_of_the_chain_is_a_float() {
@@ -86,21 +87,28 @@ class CombTest {
     }
 
     /**
-     * The last keys of a bank ring a hole, and a portal can land in it, so one
-     * jump puts every key of the end cluster a single hop away.
+     * The last two keys and both floats close a ring around a hole, and a
+     * portal can land in it, so one jump puts every key of the end cluster a
+     * single hop away. Closed, because a portal reaches the hole and nothing
+     * ever needs to pass through it.
      */
     @Test
-    fun the_end_cluster_rings_a_hole_a_portal_can_reach() {
+    fun the_end_cluster_closes_a_ring_a_portal_can_reach() {
         val comb = comb()
         for (bank in Bank.values()) {
             val hole = comb.spots(bank).first { it.v == Comb.HOLE }
             val ring = Side.values()
-                .mapNotNull { comb.spotAt(bank, Comb.step(hole, it).first, Comb.step(hole, it).second) }
-                .filter { comb.keyOf(it) >= 0 }
-                .map { comb.keyOf(it) }
-                .distinct()
-            assertEquals("the hole in $bank should be ringed by the last keys", 2, ring.size)
-            assertEquals(comb.chain.getValue(bank).takeLast(2).toSet(), ring.toSet())
+                .map { Comb.step(hole, it) }
+                .map { (col, row) -> comb.spotAt(bank, col, row) }
+            assertTrue(
+                "nothing should be able to walk through the hole in $bank",
+                ring.all { it == null || comb.keyOf(it) >= 0 },
+            )
+            assertEquals(
+                "the ring in $bank should hold the last two keys and both floats",
+                (comb.chain.getValue(bank).takeLast(2) + comb.floats.getValue(bank)).toSet(),
+                ring.filterNotNull().map { comb.keyOf(it) }.toSet(),
+            )
 
             val chain = comb.chain.getValue(bank)
             val landings = chain.indices.flatMap { i ->
@@ -113,6 +121,84 @@ class CombTest {
                 landings.any { it.spot == hole },
             )
         }
+    }
+
+    /**
+     * Two portals out of one cell never come to rest on the same ground, or on
+     * touching ground: a side that means the same place as another side is a
+     * side spent for nothing.
+     */
+    @Test
+    fun the_landings_of_a_cell_stand_apart() {
+        val comb = comb()
+        for (bank in Bank.values()) {
+            val chain = comb.chain.getValue(bank)
+            for (i in chain.indices) {
+                val here = spot(comb, bank, order[chain[i]])
+                val rests = Side.values()
+                    .mapNotNull { comb.portal(bank, here, it, chain.take(i + 1)) }
+                    .filter { !it.onKey }
+                    .map { it.spot }
+                for (a in rests.indices) for (b in a + 1 until rests.size) {
+                    assertTrue(
+                        "${order[chain[i]]} in $bank rests at (${rests[a].col}, ${rests[a].row})" +
+                            " and (${rests[b].col}, ${rests[b].row})",
+                        comb.hops(rests[a], rests[b]) >= 2,
+                    )
+                }
+            }
+        }
+    }
+
+    /**
+     * Every key a thumb could still want is still available: from any key,
+     * walking and jumping reaches every key ahead of it and every float,
+     * without taking anything on the way.
+     *
+     * This is the claim the whole layout has to keep. A grid can satisfy steno
+     * order and still strand a key behind a wall of keys the chord does not
+     * want, and no amount of tuning the strides would show it.
+     */
+    @Test
+    fun every_key_ahead_is_still_reachable() {
+        val comb = comb()
+        for (bank in Bank.values()) {
+            val chain = comb.chain.getValue(bank)
+            val loose = comb.floats.getValue(bank)
+            for (i in chain.indices) {
+                val reached = reachable(comb, bank, chain[i])
+                for (want in chain.drop(i + 1) + loose) {
+                    assertTrue(
+                        "${order[want]} is out of reach from ${order[chain[i]]} in $bank",
+                        want in reached,
+                    )
+                }
+            }
+        }
+    }
+
+    /** The keys one thumb can still take from here without taking another. */
+    private fun reachable(comb: Comb, bank: Bank, from: Int): Set<Int> {
+        val taken = listOf(from)
+        val queue = ArrayDeque(comb.spots(bank).filter { comb.keyOf(it) == from })
+        val seen = queue.toMutableSet()
+        val out = mutableSetOf<Int>()
+        while (queue.isNotEmpty()) {
+            val here = queue.removeFirst()
+            val next = Side.values().flatMap {
+                val (col, row) = Comb.step(here, it)
+                listOfNotNull(
+                    comb.spotAt(bank, col, row),
+                    comb.portal(bank, here, it, taken)?.spot,
+                )
+            }
+            for (spot in next) {
+                // Entering a live cell takes it, which ends the errand there.
+                comb.resolve(spot, taken)?.let { out.add(it) }
+                    ?: if (seen.add(spot)) queue.addLast(spot) else Unit
+            }
+        }
+        return out
     }
 
     /** A cell never spills past its own hexagon, so the comb ends where it is drawn. */
@@ -206,25 +292,25 @@ class CombTest {
     }
 
     /**
-     * Early in the order a portal lands on open ground and takes nothing; late
-     * in the order that ground is gone and it lands on the key itself.
+     * A portal rests on open ground and takes nothing, unless no ground beside
+     * the key it aims at is worth the hop. Then it lands on the key and takes
+     * it: one hop instead of a choice.
      */
     @Test
-    fun a_portal_lands_on_ground_early_and_on_a_key_late() {
+    fun a_portal_rests_on_ground_or_takes_the_key() {
         val comb = comb()
-        val bank = Bank.LEFT
-        val chain = comb.chain.getValue(bank)
-        val first = spot(comb, bank, order[chain[0]])
-        val early = Side.values().mapNotNull { comb.portal(bank, first, it, emptyList()) }
-        assertTrue("the first key should have portals", early.isNotEmpty())
-        assertTrue("an early portal should land on ground", early.any { !it.onKey })
+        val first = spot(comb, Bank.LEFT, order[comb.chain.getValue(Bank.LEFT)[0]])
+        val early = Side.values().mapNotNull { comb.portal(Bank.LEFT, first, it, emptyList()) }
+        assertTrue("an early portal should rest on ground", early.any { !it.onKey })
 
-        val last = chain[chain.size - 2]
-        val taken = chain.take(chain.size - 2)
-        val late = Side.values().mapNotNull {
-            comb.portal(bank, spot(comb, bank, order[last]), it, taken)
+        val all = Bank.values().flatMap { bank ->
+            comb.chain.getValue(bank).flatMap { key ->
+                Side.values().mapNotNull {
+                    comb.portal(bank, spot(comb, bank, order[key]), it, listOf(key))
+                }
+            }
         }
-        assertTrue("a late portal should land on a key", late.all { it.onKey })
+        assertTrue("a portal should land on a key where no ground earns it", all.any { it.onKey })
     }
 
     /** The sides facing the keys the walk can still reach carry no jump. */
@@ -245,15 +331,19 @@ class CombTest {
         }
     }
 
-    /** Four sides are left over, and each takes one of the four strides. */
+    /**
+     * Four sides are left over, and at the head of the order each takes one of
+     * the four strides and aims somewhere of its own. Further down a stride can
+     * run out of order to aim at, and that side then carries no jump.
+     */
     @Test
     fun the_other_four_sides_are_portals() {
         val comb = comb()
         val bank = Bank.LEFT
-        val chain = comb.chain.getValue(bank)
-        val here = spot(comb, bank, order[chain[2]])
-        val jumps = Side.values().mapNotNull { comb.portal(bank, here, it, chain.take(3)) }
+        val first = spot(comb, bank, order[comb.chain.getValue(bank)[0]])
+        val jumps = Side.values().mapNotNull { comb.portal(bank, first, it, emptyList()) }
         assertEquals(4, jumps.size)
+        assertEquals(4, jumps.map { it.aim }.distinct().size)
     }
 
     /** Ground and holes answer with no key, whatever the stroke has taken. */

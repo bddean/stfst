@@ -19,13 +19,14 @@ data class Config(
      * after it directly below. Repeating a value in touching cells melds them
      * into one button, which is all a big key is.
      *
-     * A button that touches no other key is a float, and steno order says
-     * nothing about one: `#` and `+` here, `@` and `*` on the right. The last
-     * keys of each bank ring a hole, so the far end of the order is a dip
-     * through the middle rather than a walk down the whole comb.
+     * A key that does not touch the next key of the walk is a float, and steno
+     * order says nothing about one: `#` and `+` here, `@` and `*` on the right.
+     * The last two keys and the two floats close a ring around a hole, so a
+     * portal into the hole puts the whole end of the order one hop away and
+     * nothing ever has to pass through it.
      */
-    var combLeft: String = "#.^S./#.TK./..PW./..HR./..AO./+.oO./+.A..",
-    var combRight: String = ".UE.@/.rf.@/.bp../.gl../.st../.zd.*/.od.*/.z...",
+    var combLeft: String = " ..../ .^S./ .TK./ .PW./ .HR./  AO./  o+./  #..",
+    var combRight: String = "..../.UE./.rf./.bp./.gl./.st./.zd/.*o/..@",
     /**
      * The four portal strides, in keys of the steno order.
      *
@@ -132,8 +133,9 @@ data class Config(
      *
      * A stride is four numbers rather than fifty-two destinations, and this is
      * how the four stop being numbers: leave by that side and the focus goes
-     * there. A ring on the landing means arriving takes that key, and a dashed
-     * ring means it only comes to rest beside it.
+     * there. The arrow in the landing points at the side to leave by. A ring
+     * means arriving takes that key, and a dashed ring means it only comes to
+     * rest beside it.
      */
     var showPortals: Boolean = true,
 

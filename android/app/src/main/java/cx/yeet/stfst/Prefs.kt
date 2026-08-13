@@ -15,7 +15,7 @@ object Prefs {
      * saved before floats and hole rings existed is the old default rather than
      * a choice, and keeping it would hide the new one behind a settings screen.
      */
-    private const val LAYOUT = 2
+    private const val LAYOUT = 3
 
     fun save(config: Config, prefs: SharedPreferences) = with(config) {
         prefs.edit().apply {

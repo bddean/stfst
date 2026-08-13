@@ -46,13 +46,14 @@ ground, `o` is a hole, a space is off the board, and anything else is the key
 of that name. The left bank ships as:
 
 ```
-#.^S.
-#.TK.
-..PW.
-..HR.
-..AO.
-+.oO.
-+.A..
+ ....
+ .^S.
+ .TK.
+ .PW.
+ .HR.
+  AO.
+  o+.
+  #..
 ```
 
 Every character touches the one above, below, left and right of it, plus one
@@ -67,30 +68,37 @@ fixes each of them:
 | a melded button | a run of touching cells holding one value. That is all a big key is |
 | two buttons, one key | cells holding one value that do not touch |
 | the walk | the two sides facing keys steno order still allows |
-| the portals | the other four sides, the ones holding passed keys included |
-| a float | a key none of whose cells touch another key |
+| the portals | the other sides, the ones holding passed keys included |
+| a float | a key that does not touch the next key of the walk |
 | a cell's ground | the field clipped by the bisector against every rival, and by its own six lattice neighbours |
 
 ## The floats are the modifiers
 
-`#` and `+` on the left, `@` and `*` on the right, standing clear of the
-chain. Nothing joins them to the walk, so the walk cannot pass them: a
-modifier is takeable however far down the comb the thumb has already gone.
+`#` and `+` on the left, `@` and `*` on the right. Nothing joins them to the
+walk, so the walk cannot pass them: a modifier is takeable however far down
+the comb the thumb has already gone.
 
-That is the old keyboard's floating arc, and it costs no mechanism. A key is
-on the walk when its cells touch another key, so standing a button clear of
-the chain says the whole thing.
+That is the old keyboard's floating arc, and it costs no mechanism. Read the
+order backwards and the walk builds itself: the last key of a bank is on it,
+and a key joins when it touches the next key already on. What cannot join is a
+float. Reading the successor rather than every neighbour is what lets a float
+sit against the end cluster and still be a float.
 
-## The end cluster rings a hole
+## The end cluster closes a ring
 
-The last two keys of each bank surround a hole. A hole takes nothing and a
-portal can land in one, which makes it the best landing site on the comb: one
-jump reaches the end of the order and every key of the cluster is then a
-single hop away, so you still choose which vowel.
+The last two keys of each bank and both of its floats close a ring around a
+hole. A hole takes nothing and a portal can land in one, which makes it the
+best landing site on the comb: one jump reaches the end of the order and every
+key of the cluster is then a single hop away, so you still choose which vowel,
+and both modifiers are there too.
+
+Closed, with no way in but a portal. Every key of the order has a portal that
+lands in the hole, so nothing ever needs to walk through it, and a ring of
+keys is worth more than a gap.
 
 `Teleport through a hole` is the hole's other trick, off by default. It throws
-a focus that *walks* into a hole across the comb's middle, which is worth
-having only when the hole sits early in the order.
+a focus that *walks* into a hole across the comb's middle, which the shipped
+layouts give nothing to walk in with.
 
 `Comb` answers all of it, and the drawing asks `Comb` rather than working the
 shapes out a second way, so the picture cannot disagree with the decision.
@@ -107,21 +115,42 @@ So a portal carries a **stride** instead, and the four strides are the same
 for every key on the board. The `out` portal always means "jump three keys
 ahead". Where that lands is derived:
 
-- **Early in the order** there is open ground beside key `i+k` touching two or
-  more keys still ahead. The focus lands there and takes nothing, and every one
-  of those keys is then one hop away. Two hops, and a choice at the end of the
-  first.
-- **Late in the order** no ground is worth that. The jump lands on the key
-  itself and takes it. One hop.
+- **Open ground beside key `i+k`**, touching two or more keys still live. The
+  focus rests there and takes nothing, and every one of those keys is then one
+  hop away. Two hops, and a choice at the end of the first.
+- **No ground worth the hop.** The jump lands on the key itself and takes it.
+  One hop.
 
 The sides take the strides in order of how far each turns from the way the walk
-is heading, so a side means the same jump wherever the thumb is.
+is heading, so a side means the same jump wherever the thumb is. A side with no
+cell beyond it is never crossed, so it carries nothing, and neither does a
+stride that aims where an earlier stride already aims.
+
+### The four are one allocation
+
+Two portals that come to rest on the same cell, or on touching cells, spend two
+sides of the comb on one place. Answering each stride on its own let that
+happen: the greedy pick for stride 3 took the only ground stride 5 had.
+
+So the four are chosen together. Every way of filling them is tried and the
+best is kept, with no two resting places closer than one cell apart. A handful
+of strides over a handful of cells each is a few hundred arrangements, so the
+exact answer costs less than a rule for guessing well. A landing that takes a
+key is exempt, because a key names itself.
+
+`CombTest.every_key_ahead_is_still_reachable` is the claim this has to keep:
+from any key, walking and jumping reaches every key ahead of it and both
+floats, taking nothing on the way. A grid can satisfy steno order and still
+strand a key behind a wall of keys the chord does not want, and no amount of
+tuning the strides would show it.
+
+### Watching one land
 
 Four numbers stay numbers until you watch one land, so the keyboard draws them.
 While a thumb is down, every portal side of the cell under the focus gets a
-line to the cell it arrives at. A ring there means arriving takes that key; a
-dashed ring means it comes to rest beside it. `Show where the portals go` turns
-this off.
+line to the cell it arrives at, and an **arrow** in that cell pointing back at
+the side to leave by. A ring means arriving takes that key; a dashed ring means
+it comes to rest beside it. `Show where the portals go` turns this off.
 
 ## The focus is not the thumb
 

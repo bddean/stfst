@@ -11,8 +11,10 @@ import android.graphics.Path
 import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
+import kotlin.math.cos
 import kotlin.math.hypot
 import kotlin.math.min
+import kotlin.math.sin
 
 /**
  * The keyboard itself: two thumb combs and the touch handling that turns taps
@@ -428,6 +430,9 @@ class CombView(
      * read as four places while the thumb is on them. A ring on the landing
      * means arriving takes that key; a dashed one means it comes to rest beside
      * it, with the cluster then one hop away.
+     *
+     * The arrow in the landing points the way out, not the way in: four rings
+     * say where the portals go, and only the arrow says which is which.
      */
     private fun drawPortals(canvas: Canvas, thumb: Thumb, paint: Palette) {
         if (!thumb.live) return
@@ -447,13 +452,30 @@ class CombView(
             ink.color = fade(paint.hot, if (land.onKey) 0.85f else 0.5f)
             canvas.drawCircle(to.x, to.y, r * 0.42f, ink)
             ink.pathEffect = null
-            // A landing on the key sits on a cell that already names itself.
-            if (!config.showLabels || land.onKey) continue
+            val a = Math.toRadians(Comb.angleOf(side).toDouble())
+            val dx = cos(a).toFloat() * at.ct - sin(a).toFloat() * at.st
+            val dy = cos(a).toFloat() * at.st + sin(a).toFloat() * at.ct
             ink.style = Paint.Style.FILL
-            canvas.drawText(
-                order[land.aim].toString(), to.x, to.y + ink.textSize * 0.35f, ink
+            ink.color = fade(paint.hot, if (land.onKey) 0.85f else 0.6f)
+            // A key cell already carries its letter, so the arrow rides the ring
+            // rather than sitting over it.
+            val run = hypot(to.x - from.x, to.y - from.y).coerceAtLeast(1f)
+            val ride = if (land.onKey) r * 0.42f else 0f
+            arrow(
+                canvas, to.x - (to.x - from.x) / run * ride, to.y - (to.y - from.y) / run * ride,
+                dx, dy, r * 0.26f,
             )
         }
+    }
+
+    /** A solid triangle at a point, pointing along a unit vector. */
+    private fun arrow(canvas: Canvas, x: Float, y: Float, dx: Float, dy: Float, size: Float) {
+        val path = Path()
+        path.moveTo(x + dx * size, y + dy * size)
+        path.lineTo(x - dx * size * 0.5f - dy * size * 0.75f, y - dy * size * 0.5f + dx * size * 0.75f)
+        path.lineTo(x - dx * size * 0.5f + dy * size * 0.75f, y - dy * size * 0.5f - dx * size * 0.75f)
+        path.close()
+        canvas.drawPath(path, ink)
     }
 
     /**

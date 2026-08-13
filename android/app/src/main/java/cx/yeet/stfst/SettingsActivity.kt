@@ -85,7 +85,9 @@ class SettingsActivity : Activity() {
                 "the order and the one after it. Repeat a value in touching " +
                 "cells and they meld into one button, which is all a big key " +
                 "is. Entering a cell takes what it yields, in steno order, " +
-                "and a spent cell is ground."),
+                "and a spent cell is ground. A key that does not touch the " +
+                "next key of the walk is a float, and steno order says nothing " +
+                "about a float: that is what the modifiers are."),
         Text("Left comb", { it.combLeft }, { c, v -> c.combLeft = v },
             "rows separated by a slash"),
         Text("Right comb", { it.combRight }, { c, v -> c.combRight = v }),
@@ -93,10 +95,11 @@ class SettingsActivity : Activity() {
             "four numbers, in keys of the steno order. Two of a cell's six " +
                 "sides face the keys the walk can still reach; the other four " +
                 "are portals and take these strides, ordered by how far each " +
-                "turns from the way the walk is heading. Early in the order a " +
-                "stride lands on the ground between two keys and takes " +
-                "nothing, leaving both one hop away; late in the order that " +
-                "ground is gone and it lands on the key itself"),
+                "turns from the way the walk is heading. A stride rests on the " +
+                "ground beside the key it aims at and takes nothing, leaving " +
+                "several keys one hop away; where no ground is worth the hop it " +
+                "lands on the key itself. The four are chosen together, so no " +
+                "two rest on the same cell or on touching ones"),
         Range("Tilt, portrait", -45f, 45f, { it.tiltPortrait },
             { c, v -> c.tiltPortrait = v },
             "how far the comb is turned. Zero runs the columns straight down " +
@@ -114,9 +117,9 @@ class SettingsActivity : Activity() {
         Flag("Teleport through a hole", { it.combHole }, { c, v -> c.combHole = v },
             "a focus that walks into a hole is thrown straight across the " +
                 "comb's middle, and the offset holds until the lift. Off by " +
-                "default: the shipped layouts ring their hole with the last " +
-                "keys of the order, and a throw from there reaches only cells " +
-                "the order has passed. A portal can land on a hole either way"),
+                "default: the shipped layouts close a ring around their hole, " +
+                "so nothing walks into one and a portal is the only way in. A " +
+                "portal can land on a hole either way"),
 
         Section("Strokes"),
         Flag("Write on the first lift", { it.commitOnFirstLift },
@@ -165,8 +168,9 @@ class SettingsActivity : Activity() {
         Flag("Show where the portals go", { it.showPortals },
             { c, v -> c.showPortals = v },
             "from the cell under the focus, a line out of each portal side to " +
-                "the cell it lands on. A ring there means arriving takes that " +
-                "key; a dashed ring means it comes to rest beside it"),
+                "the cell it lands on, with an arrow there pointing back at " +
+                "the side to leave by. A ring means arriving takes that key; a " +
+                "dashed ring means it comes to rest beside it"),
         Flag("Show cells already passed", { it.showDeadCells },
             { c, v -> c.showDeadCells = v },
             "faded. They are portals now, and they stop looking like keys"),
