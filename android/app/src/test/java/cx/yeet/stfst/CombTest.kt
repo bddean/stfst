@@ -277,6 +277,16 @@ class CombTest {
         }
     }
 
+    /** Two thumbs sweep mirrored arcs, so one angle turns the banks opposite ways. */
+    @Test
+    fun the_two_banks_turn_opposite_ways() {
+        val comb = comb(Config(tilt = 20f))
+        val left = comb.place(Bank.LEFT, field, 20f)
+        val right = comb.place(Bank.RIGHT, field, 20f)
+        assertEquals(left.ct, right.ct, 1e-5f)
+        assertEquals(left.st, -right.st, 1e-5f)
+    }
+
     /** Tilt turns the comb and nothing else: the same cells, the same order. */
     @Test
     fun tilt_moves_the_cells_and_keeps_the_layout() {

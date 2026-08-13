@@ -94,7 +94,7 @@ class Chorder(
      */
     private var pending = false
 
-    private val tilt: Float get() = config.tilt(landscape)
+    private val tilt: Float get() = config.tilt
 
     fun thumb(bank: Bank) = if (bank == Bank.LEFT) left else right
 

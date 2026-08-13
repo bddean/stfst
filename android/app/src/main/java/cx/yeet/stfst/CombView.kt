@@ -73,7 +73,7 @@ class CombView(
     /** Whether the two combs stand on the edges with the bar in the gap. */
     val sides: Boolean get() = !embedded && landscape && config.landscapeSides
 
-    private val tilt: Float get() = config.tilt(landscape)
+    private val tilt: Float get() = config.tilt
 
     fun apply(fresh: Config) {
         config = fresh
@@ -469,12 +469,20 @@ class CombView(
         return Point((b.x - a.x) / run, (b.y - a.y) / run)
     }
 
-    /** A solid triangle at a point, pointing along a unit vector. */
+    /**
+     * A solid arrowhead at a point, pointing along a unit vector.
+     *
+     * A plain triangle reads as a triangle at any angle. The notch in the tail
+     * is what makes it read as pointing.
+     */
     private fun arrow(canvas: Canvas, x: Float, y: Float, dx: Float, dy: Float, size: Float) {
+        // Along the way it points, and across it.
+        fun at(on: Float, off: Float) =
+            Point(x + dx * size * on - dy * size * off, y + dy * size * on + dx * size * off)
         val path = Path()
-        path.moveTo(x + dx * size, y + dy * size)
-        path.lineTo(x - dx * size * 0.5f - dy * size * 0.75f, y - dy * size * 0.5f + dx * size * 0.75f)
-        path.lineTo(x - dx * size * 0.5f + dy * size * 0.75f, y - dy * size * 0.5f - dx * size * 0.75f)
+        val tip = at(1.5f, 0f)
+        path.moveTo(tip.x, tip.y)
+        for (p in listOf(at(-0.9f, 0.95f), at(-0.4f, 0f), at(-0.9f, -0.95f))) path.lineTo(p.x, p.y)
         path.close()
         canvas.drawPath(path, ink)
     }

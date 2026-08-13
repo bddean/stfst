@@ -98,16 +98,15 @@ class SettingsActivity : Activity() {
                 "turns from the way the walk is heading. A stride rests on the " +
                 "ground beside the key it aims at and takes nothing, leaving " +
                 "several keys one hop away; where no ground is worth the hop it " +
-                "lands on the key itself. The four are chosen together, so no " +
-                "two rest on the same cell or on touching ones"),
-        Range("Tilt, portrait", -45f, 45f, { it.tiltPortrait },
-            { c, v -> c.tiltPortrait = v },
+                "lands on the key itself. A key the thumb can already step onto " +
+                "is not worth anything, so a landing never repeats the ground it " +
+                "left. The four are chosen together, so no two rest on the same " +
+                "cell or on touching ones"),
+        Range("Tilt", -45f, 45f, { it.tilt }, { c, v -> c.tilt = v },
             "how far the comb is turned. Zero runs the columns straight down " +
                 "the glass; a thumb sweeps along an arc, so a few degrees can " +
-                "put the walk under it", unit = "\u00b0"),
-        Range("Tilt, landscape", -45f, 45f, { it.tiltLandscape },
-            { c, v -> c.tiltLandscape = v },
-            "the same, for a landscape screen", unit = "\u00b0"),
+                "put the walk under it. The right bank turns the other way, " +
+                "because the two thumbs sweep mirrored arcs", unit = "\u00b0"),
         Range("Comb fill", 0.4f, 1f, { it.combFill }, { c, v -> c.combFill = v },
             "one fills the field. Less packs the comb within reach; a thumb " +
                 "that overshoots the drawn edge still means the cell it " +

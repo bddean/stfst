@@ -115,11 +115,15 @@ So a portal carries a **stride** instead, and the four strides are the same
 for every key on the board. The `out` portal always means "jump three keys
 ahead". Where that lands is derived:
 
-- **Open ground beside key `i+k`**, touching two or more keys still live. The
-  focus rests there and takes nothing, and every one of those keys is then one
-  hop away. Two hops, and a choice at the end of the first.
+- **Open ground beside key `i+k`**, adding two or more keys the thumb does not
+  already have. The focus rests there and takes nothing, and every one of those
+  keys is then one hop away. Two hops, and a choice at the end of the first.
 - **No ground worth the hop.** The jump lands on the key itself and takes it.
   One hop.
+
+Worth is what the jump **buys**. A key the thumb can already step onto counts
+for nothing, so a landing that shares its neighbours with the cell being left is
+a side of the comb spent on ground the thumb already has.
 
 The sides take the strides in order of how far each turns from the way the walk
 is heading, so a side means the same jump wherever the thumb is. A side with no
@@ -181,9 +185,12 @@ instead.
 ## Tilt
 
 A thumb sweeps along an arc, not a line, so the comb can be turned. `Tilt` is
-degrees, portrait and landscape apart, and zero runs the columns straight down
-the glass. It turns the lattice, which is one placement the drawing and the hit
-test share; nothing else about the layout moves.
+degrees, and zero runs the columns straight down the glass. The right bank
+turns the other way: two thumbs sweep mirrored arcs, so one angle describes
+both and the sign belongs to the bank.
+
+It turns the lattice, which is one placement the drawing and the hit test
+share; nothing else about the layout moves.
 
 ## Writing a stroke
 

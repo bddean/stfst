@@ -38,14 +38,14 @@ data class Config(
      */
     var combStrides: String = "3 5 7 9",
     /**
-     * How much the comb is turned, in degrees, portrait and landscape apart.
+     * How much the comb is turned, in degrees.
      *
      * Zero runs the columns straight down the glass. A thumb sweeps along an
      * arc rather than a line, so a few degrees of tilt can put the walk under
-     * it; which few is a fact about hands and not about layouts.
+     * it; which few is a fact about hands and not about layouts. The right bank
+     * turns the other way, because the two thumbs sweep mirrored arcs.
      */
-    var tiltPortrait: Float = 0f,
-    var tiltLandscape: Float = 0f,
+    var tilt: Float = 0f,
     /** How much of the field the comb fills. Less packs it within reach. */
     var combFill: Float = 1f,
     /** Where the middle of the comb sits, as a fraction down the field. */
@@ -197,7 +197,4 @@ data class Config(
         if (bank == Bank.LEFT) doubleTapLeft else doubleTapRight
 
     fun comb(bank: Bank): String = if (bank == Bank.LEFT) combLeft else combRight
-
-    /** How far the comb is turned, which the two orientations set apart. */
-    fun tilt(landscape: Boolean): Float = if (landscape) tiltLandscape else tiltPortrait
 }

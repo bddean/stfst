@@ -161,6 +161,9 @@ class Comb(val order: String, val config: Config) {
      * lattice is then turned by [Config.tilt] and scaled to fill the field. One
      * placement answers the drawing and the hit test both, which is what stops
      * the picture disagreeing with the decision.
+     *
+     * The right bank turns the other way. Two thumbs sweep mirrored arcs, so
+     * one angle describes both and the sign belongs to the bank.
      */
     fun place(bank: Bank, field: Field, tilt: Float): Placement {
         val key = Triple(bank, field, tilt)
@@ -181,7 +184,7 @@ class Comb(val order: String, val config: Config) {
     private fun compute(bank: Bank, field: Field, tilt: Float): Placement {
         val list = spots.getValue(bank)
         if (list.isEmpty()) return Placement(1f, field.centerX, field.centerY, 1f, 0f)
-        val radians = Math.toRadians(tilt.toDouble())
+        val radians = Math.toRadians(if (bank == Bank.RIGHT) -tilt.toDouble() else tilt.toDouble())
         val ct = cos(radians).toFloat()
         val st = sin(radians).toFloat()
         var lowX = Float.MAX_VALUE
@@ -367,13 +370,13 @@ class Comb(val order: String, val config: Config) {
         )
         val slot = portals.indexOf(side)
         if (slot < 0) return null
-        return jumps(bank, here).getOrNull(min(slot, strides.size - 1))
+        return jumps(bank, from, here).getOrNull(min(slot, strides.size - 1))
     }
 
-    private val jumped = HashMap<Pair<Bank, Int>, List<Landing?>>()
+    private val jumped = HashMap<Pair<Bank, Spot>, List<Landing?>>()
 
     /**
-     * Where all four strides out of one rank land, chosen together.
+     * Where all four strides out of one cell land, chosen together.
      *
      * Two portals that come to rest on the same cell, or on touching ones,
      * spend two sides of the comb on one place. So this is an allocation and
@@ -384,35 +387,47 @@ class Comb(val order: String, val config: Config) {
      * nothing can be confused with it. A stride that aims where an earlier one
      * already aims is dead: there is nothing left for it to mean.
      */
-    private fun jumps(bank: Bank, here: Int): List<Landing?> = jumped.getOrPut(bank to here) {
-        val keys = chain.getValue(bank)
-        val aimed = mutableSetOf<Int>()
-        val choices = strides.map { stride ->
-            val aim = keys.getOrNull(min(here + stride, keys.size - 1))
-                ?.takeIf { (rank.getValue(bank)[it] ?: -1) > here && aimed.add(it) }
-            if (aim == null) listOf(null) else options(bank, here, aim)
+    private fun jumps(bank: Bank, from: Spot, here: Int): List<Landing?> =
+        jumped.getOrPut(bank to from) {
+            val keys = chain.getValue(bank)
+            val aimed = mutableSetOf<Int>()
+            val choices = strides.map { stride ->
+                val aim = keys.getOrNull(min(here + stride, keys.size - 1))
+                    ?.takeIf { (rank.getValue(bank)[it] ?: -1) > here && aimed.add(it) }
+                if (aim == null) listOf(null) else options(bank, from, here, aim)
+            }
+            spread(choices)
         }
-        spread(choices)
+
+    /** The live keys one step from a cell, which a jump cannot buy again. */
+    private fun beside(bank: Bank, spot: Spot, here: Int): Set<Int> {
+        val cells = byCell.getValue(bank)
+        val ranks = rank.getValue(bank)
+        val loose = floats.getValue(bank)
+        return Side.values()
+            .mapNotNull { cells[at(step(spot, it))] }
+            .map { keyOf(it) }
+            .filter { it >= 0 && (it in loose || (ranks[it] ?: -1) > here) }
+            .toSet()
     }
 
     /**
      * Where one stride could land: the open ground beside the key it aims at,
-     * each worth the keys it leaves one hop away, and the key itself.
+     * each worth the keys it *adds* one hop away, and the key itself.
      *
-     * Ground worth only one key is not worth the hop. Late in the order there
-     * is none worth it at all, which is why the jump can end on the key and
-     * take it: one hop instead of a choice.
+     * Worth is what the jump buys, so a key the thumb can already step onto
+     * counts for nothing. A landing that shares its neighbours with the cell
+     * being left spends a side of the comb on ground the thumb already has.
+     *
+     * Ground worth fewer than two new keys is not worth the hop. Late in the
+     * order there is none worth it at all, which is why the jump can end on the
+     * key and take it: one hop instead of a choice.
      */
-    private fun options(bank: Bank, here: Int, aim: Int): List<Pair<Landing, Int>?> {
+    private fun options(bank: Bank, from: Spot, here: Int, aim: Int): List<Pair<Landing, Int>?> {
         val cells = byCell.getValue(bank)
         val mine = buttons.getValue(bank).filter { it.key == aim }
-        val ranks = rank.getValue(bank)
-        val loose = floats.getValue(bank)
-        fun reach(ground: Spot): Int = Side.values()
-            .mapNotNull { cells[at(step(ground, it))] }
-            .map { keyOf(it) }
-            .filter { it >= 0 && (it in loose || (ranks[it] ?: -1) > here) }
-            .distinct().size
+        val had = beside(bank, from, here)
+        fun reach(ground: Spot): Int = (beside(bank, ground, here) - had).size
         val rests = mine.asSequence()
             .flatMap { it.spots.asSequence() }
             .flatMap { spot -> Side.values().asSequence().mapNotNull { cells[at(step(spot, it))] } }
@@ -424,8 +439,9 @@ class Comb(val order: String, val config: Config) {
                 .thenBy { it.first.row }.thenBy { it.first.col })
             .map { (spot, worth) -> Landing(spot, aim, false) to worth }
             .toList()
+        // Taking a key the thumb could step onto anyway buys nothing either.
         val onKey = mine.firstOrNull()?.spots?.firstOrNull()
-            ?.let { Landing(it, aim, true) to 1 }
+            ?.let { Landing(it, aim, true) to if (aim in had) 0 else 1 }
         return rests + listOfNotNull(onKey)
     }
 

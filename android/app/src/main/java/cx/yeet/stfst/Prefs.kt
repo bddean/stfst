@@ -23,8 +23,7 @@ object Prefs {
             putString("combLeft", combLeft)
             putString("combRight", combRight)
             putString("combStrides", combStrides)
-            putFloat("tiltPortrait", tiltPortrait)
-            putFloat("tiltLandscape", tiltLandscape)
+            putFloat("tilt", tilt)
             putFloat("combFill", combFill)
             putFloat("combAt", combAt)
             putBoolean("combHole", combHole)
@@ -66,8 +65,7 @@ object Prefs {
             combLeft = if (fresh) d.combLeft else prefs.getString("combLeft", d.combLeft)!!,
             combRight = if (fresh) d.combRight else prefs.getString("combRight", d.combRight)!!,
             combStrides = prefs.getString("combStrides", d.combStrides)!!,
-            tiltPortrait = prefs.getFloat("tiltPortrait", d.tiltPortrait),
-            tiltLandscape = prefs.getFloat("tiltLandscape", d.tiltLandscape),
+            tilt = prefs.getFloat("tilt", d.tilt),
             combFill = prefs.getFloat("combFill", d.combFill),
             combAt = prefs.getFloat("combAt", d.combAt),
             combHole = prefs.getBoolean("combHole", d.combHole),
