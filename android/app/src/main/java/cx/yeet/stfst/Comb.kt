@@ -221,8 +221,7 @@ class Comb(val order: String, val config: Config) {
     }
 
     /** The lattice point of a cell, in cell radii, before tilt and scale. */
-    fun lattice(spot: Spot): Point =
-        Point(1.5f * spot.col, SQ3 * (spot.row + 0.5f * (spot.col and 1)))
+    fun lattice(spot: Spot): Point = lattice(spot.col, spot.row)
 
     fun point(spot: Spot, at: Placement): Point {
         val p = lattice(spot)
@@ -408,7 +407,8 @@ class Comb(val order: String, val config: Config) {
      * when it is there: riding is a crossing like any other, and a key on the
      * way out is taken rather than ridden past.
      */
-    fun onward(bank: Bank, land: Landing, taken: List<Int>): Landing? {
+    fun onward(bank: Bank, ride: Ride, taken: List<Int>): Landing? {
+        val land = ride.land
         if (land.onKey) return null
         val keys = chain.getValue(bank)
         val ranks = rank.getValue(bank)
@@ -417,19 +417,24 @@ class Comb(val order: String, val config: Config) {
             ?.takeIf { (ranks[it] ?: -1) > here } ?: return null
         val next = options(bank, land.spot, here, aim, land.stride)
             .firstOrNull()?.first?.takeIf { it.spot != land.spot } ?: return null
-        val gate = byCell.getValue(bank)[at(step(land.spot, toward(land.spot, next.spot)))]
-        return next.takeIf { gate != null && resolve(gate, taken) == null }
+        val open = sameWay(ride.side).any { side ->
+            byCell.getValue(bank)[at(step(land.spot, side))]
+                ?.let { resolve(it, taken) == null } == true
+        }
+        return next.takeIf { open }
     }
 
-    /** The side of one cell that points most nearly at another. */
-    fun toward(from: Spot, to: Spot): Side {
-        val a = lattice(from)
-        val b = lattice(to)
-        val angle = Math.toDegrees(
-            Math.atan2((b.y - a.y).toDouble(), (b.x - a.x).toDouble())
-        ).toFloat()
-        return Side.values().minByOrNull { turn(angleOf(it), angle) }!!
-    }
+    /**
+     * The sides a thumb still going this way can cross: the one it came by and
+     * the two beside it.
+     *
+     * A long slide is one motion, not several, and the cost of it is barely
+     * more than a short one. A thumb sweeps along an arc rather than a line, so
+     * holding it to the exact side it started on would be holding it to
+     * something hands do not do.
+     */
+    fun sameWay(side: Side): List<Side> =
+        Side.values().filter { turn(angleOf(it), angleOf(side)) <= 60 }
 
     /** The live keys one step from a cell, which a jump cannot buy again. */
     private fun beside(bank: Bank, spot: Spot, here: Int): Set<Int> {
@@ -579,14 +584,27 @@ class Comb(val order: String, val config: Config) {
             }
         }
 
-        /** Where a side points, in degrees clockwise from right. */
-        fun angleOf(side: Side): Float = when (side) {
-            Side.SE -> 60f
-            Side.S -> 90f
-            Side.SW -> 120f
-            Side.NW -> 240f
-            Side.N -> 270f
-            Side.NE -> 300f
+        /** The lattice point of a cell, in cell radii, before tilt and scale. */
+        fun lattice(col: Int, row: Int): Point =
+            Point(1.5f * col, SQ3 * (row + 0.5f * (col and 1)))
+
+        /**
+         * Where a side points, in degrees clockwise from right.
+         *
+         * Read off the step the side names, so it cannot drift from the
+         * lattice. Written down it drifted: the four diagonals had the angles
+         * of the hexagon's corners, which sit 30 degrees off its sides.
+         */
+        fun angleOf(side: Side): Float = ANGLES.getValue(side)
+
+        private val ANGLES: Map<Side, Float> = Side.values().associateWith { side ->
+            val home = Spot(2, 2, GROUND)
+            val a = lattice(home.col, home.row)
+            val (col, row) = step(home, side)
+            val b = lattice(col, row)
+            Math.toDegrees(
+                Math.atan2((b.y - a.y).toDouble(), (b.x - a.x).toDouble())
+            ).toFloat()
         }
 
         /** The smaller of the two ways round, in degrees. */
@@ -605,6 +623,9 @@ data class Walk(val chain: List<Int>, val floats: Set<Int>)
 
 /** One drawn button: a run of touching cells that all hold one value. */
 data class Button(val key: Int, val v: Char, val spots: List<Spot>)
+
+/** A jump the focus is resting on, and the way the thumb came in by. */
+data class Ride(val land: Landing, val side: Side)
 
 /**
  * Where a portal puts the focus, the key its stride aimed at, and whether

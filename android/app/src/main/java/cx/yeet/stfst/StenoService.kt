@@ -3,6 +3,7 @@ package cx.yeet.stfst
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
+import android.graphics.Rect
 import android.inputmethodservice.InputMethodService
 import android.os.SystemClock
 import android.text.TextUtils
@@ -218,6 +219,28 @@ class StenoService : InputMethodService() {
     }
 
     /** A fresh field means a fresh buffer: the old text belongs to the old field. */
+    /**
+     * What the app lays out around, and what our window takes touches for.
+     *
+     * The keys are both. The band the preview draws above them is neither: it
+     * is over the app on purpose, so the app keeps its room and its touches up
+     * there and the copy of the comb floats on top.
+     */
+    override fun onComputeInsets(outInsets: Insets) {
+        super.onComputeInsets(outInsets)
+        val keys = view ?: return
+        if (keys.keysTop <= 0) return
+        val at = IntArray(2)
+        keys.getLocationInWindow(at)
+        val edge = at[1] + keys.keysTop
+        outInsets.contentTopInsets = edge
+        outInsets.visibleTopInsets = edge
+        outInsets.touchableInsets = Insets.TOUCHABLE_INSETS_REGION
+        val room = Rect()
+        keys.rootView.getWindowVisibleDisplayFrame(room)
+        outInsets.touchableRegion.set(0, edge, room.width(), room.height())
+    }
+
     override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
         super.onStartInputView(info, restarting)
         forget()

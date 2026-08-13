@@ -47,6 +47,8 @@ object Prefs {
             putFloat("cloudAlpha", cloudAlpha)
             putBoolean("touchReadout", touchReadout)
             putFloat("fieldSplit", fieldSplit)
+            putBoolean("oneThumb", oneThumb)
+            putFloat("previewHeight", previewHeight)
             putBoolean("landscapeSides", landscapeSides)
             putFloat("splitLandscape", splitLandscape)
             putFloat("landscapeHeight", landscapeHeight)
@@ -90,6 +92,8 @@ object Prefs {
             cloudAlpha = prefs.getFloat("cloudAlpha", d.cloudAlpha),
             touchReadout = prefs.getBoolean("touchReadout", d.touchReadout),
             fieldSplit = prefs.getFloat("fieldSplit", d.fieldSplit),
+            oneThumb = prefs.getBoolean("oneThumb", d.oneThumb),
+            previewHeight = prefs.getFloat("previewHeight", d.previewHeight),
             landscapeSides = prefs.getBoolean("landscapeSides", d.landscapeSides),
             splitLandscape = prefs.getFloat("splitLandscape", d.splitLandscape),
             landscapeHeight = prefs.getFloat("landscapeHeight", d.landscapeHeight),

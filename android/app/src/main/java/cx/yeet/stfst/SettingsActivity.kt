@@ -114,6 +114,17 @@ class SettingsActivity : Activity() {
                 "the glass; a thumb sweeps along an arc, so a few degrees can " +
                 "put the walk under it. The right bank turns the other way, " +
                 "because the two thumbs sweep mirrored arcs", unit = "\u00b0"),
+        Flag("One thumb walks both combs", { it.oneThumb }, { c, v -> c.oneThumb = v },
+            "a touch that arrives in the other comb's field is handed over to " +
+                "it, and the comb it leaves keeps what it took, so one hand can " +
+                "write a whole stroke. Only while the other thumb is up, so two " +
+                "hands never meet it"),
+        Range("Preview over the app", 0f, 0.5f, { it.previewHeight },
+            { c, v -> c.previewHeight = v },
+            "a copy of the combs above the keys, drawn over the app and taking " +
+                "no touches. Shrink the keys and a thumb crosses cells in less " +
+                "travel; this buys back the legibility that costs. Zero for none",
+            unit = "× screen"),
         Range("Comb fill", 0.4f, 1f, { it.combFill }, { c, v -> c.combFill = v },
             "one fills the field. Less packs the comb within reach; a thumb " +
                 "that overshoots the drawn edge still means the cell it " +

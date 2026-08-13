@@ -226,7 +226,7 @@ class CombTest {
      * Four sides can only name four distances, and on the right comb that left
      * two keys further than two hops: `-E` could not see `-T`, and `U` could
      * not see `-S`. A stride that is not spent by one jump turns each side into
-     * a run of landings, and the runs cover what the four could not.
+     * a run of landings, and one slide of the thumb walks the run.
      */
     @Test
     fun a_ridden_portal_reaches_every_key_ahead() {
@@ -246,10 +246,18 @@ class CombTest {
                     .filter { comb.resolve(it, taken) == null }.flatMap { keysBy(it) })
                     .toMutableSet()
                 for (side in Side.values()) {
-                    var land = comb.portal(bank, home, side, taken) ?: continue
+                    var ride = Ride(comb.portal(bank, home, side, taken) ?: continue, side)
                     while (true) {
-                        reach += if (land.onKey) setOf(land.aim) else keysBy(land.spot)
-                        land = comb.onward(bank, land, taken) ?: break
+                        reach += if (ride.land.onKey) setOf(ride.land.aim)
+                        else keysBy(ride.land.spot)
+                        val next = comb.onward(bank, ride, taken) ?: break
+                        // The thumb keeps going, and a thumb arcs, so any of the
+                        // three sides about the one it came by will do.
+                        val on = comb.sameWay(ride.side).firstOrNull { s ->
+                            val (col, row) = Comb.step(ride.land.spot, s)
+                            comb.spotAt(bank, col, row)?.let { comb.resolve(it, taken) == null } == true
+                        } ?: break
+                        ride = Ride(next, on)
                     }
                 }
                 for (want in chain.drop(i + 1) + loose) {

@@ -85,11 +85,30 @@ class CombView(
         invalidate()
     }
 
+    /**
+     * How deep the keys are. Above them the view is the preview band, which is
+     * drawn over the app and takes no touches.
+     */
+    val keysDeep: Int
+        get() {
+            val screen = resources.displayMetrics.heightPixels
+            val share =
+                if (landscape && !embedded) config.landscapeHeight else config.keyboardHeight
+            return (screen * share.coerceIn(0.15f, 0.95f)).toInt()
+        }
+
+    private val previewDeep: Int
+        get() =
+            if (embedded) 0
+            else (resources.displayMetrics.heightPixels * config.previewHeight
+                .coerceIn(0f, 0.6f)).toInt()
+
+    /** Where the keys start, so the band above them can be drawn over the app. */
+    val keysTop: Int get() = height - keysDeep
+
     override fun onMeasure(widthSpec: Int, heightSpec: Int) {
         val width = MeasureSpec.getSize(widthSpec)
-        val screen = resources.displayMetrics.heightPixels
-        val share = if (landscape && !embedded) config.landscapeHeight else config.keyboardHeight
-        var height = (screen * share.coerceIn(0.15f, 0.95f)).toInt()
+        var height = keysDeep + previewDeep
         // The window is what it is. Measuring past it would put the top of the
         // comb off the glass, which is what asking for the whole screen did.
         if (MeasureSpec.getMode(heightSpec) != MeasureSpec.UNSPECIFIED) {
@@ -118,12 +137,23 @@ class CombView(
 
     private fun layoutFields() {
         val (left, right) = spans(width.toFloat())
-        val top = if (config.touchReadout) height * 0.04f else 0f
+        val floor = height.toFloat()
+        val top = keysTop + if (config.touchReadout) keysDeep * 0.04f else 0f
         chorder.landscape = landscape
-        chorder.place(Bank.LEFT, Field(left.start, top, left.endInclusive, height.toFloat()))
-        chorder.place(Bank.RIGHT, Field(right.start, top, right.endInclusive, height.toFloat()))
+        chorder.place(Bank.LEFT, Field(left.start, top, left.endInclusive, floor))
+        chorder.place(Bank.RIGHT, Field(right.start, top, right.endInclusive, floor))
         cut()
     }
+
+    /** The same bank, drawn large in the band over the app. */
+    private fun band(bank: Bank): Field {
+        val (left, right) = spans(width.toFloat())
+        val span = if (bank == Bank.LEFT) left else right
+        return Field(span.start, 0f, span.endInclusive, keysTop.toFloat())
+    }
+
+    /** Whether a touch is on the keys at all, rather than the band over the app. */
+    private fun onKeys(y: Float): Boolean = y >= keysTop
 
     /** The field under this x, or null on the ground between split fields. */
     private fun bankAt(x: Float): Bank? {
@@ -142,6 +172,7 @@ class CombView(
                 val pointer = event.getPointerId(at)
                 val x = event.getX(at)
                 val y = event.getY(at)
+                if (!onKeys(y)) return false
                 val bank = bankAt(x) ?: return false
                 clouds[bank]?.clear()
                 record(event, at, bank)
@@ -165,6 +196,16 @@ class CombView(
                     downs[pointer]?.let {
                         val far = hypot(event.getX(at) - it.x, event.getY(at) - it.y)
                         if (far > height * 0.02f) downs.remove(pointer)
+                    }
+                    // One hand can write a whole stroke: a touch that arrives
+                    // in the other field is handed over, and the field it left
+                    // keeps what it took.
+                    if (config.oneThumb) {
+                        bankAt(event.getX(at))?.takeIf { it != thumb.bank }?.let {
+                            if (chorder.cross(pointer, it, event.getX(at), event.getY(at))) {
+                                haptics.take(it)
+                            }
+                        }
                     }
                     var took = false
                     // Every sample, not one per frame: take-on-entry reads the
@@ -313,24 +354,40 @@ class CombView(
             hole = if (dark) Color.rgb(216, 168, 77) else Color.rgb(169, 111, 22),
         )
         val back = if (dark) Color.rgb(18, 18, 20) else Color.rgb(246, 246, 248)
-        // Only the fields get a ground. Between them in landscape the app shows
-        // through, which is the whole point of laying out this way.
+        // Only the fields get a ground, and only where the keys are. Above them
+        // and between them the app shows through, which is what the band is for.
         ink.style = Paint.Style.FILL
         ink.color = back
         for (bank in Bank.values()) {
             val field = chorder.thumb(bank).field
-            canvas.drawRect(field.left, 0f, field.right, height.toFloat(), ink)
+            canvas.drawRect(field.left, keysTop.toFloat(), field.right, height.toFloat(), ink)
         }
         ink.textSize = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_SP, config.labelSp, resources.displayMetrics
         )
         ink.textAlign = Paint.Align.CENTER
         for (bank in Bank.values()) {
+            val thumb = chorder.thumb(bank)
+            val sketch = sketches[bank] ?: continue
             if (config.cloud) drawCloud(canvas, bank, paint)
-            drawComb(canvas, chorder.thumb(bank), paint)
-            drawFocus(canvas, chorder.thumb(bank), paint)
-            if (config.showPortals) drawPortals(canvas, chorder.thumb(bank), paint)
-            drawTaken(canvas, chorder.thumb(bank), paint)
+            drawComb(canvas, thumb, paint, sketch)
+            drawFocusCell(canvas, thumb, paint, sketch)
+            drawMarks(canvas, thumb, paint)
+            if (config.showPortals) drawPortals(canvas, thumb, paint)
+            drawTaken(canvas, thumb, paint, thumb.field)
+        }
+        if (keysTop > 0 && chorder.thumb(Bank.LEFT).live || chorder.thumb(Bank.RIGHT).live) {
+            for (bank in Bank.values()) {
+                val band = bands[bank] ?: continue
+                ink.style = Paint.Style.FILL
+                ink.color = fade(back, 0.88f)
+                canvas.drawRect(band(bank).let {
+                    android.graphics.RectF(it.left, it.top, it.right, it.bottom)
+                }, ink)
+                drawComb(canvas, chorder.thumb(bank), paint, band)
+                drawFocusCell(canvas, chorder.thumb(bank), paint, band)
+                drawTaken(canvas, chorder.thumb(bank), paint, band(bank))
+            }
         }
         if (config.touchReadout) drawReadout(canvas, paint)
     }
@@ -347,41 +404,46 @@ class CombView(
         val keys: List<Triple<Button, Path, Point>>,
         val chain: Path?,
         val radius: Float,
+        val at: Placement,
     )
 
     private var sketches: Map<Bank, Sketch> = emptyMap()
+    private var bands: Map<Bank, Sketch> = emptyMap()
 
     private fun cut() {
-        sketches = Bank.values().associateWith { bank ->
-            val field = chorder.thumb(bank).field
-            val at = comb.place(bank, field, tilt)
-            val chain = Path()
-            var started = false
-            for (key in comb.chain.getValue(bank)) {
-                val button = comb.buttons.getValue(bank).firstOrNull { it.key == key } ?: continue
-                val c = comb.center(bank, field, tilt, button)
-                if (started) chain.lineTo(c.x, c.y) else chain.moveTo(c.x, c.y)
-                started = true
-            }
-            Sketch(
-                ground = comb.spots(bank).filter { comb.keyOf(it) < 0 }.mapNotNull { spot ->
-                    polygon(comb.region(bank, field, tilt, spot))?.let { spot to it }
-                },
-                keys = comb.buttons.getValue(bank).mapNotNull { button ->
-                    melded(bank, field, button)?.let {
-                        Triple(button, it, comb.center(bank, field, tilt, button))
-                    }
-                },
-                chain = chain.takeIf { started },
-                radius = at.radius,
-            )
+        sketches = Bank.values().associateWith { carve(it, chorder.thumb(it).field) }
+        bands = if (keysTop <= 0) emptyMap()
+        else Bank.values().associateWith { carve(it, band(it)) }
+    }
+
+    private fun carve(bank: Bank, field: Field): Sketch {
+        val at = comb.place(bank, field, tilt)
+        val chain = Path()
+        var started = false
+        for (key in comb.chain.getValue(bank)) {
+            val button = comb.buttons.getValue(bank).firstOrNull { it.key == key } ?: continue
+            val c = comb.center(bank, field, tilt, button)
+            if (started) chain.lineTo(c.x, c.y) else chain.moveTo(c.x, c.y)
+            started = true
         }
+        return Sketch(
+            ground = comb.spots(bank).filter { comb.keyOf(it) < 0 }.mapNotNull { spot ->
+                polygon(comb.region(bank, field, tilt, spot))?.let { spot to it }
+            },
+            keys = comb.buttons.getValue(bank).mapNotNull { button ->
+                melded(bank, field, button)?.let {
+                    Triple(button, it, comb.center(bank, field, tilt, button))
+                }
+            },
+            chain = chain.takeIf { started },
+            radius = at.radius,
+            at = at,
+        )
     }
 
     /** Every cell of one bank: the ground it owns, its outline, and its label. */
-    private fun drawComb(canvas: Canvas, thumb: Thumb, paint: Palette) {
-        val sketch = sketches[thumb.bank] ?: return
-        val at = comb.place(thumb.bank, thumb.field, tilt)
+    private fun drawComb(canvas: Canvas, thumb: Thumb, paint: Palette, sketch: Sketch) {
+        val at = sketch.at
 
         ink.pathEffect = dashes
         ink.strokeWidth = sketch.radius * 0.03f
@@ -404,20 +466,41 @@ class CombView(
         }
 
         ink.strokeWidth = sketch.radius * 0.055f
+        val held = (thumb.keys + chorder.sticky).toSet()
         for ((button, path, middle) in sketch.keys) {
-            val live = comb.live(button.key, thumb.keys)
-            if (!live && !config.showDeadCells) continue
+            // Three things a key can be, and they are three different answers:
+            // in the chord, still available, or spent by steno order.
+            val state = when {
+                button.key in held -> 2
+                comb.live(button.key, thumb.keys) -> 1
+                else -> 0
+            }
+            if (state == 0 && !config.showDeadCells) continue
             ink.style = Paint.Style.FILL
-            ink.color = if (live) paint.face else fade(paint.face, 0.35f)
+            ink.color = when (state) {
+                2 -> paint.warm
+                1 -> paint.face
+                else -> fade(paint.face, 0.35f)
+            }
             canvas.drawPath(path, ink)
             ink.style = Paint.Style.STROKE
-            ink.color = if (live) paint.edge else fade(paint.edge, 0.4f)
+            ink.strokeWidth = sketch.radius * if (state == 2) 0.085f else 0.055f
+            ink.color = when (state) {
+                2 -> paint.hot
+                1 -> paint.edge
+                else -> fade(paint.edge, 0.4f)
+            }
             canvas.drawPath(path, ink)
             if (!config.showLabels) continue
             ink.style = Paint.Style.FILL
-            ink.color = if (live) paint.text else fade(paint.text, 0.3f)
+            ink.color = when (state) {
+                2 -> paint.hot
+                1 -> paint.text
+                else -> fade(paint.text, 0.3f)
+            }
             canvas.drawText(button.v.toString(), middle.x, middle.y + ink.textSize * 0.35f, ink)
         }
+        ink.strokeWidth = sketch.radius * 0.055f
     }
 
     /**
@@ -441,9 +524,10 @@ class CombView(
         val spot = thumb.spot ?: return
         val at = comb.place(thumb.bank, thumb.field, tilt)
         val r = sketches[thumb.bank]?.radius ?: return
-        val ahead = thumb.riding?.let { comb.onward(thumb.bank, it, thumb.keys) }
+        val riding = thumb.riding
+        val ahead = riding?.let { comb.onward(thumb.bank, it, thumb.keys) }
         val jumps =
-            if (ahead != null) listOf(comb.toward(spot, ahead.spot) to ahead)
+            if (riding != null && ahead != null) listOf(riding.side to ahead)
             else Side.values().mapNotNull { side ->
                 comb.portal(thumb.bank, spot, side, thumb.keys)?.let { side to it }
             }
@@ -463,12 +547,13 @@ class CombView(
             ink.color = fade(paint.hot, if (land.onKey) 0.85f else 0.6f)
             // A key cell already carries its letter, so the arrow rides the ring
             // rather than sitting over it.
-            val ride = if (land.onKey) r * 0.42f else 0f
+            val sit = if (land.onKey) r * 0.42f else 0f
             val back = unit(to, from)
             // The side already knows which way it points: it is the step from the
             // cell's middle out to the edge the portal leaves by.
             val way = unit(comb.point(spot, at), from)
-            arrow(canvas, to.x + back.x * ride, to.y + back.y * ride, way.x, way.y, r * 0.26f)
+            val more = comb.onward(thumb.bank, Ride(land, side), thumb.keys) != null
+            arrow(canvas, to.x + back.x * sit, to.y + back.y * sit, way.x, way.y, r * 0.26f, more)
         }
     }
 
@@ -483,17 +568,28 @@ class CombView(
      *
      * A plain triangle reads as a triangle at any angle. The notch in the tail
      * is what makes it read as pointing.
+     *
+     * Two heads for a landing the same slide can carry past, which is the one
+     * thing the picture cannot say by where it puts a ring.
      */
-    private fun arrow(canvas: Canvas, x: Float, y: Float, dx: Float, dy: Float, size: Float) {
+    private fun arrow(
+        canvas: Canvas, x: Float, y: Float, dx: Float, dy: Float, size: Float, twice: Boolean,
+    ) {
         // Along the way it points, and across it.
-        fun at(on: Float, off: Float) =
-            Point(x + dx * size * on - dy * size * off, y + dy * size * on + dx * size * off)
-        val path = Path()
-        val tip = at(1.5f, 0f)
-        path.moveTo(tip.x, tip.y)
-        for (p in listOf(at(-0.9f, 0.95f), at(-0.4f, 0f), at(-0.9f, -0.95f))) path.lineTo(p.x, p.y)
-        path.close()
-        canvas.drawPath(path, ink)
+        fun at(lead: Float, on: Float, off: Float) = Point(
+            x + dx * size * (on + lead) - dy * size * off,
+            y + dy * size * (on + lead) + dx * size * off,
+        )
+        for (lead in if (twice) listOf(0.9f, -0.9f) else listOf(0f)) {
+            val path = Path()
+            val tip = at(lead, 1.5f, 0f)
+            path.moveTo(tip.x, tip.y)
+            for (p in listOf(at(lead, -0.9f, 0.95f), at(lead, -0.4f, 0f), at(lead, -0.9f, -0.95f))) {
+                path.lineTo(p.x, p.y)
+            }
+            path.close()
+            canvas.drawPath(path, ink)
+        }
     }
 
     /**
@@ -527,32 +623,27 @@ class CombView(
      * well, faint, tied to the focus that left it. What is filled is what a
      * further step would take, which is the answer before it is given.
      */
-    private fun drawFocus(canvas: Canvas, thumb: Thumb, paint: Palette) {
+    private fun drawFocusCell(canvas: Canvas, thumb: Thumb, paint: Palette, sketch: Sketch) {
         if (!thumb.live) return
-        val spot = thumb.spot
-        if (spot != null) {
-            val button = comb.buttons.getValue(thumb.bank)
-                .firstOrNull { b -> b.spots.any { it.col == spot.col && it.row == spot.row } }
-            val sketch = sketches[thumb.bank]
-            val cut = sketch?.keys?.firstOrNull { it.first == button }
-            val path = cut?.second ?: sketch?.ground
-                ?.firstOrNull { it.first == spot }?.second
-            if (path != null) {
-                // Warm only where a step would take a key; over ground and over
-                // a cell the order has passed it says where, not what.
-                ink.style = Paint.Style.FILL
-                ink.color = if (comb.resolve(spot, thumb.keys) != null) paint.warm
-                else fade(paint.warm, 0.45f)
-                canvas.drawPath(path, ink)
-                if (cut != null && config.showLabels) {
-                    ink.color = paint.text
-                    canvas.drawText(
-                        cut.first.v.toString(), cut.third.x,
-                        cut.third.y + ink.textSize * 0.35f, ink
-                    )
-                }
-            }
-        }
+        val spot = thumb.spot ?: return
+        val button = comb.buttons.getValue(thumb.bank)
+            .firstOrNull { b -> b.spots.any { it.col == spot.col && it.row == spot.row } }
+        val cut = sketch.keys.firstOrNull { it.first == button }
+        val path = cut?.second ?: sketch.ground.firstOrNull { it.first == spot }?.second ?: return
+        // Warm only where a step would take a key; over ground and over a cell
+        // the order has passed it says where, not what.
+        ink.style = Paint.Style.FILL
+        ink.color = if (comb.resolve(spot, thumb.keys) != null) paint.warm
+        else fade(paint.warm, 0.45f)
+        canvas.drawPath(path, ink)
+        if (cut == null || !config.showLabels) return
+        ink.color = paint.text
+        canvas.drawText(cut.first.v.toString(), cut.third.x, cut.third.y + ink.textSize * 0.35f, ink)
+    }
+
+    /** Where the thumb is, and where the focus a jump left it went. */
+    private fun drawMarks(canvas: Canvas, thumb: Thumb, paint: Palette) {
+        if (!thumb.live) return
         val mark = config.markRadius * min(thumb.field.width, thumb.field.height)
         val parted = hypot(thumb.offX, thumb.offY) > mark
         ink.style = Paint.Style.FILL
@@ -567,7 +658,7 @@ class CombView(
     }
 
     /** The keys this thumb holds, armed ones included. */
-    private fun drawTaken(canvas: Canvas, thumb: Thumb, paint: Palette) {
+    private fun drawTaken(canvas: Canvas, thumb: Thumb, paint: Palette, where: Field) {
         val armed = chorder.sticky.filter { comb.bankOf(it) == thumb.bank }
         val keys = (thumb.keys + armed).distinct()
         if (keys.isEmpty()) return
@@ -576,9 +667,7 @@ class CombView(
         // In steno order, not take order, so what is shown is the outline.
         canvas.drawText(
             keys.sorted().joinToString("") { order[it].toString() },
-            thumb.field.centerX,
-            thumb.field.top + ink.textSize,
-            ink
+            where.centerX, where.top + ink.textSize, ink
         )
     }
 

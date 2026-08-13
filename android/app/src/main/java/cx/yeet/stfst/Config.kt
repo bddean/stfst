@@ -142,6 +142,14 @@ data class Config(
     /** Print what the driver says about the live touch: pressure, size, axes. */
     var touchReadout: Boolean = false,
 
+    /**
+     * A touch that arrives in the other comb's field is handed over to it.
+     *
+     * The comb it leaves keeps what it took, so one hand can write a whole
+     * stroke, slowly. It happens only while the other thumb is up, so two hands
+     * never meet it.
+     */
+    var oneThumb: Boolean = true,
     /** Where the left field ends and the right begins, in portrait. */
     var fieldSplit: Float = 0.5f,
     /**
@@ -176,6 +184,16 @@ data class Config(
      * worth the briefs. Off leaves that one line, in the gap or under the keys.
      */
     var showLog: Boolean = true,
+    /**
+     * A copy of the combs, drawn over the app above the keys.
+     *
+     * Its share of the screen, zero for none. What it buys is a small
+     * keyboard: shrink the keys and a thumb crosses cells in less travel, and
+     * the copy over the app keeps the walk legible while it does. It is drawn
+     * only while a thumb is down, and it takes no touches, so the app under it
+     * still works.
+     */
+    var previewHeight: Float = 0f,
     /** The thumb marks: where the focus is, and where the thumb is now. */
     var markRadius: Float = 0.022f,
     var labelSp: Float = 15f,

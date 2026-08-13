@@ -45,7 +45,7 @@ class Thumb(val bank: Bank) {
      * A stride is not spent by one jump: sliding on the way the jump went sends
      * it again. Null once the focus leaves the landing any other way.
      */
-    var riding: Landing? = null
+    var riding: Ride? = null
 
     val down: Boolean get() = pointer != NONE
 
@@ -187,7 +187,7 @@ class Chorder(
                 // beside the cluster it rings. Falling through as well would
                 // undo the jump on the next sample.
                 thumb.inHole = now.v == Comb.HOLE
-                thumb.riding = land.takeIf { !it.onKey }
+                thumb.riding = if (land.onKey) null else Ride(land, side)
             }
         }
 
@@ -195,16 +195,18 @@ class Chorder(
         // jump went. Leaving the landing any other way puts it back on foot,
         // and a key on the way out is taken rather than ridden past.
         val riding = thumb.riding
-        if (riding != null && was == riding.spot && now != was) {
-            val next = comb.onward(thumb.bank, riding, thumb.keys)
-            val gate = next?.let { Comb.step(riding.spot, comb.toward(riding.spot, it.spot)) }
-            if (next != null && gate == (now.col to now.row)) {
+        if (riding != null && was == riding.land.spot && now != was) {
+            val gate = comb.sameWay(riding.side).firstOrNull {
+                Comb.step(riding.land.spot, it) == (now.col to now.row)
+            }
+            val next = gate?.let { comb.onward(thumb.bank, riding, thumb.keys) }
+            if (next != null && comb.resolve(now, thumb.keys) == null) {
                 val to = comb.point(next.spot, comb.place(thumb.bank, thumb.field, tilt))
                 thumb.offX = to.x - x
                 thumb.offY = to.y - y
                 now = next.spot
                 thumb.inHole = now.v == Comb.HOLE
-                thumb.riding = next.takeIf { !it.onKey }
+                thumb.riding = if (next.onKey) null else Ride(next, gate)
             } else {
                 thumb.riding = null
             }
@@ -218,6 +220,29 @@ class Chorder(
             took = true
         }
         return took
+    }
+
+    /**
+     * One thumb walks the other comb too.
+     *
+     * A touch that leaves its own field and arrives in the other one is handed
+     * over: the comb it leaves keeps what it took, and the comb it arrives in
+     * takes the touch. Two hands never need this, so it happens only while the
+     * other thumb is up, and one hand can then write a whole stroke.
+     */
+    fun cross(pointer: Int, into: Bank, x: Float, y: Float): Boolean {
+        val from = forPointer(pointer) ?: return false
+        val to = thumb(into)
+        if (from === to || to.down) return false
+        from.release()
+        to.pointer = pointer
+        to.live = true
+        to.atX = x
+        to.atY = y
+        to.spot = comb.hit(into, to.field, tilt, x, y)
+        val key = to.spot?.let { comb.resolve(it, to.keys) } ?: return false
+        take(to, key)
+        return true
     }
 
     /**

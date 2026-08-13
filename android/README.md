@@ -71,6 +71,7 @@ fixes each of them:
 | the portals | the other sides, the ones holding passed keys included |
 | a float | a key that does not touch the next key of the walk |
 | a cell's ground | the field clipped by the bisector against every rival, and by its own six lattice neighbours |
+| where a side points | the step it names, read off the lattice. A hexagon's corners sit 30 degrees off its sides, and a corner is not a side |
 
 ## The floats are the modifiers
 
@@ -149,16 +150,22 @@ names itself.
 
 Keep sliding the way the jump went and it goes again. A side is therefore a
 **run** of landings, not one: `+4` ridden twice is eight of the order ahead,
-inside a single motion of the thumb.
+inside a single motion of the thumb. That is the whole point of it. A long
+stride has to be one longer slide, or it costs as much as two short ones.
 
-The ride fires on the side of the landing that points at where the ride goes,
-which is not always the side you left the key by. A key on the way out is taken
-rather than ridden past, and a side with no cell beyond it is never crossed, so
-`Comb.onward` answers null in both cases and the drawing and the touch cannot
-disagree about when the ride is there.
+So the ride fires on **the side the thumb came in by, or either side next to
+it**. A thumb sweeps an arc rather than a line, and holding it to one exact
+side of six would be holding it to something hands do not do. A key on the way
+out is taken rather than ridden past, and a side with no cell beyond it is
+never crossed, so `Comb.onward` answers null in both cases and the drawing and
+the touch cannot disagree about when the ride is there.
 
-Leaving a landing any other way puts the focus back on foot. That keeps every
-motion the board had before the ride existed.
+Turning right round out of a landing puts the focus back on foot. That keeps
+every motion the board had before the ride existed.
+
+In the preview a landing the same slide can carry past gets **two arrowheads**
+instead of one, which is the one thing the picture cannot say by where it puts
+a ring.
 
 ### Two hops, and why the numbers are fixed
 
@@ -173,7 +180,8 @@ reaches all 153.** The strides this keyboard shipped with before, +3 +5 +7 +9,
 reach 138.
 
 Riding closes the last two. `-E` rides `+4` twice to reach rank eight, which is
-`-T`, and `U` rides `+4` twice to reach `-S`. So **every key a thumb still wants
+`-T`, and `U` rides `+4` twice to reach `-S`. Held to one exact side the ride
+reaches 153; allowed the arc, it reaches all 155. So **every key a thumb still wants
 is one slide away**, and `CombTest.a_ridden_portal_reaches_every_key_ahead` is
 that claim.
 
@@ -195,6 +203,25 @@ the side to leave by. A ring means arriving takes that key; a dashed ring means
 it comes to rest beside it. Once the focus is resting on a landing the picture
 is the same, with one arrow: the stride again. `Show where the portals go`
 turns this off.
+
+## One thumb, both combs
+
+A touch that arrives in the other comb's field is handed over to it, and the
+comb it leaves keeps what it took. So one hand can write a whole stroke,
+slowly, by walking one comb and then the other. It happens only while the other
+thumb is up, so two hands never meet it. `One thumb walks both combs` turns it
+off.
+
+## The preview over the app
+
+Shrink the keys and a thumb crosses cells in less travel, which is faster. What
+it costs is legibility, and `Preview over the app` buys that back: a copy of
+both combs, drawn above the keys, over the app.
+
+`onComputeInsets` is what makes that work. The keys are what the app lays out
+around and what the window takes touches for; the band above them is neither.
+So the app keeps its room and its touches up there, and the copy floats on top.
+It is drawn only while a thumb is down.
 
 ## The focus is not the thumb
 
