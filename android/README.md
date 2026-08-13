@@ -205,6 +205,25 @@ it comes to rest beside it. Once the focus is resting on a landing the picture
 is the same, with one arrow: the stride again. `Show where the portals go`
 turns this off. The band over the app draws the same picture.
 
+The line goes on to where the slide ends. Each stop it passes through keeps one
+arrowhead, and the last one carries **one head per slide it takes to arrive**.
+So the heads are where you are going, not where you go through.
+
+`Comb.slides` is the whole picture, and the touch asks the same function. It
+had to become one function: the drawing worked out its own answer, and it drew
+a ride out of `S` that ran into `-H`, which a thumb could never make.
+`Comb.onward` now answers about the one side being crossed and nothing else,
+and `ChorderTest.every_drawn_slide_is_a_slide_a_thumb_can_make` walks every
+drawn stop on the board as thumb motion and fails if the focus does not arrive
+where the drawing said.
+
+### Three kinds of key
+
+The vowels and the modifiers stand on their own ground: a green tint for
+`AOEU`, a violet one for the modifiers, plain for the rest. Which is which is
+read off the glyph, so a key that spells nothing is a modifier and a layout
+that moves one does not have to say so twice.
+
 ## One thumb, both combs
 
 A touch that arrives in the other comb's field is handed over to it, and the
@@ -228,6 +247,11 @@ the keys the chord can still take, and the landings the portals go to. The rest
 is the app. It fades in as a thumb goes down and out as it lifts, because a
 band that arrives at full strength reads as a flash over whatever the app was
 showing.
+
+The thumb and the focus are drawn in the band as well. They are places on the
+comb rather than places on the glass, so `Comb.carry` reads them in the keys'
+placement and writes them in the band's. The settings preview gets a band too,
+which is where to look at one without an app under it.
 
 ## The focus is not the thumb
 

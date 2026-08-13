@@ -196,11 +196,11 @@ class Chorder(
         // and a key on the way out is taken rather than ridden past.
         val riding = thumb.riding
         if (riding != null && was == riding.land.spot && now != was) {
-            val gate = comb.sameWay(riding.side).firstOrNull {
+            val gate = Side.values().firstOrNull {
                 Comb.step(riding.land.spot, it) == (now.col to now.row)
             }
-            val next = gate?.let { comb.onward(thumb.bank, riding, thumb.keys) }
-            if (next != null && comb.resolve(now, thumb.keys) == null) {
+            val next = gate?.let { comb.onward(thumb.bank, riding, it, thumb.keys) }
+            if (next != null) {
                 val to = comb.point(next.spot, comb.place(thumb.bank, thumb.field, tilt))
                 thumb.offX = to.x - x
                 thumb.offY = to.y - y

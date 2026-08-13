@@ -245,19 +245,10 @@ class CombTest {
                 val reach = (keysBy(home) + around(home)
                     .filter { comb.resolve(it, taken) == null }.flatMap { keysBy(it) })
                     .toMutableSet()
-                for (side in Side.values()) {
-                    var ride = Ride(comb.portal(bank, home, side, taken) ?: continue, side)
-                    while (true) {
-                        reach += if (ride.land.onKey) setOf(ride.land.aim)
-                        else keysBy(ride.land.spot)
-                        val next = comb.onward(bank, ride, taken) ?: break
-                        // The thumb keeps going, and a thumb arcs, so any of the
-                        // three sides about the one it came by will do.
-                        val on = comb.sameWay(ride.side).firstOrNull { s ->
-                            val (col, row) = Comb.step(ride.land.spot, s)
-                            comb.spotAt(bank, col, row)?.let { comb.resolve(it, taken) == null } == true
-                        } ?: break
-                        ride = Ride(next, on)
+                for (run in comb.slides(bank, home, null, taken)) {
+                    for (stop in run) {
+                        reach += if (stop.land.onKey) setOf(stop.land.aim)
+                        else keysBy(stop.land.spot)
                     }
                 }
                 for (want in chain.drop(i + 1) + loose) {

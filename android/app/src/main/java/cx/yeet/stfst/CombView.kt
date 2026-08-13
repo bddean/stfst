@@ -90,32 +90,29 @@ class CombView(
      * How deep the keys are. Above them the view is the preview band, which is
      * drawn over the app and takes no touches.
      */
-    val keysDeep: Int
-        get() {
-            val screen = resources.displayMetrics.heightPixels
-            val share =
-                if (landscape && !embedded) config.landscapeHeight else config.keyboardHeight
-            return (screen * share.coerceIn(0.15f, 0.95f)).toInt()
-        }
-
-    private val previewDeep: Int
-        get() =
-            if (embedded) 0
-            else (resources.displayMetrics.heightPixels * config.previewHeight
-                .coerceIn(0f, 0.6f)).toInt()
+    var keysDeep: Int = 0
+        private set
 
     /** Where the keys start, so the band above them can be drawn over the app. */
     val keysTop: Int get() = height - keysDeep
 
     override fun onMeasure(widthSpec: Int, heightSpec: Int) {
         val width = MeasureSpec.getSize(widthSpec)
-        var height = keysDeep + previewDeep
+        val screen = resources.displayMetrics.heightPixels
+        val share = if (landscape && !embedded) config.landscapeHeight else config.keyboardHeight
+        var keys = (screen * share.coerceIn(0.15f, 0.95f)).toInt()
+        var band = (screen * config.previewHeight.coerceIn(0f, 0.6f)).toInt()
         // The window is what it is. Measuring past it would put the top of the
-        // comb off the glass, which is what asking for the whole screen did.
+        // comb off the glass, so the keys and the band give up room together.
         if (MeasureSpec.getMode(heightSpec) != MeasureSpec.UNSPECIFIED) {
-            height = min(height, MeasureSpec.getSize(heightSpec))
+            val room = MeasureSpec.getSize(heightSpec)
+            if (keys + band > room) {
+                keys = (keys * (room.toFloat() / (keys + band))).toInt()
+                band = room - keys
+            }
         }
-        setMeasuredDimension(width, height)
+        keysDeep = keys
+        setMeasuredDimension(width, keys + band)
     }
 
     /**
@@ -335,14 +332,35 @@ class CombView(
         )
 
     private class Palette(
-        val face: Int,
         val edge: Int,
         val text: Int,
         val hot: Int,
-        val warm: Int,
         val hole: Int,
         val back: Int,
+        /** The ground each kind of key stands on, plain and in the chord. */
+        val tints: Map<Kind, Tint>,
     )
+
+    /**
+     * What a key is to the eye.
+     *
+     * The vowels are what a stroke turns on, and the modifiers are the keys
+     * that spell nothing by themselves. Both are read off the glyph, so a
+     * layout that moves them does not have to say so twice.
+     */
+    private enum class Kind { PLAIN, VOWEL, MOD }
+
+    private class Tint(val face: Int, val warm: Int)
+
+    private fun kindOf(key: Int): Kind = when {
+        key < 0 -> Kind.PLAIN
+        order[key] in "AOEU" -> Kind.VOWEL
+        !order[key].isLetter() -> Kind.MOD
+        else -> Kind.PLAIN
+    }
+
+    private fun face(paint: Palette, key: Int, held: Boolean): Int =
+        paint.tints.getValue(kindOf(key)).let { if (held) it.warm else it.face }
 
     /**
      * How far the band over the app has faded in: 0 gone, 1 there.
@@ -367,13 +385,25 @@ class CombView(
         val dark = (resources.configuration.uiMode and
             Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
         val paint = Palette(
-            face = if (dark) Color.rgb(38, 40, 46) else Color.WHITE,
             edge = if (dark) Color.rgb(70, 74, 84) else Color.rgb(206, 210, 218),
             text = if (dark) Color.rgb(232, 234, 238) else Color.rgb(24, 26, 30),
             hot = Color.rgb(64, 132, 240),
-            warm = if (dark) Color.rgb(30, 58, 104) else Color.rgb(206, 226, 255),
             hole = if (dark) Color.rgb(216, 168, 77) else Color.rgb(169, 111, 22),
             back = if (dark) Color.rgb(18, 18, 20) else Color.rgb(246, 246, 248),
+            tints = mapOf(
+                Kind.PLAIN to Tint(
+                    if (dark) Color.rgb(38, 40, 46) else Color.WHITE,
+                    if (dark) Color.rgb(30, 58, 104) else Color.rgb(206, 226, 255),
+                ),
+                Kind.VOWEL to Tint(
+                    if (dark) Color.rgb(30, 48, 40) else Color.rgb(235, 248, 240),
+                    if (dark) Color.rgb(28, 84, 58) else Color.rgb(196, 236, 212),
+                ),
+                Kind.MOD to Tint(
+                    if (dark) Color.rgb(46, 40, 56) else Color.rgb(246, 241, 250),
+                    if (dark) Color.rgb(72, 56, 108) else Color.rgb(226, 214, 246),
+                ),
+            ),
         )
         val back = paint.back
         // Only the fields get a ground, and only where the keys are. Above them
@@ -394,7 +424,7 @@ class CombView(
             if (config.cloud) drawCloud(canvas, bank, paint)
             drawComb(canvas, thumb, paint, sketch)
             drawFocusCell(canvas, thumb, paint, sketch)
-            drawMarks(canvas, thumb, paint)
+            drawMarks(canvas, thumb, paint, sketch)
             if (config.showPortals) drawPortals(canvas, thumb, paint, sketch)
             drawTaken(canvas, thumb, paint, thumb.field)
         }
@@ -403,10 +433,12 @@ class CombView(
             canvas.saveLayerAlpha(0f, 0f, width.toFloat(), keysTop.toFloat(), (show * 255).toInt())
             for (bank in Bank.values()) {
                 val band = bands[bank] ?: continue
-                drawComb(canvas, chorder.thumb(bank), paint, band)
-                drawFocusCell(canvas, chorder.thumb(bank), paint, band)
-                if (config.showPortals) drawPortals(canvas, chorder.thumb(bank), paint, band)
-                drawTaken(canvas, chorder.thumb(bank), paint, band(bank))
+                val thumb = chorder.thumb(bank)
+                drawComb(canvas, thumb, paint, band)
+                drawFocusCell(canvas, thumb, paint, band)
+                if (config.showPortals) drawPortals(canvas, thumb, paint, band)
+                drawMarks(canvas, thumb, paint, band)
+                drawTaken(canvas, thumb, paint, band(bank))
             }
             canvas.restore()
         }
@@ -509,11 +541,8 @@ class CombView(
             }
             if (state == 0 && !config.showDeadCells) continue
             ink.style = Paint.Style.FILL
-            ink.color = when (state) {
-                2 -> paint.warm
-                1 -> paint.face
-                else -> fade(paint.face, 0.35f)
-            }
+            val ground = face(paint, button.key, state == 2)
+            ink.color = if (state == 0) fade(ground, 0.35f) else ground
             canvas.drawPath(path, ink)
             ink.style = Paint.Style.STROKE
             ink.strokeWidth = sketch.radius * if (state == 2) 0.085f else 0.055f
@@ -558,31 +587,14 @@ class CombView(
     private fun drawPortals(canvas: Canvas, thumb: Thumb, paint: Palette, sketch: Sketch) {
         if (!thumb.live) return
         val spot = thumb.spot ?: return
-        val at = sketch.at
-        val r = sketch.radius
-        val riding = thumb.riding
-        val ahead = riding?.let { comb.onward(thumb.bank, it, thumb.keys) }
-        val jumps =
-            if (riding != null && ahead != null) listOf(riding.side to ahead)
-            else Side.values().mapNotNull { side ->
-                comb.portal(thumb.bank, spot, side, thumb.keys)?.let { side to it }
-            }
-        for ((side, land) in jumps) {
-            // The side already knows which way it points: it is the step from the
-            // cell's middle out to the edge the portal leaves by.
-            val leaves = comb.edge(spot, side, at)
-            val way = unit(comb.point(spot, at), leaves)
-            var from = leaves
-            var stop = land
-            var slides = 1
-            while (true) {
-                val next = comb.onward(thumb.bank, Ride(stop, side), thumb.keys)
-                    ?.takeIf { slides < 4 }
-                drawStop(canvas, paint, sketch, from, stop, way, if (next == null) slides else 0)
-                if (next == null) break
-                from = comb.point(stop.spot, at)
-                stop = next
-                slides++
+        for (run in comb.slides(thumb.bank, spot, thumb.riding, thumb.keys)) {
+            var from = spot
+            for ((i, stop) in run.withIndex()) {
+                drawStop(
+                    canvas, paint, sketch, from, stop,
+                    first = i == 0, heads = if (i == run.size - 1) run.size else 1,
+                )
+                from = stop.land.spot
             }
         }
     }
@@ -590,42 +602,60 @@ class CombView(
     /**
      * One place a slide comes to, with the line that reaches it.
      *
-     * [heads] is how many slides it took to get there, and zero for a stop the
-     * slide only passes through.
+     * [heads] is how many slides it takes to arrive, which only the last stop
+     * of a run can say. The line leaves the side the thumb crosses, so the
+     * arrow points the way out and not at the cell it goes to.
      */
     private fun drawStop(
         canvas: Canvas, paint: Palette, sketch: Sketch,
-        from: Point, stop: Landing, way: Point, heads: Int,
+        from: Spot, stop: Ride, first: Boolean, heads: Int,
     ) {
         val at = sketch.at
         val r = sketch.radius
-        val to = comb.point(stop.spot, at)
+        val leaves = comb.edge(from, stop.side, at)
+        val start = if (first) leaves else comb.point(from, at)
+        val to = comb.point(stop.land.spot, at)
         ink.style = Paint.Style.STROKE
         ink.strokeWidth = r * 0.05f
         ink.color = fade(paint.hot, 0.4f)
         ink.pathEffect = dashes
-        canvas.drawLine(from.x, from.y, to.x, to.y, ink)
+        canvas.drawLine(start.x, start.y, to.x, to.y, ink)
         ink.pathEffect = null
-        // Over the app the ground under a landing is not ours, so the ring gets
-        // something to sit on.
-        if (sketch.over && heads > 0) cellPath(sketch, stop.spot)?.let {
-            ink.style = Paint.Style.FILL
-            ink.color = paint.back
-            canvas.drawPath(it, ink)
-        }
+        if (sketch.over) solid(canvas, paint, sketch, stop.land.spot)
         ink.style = Paint.Style.STROKE
-        ink.pathEffect = if (stop.onKey) null else dashes
-        ink.color = fade(paint.hot, if (stop.onKey) 0.85f else 0.5f)
+        ink.strokeWidth = r * 0.05f
+        ink.pathEffect = if (stop.land.onKey) null else dashes
+        ink.color = fade(paint.hot, if (stop.land.onKey) 0.85f else 0.5f)
         canvas.drawCircle(to.x, to.y, r * 0.42f, ink)
         ink.pathEffect = null
-        if (heads <= 0) return
         ink.style = Paint.Style.FILL
-        ink.color = fade(paint.hot, if (stop.onKey) 0.85f else 0.6f)
+        ink.color = fade(paint.hot, if (stop.land.onKey) 0.85f else 0.6f)
         // A key cell already carries its letter, so the arrow rides the ring
         // rather than sitting over it.
-        val sit = if (stop.onKey) r * 0.42f else 0f
-        val back = unit(to, from)
+        val sit = if (stop.land.onKey) r * 0.42f else 0f
+        val back = unit(to, comb.point(from, at))
+        // The side already knows which way it points: it is the step from the
+        // cell's middle out to the edge the slide leaves by.
+        val way = unit(comb.point(from, at), leaves)
         arrow(canvas, to.x + back.x * sit, to.y + back.y * sit, way.x, way.y, r * 0.26f, heads)
+    }
+
+    /** A cell the band must not let the app through: a place the thumb is going. */
+    private fun solid(canvas: Canvas, paint: Palette, sketch: Sketch, spot: Spot) {
+        val path = cellPath(sketch, spot) ?: return
+        val cut = keyCut(sketch, spot)
+        ink.style = Paint.Style.FILL
+        ink.color = if (cut != null) face(paint, cut.first.key, false) else paint.back
+        canvas.drawPath(path, ink)
+        if (cut == null) return
+        ink.style = Paint.Style.STROKE
+        ink.strokeWidth = sketch.radius * 0.055f
+        ink.color = paint.edge
+        canvas.drawPath(path, ink)
+        if (!config.showLabels) return
+        ink.style = Paint.Style.FILL
+        ink.color = paint.text
+        canvas.drawText(cut.first.v.toString(), cut.third.x, cut.third.y + ink.textSize * 0.35f, ink)
     }
 
     /** The unit step from `a` toward `b`. */
@@ -701,29 +731,37 @@ class CombView(
         val path = cellPath(sketch, spot) ?: return
         // Warm only where a step would take a key; over ground and over a cell
         // the order has passed it says where, not what.
+        val warm = face(paint, cut?.first?.key ?: -1, true)
         ink.style = Paint.Style.FILL
-        ink.color = if (comb.resolve(spot, thumb.keys) != null) paint.warm
-        else fade(paint.warm, 0.45f)
+        ink.color = if (comb.resolve(spot, thumb.keys) != null) warm else fade(warm, 0.45f)
         canvas.drawPath(path, ink)
         if (cut == null || !config.showLabels) return
         ink.color = paint.text
         canvas.drawText(cut.first.v.toString(), cut.third.x, cut.third.y + ink.textSize * 0.35f, ink)
     }
 
-    /** Where the thumb is, and where the focus a jump left it went. */
-    private fun drawMarks(canvas: Canvas, thumb: Thumb, paint: Palette) {
+    /**
+     * Where the thumb is, and where the focus a jump left it went.
+     *
+     * Both are places on the comb rather than places on the glass, so the copy
+     * over the app carries them into its own placement and shows the same two.
+     */
+    private fun drawMarks(canvas: Canvas, thumb: Thumb, paint: Palette, sketch: Sketch) {
         if (!thumb.live) return
-        val mark = config.markRadius * min(thumb.field.width, thumb.field.height)
-        val parted = hypot(thumb.offX, thumb.offY) > mark
+        val here = sketches[thumb.bank]?.at ?: return
+        val focus = comb.carry(here, sketch.at, Point(thumb.focusX, thumb.focusY))
+        val held = comb.carry(here, sketch.at, Point(thumb.atX, thumb.atY))
+        val mark = config.markRadius * min(thumb.field.width, thumb.field.height) *
+            (sketch.radius / here.radius)
         ink.style = Paint.Style.FILL
         ink.color = paint.hot
-        canvas.drawCircle(thumb.focusX, thumb.focusY, mark, ink)
-        if (!parted) return
+        canvas.drawCircle(focus.x, focus.y, mark, ink)
+        if (hypot(focus.x - held.x, focus.y - held.y) <= mark) return
         ink.color = fade(paint.hot, 0.35f)
-        canvas.drawCircle(thumb.atX, thumb.atY, mark * 0.7f, ink)
+        canvas.drawCircle(held.x, held.y, mark * 0.7f, ink)
         ink.style = Paint.Style.STROKE
         ink.strokeWidth = mark * 0.25f
-        canvas.drawLine(thumb.atX, thumb.atY, thumb.focusX, thumb.focusY, ink)
+        canvas.drawLine(held.x, held.y, focus.x, focus.y, ink)
     }
 
     /** The keys this thumb holds, armed ones included. */

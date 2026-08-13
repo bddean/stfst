@@ -232,6 +232,23 @@ class Comb(val order: String, val config: Config) {
     }
 
     /**
+     * The same place on the comb, read in one placement and written in another.
+     *
+     * What the copy over the app draws the thumb and the focus with: they are
+     * points between cells, and only the lattice can say where they are.
+     */
+    fun carry(from: Placement, to: Placement, p: Point): Point {
+        val dx = (p.x - from.originX) / from.radius
+        val dy = (p.y - from.originY) / from.radius
+        val lx = dx * from.ct + dy * from.st
+        val ly = -dx * from.st + dy * from.ct
+        return Point(
+            to.originX + (lx * to.ct - ly * to.st) * to.radius,
+            to.originY + (lx * to.st + ly * to.ct) * to.radius,
+        )
+    }
+
+    /**
      * The cell this point falls in, or null when the bank has none.
      *
      * The nearest centre, which inside the lattice is exactly the hexagon and
@@ -397,44 +414,63 @@ class Comb(val order: String, val config: Config) {
         }
 
     /**
-     * Where the same stride carries the focus on from a landing it just made.
+     * Where the same stride carries the focus on, when the thumb leaves the
+     * landing through [out].
      *
      * A stride is not spent by one jump. That is what puts a key eight of the
      * order ahead inside one slide of the thumb, where four sides can only name
      * four distances.
      *
-     * Null when the ride cannot be taken, so the drawing and the touch agree on
-     * when it is there: riding is a crossing like any other, and a key on the
-     * way out is taken rather than ridden past.
+     * The whole rule for whether a ride is there, asked about one side and
+     * nowhere else. A thumb sweeps an arc rather than a line, so any side
+     * within 60 degrees of the way it came still counts as going on. A key on
+     * the way out is taken rather than ridden past, and a side with no cell
+     * beyond it is never crossed.
      */
-    fun onward(bank: Bank, ride: Ride, taken: List<Int>): Landing? {
+    fun onward(bank: Bank, ride: Ride, out: Side, taken: List<Int>): Landing? {
         val land = ride.land
         if (land.onKey) return null
+        if (turn(angleOf(out), angleOf(ride.side)) > 60) return null
+        val beyond = byCell.getValue(bank)[at(step(land.spot, out))] ?: return null
+        if (resolve(beyond, taken) != null) return null
         val keys = chain.getValue(bank)
         val ranks = rank.getValue(bank)
         val here = ranks[land.aim] ?: return null
         val aim = keys.getOrNull(min(here + land.stride, keys.size - 1))
             ?.takeIf { (ranks[it] ?: -1) > here } ?: return null
-        val next = options(bank, land.spot, here, aim, land.stride)
-            .firstOrNull()?.first?.takeIf { it.spot != land.spot } ?: return null
-        val open = sameWay(ride.side).any { side ->
-            byCell.getValue(bank)[at(step(land.spot, side))]
-                ?.let { resolve(it, taken) == null } == true
-        }
-        return next.takeIf { open }
+        return options(bank, land.spot, here, aim, land.stride)
+            .firstOrNull()?.first?.takeIf { it.spot != land.spot }
     }
 
+    /** The crossing that carries a slide on, nearest the way it came. */
+    private fun rideOn(bank: Bank, cur: Ride, taken: List<Int>): Ride? =
+        Side.values().sortedBy { turn(angleOf(it), angleOf(cur.side)) }
+            .firstNotNullOfOrNull { out ->
+                onward(bank, cur, out, taken)?.let { Ride(it, out) }
+            }
+
     /**
-     * The sides a thumb still going this way can cross: the one it came by and
-     * the two beside it.
+     * Every jump out of the cell the focus is in, each as the run of landings
+     * one slide of the thumb reaches.
      *
-     * A long slide is one motion, not several, and the cost of it is barely
-     * more than a short one. A thumb sweeps along an arc rather than a line, so
-     * holding it to the exact side it started on would be holding it to
-     * something hands do not do.
+     * A run ends where the next crossing cannot be made, so what this returns
+     * is what a thumb can do and nothing else. The keyboard draws this rather
+     * than working the same thing out a second way, which is what stops the
+     * picture promising a jump the touch will not make.
      */
-    fun sameWay(side: Side): List<Side> =
-        Side.values().filter { turn(angleOf(it), angleOf(side)) <= 60 }
+    fun slides(bank: Bank, spot: Spot, riding: Ride?, taken: List<Int>): List<List<Ride>> {
+        fun run(first: Ride): List<Ride> {
+            val out = mutableListOf(first)
+            // Each ride aims further down the order than the one before, so the
+            // run is finite.
+            while (true) out.add(rideOn(bank, out.last(), taken) ?: break)
+            return out
+        }
+        if (riding != null) return listOfNotNull(rideOn(bank, riding, taken)?.let { run(it) })
+        return Side.values().mapNotNull { side ->
+            portal(bank, spot, side, taken)?.let { run(Ride(it, side)) }
+        }
+    }
 
     /** The live keys one step from a cell, which a jump cannot buy again. */
     private fun beside(bank: Bank, spot: Spot, here: Int): Set<Int> {
