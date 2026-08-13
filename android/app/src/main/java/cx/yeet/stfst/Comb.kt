@@ -334,12 +334,6 @@ class Comb(val order: String, val config: Config) {
 
     // ---- portals -----------------------------------------------------------
 
-    /** The four strides, read from the config and padded to four. */
-    val strides: List<Int> = config.combStrides.split(' ', ',')
-        .mapNotNull { it.trim().toIntOrNull() }
-        .filter { it > 0 }
-        .let { given -> List(4) { i -> given.getOrElse(i) { DEFAULT_STRIDES[i] } } }
-
     /**
      * Where a portal out of `from` through side `side` lands, or null when the
      * side is not a portal.
@@ -370,7 +364,7 @@ class Comb(val order: String, val config: Config) {
         )
         val slot = portals.indexOf(side)
         if (slot < 0) return null
-        return jumps(bank, from, here).getOrNull(min(slot, strides.size - 1))
+        return jumps(bank, from, here).getOrNull(min(slot, STRIDES.size - 1))
     }
 
     private val jumped = HashMap<Pair<Bank, Spot>, List<Landing?>>()
@@ -391,7 +385,7 @@ class Comb(val order: String, val config: Config) {
         jumped.getOrPut(bank to from) {
             val keys = chain.getValue(bank)
             val aimed = mutableSetOf<Int>()
-            val choices = strides.map { stride ->
+            val choices = STRIDES.map { stride ->
                 val aim = keys.getOrNull(min(here + stride, keys.size - 1))
                     ?.takeIf { (rank.getValue(bank)[it] ?: -1) > here && aimed.add(it) }
                 if (aim == null) listOf(null) else options(bank, from, here, aim)
@@ -423,42 +417,48 @@ class Comb(val order: String, val config: Config) {
      * order there is none worth it at all, which is why the jump can end on the
      * key and take it: one hop instead of a choice.
      */
-    private fun options(bank: Bank, from: Spot, here: Int, aim: Int): List<Pair<Landing, Int>?> {
+    private fun options(bank: Bank, from: Spot, here: Int, aim: Int): List<Pair<Landing, Set<Int>>?> {
         val cells = byCell.getValue(bank)
         val mine = buttons.getValue(bank).filter { it.key == aim }
         val had = beside(bank, from, here)
-        fun reach(ground: Spot): Int = (beside(bank, ground, here) - had).size
         val rests = mine.asSequence()
             .flatMap { it.spots.asSequence() }
             .flatMap { spot -> Side.values().asSequence().mapNotNull { cells[at(step(spot, it))] } }
             .filter { it.v == GROUND || it.v == HOLE }
             .distinct()
-            .map { it to reach(it) }
-            .filter { it.second >= 2 }
-            .sortedWith(compareByDescending<Pair<Spot, Int>> { it.second }
+            .map { it to (beside(bank, it, here) - had) }
+            .filter { it.second.size >= 2 }
+            .sortedWith(compareByDescending<Pair<Spot, Set<Int>>> { it.second.size }
                 .thenBy { it.first.row }.thenBy { it.first.col })
-            .map { (spot, worth) -> Landing(spot, aim, false) to worth }
+            .map { (spot, brings) -> Landing(spot, aim, false) to brings }
             .toList()
         // Taking a key the thumb could step onto anyway buys nothing either.
         val onKey = mine.firstOrNull()?.spots?.firstOrNull()
-            ?.let { Landing(it, aim, true) to if (aim in had) 0 else 1 }
+            ?.let { Landing(it, aim, true) to (setOf(aim) - had) }
         return rests + listOfNotNull(onKey)
     }
 
     /**
-     * The best way to fill the strides: most worth, resting places kept apart.
+     * The best way to fill the strides: the most keys covered between them,
+     * with the resting places kept apart.
+     *
+     * What the four portals are worth together is the keys they put within
+     * reach, counted once. Adding up what each is worth on its own is a
+     * different number, and the wrong one: it pays twice for a key two landings
+     * share, and it made the shipped board reach 138 of the 155 keys a thumb
+     * can want, where 153 is everything the grid allows.
      *
      * A handful of strides over a handful of cells each, so the whole product
      * is a few hundred arrangements and the exact answer is cheaper than a rule
      * for picking one greedily. Filling them in turn is what put two portals on
      * one cell: an early stride would take the only ground a later one had.
      */
-    private fun spread(choices: List<List<Pair<Landing, Int>?>>): List<Landing?> {
+    private fun spread(choices: List<List<Pair<Landing, Set<Int>>?>>): List<Landing?> {
         var best: List<Landing?> = choices.map { null }
         var most = -1
-        fun walk(i: Int, sofar: List<Landing?>, rests: List<Spot>, worth: Int) {
+        fun walk(i: Int, sofar: List<Landing?>, rests: List<Spot>, covered: Set<Int>) {
             if (i == choices.size) {
-                if (worth > most) { most = worth; best = sofar }
+                if (covered.size > most) { most = covered.size; best = sofar }
                 return
             }
             val open = choices[i].ifEmpty { listOf(null) }
@@ -470,14 +470,14 @@ class Comb(val order: String, val config: Config) {
                 walk(
                     i + 1, sofar + land,
                     if (land != null && !land.onKey) rests + land.spot else rests,
-                    worth + (option?.second ?: 0),
+                    covered + (option?.second ?: emptySet()),
                 )
             }
             // Every resting place was too close to one already placed. The side
             // goes dead rather than doubling up on a cell.
-            if (!any) walk(i + 1, sofar + null, rests, worth)
+            if (!any) walk(i + 1, sofar + null, rests, covered)
         }
-        walk(0, emptyList(), emptyList(), 0)
+        walk(0, emptyList(), emptyList(), emptySet())
         return best
     }
 
@@ -509,7 +509,16 @@ class Comb(val order: String, val config: Config) {
         const val GROUND = '.'
         const val HOLE = 'o'
         val SQ3: Float = sqrt(3f)
-        val DEFAULT_STRIDES = listOf(3, 5, 7, 9)
+        /**
+         * The four portal strides, in keys of the steno order.
+         *
+         * Not a taste, and not a knob. Of every set of four these put the most
+         * keys within two hops of a thumb: 153 of the 155 a stroke can want,
+         * which is everything the shipped grids allow. `3 5 7 9` reaches 138.
+         * `CombTest.the_portals_reach_as_far_as_the_grid_allows` is the claim,
+         * and it works the ceiling out from the grid rather than naming it.
+         */
+        val STRIDES = listOf(3, 4, 7, 10)
 
         /** The air the comb keeps around itself, in cell radii. */
         const val BREATH = 0.12f

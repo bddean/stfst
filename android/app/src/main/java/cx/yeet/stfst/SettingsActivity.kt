@@ -91,17 +91,20 @@ class SettingsActivity : Activity() {
         Text("Left comb", { it.combLeft }, { c, v -> c.combLeft = v },
             "rows separated by a slash"),
         Text("Right comb", { it.combRight }, { c, v -> c.combRight = v }),
-        Text("Portal strides", { it.combStrides }, { c, v -> c.combStrides = v },
-            "four numbers, in keys of the steno order. Two of a cell's six " +
-                "sides face the keys the walk can still reach; the other four " +
-                "are portals and take these strides, ordered by how far each " +
-                "turns from the way the walk is heading. A stride rests on the " +
-                "ground beside the key it aims at and takes nothing, leaving " +
-                "several keys one hop away; where no ground is worth the hop it " +
-                "lands on the key itself. A key the thumb can already step onto " +
-                "is not worth anything, so a landing never repeats the ground it " +
-                "left. The four are chosen together, so no two rest on the same " +
-                "cell or on touching ones"),
+        Section("The portals",
+            "Two of a cell's six sides face the keys the walk can still reach. " +
+                "The other four are portals, and each carries a stride, " +
+                "${Comb.STRIDES.joinToString(" ") { "+$it" }}, ordered by how far it turns from " +
+                "the way the walk is heading. A stride rests on the ground " +
+                "beside the key it aims at and takes nothing, leaving several " +
+                "keys one hop away; where no ground is worth the hop it lands " +
+                "on the key itself. A key the thumb can already step onto is " +
+                "not worth anything, so a landing never repeats the ground it " +
+                "left. The four are chosen together, for the most keys they " +
+                "put within two hops between them.\n\n" +
+                "These four numbers are not a setting. Of every set of four " +
+                "they reach the furthest: 153 of the 155 keys a stroke can " +
+                "want, which is everything the shipped grids allow."),
         Range("Tilt", -45f, 45f, { it.tilt }, { c, v -> c.tilt = v },
             "how far the comb is turned. Zero runs the columns straight down " +
                 "the glass; a thumb sweeps along an arc, so a few degrees can " +

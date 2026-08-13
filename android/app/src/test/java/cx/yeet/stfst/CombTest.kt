@@ -177,6 +177,62 @@ class CombTest {
         }
     }
 
+    /**
+     * The portals reach as far as the grid allows.
+     *
+     * Two hops is what a thumb should need for a key it still wants: one into a
+     * resting place, one onto the key. Whether every key is within two is a
+     * fact about the grid and not about the strides, so the test asks the grid:
+     * it works out the best four resting places on the board and holds the
+     * strides to that. Reaching is not enough, and a number in a test would go
+     * stale the first time a grid changed.
+     */
+    @Test
+    fun the_portals_reach_as_far_as_the_grid_allows() {
+        val comb = comb()
+        for (bank in Bank.values()) {
+            val chain = comb.chain.getValue(bank)
+            val loose = comb.floats.getValue(bank)
+            for (i in chain.indices) {
+                val taken = chain.take(i + 1)
+                val home = spot(comb, bank, order[chain[i]])
+                fun around(s: Spot) = Side.values().mapNotNull {
+                    val (col, row) = Comb.step(s, it)
+                    comb.spotAt(bank, col, row)
+                }
+                fun keysBy(s: Spot) = around(s).mapNotNull { comb.resolve(it, taken) }.toSet()
+                val want = (chain.drop(i + 1) + loose).toSet()
+                val rests = comb.spots(bank).filter { comb.resolve(it, taken) == null }
+                // A resting cell beside the thumb is a hop it does not pay for.
+                val free = keysBy(home) + around(home).filter { it in rests }.flatMap { keysBy(it) }
+                val brings = rests.map { (keysBy(it) - free) intersect want }
+                    .filter { it.isNotEmpty() }.distinct()
+                val ceiling = (free intersect want).size +
+                    unions(brings, 4).maxOf { it.size }
+                val got = free + Side.values()
+                    .mapNotNull { comb.portal(bank, home, it, taken) }
+                    .flatMap { if (it.onKey) setOf(it.aim) else keysBy(it.spot) }
+                assertEquals(
+                    "${order[chain[i]]} in $bank reaches less than the grid allows",
+                    ceiling, (got intersect want).size,
+                )
+            }
+        }
+    }
+
+    /** Every union of up to `most` of these sets, the empty one included. */
+    private fun unions(from: List<Set<Int>>, most: Int): List<Set<Int>> {
+        var level = listOf(emptySet<Int>() to -1)
+        val out = mutableListOf(emptySet<Int>())
+        repeat(most) {
+            level = level.flatMap { (u, last) ->
+                (last + 1 until from.size).map { (u + from[it]) to it }
+            }
+            out.addAll(level.map { it.first })
+        }
+        return out
+    }
+
     /** The keys one thumb can still take from here without taking another. */
     private fun reachable(comb: Comb, bank: Bank, from: Int): Set<Int> {
         val taken = listOf(from)
@@ -372,14 +428,6 @@ class CombTest {
         val slashed = Comb(order, Config(combLeft = "S./.T", combRight = "E"))
         val lined = Comb(order, Config(combLeft = "S.\n.T", combRight = "E"))
         assertEquals(slashed.spots(Bank.LEFT), lined.spots(Bank.LEFT))
-    }
-
-    /** The strides are read from the config, and short lists keep the defaults. */
-    @Test
-    fun the_strides_come_from_the_config() {
-        assertEquals(listOf(2, 4, 6, 8), Comb(order, Config(combStrides = "2 4 6 8")).strides)
-        assertEquals(listOf(2, 5, 7, 9), Comb(order, Config(combStrides = "2")).strides)
-        assertEquals(Comb.DEFAULT_STRIDES, Comb(order, Config(combStrides = "junk")).strides)
     }
 
     /** A cell outside the lattice is still answered by the nearest one. */

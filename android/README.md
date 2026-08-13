@@ -112,8 +112,8 @@ keys. All four are portals. If each carried a destination of its own there
 would be about fifty-two of them to learn.
 
 So a portal carries a **stride** instead, and the four strides are the same
-for every key on the board. The `out` portal always means "jump three keys
-ahead". Where that lands is derived:
+for every key on the board: **+3 +4 +7 +10**. The `out` portal always means
+"jump three keys ahead". Where that lands is derived:
 
 - **Open ground beside key `i+k`**, adding two or more keys the thumb does not
   already have. The focus rests there and takes nothing, and every one of those
@@ -136,17 +136,35 @@ Two portals that come to rest on the same cell, or on touching cells, spend two
 sides of the comb on one place. Answering each stride on its own let that
 happen: the greedy pick for stride 3 took the only ground stride 5 had.
 
-So the four are chosen together. Every way of filling them is tried and the
-best is kept, with no two resting places closer than one cell apart. A handful
-of strides over a handful of cells each is a few hundred arrangements, so the
-exact answer costs less than a rule for guessing well. A landing that takes a
-key is exempt, because a key names itself.
+So the four are chosen together, and what they are worth together is **the keys
+they put within reach, counted once**. Adding up what each is worth on its own
+is a different number and the wrong one, because it pays twice for a key two
+landings share. Every arrangement is tried and the best is kept, with no two
+resting places closer than one cell apart. A handful of strides over a handful
+of cells each is a few hundred arrangements, so the exact answer costs less than
+a rule for guessing well. A landing that takes a key is exempt, because a key
+names itself.
 
-`CombTest.every_key_ahead_is_still_reachable` is the claim this has to keep:
-from any key, walking and jumping reaches every key ahead of it and both
-floats, taking nothing on the way. A grid can satisfy steno order and still
-strand a key behind a wall of keys the chord does not want, and no amount of
-tuning the strides would show it.
+### Two hops, and why the numbers are fixed
+
+The target is that any key a thumb still wants is **two hops away**: one into a
+resting place, one onto the key. Whether that is possible is a fact about the
+grid, so it is worth measuring rather than asserting.
+
+Across both banks a stroke can want 155 keys in all. The most any four resting
+places could ever reach is 153: `-E` cannot reach `-T` in two hops, and `U`
+cannot reach `-S`, and no rule fixes that because the grid has no landing site
+that sees enough. **+3 +4 +7 +10 reaches all 153.** The strides this keyboard
+shipped with before, +3 +5 +7 +9, reach 138.
+
+So the four numbers are not a setting. They are the answer to a search, and
+`CombTest.the_portals_reach_as_far_as_the_grid_allows` holds them to it: the
+test works the ceiling out from the grid and fails if the portals fall short of
+it. Change a grid and the test recomputes what that grid allows.
+
+`CombTest.every_key_ahead_is_still_reachable` is the weaker claim underneath:
+every key ahead is reachable at *some* distance. A grid can satisfy steno order
+and still strand a key behind a wall of keys the chord does not want.
 
 ### Watching one land
 

@@ -28,16 +28,6 @@ data class Config(
     var combLeft: String = " ..../ .^S./ .TK./ .PW./ .HR./  AO./  o+./  #..",
     var combRight: String = "..../.UE./.rf./.bp./.gl./.st./.zd/.*o/..@",
     /**
-     * The four portal strides, in keys of the steno order.
-     *
-     * Two of a cell's six sides face the keys the walk can still reach. The
-     * other four are portals, and each carries one of these rather than a
-     * destination of its own: four numbers to learn instead of one per side per
-     * key. The sides take them in order of how far they turn from the way the
-     * walk is heading.
-     */
-    var combStrides: String = "3 5 7 9",
-    /**
      * How much the comb is turned, in degrees.
      *
      * Zero runs the columns straight down the glass. A thumb sweeps along an

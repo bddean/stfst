@@ -22,7 +22,6 @@ object Prefs {
             putInt("layout", LAYOUT)
             putString("combLeft", combLeft)
             putString("combRight", combRight)
-            putString("combStrides", combStrides)
             putFloat("tilt", tilt)
             putFloat("combFill", combFill)
             putFloat("combAt", combAt)
@@ -64,7 +63,6 @@ object Prefs {
         return Config(
             combLeft = if (fresh) d.combLeft else prefs.getString("combLeft", d.combLeft)!!,
             combRight = if (fresh) d.combRight else prefs.getString("combRight", d.combRight)!!,
-            combStrides = prefs.getString("combStrides", d.combStrides)!!,
             tilt = prefs.getFloat("tilt", d.tilt),
             combFill = prefs.getFloat("combFill", d.combFill),
             combAt = prefs.getFloat("combAt", d.combAt),
