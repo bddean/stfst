@@ -245,6 +245,66 @@ class ChorderTest {
         assertEquals(hole, chorder.thumb(Bank.LEFT).spot)
     }
 
+    /**
+     * A stride is not spent by one jump. Sliding on the way the jump went sends
+     * it again, which is what puts a key eight of the order ahead inside one
+     * slide of the thumb.
+     */
+    @Test
+    fun a_stride_ridden_on_goes_the_same_way_again() {
+        val (bank, home, side, land) = rideable()
+        val at = comb.place(bank, field(bank), 0f)
+        val next = comb.onward(bank, land, listOf(comb.keyOf(home)))!!
+        val thumb = chorder.thumb(bank)
+
+        comb.point(home, at).let { chorder.down(bank, 0, it.x, it.y) }
+        comb.point(cellOf(bank, Comb.step(home, side)), at).let { chorder.move(0, it.x, it.y) }
+        assertEquals("the jump should land where it says", land.spot, thumb.spot)
+
+        val gate = comb.point(
+            cellOf(bank, Comb.step(land.spot, comb.toward(land.spot, next.spot))), at
+        )
+        chorder.move(0, gate.x - thumb.offX, gate.y - thumb.offY)
+        assertEquals("riding on should jump again", next.spot, thumb.spot)
+        assertNotEquals("the ride should reach further", land.aim, next.aim)
+    }
+
+    /** Leaving a landing any other way puts the focus back on foot. */
+    @Test
+    fun a_landing_left_any_other_way_stops_riding() {
+        val (bank, home, side, land) = rideable()
+        val at = comb.place(bank, field(bank), 0f)
+        val next = comb.onward(bank, land, listOf(comb.keyOf(home)))!!
+        val ride = comb.toward(land.spot, next.spot)
+        val other = Side.values().first {
+            it != ride && comb.spotAt(
+                bank, Comb.step(land.spot, it).first, Comb.step(land.spot, it).second
+            ) != null
+        }
+        val thumb = chorder.thumb(bank)
+        comb.point(home, at).let { chorder.down(bank, 0, it.x, it.y) }
+        comb.point(cellOf(bank, Comb.step(home, side)), at).let { chorder.move(0, it.x, it.y) }
+        val away = comb.point(cellOf(bank, Comb.step(land.spot, other)), at)
+        chorder.move(0, away.x - thumb.offX, away.y - thumb.offY)
+        assertNotEquals("only the way the jump went rides on", next.spot, thumb.spot)
+    }
+
+    private fun cellOf(bank: Bank, p: Pair<Int, Int>) = comb.spotAt(bank, p.first, p.second)!!
+
+    private data class Ride(val bank: Bank, val home: Spot, val side: Side, val land: Landing)
+
+    /** The first key of either comb with a jump that can be ridden on. */
+    private fun rideable(): Ride = Bank.values().firstNotNullOf { bank ->
+        comb.chain.getValue(bank).firstNotNullOfOrNull { key ->
+            val home = comb.buttons.getValue(bank).first { it.key == key }.spots.first()
+            Side.values().firstNotNullOfOrNull { side ->
+                comb.portal(bank, home, side, listOf(key))
+                    ?.takeIf { comb.onward(bank, it, listOf(key)) != null }
+                    ?.let { Ride(bank, home, side, it) }
+            }
+        }
+    }
+
     /** A stroke goes out once, however many thumbs were holding keys. */
     @Test
     fun a_lift_with_nothing_taken_writes_nothing() {

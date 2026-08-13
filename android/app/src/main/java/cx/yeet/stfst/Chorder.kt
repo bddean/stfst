@@ -39,6 +39,14 @@ class Thumb(val bank: Bank) {
     /** Whether the focus is inside a hole, so crossing in fires once. */
     var inHole: Boolean = false
 
+    /**
+     * The jump the focus is resting on, while it can still be ridden.
+     *
+     * A stride is not spent by one jump: sliding on the way the jump went sends
+     * it again. Null once the focus leaves the landing any other way.
+     */
+    var riding: Landing? = null
+
     val down: Boolean get() = pointer != NONE
 
     /** The last key taken, or -1. Steno order can only go up from here. */
@@ -51,6 +59,7 @@ class Thumb(val bank: Bank) {
         offY = 0f
         spot = null
         inHole = false
+        riding = null
     }
 
     companion object {
@@ -178,6 +187,26 @@ class Chorder(
                 // beside the cluster it rings. Falling through as well would
                 // undo the jump on the next sample.
                 thumb.inHole = now.v == Comb.HOLE
+                thumb.riding = land.takeIf { !it.onKey }
+            }
+        }
+
+        // The same stride again, for a thumb that keeps sliding the way the
+        // jump went. Leaving the landing any other way puts it back on foot,
+        // and a key on the way out is taken rather than ridden past.
+        val riding = thumb.riding
+        if (riding != null && was == riding.spot && now != was) {
+            val next = comb.onward(thumb.bank, riding, thumb.keys)
+            val gate = next?.let { Comb.step(riding.spot, comb.toward(riding.spot, it.spot)) }
+            if (next != null && gate == (now.col to now.row)) {
+                val to = comb.point(next.spot, comb.place(thumb.bank, thumb.field, tilt))
+                thumb.offX = to.x - x
+                thumb.offY = to.y - y
+                now = next.spot
+                thumb.inHole = now.v == Comb.HOLE
+                thumb.riding = next.takeIf { !it.onKey }
+            } else {
+                thumb.riding = null
             }
         }
 
@@ -282,6 +311,7 @@ class Chorder(
         thumb.offX = 0f
         thumb.offY = 0f
         thumb.inHole = false
+        thumb.riding = null
         thumb.spot = comb.hit(bank, thumb.field, tilt, thumb.atX, thumb.atY)
     }
 

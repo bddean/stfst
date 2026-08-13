@@ -145,6 +145,21 @@ of cells each is a few hundred arrangements, so the exact answer costs less than
 a rule for guessing well. A landing that takes a key is exempt, because a key
 names itself.
 
+### The stride is not spent
+
+Keep sliding the way the jump went and it goes again. A side is therefore a
+**run** of landings, not one: `+4` ridden twice is eight of the order ahead,
+inside a single motion of the thumb.
+
+The ride fires on the side of the landing that points at where the ride goes,
+which is not always the side you left the key by. A key on the way out is taken
+rather than ridden past, and a side with no cell beyond it is never crossed, so
+`Comb.onward` answers null in both cases and the drawing and the touch cannot
+disagree about when the ride is there.
+
+Leaving a landing any other way puts the focus back on foot. That keeps every
+motion the board had before the ride existed.
+
 ### Two hops, and why the numbers are fixed
 
 The target is that any key a thumb still wants is **two hops away**: one into a
@@ -152,10 +167,15 @@ resting place, one onto the key. Whether that is possible is a fact about the
 grid, so it is worth measuring rather than asserting.
 
 Across both banks a stroke can want 155 keys in all. The most any four resting
-places could ever reach is 153: `-E` cannot reach `-T` in two hops, and `U`
-cannot reach `-S`, and no rule fixes that because the grid has no landing site
-that sees enough. **+3 +4 +7 +10 reaches all 153.** The strides this keyboard
-shipped with before, +3 +5 +7 +9, reach 138.
+places could ever reach in two hops is 153: `-E` cannot see `-T` and `U` cannot
+see `-S`, because the grid has no landing site that sees enough. **+3 +4 +7 +10
+reaches all 153.** The strides this keyboard shipped with before, +3 +5 +7 +9,
+reach 138.
+
+Riding closes the last two. `-E` rides `+4` twice to reach rank eight, which is
+`-T`, and `U` rides `+4` twice to reach `-S`. So **every key a thumb still wants
+is one slide away**, and `CombTest.a_ridden_portal_reaches_every_key_ahead` is
+that claim.
 
 So the four numbers are not a setting. They are the answer to a search, and
 `CombTest.the_portals_reach_as_far_as_the_grid_allows` holds them to it: the
@@ -172,7 +192,9 @@ Four numbers stay numbers until you watch one land, so the keyboard draws them.
 While a thumb is down, every portal side of the cell under the focus gets a
 line to the cell it arrives at, and an **arrow** in that cell pointing back at
 the side to leave by. A ring means arriving takes that key; a dashed ring means
-it comes to rest beside it. `Show where the portals go` turns this off.
+it comes to rest beside it. Once the focus is resting on a landing the picture
+is the same, with one arrow: the stride again. `Show where the portals go`
+turns this off.
 
 ## The focus is not the thumb
 

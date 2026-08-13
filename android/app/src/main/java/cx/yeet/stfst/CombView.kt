@@ -431,14 +431,23 @@ class CombView(
      *
      * The arrow in the landing points the way out, not the way in: four rings
      * say where the portals go, and only the arrow says which is which.
+     *
+     * A focus resting on a landing gets the one jump it can still ride, drawn
+     * the same way. So the picture is always the sides of the cell the focus is
+     * in, whether that cell is a key or a place a jump left it.
      */
     private fun drawPortals(canvas: Canvas, thumb: Thumb, paint: Palette) {
         if (!thumb.live) return
         val spot = thumb.spot ?: return
         val at = comb.place(thumb.bank, thumb.field, tilt)
         val r = sketches[thumb.bank]?.radius ?: return
-        for (side in Side.values()) {
-            val land = comb.portal(thumb.bank, spot, side, thumb.keys) ?: continue
+        val ahead = thumb.riding?.let { comb.onward(thumb.bank, it, thumb.keys) }
+        val jumps =
+            if (ahead != null) listOf(comb.toward(spot, ahead.spot) to ahead)
+            else Side.values().mapNotNull { side ->
+                comb.portal(thumb.bank, spot, side, thumb.keys)?.let { side to it }
+            }
+        for ((side, land) in jumps) {
             val from = comb.edge(spot, side, at)
             val to = comb.point(land.spot, at)
             ink.style = Paint.Style.STROKE

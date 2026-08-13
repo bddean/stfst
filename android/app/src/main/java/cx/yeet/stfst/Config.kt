@@ -125,7 +125,8 @@ data class Config(
      * how the four stop being numbers: leave by that side and the focus goes
      * there. The arrow in the landing points at the side to leave by. A ring
      * means arriving takes that key, and a dashed ring means it only comes to
-     * rest beside it.
+     * rest beside it. Resting on a landing, the one arrow left is the same
+     * stride again, for a thumb that keeps sliding.
      */
     var showPortals: Boolean = true,
 

@@ -220,6 +220,48 @@ class CombTest {
         }
     }
 
+    /**
+     * A ridden portal reaches every key the thumb still wants.
+     *
+     * Four sides can only name four distances, and on the right comb that left
+     * two keys further than two hops: `-E` could not see `-T`, and `U` could
+     * not see `-S`. A stride that is not spent by one jump turns each side into
+     * a run of landings, and the runs cover what the four could not.
+     */
+    @Test
+    fun a_ridden_portal_reaches_every_key_ahead() {
+        val comb = comb()
+        for (bank in Bank.values()) {
+            val chain = comb.chain.getValue(bank)
+            val loose = comb.floats.getValue(bank)
+            for (i in chain.indices) {
+                val taken = chain.take(i + 1)
+                val home = spot(comb, bank, order[chain[i]])
+                fun around(s: Spot) = Side.values().mapNotNull {
+                    val (col, row) = Comb.step(s, it)
+                    comb.spotAt(bank, col, row)
+                }
+                fun keysBy(s: Spot) = around(s).mapNotNull { comb.resolve(it, taken) }.toSet()
+                val reach = (keysBy(home) + around(home)
+                    .filter { comb.resolve(it, taken) == null }.flatMap { keysBy(it) })
+                    .toMutableSet()
+                for (side in Side.values()) {
+                    var land = comb.portal(bank, home, side, taken) ?: continue
+                    while (true) {
+                        reach += if (land.onKey) setOf(land.aim) else keysBy(land.spot)
+                        land = comb.onward(bank, land, taken) ?: break
+                    }
+                }
+                for (want in chain.drop(i + 1) + loose) {
+                    assertTrue(
+                        "${order[want]} is more than one slide from ${order[chain[i]]} in $bank",
+                        want in reach,
+                    )
+                }
+            }
+        }
+    }
+
     /** Every union of up to `most` of these sets, the empty one included. */
     private fun unions(from: List<Set<Int>>, most: Int): List<Set<Int>> {
         var level = listOf(emptySet<Int>() to -1)

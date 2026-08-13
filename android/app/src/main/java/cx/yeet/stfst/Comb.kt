@@ -34,6 +34,10 @@ import kotlin.math.sqrt
  * nothing, with several keys then one hop away; late in the order that ground
  * is gone and the jump lands on the key and takes it. The four are chosen
  * together, so no two rest on the same cell or on touching ones.
+ *
+ * A stride is not spent by one jump. Keep sliding the way the jump went and it
+ * goes again, so a side is a run of landings rather than one. Four sides can
+ * only name four distances, and the runs reach what four cannot.
  */
 class Comb(val order: String, val config: Config) {
 
@@ -388,10 +392,44 @@ class Comb(val order: String, val config: Config) {
             val choices = STRIDES.map { stride ->
                 val aim = keys.getOrNull(min(here + stride, keys.size - 1))
                     ?.takeIf { (rank.getValue(bank)[it] ?: -1) > here && aimed.add(it) }
-                if (aim == null) listOf(null) else options(bank, from, here, aim)
+                if (aim == null) listOf(null) else options(bank, from, here, aim, stride)
             }
             spread(choices)
         }
+
+    /**
+     * Where the same stride carries the focus on from a landing it just made.
+     *
+     * A stride is not spent by one jump. That is what puts a key eight of the
+     * order ahead inside one slide of the thumb, where four sides can only name
+     * four distances.
+     *
+     * Null when the ride cannot be taken, so the drawing and the touch agree on
+     * when it is there: riding is a crossing like any other, and a key on the
+     * way out is taken rather than ridden past.
+     */
+    fun onward(bank: Bank, land: Landing, taken: List<Int>): Landing? {
+        if (land.onKey) return null
+        val keys = chain.getValue(bank)
+        val ranks = rank.getValue(bank)
+        val here = ranks[land.aim] ?: return null
+        val aim = keys.getOrNull(min(here + land.stride, keys.size - 1))
+            ?.takeIf { (ranks[it] ?: -1) > here } ?: return null
+        val next = options(bank, land.spot, here, aim, land.stride)
+            .firstOrNull()?.first?.takeIf { it.spot != land.spot } ?: return null
+        val gate = byCell.getValue(bank)[at(step(land.spot, toward(land.spot, next.spot)))]
+        return next.takeIf { gate != null && resolve(gate, taken) == null }
+    }
+
+    /** The side of one cell that points most nearly at another. */
+    fun toward(from: Spot, to: Spot): Side {
+        val a = lattice(from)
+        val b = lattice(to)
+        val angle = Math.toDegrees(
+            Math.atan2((b.y - a.y).toDouble(), (b.x - a.x).toDouble())
+        ).toFloat()
+        return Side.values().minByOrNull { turn(angleOf(it), angle) }!!
+    }
 
     /** The live keys one step from a cell, which a jump cannot buy again. */
     private fun beside(bank: Bank, spot: Spot, here: Int): Set<Int> {
@@ -417,7 +455,9 @@ class Comb(val order: String, val config: Config) {
      * order there is none worth it at all, which is why the jump can end on the
      * key and take it: one hop instead of a choice.
      */
-    private fun options(bank: Bank, from: Spot, here: Int, aim: Int): List<Pair<Landing, Set<Int>>?> {
+    private fun options(
+        bank: Bank, from: Spot, here: Int, aim: Int, stride: Int,
+    ): List<Pair<Landing, Set<Int>>?> {
         val cells = byCell.getValue(bank)
         val mine = buttons.getValue(bank).filter { it.key == aim }
         val had = beside(bank, from, here)
@@ -430,11 +470,11 @@ class Comb(val order: String, val config: Config) {
             .filter { it.second.size >= 2 }
             .sortedWith(compareByDescending<Pair<Spot, Set<Int>>> { it.second.size }
                 .thenBy { it.first.row }.thenBy { it.first.col })
-            .map { (spot, brings) -> Landing(spot, aim, false) to brings }
+            .map { (spot, brings) -> Landing(spot, aim, false, stride) to brings }
             .toList()
         // Taking a key the thumb could step onto anyway buys nothing either.
         val onKey = mine.firstOrNull()?.spots?.firstOrNull()
-            ?.let { Landing(it, aim, true) to (setOf(aim) - had) }
+            ?.let { Landing(it, aim, true, stride) to (setOf(aim) - had) }
         return rests + listOfNotNull(onKey)
     }
 
@@ -570,7 +610,7 @@ data class Button(val key: Int, val v: Char, val spots: List<Spot>)
  * Where a portal puts the focus, the key its stride aimed at, and whether
  * arriving takes that key or only comes to rest beside it.
  */
-data class Landing(val spot: Spot, val aim: Int, val onKey: Boolean)
+data class Landing(val spot: Spot, val aim: Int, val onKey: Boolean, val stride: Int)
 
 /** A cell's six sides, in the order its corners are drawn. */
 enum class Side { SE, S, SW, NW, N, NE }

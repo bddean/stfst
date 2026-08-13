@@ -102,6 +102,10 @@ class SettingsActivity : Activity() {
                 "not worth anything, so a landing never repeats the ground it " +
                 "left. The four are chosen together, for the most keys they " +
                 "put within two hops between them.\n\n" +
+                "A stride is not spent by one jump. Keep sliding the way the " +
+                "jump went and it goes again, so a side is a run of landings " +
+                "and not one. A key on the way out is taken rather than " +
+                "ridden past.\n\n" +
                 "These four numbers are not a setting. Of every set of four " +
                 "they reach the furthest: 153 of the 155 keys a stroke can " +
                 "want, which is everything the shipped grids allow."),
