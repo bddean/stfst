@@ -203,6 +203,48 @@ class ChorderTest {
         assertTrue("a written stroke clears what was armed", chorder.sticky.isEmpty())
     }
 
+    /**
+     * A float is off the walk, so the order cannot pass it: the modifier is
+     * still there after the thumb has been to the end of the comb.
+     */
+    @Test
+    fun a_float_is_takeable_after_the_whole_walk() {
+        touch(Bank.LEFT, 0, 'S')
+        for (symbol in "TKPWHRAO") walk(Bank.LEFT, symbol)
+        walk(Bank.LEFT, '+')
+        assertEquals("STKPWHRAO+", keys(Bank.LEFT))
+    }
+
+    /**
+     * A portal aimed at a hole leaves the focus in it, beside the cluster the
+     * hole rings. Falling through as well would undo the jump.
+     */
+    @Test
+    fun a_portal_into_a_hole_leaves_the_focus_in_it() {
+        val config = Config(combHole = true)
+        val comb = Comb(ORDER, config)
+        val chorder = Chorder(comb, config) {}
+        chorder.place(Bank.LEFT, left)
+        val at = comb.place(Bank.LEFT, left, 0f)
+        val hole = comb.spots(Bank.LEFT).first { it.v == Comb.HOLE }
+        val chain = comb.chain.getValue(Bank.LEFT)
+        val cell = { key: Int -> comb.buttons.getValue(Bank.LEFT).first { it.key == key }.spots.first() }
+        val (stop, side) = chain.indices.firstNotNullOf { i ->
+            Side.values().firstOrNull {
+                comb.portal(Bank.LEFT, cell(chain[i]), it, chain.take(i + 1))?.spot == hole
+            }?.let { i to it }
+        }
+        val step = { spot: Spot ->
+            val p = comb.point(spot, at)
+            chorder.move(0, p.x, p.y)
+        }
+        comb.point(cell(chain[0]), at).let { chorder.down(Bank.LEFT, 0, it.x, it.y) }
+        for (i in 1..stop) step(cell(chain[i]))
+        val out = Comb.step(cell(chain[stop]), side)
+        step(comb.spotAt(Bank.LEFT, out.first, out.second)!!)
+        assertEquals(hole, chorder.thumb(Bank.LEFT).spot)
+    }
+
     /** A stroke goes out once, however many thumbs were holding keys. */
     @Test
     fun a_lift_with_nothing_taken_writes_nothing() {

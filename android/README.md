@@ -46,21 +46,21 @@ ground, `o` is a hole, a space is off the board, and anything else is the key
 of that name. The left bank ships as:
 
 ```
-.#..
-.^@.
-.S+.
-.KT.
-.WP.
-.RH.
-.OA.
+#.^S.
+#.TK.
+..PW.
+..HR.
+..AO.
++.oO.
++.A..
 ```
 
 Every character touches the one above, below, left and right of it, plus one
 diagonal, so the text is a picture of the keyboard. Edit it in the settings.
 
 Everything else is recovered from that rectangle. There is no span, no size,
-no order field and no portal table, because the grid already fixes each of
-them:
+no order field, no portal table and no float flag, because the grid already
+fixes each of them:
 
 | | |
 |---|---|
@@ -68,7 +68,29 @@ them:
 | two buttons, one key | cells holding one value that do not touch |
 | the walk | the two sides facing keys steno order still allows |
 | the portals | the other four sides, the ones holding passed keys included |
-| a cell's ground | the field clipped by the bisector against every rival |
+| a float | a key none of whose cells touch another key |
+| a cell's ground | the field clipped by the bisector against every rival, and by its own six lattice neighbours |
+
+## The floats are the modifiers
+
+`#` and `+` on the left, `@` and `*` on the right, standing clear of the
+chain. Nothing joins them to the walk, so the walk cannot pass them: a
+modifier is takeable however far down the comb the thumb has already gone.
+
+That is the old keyboard's floating arc, and it costs no mechanism. A key is
+on the walk when its cells touch another key, so standing a button clear of
+the chain says the whole thing.
+
+## The end cluster rings a hole
+
+The last two keys of each bank surround a hole. A hole takes nothing and a
+portal can land in one, which makes it the best landing site on the comb: one
+jump reaches the end of the order and every key of the cluster is then a
+single hop away, so you still choose which vowel.
+
+`Teleport through a hole` is the hole's other trick, off by default. It throws
+a focus that *walks* into a hole across the comb's middle, which is worth
+having only when the hole sits early in the order.
 
 `Comb` answers all of it, and the drawing asks `Comb` rather than working the
 shapes out a second way, so the picture cannot disagree with the decision.
@@ -95,12 +117,17 @@ ahead". Where that lands is derived:
 The sides take the strides in order of how far each turns from the way the walk
 is heading, so a side means the same jump wherever the thumb is.
 
+Four numbers stay numbers until you watch one land, so the keyboard draws them.
+While a thumb is down, every portal side of the cell under the focus gets a
+line to the cell it arrives at. A ring there means arriving takes that key; a
+dashed ring means it comes to rest beside it. `Show where the portals go` turns
+this off.
+
 ## The focus is not the thumb
 
 A portal throws the point that reads the cells ahead of the thumb, and the
 offset holds until the lift: the thumb goes on from where it is, the focus goes
-on from where the jump put it. A hole does the same, throwing the focus
-straight across the comb's middle.
+on from where the jump put it.
 
 Both are drawn. The focus is the filled cell; once the two have parted the
 thumb is drawn too, faint, tied to the focus by a line. Holding still for
@@ -108,16 +135,19 @@ thumb is drawn too, faint, tied to the focus by a line. Holding still for
 
 ## Landscape, and what Android will not give you
 
-Each thumb takes a full-height side and the app keeps the whole screen between
-them. The window covers the glass and the touchable region is cut back to the
-two combs and the strip, so a tap in the middle reaches the app.
+A deep band, with a comb hugging each edge and the bar in the gap between them.
+The app keeps everything above the band and nothing covers it.
 
-What is **not** available is a left or right inset. `onComputeInsets`
-describes the app's room with a top edge alone, so the app lays out full width
-and the combs cover its margins rather than pushing its content inward. Narrow
-overlaying strips is what this buys, and it is the same trick the old floating
-ring copy used. `Full-height halves in landscape` turns it off and returns to a
-band at the bottom, which costs the comb most of its length.
+Full-height halves with the app between them is what the comb wants, and
+Android will not give it. `onComputeInsets` describes the app's room with a
+**top edge alone**: there is no left or right inset, so no keyboard can ask an
+app to lay out narrower. Halves that reach the foot of the glass can only be
+drawn over the app's own margins, and covering the app is the thing worth
+avoiding. So the keyboard takes its room off the bottom, as any keyboard does,
+and spends its width on putting the two combs where the thumbs are.
+`Landscape keyboard height` sets how deep the band goes, and
+`Combs on the edges in landscape` puts the two side by side in the middle
+instead.
 
 ## Tilt
 
@@ -244,3 +274,7 @@ and the tests in `app/src/test` are the ones worth reading first.
 The long-press modifier ring went with the radial layout: it read a direction
 from a mark, and there is no mark any more. A modifier picker that fits a comb
 is its own piece of work.
+
+The floating specials did come back, as floats. The old board's island and
+tombstone did not: the comb's hole does the island's job, and the walk down the
+order does the rest.

@@ -8,8 +8,18 @@ import android.content.SharedPreferences
  */
 object Prefs {
 
+    /**
+     * Bumped whenever the shipped grids change shape.
+     *
+     * A saved grid is the user's own layout and outlives an upgrade, but one
+     * saved before floats and hole rings existed is the old default rather than
+     * a choice, and keeping it would hide the new one behind a settings screen.
+     */
+    private const val LAYOUT = 2
+
     fun save(config: Config, prefs: SharedPreferences) = with(config) {
         prefs.edit().apply {
+            putInt("layout", LAYOUT)
             putString("combLeft", combLeft)
             putString("combRight", combRight)
             putString("combStrides", combStrides)
@@ -33,6 +43,7 @@ object Prefs {
             putBoolean("showDeadCells", showDeadCells)
             putBoolean("showLabels", showLabels)
             putBoolean("showChain", showChain)
+            putBoolean("showPortals", showPortals)
             putBoolean("cloud", cloud)
             putInt("cloudSamples", cloudSamples)
             putFloat("cloudAlpha", cloudAlpha)
@@ -40,6 +51,7 @@ object Prefs {
             putFloat("fieldSplit", fieldSplit)
             putBoolean("landscapeSides", landscapeSides)
             putFloat("splitLandscape", splitLandscape)
+            putFloat("landscapeHeight", landscapeHeight)
             putFloat("markRadius", markRadius)
             putFloat("labelSp", labelSp)
             putFloat("keyboardHeight", keyboardHeight)
@@ -48,9 +60,10 @@ object Prefs {
 
     fun load(prefs: SharedPreferences): Config {
         val d = Config()
+        val fresh = prefs.getInt("layout", 0) != LAYOUT
         return Config(
-            combLeft = prefs.getString("combLeft", d.combLeft)!!,
-            combRight = prefs.getString("combRight", d.combRight)!!,
+            combLeft = if (fresh) d.combLeft else prefs.getString("combLeft", d.combLeft)!!,
+            combRight = if (fresh) d.combRight else prefs.getString("combRight", d.combRight)!!,
             combStrides = prefs.getString("combStrides", d.combStrides)!!,
             tiltPortrait = prefs.getFloat("tiltPortrait", d.tiltPortrait),
             tiltLandscape = prefs.getFloat("tiltLandscape", d.tiltLandscape),
@@ -74,6 +87,7 @@ object Prefs {
             showDeadCells = prefs.getBoolean("showDeadCells", d.showDeadCells),
             showLabels = prefs.getBoolean("showLabels", d.showLabels),
             showChain = prefs.getBoolean("showChain", d.showChain),
+            showPortals = prefs.getBoolean("showPortals", d.showPortals),
             cloud = prefs.getBoolean("cloud", d.cloud),
             cloudSamples = prefs.getInt("cloudSamples", d.cloudSamples),
             cloudAlpha = prefs.getFloat("cloudAlpha", d.cloudAlpha),
@@ -81,6 +95,7 @@ object Prefs {
             fieldSplit = prefs.getFloat("fieldSplit", d.fieldSplit),
             landscapeSides = prefs.getBoolean("landscapeSides", d.landscapeSides),
             splitLandscape = prefs.getFloat("splitLandscape", d.splitLandscape),
+            landscapeHeight = prefs.getFloat("landscapeHeight", d.landscapeHeight),
             markRadius = prefs.getFloat("markRadius", d.markRadius),
             labelSp = prefs.getFloat("labelSp", d.labelSp),
             keyboardHeight = prefs.getFloat("keyboardHeight", d.keyboardHeight),

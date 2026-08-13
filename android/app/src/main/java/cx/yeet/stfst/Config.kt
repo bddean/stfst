@@ -18,9 +18,14 @@ data class Config(
      * two of them: a key touches the next in the order diagonally and the one
      * after it directly below. Repeating a value in touching cells melds them
      * into one button, which is all a big key is.
+     *
+     * A button that touches no other key is a float, and steno order says
+     * nothing about one: `#` and `+` here, `@` and `*` on the right. The last
+     * keys of each bank ring a hole, so the far end of the order is a dip
+     * through the middle rather than a walk down the whole comb.
      */
-    var combLeft: String = ".#../.^@./.S+./.KT./.WP./.RH./.OA.",
-    var combRight: String = ".E*./.fU./.pr./.lb./.tg./.ds./..z.",
+    var combLeft: String = "#.^S./#.TK./..PW./..HR./..AO./+.oO./+.A..",
+    var combRight: String = ".UE.@/.rf.@/.bp../.gl../.st../.zd.*/.od.*/.z...",
     /**
      * The four portal strides, in keys of the steno order.
      *
@@ -45,12 +50,17 @@ data class Config(
     /** Where the middle of the comb sits, as a fraction down the field. */
     var combAt: Float = 0.5f,
     /**
-     * Teleport through a hole: a focus crossing one is thrown straight across
-     * the comb's middle and the offset holds until the thumb lifts, so the far
-     * end of the order is a short dip rather than a walk. The crossing takes
-     * nothing, and going back through throws the focus home again.
+     * A hole takes nothing and a portal can land on one, which is what puts it
+     * at the heart of an end cluster: one jump reaches the hole and every key
+     * of the cluster round it is then one hop away.
+     *
+     * This switch adds the second thing a hole can do: a focus that *walks*
+     * into one is thrown straight across the comb's middle, so the far end of
+     * the order is a dip rather than a walk. Off by default, because the
+     * shipped layouts ring their hole with the last keys of the order and a
+     * throw from there reaches only cells the order has passed.
      */
-    var combHole: Boolean = true,
+    var combHole: Boolean = false,
     /**
      * The keys a lift can arm instead of writing, per bank.
      *
@@ -58,8 +68,8 @@ data class Config(
      * again sends them alone. They are the ones a chord wants alongside a whole
      * outline rather than instead of one.
      */
-    var stickyLeft: String = "#@^+",
-    var stickyRight: String = "*",
+    var stickyLeft: String = "#+",
+    var stickyRight: String = "@*",
     /**
      * The key a double tap adds, per bank, on top of the key under it.
      *
@@ -117,6 +127,15 @@ data class Config(
     var showLabels: Boolean = true,
     /** Draw the chain of the steno order through the keys, faint. */
     var showChain: Boolean = true,
+    /**
+     * Draw where each portal out of the cell under the focus goes.
+     *
+     * A stride is four numbers rather than fifty-two destinations, and this is
+     * how the four stop being numbers: leave by that side and the focus goes
+     * there. A ring on the landing means arriving takes that key, and a dashed
+     * ring means it only comes to rest beside it.
+     */
+    var showPortals: Boolean = true,
 
     /**
      * Draw every touch sample, so the shape and size of the contact is visible.
@@ -133,14 +152,15 @@ data class Config(
     /** Where the left field ends and the right begins, in portrait. */
     var fieldSplit: Float = 0.5f,
     /**
-     * Give each thumb a full-height half of the glass in landscape, with the
-     * app between them.
+     * Put the two combs on the left and right edges in landscape, with the bar
+     * in the gap between them.
      *
-     * The comb runs down, so a landscape half wants the whole height rather
-     * than a band at the bottom. Android has no left or right inset to offer,
-     * so the app lays out full width and the two combs cover its margins; the
-     * ground between them is not touchable and reaches the app. Off keeps the
-     * bottom band, which costs the comb most of its length.
+     * The comb runs down, so a landscape half wants height. What it cannot
+     * have is the app's width: `onComputeInsets` describes the app's room with
+     * a top edge alone, so there is no way to ask the app to lay out narrower.
+     * The keyboard therefore takes a tall band off the bottom, as any keyboard
+     * does, and the app keeps everything above it. Off puts the two combs side
+     * by side in the middle instead of on the edges.
      */
     var landscapeSides: Boolean = true,
     /**
@@ -148,6 +168,13 @@ data class Config(
      * 0.5 closes the gap between them.
      */
     var splitLandscape: Float = 0.3f,
+    /**
+     * The keys' share of the screen in landscape.
+     *
+     * The whole height would leave the app nothing, and covering the app is
+     * what this stopped doing, so the band is deep rather than total.
+     */
+    var landscapeHeight: Float = 0.72f,
     /** The thumb marks: where the focus is, and where the thumb is now. */
     var markRadius: Float = 0.022f,
     var labelSp: Float = 15f,

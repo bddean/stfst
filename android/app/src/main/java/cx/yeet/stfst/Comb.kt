@@ -23,6 +23,10 @@ import kotlin.math.sqrt
  * as keys and all four are portals, the two holding already-passed keys
  * included.
  *
+ * A button standing clear of the chain is a float, and order says nothing
+ * about one: it is takeable whenever the thumb reaches it. That is what the
+ * modifiers are, and it is read off the grid rather than declared.
+ *
  * A portal carries a stride rather than a destination. The four strides are
  * the same for every key on the board, so there are four numbers to learn and
  * not one per side per key. Where a stride lands is derived: early in the
@@ -61,14 +65,6 @@ class Comb(val order: String, val config: Config) {
 
     fun bankOf(key: Int): Bank? = banks.getOrNull(key)
 
-    /** The keys of one bank, in steno order. Their order is the walk. */
-    val chain: Map<Bank, List<Int>> = spots.mapValues { (_, list) ->
-        list.map { keyOf(it) }.filter { it >= 0 }.distinct().sorted()
-    }
-
-    private val rank: Map<Bank, Map<Int, Int>> =
-        chain.mapValues { (_, keys) -> keys.withIndex().associate { (i, k) -> k to i } }
-
     /**
      * The melded buttons of a bank: a run of touching cells holding one value
      * is one button, and cells that do not touch are separate buttons for the
@@ -95,9 +91,51 @@ class Comb(val order: String, val config: Config) {
         out
     }
 
-    /** Whether steno order still allows this key, given what the thumb has taken. */
+    /**
+     * The keys off the walk: a key none of whose cells touch another key.
+     *
+     * A modifier a chord wants alongside a whole outline has to be reachable
+     * whenever the thumb wants it, and steno order would forbid that. Standing
+     * a button clear of the chain says exactly this, so a float is a fact of
+     * the grid rather than a flag beside it: nothing joins it to the walk, so
+     * the walk cannot pass it.
+     */
+    val floats: Map<Bank, Set<Int>> = spots.mapValues { (bank, _) ->
+        val cells = byCell.getValue(bank)
+        buttons.getValue(bank)
+            .filter { it.key >= 0 }
+            .groupBy { it.key }
+            .filterValues { group ->
+                group.all { button ->
+                    button.spots.all { s ->
+                        Side.values().none { side ->
+                            val n = cells[at(step(s, side))]
+                            n != null && keyOf(n) >= 0 && n.v != s.v
+                        }
+                    }
+                }
+            }
+            .keys
+    }
+
+    /** The keys of one bank on the walk, in steno order. Floats are not on it. */
+    val chain: Map<Bank, List<Int>> = spots.mapValues { (bank, list) ->
+        val loose = floats.getValue(bank)
+        list.map { keyOf(it) }.filter { it >= 0 && it !in loose }.distinct().sorted()
+    }
+
+    private val rank: Map<Bank, Map<Int, Int>> =
+        chain.mapValues { (_, keys) -> keys.withIndex().associate { (i, k) -> k to i } }
+
+    /**
+     * Whether this key can still be taken, given what the thumb has taken.
+     *
+     * On the walk that is steno order, which only goes up. A float is off the
+     * walk, so the only thing that can stop it is having it already.
+     */
     fun live(key: Int, taken: List<Int>): Boolean {
         val bank = bankOf(key) ?: return false
+        if (key in floats.getValue(bank)) return key !in taken
         val here = rank.getValue(bank)[key] ?: return false
         val last = taken.mapNotNull { rank.getValue(bank)[it] }.maxOrNull() ?: -1
         return here > last
@@ -156,7 +194,9 @@ class Comb(val order: String, val config: Config) {
             lowX = min(lowX, x); highX = maxOf(highX, x)
             lowY = min(lowY, y); highY = maxOf(highY, y)
         }
-        val edge = 1f
+        // A cell reaches one radius from its centre whatever the tilt, and the
+        // comb keeps a little air past that so it never runs into the glass.
+        val edge = 1f + BREATH
         val wide = (highX - lowX) + 2f * edge
         val tall = (highY - lowY) + 2f * edge
         val fill = config.combFill.coerceIn(0.2f, 1f)
@@ -201,9 +241,14 @@ class Comb(val order: String, val config: Config) {
     /**
      * The ground a cell owns, as a polygon.
      *
-     * The field clipped by the bisector against every rival, which is the
-     * definition of the cell rather than a drawing of it. It stays right at any
-     * tilt and covers the whole field however small the lattice is.
+     * The field clipped by the bisector against every rival, then by the same
+     * bisector against the six lattice neighbours whether the board holds them
+     * or not. That second clip is what makes an edge cell a hexagon instead of
+     * the whole rest of the field, so the comb ends where it is drawn to end.
+     *
+     * Past that edge [hit] still answers with the nearest cell, so a thumb that
+     * overshoots the comb means the cell it overshot. The drawing is the
+     * decision inside the comb and the overshoot rule outside it.
      */
     fun region(
         bank: Bank,
@@ -218,13 +263,32 @@ class Comb(val order: String, val config: Config) {
             Point(field.left, field.top), Point(field.right, field.top),
             Point(field.right, field.bottom), Point(field.left, field.bottom),
         )
+        val skipped = { col: Int, row: Int -> skip.any { it.col == col && it.row == row } }
         for (rival in spots.getValue(bank)) {
             if (rival.col == spot.col && rival.row == spot.row) continue
-            if (skip.any { it.col == rival.col && it.row == rival.row }) continue
+            if (skipped(rival.col, rival.row)) continue
             polygon = nearer(polygon, mine, point(rival, at))
             if (polygon.isEmpty()) break
         }
+        for (side in Side.values()) {
+            val (col, row) = step(spot, side)
+            if (skipped(col, row)) continue
+            polygon = nearer(polygon, mine, point(Spot(col, row, GROUND), at))
+            if (polygon.isEmpty()) break
+        }
         return polygon
+    }
+
+    /** The middle of one side of a cell, which is where a portal leaves it. */
+    fun edge(spot: Spot, side: Side, at: Placement): Point {
+        val c = point(spot, at)
+        val a = Math.toRadians(angleOf(side).toDouble())
+        val dx = cos(a).toFloat() * SQ3 * 0.5f
+        val dy = sin(a).toFloat() * SQ3 * 0.5f
+        return Point(
+            c.x + (dx * at.ct - dy * at.st) * at.radius,
+            c.y + (dx * at.st + dy * at.ct) * at.radius,
+        )
     }
 
     /** A button's ground, as one convex piece per cell it melds. */
@@ -329,8 +393,8 @@ class Comb(val order: String, val config: Config) {
             .filter { it.v == GROUND || it.v == HOLE }
             .distinct()
             .maxWithOrNull(compareBy({ reach(it) }, { -it.row }, { -it.col }))
-        if (best != null && reach(best) >= 2) return Landing(best, false)
-        return mine.firstOrNull()?.spots?.firstOrNull()?.let { Landing(it, true) }
+        if (best != null && reach(best) >= 2) return Landing(best, a, false)
+        return mine.firstOrNull()?.spots?.firstOrNull()?.let { Landing(it, a, true) }
     }
 
     /** Which way the walk is heading out of this cell: toward the key two on. */
@@ -351,6 +415,9 @@ class Comb(val order: String, val config: Config) {
         const val HOLE = 'o'
         val SQ3: Float = sqrt(3f)
         val DEFAULT_STRIDES = listOf(3, 5, 7, 9)
+
+        /** The air the comb keeps around itself, in cell radii. */
+        const val BREATH = 0.12f
 
         private fun at(col: Int, row: Int): Long = (col.toLong() shl 32) or (row.toLong() and 0xffffffffL)
         private fun at(p: Pair<Int, Int>): Long = at(p.first, p.second)
@@ -392,8 +459,11 @@ data class Spot(val col: Int, val row: Int, val v: Char)
 /** One drawn button: a run of touching cells that all hold one value. */
 data class Button(val key: Int, val v: Char, val spots: List<Spot>)
 
-/** Where a portal puts the focus, and whether arriving there takes the key. */
-data class Landing(val spot: Spot, val onKey: Boolean)
+/**
+ * Where a portal puts the focus, the key its stride aimed at, and whether
+ * arriving takes that key or only comes to rest beside it.
+ */
+data class Landing(val spot: Spot, val aim: Int, val onKey: Boolean)
 
 /** A cell's six sides, in the order its corners are drawn. */
 enum class Side { SE, S, SW, NW, N, NE }

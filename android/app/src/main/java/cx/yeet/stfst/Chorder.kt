@@ -174,6 +174,10 @@ class Chorder(
                 thumb.offX = to.x - x
                 thumb.offY = to.y - y
                 now = land.spot
+                // A portal that aims at a hole means to leave the focus in it,
+                // beside the cluster it rings. Falling through as well would
+                // undo the jump on the next sample.
+                thumb.inHole = now.v == Comb.HOLE
             }
         }
 

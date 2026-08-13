@@ -106,15 +106,17 @@ class SettingsActivity : Activity() {
             { c, v -> c.tiltLandscape = v },
             "the same, for a landscape screen", unit = "\u00b0"),
         Range("Comb fill", 0.4f, 1f, { it.combFill }, { c, v -> c.combFill = v },
-            "one fills the field. Less packs the comb within reach, and the " +
-                "cells at the edge grow to cover the field the lattice no " +
-                "longer reaches", unit = "\u00d7"),
+            "one fills the field. Less packs the comb within reach; a thumb " +
+                "that overshoots the drawn edge still means the cell it " +
+                "overshot", unit = "\u00d7"),
         Range("Comb position", 0.2f, 0.8f, { it.combAt }, { c, v -> c.combAt = v },
             "where the middle of the comb sits", unit = "down the field"),
         Flag("Teleport through a hole", { it.combHole }, { c, v -> c.combHole = v },
-            "a focus crossing a hole is thrown straight across the comb's " +
-                "middle, and the offset holds until the lift. The crossing " +
-                "takes nothing, and going back through throws it home again"),
+            "a focus that walks into a hole is thrown straight across the " +
+                "comb's middle, and the offset holds until the lift. Off by " +
+                "default: the shipped layouts ring their hole with the last " +
+                "keys of the order, and a throw from there reaches only cells " +
+                "the order has passed. A portal can land on a hole either way"),
 
         Section("Strokes"),
         Flag("Write on the first lift", { it.commitOnFirstLift },
@@ -160,6 +162,11 @@ class SettingsActivity : Activity() {
         Flag("Show labels", { it.showLabels }, { c, v -> c.showLabels = v }),
         Flag("Show the steno order", { it.showChain }, { c, v -> c.showChain = v },
             "a faint chain through the keys, which is the walk"),
+        Flag("Show where the portals go", { it.showPortals },
+            { c, v -> c.showPortals = v },
+            "from the cell under the focus, a line out of each portal side to " +
+                "the cell it lands on. A ring there means arriving takes that " +
+                "key; a dashed ring means it comes to rest beside it"),
         Flag("Show cells already passed", { it.showDeadCells },
             { c, v -> c.showDeadCells = v },
             "faded. They are portals now, and they stop looking like keys"),
@@ -170,13 +177,16 @@ class SettingsActivity : Activity() {
             "in portrait. A comb runs down, so it wants the room", unit = "of the screen"),
         Range("Field split", 0.2f, 0.8f, { it.fieldSplit }, { c, v -> c.fieldSplit = v },
             "where the left field ends, in portrait", unit = "of the width"),
-        Flag("Full-height halves in landscape", { it.landscapeSides },
+        Flag("Combs on the edges in landscape", { it.landscapeSides },
             { c, v -> c.landscapeSides = v },
-            "each thumb takes a full-height side and the app keeps the whole " +
-                "screen between them. Android has no side inset to give, so " +
-                "the combs cover the app's margins rather than pushing its " +
-                "content inward; the ground between them reaches the app. Off " +
-                "keeps a band at the bottom, which costs the comb its length"),
+            "each comb hugs its own edge with the bar in the gap between them. " +
+                "Off puts the two side by side in the middle"),
+        Range("Landscape keyboard height", 0.3f, 0.95f, { it.landscapeHeight },
+            { c, v -> c.landscapeHeight = v },
+            "the app keeps everything above the band. Android describes the " +
+                "app's room with a top edge alone, so there is no way to make " +
+                "the app narrower and leave the combs full height beside it",
+            unit = "of the screen"),
         Range("Landscape field width", 0.15f, 0.5f, { it.splitLandscape },
             { c, v -> c.splitLandscape = v },
             "each field's share of the width, anchored to its own side",

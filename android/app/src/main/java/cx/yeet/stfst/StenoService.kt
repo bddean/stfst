@@ -2,9 +2,7 @@ package cx.yeet.stfst
 
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.Rect
 import android.inputmethodservice.InputMethodService
-import android.inputmethodservice.InputMethodService.Insets
 import android.os.SystemClock
 import android.text.TextUtils
 import android.util.Log
@@ -39,8 +37,6 @@ class StenoService : InputMethodService() {
     private var trouble = ""
     private lateinit var config: Config
     private var view: CombView? = null
-    /** The hints and the bar, which have to stay touchable over the app. */
-    private var controls: View? = null
     private var status: TextView? = null
     /** The field's own action key, renamed for whatever field is in front of us. */
     private var actionKey: Button? = null
@@ -146,15 +142,13 @@ class StenoService : InputMethodService() {
             addView(hints)
             addView(bar)
         }
-        controls = strip
 
-        // With a full-height half per thumb the app keeps the whole screen, so
-        // the strip has to float at the bottom of the ground between them
-        // rather than sit under keys that reach the foot of the glass.
+        // With a comb on each edge the strip goes in the gap between them, at
+        // the bottom, rather than under keys that reach the foot of the band.
         if (keys.sides) {
             return FrameLayout(this).apply {
                 layoutParams = ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
                 )
                 addView(keys)
                 addView(
@@ -183,41 +177,6 @@ class StenoService : InputMethodService() {
         forget()
         actionKey?.text = actionName(info) ?: "⏎"
         view?.apply(Prefs.load(getSharedPreferences(PREFS, MODE_PRIVATE)))
-    }
-
-    /**
-     * Let the app keep the whole screen while the two combs stand on its edges.
-     *
-     * A comb runs down, so in landscape each thumb takes a full-height side and
-     * the app belongs to the ground between them. Android has no left or right
-     * inset to hand out: the content area is described by a top edge alone. So
-     * the app is told the keyboard costs it nothing, and the touchable region
-     * is cut back to the two combs and the strip, which is what keeps a tap in
-     * the middle reaching the app rather than a keyboard that draws nothing
-     * there.
-     */
-    override fun onComputeInsets(outInsets: Insets) {
-        super.onComputeInsets(outInsets)
-        val keys = view ?: return
-        if (!keys.sides) return
-        val root = keys.rootView
-        outInsets.contentTopInsets = root.height
-        outInsets.visibleTopInsets = root.height
-        outInsets.touchableInsets = Insets.TOUCHABLE_INSETS_REGION
-        outInsets.touchableRegion.setEmpty()
-        val at = IntArray(2)
-        keys.getLocationInWindow(at)
-        for (rect in keys.touchable()) {
-            outInsets.touchableRegion.union(
-                Rect(rect.left + at[0], rect.top + at[1], rect.right + at[0], rect.bottom + at[1])
-            )
-        }
-        controls?.let {
-            it.getLocationInWindow(at)
-            outInsets.touchableRegion.union(
-                Rect(at[0], at[1], at[0] + it.width, at[1] + it.height)
-            )
-        }
     }
 
     private fun button(label: String, click: (() -> Unit)?) = Button(this).apply {

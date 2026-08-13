@@ -8,7 +8,6 @@ import android.graphics.Color
 import android.graphics.DashPathEffect
 import android.graphics.Paint
 import android.graphics.Path
-import android.graphics.Rect
 import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
@@ -71,7 +70,7 @@ class CombView(
     private val landscape: Boolean
         get() = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
-    /** Whether each thumb gets a full-height half with the app between them. */
+    /** Whether the two combs stand on the edges with the bar in the gap. */
     val sides: Boolean get() = !embedded && landscape && config.landscapeSides
 
     private val tilt: Float get() = config.tilt(landscape)
@@ -89,9 +88,13 @@ class CombView(
     override fun onMeasure(widthSpec: Int, heightSpec: Int) {
         val width = MeasureSpec.getSize(widthSpec)
         val screen = resources.displayMetrics.heightPixels
-        // A comb runs down, so a landscape half wants the whole glass. The app
-        // is told to keep its room and the two halves overlay its margins.
-        val height = if (sides) screen else (screen * config.keyboardHeight).toInt()
+        val share = if (landscape && !embedded) config.landscapeHeight else config.keyboardHeight
+        var height = (screen * share.coerceIn(0.15f, 0.95f)).toInt()
+        // The window is what it is. Measuring past it would put the top of the
+        // comb off the glass, which is what asking for the whole screen did.
+        if (MeasureSpec.getMode(heightSpec) != MeasureSpec.UNSPECIFIED) {
+            height = min(height, MeasureSpec.getSize(heightSpec))
+        }
         setMeasuredDimension(width, height)
     }
 
@@ -103,7 +106,7 @@ class CombView(
     private fun spans(
         width: Float,
     ): Pair<ClosedFloatingPointRange<Float>, ClosedFloatingPointRange<Float>> {
-        if (landscape) {
+        if (landscape && config.landscapeSides) {
             val wide = width * config.splitLandscape.coerceIn(0.15f, 0.5f)
             return (0f..wide) to ((width - wide)..width)
         }
@@ -120,16 +123,6 @@ class CombView(
         chorder.place(Bank.LEFT, Field(left.start, top, left.endInclusive, height.toFloat()))
         chorder.place(Bank.RIGHT, Field(right.start, top, right.endInclusive, height.toFloat()))
         cut()
-    }
-
-    /** The parts of this view a touch can reach. The rest belongs to the app. */
-    fun touchable(): List<Rect> {
-        val (left, right) = spans(width.toFloat())
-        if (!sides) return listOf(Rect(0, 0, width, height))
-        return listOf(
-            Rect(0, 0, left.endInclusive.toInt(), height),
-            Rect(right.start.toInt(), 0, width, height),
-        )
     }
 
     /** The field under this x, or null on the ground between split fields. */
@@ -336,6 +329,7 @@ class CombView(
             if (config.cloud) drawCloud(canvas, bank, paint)
             drawComb(canvas, chorder.thumb(bank), paint)
             drawFocus(canvas, chorder.thumb(bank), paint)
+            if (config.showPortals) drawPortals(canvas, chorder.thumb(bank), paint)
             drawTaken(canvas, chorder.thumb(bank), paint)
         }
         if (config.touchReadout) drawReadout(canvas, paint)
@@ -423,6 +417,42 @@ class CombView(
             ink.style = Paint.Style.FILL
             ink.color = if (live) paint.text else fade(paint.text, 0.3f)
             canvas.drawText(button.v.toString(), middle.x, middle.y + ink.textSize * 0.35f, ink)
+        }
+    }
+
+    /**
+     * Where each portal out of the cell under the focus goes.
+     *
+     * A stride is a number until you see it land. Each portal side gets a line
+     * from the side it leaves by to the cell it arrives at, so the four numbers
+     * read as four places while the thumb is on them. A ring on the landing
+     * means arriving takes that key; a dashed one means it comes to rest beside
+     * it, with the cluster then one hop away.
+     */
+    private fun drawPortals(canvas: Canvas, thumb: Thumb, paint: Palette) {
+        if (!thumb.live) return
+        val spot = thumb.spot ?: return
+        val at = comb.place(thumb.bank, thumb.field, tilt)
+        val r = sketches[thumb.bank]?.radius ?: return
+        for (side in Side.values()) {
+            val land = comb.portal(thumb.bank, spot, side, thumb.keys) ?: continue
+            val from = comb.edge(spot, side, at)
+            val to = comb.point(land.spot, at)
+            ink.style = Paint.Style.STROKE
+            ink.strokeWidth = r * 0.05f
+            ink.color = fade(paint.hot, 0.4f)
+            ink.pathEffect = dashes
+            canvas.drawLine(from.x, from.y, to.x, to.y, ink)
+            ink.pathEffect = if (land.onKey) null else dashes
+            ink.color = fade(paint.hot, if (land.onKey) 0.85f else 0.5f)
+            canvas.drawCircle(to.x, to.y, r * 0.42f, ink)
+            ink.pathEffect = null
+            // A landing on the key sits on a cell that already names itself.
+            if (!config.showLabels || land.onKey) continue
+            ink.style = Paint.Style.FILL
+            canvas.drawText(
+                order[land.aim].toString(), to.x, to.y + ink.textSize * 0.35f, ink
+            )
         }
     }
 
