@@ -13,15 +13,47 @@ class Thumb(val bank: Bank) {
     var atX: Float = 0f
     var atY: Float = 0f
 
+    /** Where this touch began, which the gain reaches out from. */
+    var fromX: Float = 0f
+    var fromY: Float = 0f
+
     /**
-     * How far the focus that reads the cells sits from the thumb. Zero until a
+     * How much further than the thumb the focus travels.
+     *
+     * One is the thumb itself. Above one the comb can be smaller than the
+     * thumb's reach, which is what makes the travel per cell short.
+     */
+    var gain: Float = 1f
+
+    /** Where the gain has carried the touch to, before any jump. */
+    val reachX: Float get() = fromX + gain * (atX - fromX)
+    val reachY: Float get() = fromY + gain * (atY - fromY)
+
+    /**
+     * How far the focus that reads the cells sits from the reach. Zero until a
      * portal or a hole parts them, and until the thumb lifts after one.
      */
     var offX: Float = 0f
     var offY: Float = 0f
 
-    val focusX: Float get() = atX + offX
-    val focusY: Float get() = atY + offY
+    val focusX: Float get() = reachX + offX
+    val focusY: Float get() = reachY + offY
+
+    /** Bring the focus to the thumb, and start the reach again from here. */
+    fun settle(x: Float, y: Float) {
+        atX = x
+        atY = y
+        fromX = x
+        fromY = y
+        offX = 0f
+        offY = 0f
+    }
+
+    /** Put the focus on this point, wherever the thumb is. */
+    fun aim(to: Point) {
+        offX = to.x - reachX
+        offY = to.y - reachY
+    }
 
     /** Whether the thumb has been placed, so the focus means anything yet. */
     var live: Boolean = false
@@ -130,8 +162,8 @@ class Chorder(
         thumb.release()
         thumb.pointer = pointer
         thumb.live = true
-        thumb.atX = x
-        thumb.atY = y
+        thumb.gain = config.focusGain
+        thumb.settle(x, y)
         val spot = comb.hit(bank, thumb.field, tilt, x, y) ?: return false
         thumb.spot = spot
         val key = comb.resolve(spot, thumb.keys) ?: return false
@@ -162,8 +194,8 @@ class Chorder(
         if (config.combHole && now.v == Comb.HOLE) {
             if (!thumb.inHole) {
                 val middle = comb.middle(thumb.field)
-                thumb.offX = 2f * middle.x - thumb.focusX - x
-                thumb.offY = 2f * middle.y - thumb.focusY - y
+                thumb.offX = 2f * middle.x - thumb.focusX - thumb.reachX
+                thumb.offY = 2f * middle.y - thumb.focusY - thumb.reachY
                 now = comb.hit(thumb.bank, thumb.field, tilt, thumb.focusX, thumb.focusY) ?: return false
             }
             thumb.inHole = true
@@ -179,9 +211,7 @@ class Chorder(
             }
             val land = side?.let { comb.portal(thumb.bank, was, it, thumb.keys) }
             if (land != null) {
-                val to = comb.point(land.spot, comb.place(thumb.bank, thumb.field, tilt))
-                thumb.offX = to.x - x
-                thumb.offY = to.y - y
+                thumb.aim(comb.point(land.spot, comb.place(thumb.bank, thumb.field, tilt)))
                 now = land.spot
                 // A portal that aims at a hole means to leave the focus in it,
                 // beside the cluster it rings. Falling through as well would
@@ -201,9 +231,7 @@ class Chorder(
             }
             val next = gate?.let { comb.onward(thumb.bank, riding, it, thumb.keys) }
             if (next != null) {
-                val to = comb.point(next.spot, comb.place(thumb.bank, thumb.field, tilt))
-                thumb.offX = to.x - x
-                thumb.offY = to.y - y
+                thumb.aim(comb.point(next.spot, comb.place(thumb.bank, thumb.field, tilt)))
                 now = next.spot
                 thumb.inHole = now.v == Comb.HOLE
                 thumb.riding = if (next.onKey) null else Ride(next, gate)
@@ -237,8 +265,8 @@ class Chorder(
         from.release()
         to.pointer = pointer
         to.live = true
-        to.atX = x
-        to.atY = y
+        to.gain = config.focusGain
+        to.settle(x, y)
         to.spot = comb.hit(into, to.field, tilt, x, y)
         val key = to.spot?.let { comb.resolve(it, to.keys) } ?: return false
         take(to, key)
@@ -333,8 +361,7 @@ class Chorder(
     fun stall(bank: Bank) {
         val thumb = thumb(bank)
         if (!thumb.down) return
-        thumb.offX = 0f
-        thumb.offY = 0f
+        thumb.settle(thumb.atX, thumb.atY)
         thumb.inHole = false
         thumb.riding = null
         thumb.spot = comb.hit(bank, thumb.field, tilt, thumb.atX, thumb.atY)

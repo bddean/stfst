@@ -50,12 +50,10 @@ class StenoService : InputMethodService() {
     private val notes = Notes()
     private var notesClear: Runnable? = null
 
-    /** How many lines the panel has room for, measured rather than guessed. */
-    private var notesRows = 1
     /**
-     * The reverse lookups run here, off the stroke's path to the editor.
-     * Every native call holds [runtime], because the handle is one mutable
-     * board and a lookup racing a stroke would read it mid-write.
+     * The reverse lookups and the peeks run here, off the stroke's path to the
+     * editor. Every native call holds [runtime], because the handle is one
+     * mutable board and a second reader racing a stroke would read it mid-write.
      */
     private val hinter: ExecutorService = Executors.newSingleThreadExecutor()
     private val runtime = Any()
@@ -129,12 +127,10 @@ class StenoService : InputMethodService() {
         actionKey = button("⏎") { act() }
         bar.addView(actionKey)
 
-        val keys = CombView(this, config, order, ::stroke)
+        val keys = CombView(this, config, order, ::stroke, ::chord)
         view = keys
-        // The gap between two edge combs is the only room this keyboard has to
-        // spare, so that is where the record goes, and only there is it worth
-        // more than one line.
-        val tall = keys.sides && config.showLog
+        // One line, whatever room there is. The briefs are what a line is worth,
+        // and anything taller is the app's room rather than this keyboard's.
         val panel = TextView(this).apply {
             setPadding(24, 6, 24, 6)
             textSize = 13f
@@ -142,29 +138,16 @@ class StenoService : InputMethodService() {
             // Outlines read as a column when they line up, and only a fixed
             // pitch lines them up.
             typeface = Typeface.MONOSPACE
-            if (tall) {
-                gravity = Gravity.BOTTOM
-            } else {
-                setSingleLine(true)
-                ellipsize = TextUtils.TruncateAt.START
-            }
+            setSingleLine(true)
+            ellipsize = TextUtils.TruncateAt.START
             visibility = View.GONE
         }
         notesBar = panel
-        notesRows = 1
-        if (tall) measureRows(panel)
 
         val strip = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setBackgroundColor(Color.TRANSPARENT)
-            addView(
-                panel,
-                LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    if (tall) 0 else ViewGroup.LayoutParams.WRAP_CONTENT,
-                    if (tall) 1f else 0f,
-                )
-            )
+            addView(panel)
             addView(bar)
         }
 
@@ -199,26 +182,6 @@ class StenoService : InputMethodService() {
         }
     }
 
-    /**
-     * How many lines the panel can hold, from what it was given rather than
-     * from what the band was asked for.
-     *
-     * `maxLines` would keep the first rows and the newest lines are the last,
-     * so the count feeds the render and the view is never told to truncate.
-     */
-    private fun measureRows(panel: TextView) {
-        panel.addOnLayoutChangeListener { _, _, top, _, bottom, _, _, _, _ ->
-            val line = panel.lineHeight
-            if (line <= 0) return@addOnLayoutChangeListener
-            val room = bottom - top - panel.paddingTop - panel.paddingBottom
-            val rows = (room / line).coerceAtLeast(1)
-            if (rows == notesRows) return@addOnLayoutChangeListener
-            notesRows = rows
-            render()
-        }
-    }
-
-    /** A fresh field means a fresh buffer: the old text belongs to the old field. */
     /**
      * What the app lays out around, and what our window takes touches for.
      *
@@ -347,6 +310,44 @@ class StenoService : InputMethodService() {
         sent = ""
     }
 
+    /**
+     * What this stroke would write, without writing it.
+     *
+     * The runtime is one mutable board, so the only way to ask is to make the
+     * stroke and take it back. Nothing reaches the editor and the buffer ends
+     * where it started. A stroke that means undo is answered by name instead,
+     * because asking what an undo writes would perform one.
+     */
+    private fun peek(keys: Long): String {
+        if (handle == 0L || keys == 0L) return ""
+        val star = order.indexOf('*')
+        if (star >= 0 && keys == 1L shl star) return "↶"
+        return synchronized(runtime) {
+            val was = Native.text(handle)
+            val now = Native.push(handle, keys)
+            Native.undo(handle)
+            var common = 0
+            while (common < now.length && common < was.length && now[common] == was[common]) common++
+            // A longer match takes back what the strokes it covers wrote, so
+            // say that rather than showing only what is left.
+            (if (common < was.length) "⌫" else "") + now.substring(common)
+        }
+    }
+
+    /**
+     * The chord in hand changed, so answer with what it would write.
+     *
+     * Off the drawing's thread: making the stroke to find out is a dictionary
+     * lookup, and a frame should not wait on one.
+     */
+    private fun chord(keys: Long) {
+        if (hinter.isShutdown) return
+        hinter.execute {
+            val text = peek(keys)
+            view?.post { view?.writes(keys, text) }
+        }
+    }
+
     private fun stroke(keys: Long) {
         if (handle == 0L) return
         // A bare star is the undo stroke, as on any steno machine.
@@ -385,15 +386,14 @@ class StenoService : InputMethodService() {
     }
 
     /**
-     * Put the record on the screen, at whatever length the panel has room for.
+     * Put the briefs on the screen.
      *
-     * One line is worth the briefs alone: a stroke you have just made is not
+     * The line is worth the briefs alone: a stroke you have just made is not
      * news, and a shorter way to make it is.
      */
     private fun render() {
         val bar = notesBar ?: return
-        val tall = view?.sides == true && config.showLog
-        bar.text = if (tall) notes.log(notesRows) else notes.briefs(BRIEFS)
+        bar.text = notes.briefs(BRIEFS)
         bar.visibility = if (bar.text.isEmpty()) View.GONE else View.VISIBLE
         // The record clears after a quiet spell: it is about what was just
         // written, and an hour-old line no longer is.

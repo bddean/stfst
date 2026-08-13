@@ -29,6 +29,8 @@ class CombView(
     private var config: Config,
     private val order: String,
     private val onStroke: (Long) -> Unit,
+    /** The chord in hand changed. Whoever can say what it writes answers with [writes]. */
+    private val onChord: (Long) -> Unit = {},
     /** True in the settings preview, which has no app to lay out around. */
     private val embedded: Boolean = false,
 ) : View(context) {
@@ -241,6 +243,7 @@ class CombView(
                 chorder.reset()
             }
         }
+        ask()
         invalidate()
         return true
     }
@@ -428,6 +431,7 @@ class CombView(
             if (config.showPortals) drawPortals(canvas, thumb, paint, sketch)
             drawTaken(canvas, thumb, paint, thumb.field)
         }
+        drawWriting(canvas, paint, keysTop.toFloat())
         val show = glow()
         if (keysTop > 0 && show > 0f) {
             canvas.saveLayerAlpha(0f, 0f, width.toFloat(), keysTop.toFloat(), (show * 255).toInt())
@@ -440,6 +444,7 @@ class CombView(
                 drawMarks(canvas, thumb, paint, band)
                 drawTaken(canvas, thumb, paint, band(bank))
             }
+            drawWriting(canvas, paint, 0f)
             canvas.restore()
         }
         if (config.touchReadout) drawReadout(canvas, paint)
@@ -541,8 +546,10 @@ class CombView(
             }
             if (state == 0 && !config.showDeadCells) continue
             ink.style = Paint.Style.FILL
-            val ground = face(paint, button.key, state == 2)
-            ink.color = if (state == 0) fade(ground, 0.35f) else ground
+            // A spent key gives up its hue. Kind is a question about live keys,
+            // so held and spent stay one step apart whatever kind it is.
+            ink.color = if (state == 0) fade(paint.tints.getValue(Kind.PLAIN).face, 0.3f)
+            else face(paint, button.key, state == 2)
             canvas.drawPath(path, ink)
             ink.style = Paint.Style.STROKE
             ink.strokeWidth = sketch.radius * if (state == 2) 0.085f else 0.055f
@@ -762,6 +769,42 @@ class CombView(
         ink.style = Paint.Style.STROKE
         ink.strokeWidth = mark * 0.25f
         canvas.drawLine(held.x, held.y, focus.x, focus.y, ink)
+    }
+
+    /**
+     * What the stroke in hand would write, if a thumb lifted now.
+     *
+     * The answer comes back from whoever owns the runtime, and it is kept with
+     * the chord it is about. A chord the answer is not about is not drawn, so
+     * the last stroke's text never sits over this one.
+     */
+    private var wroteFor = 0L
+    private var wrote = ""
+
+    fun writes(chord: Long, text: String) {
+        wroteFor = chord
+        wrote = text
+        invalidate()
+    }
+
+    /** Ask what is in hand now, once per change of the chord. */
+    private var asked = 0L
+
+    private fun ask() {
+        val mask = chorder.mask()
+        if (mask == asked) return
+        asked = mask
+        onChord(mask)
+    }
+
+    private fun drawWriting(canvas: Canvas, paint: Palette, top: Float) {
+        val text = if (chorder.mask() == wroteFor) wrote else ""
+        if (text.isEmpty()) return
+        ink.style = Paint.Style.FILL
+        ink.color = fade(paint.text, 0.8f)
+        canvas.drawText(
+            text.takeLast(48), width * 0.5f, top + ink.textSize * 2.4f, ink
+        )
     }
 
     /** The keys this thumb holds, armed ones included. */

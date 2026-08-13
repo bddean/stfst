@@ -177,14 +177,6 @@ data class Config(
      */
     var landscapeHeight: Float = 0.72f,
     /**
-     * Fill the gap between two edge combs with the record: every stroke, the
-     * text it wrote, and the briefer outlines under it.
-     *
-     * The gap is the only room this keyboard has to spare, and one line is only
-     * worth the briefs. Off leaves that one line, in the gap or under the keys.
-     */
-    var showLog: Boolean = true,
-    /**
      * A copy of the combs, drawn over the app above the keys.
      *
      * Its share of the screen, zero for none. What it buys is a small
@@ -194,6 +186,16 @@ data class Config(
      * still works.
      */
     var previewHeight: Float = 0f,
+    /**
+     * How much further than the thumb the focus travels.
+     *
+     * One is the thumb itself. Above one the whole comb sits inside a shorter
+     * sweep, so the travel per cell falls and the walk is quicker; what it
+     * costs is that the focus is no longer under the thumb, which is what the
+     * mark and the line to it are for. The reach starts again at every touch
+     * and at every stall.
+     */
+    var focusGain: Float = 1f,
     /** The thumb marks: where the focus is, and where the thumb is now. */
     var markRadius: Float = 0.022f,
     var labelSp: Float = 15f,

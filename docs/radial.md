@@ -205,6 +205,21 @@ because each cost a bug to learn:
   a drag every 8 ms found two bugs on the ring; the comb reads
   `getHistorical*` for the same reason.
 
+The first of those three came back to be paid a second time. The portals are
+drawn as well, and the drawing of a *jump* was not probed: it asked where a
+jump lands, then worked out on its own whether the jump could be ridden on. The
+two answers parted at once. The picture drew a ride out of `S` that ran into
+`-H`, where a thumb crossing that side takes `-H` instead of riding past it.
+
+The shape of the fix is the same as the region's. A jump is asked about the one
+side being crossed, the whole run of a slide is one function, and the picture
+calls it rather than deriving it. What is new is the test:
+`ChorderTest.every_drawn_slide_is_a_slide_a_thumb_can_make` walks every stop
+the picture draws, on every key of both banks, as real thumb motion through
+`Chorder`, and fails where the focus does not arrive as drawn. A probe makes
+the two agree by construction; replaying the picture catches it when they do
+not.
+
 What the comb dropped is the whole apparatus the direction read needed:
 `Minimum slide`, `Turn needed`, `Hold on to a key`, `Settle`, the two rings,
 the shared-out slot angles, and the sector probe. None of them has an analogue,

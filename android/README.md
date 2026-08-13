@@ -70,6 +70,7 @@ fixes each of them:
 | the walk | the two sides facing keys steno order still allows |
 | the portals | the other sides, the ones holding passed keys included |
 | a float | a key that does not touch the next key of the walk |
+| a slide | the run of landings one motion of the thumb reaches: the jump, then the ride, until a crossing cannot be made |
 | a cell's ground | the field clipped by the bisector against every rival, and by its own six lattice neighbours |
 | where a side points | the step it names, read off the lattice. A hexagon's corners sit 30 degrees off its sides, and a corner is not a side |
 
@@ -157,16 +158,10 @@ So the ride fires on **the side the thumb came in by, or either side next to
 it**. A thumb sweeps an arc rather than a line, and holding it to one exact
 side of six would be holding it to something hands do not do. A key on the way
 out is taken rather than ridden past, and a side with no cell beyond it is
-never crossed, so `Comb.onward` answers null in both cases and the drawing and
-the touch cannot disagree about when the ride is there.
+never crossed.
 
 Turning right round out of a landing puts the focus back on foot. That keeps
 every motion the board had before the ride existed.
-
-The preview draws the ride out to where it ends. A landing the slide only
-passes through gets a ring and no arrow; the cell the slide reaches gets **one
-arrowhead per slide it takes to arrive**. So the heads are at the destination,
-never at the layover.
 
 ### Two hops, and why the numbers are fixed
 
@@ -209,20 +204,43 @@ The line goes on to where the slide ends. Each stop it passes through keeps one
 arrowhead, and the last one carries **one head per slide it takes to arrive**.
 So the heads are where you are going, not where you go through.
 
-`Comb.slides` is the whole picture, and the touch asks the same function. It
-had to become one function: the drawing worked out its own answer, and it drew
-a ride out of `S` that ran into `-H`, which a thumb could never make.
-`Comb.onward` now answers about the one side being crossed and nothing else,
-and `ChorderTest.every_drawn_slide_is_a_slide_a_thumb_can_make` walks every
-drawn stop on the board as thumb motion and fails if the focus does not arrive
-where the drawing said.
+`Comb.slides` is the whole picture, and the touch asks the same functions under
+it. It had to be one answer. The drawing worked the ride out its own way, which
+let it draw a ride out of `S` that ran into `-H`: a thumb crossing that side
+takes the key rather than riding past it. `Comb.onward` answers about **the one
+side being crossed** and nothing else now, and
+`ChorderTest.every_drawn_slide_is_a_slide_a_thumb_can_make` walks every drawn
+stop on the board as thumb motion and fails where the focus does not arrive as
+drawn.
 
-### Three kinds of key
+## Three kinds of key
 
 The vowels and the modifiers stand on their own ground: a green tint for
 `AOEU`, a violet one for the modifiers, plain for the rest. Which is which is
 read off the glyph, so a key that spells nothing is a modifier and a layout
 that moves one does not have to say so twice.
+
+Across that, every key is in one of three states, because they are three
+different answers: **in the chord** (the tint at full strength, a hot rim and a
+hot letter), **still takeable**, and **spent by steno order**. A spent key
+gives up its hue as well as most of its strength, so the state reads the same
+whatever kind of key it is: kind is a question about live keys.
+`Show cells already passed` hides the spent ones.
+
+## What the stroke would write
+
+The keys in hand are printed above the comb, and under them **what they would
+write if a thumb lifted now**.
+
+The runtime is one mutable board, so the only way to ask is to make the stroke
+and take it back. Nothing reaches the editor and the buffer ends where it
+started. A stroke that means undo is answered by name instead, because asking
+what an undo writes would perform one. A match that supersedes what earlier
+strokes wrote says so with a `⌫`.
+
+It runs off the drawing's thread, on the same one the reverse lookups use, and
+the answer is kept with the chord it is about. So the last chord's text is
+never left sitting over this one.
 
 ## One thumb, both combs
 
@@ -288,6 +306,17 @@ both and the sign belongs to the bank.
 
 It turns the lattice, which is one placement the drawing and the hit test
 share; nothing else about the layout moves.
+
+## Focus reach
+
+`Focus reach` is how much further than the thumb the focus travels. One is the
+thumb itself. Above one the whole comb sits inside a shorter sweep, so the
+travel per cell falls and the walk is quicker.
+
+What it costs is that the focus is no longer under the thumb, which is what the
+mark and the line to it are for. The reach starts again at every touch and at
+every stall, so it is a multiplier on this slide rather than a drift that
+builds up.
 
 ## Writing a stroke
 
@@ -356,18 +385,10 @@ wrote, together; a brief for that same text, later. The second is about the
 first, so a brief hangs under the stroke that provoked it rather than living in
 a bar of its own.
 
-How much of that reaches the screen is a question about room, and it is asked
-where the room is known:
-
-| | |
-|---|---|
-| one line | the briefs alone. A stroke you have just made is not news, and a shorter way to make it is |
-| the landscape gap | the whole record, a line per stroke and a line per brief under it, newest at the foot |
-
-The gap between two edge combs is the only room this keyboard has to spare, so
-that is where the record goes. The panel measures itself and keeps as many
-lines as it can hold. `The record in the landscape gap` turns it back to one
-line, and a quiet minute clears it either way.
+What reaches the screen is **one line, and the briefs alone**. A stroke you
+have just made is not news, and a shorter way to make it is. Anything taller
+than a line is the app's room rather than this keyboard's, so the panel never
+grows into it. A quiet minute clears the line.
 
 ## What the touch panel reports
 

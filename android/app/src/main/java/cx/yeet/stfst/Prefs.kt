@@ -49,10 +49,10 @@ object Prefs {
             putFloat("fieldSplit", fieldSplit)
             putBoolean("oneThumb", oneThumb)
             putFloat("previewHeight", previewHeight)
+            putFloat("focusGain", focusGain)
             putBoolean("landscapeSides", landscapeSides)
             putFloat("splitLandscape", splitLandscape)
             putFloat("landscapeHeight", landscapeHeight)
-            putBoolean("showLog", showLog)
             putFloat("markRadius", markRadius)
             putFloat("labelSp", labelSp)
             putFloat("keyboardHeight", keyboardHeight)
@@ -94,10 +94,10 @@ object Prefs {
             fieldSplit = prefs.getFloat("fieldSplit", d.fieldSplit),
             oneThumb = prefs.getBoolean("oneThumb", d.oneThumb),
             previewHeight = prefs.getFloat("previewHeight", d.previewHeight),
+            focusGain = prefs.getFloat("focusGain", d.focusGain),
             landscapeSides = prefs.getBoolean("landscapeSides", d.landscapeSides),
             splitLandscape = prefs.getFloat("splitLandscape", d.splitLandscape),
             landscapeHeight = prefs.getFloat("landscapeHeight", d.landscapeHeight),
-            showLog = prefs.getBoolean("showLog", d.showLog),
             markRadius = prefs.getFloat("markRadius", d.markRadius),
             labelSp = prefs.getFloat("labelSp", d.labelSp),
             keyboardHeight = prefs.getFloat("keyboardHeight", d.keyboardHeight),

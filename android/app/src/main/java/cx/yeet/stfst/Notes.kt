@@ -9,9 +9,8 @@ package cx.yeet.stfst
  * about the first, so a brief attaches to the stroke that provoked it rather
  * than living in a bar of its own.
  *
- * How much of this is worth showing is a question about room, so it is asked at
- * the point of rendering: one line of it is the briefs, because a stroke you
- * just made is not news and a shorter way to make it is.
+ * What is worth one line is the briefs, because a stroke you just made is not
+ * news and a shorter way to make it is. That is all the panel ever shows.
  */
 class Notes(private val keep: Int = 60) {
 
@@ -48,15 +47,4 @@ class Notes(private val keep: Int = 60) {
     /** The briefs alone, newest last: what one line of room is worth spending on. */
     fun briefs(most: Int): String =
         strokes.flatMap { it.briefs }.takeLast(most).joinToString("   ")
-
-    /** The whole record, a line per stroke and a line per brief under it. */
-    fun log(rows: Int): String {
-        if (rows <= 0) return ""
-        val lines = strokes.flatMap { stroke ->
-            val wrote = stroke.wrote.replace("\n", "⏎")
-            listOf(if (wrote.isEmpty()) stroke.outline else "${stroke.outline}  $wrote") +
-                stroke.briefs.map { "  ↳ $it" }
-        }
-        return lines.takeLast(rows).joinToString("\n")
-    }
 }

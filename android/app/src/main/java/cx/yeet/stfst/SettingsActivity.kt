@@ -125,6 +125,10 @@ class SettingsActivity : Activity() {
                 "no touches. Shrink the keys and a thumb crosses cells in less " +
                 "travel; this buys back the legibility that costs. Zero for none",
             unit = "× screen"),
+        Range("Focus reach", 1f, 3f, { it.focusGain }, { c, v -> c.focusGain = v },
+            "how much further than the thumb the focus travels. One is the " +
+                "thumb itself; above one the whole comb sits inside a shorter " +
+                "sweep, and the mark shows where the focus went", unit = "\u00d7"),
         Range("Comb fill", 0.4f, 1f, { it.combFill }, { c, v -> c.combFill = v },
             "one fills the field. Less packs the comb within reach; a thumb " +
                 "that overshoots the drawn edge still means the cell it " +
@@ -208,11 +212,6 @@ class SettingsActivity : Activity() {
                 "app's room with a top edge alone, so there is no way to make " +
                 "the app narrower and leave the combs full height beside it",
             unit = "of the screen"),
-        Flag("The record in the landscape gap", { it.showLog },
-            { c, v -> c.showLog = v },
-            "the gap between two edge combs fills with what the keyboard has " +
-                "just done: every stroke, the text it wrote, and the briefer " +
-                "outlines under it. Off leaves the one line of briefs"),
         Range("Landscape field width", 0.15f, 0.5f, { it.splitLandscape },
             { c, v -> c.splitLandscape = v },
             "each field's share of the width, anchored to its own side",
