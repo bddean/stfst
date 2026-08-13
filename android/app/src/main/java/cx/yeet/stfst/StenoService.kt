@@ -2,6 +2,7 @@ package cx.yeet.stfst
 
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Rect
 import android.inputmethodservice.InputMethodService
 import android.inputmethodservice.InputMethodService.Insets
 import android.os.SystemClock
@@ -14,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import java.io.File
@@ -36,7 +38,9 @@ class StenoService : InputMethodService() {
     /** Why the runtime did not start, for the bar to show instead of dying. */
     private var trouble = ""
     private lateinit var config: Config
-    private var view: RadialView? = null
+    private var view: CombView? = null
+    /** The hints and the bar, which have to stay touchable over the app. */
+    private var controls: View? = null
     private var status: TextView? = null
     /** The field's own action key, renamed for whatever field is in front of us. */
     private var actionKey: Button? = null
@@ -87,13 +91,6 @@ class StenoService : InputMethodService() {
 
     override fun onCreateInputView(): View {
         config = Prefs.load(getSharedPreferences(PREFS, MODE_PRIVATE))
-        val column = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-            )
-        }
         val bar = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL
@@ -141,17 +138,43 @@ class StenoService : InputMethodService() {
         }
         hintsBar = hints
 
-        val radial = RadialView(this, config, order, ::stroke, ::key)
-        view = radial
-        // The keys first, because the copy of the ring sits in a strip at the top of
-        // them and that strip has to be the topmost thing in the window: the inset
-        // that lets the app lay out underneath is one line, so anything above the
-        // strip would hide app content behind it. A bar under the keys is also the
-        // easier one to reach.
-        column.addView(radial)
-        column.addView(hints)
-        column.addView(bar)
-        return column
+        val keys = CombView(this, config, order, ::stroke)
+        view = keys
+        val strip = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setBackgroundColor(Color.TRANSPARENT)
+            addView(hints)
+            addView(bar)
+        }
+        controls = strip
+
+        // With a full-height half per thumb the app keeps the whole screen, so
+        // the strip has to float at the bottom of the ground between them
+        // rather than sit under keys that reach the foot of the glass.
+        if (keys.sides) {
+            return FrameLayout(this).apply {
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
+                )
+                addView(keys)
+                addView(
+                    strip,
+                    FrameLayout.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL,
+                    )
+                )
+            }
+        }
+        return LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            addView(keys)
+            addView(strip)
+        }
     }
 
     /** A fresh field means a fresh buffer: the old text belongs to the old field. */
@@ -163,20 +186,38 @@ class StenoService : InputMethodService() {
     }
 
     /**
-     * Let the app lay out underneath the floating part of the keyboard.
+     * Let the app keep the whole screen while the two combs stand on its edges.
      *
-     * The window reaches above the keys so the copy of the ring has somewhere to go.
-     * Without this the app would be pushed up by the whole window and the strip would
-     * cost it the room it was meant to save, and every touch in the strip would be
-     * swallowed by a keyboard that draws nothing there.
+     * A comb runs down, so in landscape each thumb takes a full-height side and
+     * the app belongs to the ground between them. Android has no left or right
+     * inset to hand out: the content area is described by a top edge alone. So
+     * the app is told the keyboard costs it nothing, and the touchable region
+     * is cut back to the two combs and the strip, which is what keeps a tap in
+     * the middle reaching the app rather than a keyboard that draws nothing
+     * there.
      */
     override fun onComputeInsets(outInsets: Insets) {
         super.onComputeInsets(outInsets)
-        val floating = view?.floating() ?: 0
-        if (floating <= 0) return
-        outInsets.contentTopInsets += floating
-        outInsets.visibleTopInsets += floating
-        outInsets.touchableInsets = Insets.TOUCHABLE_INSETS_CONTENT
+        val keys = view ?: return
+        if (!keys.sides) return
+        val root = keys.rootView
+        outInsets.contentTopInsets = root.height
+        outInsets.visibleTopInsets = root.height
+        outInsets.touchableInsets = Insets.TOUCHABLE_INSETS_REGION
+        outInsets.touchableRegion.setEmpty()
+        val at = IntArray(2)
+        keys.getLocationInWindow(at)
+        for (rect in keys.touchable()) {
+            outInsets.touchableRegion.union(
+                Rect(rect.left + at[0], rect.top + at[1], rect.right + at[0], rect.bottom + at[1])
+            )
+        }
+        controls?.let {
+            it.getLocationInWindow(at)
+            outInsets.touchableRegion.union(
+                Rect(at[0], at[1], at[0] + it.width, at[1] + it.height)
+            )
+        }
     }
 
     private fun button(label: String, click: (() -> Unit)?) = Button(this).apply {

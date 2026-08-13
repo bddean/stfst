@@ -1,214 +1,158 @@
-# The radial keyboard
+# The comb keyboard
 
-An Android input method over the compiled dictionaries. Two thumbs, each sliding
-through its own half of the steno order.
+An Android input method over the compiled dictionaries. Two thumbs, each
+walking down its own honeycomb through its half of the steno order.
 
 ## What the gesture is
 
-A chord is a rising run through the steno order, so one thumb tracing one bank is
-a walk that only ever goes forward. Two things follow, and they are the whole
-design:
+A chord is a rising run through the steno order, so one thumb tracing one bank
+is a walk that only ever goes forward. The comb lays that walk out as fixed
+cells and reads the thumb by **where it is**, never by where it went.
 
-- The key just taken can never come again, so the point under the thumb is always
-  free. That is what the ring is drawn around.
-- Only keys later in the order can come next, so the ring drops the rest.
+Touch down on the key you want. Then step, one cell at a time, down the chain.
+Entering a cell takes what it yields; a cell steno order has passed is ground.
+Lifting either thumb writes the stroke.
 
-The dictionary is not asked. A key sits at a fixed angle on a fixed ring whatever
-is loaded, because a layout that moved with the dictionary could not be learned.
+Nothing waits on time, distance or turning. A cell is a place, so a tap on one
+is finished and there is no gate to tune.
 
-## One ring, read by direction
+## Why the keys stand still
 
-A slide is read by its direction. How far it went decides nothing beyond whether
-it happened at all, which `Minimum slide` sets.
+The old keyboard read a slide by its direction, from a ring that reshaped
+itself around the last key taken. That has a ceiling nothing can lift: twelve
+keys follow the first of a bank, so those twelve directions share 360 degrees
+and **30 degrees is the widest any of them can be**. Sharing the ring out
+between the live keys reaches that ceiling exactly and cannot beat it.
 
-There were two rings, and how far you slid chose between them. Metering a distance
-under a thumb without looking is the weak channel: the answer to "how far" was
-wrong far more often than the answer to "which way", and two rings asked for it on
-every flick. Every rule that went wrong on this keyboard came from that one choice.
-`Settle` exists because a thumb reaching outward crosses the near ring on the way,
-and the vowel it collected there was the bug that took three attempts to find.
+A fixed cell pays in area instead of angle, and area the glass has plenty of.
+What position reading needs in exchange is a rule with no gate in it, and
+take-on-entry is that rule.
 
-Nothing was lost by dropping it. **The narrowest target a key can have is set by
-how many keys still follow it, not by the layout.** Twelve keys follow the first of
-a bank, so 30 degrees is the ceiling for any arrangement of them, and a single
-shared ring reaches that ceiling in every state:
+## The comb runs down
 
-| after | keys still live | each holds |
-|---|---|---|
-| S | 8 | 45° |
-| T | 7 | 51° |
-| K | 6 | 60° |
-| P | 5 | 72° |
-| W | 4 | 90° |
-| H | 3 | 120° |
-| R | 2 | 180° |
+Flat-top hexes, with alternate columns hanging half a cell lower. So a column
+is a run down the glass, and the chain of the steno order zigzags between two
+of them: a key touches the next in the order diagonally, and the one after
+that directly below.
 
-The second ring bought room by adding a channel that cost more than the room was
-worth. Put keys in a near string and the short slide comes back, with `Settle` and
-the ring boundary.
+Down, not across, for two reasons. A thumb sweeping toward its palm is the
+short strong motion. And a comb that runs down can be full height, which is
+what landscape wants.
 
-The ring is drawn a second time in the clear, where the thumb is not covering it.
-Same keys, same angles, smaller. See "Where the copy goes" below.
+## A layout is one value per cell
+
+One character per cell, rows separated by a slash or a newline. A dot is open
+ground, `o` is a hole, a space is off the board, and anything else is the key
+of that name. The left bank ships as:
 
 ```
-   ⌫      S      T        far ring, long slide:  S T K P W H R
-       +                  near ring, short slide: A O # @ ^ +
-R     ^   ●   A     K     ● is the thumb
-       @  #  O            slots run clockwise in steno order
-   H      W      P        from each ring's start angle
+.#..
+.^@.
+.S+.
+.KT.
+.WP.
+.RH.
+.OA.
 ```
 
-## The live keys share each ring out between them
+Every character touches the one above, below, left and right of it, plus one
+diagonal, so the text is a picture of the keyboard. Edit it in the settings.
 
-A ring is divided evenly between the keys still live on it: the earliest sits at
-the start angle and the rest follow clockwise, so the order round the ring is the
-order of the chord. The dictionary is still not asked, and the layout still follows
-from the keys taken and nothing else.
+Everything else is recovered from that rectangle. There is no span, no size,
+no order field and no portal table, because the grid already fixes each of
+them:
 
-The average region is 360 degrees over the count however the slots are placed, so
-what this buys is the worst one. With fixed slots a key with a live neighbour on
-each side is squeezed to the gap between them: after E, the right near ring holds
-U, d and z, and d gets 45 degrees against 157 for each of its neighbours. Shared
-out, all three hold 120. `RingTest.sharing_the_ring_out_widens_the_smallest_region`
-is that claim, and `a_slide_to_where_a_key_is_drawn_takes_that_key` is the contract
-it rests on, over every state both banks can be in.
+| | |
+|---|---|
+| a melded button | a run of touching cells holding one value. That is all a big key is |
+| two buttons, one key | cells holding one value that do not touch |
+| the walk | the two sides facing keys steno order still allows |
+| the portals | the other four sides, the ones holding passed keys included |
+| a cell's ground | the field clipped by the bisector against every rival |
 
-The cost is that a key's direction depends on what the stroke has taken. The thing
-to learn is "the second key still available is up-right", not "K is at 0". `Share
-each ring out evenly` turns it off and restores fixed slots.
+`Comb` answers all of it, and the drawing asks `Comb` rather than working the
+shapes out a second way, so the picture cannot disagree with the decision.
+`CombTest.a_tap_lands_inside_the_cell_it_is_answered_by` is that claim, over
+three tilts.
 
-The left near ring starts on the diagonal, not at 0. After any consonant it holds A
-and O alone, so their boundary is a quarter turn from each: at 0 that boundary is
-straight up and straight down, which is where the consonants are, and an undershot
-reach upward would pick a vowel by coin toss.
+## Four numbers, not fifty-two destinations
 
-## A boundary is sticky
+Steno order is enforced, so four of a cell's six sides can never be taken as
+keys. All four are portals. If each carried a destination of its own there
+would be about fifty-two of them to learn.
 
-A thumb resting between two keys is nearer first one and then the other on every
-touch sample, so the highlight and the buzz would swap back and forth and neither
-would say anything. The key already chosen keeps the answer until a rival beats it
-by `Hold on to a key`, six degrees by default.
+So a portal carries a **stride** instead, and the four strides are the same
+for every key on the board. The `out` portal always means "jump three keys
+ahead". Where that lands is derived:
 
-## Two layouts, because a tap is not a slide
+- **Early in the order** there is open ground beside key `i+k` touching two or
+  more keys still ahead. The focus lands there and takes nothing, and every one
+  of those keys is then one hop away. Two hops, and a choice at the end of the
+  first.
+- **Late in the order** no ground is worth that. The jump lands on the key
+  itself and takes it. One hop.
 
-A touch-down has a whole field to aim at and no direction to read. A slide has a
-direction and one point to measure from. Reading the touch-down as a slide from
-the field's home point made these one question, and it crowded thirteen keys
-around a single point: the first key of a stroke was the hardest one to hit.
+The sides take the strides in order of how far each turns from the way the walk
+is heading, so a side means the same jump wherever the thumb is.
 
-So a touch-down reads a honeycomb over the whole field, in steno order, three
-columns wide. Thirteen keys fall into rows of 3 2 3 2 3, and a cell is a target
-about a finger across. Positions are fixed whatever the stroke has taken already,
-because a tap has to be aimed before the thumb lands; steno order still applies,
-and a tap will not answer with a key the stroke has passed.
+## The focus is not the thumb
 
-Steno order fills the middle row first, then outward. An early key is where the
-sliding starts, since most of the stroke is still ahead of it, and a thumb at the
-edge of the glass has nowhere to slide to. By row and not by cell: ranking every
-cell by its distance from the middle gives the earliest keys the most central
-cells and leaves the layout scattered, and thirteen keys nobody can find are worse
-than thirteen keys with less room.
+A portal throws the point that reads the cells ahead of the thumb, and the
+offset holds until the lift: the thumb goes on from where it is, the focus goes
+on from where the jump put it. A hole does the same, throwing the focus
+straight across the comb's middle.
 
-`Cell width` and `Cell height` size the lattice against a honeycomb that fills the
-field, one being that honeycomb. Less packs the keys within reach of a thumb, and
-the cells at the edge then grow to cover the field the lattice no longer reaches:
-a cell is the ground nearer that key than any other, and shrinking the lattice does
-not change what a tap out there means. Row and column separately, because a field
-taller than it is wide gives cells taller than they are wide.
+Both are drawn. The focus is the filled cell; once the two have parted the
+thumb is drawn too, faint, tied to the focus by a line. Holding still for
+`Stall` brings the focus back, writing nothing.
 
-Which is why a cell is drawn as the field clipped by the bisector against every
-rival, rather than as a hexagon from the lattice spacing. That is the definition of
-the cell and not a picture of it, so it stays right for any lattice and covers the
-whole field for every setting. `RingTest.a_tap_lands_inside_the_cell_it_is_answered_by`
-is the claim, over a shrunken lattice as well as a full one.
+## Landscape, and what Android will not give you
 
-Every slide after that reads the rings.
+Each thumb takes a full-height side and the app keeps the whole screen between
+them. The window covers the glass and the touchable region is cut back to the
+two combs and the strip, so a tap in the middle reaches the app.
 
-## Every key is drawn as the region that takes it
+What is **not** available is a left or right inset. `onComputeInsets`
+describes the app's room with a top edge alone, so the app lays out full width
+and the combs cover its margins rather than pushing its content inward. Narrow
+overlaying strips is what this buys, and it is the same trick the old floating
+ring copy used. `Full-height halves in landscape` turns it off and returns to a
+band at the bottom, which costs the comb most of its length.
 
-Not as a circle at its slot. A live key owns every direction closer to its slot
-than to any other live slot, and that is usually far wider than the slot: after
-one consonant the two vowels own half the near ring each, and four live consonants
-own about ninety degrees apiece. Drawn as circles, that generosity was invisible
-and the ring looked like eight small targets to be hit precisely.
+## Tilt
 
-The regions are asked of the decision function rather than worked out from the
-slot angles, so the picture cannot disagree with what a slide will do. Same for
-the honeycomb: a cell is the set of points nearer that key than any other, which
-is what `entryAt` answers with.
-
-Three more things are drawn for the same reason. The fingertip, live, so a slide
-shows before it is read. A line from the mark to the fingertip, which is the slide
-being measured. And the region under the fingertip, filled, which is the key a
-lift or a pause would take.
-
-The copy in the clear shows all of that too, at its own scale, so a thumb covering
-the real ring costs nothing.
-
-## Where the copy goes
-
-The copy has to sit somewhere the thumb is not, and the field stopped being that
-place once the honeycomb filled it. `Copy of the ring` has four answers:
-
-- **Floating over the app**, the default. The keyboard's window reaches above the
-  keys, and `onComputeInsets` tells the app to lay out underneath, so the strip
-  takes no room from it. The strip is transparent and holds nothing while both
-  thumbs are up, and it is outside the touchable region, so a tap there reaches the
-  app. It only ever covers what is being read while a slide is happening.
-- **In a strip above the keys**, which takes the room instead and pushes the app up.
-- **In the thumb field**, which is where it used to be.
-- **Off**.
-
-The strip is measured from the ring it has to hold rather than set by a parameter,
-and the keys decide the scale, so a copy that would not fit cannot be asked for.
-
-The bar sits under the keys because of this. The inset that lets the app lay out
-underneath is a single line, so anything drawn above the strip would have app
-content hidden behind it, and the bar is opaque.
+A thumb sweeps along an arc, not a line, so the comb can be turned. `Tilt` is
+degrees, portrait and landscape apart, and zero runs the columns straight down
+the glass. It turns the lattice, which is one placement the drawing and the hit
+test share; nothing else about the layout moves.
 
 ## Writing a stroke
 
-Touch down on the key you want, then flick once per key. The direction of the flick
-is the whole of what it says.
+Lifting either thumb writes, and **the thumb still down keeps its keys**.
+Spelling a run of words that share a right-hand shape therefore costs one
+right-hand motion, not one per word. `Write on the first lift` turns this off
+and waits for both.
 
-A key is taken as soon as the flick clears `Minimum slide`, but only if the slide
-has turned by `Turn needed` since the last key. Going further along the same ray is
-the same reach, not another one, or a single long drag would take a second and a
-third key along it.
+A lift writes only when a key has been taken since the last stroke. Keeping
+keys and asking for a stroke are different things, and only the second is what
+a lift can mean: otherwise the second thumb's own lift writes its held keys
+again, and `Rr` comes out as `Rr` and then `r`.
 
-`Settle` applies to a near ring, so it does nothing until you configure one.
-
-Lifting either thumb writes the stroke, and **the thumb still down keeps its
-keys**. Spelling a run of words that share a right-hand shape therefore costs one
-right-hand motion, not one per word. `Write on the first lift` turns this off and
-waits for both.
-
-A lift writes only when a key has been taken since the last stroke. Keeping keys
-and asking for a stroke are different things, and only the second is what a lift
-can mean: otherwise the second thumb's own lift writes its held keys again, and
-`Rr` comes out as `Rr` and then `r`.
-
-The measuring origin is the fingertip where the last key was taken, and the ring
-is drawn there too. One point for both, which is not a detail: any offset between
-them leaves the distance already travelled sitting above the slide threshold, and
-the next touch sample spends it on a key nobody asked for.
-
-Drift is handled by holding still. After `Stall`, the ring comes to the thumb with
-nothing written. To the thumb and not to the field's home point, for the reason
-above: a mark left where the thumb is not counts the gap between them as a slide,
-and the next twitch spends it.
+A lift that took only the **armed keys** of its bank arms them for the next
+stroke instead of writing; lifting on them again sends them alone. Two quick
+taps add the side's double-tap key on top of the key under them, so tap tap on
+`-T` releases as `-*T`.
 
 ## The buzzes
 
-A buzz when a key is taken says a key was taken, which is a thing you can already
-see. The buzz that matters is on the **change of key under the thumb**, because
-that is what turns the aim of a slide into something to feel instead of something
-to read.
+A buzz when a key is taken says a key was taken, which is a thing you can
+already see. The buzz that matters is on the **change of cell under the
+focus**, because that is what turns a walk into something to feel instead of
+something to read.
 
-The two thumbs get buzzes that feel different, and this is where the hardware sets
-the limit. A phone has one vibration motor, so there is no left channel and no
-right channel, and no frequency to set. What there is, in the order the code asks
-for it:
+The two thumbs get buzzes that feel different, and this is where the hardware
+sets the limit. A phone has one vibration motor, so there is no left channel
+and no right channel. What there is, in the order the code asks for it:
 
 1. more than one motor, on the few devices that have them, addressed separately
 2. composition primitives, where `PRIMITIVE_LOW_TICK` against `PRIMITIVE_TICK`
@@ -216,23 +160,13 @@ for it:
 3. amplitude control, so weak against strong
 4. none of those, so one pulse against two, because rhythm always survives
 
-The settings screen prints which one this device got, under the switch that asks
-for it. Guessing at hardware is what the touch readout exists to avoid.
-
-## What the touch panel reports
-
-Every sample of the contact is drawn, faint, at the size and shape the driver
-gives it, and the numbers behind it are printed: pressure, size, and the two axes
-of the contact ellipse. Whether a hard press can be told from a light one is a
-question about the hardware, so it is on the screen rather than guessed at. Most
-panels report a constant pressure and a real contact area, which means a firm
-press shows up as a bigger ellipse and not as more pressure.
+The settings screen prints which one this device got, under the switch that
+asks for it.
 
 ## The bar
 
-The steno keys write text and can ask for nothing else, so a field with a submit
-button of its own was a dead end. The bar above the keyboard carries what the
-editor owns, right to left in reach order:
+The steno keys write text and can ask for nothing else, so the bar carries what
+the editor owns, right to left in reach order:
 
 | | |
 |---|---|
@@ -242,36 +176,27 @@ editor owns, right to left in reach order:
 | `⌄` | put the keyboard away |
 | `⚙` | the settings |
 
-The action key is renamed for whatever field is in front of it, out of the
-`EditorInfo` the app supplies.
+Any edit made through the bar gives up the tracked buffer. What reaches the
+editor is the difference between the runtime's buffer and what was last sent,
+so an edit made another way would leave that difference describing text nobody
+has. The next stroke starts from the field as it now is.
 
 ## The hints bar
 
 After every stroke the runtime reads the trailing one to four words backwards
 through every dictionary that carries a `reverse.hfstol`, phrases included.
 When an outline writes the same text in fewer strokes, `text=OUTLINE` joins a
-rolling row between the keys and the bar: eight entries, oldest out first,
-gone after a quiet minute and while it has nothing to say. A phrase is only
-worth showing when it saves strokes; a single word also when an outline no
-longer than what was stroked differs from it. The lookups run off the stroke's
-thread, so the editor never waits on them.
+rolling row between the keys and the bar: eight entries, oldest out first, gone
+after a quiet minute and while it has nothing to say. The lookups run off the
+stroke's thread, so the editor never waits on them.
 
-## Landscape
+## What the touch panel reports
 
-In landscape each thumb's field hugs its own side of the glass and the ground
-between them belongs to neither: a touch there reaches nothing. `Landscape
-field width` sets each field's share of the width, and 0.5 closes the gap.
-
-Any edit made through the bar gives up the tracked buffer. What reaches the editor
-is the difference between the runtime's buffer and what was last sent, so an edit
-made another way would leave that difference describing text nobody has. The next
-stroke starts from the field as it now is.
-
-## Long press
-
-Off by default. On, a hold opens a modifier ring: the near ring toggles a sticky
-modifier and the far ring sends a key with whatever is sticky, so `⌃` then `←` is
-one key event.
+`Draw the touched area` draws every sample of the contact at the size and shape
+the driver gives it, and `Print the touch numbers` prints pressure, size and
+the two contact axes. Whether a hard press can be told from a light one is a
+question about the hardware, so it goes on the screen rather than being
+guessed at. Both are off by default.
 
 ## Building
 
@@ -289,14 +214,13 @@ signing key would have to live somewhere.
 ## Releasing
 
 ```sh
-android/release.sh 0.12 "one line of what changed" [notes.md]
+android/release.sh 0.13 "one line of what changed" [notes.md]
 ```
 
-The GitHub release is the deployment: the phone installs from the release
-page, so a build that only lands in `app/build/outputs` has not shipped.
-The script tests, builds, and publishes tag `radial-v<version>` with the
-APK attached, and refuses a dirty or unpushed tree. Without a notes file it
-lets GitHub generate the notes; the hand-written ones read better.
+The GitHub release is the deployment: the phone installs from the release page,
+so a build that only lands in `app/build/outputs` has not shipped. The script
+tests, builds, and publishes tag `radial-v<version>` with the APK attached, and
+refuses a dirty or unpushed tree.
 
 `build-native.sh` wants an NDK, named by `ANDROID_NDK` or found at
 `~/Library/Android/sdk/ndk/26.3.11579264`. The cross std comes from the flake,
@@ -306,11 +230,17 @@ which is why cargo runs inside `nix develop`.
 
 | | |
 |---|---|
-| `Ring` | which thumb owns a key, and where the key sits. No Android, no dictionary |
+| `Comb` | the layout, the lattice, and where a portal lands. No Android, no dictionary |
 | `Chorder` | two thumbs, and the rule that turns them into strokes. No Android |
-| `RadialView` | drawing and touch. Decides nothing |
-| `StenoService` | the editor and the native handle |
+| `CombView` | drawing and touch. Decides nothing |
+| `StenoService` | the editor, the insets, and the native handle |
 | `stfst-jni` | opens the stack, hands strokes to `stfst-board`, returns the buffer |
 
-`Ring` and `Chorder` are plain Kotlin so they can be tested without a device, and
-the tests in `app/src/test` are the ones worth reading first.
+`Comb` and `Chorder` are plain Kotlin so they can be tested without a device,
+and the tests in `app/src/test` are the ones worth reading first.
+
+## Not carried over
+
+The long-press modifier ring went with the radial layout: it read a direction
+from a mark, and there is no mark any more. A modifier picker that fits a comb
+is its own piece of work.

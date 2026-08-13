@@ -1,0 +1,557 @@
+package cx.yeet.stfst
+
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.res.Configuration
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.DashPathEffect
+import android.graphics.Paint
+import android.graphics.Path
+import android.graphics.Rect
+import android.util.TypedValue
+import android.view.MotionEvent
+import android.view.View
+import kotlin.math.hypot
+import kotlin.math.min
+
+/**
+ * The keyboard itself: two thumb combs and the touch handling that turns taps
+ * and walks into strokes.
+ *
+ * Drawing reads the chorder and decides nothing. Every shape is asked of
+ * [Comb], the region a cell owns included, so the picture is the decision
+ * function rather than a copy of it that can drift.
+ */
+@SuppressLint("ViewConstructor")
+class CombView(
+    context: Context,
+    private var config: Config,
+    private val order: String,
+    private val onStroke: (Long) -> Unit,
+    /** True in the settings preview, which has no app to lay out around. */
+    private val embedded: Boolean = false,
+) : View(context) {
+
+    private var comb = Comb(order, config)
+    private var chorder = Chorder(comb, config) { onStroke(it) }
+    private val haptics = Haptics(context, config)
+
+    /** The last cell each thumb was told about, so a tick reports a change only. */
+    private val told = mutableMapOf<Bank, Spot?>(Bank.LEFT to null, Bank.RIGHT to null)
+
+    private val ink = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val dashes = DashPathEffect(floatArrayOf(9f, 9f), 0f)
+    private val stalls = mutableMapOf<Bank, Runnable>()
+
+    /** Where and when a touch went down, to tell a quick tap from a walk. */
+    private class Tap(val x: Float, val y: Float, val time: Long)
+
+    private val downs = mutableMapOf<Int, Tap>()
+    private val lastTaps = mutableMapOf<Bank, Tap>()
+
+    /** The one timer that sends a held tap on when its window closes. */
+    private var flusher: Runnable? = null
+
+    /** What the driver reported about one touch sample. */
+    private class Touch(
+        val x: Float,
+        val y: Float,
+        val major: Float,
+        val minor: Float,
+        val orientation: Float,
+        val pressure: Float,
+        val size: Float,
+    )
+
+    private val clouds = mapOf(
+        Bank.LEFT to ArrayDeque<Touch>(), Bank.RIGHT to ArrayDeque<Touch>()
+    )
+
+    private val landscape: Boolean
+        get() = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
+    /** Whether each thumb gets a full-height half with the app between them. */
+    val sides: Boolean get() = !embedded && landscape && config.landscapeSides
+
+    private val tilt: Float get() = config.tilt(landscape)
+
+    fun apply(fresh: Config) {
+        config = fresh
+        comb = Comb(order, fresh)
+        chorder = Chorder(comb, fresh) { onStroke(it) }
+        haptics.apply(fresh)
+        layoutFields()
+        requestLayout()
+        invalidate()
+    }
+
+    override fun onMeasure(widthSpec: Int, heightSpec: Int) {
+        val width = MeasureSpec.getSize(widthSpec)
+        val screen = resources.displayMetrics.heightPixels
+        // A comb runs down, so a landscape half wants the whole glass. The app
+        // is told to keep its room and the two halves overlay its margins.
+        val height = if (sides) screen else (screen * config.keyboardHeight).toInt()
+        setMeasuredDimension(width, height)
+    }
+
+    /**
+     * The horizontal run each thumb's field covers. Portrait splits the whole
+     * width; in landscape each field hugs its own side and the ground between
+     * them belongs to neither.
+     */
+    private fun spans(
+        width: Float,
+    ): Pair<ClosedFloatingPointRange<Float>, ClosedFloatingPointRange<Float>> {
+        if (landscape) {
+            val wide = width * config.splitLandscape.coerceIn(0.15f, 0.5f)
+            return (0f..wide) to ((width - wide)..width)
+        }
+        val edge = width * config.fieldSplit
+        return (0f..edge) to (edge..width)
+    }
+
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) = layoutFields()
+
+    private fun layoutFields() {
+        val (left, right) = spans(width.toFloat())
+        val top = if (config.touchReadout) height * 0.04f else 0f
+        chorder.landscape = landscape
+        chorder.place(Bank.LEFT, Field(left.start, top, left.endInclusive, height.toFloat()))
+        chorder.place(Bank.RIGHT, Field(right.start, top, right.endInclusive, height.toFloat()))
+        cut()
+    }
+
+    /** The parts of this view a touch can reach. The rest belongs to the app. */
+    fun touchable(): List<Rect> {
+        val (left, right) = spans(width.toFloat())
+        if (!sides) return listOf(Rect(0, 0, width, height))
+        return listOf(
+            Rect(0, 0, left.endInclusive.toInt(), height),
+            Rect(right.start.toInt(), 0, width, height),
+        )
+    }
+
+    /** The field under this x, or null on the ground between split fields. */
+    private fun bankAt(x: Float): Bank? {
+        val (left, right) = spans(width.toFloat())
+        return when {
+            x <= left.endInclusive -> Bank.LEFT
+            x >= right.start -> Bank.RIGHT
+            else -> null
+        }
+    }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        when (event.actionMasked) {
+            MotionEvent.ACTION_DOWN, MotionEvent.ACTION_POINTER_DOWN -> {
+                val at = event.actionIndex
+                val pointer = event.getPointerId(at)
+                val x = event.getX(at)
+                val y = event.getY(at)
+                val bank = bankAt(x) ?: return false
+                clouds[bank]?.clear()
+                record(event, at, bank)
+                // A double tap arms the side's key and then goes down as a
+                // normal touch, so tap tap on -T releases as -*T. Its own lift
+                // is not recorded as a tap, which writes it at once.
+                if (!doubleTap(bank, x, y, event.eventTime)) {
+                    chorder.flush()
+                    downs[pointer] = Tap(x, y, event.eventTime)
+                }
+                if (chorder.down(bank, pointer, x, y)) haptics.take(bank)
+                tell(bank)
+                armStall(bank)
+            }
+
+            MotionEvent.ACTION_MOVE -> {
+                for (at in 0 until event.pointerCount) {
+                    val pointer = event.getPointerId(at)
+                    val thumb = chorder.forPointer(pointer) ?: continue
+                    record(event, at, thumb.bank)
+                    downs[pointer]?.let {
+                        val far = hypot(event.getX(at) - it.x, event.getY(at) - it.y)
+                        if (far > height * 0.02f) downs.remove(pointer)
+                    }
+                    var took = false
+                    // Every sample, not one per frame: take-on-entry reads the
+                    // path itself, and a fast sweep crosses a cell between frames.
+                    for (h in 0 until event.historySize) {
+                        took = chorder.move(
+                            pointer, event.getHistoricalX(at, h), event.getHistoricalY(at, h)
+                        ) || took
+                    }
+                    took = chorder.move(pointer, event.getX(at), event.getY(at)) || took
+                    if (took) haptics.take(thumb.bank)
+                    tell(thumb.bank)
+                    armStall(thumb.bank)
+                }
+            }
+
+            MotionEvent.ACTION_UP, MotionEvent.ACTION_POINTER_UP -> {
+                val pointer = event.getPointerId(event.actionIndex)
+                val down = downs.remove(pointer)
+                val thumb = chorder.forPointer(pointer)
+                val tap = config.doubleTapMs > 0 && down != null &&
+                    event.eventTime - down.time <= config.doubleTapMs
+                val stroke = chorder.up(pointer, tap)
+                if (stroke != 0L) haptics.stroke(thumb?.bank ?: Bank.LEFT)
+                if (tap && thumb != null) {
+                    lastTaps[thumb.bank] = Tap(down!!.x, down.y, event.eventTime)
+                    if (stroke != 0L) armFlush()
+                }
+                thumb?.let { told[it.bank] = null }
+            }
+
+            MotionEvent.ACTION_CANCEL -> {
+                downs.clear()
+                lastTaps.clear()
+                chorder.reset()
+            }
+        }
+        invalidate()
+        return true
+    }
+
+    /**
+     * A move event carries the samples taken between frames, so reading the
+     * history gives the whole touched path and not one point per frame.
+     */
+    private fun record(event: MotionEvent, at: Int, bank: Bank) {
+        if (!config.cloud && !config.touchReadout) return
+        val cloud = clouds[bank] ?: return
+        for (h in 0 until event.historySize) {
+            cloud.addLast(
+                Touch(
+                    event.getHistoricalX(at, h), event.getHistoricalY(at, h),
+                    event.getHistoricalTouchMajor(at, h), event.getHistoricalTouchMinor(at, h),
+                    event.getHistoricalOrientation(at, h), event.getHistoricalPressure(at, h),
+                    event.getHistoricalSize(at, h),
+                )
+            )
+        }
+        cloud.addLast(
+            Touch(
+                event.getX(at), event.getY(at),
+                event.getTouchMajor(at), event.getTouchMinor(at),
+                event.getOrientation(at), event.getPressure(at), event.getSize(at),
+            )
+        )
+        while (cloud.size > config.cloudSamples.coerceAtLeast(1)) cloud.removeFirst()
+    }
+
+    /**
+     * A second quick tap close to the first arms the side's double-tap key and
+     * unwrites the first tap's held stroke; the second tap then strokes as
+     * itself, so tap tap on `-T` releases as `-*T`.
+     */
+    private fun doubleTap(bank: Bank, x: Float, y: Float, now: Long): Boolean {
+        if (config.doubleTapMs <= 0) return false
+        val tap = lastTaps.remove(bank) ?: return false
+        if (now - tap.time > config.doubleTapMs) return false
+        if (hypot(x - tap.x, y - tap.y) > height * 0.05f) return false
+        val key = order.indexOf(config.doubleTap(bank))
+        if (key < 0) return false
+        chorder.cancelHeld()
+        chorder.stick(key)
+        haptics.take(bank)
+        return true
+    }
+
+    private fun armFlush() {
+        flusher?.let { removeCallbacks(it) }
+        val task = Runnable {
+            chorder.flush()
+            invalidate()
+        }
+        flusher = task
+        postDelayed(task, config.doubleTapMs)
+    }
+
+    /** A focus that a portal has thrown away comes back when the thumb holds still. */
+    private fun armStall(bank: Bank) {
+        stalls.remove(bank)?.let { removeCallbacks(it) }
+        val task = Runnable {
+            chorder.stall(bank)
+            told[bank] = null
+            invalidate()
+        }
+        stalls[bank] = task
+        postDelayed(task, config.stallMs)
+    }
+
+    /**
+     * Report the cell under the focus, once per change.
+     *
+     * Where the focus is becomes something to feel rather than something to
+     * read, which is what using this without looking needs.
+     */
+    private fun tell(bank: Bank) {
+        val spot = chorder.thumb(bank).spot
+        if (told[bank] == spot) return
+        told[bank] = spot
+        if (spot != null) haptics.tick(bank)
+    }
+
+    private fun fade(color: Int, dim: Float): Int =
+        if (dim >= 1f) color else Color.argb(
+            (Color.alpha(color) * dim).toInt(),
+            Color.red(color), Color.green(color), Color.blue(color)
+        )
+
+    private class Palette(
+        val face: Int,
+        val edge: Int,
+        val text: Int,
+        val hot: Int,
+        val warm: Int,
+        val hole: Int,
+    )
+
+    override fun onDraw(canvas: Canvas) {
+        val dark = (resources.configuration.uiMode and
+            Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+        val paint = Palette(
+            face = if (dark) Color.rgb(38, 40, 46) else Color.WHITE,
+            edge = if (dark) Color.rgb(70, 74, 84) else Color.rgb(206, 210, 218),
+            text = if (dark) Color.rgb(232, 234, 238) else Color.rgb(24, 26, 30),
+            hot = Color.rgb(64, 132, 240),
+            warm = if (dark) Color.rgb(30, 58, 104) else Color.rgb(206, 226, 255),
+            hole = if (dark) Color.rgb(216, 168, 77) else Color.rgb(169, 111, 22),
+        )
+        val back = if (dark) Color.rgb(18, 18, 20) else Color.rgb(246, 246, 248)
+        // Only the fields get a ground. Between them in landscape the app shows
+        // through, which is the whole point of laying out this way.
+        ink.style = Paint.Style.FILL
+        ink.color = back
+        for (bank in Bank.values()) {
+            val field = chorder.thumb(bank).field
+            canvas.drawRect(field.left, 0f, field.right, height.toFloat(), ink)
+        }
+        ink.textSize = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_SP, config.labelSp, resources.displayMetrics
+        )
+        ink.textAlign = Paint.Align.CENTER
+        for (bank in Bank.values()) {
+            if (config.cloud) drawCloud(canvas, bank, paint)
+            drawComb(canvas, chorder.thumb(bank), paint)
+            drawFocus(canvas, chorder.thumb(bank), paint)
+            drawTaken(canvas, chorder.thumb(bank), paint)
+        }
+        if (config.touchReadout) drawReadout(canvas, paint)
+    }
+
+    /**
+     * The shapes of one bank, which depend on the layout and the field alone.
+     *
+     * Only the colours change as a stroke is built, so the paths are cut once
+     * per layout rather than once per frame. [Comb] is still the only source of
+     * them: what is cached is the answer, not a second way of working it out.
+     */
+    private class Sketch(
+        val ground: List<Pair<Spot, Path>>,
+        val keys: List<Triple<Button, Path, Point>>,
+        val chain: Path?,
+        val radius: Float,
+    )
+
+    private var sketches: Map<Bank, Sketch> = emptyMap()
+
+    private fun cut() {
+        sketches = Bank.values().associateWith { bank ->
+            val field = chorder.thumb(bank).field
+            val at = comb.place(bank, field, tilt)
+            val chain = Path()
+            var started = false
+            for (key in comb.chain.getValue(bank)) {
+                val button = comb.buttons.getValue(bank).firstOrNull { it.key == key } ?: continue
+                val c = comb.center(bank, field, tilt, button)
+                if (started) chain.lineTo(c.x, c.y) else chain.moveTo(c.x, c.y)
+                started = true
+            }
+            Sketch(
+                ground = comb.spots(bank).filter { comb.keyOf(it) < 0 }.mapNotNull { spot ->
+                    polygon(comb.region(bank, field, tilt, spot))?.let { spot to it }
+                },
+                keys = comb.buttons.getValue(bank).mapNotNull { button ->
+                    melded(bank, field, button)?.let {
+                        Triple(button, it, comb.center(bank, field, tilt, button))
+                    }
+                },
+                chain = chain.takeIf { started },
+                radius = at.radius,
+            )
+        }
+    }
+
+    /** Every cell of one bank: the ground it owns, its outline, and its label. */
+    private fun drawComb(canvas: Canvas, thumb: Thumb, paint: Palette) {
+        val sketch = sketches[thumb.bank] ?: return
+        val at = comb.place(thumb.bank, thumb.field, tilt)
+
+        ink.pathEffect = dashes
+        ink.strokeWidth = sketch.radius * 0.03f
+        ink.style = Paint.Style.STROKE
+        for ((spot, path) in sketch.ground) {
+            ink.color = if (spot.v == Comb.HOLE) paint.hole else fade(paint.edge, 0.7f)
+            canvas.drawPath(path, ink)
+            if (spot.v != Comb.HOLE) continue
+            val p = comb.point(spot, at)
+            canvas.drawCircle(p.x, p.y, sketch.radius * 0.3f, ink)
+        }
+        ink.pathEffect = null
+
+        if (config.showChain) sketch.chain?.let {
+            ink.style = Paint.Style.STROKE
+            ink.color = fade(paint.text, 0.22f)
+            ink.pathEffect = dashes
+            canvas.drawPath(it, ink)
+            ink.pathEffect = null
+        }
+
+        ink.strokeWidth = sketch.radius * 0.055f
+        for ((button, path, middle) in sketch.keys) {
+            val live = comb.live(button.key, thumb.keys)
+            if (!live && !config.showDeadCells) continue
+            ink.style = Paint.Style.FILL
+            ink.color = if (live) paint.face else fade(paint.face, 0.35f)
+            canvas.drawPath(path, ink)
+            ink.style = Paint.Style.STROKE
+            ink.color = if (live) paint.edge else fade(paint.edge, 0.4f)
+            canvas.drawPath(path, ink)
+            if (!config.showLabels) continue
+            ink.style = Paint.Style.FILL
+            ink.color = if (live) paint.text else fade(paint.text, 0.3f)
+            canvas.drawText(button.v.toString(), middle.x, middle.y + ink.textSize * 0.35f, ink)
+        }
+    }
+
+    /**
+     * One button, melded: the union of the ground its cells own.
+     *
+     * Each cell is clipped against every rival but its own button's, so the
+     * pieces meet exactly and the union has no seam to stroke.
+     */
+    private fun melded(bank: Bank, field: Field, button: Button): Path? {
+        val whole = Path()
+        for (piece in comb.regions(bank, field, tilt, button)) {
+            val path = polygon(piece) ?: continue
+            whole.op(path, Path.Op.UNION)
+        }
+        return whole.takeIf { !it.isEmpty }
+    }
+
+    private fun polygon(points: List<Point>): Path? {
+        if (points.size < 3) return null
+        val path = Path()
+        path.moveTo(points[0].x, points[0].y)
+        for (i in 1 until points.size) path.lineTo(points[i].x, points[i].y)
+        path.close()
+        return path
+    }
+
+    /**
+     * The cell the focus is in, filled, and the thumb that drives it.
+     *
+     * A portal or a hole parts the two, and after one the thumb is drawn as
+     * well, faint, tied to the focus that left it. What is filled is what a
+     * further step would take, which is the answer before it is given.
+     */
+    private fun drawFocus(canvas: Canvas, thumb: Thumb, paint: Palette) {
+        if (!thumb.live) return
+        val spot = thumb.spot
+        if (spot != null) {
+            val button = comb.buttons.getValue(thumb.bank)
+                .firstOrNull { b -> b.spots.any { it.col == spot.col && it.row == spot.row } }
+            val sketch = sketches[thumb.bank]
+            val cut = sketch?.keys?.firstOrNull { it.first == button }
+            val path = cut?.second ?: sketch?.ground
+                ?.firstOrNull { it.first == spot }?.second
+            if (path != null) {
+                // Warm only where a step would take a key; over ground and over
+                // a cell the order has passed it says where, not what.
+                ink.style = Paint.Style.FILL
+                ink.color = if (comb.resolve(spot, thumb.keys) != null) paint.warm
+                else fade(paint.warm, 0.45f)
+                canvas.drawPath(path, ink)
+                if (cut != null && config.showLabels) {
+                    ink.color = paint.text
+                    canvas.drawText(
+                        cut.first.v.toString(), cut.third.x,
+                        cut.third.y + ink.textSize * 0.35f, ink
+                    )
+                }
+            }
+        }
+        val mark = config.markRadius * min(thumb.field.width, thumb.field.height)
+        val parted = hypot(thumb.offX, thumb.offY) > mark
+        ink.style = Paint.Style.FILL
+        ink.color = paint.hot
+        canvas.drawCircle(thumb.focusX, thumb.focusY, mark, ink)
+        if (!parted) return
+        ink.color = fade(paint.hot, 0.35f)
+        canvas.drawCircle(thumb.atX, thumb.atY, mark * 0.7f, ink)
+        ink.style = Paint.Style.STROKE
+        ink.strokeWidth = mark * 0.25f
+        canvas.drawLine(thumb.atX, thumb.atY, thumb.focusX, thumb.focusY, ink)
+    }
+
+    /** The keys this thumb holds, armed ones included. */
+    private fun drawTaken(canvas: Canvas, thumb: Thumb, paint: Palette) {
+        val armed = chorder.sticky.filter { comb.bankOf(it) == thumb.bank }
+        val keys = (thumb.keys + armed).distinct()
+        if (keys.isEmpty()) return
+        ink.style = Paint.Style.FILL
+        ink.color = paint.hot
+        // In steno order, not take order, so what is shown is the outline.
+        canvas.drawText(
+            keys.sorted().joinToString("") { order[it].toString() },
+            thumb.field.centerX,
+            thumb.field.top + ink.textSize,
+            ink
+        )
+    }
+
+    private fun drawCloud(canvas: Canvas, bank: Bank, paint: Palette) {
+        val cloud = clouds[bank] ?: return
+        val unit = min(chorder.thumb(bank).field.width, chorder.thumb(bank).field.height)
+        ink.style = Paint.Style.FILL
+        ink.color = fade(paint.hot, config.cloudAlpha)
+        for (touch in cloud) {
+            // Panels report one, the other, or neither. Fall through to the dot.
+            val major = when {
+                touch.major > 1f -> touch.major
+                touch.size > 0f -> touch.size * unit
+                else -> config.markRadius * unit
+            }
+            val a = major * 0.5f
+            val b = (if (touch.minor > 1f) touch.minor else major) * 0.5f
+            canvas.save()
+            canvas.rotate(Math.toDegrees(touch.orientation.toDouble()).toFloat(), touch.x, touch.y)
+            canvas.drawOval(touch.x - b, touch.y - a, touch.x + b, touch.y + a, ink)
+            canvas.restore()
+        }
+    }
+
+    /**
+     * What the driver says about the live touch.
+     *
+     * Many panels report a constant pressure and a real contact size, so
+     * whether a firm press can be told from a light one is a question these
+     * numbers answer.
+     */
+    private fun drawReadout(canvas: Canvas, paint: Palette) {
+        ink.style = Paint.Style.FILL
+        ink.color = fade(paint.text, 0.65f)
+        for (bank in Bank.values()) {
+            val touch = clouds[bank]?.lastOrNull() ?: continue
+            val field = chorder.thumb(bank).field
+            canvas.drawText(
+                "p %.2f  sz %.2f  maj %.0f  min %.0f".format(
+                    touch.pressure, touch.size, touch.major, touch.minor
+                ),
+                field.centerX, ink.textSize, ink
+            )
+        }
+    }
+}

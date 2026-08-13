@@ -5,15 +5,12 @@ import android.os.Bundle
 import android.text.InputType
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.SeekBar
-import android.widget.Spinner
 import android.widget.TextView
 
 /**
@@ -28,7 +25,7 @@ class SettingsActivity : Activity() {
     private lateinit var config: Config
 
     /** The keyboard itself, pinned under the knobs, redrawn on every change. */
-    private var preview: RadialView? = null
+    private var preview: CombView? = null
     private var previewToggle: CheckBox? = null
 
     private fun refresh() {
@@ -74,222 +71,133 @@ class SettingsActivity : Activity() {
     ) : Knob(label, note)
 
     /** One of a short, closed set of values. */
-    private class Choice(
-        label: String,
-        val names: List<String>,
-        val get: (Config) -> Int,
-        val set: (Config, Int) -> Unit,
-        note: String = "",
-    ) : Knob(label, note)
-
-    /** A heading, so the list reads as sections rather than as thirty sliders. */
     private class Section(label: String, note: String = "") : Knob(label, note)
 
     private val knobs: List<Knob> = listOf(
-        Section("The board",
-            "The default layout: a staggered ring of slices round an island, " +
-                "read by where the thumb is. Each ring key is one slice, and " +
-                "every other slice sits further out, which opens two lanes: a " +
-                "sweep along either one crosses every other key, a machine " +
-                "row. Any cell the thumb enters is taken, in any order, and a " +
-                "taken cell is ground. The island is one pie of keys that go " +
-                "before the ring; once the ring closes it, it becomes the " +
-                "tombstone: crossing it throws the focus reading the keys " +
-                "straight across the middle, so a far key is a short dip " +
-                "instead of a trip around. The floats hang past the outer " +
-                "edge: a tap arms one for the next stroke, a second tap sends " +
-                "it alone, and a double tap anywhere stands in for the sunken " +
-                "one. The corridor inside the ring and the field past its " +
-                "outer edge take nothing: they are the roads past a live key. " +
-                "All radii are in pitches, and the span sets what a pitch is."),
-        Flag("Fixed board", { it.board }, { c, v -> c.board = v },
-            "off falls back to the radial layout below, which reads slides by " +
-                "direction instead"),
-        Text("Left island", { it.boardIslandLeft }, { c, v -> c.boardIslandLeft = v },
-            "taken before the ring, in any order, like the machine's thumb " +
-                "cluster. A stroke is a set of keys, so the outline stays steno " +
-                "order whatever order the thumb walked"),
-        Text("Left board ring", { it.boardRingLeft }, { c, v -> c.boardRingLeft = v },
-            "in steno order, one slice per key, clockwise from the start angle"),
-        Text("Right island", { it.boardIslandRight }, { c, v -> c.boardIslandRight = v }),
-        Text("Right board ring", { it.boardRingRight }, { c, v -> c.boardRingRight = v }),
-        Text("Left floats", { it.boardArcsLeft }, { c, v -> c.boardArcsLeft = v },
-            "the arcs past the outer edge: the first floats on top, the " +
-                "second sinks below. A tap arms one to join the next stroke; " +
-                "tapping it again sends it alone. A float never closes the " +
-                "island"),
-        Text("Right floats", { it.boardArcsRight }, { c, v -> c.boardArcsRight = v }),
-        Range("Float sweep", 20f, 140f, { it.boardArcSweep }, { c, v -> c.boardArcSweep = v },
-            "how far each floating arc wraps around the ring", unit = "°"),
-        Range("Float depth", 0.25f, 0.9f, { it.boardArcWide }, { c, v -> c.boardArcWide = v },
-            unit = "pitches"),
-        Range("Float gap", 0.02f, 1.2f, { it.boardArcGap }, { c, v -> c.boardArcGap = v },
-            "how far past the outer edge the floats sit; the ground between " +
-                "is still road", unit = "pitches"),
-        Range("Float curvature", 0f, 1f, { it.boardArcCurve }, { c, v -> c.boardArcCurve = v },
-            "one wraps the ring; toward zero the float straightens into a " +
-                "bar of the same length and depth", unit = "×"),
+        Section("The comb",
+            "A fixed honeycomb per thumb, walked downward in steno order and " +
+                "read by where the focus is. A layout is one character per " +
+                "cell: a dot is open ground, o is a hole, a space is off the " +
+                "board, and anything else is the key of that name. Rows are " +
+                "separated by a slash. Alternate columns hang half a cell " +
+                "lower, so a column runs down the glass and the chain of the " +
+                "order zigzags between two of them: a key touches the next in " +
+                "the order and the one after it. Repeat a value in touching " +
+                "cells and they meld into one button, which is all a big key " +
+                "is. Entering a cell takes what it yields, in steno order, " +
+                "and a spent cell is ground."),
+        Text("Left comb", { it.combLeft }, { c, v -> c.combLeft = v },
+            "rows separated by a slash"),
+        Text("Right comb", { it.combRight }, { c, v -> c.combRight = v }),
+        Text("Portal strides", { it.combStrides }, { c, v -> c.combStrides = v },
+            "four numbers, in keys of the steno order. Two of a cell's six " +
+                "sides face the keys the walk can still reach; the other four " +
+                "are portals and take these strides, ordered by how far each " +
+                "turns from the way the walk is heading. Early in the order a " +
+                "stride lands on the ground between two keys and takes " +
+                "nothing, leaving both one hop away; late in the order that " +
+                "ground is gone and it lands on the key itself"),
+        Range("Tilt, portrait", -45f, 45f, { it.tiltPortrait },
+            { c, v -> c.tiltPortrait = v },
+            "how far the comb is turned. Zero runs the columns straight down " +
+                "the glass; a thumb sweeps along an arc, so a few degrees can " +
+                "put the walk under it", unit = "\u00b0"),
+        Range("Tilt, landscape", -45f, 45f, { it.tiltLandscape },
+            { c, v -> c.tiltLandscape = v },
+            "the same, for a landscape screen", unit = "\u00b0"),
+        Range("Comb fill", 0.4f, 1f, { it.combFill }, { c, v -> c.combFill = v },
+            "one fills the field. Less packs the comb within reach, and the " +
+                "cells at the edge grow to cover the field the lattice no " +
+                "longer reaches", unit = "\u00d7"),
+        Range("Comb position", 0.2f, 0.8f, { it.combAt }, { c, v -> c.combAt = v },
+            "where the middle of the comb sits", unit = "down the field"),
+        Flag("Teleport through a hole", { it.combHole }, { c, v -> c.combHole = v },
+            "a focus crossing a hole is thrown straight across the comb's " +
+                "middle, and the offset holds until the lift. The crossing " +
+                "takes nothing, and going back through throws it home again"),
+
+        Section("Strokes"),
+        Flag("Write on the first lift", { it.commitOnFirstLift },
+            { c, v -> c.commitOnFirstLift = v },
+            "the thumb still down keeps its keys, so a shared right hand is " +
+                "stroked once"),
+        Text("Left armed keys", { it.stickyLeft }, { c, v -> c.stickyLeft = v },
+            "a lift that took only these arms them for the next stroke " +
+                "instead of writing; lifting on them again sends them alone"),
+        Text("Right armed keys", { it.stickyRight }, { c, v -> c.stickyRight = v }),
         Text("Left double tap", { it.doubleTapLeft.toString() },
             { c, v -> v.firstOrNull()?.let { c.doubleTapLeft = it } },
-            "the key two quick taps add on top of the key under them: tap " +
-                "tap on -T releases as -*T. On the free thumb's side it " +
-                "lands in the stroke the other thumb is holding"),
+            "the key two quick taps add on top of the key under them: tap tap " +
+                "on -T releases as -*T"),
         Text("Right double tap", { it.doubleTapRight.toString() },
             { c, v -> v.firstOrNull()?.let { c.doubleTapRight = it } }),
         Range("Double tap window (ms)", 0f, 500f, { it.doubleTapMs.toFloat() },
             { c, v -> c.doubleTapMs = v.toLong() },
             "two taps this close together are a double tap, so a quick tap's " +
-                "stroke waits this long. Zero turns double taps off and the " +
-                "wait with them", unit = "ms"),
-        Text("Doorways", { it.boardPortals }, { c, v -> c.boardPortals = v },
-            "the fallback the tombstone replaced, working only while its size " +
-                "is zero. Pairs like A>R: a dead A cell takes R, for as long " +
-                "as R can still be taken"),
-        Range("Board span", 3f, 7f, { it.boardSpan }, { c, v -> c.boardSpan = v },
-            "pitches across the field's short side; fewer means a bigger board",
-            unit = "pitches"),
-        Range("Ring inner edge", 1.0f, 2.2f, { it.boardInner }, { c, v -> c.boardInner = v },
-            "where the slices begin. The gap between it and the island is the " +
-                "corridor, so lower is deeper slices and a narrower road",
-            unit = "pitches"),
-        Range("Ring outer edge", 1.5f, 3.2f, { it.boardOuter }, { c, v -> c.boardOuter = v },
-            "where the slices end. Past it is the outer road: nothing takes",
-            unit = "pitches"),
-        Range("Stagger", 0f, 0.8f, { it.boardStagger }, { c, v -> c.boardStagger = v },
-            "how much further out every other slice sits. The stagger is the " +
-                "height of the two lanes, and zero is a plain ring with none",
-            unit = "pitches"),
-        Flag("Top row inside", { it.boardTopIn }, { c, v -> c.boardTopIn = v },
-            "the machine's top row (T P H, and F P L T D) on the inward " +
-                "slices; off swaps the alternation"),
-        Range("Island size", 0.5f, 1.35f, { it.boardIsle }, { c, v -> c.boardIsle = v },
-            "one circle, one size: the vowels' pie while it lives, the " +
-                "tombstone once the ring closes it. The gap up to the inner " +
-                "edge is the corridor", unit = "pitches"),
-        Flag("Teleport through the dead island", { it.boardTeleport },
-            { c, v -> c.boardTeleport = v },
-            "crossing the dead island throws the focus out the other side, " +
-                "and the glyph in front of the thumb says where. Off turns " +
-                "the doorways back on"),
-        Range("Board position", 0.2f, 0.8f, { it.boardAt }, { c, v -> c.boardAt = v },
-            "where the middle of the board sits", unit = "down the field"),
-        Range("Left board start", -180f, 180f, { it.boardStartLeft },
-            { c, v -> c.boardStartLeft = v },
-            "where the ring's first key sits; -90 is straight up", unit = "\u00b0"),
-        Range("Right board start", -180f, 180f, { it.boardStartRight },
-            { c, v -> c.boardStartRight = v }, unit = "\u00b0"),
-
-        Section("The copy",
-            "The thumb covers the keys it is choosing from, so a copy of its " +
-                "bank is drawn somewhere the thumb is not, at one steady scale " +
-                "whatever the board's own knobs say."),
-        Choice("Where the copy goes", Preview.values().map { it.label },
-            { it.preview.ordinal }, { c, v -> c.preview = Preview.values()[v] },
-            "floating over the app costs the app no room: the strip is empty and " +
-                "untouchable until a thumb is down. A strip above the keys takes " +
-                "the room instead and pushes the app up"),
-        Range("Copy scale", 0.3f, 1f, { it.mirrorScale }, { c, v -> c.mirrorScale = v },
-            "against the board under the thumb. The copy shrinks below this only " +
-                "when the strip cannot hold it", unit = "\u00d7"),
-        Range("Copy fade", 0.2f, 1f, { it.mirrorDim }, { c, v -> c.mirrorDim = v },
-            "one is as strong as the board under the thumb", unit = "\u00d7"),
-        Range("Copy position", 0.05f, 0.6f, { it.mirrorAt }, { c, v -> c.mirrorAt = v },
-            "only when the copy sits in the thumb field itself", unit = "down the field"),
-
-        Section("Strokes"),
-        Flag("Write on the first lift", { it.commitOnFirstLift }, { c, v -> c.commitOnFirstLift = v },
-            "the thumb still down keeps its keys, so a shared right hand is stroked once"),
-        Flag("Long press for modifiers", { it.longPress }, { c, v -> c.longPress = v },
-            "off by default: a hold is easy to do by accident while learning"),
-        Range("Long press (ms)", 150f, 1200f, { it.longPressMs.toFloat() }, { c, v -> c.longPressMs = v.toLong() }, unit = "ms"),
+                "stroke waits this long. Zero turns double taps off", unit = "ms"),
+        Range("Stall (ms)", 200f, 3000f, { it.stallMs.toFloat() },
+            { c, v -> c.stallMs = v.toLong() },
+            "hold still this long and a focus a portal threw away comes back " +
+                "to the thumb, writing nothing", unit = "ms"),
 
         Section("Buzzes"),
         Flag("Haptics", { it.haptics }, { c, v -> c.haptics = v }),
-        Flag("Buzz on every change of key", { it.hapticTicks }, { c, v -> c.hapticTicks = v },
-            "not only when a key is taken, so the aim of a slide is something to feel " +
-                "rather than something to read"),
-        Flag("A different buzz per thumb", { it.hapticSplit }, { c, v -> c.hapticSplit = v },
-            "one motor cannot be on the left and on the right, so this is two voices " +
-                "from the same motor. What is available is printed below"),
-        Range("Buzz strength", 0.05f, 1f, { it.hapticStrength }, { c, v -> c.hapticStrength = v },
-            unit = "\u00d7"),
+        Flag("Buzz on every change of cell", { it.hapticTicks },
+            { c, v -> c.hapticTicks = v },
+            "not only when a key is taken, so where the focus is becomes " +
+                "something to feel rather than something to read"),
+        Flag("A different buzz per thumb", { it.hapticSplit },
+            { c, v -> c.hapticSplit = v },
+            "one motor cannot be on the left and on the right, so this is two " +
+                "voices from the same motor. What is available is printed below"),
+        Range("Buzz strength", 0.05f, 1f, { it.hapticStrength },
+            { c, v -> c.hapticStrength = v }, unit = "\u00d7"),
         Range("Shortest gap between buzzes", 5f, 120f, { it.hapticGapMs.toFloat() },
             { c, v -> c.hapticGapMs = v.toLong() },
-            "or a slide across several keys is one long buzz", unit = "ms"),
+            "or a walk across several cells is one long buzz", unit = "ms"),
 
         Section("Looks and sizes"),
         Flag("Show labels", { it.showLabels }, { c, v -> c.showLabels = v }),
+        Flag("Show the steno order", { it.showChain }, { c, v -> c.showChain = v },
+            "a faint chain through the keys, which is the walk"),
+        Flag("Show cells already passed", { it.showDeadCells },
+            { c, v -> c.showDeadCells = v },
+            "faded. They are portals now, and they stop looking like keys"),
         Range("Label size (sp)", 8f, 28f, { it.labelSp }, { c, v -> c.labelSp = v },
-            "a label shrinks below this where its cell cannot hold it", unit = "sp"),
-        Range("Keyboard height", 0.2f, 0.7f, { it.keyboardHeight }, { c, v -> c.keyboardHeight = v }, unit = "of the screen"),
+            unit = "sp"),
+        Range("Keyboard height", 0.2f, 0.8f, { it.keyboardHeight },
+            { c, v -> c.keyboardHeight = v },
+            "in portrait. A comb runs down, so it wants the room", unit = "of the screen"),
         Range("Field split", 0.2f, 0.8f, { it.fieldSplit }, { c, v -> c.fieldSplit = v },
-            "where the left field ends", unit = "of the width"),
+            "where the left field ends, in portrait", unit = "of the width"),
+        Flag("Full-height halves in landscape", { it.landscapeSides },
+            { c, v -> c.landscapeSides = v },
+            "each thumb takes a full-height side and the app keeps the whole " +
+                "screen between them. Android has no side inset to give, so " +
+                "the combs cover the app's margins rather than pushing its " +
+                "content inward; the ground between them reaches the app. Off " +
+                "keeps a band at the bottom, which costs the comb its length"),
         Range("Landscape field width", 0.15f, 0.5f, { it.splitLandscape },
             { c, v -> c.splitLandscape = v },
-            "in landscape each field hugs its own side and takes this much of " +
-                "the width; the ground between them takes nothing. 0.5 closes " +
-                "the gap", unit = "of the width"),
-        Range("Thumb mark size", 0.008f, 0.06f, { it.markRadius }, { c, v -> c.markRadius = v },
-            "the dot at the last key and the ring at the fingertip", unit = "\u00d7 field"),
-
-        Section("The radial fallback",
-            "The other layout, when the board is off. A touch-down reads a " +
-                "honeycomb over the whole field; every slide after that reads the " +
-                "ring around the last key: which way, never how far. Lengths here " +
-                "are fractions of the field's short side."),
-        Range("Tap layout columns", 2f, 6f, { it.entryCols.toFloat() },
-            { c, v -> c.entryCols = v.toInt() },
-            "the widest row of the honeycomb. Three puts thirteen keys in rows of " +
-                "3 2 3 2 3. More columns make every cell smaller", unit = "columns"),
-        Range("Cell width", 0.3f, 1.2f, { it.entryWide }, { c, v -> c.entryWide = v },
-            "against a honeycomb that fills the field. One fills it", unit = "\u00d7"),
-        Range("Cell height", 0.3f, 1.2f, { it.entryTall }, { c, v -> c.entryTall = v },
-            "less packs the keys within reach, and the cells at the edge grow to " +
-                "cover the field the lattice no longer reaches", unit = "\u00d7"),
-        Range("Honeycomb position", 0.2f, 0.8f, { it.entryAt }, { c, v -> c.entryAt = v },
-            "where its middle sits, measured down the field", unit = "down the field"),
-        Flag("Early keys in the middle rows", { it.entryCentral }, { c, v -> c.entryCentral = v },
-            "an early key is where the sliding starts, so it sits in the middle of " +
-                "the field with room to slide. Off is plain reading order"),
-        Flag("Show keys already passed", { it.showDeadSlots }, { c, v -> c.showDeadSlots = v },
-            "on the honeycomb; a slide has no region for a key steno order has passed"),
-        Text("Left ring", { it.farLeft }, { c, v -> c.farLeft = v },
-            "the slide keys, in steno order, clockwise from the start angle"),
-        Text("Right ring", { it.farRight }, { c, v -> c.farRight = v }),
-        Text("Bank split key", { it.splitKey.toString() },
-            { c, v -> v.firstOrNull()?.let { c.splitKey = it } },
-            "the first key the right thumb owns"),
-        Range("Left start angle", -180f, 180f, { it.startFarLeft }, { c, v -> c.startFarLeft = v },
-            "-90 is straight up", unit = "\u00b0"),
-        Range("Right start angle", -180f, 180f, { it.startFarRight }, { c, v -> c.startFarRight = v }, unit = "\u00b0"),
-        Range("Minimum slide", 0.01f, 0.25f, { it.minSlide }, { c, v -> c.minSlide = v },
-            "shorter than this and a slide means nothing", unit = "\u00d7 field"),
-        Range("Ring reach", 0.15f, 0.6f, { it.farReach }, { c, v -> c.farReach = v },
-            "how far out the keys sit", unit = "\u00d7 field"),
-        Range("Region outer edge", 0.3f, 0.8f, { it.farEdge }, { c, v -> c.farEdge = v },
-            "how far out the ring is drawn. Past it the same key is still taken", unit = "\u00d7 field"),
-        Range("Region step (degrees)", 0.5f, 10f, { it.sectorStep }, { c, v -> c.sectorStep = v },
-            "how finely the drawn regions are measured. Smaller is more exact", unit = "\u00b0"),
-        Range("Hold on to a key", 0f, 30f, { it.hysteresisDegrees }, { c, v -> c.hysteresisDegrees = v },
-            "how much better a rival has to be before the answer changes, which is " +
-                "what stops the answer swapping at a boundary", unit = "\u00b0"),
-        Range("Turn needed (degrees)", 0f, 44f, { it.turnDegrees }, { c, v -> c.turnDegrees = v },
-            "how far a slide must turn before it takes another key, so one long " +
-                "reach is one key", unit = "\u00b0"),
-        Range("Stall (ms)", 200f, 3000f, { it.stallMs.toFloat() }, { c, v -> c.stallMs = v.toLong() },
-            "hold still this long and the ring goes home", unit = "ms"),
-        Range("Home point", 0.2f, 0.95f, { it.homeAt }, { c, v -> c.homeAt = v },
-            "where in the field a stalled ring returns to, measured from the top", unit = "down the field"),
+            "each field's share of the width, anchored to its own side",
+            unit = "of the width"),
+        Range("Thumb mark size", 0.008f, 0.06f, { it.markRadius },
+            { c, v -> c.markRadius = v },
+            "the dot at the focus, and the fainter one at the thumb once a " +
+                "portal has parted them", unit = "\u00d7 field"),
 
         Section("The touch panel"),
         Flag("Draw the touched area", { it.cloud }, { c, v -> c.cloud = v },
-            "every sample of the contact, at the size and shape the driver gives it"),
+            "every sample of the contact, at the size and shape the driver " +
+                "gives it"),
         Range("Samples kept", 20f, 1200f, { it.cloudSamples.toFloat() },
             { c, v -> c.cloudSamples = v.toInt() }, unit = "samples"),
-        Range("Touch fade", 0.02f, 0.5f, { it.cloudAlpha }, { c, v -> c.cloudAlpha = v }, unit = "\u00d7"),
-        Flag("Print the touch numbers", { it.touchReadout }, { c, v -> c.touchReadout = v },
-            "pressure, size and the two contact axes: whether a hard press can be " +
-                "told from a light one is a question these numbers answer"),
+        Range("Touch fade", 0.02f, 0.5f, { it.cloudAlpha }, { c, v -> c.cloudAlpha = v },
+            unit = "\u00d7"),
+        Flag("Print the touch numbers", { it.touchReadout },
+            { c, v -> c.touchReadout = v },
+            "pressure, size and the two contact axes: whether a hard press " +
+                "can be told from a light one is a question these numbers answer"),
     )
 
     override fun onCreate(state: Bundle?) {
@@ -325,7 +233,7 @@ class SettingsActivity : Activity() {
         }
         // The engine's steno order, spelled out: the preview draws glyphs and
         // geometry only, so it does not need the engine.
-        val view = RadialView(this, config, "#@^+STKPWHRAO*EUfrpblgtsdz", {}, { _, _ -> })
+        val view = CombView(this, config, "#@^+STKPWHRAO*EUfrpblgtsdz", {}, embedded = true)
         preview = view
         val toggle = CheckBox(this).apply {
             text = "Show the preview"
@@ -397,26 +305,6 @@ class SettingsActivity : Activity() {
                         override fun onStartTrackingTouch(bar: SeekBar?) = Unit
                         override fun onStopTrackingTouch(bar: SeekBar?) = keep()
                     })
-                })
-            }
-
-            is Choice -> {
-                title.text = knob.label
-                box.addView(Spinner(this).apply {
-                    adapter = ArrayAdapter(
-                        this@SettingsActivity,
-                        android.R.layout.simple_spinner_dropdown_item,
-                        knob.names,
-                    )
-                    setSelection(knob.get(config))
-                    onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(p: AdapterView<*>?, v: View?, at: Int, id: Long) {
-                            knob.set(config, at)
-                            keep()
-                        }
-
-                        override fun onNothingSelected(p: AdapterView<*>?) = Unit
-                    }
                 })
             }
 

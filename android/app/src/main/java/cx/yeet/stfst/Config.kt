@@ -3,239 +3,84 @@ package cx.yeet.stfst
 /**
  * Every parameter the keyboard has, in one place.
  *
- * Lengths are fractions of the thumb field's short side, so a setting means the
- * same thing on any screen. Angles are degrees clockwise, zero pointing right,
- * which is what `atan2` gives.
+ * Lengths are fractions of the thumb field unless a comment says otherwise, so
+ * a setting means the same thing on any screen. Angles are degrees clockwise,
+ * zero pointing right, which is what `atan2` gives.
  */
 data class Config(
-    /** The first key of the right thumb's bank. Everything before it is the left's. */
-    var splitKey: Char = '*',
-
     /**
-     * Each bank's keys on the direction-read ring, in steno order.
+     * Each bank's layout: one character per cell, rows separated by a slash or
+     * a newline. A dot is open ground, `o` is a hole, a space is off the board,
+     * and anything else is the key of that name.
      *
-     * One ring per thumb, so a slide is read by direction alone and how far it
-     * went means nothing beyond `Minimum slide`. Metering a distance under a
-     * thumb without looking is the hard channel, and the answer to "how far" was
-     * wrong far more often than the answer to "which way". A key in neither
-     * string cannot be stroked in this layout.
+     * The comb runs down. Alternate columns hang half a cell lower, so a column
+     * is a run down the glass and the chain of the steno order zigzags between
+     * two of them: a key touches the next in the order diagonally and the one
+     * after it directly below. Repeating a value in touching cells melds them
+     * into one button, which is all a big key is.
      */
-    var farLeft: String = "#@^+STKPWHRAO",
-    var farRight: String = "*EUfrpblgtsdz",
-
+    var combLeft: String = ".#../.^@./.S+./.KT./.WP./.RH./.OA.",
+    var combRight: String = ".E*./.fU./.pr./.lb./.tg./.ds./..z.",
     /**
-     * Read every touch against fixed cells, by where it is rather than by where
-     * it went.
+     * The four portal strides, in keys of the steno order.
      *
-     * The direction-read ring caps a key's target by how many keys follow it:
-     * twelve after the first means 30 degrees is the ceiling. A fixed cell pays
-     * in area instead of angle, and area the field has plenty of. What position
-     * reading needs in exchange is a rule with no gate in it, and take-on-entry
-     * is that rule: any cell the thumb enters is taken, a spent cell is ground,
-     * and the ground between cells takes nothing.
+     * Two of a cell's six sides face the keys the walk can still reach. The
+     * other four are portals, and each carries one of these rather than a
+     * destination of its own: four numbers to learn instead of one per side per
+     * key. The sides take them in order of how far they turn from the way the
+     * walk is heading.
      */
-    var board: Boolean = true,
+    var combStrides: String = "3 5 7 9",
     /**
-     * Each bank of the board: an island of cells inside a ring of cells, both
-     * written in steno order, island first.
+     * How much the comb is turned, in degrees, portrait and landscape apart.
      *
-     * Each ring key is one slice, in ring order round the circle, every other
-     * slice staggered outward. Steno order alternates the machine's rows, so
-     * a sweep along either lane the stagger opens is a machine row. No order
-     * is enforced on the ring: the machine presses everything together, and a
-     * taken cell is dead.
-     *
-     * The island's keys go in any order too, but before the ring, and the first
-     * ring key closes it. That is what pays for the middle: the island dies
-     * early, the corridor stays road, and the dead island becomes the tombstone
-     * the teleport reads, instead of vowels a crossing would collect.
-     *
-     * The left island holds the vowels although the outline spells them late.
-     * It costs nothing the dictionary can see: a stroke is a set of keys, and
-     * the outline spelling stays steno order whatever order the thumb walked.
+     * Zero runs the columns straight down the glass. A thumb sweeps along an
+     * arc rather than a line, so a few degrees of tilt can put the walk under
+     * it; which few is a fact about hands and not about layouts.
      */
-    var boardIslandLeft: String = "AO",
-    var boardRingLeft: String = "^STKPWHR",
-    var boardIslandRight: String = "EU",
-    var boardRingRight: String = "frpblgtsdz",
+    var tiltPortrait: Float = 0f,
+    var tiltLandscape: Float = 0f,
+    /** How much of the field the comb fills. Less packs it within reach. */
+    var combFill: Float = 1f,
+    /** Where the middle of the comb sits, as a fraction down the field. */
+    var combAt: Float = 0.5f,
     /**
-     * Each bank's floating keys: the first floats above the ring, the second
-     * sinks below it, as arcs wrapping the outer edge. A key here is dropped
-     * from the island and ring strings, so an old saved layout keeps working.
+     * Teleport through a hole: a focus crossing one is thrown straight across
+     * the comb's middle and the offset holds until the thumb lifts, so the far
+     * end of the order is a short dip rather than a walk. The crossing takes
+     * nothing, and going back through throws the focus home again.
+     */
+    var combHole: Boolean = true,
+    /**
+     * The keys a lift can arm instead of writing, per bank.
      *
-     * A float is taken like any other cell, and it does not close the island.
-     * A tap that lifts on floats alone arms them for the next stroke instead
-     * of writing; tapping again sends them alone.
+     * A lift that took only these adds them to the next stroke; lifting on them
+     * again sends them alone. They are the ones a chord wants alongside a whole
+     * outline rather than instead of one.
      */
-    var boardArcsLeft: String = "#+",
-    var boardArcsRight: String = "@*",
-    /** Degrees a floating arc wraps around the ring, at full curvature. */
-    var boardArcSweep: Float = 70f,
-    /** A floating arc's radial depth, in pitches. */
-    var boardArcWide: Float = 0.5f,
-    /** How far past the outer edge the floats sit, in pitches. */
-    var boardArcGap: Float = 0.12f,
+    var stickyLeft: String = "#@^+",
+    var stickyRight: String = "*",
     /**
-     * How hard a float bends. One wraps the ring; toward zero the bend
-     * straightens into a bar of the same length and depth, still centred where
-     * the arc was.
-     */
-    var boardArcCurve: Float = 1f,
-    /**
-     * Doorways, the fallback the teleport replaced: they work only while
-     * [boardTeleport] is off. `A>R` means a dead A cell takes R, for as long
-     * as R can still be taken; after that it is plain ground. Each pair here
-     * is the far ring key its cell's chords most often still owe, measured
-     * over the dictionary.
-     */
-    var boardPortals: String = "A>R O>H @>s *>t E>d U>g",
-    /**
-     * The key a double tap adds, per side, on top of the key under it.
+     * The key a double tap adds, per bank, on top of the key under it.
      *
-     * Two quick taps close together stand in for a trip to the sunken arc,
-     * which is the board's farthest reach. The second tap still strokes as
-     * itself, so tap tap on `-T` releases as `-*T`, and the armed key joins
-     * whatever the next lift writes: a double tap on the free thumb's side
-     * lands its key in the stroke the other thumb is holding.
+     * Two quick taps stand in for a trip to the far end of the comb. The second
+     * tap still strokes as itself, so tap tap on `-T` releases as `-*T`.
      */
     var doubleTapLeft: Char = '+',
     var doubleTapRight: Char = '*',
     /**
-     * Two taps this close together are a double tap. A quick tap's stroke
-     * waits this long before it goes out, which is what a second tap can
-     * still cancel. Zero turns double taps off, and quick taps stop waiting.
+     * Two taps this close together are a double tap. A quick tap's stroke waits
+     * this long before it goes out, which is what a second tap can cancel. Zero
+     * turns double taps off, and quick taps stop waiting.
      */
     var doubleTapMs: Long = 250L,
-    /**
-     * Cell pitches across the field's short side. Fewer means a bigger board.
-     * The radii below are all in pitches, so this is the one scale knob.
-     */
-    var boardSpan: Float = 5.4f,
-    /**
-     * The island circle's radius, in pitches. One circle, one size: a pie cut
-     * among the island's keys while it lives, the tombstone once the ring
-     * closes it. More island keys divide the pie further.
-     */
-    var boardIsle: Float = 0.9f,
-    /**
-     * Teleport through the dead island: crossing into it throws the focus
-     * that presses the keys to the point straight across the board's middle,
-     * and the offset holds until the thumb lifts, so a key on the far side of
-     * the ring is a short dip through the island. The crossing itself takes
-     * nothing, and going back through throws the focus home again. Off turns
-     * the doorways back on.
-     */
-    var boardTeleport: Boolean = true,
-    /**
-     * The ring's edges, in pitches. Every slice spans their gap minus the
-     * stagger.
-     *
-     * A cell is only the button that is drawn. Inside the inner edge the
-     * corridor circles the island, past the outer edge is the open field, and
-     * neither takes: they are the two roads, and a walk gets past a live key
-     * on one of them. The roads are the board's whole guard, since nothing
-     * waits on time or turning.
-     */
-    var boardInner: Float = 1.4f,
-    var boardOuter: Float = 2.6f,
-    /**
-     * How much further out every other slice sits, in pitches.
-     *
-     * The stagger is what opens the two lanes: a notch of ground above every
-     * inward slice and below every outward one, so a sweep along one lane
-     * crosses every other key, which is a machine row. Zero is a plain ring
-     * of full slices, and no lanes.
-     */
-    var boardStagger: Float = 0.4f,
-    /**
-     * Put the machine's top row (T P H, and F P L T D) on the inward slices.
-     * Off swaps the alternation. Which way round reads better is a fact about
-     * thumbs, not layouts.
-     */
-    var boardTopIn: Boolean = true,
-    /** Where the middle of the board sits, as a fraction down the field. */
-    var boardAt: Float = 0.5f,
-    /** Where each board ring's first key sits. -90 is straight up. */
-    var boardStartLeft: Float = -90f,
-    var boardStartRight: Float = -90f,
 
     /**
-     * How many columns the widest row of the tap layout has.
-     *
-     * The tap layout owes the rings nothing: a touch-down has no direction to
-     * read, so it is a honeycomb over the whole field and the thumb only has to
-     * find the key. Three columns put thirteen keys in rows of 3 2 3 2 3.
-     */
-    var entryCols: Int = 3,
-    /**
-     * How wide and how tall a cell is, against a honeycomb that fills the field.
-     *
-     * One fills it. Less packs the keys closer together, which is what a thumb that
-     * cannot reach the top of the field wants, and the cells at the edge then grow
-     * to cover the field the lattice no longer reaches: a cell is the ground nearer
-     * that key than any other, and shrinking the lattice does not change what a tap
-     * out there means. Row and column separately, because a field taller than it is
-     * wide gives cells taller than they are wide.
-     */
-    var entryWide: Float = 1f,
-    var entryTall: Float = 1f,
-    /** Where the middle of the honeycomb sits, as a fraction down the field. */
-    var entryAt: Float = 0.5f,
-    /**
-     * Fill the middle rows of the honeycomb first, so the earliest keys sit there.
-     *
-     * An early key is where the sliding starts, since most of the stroke is still
-     * ahead of it, and a thumb at the edge of the glass has nowhere to slide to.
-     * Off fills the rows from the top, which is plain reading order.
-     */
-    var entryCentral: Boolean = true,
-
-    /** Where each ring's first key sits. -90 is straight up, 0 is right. */
-    var startFarLeft: Float = -90f,
-    var startFarRight: Float = -90f,
-
-    /**
-     * Shorter than this and a slide has not chosen anything yet.
-     *
-     * The only thing distance decides on the ring. It is the whole guard against
-     * a resting thumb taking keys.
-     */
-    var minSlide: Float = 0.085f,
-    /**
-     * How far out the ring sits: where the keys are drawn *and* what a slide is
-     * measured against.
-     */
-    var farReach: Float = 0.30f,
-    /**
-     * How far a slide has to turn before it can take another key.
-     *
-     * Reaching outward clears the threshold again from every new mark, so a
-     * single long drag would take a second and a third key along the same ray. A
-     * new key means a new direction. Under the angle between two slots, or the
-     * neighbouring key becomes unreachable.
-     */
-    var turnDegrees: Float = 30f,
-    /**
-     * How much better a rival key has to be before a slide changes its answer.
-     *
-     * A thumb resting on the boundary between two keys is nearer first one and then
-     * the other on every touch sample, so the highlight and the tick swap back and
-     * forth and neither says anything. The key already chosen keeps the answer
-     * inside this margin. Zero takes the nearest every time.
-     */
-    var hysteresisDegrees: Float = 6f,
-
-    /**
-     * Hold still this long and the ring returns to the field's home point.
-     *
-     * The only drift remedy, and it has to be: a ring drawn anywhere but the
-     * measuring point would send the thumb at an angle nothing measures, so
-     * pulling the origin back part way is not available.
+     * Hold still this long and the focus comes back to the thumb, writing
+     * nothing. What a thumb does when a portal has left the two far apart and
+     * it wants its bearings back.
      */
     var stallMs: Long = 900L,
-
-    /** Where in its field a thumb's home point sits, as a fraction from the top. */
-    var homeAt: Float = 0.62f,
 
     /**
      * Lifting one thumb writes the stroke, and the thumb still down keeps its
@@ -244,115 +89,78 @@ data class Config(
      */
     var commitOnFirstLift: Boolean = true,
 
-    /** Off by default: a hold is easy to do by accident while learning. */
-    var longPress: Boolean = false,
-    var longPressMs: Long = 400L,
-
     var haptics: Boolean = true,
     /**
-     * Buzz when the key under the thumb changes, not only when one is taken.
+     * Buzz when the cell under the focus changes, not only when a key is taken.
      *
-     * The aim of a slide is a thing you can then feel instead of read, which is
+     * Where the focus is becomes a thing you can feel instead of read, which is
      * what a keyboard used without looking needs.
      */
     var hapticTicks: Boolean = true,
     /**
      * Give the two thumbs buzzes that feel different.
      *
-     * A phone has one vibrator, so this is not a left channel and a right channel.
-     * It is two voices from the same motor, and which two depends on what the
-     * hardware offers: two motors if the device has them, else a low tick against a
-     * sharp one, else a weak buzz against a strong one, else one pulse against two.
-     * The settings screen prints what this device actually did.
+     * A phone has one vibrator, so this is not a left channel and a right
+     * channel. It is two voices from the same motor, and which two depends on
+     * what the hardware offers: two motors if the device has them, else a low
+     * tick against a sharp one, else a weak buzz against a strong one, else one
+     * pulse against two. The settings screen prints what this device did.
      */
     var hapticSplit: Boolean = true,
     /** How hard, where the motor allows a choice. */
     var hapticStrength: Float = 0.55f,
-    /** No two ticks closer together than this, or a slide is one long buzz. */
+    /** No two ticks closer together than this, or a walk is one long buzz. */
     var hapticGapMs: Long = 28L,
-    /** Draw the keys steno order has passed, faded. */
-    var showDeadSlots: Boolean = true,
+
+    /** Draw the cells steno order has passed, faded. */
+    var showDeadCells: Boolean = true,
     var showLabels: Boolean = true,
-
-    /**
-     * How finely the drawn sectors are probed, in degrees.
-     *
-     * The picture asks the decision function which key each direction takes, so
-     * this is the only thing that separates the two. Small is exact and cheap.
-     */
-    var sectorStep: Float = 2f,
-    /** How far out the far ring's sectors are drawn. Beyond it is the same key. */
-    var farEdge: Float = 0.46f,
-
-    /**
-     * Where the copy of the ring goes.
-     *
-     * It has to go somewhere the thumb is not, and the field is no longer that
-     * somewhere: a honeycomb that fills the field leaves nothing for a copy to sit
-     * on top of.
-     */
-    var preview: Preview = Preview.OVER,
-    /** Where in the field the copy sits, when it sits in the field. */
-    var mirrorAt: Float = 0.28f,
-    var mirrorScale: Float = 0.62f,
-    /** How much weaker the copy is drawn, so it reads as a copy. */
-    var mirrorDim: Float = 0.5f,
+    /** Draw the chain of the steno order through the keys, faint. */
+    var showChain: Boolean = true,
 
     /**
      * Draw every touch sample, so the shape and size of the contact is visible.
      *
-     * What the hardware reports about a touch beyond its centre, which is what a
-     * hard and light press would have to be told apart by.
+     * What the hardware reports about a touch beyond its centre, which is what
+     * a hard and a light press would have to be told apart by.
      */
-    var cloud: Boolean = true,
+    var cloud: Boolean = false,
     var cloudSamples: Int = 400,
     var cloudAlpha: Float = 0.1f,
     /** Print what the driver says about the live touch: pressure, size, axes. */
-    var touchReadout: Boolean = true,
+    var touchReadout: Boolean = false,
 
-    /** Where the left field ends and the right begins. */
+    /** Where the left field ends and the right begins, in portrait. */
     var fieldSplit: Float = 0.5f,
     /**
-     * Each field's share of the width in landscape, anchored to its own side,
-     * with dead ground between. 0.5 closes the gap, which is the portrait rule.
+     * Give each thumb a full-height half of the glass in landscape, with the
+     * app between them.
+     *
+     * The comb runs down, so a landscape half wants the whole height rather
+     * than a band at the bottom. Android has no left or right inset to offer,
+     * so the app lays out full width and the two combs cover its margins; the
+     * ground between them is not touchable and reaches the app. Off keeps the
+     * bottom band, which costs the comb most of its length.
      */
-    var splitLandscape: Float = 0.36f,
-    /** The thumb marks: where the last key was taken, and where the thumb is now. */
+    var landscapeSides: Boolean = true,
+    /**
+     * Each field's share of the width in landscape, anchored to its own side.
+     * 0.5 closes the gap between them.
+     */
+    var splitLandscape: Float = 0.3f,
+    /** The thumb marks: where the focus is, and where the thumb is now. */
     var markRadius: Float = 0.022f,
     var labelSp: Float = 15f,
-    var keyboardHeight: Float = 0.42f,
+    /** The keys' share of the screen in portrait. */
+    var keyboardHeight: Float = 0.46f,
 ) {
-    fun far(bank: Bank) = if (bank == Bank.LEFT) farLeft else farRight
+    fun sticky(bank: Bank): String = if (bank == Bank.LEFT) stickyLeft else stickyRight
 
     fun doubleTap(bank: Bank): Char =
         if (bank == Bank.LEFT) doubleTapLeft else doubleTapRight
 
-    /**
-     * The band of distances the ring answers to, which is what a key's region
-     * fills. The ring has no outer edge, so the drawn one is where the picture
-     * stops rather than where the answer changes.
-     */
-    fun bounds(): ClosedFloatingPointRange<Float> = minSlide..farEdge
+    fun comb(bank: Bank): String = if (bank == Bank.LEFT) combLeft else combRight
 
-    fun startAngle(bank: Bank): Float =
-        if (bank == Bank.LEFT) startFarLeft else startFarRight
-}
-
-/**
- * Where the copy of the ring goes.
- *
- * [OVER] floats it over the app instead of taking room from it: the keyboard's
- * window reaches above the keys, and the app is told to lay out underneath, so the
- * strip costs nothing while no thumb is down and covers nothing that is being read.
- * [BAND] takes the room instead, and pushes the app up out of the way.
- */
-enum class Preview(val label: String) {
-    OFF("Off"),
-    FIELD("In the thumb field"),
-    BAND("In a strip above the keys"),
-    OVER("Floating over the app"),
-    ;
-
-    /** Whether the copy gets a strip of its own above the keys. */
-    val strip: Boolean get() = this == BAND || this == OVER
+    /** How far the comb is turned, which the two orientations set apart. */
+    fun tilt(landscape: Boolean): Float = if (landscape) tiltLandscape else tiltPortrait
 }

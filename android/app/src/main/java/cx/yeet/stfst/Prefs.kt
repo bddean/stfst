@@ -10,68 +10,35 @@ object Prefs {
 
     fun save(config: Config, prefs: SharedPreferences) = with(config) {
         prefs.edit().apply {
-            putString("splitKey", splitKey.toString())
-            putString("farLeft", farLeft)
-            putString("farRight", farRight)
-            putBoolean("board", board)
-            putString("boardIslandLeft", boardIslandLeft)
-            putString("boardRingLeft", boardRingLeft)
-            putString("boardIslandRight", boardIslandRight)
-            putString("boardRingRight", boardRingRight)
-            putString("boardPortals", boardPortals)
-            putString("boardArcsLeft", boardArcsLeft)
-            putString("boardArcsRight", boardArcsRight)
-            putFloat("boardArcSweep", boardArcSweep)
-            putFloat("boardArcWide", boardArcWide)
-            putFloat("boardArcGap", boardArcGap)
-            putFloat("boardArcCurve", boardArcCurve)
-            putFloat("boardIsle", boardIsle)
-            putBoolean("boardTeleport", boardTeleport)
+            putString("combLeft", combLeft)
+            putString("combRight", combRight)
+            putString("combStrides", combStrides)
+            putFloat("tiltPortrait", tiltPortrait)
+            putFloat("tiltLandscape", tiltLandscape)
+            putFloat("combFill", combFill)
+            putFloat("combAt", combAt)
+            putBoolean("combHole", combHole)
+            putString("stickyLeft", stickyLeft)
+            putString("stickyRight", stickyRight)
             putString("doubleTapLeft", doubleTapLeft.toString())
             putString("doubleTapRight", doubleTapRight.toString())
             putLong("doubleTapMs", doubleTapMs)
-            putFloat("boardSpan", boardSpan)
-            putFloat("boardInner", boardInner)
-            putFloat("boardOuter", boardOuter)
-            putFloat("boardStagger", boardStagger)
-            putBoolean("boardTopIn", boardTopIn)
-            putFloat("boardAt", boardAt)
-            putFloat("boardStartLeft", boardStartLeft)
-            putFloat("boardStartRight", boardStartRight)
-            putInt("entryCols", entryCols)
-            putFloat("entryWide", entryWide)
-            putFloat("entryTall", entryTall)
-            putFloat("entryAt", entryAt)
-            putBoolean("entryCentral", entryCentral)
-            putFloat("startFarLeft", startFarLeft)
-            putFloat("startFarRight", startFarRight)
-            putFloat("minSlide", minSlide)
-            putFloat("farReach", farReach)
-            putFloat("turnDegrees", turnDegrees)
-            putFloat("hysteresisDegrees", hysteresisDegrees)
             putLong("stallMs", stallMs)
-            putFloat("homeAt", homeAt)
             putBoolean("commitOnFirstLift", commitOnFirstLift)
-            putBoolean("longPress", longPress)
-            putLong("longPressMs", longPressMs)
             putBoolean("haptics", haptics)
             putBoolean("hapticTicks", hapticTicks)
             putBoolean("hapticSplit", hapticSplit)
             putFloat("hapticStrength", hapticStrength)
             putLong("hapticGapMs", hapticGapMs)
-            putBoolean("showDeadSlots", showDeadSlots)
+            putBoolean("showDeadCells", showDeadCells)
             putBoolean("showLabels", showLabels)
-            putFloat("sectorStep", sectorStep)
-            putFloat("farEdge", farEdge)
-            putString("preview", preview.name)
-            putFloat("mirrorAt", mirrorAt)
-            putFloat("mirrorScale", mirrorScale)
-            putFloat("mirrorDim", mirrorDim)
+            putBoolean("showChain", showChain)
             putBoolean("cloud", cloud)
             putInt("cloudSamples", cloudSamples)
             putFloat("cloudAlpha", cloudAlpha)
             putBoolean("touchReadout", touchReadout)
             putFloat("fieldSplit", fieldSplit)
+            putBoolean("landscapeSides", landscapeSides)
             putFloat("splitLandscape", splitLandscape)
             putFloat("markRadius", markRadius)
             putFloat("labelSp", labelSp)
@@ -82,71 +49,37 @@ object Prefs {
     fun load(prefs: SharedPreferences): Config {
         val d = Config()
         return Config(
-            splitKey = prefs.getString("splitKey", null)?.firstOrNull() ?: d.splitKey,
-            farLeft = prefs.getString("farLeft", d.farLeft)!!,
-            farRight = prefs.getString("farRight", d.farRight)!!,
-            board = prefs.getBoolean("board", d.board),
-            boardIslandLeft = prefs.getString("boardIslandLeft", d.boardIslandLeft)!!,
-            boardRingLeft = prefs.getString("boardRingLeft", d.boardRingLeft)!!,
-            boardIslandRight = prefs.getString("boardIslandRight", d.boardIslandRight)!!,
-            boardRingRight = prefs.getString("boardRingRight", d.boardRingRight)!!,
-            boardPortals = prefs.getString("boardPortals", d.boardPortals)!!,
-            boardArcsLeft = prefs.getString("boardArcsLeft", d.boardArcsLeft)!!,
-            boardArcsRight = prefs.getString("boardArcsRight", d.boardArcsRight)!!,
-            boardArcSweep = prefs.getFloat("boardArcSweep", d.boardArcSweep),
-            boardArcWide = prefs.getFloat("boardArcWide", d.boardArcWide),
-            boardArcGap = prefs.getFloat("boardArcGap", d.boardArcGap),
-            boardArcCurve = prefs.getFloat("boardArcCurve", d.boardArcCurve),
-            boardIsle = prefs.getFloat("boardIsle", d.boardIsle),
-            boardTeleport = prefs.getBoolean("boardTeleport", d.boardTeleport),
+            combLeft = prefs.getString("combLeft", d.combLeft)!!,
+            combRight = prefs.getString("combRight", d.combRight)!!,
+            combStrides = prefs.getString("combStrides", d.combStrides)!!,
+            tiltPortrait = prefs.getFloat("tiltPortrait", d.tiltPortrait),
+            tiltLandscape = prefs.getFloat("tiltLandscape", d.tiltLandscape),
+            combFill = prefs.getFloat("combFill", d.combFill),
+            combAt = prefs.getFloat("combAt", d.combAt),
+            combHole = prefs.getBoolean("combHole", d.combHole),
+            stickyLeft = prefs.getString("stickyLeft", d.stickyLeft)!!,
+            stickyRight = prefs.getString("stickyRight", d.stickyRight)!!,
             doubleTapLeft = prefs.getString("doubleTapLeft", null)?.firstOrNull()
                 ?: d.doubleTapLeft,
             doubleTapRight = prefs.getString("doubleTapRight", null)?.firstOrNull()
                 ?: d.doubleTapRight,
             doubleTapMs = prefs.getLong("doubleTapMs", d.doubleTapMs),
-            boardSpan = prefs.getFloat("boardSpan", d.boardSpan),
-            boardInner = prefs.getFloat("boardInner", d.boardInner),
-            boardOuter = prefs.getFloat("boardOuter", d.boardOuter),
-            boardStagger = prefs.getFloat("boardStagger", d.boardStagger),
-            boardTopIn = prefs.getBoolean("boardTopIn", d.boardTopIn),
-            boardAt = prefs.getFloat("boardAt", d.boardAt),
-            boardStartLeft = prefs.getFloat("boardStartLeft", d.boardStartLeft),
-            boardStartRight = prefs.getFloat("boardStartRight", d.boardStartRight),
-            entryCols = prefs.getInt("entryCols", d.entryCols),
-            entryWide = prefs.getFloat("entryWide", d.entryWide),
-            entryTall = prefs.getFloat("entryTall", d.entryTall),
-            entryAt = prefs.getFloat("entryAt", d.entryAt),
-            entryCentral = prefs.getBoolean("entryCentral", d.entryCentral),
-            startFarLeft = prefs.getFloat("startFarLeft", d.startFarLeft),
-            startFarRight = prefs.getFloat("startFarRight", d.startFarRight),
-            minSlide = prefs.getFloat("minSlide", d.minSlide),
-            farReach = prefs.getFloat("farReach", d.farReach),
-            turnDegrees = prefs.getFloat("turnDegrees", d.turnDegrees),
-            hysteresisDegrees = prefs.getFloat("hysteresisDegrees", d.hysteresisDegrees),
             stallMs = prefs.getLong("stallMs", d.stallMs),
-            homeAt = prefs.getFloat("homeAt", d.homeAt),
             commitOnFirstLift = prefs.getBoolean("commitOnFirstLift", d.commitOnFirstLift),
-            longPress = prefs.getBoolean("longPress", d.longPress),
-            longPressMs = prefs.getLong("longPressMs", d.longPressMs),
             haptics = prefs.getBoolean("haptics", d.haptics),
             hapticTicks = prefs.getBoolean("hapticTicks", d.hapticTicks),
             hapticSplit = prefs.getBoolean("hapticSplit", d.hapticSplit),
             hapticStrength = prefs.getFloat("hapticStrength", d.hapticStrength),
             hapticGapMs = prefs.getLong("hapticGapMs", d.hapticGapMs),
-            showDeadSlots = prefs.getBoolean("showDeadSlots", d.showDeadSlots),
+            showDeadCells = prefs.getBoolean("showDeadCells", d.showDeadCells),
             showLabels = prefs.getBoolean("showLabels", d.showLabels),
-            sectorStep = prefs.getFloat("sectorStep", d.sectorStep),
-            farEdge = prefs.getFloat("farEdge", d.farEdge),
-            preview = prefs.getString("preview", null)
-                ?.let { name -> Preview.values().firstOrNull { it.name == name } } ?: d.preview,
-            mirrorAt = prefs.getFloat("mirrorAt", d.mirrorAt),
-            mirrorScale = prefs.getFloat("mirrorScale", d.mirrorScale),
-            mirrorDim = prefs.getFloat("mirrorDim", d.mirrorDim),
+            showChain = prefs.getBoolean("showChain", d.showChain),
             cloud = prefs.getBoolean("cloud", d.cloud),
             cloudSamples = prefs.getInt("cloudSamples", d.cloudSamples),
             cloudAlpha = prefs.getFloat("cloudAlpha", d.cloudAlpha),
             touchReadout = prefs.getBoolean("touchReadout", d.touchReadout),
             fieldSplit = prefs.getFloat("fieldSplit", d.fieldSplit),
+            landscapeSides = prefs.getBoolean("landscapeSides", d.landscapeSides),
             splitLandscape = prefs.getFloat("splitLandscape", d.splitLandscape),
             markRadius = prefs.getFloat("markRadius", d.markRadius),
             labelSp = prefs.getFloat("labelSp", d.labelSp),

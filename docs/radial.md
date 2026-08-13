@@ -175,3 +175,38 @@ different gesture from this one.
 `engine.undo`, `engine.repeat_stroke` and `engine.toggle_star` moved into
 `stfst-board` untested. No dictionary in `recipe.toml` emits them, so no fixture
 reaches them; the probe dictionary is where a case would have to go.
+
+## The comb replaced all of it
+
+The section above answers "is there a stationary layout that does better" with
+no, and gives the reason: from key i, every key after i needs a direction of
+its own, twelve keys follow the first of a bank, so thirty degrees is the
+ceiling for any arrangement and stationary positions cannot even reach it.
+
+That answer stands. What it also said, in its last line, is the way out:
+stationary keys "need the finger read by where it is rather than by where it
+went, and that is a different gesture from this one." The comb is that
+gesture, and it is the keyboard now. `android/README.md` describes it.
+
+Three things carried over unchanged, and they are the ones worth naming
+because each cost a bug to learn:
+
+- **Draw the region that takes the key, and ask the decision function for it.**
+  A drawing derived from the same numbers can still disagree with the code; a
+  drawing that probes the code cannot. On the comb the region is the cell, so
+  this is `Comb.region` and the picture uses nothing else.
+- **The measuring point and the drawn point are one point.** Any offset between
+  them leaves distance already travelled sitting above a threshold. The comb
+  has no threshold to trip, but the focus and the thumb are still one point
+  until something deliberately parts them, and a stall brings them back
+  together rather than to a home point.
+- **Read every touch sample, not one per frame.** Take-on-entry reads the path
+  itself, and a fast sweep crosses a cell between frames. The test that samples
+  a drag every 8 ms found two bugs on the ring; the comb reads
+  `getHistorical*` for the same reason.
+
+What the comb dropped is the whole apparatus the direction read needed:
+`Minimum slide`, `Turn needed`, `Hold on to a key`, `Settle`, the two rings,
+the shared-out slot angles, and the sector probe. None of them has an analogue,
+because each was answering "which way, and is the flick finished yet". A cell
+is a place, so neither question exists.

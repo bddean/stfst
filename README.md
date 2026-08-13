@@ -75,8 +75,9 @@ lists the five bugs that check found on its first run.
 ## The keyboard
 
 `android/` is an Android input method over these artifacts: two thumbs, each
-sliding through its own half of the steno order, with the layout fixed by that
-order rather than by the dictionary. `stfst-jni` links `stfst-ol` into the app, so
+walking down a fixed honeycomb through its own half of the steno order, with the
+layout fixed by that order rather than by the dictionary. `stfst-jni` links
+`stfst-ol` into the app, so
 the whole 15 MB stack answers on the phone and nothing is re-implemented in
 Kotlin. See `android/README.md` for the gesture and `docs/radial.md` for what
 building it changed here.
