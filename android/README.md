@@ -163,9 +163,10 @@ the touch cannot disagree about when the ride is there.
 Turning right round out of a landing puts the focus back on foot. That keeps
 every motion the board had before the ride existed.
 
-In the preview a landing the same slide can carry past gets **two arrowheads**
-instead of one, which is the one thing the picture cannot say by where it puts
-a ring.
+The preview draws the ride out to where it ends. A landing the slide only
+passes through gets a ring and no arrow; the cell the slide reaches gets **one
+arrowhead per slide it takes to arrive**. So the heads are at the destination,
+never at the layover.
 
 ### Two hops, and why the numbers are fixed
 
@@ -202,7 +203,7 @@ line to the cell it arrives at, and an **arrow** in that cell pointing back at
 the side to leave by. A ring means arriving takes that key; a dashed ring means
 it comes to rest beside it. Once the focus is resting on a landing the picture
 is the same, with one arrow: the stride again. `Show where the portals go`
-turns this off.
+turns this off. The band over the app draws the same picture.
 
 ## One thumb, both combs
 
@@ -221,7 +222,12 @@ both combs, drawn above the keys, over the app.
 `onComputeInsets` is what makes that work. The keys are what the app lays out
 around and what the window takes touches for; the band above them is neither.
 So the app keeps its room and its touches up there, and the copy floats on top.
-It is drawn only while a thumb is down.
+
+The band has no ground of its own. Only what the thumb needs is opaque there:
+the keys the chord can still take, and the landings the portals go to. The rest
+is the app. It fades in as a thumb goes down and out as it lifts, because a
+band that arrives at full strength reads as a flash over whatever the app was
+showing.
 
 ## The focus is not the thumb
 

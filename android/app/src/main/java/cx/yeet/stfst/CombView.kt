@@ -12,6 +12,7 @@ import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
 import kotlin.math.hypot
+import kotlin.math.max
 import kotlin.math.min
 
 /**
@@ -340,7 +341,27 @@ class CombView(
         val hot: Int,
         val warm: Int,
         val hole: Int,
+        val back: Int,
     )
+
+    /**
+     * How far the band over the app has faded in: 0 gone, 1 there.
+     *
+     * A band that appears and goes at full strength reads as a flash over
+     * whatever the app was showing.
+     */
+    private var glow = 0f
+    private var glowAt = 0L
+
+    private fun glow(): Float {
+        val now = android.view.animation.AnimationUtils.currentAnimationTimeMillis()
+        val step = if (glowAt == 0L) 0f else (now - glowAt) / FADE_MS
+        glowAt = now
+        val want = if (chorder.left.live || chorder.right.live) 1f else 0f
+        glow = if (want > glow) min(want, glow + step) else max(want, glow - step)
+        if (glow != want) postInvalidateOnAnimation()
+        return glow * glow * (3f - 2f * glow)
+    }
 
     override fun onDraw(canvas: Canvas) {
         val dark = (resources.configuration.uiMode and
@@ -352,8 +373,9 @@ class CombView(
             hot = Color.rgb(64, 132, 240),
             warm = if (dark) Color.rgb(30, 58, 104) else Color.rgb(206, 226, 255),
             hole = if (dark) Color.rgb(216, 168, 77) else Color.rgb(169, 111, 22),
+            back = if (dark) Color.rgb(18, 18, 20) else Color.rgb(246, 246, 248),
         )
-        val back = if (dark) Color.rgb(18, 18, 20) else Color.rgb(246, 246, 248)
+        val back = paint.back
         // Only the fields get a ground, and only where the keys are. Above them
         // and between them the app shows through, which is what the band is for.
         ink.style = Paint.Style.FILL
@@ -373,21 +395,20 @@ class CombView(
             drawComb(canvas, thumb, paint, sketch)
             drawFocusCell(canvas, thumb, paint, sketch)
             drawMarks(canvas, thumb, paint)
-            if (config.showPortals) drawPortals(canvas, thumb, paint)
+            if (config.showPortals) drawPortals(canvas, thumb, paint, sketch)
             drawTaken(canvas, thumb, paint, thumb.field)
         }
-        if (keysTop > 0 && chorder.thumb(Bank.LEFT).live || chorder.thumb(Bank.RIGHT).live) {
+        val show = glow()
+        if (keysTop > 0 && show > 0f) {
+            canvas.saveLayerAlpha(0f, 0f, width.toFloat(), keysTop.toFloat(), (show * 255).toInt())
             for (bank in Bank.values()) {
                 val band = bands[bank] ?: continue
-                ink.style = Paint.Style.FILL
-                ink.color = fade(back, 0.88f)
-                canvas.drawRect(band(bank).let {
-                    android.graphics.RectF(it.left, it.top, it.right, it.bottom)
-                }, ink)
                 drawComb(canvas, chorder.thumb(bank), paint, band)
                 drawFocusCell(canvas, chorder.thumb(bank), paint, band)
+                if (config.showPortals) drawPortals(canvas, chorder.thumb(bank), paint, band)
                 drawTaken(canvas, chorder.thumb(bank), paint, band(bank))
             }
+            canvas.restore()
         }
         if (config.touchReadout) drawReadout(canvas, paint)
     }
@@ -405,18 +426,20 @@ class CombView(
         val chain: Path?,
         val radius: Float,
         val at: Placement,
+        /** Whether this copy is drawn over the app, where the ground is not ours. */
+        val over: Boolean,
     )
 
     private var sketches: Map<Bank, Sketch> = emptyMap()
     private var bands: Map<Bank, Sketch> = emptyMap()
 
     private fun cut() {
-        sketches = Bank.values().associateWith { carve(it, chorder.thumb(it).field) }
+        sketches = Bank.values().associateWith { carve(it, chorder.thumb(it).field, false) }
         bands = if (keysTop <= 0) emptyMap()
-        else Bank.values().associateWith { carve(it, band(it)) }
+        else Bank.values().associateWith { carve(it, band(it), true) }
     }
 
-    private fun carve(bank: Bank, field: Field): Sketch {
+    private fun carve(bank: Bank, field: Field, over: Boolean): Sketch {
         val at = comb.place(bank, field, tilt)
         val chain = Path()
         var started = false
@@ -438,8 +461,17 @@ class CombView(
             chain = chain.takeIf { started },
             radius = at.radius,
             at = at,
+            over = over,
         )
     }
+
+    private fun keyCut(sketch: Sketch, spot: Spot): Triple<Button, Path, Point>? =
+        sketch.keys.firstOrNull { (button, _, _) ->
+            button.spots.any { it.col == spot.col && it.row == spot.row }
+        }
+
+    private fun cellPath(sketch: Sketch, spot: Spot): Path? =
+        keyCut(sketch, spot)?.second ?: sketch.ground.firstOrNull { it.first == spot }?.second
 
     /** Every cell of one bank: the ground it owns, its outline, and its label. */
     private fun drawComb(canvas: Canvas, thumb: Thumb, paint: Palette, sketch: Sketch) {
@@ -515,15 +547,19 @@ class CombView(
      * The arrow in the landing points the way out, not the way in: four rings
      * say where the portals go, and only the arrow says which is which.
      *
+     * Sliding on the same way rides the stride again, so the line goes on to
+     * where that ends. The heads count the slides it takes, and they are drawn
+     * where the slide ends rather than where it passes through.
+     *
      * A focus resting on a landing gets the one jump it can still ride, drawn
      * the same way. So the picture is always the sides of the cell the focus is
      * in, whether that cell is a key or a place a jump left it.
      */
-    private fun drawPortals(canvas: Canvas, thumb: Thumb, paint: Palette) {
+    private fun drawPortals(canvas: Canvas, thumb: Thumb, paint: Palette, sketch: Sketch) {
         if (!thumb.live) return
         val spot = thumb.spot ?: return
-        val at = comb.place(thumb.bank, thumb.field, tilt)
-        val r = sketches[thumb.bank]?.radius ?: return
+        val at = sketch.at
+        val r = sketch.radius
         val riding = thumb.riding
         val ahead = riding?.let { comb.onward(thumb.bank, it, thumb.keys) }
         val jumps =
@@ -532,29 +568,64 @@ class CombView(
                 comb.portal(thumb.bank, spot, side, thumb.keys)?.let { side to it }
             }
         for ((side, land) in jumps) {
-            val from = comb.edge(spot, side, at)
-            val to = comb.point(land.spot, at)
-            ink.style = Paint.Style.STROKE
-            ink.strokeWidth = r * 0.05f
-            ink.color = fade(paint.hot, 0.4f)
-            ink.pathEffect = dashes
-            canvas.drawLine(from.x, from.y, to.x, to.y, ink)
-            ink.pathEffect = if (land.onKey) null else dashes
-            ink.color = fade(paint.hot, if (land.onKey) 0.85f else 0.5f)
-            canvas.drawCircle(to.x, to.y, r * 0.42f, ink)
-            ink.pathEffect = null
-            ink.style = Paint.Style.FILL
-            ink.color = fade(paint.hot, if (land.onKey) 0.85f else 0.6f)
-            // A key cell already carries its letter, so the arrow rides the ring
-            // rather than sitting over it.
-            val sit = if (land.onKey) r * 0.42f else 0f
-            val back = unit(to, from)
             // The side already knows which way it points: it is the step from the
             // cell's middle out to the edge the portal leaves by.
-            val way = unit(comb.point(spot, at), from)
-            val more = comb.onward(thumb.bank, Ride(land, side), thumb.keys) != null
-            arrow(canvas, to.x + back.x * sit, to.y + back.y * sit, way.x, way.y, r * 0.26f, more)
+            val leaves = comb.edge(spot, side, at)
+            val way = unit(comb.point(spot, at), leaves)
+            var from = leaves
+            var stop = land
+            var slides = 1
+            while (true) {
+                val next = comb.onward(thumb.bank, Ride(stop, side), thumb.keys)
+                    ?.takeIf { slides < 4 }
+                drawStop(canvas, paint, sketch, from, stop, way, if (next == null) slides else 0)
+                if (next == null) break
+                from = comb.point(stop.spot, at)
+                stop = next
+                slides++
+            }
         }
+    }
+
+    /**
+     * One place a slide comes to, with the line that reaches it.
+     *
+     * [heads] is how many slides it took to get there, and zero for a stop the
+     * slide only passes through.
+     */
+    private fun drawStop(
+        canvas: Canvas, paint: Palette, sketch: Sketch,
+        from: Point, stop: Landing, way: Point, heads: Int,
+    ) {
+        val at = sketch.at
+        val r = sketch.radius
+        val to = comb.point(stop.spot, at)
+        ink.style = Paint.Style.STROKE
+        ink.strokeWidth = r * 0.05f
+        ink.color = fade(paint.hot, 0.4f)
+        ink.pathEffect = dashes
+        canvas.drawLine(from.x, from.y, to.x, to.y, ink)
+        ink.pathEffect = null
+        // Over the app the ground under a landing is not ours, so the ring gets
+        // something to sit on.
+        if (sketch.over && heads > 0) cellPath(sketch, stop.spot)?.let {
+            ink.style = Paint.Style.FILL
+            ink.color = paint.back
+            canvas.drawPath(it, ink)
+        }
+        ink.style = Paint.Style.STROKE
+        ink.pathEffect = if (stop.onKey) null else dashes
+        ink.color = fade(paint.hot, if (stop.onKey) 0.85f else 0.5f)
+        canvas.drawCircle(to.x, to.y, r * 0.42f, ink)
+        ink.pathEffect = null
+        if (heads <= 0) return
+        ink.style = Paint.Style.FILL
+        ink.color = fade(paint.hot, if (stop.onKey) 0.85f else 0.6f)
+        // A key cell already carries its letter, so the arrow rides the ring
+        // rather than sitting over it.
+        val sit = if (stop.onKey) r * 0.42f else 0f
+        val back = unit(to, from)
+        arrow(canvas, to.x + back.x * sit, to.y + back.y * sit, way.x, way.y, r * 0.26f, heads)
     }
 
     /** The unit step from `a` toward `b`. */
@@ -569,18 +640,18 @@ class CombView(
      * A plain triangle reads as a triangle at any angle. The notch in the tail
      * is what makes it read as pointing.
      *
-     * Two heads for a landing the same slide can carry past, which is the one
-     * thing the picture cannot say by where it puts a ring.
+     * One head per slide it takes to arrive, which is the one thing the picture
+     * cannot say by where it puts a ring.
      */
     private fun arrow(
-        canvas: Canvas, x: Float, y: Float, dx: Float, dy: Float, size: Float, twice: Boolean,
+        canvas: Canvas, x: Float, y: Float, dx: Float, dy: Float, size: Float, heads: Int,
     ) {
         // Along the way it points, and across it.
         fun at(lead: Float, on: Float, off: Float) = Point(
             x + dx * size * (on + lead) - dy * size * off,
             y + dy * size * (on + lead) + dx * size * off,
         )
-        for (lead in if (twice) listOf(0.9f, -0.9f) else listOf(0f)) {
+        for (lead in List(heads) { 0.9f * (heads - 1 - 2 * it) }) {
             val path = Path()
             val tip = at(lead, 1.5f, 0f)
             path.moveTo(tip.x, tip.y)
@@ -626,10 +697,8 @@ class CombView(
     private fun drawFocusCell(canvas: Canvas, thumb: Thumb, paint: Palette, sketch: Sketch) {
         if (!thumb.live) return
         val spot = thumb.spot ?: return
-        val button = comb.buttons.getValue(thumb.bank)
-            .firstOrNull { b -> b.spots.any { it.col == spot.col && it.row == spot.row } }
-        val cut = sketch.keys.firstOrNull { it.first == button }
-        val path = cut?.second ?: sketch.ground.firstOrNull { it.first == spot }?.second ?: return
+        val cut = keyCut(sketch, spot)
+        val path = cellPath(sketch, spot) ?: return
         // Warm only where a step would take a key; over ground and over a cell
         // the order has passed it says where, not what.
         ink.style = Paint.Style.FILL
@@ -712,5 +781,10 @@ class CombView(
                 field.centerX, ink.textSize, ink
             )
         }
+    }
+
+    companion object {
+        /** How long the band takes to come and go. */
+        private const val FADE_MS = 130f
     }
 }
