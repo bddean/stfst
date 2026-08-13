@@ -2,6 +2,7 @@ package cx.yeet.stfst
 
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Typeface
 import android.inputmethodservice.InputMethodService
 import android.os.SystemClock
 import android.text.TextUtils
@@ -43,10 +44,13 @@ class StenoService : InputMethodService() {
     /** The running repeat of a held button, if any. */
     private var repeat: Runnable? = null
 
-    /** The hints bar: recent briefer outlines for what was just written. */
-    private var hintsBar: TextView? = null
-    private val recentHints = ArrayDeque<String>()
-    private var hintsClear: Runnable? = null
+    /** What the keyboard has just done: the strokes, and briefer ways to make them. */
+    private var notesBar: TextView? = null
+    private val notes = Notes()
+    private var notesClear: Runnable? = null
+
+    /** How many lines the panel has room for, measured rather than guessed. */
+    private var notesRows = 1
     /**
      * The reverse lookups run here, off the stroke's path to the editor.
      * Every native call holds [runtime], because the handle is one mutable
@@ -115,6 +119,8 @@ class StenoService : InputMethodService() {
         bar.addView(button("↶") {
             if (handle != 0L) {
                 show(synchronized(runtime) { Native.undo(handle) })
+                notes.stroke("↶", "")
+                render()
                 suggest()
             }
         })
@@ -122,30 +128,48 @@ class StenoService : InputMethodService() {
         actionKey = button("⏎") { act() }
         bar.addView(actionKey)
 
-        // Briefer outlines for what was just written, rolling, newest at the
-        // right. Gone while it has nothing to say, so it costs no room.
-        val hints = TextView(this).apply {
+        val keys = CombView(this, config, order, ::stroke)
+        view = keys
+        // The gap between two edge combs is the only room this keyboard has to
+        // spare, so that is where the record goes, and only there is it worth
+        // more than one line.
+        val tall = keys.sides && config.showLog
+        val panel = TextView(this).apply {
             setPadding(24, 6, 24, 6)
             textSize = 13f
             setTextColor(Color.GRAY)
-            setSingleLine(true)
-            ellipsize = TextUtils.TruncateAt.START
+            // Outlines read as a column when they line up, and only a fixed
+            // pitch lines them up.
+            typeface = Typeface.MONOSPACE
+            if (tall) {
+                gravity = Gravity.BOTTOM
+            } else {
+                setSingleLine(true)
+                ellipsize = TextUtils.TruncateAt.START
+            }
             visibility = View.GONE
         }
-        hintsBar = hints
+        notesBar = panel
+        notesRows = 1
+        if (tall) measureRows(panel)
 
-        val keys = CombView(this, config, order, ::stroke)
-        view = keys
         val strip = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setBackgroundColor(Color.TRANSPARENT)
-            addView(hints)
+            addView(
+                panel,
+                LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    if (tall) 0 else ViewGroup.LayoutParams.WRAP_CONTENT,
+                    if (tall) 1f else 0f,
+                )
+            )
             addView(bar)
         }
 
-        // With a comb on each edge the strip goes in the gap between them, at
-        // the bottom, rather than under keys that reach the foot of the band.
         if (keys.sides) {
+            val edge = (resources.displayMetrics.widthPixels *
+                config.splitLandscape.coerceIn(0.15f, 0.5f)).toInt()
             return FrameLayout(this).apply {
                 layoutParams = ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
@@ -154,10 +178,13 @@ class StenoService : InputMethodService() {
                 addView(
                     strip,
                     FrameLayout.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL,
-                    )
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        Gravity.BOTTOM,
+                    ).apply {
+                        leftMargin = edge
+                        rightMargin = edge
+                    }
                 )
             }
         }
@@ -171,12 +198,34 @@ class StenoService : InputMethodService() {
         }
     }
 
+    /**
+     * How many lines the panel can hold, from what it was given rather than
+     * from what the band was asked for.
+     *
+     * `maxLines` would keep the first rows and the newest lines are the last,
+     * so the count feeds the render and the view is never told to truncate.
+     */
+    private fun measureRows(panel: TextView) {
+        panel.addOnLayoutChangeListener { _, _, top, _, bottom, _, _, _, _ ->
+            val line = panel.lineHeight
+            if (line <= 0) return@addOnLayoutChangeListener
+            val room = bottom - top - panel.paddingTop - panel.paddingBottom
+            val rows = (room / line).coerceAtLeast(1)
+            if (rows == notesRows) return@addOnLayoutChangeListener
+            notesRows = rows
+            render()
+        }
+    }
+
     /** A fresh field means a fresh buffer: the old text belongs to the old field. */
     override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
         super.onStartInputView(info, restarting)
         forget()
+        notes.clear()
+        render()
         actionKey?.text = actionName(info) ?: "⏎"
-        view?.apply(Prefs.load(getSharedPreferences(PREFS, MODE_PRIVATE)))
+        config = Prefs.load(getSharedPreferences(PREFS, MODE_PRIVATE))
+        view?.apply(config)
     }
 
     private fun button(label: String, click: (() -> Unit)?) = Button(this).apply {
@@ -279,13 +328,18 @@ class StenoService : InputMethodService() {
         if (handle == 0L) return
         // A bare star is the undo stroke, as on any steno machine.
         val star = order.indexOf('*')
-        if (star >= 0 && keys == 1L shl star) {
-            show(synchronized(runtime) { Native.undo(handle) })
-        } else {
-            show(synchronized(runtime) { Native.push(handle, keys) })
+        val back = star >= 0 && keys == 1L shl star
+        val text = synchronized(runtime) {
+            if (back) Native.undo(handle) else Native.push(handle, keys)
         }
+        notes.stroke(outline(keys), show(text))
+        render()
         suggest()
     }
+
+    /** A stroke's keys as the outline it is written as, in steno order. */
+    private fun outline(keys: Long): String =
+        order.filterIndexed { i, _ -> (keys shr i) and 1L == 1L }
 
     /**
      * Ask the runtime for briefer outlines for what was just written, and fold
@@ -301,44 +355,50 @@ class StenoService : InputMethodService() {
             val found = synchronized(runtime) {
                 if (handle == 0L) "" else Native.hints(handle)
             }
-            hintsBar?.post { absorb(found) }
+            notesBar?.post {
+                if (notes.brief(found.lines())) render()
+            }
         }
-    }
-
-    /** Newest at the right, no repeats, at most [HINTS] entries. */
-    private fun absorb(found: String) {
-        for (entry in found.lines()) {
-            if (entry.isEmpty() || entry in recentHints) continue
-            recentHints.addLast(entry)
-            while (recentHints.size > HINTS) recentHints.removeFirst()
-        }
-        val bar = hintsBar ?: return
-        bar.text = recentHints.joinToString("   ")
-        bar.visibility = if (recentHints.isEmpty()) View.GONE else View.VISIBLE
-        // The buffer clears after a quiet minute: a hint is about what was
-        // just written, and an hour-old one no longer is.
-        hintsClear?.let { bar.removeCallbacks(it) }
-        val clear = Runnable {
-            recentHints.clear()
-            bar.text = ""
-            bar.visibility = View.GONE
-        }
-        hintsClear = clear
-        bar.postDelayed(clear, HINTS_IDLE_MS)
     }
 
     /**
-     * Send the editor the difference between the buffer and what it already has.
+     * Put the record on the screen, at whatever length the panel has room for.
+     *
+     * One line is worth the briefs alone: a stroke you have just made is not
+     * news, and a shorter way to make it is.
      */
-    private fun show(text: String) {
+    private fun render() {
+        val bar = notesBar ?: return
+        val tall = view?.sides == true && config.showLog
+        bar.text = if (tall) notes.log(notesRows) else notes.briefs(BRIEFS)
+        bar.visibility = if (bar.text.isEmpty()) View.GONE else View.VISIBLE
+        // The record clears after a quiet spell: it is about what was just
+        // written, and an hour-old line no longer is.
+        notesClear?.let { bar.removeCallbacks(it) }
+        val clear = Runnable {
+            notes.clear()
+            bar.text = ""
+            bar.visibility = View.GONE
+        }
+        notesClear = clear
+        bar.postDelayed(clear, NOTES_IDLE_MS)
+    }
+
+    /**
+     * Send the editor the difference between the buffer and what it already
+     * has, and answer with the text that appeared.
+     */
+    private fun show(text: String): String {
         status?.text = text.takeLast(60)
-        val editor = currentInputConnection ?: return
         var common = 0
         while (common < text.length && common < sent.length && text[common] == sent[common]) common++
+        val added = text.substring(common)
+        val editor = currentInputConnection ?: return added
         val stale = sent.length - common
         if (stale > 0) editor.deleteSurroundingText(stale, 0)
-        if (common < text.length) editor.commitText(text.substring(common), 1)
+        if (added.isNotEmpty()) editor.commitText(added, 1)
         sent = text
+        return added
     }
 
     /** A key a long press asked for, with whatever modifiers were sticky. */
@@ -356,8 +416,8 @@ class StenoService : InputMethodService() {
     companion object {
         const val TAG = "stfst"
         const val PREFS = "radial"
-        /** How many hints the bar holds, and how long a quiet spell keeps them. */
-        const val HINTS = 8
-        const val HINTS_IDLE_MS = 60_000L
+        /** How many briefs one line holds, and how long a quiet spell keeps them. */
+        const val BRIEFS = 8
+        const val NOTES_IDLE_MS = 60_000L
     }
 }

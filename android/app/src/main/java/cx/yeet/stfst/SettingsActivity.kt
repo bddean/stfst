@@ -187,6 +187,11 @@ class SettingsActivity : Activity() {
                 "app's room with a top edge alone, so there is no way to make " +
                 "the app narrower and leave the combs full height beside it",
             unit = "of the screen"),
+        Flag("The record in the landscape gap", { it.showLog },
+            { c, v -> c.showLog = v },
+            "the gap between two edge combs fills with what the keyboard has " +
+                "just done: every stroke, the text it wrote, and the briefer " +
+                "outlines under it. Off leaves the one line of briefs"),
         Range("Landscape field width", 0.15f, 0.5f, { it.splitLandscape },
             { c, v -> c.splitLandscape = v },
             "each field's share of the width, anchored to its own side",

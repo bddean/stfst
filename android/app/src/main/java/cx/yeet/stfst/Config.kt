@@ -175,6 +175,14 @@ data class Config(
      * what this stopped doing, so the band is deep rather than total.
      */
     var landscapeHeight: Float = 0.72f,
+    /**
+     * Fill the gap between two edge combs with the record: every stroke, the
+     * text it wrote, and the briefer outlines under it.
+     *
+     * The gap is the only room this keyboard has to spare, and one line is only
+     * worth the briefs. Off leaves that one line, in the gap or under the keys.
+     */
+    var showLog: Boolean = true,
     /** The thumb marks: where the focus is, and where the thumb is now. */
     var markRadius: Float = 0.022f,
     var labelSp: Float = 15f,

@@ -135,8 +135,8 @@ thumb is drawn too, faint, tied to the focus by a line. Holding still for
 
 ## Landscape, and what Android will not give you
 
-A deep band, with a comb hugging each edge and the bar in the gap between them.
-The app keeps everything above the band and nothing covers it.
+A deep band, with a comb hugging each edge. The gap between them holds the bar
+and the record. The app keeps everything above the band and nothing covers it.
 
 Full-height halves with the app between them is what the comb wants, and
 Android will not give it. `onComputeInsets` describes the app's room with a
@@ -211,14 +211,30 @@ editor is the difference between the runtime's buffer and what was last sent,
 so an edit made another way would leave that difference describing text nobody
 has. The next stroke starts from the field as it now is.
 
-## The hints bar
+## The record
 
 After every stroke the runtime reads the trailing one to four words backwards
 through every dictionary that carries a `reverse.hfstol`, phrases included.
-When an outline writes the same text in fewer strokes, `text=OUTLINE` joins a
-rolling row between the keys and the bar: eight entries, oldest out first, gone
-after a quiet minute and while it has nothing to say. The lookups run off the
-stroke's thread, so the editor never waits on them.
+When an outline writes the same text in fewer strokes, that is a **brief**. The
+lookups run off the stroke's thread, so the editor never waits on them.
+
+Two facts arrive per stroke and at different times: the outline and the text it
+wrote, together; a brief for that same text, later. The second is about the
+first, so a brief hangs under the stroke that provoked it rather than living in
+a bar of its own.
+
+How much of that reaches the screen is a question about room, and it is asked
+where the room is known:
+
+| | |
+|---|---|
+| one line | the briefs alone. A stroke you have just made is not news, and a shorter way to make it is |
+| the landscape gap | the whole record, a line per stroke and a line per brief under it, newest at the foot |
+
+The gap between two edge combs is the only room this keyboard has to spare, so
+that is where the record goes. The panel measures itself and keeps as many
+lines as it can hold. `The record in the landscape gap` turns it back to one
+line, and a quiet minute clears it either way.
 
 ## What the touch panel reports
 
@@ -262,12 +278,13 @@ which is why cargo runs inside `nix develop`.
 |---|---|
 | `Comb` | the layout, the lattice, and where a portal lands. No Android, no dictionary |
 | `Chorder` | two thumbs, and the rule that turns them into strokes. No Android |
+| `Notes` | the record of what was written, and how much of it fits. No Android |
 | `CombView` | drawing and touch. Decides nothing |
 | `StenoService` | the editor, the insets, and the native handle |
 | `stfst-jni` | opens the stack, hands strokes to `stfst-board`, returns the buffer |
 
-`Comb` and `Chorder` are plain Kotlin so they can be tested without a device,
-and the tests in `app/src/test` are the ones worth reading first.
+`Comb`, `Chorder` and `Notes` are plain Kotlin so they can be tested without a
+device, and the tests in `app/src/test` are the ones worth reading first.
 
 ## Not carried over
 

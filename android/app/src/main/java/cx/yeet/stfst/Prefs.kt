@@ -52,6 +52,7 @@ object Prefs {
             putBoolean("landscapeSides", landscapeSides)
             putFloat("splitLandscape", splitLandscape)
             putFloat("landscapeHeight", landscapeHeight)
+            putBoolean("showLog", showLog)
             putFloat("markRadius", markRadius)
             putFloat("labelSp", labelSp)
             putFloat("keyboardHeight", keyboardHeight)
@@ -96,6 +97,7 @@ object Prefs {
             landscapeSides = prefs.getBoolean("landscapeSides", d.landscapeSides),
             splitLandscape = prefs.getFloat("splitLandscape", d.splitLandscape),
             landscapeHeight = prefs.getFloat("landscapeHeight", d.landscapeHeight),
+            showLog = prefs.getBoolean("showLog", d.showLog),
             markRadius = prefs.getFloat("markRadius", d.markRadius),
             labelSp = prefs.getFloat("labelSp", d.labelSp),
             keyboardHeight = prefs.getFloat("keyboardHeight", d.keyboardHeight),
