@@ -105,7 +105,7 @@ class Comb(val order: String, val config: Config) {
      * off every neighbour is what lets a float sit against the end cluster and
      * still be a float.
      */
-    private val walked: Map<Bank, Pair<List<Int>, Set<Int>>> = spots.mapValues { (bank, list) ->
+    private val walked: Map<Bank, Walk> = spots.mapValues { (bank, list) ->
         val cells = byCell.getValue(bank)
         fun touches(key: Int, other: Int): Boolean =
             buttons.getValue(bank).filter { it.key == key }.any { button ->
@@ -118,13 +118,13 @@ class Comb(val order: String, val config: Config) {
         for (key in keys.asReversed()) {
             if (walk.isEmpty() || touches(key, walk.first())) walk.addFirst(key)
         }
-        walk.toList() to keys.minus(walk.toSet()).toSet()
+        Walk(walk.toList(), keys.minus(walk.toSet()).toSet())
     }
 
     /** The keys of one bank on the walk, in steno order. Floats are not on it. */
-    val chain: Map<Bank, List<Int>> = walked.mapValues { it.value.first }
+    val chain: Map<Bank, List<Int>> = walked.mapValues { it.value.chain }
 
-    val floats: Map<Bank, Set<Int>> = walked.mapValues { it.value.second }
+    val floats: Map<Bank, Set<Int>> = walked.mapValues { it.value.floats }
 
     private val rank: Map<Bank, Map<Int, Int>> =
         chain.mapValues { (_, keys) -> keys.withIndex().associate { (i, k) -> k to i } }
@@ -534,6 +534,9 @@ class Comb(val order: String, val config: Config) {
 
 /** A cell of the lattice and the value it answers with. */
 data class Spot(val col: Int, val row: Int, val v: Char)
+
+/** One bank's keys, split into the walk and what could not join it. */
+data class Walk(val chain: List<Int>, val floats: Set<Int>)
 
 /** One drawn button: a run of touching cells that all hold one value. */
 data class Button(val key: Int, val v: Char, val spots: List<Spot>)

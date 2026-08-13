@@ -11,10 +11,8 @@ import android.graphics.Path
 import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
-import kotlin.math.cos
 import kotlin.math.hypot
 import kotlin.math.min
-import kotlin.math.sin
 
 /**
  * The keyboard itself: two thumb combs and the touch handling that turns taps
@@ -452,20 +450,23 @@ class CombView(
             ink.color = fade(paint.hot, if (land.onKey) 0.85f else 0.5f)
             canvas.drawCircle(to.x, to.y, r * 0.42f, ink)
             ink.pathEffect = null
-            val a = Math.toRadians(Comb.angleOf(side).toDouble())
-            val dx = cos(a).toFloat() * at.ct - sin(a).toFloat() * at.st
-            val dy = cos(a).toFloat() * at.st + sin(a).toFloat() * at.ct
             ink.style = Paint.Style.FILL
             ink.color = fade(paint.hot, if (land.onKey) 0.85f else 0.6f)
             // A key cell already carries its letter, so the arrow rides the ring
             // rather than sitting over it.
-            val run = hypot(to.x - from.x, to.y - from.y).coerceAtLeast(1f)
             val ride = if (land.onKey) r * 0.42f else 0f
-            arrow(
-                canvas, to.x - (to.x - from.x) / run * ride, to.y - (to.y - from.y) / run * ride,
-                dx, dy, r * 0.26f,
-            )
+            val back = unit(to, from)
+            // The side already knows which way it points: it is the step from the
+            // cell's middle out to the edge the portal leaves by.
+            val way = unit(comb.point(spot, at), from)
+            arrow(canvas, to.x + back.x * ride, to.y + back.y * ride, way.x, way.y, r * 0.26f)
         }
+    }
+
+    /** The unit step from `a` toward `b`. */
+    private fun unit(a: Point, b: Point): Point {
+        val run = hypot(b.x - a.x, b.y - a.y).coerceAtLeast(1f)
+        return Point((b.x - a.x) / run, (b.y - a.y) / run)
     }
 
     /** A solid triangle at a point, pointing along a unit vector. */
