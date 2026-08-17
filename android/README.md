@@ -433,6 +433,7 @@ which is why cargo runs inside `nix develop`.
 | `Comb` | the layout, the lattice, and where a portal lands. No Android, no dictionary |
 | `Chorder` | two thumbs, and the rule that turns them into strokes. No Android |
 | `Notes` | the record of what was written, and how much of it fits. No Android |
+| `Motor` | what a thumb motion costs, for judging layouts. No Android, no layout; see `docs/motor.md` |
 | `CombView` | drawing and touch. Decides nothing |
 | `StenoService` | the editor, the insets, and the native handle |
 | `stfst-jni` | opens the stack, hands strokes to `stfst-board`, returns the buffer |

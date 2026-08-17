@@ -115,6 +115,7 @@ host with no lexicon refuses `{:infl:…}` rather than answering it with rules.
 | `docs/latency.md` | Per-lookup latency, and why the search frontier is wide. |
 | `docs/encoding.md` | What the artifact costs, why delayed alignment would cost more, and the exact size model. |
 | `docs/modifiers.md` | The `@` keysym namespace, and why a keystroke's modifiers are tags inside the item. |
+| `docs/motor.md` | What a thumb motion costs: one synthesised speed profile read three ways, for judging layouts before building them. |
 | `docs/phrasing.md` | The §7 clause grammar: what is a rule and what is a table, and why the retro modifier layer needs a different mechanism. |
 | `docs/parity.md` | Plover's translation language operator by operator, what the record language says instead, and what it still cannot say. |
 | `docs/retro.md` | Rewriting text already written: why the window comes after the keys, why the tape carries character classes and not characters, and what is left in the host. |

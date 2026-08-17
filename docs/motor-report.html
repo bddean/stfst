@@ -1,0 +1,942 @@
+<title>Thumbs on Glass</title>
+<style>
+  :root{
+    --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e;
+    --muted:#898781; --grid:#e1e0d9; --axis:#c3c2b7; --border:rgba(11,11,11,.10);
+    --accent:#2a78d6; --accent-ink:#1c5cab; --accent-soft:rgba(42,120,214,.10);
+    --c-bend:#4a3aa7; --c-chan:#c94f7f; --c-home:#008300;
+    --r0:#9ec5f4; --r1:#6da7ec; --r2:#3987e5; --r3:#256abf; --r4:#184f95; --r5:#0d366b;
+    --chip:#f0efec; --code:#f0efec;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --page:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7;
+      --muted:#898781; --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,.10);
+      --accent:#3987e5; --accent-ink:#86b6ef; --accent-soft:rgba(57,135,229,.16);
+      --c-bend:#9085e9; --c-chan:#d55181; --c-home:#0ca30c;
+      --r0:#184f95; --r1:#1c5cab; --r2:#256abf; --r3:#3987e5; --r4:#5598e7; --r5:#9ec5f4;
+      --chip:#242423; --code:#242423;
+    }
+  }
+  :root[data-theme="dark"]{
+    --page:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7;
+    --muted:#898781; --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,.10);
+    --accent:#3987e5; --accent-ink:#86b6ef; --accent-soft:rgba(57,135,229,.16);
+    --c-bend:#9085e9; --c-chan:#d55181; --c-home:#0ca30c;
+    --r0:#184f95; --r1:#1c5cab; --r2:#256abf; --r3:#3987e5; --r4:#5598e7; --r5:#9ec5f4;
+    --chip:#242423; --code:#242423;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--page); color:var(--ink);
+    font-family:"Charter","Iowan Old Style",Georgia,serif;
+    font-size:17px; line-height:1.55;
+  }
+  .sans{font-family:"Avenir Next","Seravek","Segoe UI",system-ui,sans-serif}
+  .mono{font-family:ui-monospace,"SF Mono","Cascadia Code",Menlo,monospace;font-variant-numeric:tabular-nums}
+  main{max-width:1040px;margin:0 auto;padding:0 24px 96px}
+  .prose{max-width:64ch}
+  header{padding:56px 0 8px}
+  .eyebrow{font-family:"Avenir Next","Seravek","Segoe UI",system-ui,sans-serif;
+    font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  h1{font-family:"Avenir Next","Seravek","Segoe UI",system-ui,sans-serif;
+    font-size:clamp(34px,5vw,52px);font-weight:600;letter-spacing:-.015em;
+    margin:.2em 0 .25em;text-wrap:balance;line-height:1.05}
+  .dek{font-size:20px;color:var(--ink2);max-width:56ch;text-wrap:balance;margin:0 0 6px}
+  .meta{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12.5px;color:var(--muted);margin-top:14px}
+  h2{font-family:"Avenir Next","Seravek","Segoe UI",system-ui,sans-serif;
+    font-size:24px;font-weight:600;letter-spacing:-.01em;margin:64px 0 10px;text-wrap:balance}
+  h3{font-family:"Avenir Next","Seravek","Segoe UI",system-ui,sans-serif;
+    font-size:15px;font-weight:600;margin:24px 0 6px}
+  p{margin:.6em 0}
+  a{color:var(--accent-ink)}
+  code{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:.86em;
+    background:var(--code);padding:.1em .35em;border-radius:4px}
+  .rule{border:0;border-top:1px solid var(--grid);margin:56px 0 0}
+
+  /* formula strip */
+  .laws{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:20px 0 6px}
+  .law{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
+  .law b{font-family:"Avenir Next","Seravek","Segoe UI",system-ui,sans-serif;font-size:13px;
+    font-weight:600;display:flex;align-items:center;gap:8px}
+  .law .f{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:13px;margin-top:6px;color:var(--ink)}
+  .law .why{font-size:13.5px;color:var(--ink2);margin-top:4px}
+  .swatch{width:14px;height:3px;border-radius:2px;display:inline-block;flex:none}
+  .sigline{margin:14px 0 0;padding:12px 16px;background:var(--accent-soft);border-radius:8px;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:14px}
+
+  /* panels */
+  .panel{background:var(--surface);border:1px solid var(--border);border-radius:10px;
+    padding:18px;margin-top:18px}
+  .controls{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;margin-bottom:10px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{font-family:"Avenir Next","Seravek","Segoe UI",system-ui,sans-serif;font-size:13.5px;
+    padding:5px 12px;border-radius:999px;border:1px solid var(--border);
+    background:var(--chip);color:var(--ink2);cursor:pointer}
+  .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+  .chip:focus-visible,.slider input:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .slider{display:flex;align-items:center;gap:8px;font-family:"Avenir Next","Seravek","Segoe UI",system-ui,sans-serif;
+    font-size:12.5px;color:var(--ink2)}
+  .slider input{width:110px;accent-color:var(--accent)}
+  .slider .val{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12px;min-width:56px;color:var(--ink)}
+  .twin{display:grid;grid-template-columns:minmax(280px,4fr) minmax(320px,6fr);gap:16px;align-items:start}
+  @media (max-width:820px){.twin{grid-template-columns:1fr}}
+  .figcap{font-family:"Avenir Next","Seravek","Segoe UI",system-ui,sans-serif;
+    font-size:12.5px;color:var(--muted);margin-top:6px}
+  svg{display:block;width:100%;height:auto}
+  svg text{font-family:"Avenir Next","Seravek","Segoe UI",system-ui,sans-serif}
+
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-top:14px}
+  .tile{border:1px solid var(--border);border-radius:8px;padding:10px 12px;background:var(--page)}
+  .tile .k{font-family:"Avenir Next","Seravek","Segoe UI",system-ui,sans-serif;
+    font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .tile .v{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:22px;margin-top:2px}
+  .tile .u{font-size:12px;color:var(--muted)}
+
+  .tip{position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--border);
+    border-radius:6px;padding:7px 9px;font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px;line-height:1.5;box-shadow:0 2px 10px rgba(0,0,0,.10);display:none;z-index:5;
+    white-space:nowrap;color:var(--ink)}
+
+  /* comparison */
+  .story{min-height:3.2em;max-width:70ch;color:var(--ink2)}
+  .boards{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px;margin-top:14px}
+  .board{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px}
+  .board h3{margin:0 0 2px;font-size:15px}
+  .board .sub{font-size:12.5px;color:var(--muted);line-height:1.4;min-height:3.6em;
+    font-family:"Avenir Next","Seravek","Segoe UI",system-ui,sans-serif}
+  .board .stats{display:flex;gap:14px;margin-top:8px;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:13px}
+  .board .stats span b{display:block;font-family:"Avenir Next","Seravek","Segoe UI",system-ui,sans-serif;
+    font-weight:400;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .board .note{font-size:12px;color:var(--c-chan);margin-top:6px;min-height:1.4em;
+    font-family:"Avenir Next","Seravek","Segoe UI",system-ui,sans-serif}
+  .barrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin-top:14px}
+  .barchart{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px}
+  .barchart h3{margin:0 0 8px}
+  .legendline{display:flex;align-items:center;gap:8px;font-family:"Avenir Next","Seravek","Segoe UI",system-ui,sans-serif;
+    font-size:12px;color:var(--muted);margin-top:10px}
+  .ramp{height:8px;width:120px;border-radius:4px;
+    background:linear-gradient(90deg,var(--r0),var(--r1),var(--r2),var(--r3),var(--r4),var(--r5))}
+
+  table{border-collapse:collapse;font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:13px;margin-top:10px;min-width:560px}
+  th,td{padding:6px 12px;text-align:right;border-bottom:1px solid var(--grid)}
+  th{font-family:"Avenir Next","Seravek","Segoe UI",system-ui,sans-serif;font-weight:600;
+    font-size:12px;color:var(--ink2)}
+  th:first-child,td:first-child{text-align:left}
+  .tablewrap{overflow-x:auto}
+  details summary{cursor:pointer;font-family:"Avenir Next","Seravek","Segoe UI",system-ui,sans-serif;
+    font-size:13.5px;color:var(--ink2)}
+
+  .findings{counter-reset:f;max-width:66ch;padding-left:0;list-style:none}
+  .findings li{margin:14px 0;padding-left:38px;position:relative}
+  .findings li::before{counter-increment:f;content:counter(f);position:absolute;left:0;top:2px;
+    width:24px;height:24px;border-radius:50%;background:var(--accent-soft);color:var(--accent-ink);
+    font-family:"Avenir Next","Seravek","Segoe UI",system-ui,sans-serif;font-size:13px;font-weight:600;
+    display:flex;align-items:center;justify-content:center}
+  .ranks{display:grid;gap:12px;margin-top:18px}
+  .rank{display:grid;grid-template-columns:56px 1fr;gap:0 16px;align-items:start;
+    background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 18px}
+  .rank .n{font-family:"Avenir Next","Seravek","Segoe UI",system-ui,sans-serif;
+    font-size:34px;font-weight:600;color:var(--accent-ink);line-height:1;padding-top:2px}
+  .rank h3{margin:0 0 2px}
+  .rank .verdict{font-size:15.5px;color:var(--ink2);max-width:66ch;margin:2px 0 8px}
+  .rank .stats{display:flex;gap:18px;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:13px}
+  .rank .stats span b{display:block;font-family:"Avenir Next","Seravek","Segoe UI",system-ui,sans-serif;
+    font-weight:400;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .rank .flag{font-size:11.5px;color:var(--c-chan);
+    font-family:"Avenir Next","Seravek","Segoe UI",system-ui,sans-serif}
+  .ledger td,.ledger th{text-align:left;font-family:"Charter",Georgia,serif;font-size:14.5px;white-space:normal}
+  .ledger th{font-family:"Avenir Next","Seravek","Segoe UI",system-ui,sans-serif}
+  .ledger{min-width:0;width:100%}
+  footer{margin-top:72px;padding-top:18px;border-top:1px solid var(--grid);
+    font-size:13.5px;color:var(--muted)}
+  @media (prefers-reduced-motion: no-preference){
+    .chip,.bar rect{transition:background .15s,opacity .15s}
+  }
+</style>
+
+<main>
+<header>
+  <div class="eyebrow">stfst · the motor model · 2026-08-17</div>
+  <h1>Thumbs on Glass</h1>
+  <p class="dek">Five steno keyboard ideas, priced by one physical model of thumb
+  motion before any of them is built.</p>
+  <div class="meta">source of truth: android/…/Motor.kt · docs/motor.md · this page runs a JS port of it, live</div>
+</header>
+
+<section class="prose">
+  <h2>The model is one mechanism</h2>
+  <p>A motion is a path with tolerances: a list of gates, each a point and the
+  lateral slack that still passes. The model synthesises the speed a thumb would
+  take along that path, and every output is a reading off that one profile.
+  Speed at each point is the lowest of four ceilings, and each ceiling is a
+  named piece of motor physics:</p>
+</section>
+
+<div class="laws sans">
+  <div class="law"><b><span class="swatch" style="background:var(--muted)"></span>Top speed</b>
+    <div class="f">v ≤ vMax, under aMax</div>
+    <div class="why">A thumb is a mass. It cannot step-change its speed.</div></div>
+  <div class="law"><b><span class="swatch" style="background:var(--c-bend)"></span>Curvature</b>
+    <div class="f">v = bend / ∛κ</div>
+    <div class="why">The two-thirds power law. Gentle curves stay fast, corners do not.</div></div>
+  <div class="law"><b><span class="swatch" style="background:var(--c-chan)"></span>Tolerance</b>
+    <div class="f">v so that z·σ ≤ slack</div>
+    <div class="why">The steering law. A tight channel is threaded slowly.</div></div>
+  <div class="law"><b><span class="swatch" style="background:var(--c-home)"></span>Homing</b>
+    <div class="f">v ≤ (dist + slack) / home</div>
+    <div class="why">Closing on a landing. Integrated, this is Fitts' logarithm.</div></div>
+</div>
+
+<section class="prose">
+  <p class="sigline">σ = jitter + noise·v + drift·√glide</p>
+  <p>That one line ties speed to accuracy. Scatter grows with speed, so the same
+  channel is missed more when it is crossed faster. The <b>drift</b> term is the
+  glass itself: a physical key gives the finger an edge to feel, a slide on glass
+  feels nothing. So a glide runs open loop and wanders like a random walk, and
+  only a touch-down re-anchors it. Taps and swipes are priced by different
+  physics because they are different physics.</p>
+  <p>A sharp corner is paid separately, as a fresh muscle burst. That is what
+  makes a squiggle dear: not its length, its corners. Time, miss chance, and the
+  comfort components (travel, turning, reach, corners) are then three readings
+  off the same profile.</p>
+</section>
+
+<section>
+  <h2>Watch the profile happen</h2>
+  <p class="prose">Pick a path. The left picture is what the thumb must do: the
+  gates, the slack around them, and the 1σ scatter band the model predicts. The
+  right picture is the four ceilings and the speed the thumb actually gets,
+  which is their lower envelope made reachable under acceleration. Move the
+  pointer over either picture; drag the sliders and everything reprices.</p>
+
+  <div class="panel">
+    <div class="controls">
+      <div class="chips" id="pathChips" role="group" aria-label="path presets"></div>
+      <span style="flex:1"></span>
+      <label class="slider">slack <input type="range" id="sSlack" min="1" max="8" step="0.1" value="4.3">
+        <span class="val" id="vSlack"></span></label>
+      <label class="slider">bend <input type="range" id="sBend" min="40" max="160" step="5" value="80">
+        <span class="val" id="vBend"></span></label>
+      <label class="slider">drift <input type="range" id="sDrift" min="0" max="0.3" step="0.01" value="0.1">
+        <span class="val" id="vDrift"></span></label>
+      <label class="slider">noise <input type="range" id="sNoise" min="0.004" max="0.024" step="0.001" value="0.012">
+        <span class="val" id="vNoise"></span></label>
+    </div>
+    <div class="twin">
+      <div style="position:relative">
+        <div id="pathView"></div>
+        <div class="figcap">The path, its gates, and the ±1σ band. Color is speed.</div>
+        <div class="legendline"><span>slow</span><span class="ramp"></span><span>fast</span></div>
+      </div>
+      <div style="position:relative">
+        <div id="profView"></div>
+        <div class="figcap">Speed along the path. Ink line: what the thumb gets. Colored lines: the ceilings.</div>
+        <div class="tip" id="profTip"></div>
+      </div>
+    </div>
+    <div class="tiles" id="tiles"></div>
+  </div>
+</section>
+
+<section>
+  <h2>Five boards, same chords</h2>
+  <p class="prose">Every board is asked for the same strokes, from the same rest
+  point, with the same thumb. Cell pitch is 8.7&nbsp;mm, hard gates get half of
+  that as slack. The flight from rest to the first key, the touch, the glide,
+  and the lift are all in the price.</p>
+
+  <div class="panel">
+    <div class="controls">
+      <div class="chips" id="chordChips" role="group" aria-label="chord"></div>
+    </div>
+    <p class="story" id="story"></p>
+    <div class="boards" id="boards"></div>
+    <div class="barrow" id="bars"></div>
+    <details style="margin-top:14px"><summary>Every number, as a table</summary>
+      <div class="tablewrap" id="bigTable"></div>
+    </details>
+  </div>
+</section>
+
+<section>
+  <h2>The separability dial</h2>
+  <p class="prose">The weave is swype given a board of its own: the steno order
+  laid on a zigzag, so a skipped key always bends the shape. It has one knob,
+  the amplitude of the zigzag, and the model prices both sides of it. Amplitude
+  buys shape separation linearly. It pays in corners on the chords that walk the
+  weave. And there is a floor neither side can move: a glide at swipe speed
+  carries 4 to 5 mm of scatter, so shape alone cannot finish the job at phone
+  scale. The dictionary stays load-bearing, and pricing that needs a recognizer
+  model beside this motor one.</p>
+  <div class="panel">
+    <div class="barrow" id="dial"></div>
+    <p class="figcap">Computed live for the three skip-pairs. The dashed marker
+    is the 6 mm the boards above use.</p>
+  </div>
+</section>
+
+<section class="prose">
+  <h2>What the model says</h2>
+  <ol class="findings">
+    <li><b>The air dominates short strokes.</b> A lone tap costs about 485&nbsp;ms
+    on every board, and roughly 400 of that is the flight before the glass.
+    Fewer, longer strokes beat many taps, which is the argument for chording on
+    glass at all.</li>
+    <li><b>The comb's own walk carries a corner tax.</b> STK zigzags between two
+    columns, so the common case pays 0.6 of a full reversal. Any redesign that
+    straightens the chain pays for itself before it does anything clever.</li>
+    <li><b>Swype is a property of the board, not of the finger.</b> On the comb
+    the chain is nearly collinear, so KR and KWR are the same line: a coin flip
+    before the dictionary speaks. Bend the order into a weave and every
+    skip-pair separates, at a price in corners the dial below the boards shows.
+    The hard floor is scatter: 4 to 5 mm of sigma at glide speed, so shape alone
+    cannot finish the job at phone scale and the recognizer's prior must be
+    modeled before swype can be fairly ranked.</li>
+    <li><b>The negative key roughly ties the detour it replaces.</b> On KR it
+    removes the corner, and then gives the win back as one more gate and 2&nbsp;mm
+    more glide: 750&nbsp;ms against the detour's 743, with more miss. Negatives
+    should be bought where the detour is long or blocked, not wherever a skip
+    exists.</li>
+    <li><b>Rays wins exactly where it straightens and shortens.</b> KR becomes
+    one 8.7&nbsp;mm glide: 551&nbsp;ms, 3% miss, the best comfort on the page.
+    Where the comb was already straight (SKWR) it buys nothing. So duplicates
+    are a targeted instrument, and the model can rank which chords deserve one.</li>
+    <li><b>Drift taxes long glides on every board.</b> A straight SKWR misses
+    12% at this slack because the thumb has run 26&nbsp;mm open loop. A
+    mid-stroke re-anchor (lift, touch) is a priceable alternative the model can
+    already compare.</li>
+  </ol>
+</section>
+
+<section>
+  <h2>The ranking</h2>
+  <p class="prose">All four chords summed, at the committed defaults, one thumb.
+  The order is a judgment the numbers inform, not a sort key: swype on the comb
+  posts the fastest total and still comes last, because its miss column is
+  structural on that board where every other column on the page is tunable.</p>
+  <div class="ranks" id="ranking"></div>
+</section>
+
+<section>
+  <h2>The ledger</h2>
+  <div class="tablewrap">
+  <table class="ledger">
+    <tr><th style="width:9em">Board</th><th>What was assumed</th></tr>
+    <tr><td>Comb (shipped)</td><td>Take-on-entry walk over the shipped left bank. Hard
+      gates at half the cell pitch. KR detours through open ground east of W.
+      Portals exist and would beat the detour on longer skips; this page prices the walk.</td></tr>
+    <tr><td>Swype</td><td>The same board, read softly: the recognizer decides, not the
+      cell, so interior gates carry no slack. Accuracy is shape confusion against the
+      nearest rival chord, before any dictionary context. The dictionary would rescue
+      some of it; that rescue is not priced.</td></tr>
+    <tr><td>Duplicates + negatives</td><td>The comb plus an unpress cell placed past R, so
+      KR is glide K→W→R→~W. Where the proposal names no change, the comb's path is used.</td></tr>
+    <tr><td>Weave (swype's own board)</td><td>The steno order on a period-4 zigzag chosen so
+      no three keys of a rising run are collinear, which is the property soft recognition
+      needs. Soft gates, 7.5&nbsp;mm pitch, amplitude 6&nbsp;mm in the comparison; the dial
+      sweeps it. Only the walk prefix is laid out; vowels and floats await a full design.</td></tr>
+    <tr><td>Rays (this report's idea)</td><td>Touch the first key, then one straight slide;
+      duplicate keys sit along the ray so crossing them in order spells the chord. Hard
+      gates at the same 4.3&nbsp;mm. What it spends is board area and learning, and
+      neither is priced here.</td></tr>
+  </table>
+  </div>
+  <p class="prose">Global caveats: one left thumb, a fixed rest point, parameters
+  are literature-shaped defaults awaiting calibration from recorded tapes, and
+  the model omits practice, visual search, and two-thumb overlap. This page runs
+  a JavaScript port of <code>Motor.kt</code>; the Kotlin and its tests are the
+  source of truth.</p>
+</section>
+
+<footer>
+  stfst · the motor model · numbers recompute in this page from the same defaults
+  as MotorTest. Change a slider above to see the mechanism; the comparison keeps
+  the defaults so the findings stay true to the committed model.
+</footer>
+</main>
+
+<script>
+"use strict";
+// ---- Motor.kt, ported. Kotlin is the source of truth. ----------------------
+const DEF = {vMax:400, aMax:8000, bend:80, noise:0.012, jitter:0.6, drift:0.1,
+  z:2.5, home:0.15, creep:20, touch:0.10, snap:0.08, snapAt:0.5236, ds:0.4};
+const HAND = {ax:10, ay:85, near:25, far:65};
+const W8 = {travel:0.01, turn:0.15, reach:0.05, radial:0.005, snap:0.4};
+const hyp = Math.hypot, PIF = Math.PI;
+const angdiff=(a,b)=>{let d=a-b;while(d>PIF)d-=2*PIF;while(d<-PIF)d+=2*PIF;return d;};
+function erf(x){const t=1/(1+0.3275911*Math.abs(x));
+  const y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-x*x);
+  return x<0?-y:y;}
+const phi=x=>0.5*(1+erf(x/Math.SQRT2));
+const lerpSlack=(a,b,t)=>!isFinite(a)&&!isFinite(b)?a:!isFinite(a)?b:!isFinite(b)?a:a+(b-a)*t;
+function dedupe(gs){const out=[];for(const g of gs){const l=out[out.length-1];
+  if(l&&hyp(g.x-l.x,g.y-l.y)<1e-4)l.slack=Math.min(l.slack,g.slack);else out.push({...g});}return out;}
+function sample(gs,tn){const pts=dedupe(gs);if(pts.length<2)return null;
+  const cum=[0];for(let i=1;i<pts.length;i++)cum[i]=cum[i-1]+hyp(pts[i].x-pts[i-1].x,pts[i].y-pts[i-1].y);
+  const total=cum[cum.length-1];if(total<tn.ds)return null;
+  const n=Math.max(2,Math.round(total/tn.ds)+1),step=total/(n-1);
+  const x=new Float64Array(n),y=new Float64Array(n),slack=new Float64Array(n);let seg=0;
+  for(let i=0;i<n;i++){const at=Math.min(i*step,total);
+    while(seg<pts.length-2&&cum[seg+1]<at)seg++;
+    const span=cum[seg+1]-cum[seg],t=span>0?(at-cum[seg])/span:0;
+    x[i]=pts[seg].x+(pts[seg+1].x-pts[seg].x)*t;
+    y[i]=pts[seg].y+(pts[seg+1].y-pts[seg].y)*t;
+    slack[i]=lerpSlack(pts[seg].slack,pts[seg+1].slack,t);}
+  const heading=new Float64Array(n-1);
+  for(let i=0;i<n-1;i++)heading[i]=Math.atan2(y[i+1]-y[i],x[i+1]-x[i]);
+  return {x,y,slack,step,n,heading};}
+function bendCap(s,i,tn){if(s.n<3)return tn.vMax;
+  const w=Math.max(1,Math.round(1.2/s.step)),lo=Math.max(0,i-w),hi=Math.min(s.n-2,i+w-1);
+  if(hi<=lo)return tn.vMax;
+  const k=Math.abs(angdiff(s.heading[hi],s.heading[lo]))/((hi-lo)*s.step);
+  return k<1e-6?tn.vMax:tn.bend/Math.cbrt(k);}
+const chanCap=(sl,tn)=>!isFinite(sl)?tn.vMax:Math.max(tn.creep,(sl/tn.z-tn.jitter)/tn.noise);
+function clampAccel(v,step,tn){
+  for(let i=1;i<v.length;i++)v[i]=Math.min(v[i],Math.sqrt(v[i-1]*v[i-1]+2*tn.aMax*step));
+  for(let i=v.length-2;i>=0;i--)v[i]=Math.min(v[i],Math.sqrt(v[i+1]*v[i+1]+2*tn.aMax*step));}
+const strain=r=>{const o=Math.max(HAND.near-r,0)+Math.max(r-HAND.far,0);
+  const b=o/(HAND.far-HAND.near);return b*b;};
+function motion(s,v,tn){let sec=0,reach=0,radial=0,turn=0;
+  let r0=hyp(s.x[0]-HAND.ax,s.y[0]-HAND.ay);reach+=strain(r0)*s.step*0.5;
+  for(let i=1;i<s.n;i++){sec+=s.step/Math.max(0.5*(v[i-1]+v[i]),0.5*tn.creep);
+    const r=hyp(s.x[i]-HAND.ax,s.y[i]-HAND.ay);radial+=Math.abs(r-r0);reach+=strain(r)*s.step;r0=r;}
+  reach-=strain(r0)*s.step*0.5;
+  for(let j=1;j<s.n-1;j++)turn+=Math.abs(angdiff(s.heading[j],s.heading[j-1]));
+  return {sec,miss:0,travel:(s.n-1)*s.step,turn,reach,radial,snaps:0};}
+function channelMiss(s,v,gs,tn){const pts=dedupe(gs);let pass=1,cum=0;
+  for(let k=1;k<pts.length;k++){cum+=hyp(pts[k].x-pts[k-1].x,pts[k].y-pts[k-1].y);
+    if(!isFinite(pts[k].slack))continue;
+    const i=Math.min(s.n-1,Math.max(0,Math.round(cum/s.step)));
+    const sg=tn.jitter+tn.noise*v[i]+tn.drift*Math.sqrt(cum);
+    pass*=erf(pts[k].slack/(sg*Math.SQRT2));}
+  return 1-pass;}
+const landMiss=(sl,sg)=>!isFinite(sl)?0:Math.exp(-0.5*(sl/sg)*(sl/sg));
+function snapCost(gs,tn){const pts=dedupe(gs);let snaps=0;
+  for(let j=1;j<pts.length-1;j++){
+    const a=Math.atan2(pts[j].y-pts[j-1].y,pts[j].x-pts[j-1].x);
+    const b=Math.atan2(pts[j+1].y-pts[j].y,pts[j+1].x-pts[j].x);
+    snaps+=Math.max(0,Math.abs(angdiff(b,a))-tn.snapAt)/(PIF-tn.snapAt);}
+  return {sec:tn.snap*snaps,miss:0,travel:0,turn:0,reach:0,radial:0,snaps};}
+const NONE={sec:0,miss:0,travel:0,turn:0,reach:0,radial:0,snaps:0};
+const add=(a,b)=>({sec:a.sec+b.sec,miss:1-(1-a.miss)*(1-b.miss),travel:a.travel+b.travel,
+  turn:a.turn+b.turn,reach:a.reach+b.reach,radial:a.radial+b.radial,snaps:a.snaps+b.snaps});
+const effort=c=>W8.travel*c.travel+W8.turn*c.turn+W8.reach*c.reach+W8.radial*c.radial+W8.snap*c.snaps;
+
+// analyze keeps the arrays so the page can draw the mechanism, not only its answer
+function analyzeSlide(gs,tn){const s=sample(gs,tn);if(!s)return null;
+  const capB=new Float64Array(s.n),capC=new Float64Array(s.n),v=new Float64Array(s.n);
+  for(let i=0;i<s.n;i++){capB[i]=bendCap(s,i,tn);capC[i]=chanCap(s.slack[i],tn);
+    v[i]=Math.min(tn.vMax,Math.min(capB[i],capC[i]));}
+  v[0]=0;clampAccel(v,s.step,tn);
+  const m=motion(s,v,tn);m.miss=channelMiss(s,v,gs,tn);
+  const cost=add(m,snapCost(gs,tn));
+  const sig=new Float64Array(s.n);
+  for(let i=0;i<s.n;i++)sig[i]=tn.jitter+tn.noise*v[i]+tn.drift*Math.sqrt(i*s.step);
+  return {s,v,capB,capC,capH:null,sig,cost};}
+function analyzeFlight(from,to,tn){const gs=[{x:from.x,y:from.y,slack:Infinity},to];
+  const s=sample(gs,tn);
+  if(!s)return {s:null,cost:{...NONE,miss:landMiss(to.slack,tn.jitter)}};
+  const capH=new Float64Array(s.n),v=new Float64Array(s.n);
+  for(let i=0;i<s.n;i++){capH[i]=(( (s.n-1-i)*s.step)+to.slack)/tn.home;
+    v[i]=Math.min(tn.vMax,capH[i]);}
+  v[0]=0;clampAccel(v,s.step,tn);
+  const sgl=tn.jitter+tn.noise*v[s.n-1];
+  const m=motion(s,v,tn);m.miss=landMiss(to.slack,sgl);
+  const sig=new Float64Array(s.n);
+  for(let i=0;i<s.n;i++)sig[i]=tn.jitter+tn.noise*v[i];
+  return {s,v,capB:null,capC:null,capH,sig,cost:m};}
+const slideCost=(gs,tn)=>{const a=analyzeSlide(gs,tn);return a?a.cost:{...NONE};};
+const flightCost=(f,t,tn)=>analyzeFlight(f,t,tn).cost;
+function stroke(slides,from,tn){let at=from,total={...NONE};
+  for(const gs of slides){if(!gs.length)continue;
+    total=add(total,flightCost(at,gs[0],tn));
+    total=add(total,slideCost(gs,tn));
+    total=add(total,{...NONE,sec:tn.touch});
+    at={x:gs[gs.length-1].x,y:gs[gs.length-1].y};}
+  return total;}
+function even(gs,n,tn){const s=sample(gs,tn);
+  if(!s){const g=gs[0]||{x:0,y:0};return Array.from({length:n},()=>({x:g.x,y:g.y}));}
+  return Array.from({length:n},(_,k)=>{const i=Math.round((s.n-1)*k/(n-1));return {x:s.x[i],y:s.y[i]};});}
+function meanSigma(gs,tn){const s=sample(gs,tn);if(!s)return tn.jitter;
+  const a=analyzeSlide(gs,tn);let sum=0;for(const q of a.v)sum+=q;
+  return tn.jitter+tn.noise*(sum/s.n)+tn.drift*(2/3)*Math.sqrt((s.n-1)*s.step);}
+function confusion(a,b,tn){const pa=even(a,32,tn),pb=even(b,32,tn);
+  let gap=0;for(let i=0;i<32;i++)gap+=hyp(pa[i].x-pb[i].x,pa[i].y-pb[i].y);gap/=32;
+  const sg=meanSigma(a,tn);return {gap,sigma:sg,p:phi(-gap/(2*sg))};}
+
+// ---- svg helpers ------------------------------------------------------------
+const svgel=(n,at)=>{const e=document.createElementNS("http://www.w3.org/2000/svg",n);
+  for(const k in at)e.setAttribute(k,at[k]);return e;};
+const fmt=(x,d=0)=>x.toFixed(d);
+const RAMP=["var(--r0)","var(--r1)","var(--r2)","var(--r3)","var(--r4)","var(--r5)"];
+const bucket=v=>Math.min(5,Math.floor(v/420*6));
+
+// path drawn as chunks colored by speed
+function speedPath(svg,s,v,toX,toY,width){
+  const chunk=Math.max(4,Math.round(s.n/60));
+  for(let i=0;i<s.n-1;i+=chunk){
+    const j=Math.min(s.n-1,i+chunk);let d="M";
+    for(let k=i;k<=j;k++)d+=fmt(toX(s.x[k]),1)+" "+fmt(toY(s.y[k]),1)+(k<j?" L":"");
+    let mv=0;for(let k=i;k<=j;k++)mv+=v[k];mv/=(j-i+1);
+    svg.appendChild(svgel("path",{d,fill:"none","stroke-width":width,
+      "stroke-linecap":"round",stroke:RAMP[bucket(mv)]}));}}
+
+// ---- the explorer -----------------------------------------------------------
+const PRESETS=[
+  {id:"line",label:"Line 45 mm",kind:"slide",
+   gates:sl=>[{x:5,y:16,slack:sl},{x:50,y:16,slack:sl}]},
+  {id:"squig",label:"Squiggle 22 mm",kind:"slide",
+   gates:sl=>Array.from({length:7},(_,i)=>({x:8+i*2,y:i%2?19:16,slack:sl}))},
+  {id:"arc",label:"Arc 47 mm",kind:"slide",
+   gates:sl=>Array.from({length:17},(_,i)=>{const a=PIF/2*i/16;
+     return {x:8+30*Math.sin(a),y:36-30*Math.cos(a)+4,slack:sl};})},
+  {id:"flight",label:"Flight 43 mm",kind:"flight",
+   gates:sl=>[{x:5,y:16},{x:48,y:16,slack:sl}]},
+];
+let preset=PRESETS[0];
+const tune=()=>({...DEF,
+  bend:+el("sBend").value,drift:+el("sDrift").value,noise:+el("sNoise").value});
+const el=id=>document.getElementById(id);
+
+function drawExplorer(){
+  const tn=tune(),sl=+el("sSlack").value;
+  el("vSlack").textContent=sl.toFixed(1)+" mm";
+  el("vBend").textContent=tn.bend.toFixed(0);
+  el("vDrift").textContent=tn.drift.toFixed(2);
+  el("vNoise").textContent=tn.noise.toFixed(3)+" s";
+  const gs=preset.gates(sl);
+  const a=preset.kind==="flight"?analyzeFlight(gs[0],gs[1],tn):analyzeSlide(gs,tn);
+  drawPathView(a,gs,tn);
+  drawProfView(a,tn);
+  drawTiles(a,tn);
+}
+function drawPathView(a,gs,tn){
+  const box=el("pathView");box.innerHTML="";
+  const W=420,H=340,pad=14;
+  const svg=svgel("svg",{viewBox:`0 0 ${W} ${H}`,role:"img",
+    "aria-label":"the path, its gates and its scatter band"});
+  const sc=6.6,ox=pad+6,oy=pad+30;
+  const toX=x=>ox+x*sc,toY=y=>oy+y*sc;
+  const s=a.s;
+  // 1-sigma band as a ribbon around the path
+  if(s){const up=[],dn=[];
+    for(let i=0;i<s.n;i+=3){
+      const h=i<s.n-1?s.heading[i]:s.heading[s.n-2];
+      const nx=-Math.sin(h),ny=Math.cos(h),w=a.sig[i];
+      up.push(fmt(toX(s.x[i]+nx*w),1)+","+fmt(toY(s.y[i]+ny*w),1));
+      dn.push(fmt(toX(s.x[i]-nx*w),1)+","+fmt(toY(s.y[i]-ny*w),1));}
+    svg.appendChild(svgel("polygon",{points:up.concat(dn.reverse()).join(" "),
+      fill:"var(--accent-soft)",stroke:"none"}));}
+  // gates
+  const pts=dedupe(gs);
+  pts.forEach((g,i)=>{
+    if(isFinite(g.slack))svg.appendChild(svgel("circle",{cx:toX(g.x),cy:toY(g.y),
+      r:g.slack*sc,fill:"none",stroke:"var(--axis)","stroke-dasharray":"3 3"}));
+    svg.appendChild(svgel("circle",{cx:toX(g.x),cy:toY(g.y),r:3,
+      fill:i===0?"var(--ink)":"var(--surface)",stroke:"var(--ink)","stroke-width":1.2}));});
+  if(s)speedPath(svg,s,a.v,toX,toY,3);
+  // hover dot, driven by the profile chart
+  svg.appendChild(svgel("circle",{id:"pathDot",r:5,fill:"none",
+    stroke:"var(--ink)","stroke-width":1.6,opacity:0}));
+  const cap=svgel("text",{x:pad,y:16,"font-size":11,fill:"var(--muted)"});
+  cap.textContent=preset.kind==="flight"
+    ?"in the air: only the landing constrains"
+    :"filled dot: touch down. dashed ring: a gate's slack.";
+  svg.appendChild(cap);
+  box.appendChild(svg);
+}
+function drawProfView(a,tn){
+  const box=el("profView");box.innerHTML="";
+  if(!a.s)return;
+  const W=560,H=300,L=46,Rr=84,T=18,B=34;
+  const svg=svgel("svg",{viewBox:`0 0 ${W} ${H}`,role:"img",
+    "aria-label":"speed profile and its ceilings"});
+  const s=a.s,len=(s.n-1)*s.step,vTop=440;
+  const toX=q=>L+q/len*(W-L-Rr),toY=v=>H-B-(Math.min(v,vTop)/vTop)*(H-T-B);
+  for(let v=0;v<=400;v+=100){
+    svg.appendChild(svgel("line",{x1:L,x2:W-Rr,y1:toY(v),y2:toY(v),
+      stroke:v?"var(--grid)":"var(--axis)","stroke-width":1}));
+    const t=svgel("text",{x:L-6,y:toY(v)+3,"font-size":10,fill:"var(--muted)","text-anchor":"end"});
+    t.textContent=v;svg.appendChild(t);}
+  const xt=svgel("text",{x:(L+W-Rr)/2,y:H-8,"font-size":10.5,fill:"var(--muted)","text-anchor":"middle"});
+  xt.textContent="mm along the path";svg.appendChild(xt);
+  const yt=svgel("text",{x:L-6,y:T-6,"font-size":10.5,fill:"var(--muted)","text-anchor":"end"});
+  yt.textContent="mm/s";svg.appendChild(yt);
+  const line=(arr,color,dash)=>{if(!arr)return null;
+    let d="M";for(let i=0;i<s.n;i+=2)d+=fmt(toX(i*s.step),1)+" "+fmt(toY(arr[i]),1)+(i+2<s.n?" L":"");
+    const p=svgel("path",{d,fill:"none",stroke:color,"stroke-width":1.6});
+    if(dash)p.setAttribute("stroke-dasharray",dash);svg.appendChild(p);return p;};
+  // ceilings
+  svg.appendChild(svgel("line",{x1:L,x2:W-Rr,y1:toY(tn.vMax),y2:toY(tn.vMax),
+    stroke:"var(--muted)","stroke-width":1.4,"stroke-dasharray":"5 4"}));
+  line(a.capB,"var(--c-bend)","5 4");
+  line(a.capC,"var(--c-chan)","5 4");
+  line(a.capH,"var(--c-home)","5 4");
+  // resolved profile: area + ink line
+  let ad="M"+fmt(toX(0),1)+" "+fmt(toY(0),1);
+  for(let i=0;i<s.n;i+=2)ad+=" L"+fmt(toX(i*s.step),1)+" "+fmt(toY(a.v[i]),1);
+  ad+=" L"+fmt(toX(len),1)+" "+fmt(toY(0),1)+" Z";
+  svg.appendChild(svgel("path",{d:ad,fill:"var(--accent-soft)",stroke:"none"}));
+  let d="M";for(let i=0;i<s.n;i+=2)d+=fmt(toX(i*s.step),1)+" "+fmt(toY(a.v[i]),1)+(i+2<s.n?" L":"");
+  svg.appendChild(svgel("path",{d,fill:"none",stroke:"var(--ink)","stroke-width":2.4,
+    "stroke-linejoin":"round"}));
+  // direct labels for ceilings, collision-nudged
+  const ends=[["top speed","var(--muted)",tn.vMax],
+    a.capB?["curvature","var(--c-bend)",a.capB[s.n-1]]:null,
+    a.capC?["tolerance","var(--c-chan)",a.capC[s.n-1]]:null,
+    a.capH?["homing","var(--c-home)",a.capH[Math.floor(s.n*0.7)]]:null,
+    ["profile","var(--ink)",a.v[s.n-1]]].filter(Boolean)
+    .map(q=>({label:q[0],color:q[1],y:toY(q[2])})).sort((p,q)=>p.y-q.y);
+  for(let i=1;i<ends.length;i++)if(ends[i].y-ends[i-1].y<13)ends[i].y=ends[i-1].y+13;
+  for(const e of ends){const t=svgel("text",{x:W-Rr+7,y:e.y+3,"font-size":10.5,fill:e.color});
+    t.textContent=e.label;svg.appendChild(t);}
+  // crosshair
+  const cross=svgel("line",{y1:T,y2:H-B,stroke:"var(--axis)","stroke-width":1,opacity:0});
+  const dot=svgel("circle",{r:4,fill:"var(--ink)",opacity:0});
+  svg.appendChild(cross);svg.appendChild(dot);
+  svg.style.touchAction="none";
+  const tip=el("profTip");
+  svg.addEventListener("pointermove",ev=>{
+    const r=svg.getBoundingClientRect();
+    const mm=((ev.clientX-r.left)/r.width*W-L)/(W-L-Rr)*len;
+    if(mm<0||mm>len){tip.style.display="none";cross.setAttribute("opacity",0);
+      dot.setAttribute("opacity",0);hoverPath(null);return;}
+    const i=Math.min(s.n-1,Math.max(0,Math.round(mm/s.step)));
+    cross.setAttribute("x1",toX(i*s.step));cross.setAttribute("x2",toX(i*s.step));
+    cross.setAttribute("opacity",1);
+    dot.setAttribute("cx",toX(i*s.step));dot.setAttribute("cy",toY(a.v[i]));
+    dot.setAttribute("opacity",1);
+    tip.style.display="block";
+    const px=(ev.clientX-r.left),py=(ev.clientY-r.top);
+    tip.style.left=Math.min(px+14,r.width-150)+"px";tip.style.top=Math.max(0,py-58)+"px";
+    tip.innerHTML="s "+fmt(i*s.step,1)+" mm<br>v "+fmt(a.v[i])+" mm/s<br>σ "
+      +a.sig[i].toFixed(2)+" mm";
+    hoverPath(i);});
+  svg.addEventListener("pointerleave",()=>{tip.style.display="none";
+    cross.setAttribute("opacity",0);dot.setAttribute("opacity",0);hoverPath(null);});
+  box.appendChild(svg);
+  function hoverPath(i){
+    const pd=document.getElementById("pathDot");if(!pd)return;
+    if(i==null){pd.setAttribute("opacity",0);return;}
+    const sc=6.6,ox=20,oy=44;
+    pd.setAttribute("cx",ox+s.x[i]*sc);pd.setAttribute("cy",oy+s.y[i]*sc);
+    pd.setAttribute("opacity",1);}
+}
+function drawTiles(a,tn){
+  const c=a.cost;
+  el("tiles").innerHTML=[
+    ["time",fmt(c.sec*1000),"ms"],
+    ["miss",(c.miss*100).toFixed(1),"%"],
+    ["corners",c.snaps.toFixed(2),"snaps"],
+    ["travel",fmt(c.travel,1),"mm"],
+    ["effort",effort(c).toFixed(2),"au"],
+  ].map(q=>`<div class="tile"><div class="k">${q[0]}</div>
+    <div class="v">${q[1]}<span class="u"> ${q[2]}</span></div></div>`).join("");
+}
+
+// ---- the boards --------------------------------------------------------------
+const HOP=8.66025,SLK=4.33;
+const pos=(c,r)=>({x:7.5*c,y:8.66025*(r+(c%2?0.5:0))});
+const LAYOUT=[" ...."," .^S."," .TK."," .PW."," .HR.","  AO.","  o+.","  #.."];
+const KEY={};const CELLS=[];
+LAYOUT.forEach((row,r)=>{[...row].forEach((ch,c)=>{
+  if(ch===" ")return;const p=pos(c,r);
+  CELLS.push({...p,ch});if(ch!=="."&&ch!=="o")KEY[ch]=p;});});
+const g=(k,slack=SLK)=>({x:KEY[k].x,y:KEY[k].y,slack});
+const soft=k=>({x:KEY[k].x,y:KEY[k].y,slack:Infinity});
+const at=(x,y,slack=SLK)=>({x,y,slack});
+const ray=(k,deg,hops)=>{const o=KEY[k],a=deg*PIF/180;
+  return Array.from({length:hops+1},(_,i)=>i===0?g(k)
+    :at(o.x+Math.cos(a)*HOP*i,o.y+Math.sin(a)*HOP*i));};
+const FROM={x:26,y:58};
+// The weave: swype on a board built for it. The order on a period-4 zigzag,
+// chosen non-affine so no three keys of a rising run are collinear, and a
+// skipped key therefore always changes the shape.
+const WORD="^STKPWHR", WZIG=[0,1,-1,0], WA=6;
+const wpos=(i,a)=>({x:19+WZIG[i%4]*a,y:10+i*7.5});
+const weaveSlides=(chord,a=WA)=>[[...chord].map((k,i)=>{
+  const p=wpos(WORD.indexOf(k),a);
+  return {x:p.x,y:p.y,slack:i===0?SLK:Infinity};})];
+const KBS=[
+  {id:"comb",short:"Comb",name:"Comb, shipped",sub:"Take-on-entry walk. Hard gates at half the cell pitch."},
+  {id:"swype",short:"Swype",name:"Swype, on the comb",sub:"Same board, soft gates: the recognizer decides. Confusion vs the nearest rival shape, before the dictionary."},
+  {id:"weave",short:"Weave",name:"Weave, swype's own board",sub:"The order on a zigzag so a skipped key always bends the shape. Soft gates, amplitude 6 mm."},
+  {id:"negs",short:"Dup + neg",name:"Duplicates + negatives",sub:"The comb, plus an unpress cell past R so a skip is one straight glide."},
+  {id:"rays",short:"Rays",name:"Rays, this report's idea",sub:"Touch the first key, then one straight slide. Duplicates put the rest of the chord on the ray."},
+];
+const CHORDS={
+  S:{story:"One key. A tap is a flight and a touch, and every board prices it the same. A stroke this short is bought in the air, not on the glass.",
+    comb:[[g("S")]],swype:{slides:[[g("S")]],rival:null},
+    weave:{slides:weaveSlides("S"),rival:null},
+    negs:[[g("S")]],rays:[[g("S")]],
+    dups:{rays:[]}},
+  STK:{story:"Three keys in a row of the order. The comb's chain zigzags between two columns, so even the common case pays corners. Rays straightens it. On the comb, swype cannot use T's position: S, T, K sit on one bend. The weave puts T off the S to K line on purpose.",
+    comb:[[g("S"),g("T"),g("K")]],
+    swype:{slides:[[g("S"),soft("T"),soft("K")]],rival:[soft("S"),soft("K")],rivalName:"SK"},
+    weave:{slides:weaveSlides("STK"),rival:weaveSlides("SK")[0],rivalName:"SK"},
+    negs:[[g("S"),g("T"),g("K")]],
+    rays:[ray("S",120,2)],dups:{rays:["T","K"]}},
+  KR:{story:"K and R without W: the chord the negative key was invented for. The comb detours around live W. The negative glides straight through W and unpresses it past R. Swype on the comb cannot tell KR from KWR at all: same line. The weave bends W off that line, so the shapes finally differ.",
+    comb:[[g("K"),at(30,25.98),g("R")]],
+    swype:{slides:[[g("K"),soft("R")]],rival:[soft("K"),soft("W"),soft("R")],rivalName:"KWR"},
+    weave:{slides:weaveSlides("KR"),rival:weaveSlides("KWR")[0],rivalName:"KWR"},
+    negs:[[g("K"),g("W"),g("R"),at(30,43.3)]],
+    rays:[ray("K",60,1)],dups:{rays:["R"]},negCell:{x:30,y:43.3,label:"~W"}},
+  SKWR:{story:"Four keys, and the comb's best case: the chain is straight here. Soft recognition pays for that same straightness, because SKR is the same line. The weave separates them and pays corners for it.",
+    comb:[[g("S"),g("K"),g("W"),g("R")]],
+    swype:{slides:[[g("S"),soft("K"),soft("W"),soft("R")]],rival:[soft("S"),soft("K"),soft("R")],rivalName:"SKR"},
+    weave:{slides:weaveSlides("SKWR"),rival:weaveSlides("SKR")[0],rivalName:"SKR"},
+    negs:[[g("S"),g("K"),g("W"),g("R")]],
+    rays:[ray("S",90,3)],dups:{rays:["K","W","R"]}},
+};
+const CHORD_IDS=Object.keys(CHORDS).concat("All");
+let chord="KR";
+
+function costOf(kb,ch){
+  const spec=CHORDS[ch][kb];
+  const slides=spec.slides||spec;
+  let c=stroke(slides,FROM,DEF),conf=null;
+  if(spec.rival){
+    conf=confusion(slides[0],spec.rival,DEF);
+    c={...c,miss:1-(1-c.miss)*(1-conf.p)};}
+  return {c,conf,rivalName:spec.rivalName};}
+function totals(kb){
+  let t={...NONE},notes=[];
+  for(const ch of Object.keys(CHORDS)){const r=costOf(kb,ch);t=add(t,r.c);
+    if(r.conf)notes.push(ch+"↔"+r.rivalName+" "+(r.conf.p*100).toFixed(0)+"%");}
+  return {c:t,confNote:notes.join(", ")};}
+
+function hexPts(cx,cy,R){let s="";
+  for(let i=0;i<6;i++){const a=PIF/3*i;
+    s+=fmt(cx+R*Math.cos(a),1)+","+fmt(cy+R*Math.sin(a),1)+" ";}return s;}
+
+function boardSVG(kb,ch){
+  const W=232,H=356,sc=5.0,ox=14,oy=26;
+  const toX=x=>ox+x*sc,toY=y=>oy+y*sc;
+  const svg=svgel("svg",{viewBox:`0 0 ${W} ${H}`,role:"img",
+    "aria-label":kb+" board with the "+ch+" path"});
+  const faint=kb==="rays";
+  const cells=kb==="weave"
+    ?[...WORD].map((k,i)=>({...wpos(i,WA),ch:k,r:4.2}))
+    :CELLS;
+  for(const c of cells){
+    svg.appendChild(svgel("polygon",{points:hexPts(toX(c.x),toY(c.y),(c.r||4.55)*sc),
+      fill:c.ch==="."?"none":"var(--page)",stroke:"var(--grid)","stroke-width":1,
+      opacity:faint&&c.ch!=="."?0.45:1}));
+    if(c.ch!=="."&&c.ch!=="o"){
+      const t=svgel("text",{x:toX(c.x),y:toY(c.y)+4,"font-size":11,
+        "text-anchor":"middle",fill:"var(--ink2)",opacity:faint?0.5:1});
+      t.textContent=c.ch;svg.appendChild(t);}}
+  const chs=ch==="All"?Object.keys(CHORDS):[ch];
+  for(const one of chs){
+    const spec=CHORDS[one][kb];
+    const slides=spec.slides||spec;
+    // extra cells this proposal adds
+    if(kb==="negs"&&CHORDS[one].negCell){const n=CHORDS[one].negCell;
+      svg.appendChild(svgel("polygon",{points:hexPts(toX(n.x),toY(n.y),4.55*sc),
+        fill:"var(--page)",stroke:"var(--axis)","stroke-width":1.2,"stroke-dasharray":"4 3"}));
+      const t=svgel("text",{x:toX(n.x),y:toY(n.y)+4,"font-size":10,
+        "text-anchor":"middle",fill:"var(--ink2)"});t.textContent="~W";svg.appendChild(t);}
+    if(kb==="rays"&&CHORDS[one].dups){
+      const labels=CHORDS[one].dups.rays||[];
+      slides[0].slice(1).forEach((gt,i)=>{
+        svg.appendChild(svgel("polygon",{points:hexPts(toX(gt.x),toY(gt.y),4.55*sc),
+          fill:"var(--page)",stroke:"var(--axis)","stroke-width":1.2,"stroke-dasharray":"4 3"}));
+        const t=svgel("text",{x:toX(gt.x),y:toY(gt.y)+4,"font-size":10,
+          "text-anchor":"middle",fill:"var(--ink2)"});
+        t.textContent=labels[i]||"";svg.appendChild(t);});}
+    // the flight, dotted
+    const first=slides[0][0];
+    svg.appendChild(svgel("line",{x1:toX(FROM.x),y1:toY(FROM.y),
+      x2:toX(first.x),y2:toY(first.y),stroke:"var(--axis)","stroke-width":1,
+      "stroke-dasharray":"2 4"}));
+    // the glide, speed colored
+    const tn=DEF,s=sample(slides[0],tn);
+    if(s)speedPath(svg,s,analyzeSlide(slides[0],tn).v,toX,toY,3.4);
+    svg.appendChild(svgel("circle",{cx:toX(first.x),cy:toY(first.y),r:4,
+      fill:"var(--ink)"}));
+    const last=slides[0][slides[0].length-1];
+    if(slides[0].length>1)svg.appendChild(svgel("rect",{x:toX(last.x)-3.4,y:toY(last.y)-3.4,
+      width:6.8,height:6.8,fill:"var(--surface)",stroke:"var(--ink)","stroke-width":1.4}));}
+  // rest point
+  svg.appendChild(svgel("circle",{cx:toX(FROM.x),cy:toY(FROM.y),r:2.4,fill:"var(--muted)"}));
+  const t=svgel("text",{x:toX(FROM.x)+6,y:toY(FROM.y)+3,"font-size":9.5,fill:"var(--muted)"});
+  t.textContent="rest";svg.appendChild(t);
+  return svg;}
+
+function drawCompare(){
+  const results=KBS.map(kb=>{
+    if(chord==="All"){const r=totals(kb.id);return {kb,c:r.c,confNote:r.confNote};}
+    const r=costOf(kb.id,chord);
+    return {kb,c:r.c,confNote:r.conf?("reads as "+r.rivalName+" "+(r.conf.p*100).toFixed(0)+"% of the time, shape gap "+r.conf.gap.toFixed(1)+" mm"):""};});
+  el("story").textContent=chord==="All"
+    ?"All four chords, summed: each stroke starts from rest, so this is four flights, four glides, four lifts per board."
+    :CHORDS[chord].story;
+  el("boards").innerHTML="";
+  for(const r of results){
+    const d=document.createElement("div");d.className="board";
+    d.innerHTML=`<h3>${r.kb.name}</h3><div class="sub">${r.kb.sub}</div>`;
+    d.appendChild(boardSVG(r.kb.id,chord));
+    const st=document.createElement("div");st.className="stats";
+    st.innerHTML=`<span><b>time</b>${fmt(r.c.sec*1000)} ms</span>
+      <span><b>miss</b>${(r.c.miss*100).toFixed(1)}%</span>
+      <span><b>effort</b>${effort(r.c).toFixed(2)}</span>`;
+    d.appendChild(st);
+    const note=document.createElement("div");note.className="note";
+    note.textContent=r.confNote||"";d.appendChild(note);
+    el("boards").appendChild(d);}
+  // bars
+  const metrics=[
+    {name:"Time, ms",get:r=>r.c.sec*1000,f:v=>fmt(v)},
+    {name:"Whole-stroke miss, %",get:r=>r.c.miss*100,f:v=>v.toFixed(1)},
+    {name:"Effort",get:r=>effort(r.c),f:v=>v.toFixed(2)}];
+  el("bars").innerHTML="";
+  for(const m of metrics){
+    const max=Math.max(...results.map(m.get))*1.12||1;
+    const div=document.createElement("div");div.className="barchart";
+    div.innerHTML=`<h3>${m.name}</h3>`;
+    const H=4*30+6,W=344;
+    const svg=svgel("svg",{viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":m.name});
+    results.forEach((r,i)=>{
+      const y=i*30+4,val=m.get(r),bw=Math.max(2,val/max*(W-130));
+      const grp=svgel("g",{class:"bar"});
+      const lab=svgel("text",{x:0,y:y+14,"font-size":11.5,fill:"var(--ink2)"});
+      lab.textContent=r.kb.short;grp.appendChild(lab);
+      grp.appendChild(svgel("rect",{x:92,y:y,width:bw,height:19,rx:3,
+        fill:"var(--accent)"}));
+      const vt=svgel("text",{x:92+bw+7,y:y+14,"font-size":11.5,fill:"var(--ink)",
+        "font-family":"ui-monospace,Menlo,monospace"});
+      vt.textContent=m.f(val);grp.appendChild(vt);
+      const ti=svgel("title",{});ti.textContent=r.kb.name+": "+m.f(val);grp.appendChild(ti);
+      svg.appendChild(grp);});
+    svg.appendChild(svgel("line",{x1:92,x2:92,y1:0,y2:H,stroke:"var(--axis)"}));
+    div.appendChild(svg);el("bars").appendChild(div);}
+  // the full table
+  let rows="<table><tr><th>chord</th><th>board</th><th>time ms</th><th>miss %</th><th>effort</th><th>travel mm</th><th>corners</th><th>note</th></tr>";
+  for(const ch of Object.keys(CHORDS))for(const kb of KBS){
+    const r=costOf(kb.id,ch);
+    rows+=`<tr><td>${ch}</td><td style="text-align:left">${kb.short}</td>
+      <td>${fmt(r.c.sec*1000)}</td><td>${(r.c.miss*100).toFixed(1)}</td>
+      <td>${effort(r.c).toFixed(2)}</td><td>${r.c.travel.toFixed(1)}</td>
+      <td>${r.c.snaps.toFixed(2)}</td>
+      <td style="text-align:left">${r.conf?("confusable with "+r.rivalName+", p="+(r.conf.p*100).toFixed(0)+"%"):""}</td></tr>`;}
+  el("bigTable").innerHTML=rows+"</table>";
+}
+
+// ---- the separability dial ------------------------------------------------------
+function lineChart(title,series,xlabel,f){
+  const div=document.createElement("div");div.className="barchart";div.style.position="relative";
+  div.innerHTML=`<h3>${title}</h3>`;
+  const W=344,H=224,L=40,Rr=86,T=14,B=32;
+  const ymax=Math.max(...series.flatMap(s=>s.pts.map(p=>p.y)))*1.12||1;
+  const toX=x=>L+x/10*(W-L-Rr),toY=y=>H-B-y/ymax*(H-T-B);
+  const svg=svgel("svg",{viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":title});
+  const pow=Math.pow(10,Math.floor(Math.log10(ymax/4)));
+  const tick=Math.ceil(ymax/4/pow)*pow;
+  for(let yv=0;yv<=ymax;yv+=tick){
+    svg.appendChild(svgel("line",{x1:L,x2:W-Rr,y1:toY(yv),y2:toY(yv),
+      stroke:yv?"var(--grid)":"var(--axis)","stroke-width":1}));
+    const t=svgel("text",{x:L-5,y:toY(yv)+3,"font-size":10,fill:"var(--muted)","text-anchor":"end"});
+    t.textContent=f(yv);svg.appendChild(t);}
+  const xt=svgel("text",{x:(L+W-Rr)/2,y:H-8,"font-size":10.5,fill:"var(--muted)","text-anchor":"middle"});
+  xt.textContent=xlabel;svg.appendChild(xt);
+  // the amplitude the comparison uses
+  svg.appendChild(svgel("line",{x1:toX(WA),x2:toX(WA),y1:T,y2:H-B,
+    stroke:"var(--axis)","stroke-width":1,"stroke-dasharray":"3 3"}));
+  for(const s of series){
+    let d="M"+s.pts.map(p=>fmt(toX(p.x),1)+" "+fmt(toY(p.y),1)).join(" L");
+    svg.appendChild(svgel("path",{d,fill:"none",stroke:s.color,"stroke-width":2,
+      "stroke-linejoin":"round"}));}
+  const ends=series.map(s=>({label:s.name,color:s.color,
+    y:toY(s.pts[s.pts.length-1].y)})).sort((p,q)=>p.y-q.y);
+  for(let i=1;i<ends.length;i++)if(ends[i].y-ends[i-1].y<13)ends[i].y=ends[i-1].y+13;
+  for(const e of ends){const t=svgel("text",{x:W-Rr+6,y:e.y+3,"font-size":10,fill:e.color});
+    t.textContent=e.label;svg.appendChild(t);}
+  const cross=svgel("line",{y1:T,y2:H-B,stroke:"var(--axis)","stroke-width":1,opacity:0});
+  svg.appendChild(cross);
+  const tip=document.createElement("div");tip.className="tip";div.appendChild(tip);
+  svg.addEventListener("pointermove",ev=>{
+    const r=svg.getBoundingClientRect();
+    const a=Math.round(((ev.clientX-r.left)/r.width*W-L)/(W-L-Rr)*10);
+    if(a<0||a>10){tip.style.display="none";cross.setAttribute("opacity",0);return;}
+    cross.setAttribute("x1",toX(a));cross.setAttribute("x2",toX(a));
+    cross.setAttribute("opacity",1);tip.style.display="block";
+    tip.style.left=Math.min(ev.clientX-r.left+14,r.width-150)+"px";
+    tip.style.top=(ev.clientY-r.top-20)+"px";
+    tip.innerHTML="a "+a+" mm<br>"+series.map(s=>
+      s.name+" "+f(s.pts[a].y)).join("<br>");});
+  svg.addEventListener("pointerleave",()=>{tip.style.display="none";
+    cross.setAttribute("opacity",0);});
+  div.appendChild(svg);return div;}
+
+function drawDial(){
+  const holder=el("dial");holder.innerHTML="";
+  const AMPS=Array.from({length:11},(_,i)=>i);
+  const TRIO=[["STK","SK","var(--c-bend)"],["KR","KWR","var(--c-chan)"],["SKWR","SKR","var(--c-home)"]];
+  holder.appendChild(lineChart("Reads as the rival, %",
+    TRIO.map(([c,r,col])=>({name:c+"↔"+r,color:col,
+      pts:AMPS.map(a=>({x:a,y:confusion(weaveSlides(c,a)[0],weaveSlides(r,a)[0],DEF).p*100}))})),
+    "amplitude, mm",v=>v.toFixed(0)));
+  holder.appendChild(lineChart("Stroke time, ms",
+    TRIO.map(([c,r,col])=>({name:c,color:col,
+      pts:AMPS.map(a=>({x:a,y:stroke(weaveSlides(c,a),FROM,DEF).sec*1000}))})),
+    "amplitude, mm",v=>v.toFixed(0)));}
+
+// ---- the ranking ---------------------------------------------------------------
+const RANKS=[
+  {id:"rays",verdict:"Best or tied on every sampled chord, because it attacks the two \
+things the model actually taxes: corners and open-loop glide. What it has not paid for \
+is board area, learning, and a proof that every chord of the order can be given a ray. \
+That is a design pass, and the model can score each candidate ray set. Worth doing next."},
+  {id:"comb",verdict:"Never ambiguous, never terrible, already built. Its costs are now \
+named rather than felt: the zigzag corner tax on the walk and the drift tax on long \
+glides. It is the baseline the proposals must beat, and two of the three mostly do not."},
+  {id:"negs",verdict:"As a blanket idea it ties the detour it replaces: the corner it \
+removes comes back as an extra gate and two more millimetres of glide, with more miss. \
+Keep it as a patch, not a board: let the model find the long or blocked detours, and \
+buy a negative key only there."},
+  {id:"weave",verdict:"Swype given the board it deserves, because different boards are \
+the point. Every skip-pair is separable in principle, and the dial shows what separation \
+costs in corners. What caps it is scatter, not geometry: a glide at swipe speed carries \
+4 to 5 mm of sigma, so shape alone tops out near 60 to 90 percent per pair at phone \
+scale. Promising, and blocked on the next instrument: a recognizer model, so the \
+dictionary prior is priced with the motor."},
+  {id:"swype",verdict:"The fastest hands on the page and the worst answer, and the \
+indictment is of the board, not of swiping. The comb's chain is nearly collinear, so KR \
+and KWR are the same shape and half the meaning rides on the dictionary. The weave \
+above is the same gesture on a board shaped for it."},
+];
+function drawRanking(){
+  const h=el("ranking");h.innerHTML="";
+  RANKS.forEach((r,i)=>{
+    const kb=KBS.find(k=>k.id===r.id),t=totals(r.id);
+    const d=document.createElement("div");d.className="rank";
+    d.innerHTML=`<div class="n">${i+1}</div><div>
+      <h3>${kb.name}</h3>
+      <p class="verdict">${r.verdict}</p>
+      <div class="stats">
+        <span><b>four chords</b>${fmt(t.c.sec*1000)} ms</span>
+        <span><b>miss, compound</b>${(t.c.miss*100).toFixed(0)}%</span>
+        <span><b>effort</b>${effort(t.c).toFixed(2)}</span>
+        ${r.id==="swype"?'<span class="flag">miss is shape confusion, before the dictionary</span>':""}
+      </div></div>`;
+    h.appendChild(d);});}
+
+// ---- wiring ------------------------------------------------------------------
+function chips(holder,items,current,onpick){
+  const h=el(holder);h.innerHTML="";
+  for(const it of items){
+    const b=document.createElement("button");b.className="chip";
+    b.textContent=it.label||it;b.setAttribute("aria-pressed",String((it.id||it)===current));
+    b.addEventListener("click",()=>onpick(it.id||it));
+    h.appendChild(b);}}
+function wire(){
+  chips("pathChips",PRESETS,preset.id,id=>{preset=PRESETS.find(p=>p.id===id);wire();});
+  chips("chordChips",CHORD_IDS,chord,id=>{chord=id;wire();});
+  drawExplorer();drawCompare();drawDial();drawRanking();}
+for(const id of ["sSlack","sBend","sDrift","sNoise"])
+  el(id).addEventListener("input",drawExplorer);
+wire();
+</script>
