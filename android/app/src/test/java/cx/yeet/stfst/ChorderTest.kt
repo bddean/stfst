@@ -321,6 +321,35 @@ class ChorderTest {
         }
     }
 
+    /**
+     * A jump keeps where in the cell the focus is.
+     *
+     * Arriving at the middle of the landing spends half a cell of a slide the
+     * thumb has not made yet: the next crossing is then half a cell away rather
+     * than a whole one, so one motion goes two landings and the picture reads
+     * as a lie. Carrying the offset makes a ride cost a cell, as a step does.
+     */
+    @Test
+    fun a_jump_keeps_the_place_in_the_cell() {
+        val bank = Bank.LEFT
+        val first = comb.chain.getValue(bank)[0]
+        val at = comb.place(bank, field(bank), 0f)
+        val home = comb.buttons.getValue(bank).first { it.key == first }.spots.first()
+        val side = Side.values().first { comb.jump(bank, home, it, null, listOf(first)) != null }
+        val land = comb.jump(bank, home, side, null, listOf(first))!!
+        val middle = comb.point(cellOf(bank, Comb.step(home, side)), at)
+        // Well inside the crossed cell, and well off its middle.
+        val cross = Point(middle.x + at.radius * 0.25f, middle.y - at.radius * 0.1f)
+
+        comb.point(home, at).let { chorder.down(bank, 0, it.x, it.y) }
+        chorder.move(0, cross.x, cross.y)
+        val thumb = chorder.thumb(bank)
+        assertEquals(land.spot, thumb.spot)
+        val landed = comb.point(land.spot, at)
+        assertEquals(cross.x - middle.x, thumb.focusX - landed.x, 0.5f)
+        assertEquals(cross.y - middle.y, thumb.focusY - landed.y, 0.5f)
+    }
+
     private fun cellOf(bank: Bank, p: Pair<Int, Int>) = comb.spotAt(bank, p.first, p.second)!!
 
     private data class Found(val bank: Bank, val home: Spot, val run: List<Ride>)

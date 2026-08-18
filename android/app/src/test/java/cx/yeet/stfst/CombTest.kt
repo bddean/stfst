@@ -439,6 +439,24 @@ class CombTest {
     }
 
     /**
+     * A cell the walk has left carries no slide.
+     *
+     * A jump fires out of the cell the last key was taken in and nowhere else,
+     * so a cell the thumb only wandered back into promises nothing. The picture
+     * asks this, and drawing the portals of a stale cell would offer a jump the
+     * touch will not make.
+     */
+    @Test
+    fun a_cell_the_walk_has_left_offers_nothing() {
+        val comb = comb()
+        val bank = Bank.LEFT
+        val chain = comb.chain.getValue(bank)
+        val here = spot(comb, bank, order[chain[0]])
+        assertTrue(comb.slides(bank, here, null, chain.take(1)).isNotEmpty())
+        assertTrue(comb.slides(bank, here, null, chain.take(3)).isEmpty())
+    }
+
+    /**
      * Four sides are left over, and at the head of the order each takes one of
      * the four strides and aims somewhere of its own. Further down a stride can
      * run out of order to aim at, and that side then carries no jump.

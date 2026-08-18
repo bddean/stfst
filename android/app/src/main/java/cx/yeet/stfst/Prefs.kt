@@ -5,102 +5,110 @@ import android.content.SharedPreferences
 /**
  * Config in and out of storage. Its own file because a parameter set and a
  * storage format are different things, and only one of them needs a device.
+ *
+ * One slot per parameter, naming its key once for both directions, so saving
+ * and loading cannot disagree on where a value lives.
  */
 object Prefs {
 
     /**
-     * Bumped whenever the shipped grids change shape.
+     * Bumped whenever the shipped layout changes: the grids, or which keys a
+     * lift can arm.
      *
-     * A saved grid is the user's own layout and outlives an upgrade, but one
+     * A saved value is the user's own choice and outlives an upgrade, but one
      * saved before floats and hole rings existed is the old default rather than
      * a choice, and keeping it would hide the new one behind a settings screen.
      */
-    private const val LAYOUT = 3
+    private const val LAYOUT = 4
 
-    fun save(config: Config, prefs: SharedPreferences) = with(config) {
-        prefs.edit().apply {
-            putInt("layout", LAYOUT)
-            putString("combLeft", combLeft)
-            putString("combRight", combRight)
-            putFloat("tilt", tilt)
-            putFloat("combFill", combFill)
-            putFloat("combAt", combAt)
-            putBoolean("combHole", combHole)
-            putString("stickyLeft", stickyLeft)
-            putString("stickyRight", stickyRight)
-            putString("doubleTapLeft", doubleTapLeft.toString())
-            putString("doubleTapRight", doubleTapRight.toString())
-            putLong("doubleTapMs", doubleTapMs)
-            putLong("stallMs", stallMs)
-            putBoolean("commitOnFirstLift", commitOnFirstLift)
-            putBoolean("haptics", haptics)
-            putBoolean("hapticTicks", hapticTicks)
-            putBoolean("hapticSplit", hapticSplit)
-            putFloat("hapticStrength", hapticStrength)
-            putLong("hapticGapMs", hapticGapMs)
-            putBoolean("showDeadCells", showDeadCells)
-            putBoolean("showLabels", showLabels)
-            putBoolean("showChain", showChain)
-            putBoolean("showPortals", showPortals)
-            putBoolean("cloud", cloud)
-            putInt("cloudSamples", cloudSamples)
-            putFloat("cloudAlpha", cloudAlpha)
-            putBoolean("touchReadout", touchReadout)
-            putFloat("fieldSplit", fieldSplit)
-            putBoolean("oneThumb", oneThumb)
-            putFloat("previewHeight", previewHeight)
-            putFloat("focusGain", focusGain)
-            putBoolean("landscapeSides", landscapeSides)
-            putFloat("splitLandscape", splitLandscape)
-            putFloat("landscapeHeight", landscapeHeight)
-            putFloat("markRadius", markRadius)
-            putFloat("labelSp", labelSp)
-            putFloat("keyboardHeight", keyboardHeight)
-        }.apply()
+    private class Slot<T>(
+        val key: String,
+        val get: (Config) -> T,
+        val set: (Config, T) -> Unit,
+        val put: SharedPreferences.Editor.(String, T) -> Any,
+        val read: SharedPreferences.(String, T) -> T,
+        /** A value saved before the shipped layout changed is not loaded. */
+        val shipped: Boolean = false,
+    ) {
+        fun save(config: Config, out: SharedPreferences.Editor) = out.put(key, get(config))
+        fun load(config: Config, stored: SharedPreferences, stale: Boolean) {
+            if (shipped && stale) return
+            set(config, stored.read(key, get(config)))
+        }
+    }
+
+    private fun text(
+        key: String, get: (Config) -> String, set: (Config, String) -> Unit,
+        shipped: Boolean = false,
+    ) = Slot(key, get, set, SharedPreferences.Editor::putString,
+        { k, d -> getString(k, d) ?: d }, shipped)
+
+    private fun letter(key: String, get: (Config) -> Char, set: (Config, Char) -> Unit) =
+        Slot(key, get, set, { k, v -> putString(k, v.toString()) },
+            { k, d -> getString(k, null)?.firstOrNull() ?: d })
+
+    private fun flag(key: String, get: (Config) -> Boolean, set: (Config, Boolean) -> Unit) =
+        Slot(key, get, set, SharedPreferences.Editor::putBoolean, SharedPreferences::getBoolean)
+
+    private fun size(key: String, get: (Config) -> Float, set: (Config, Float) -> Unit) =
+        Slot(key, get, set, SharedPreferences.Editor::putFloat, SharedPreferences::getFloat)
+
+    private fun span(key: String, get: (Config) -> Long, set: (Config, Long) -> Unit) =
+        Slot(key, get, set, SharedPreferences.Editor::putLong, SharedPreferences::getLong)
+
+    private fun count(key: String, get: (Config) -> Int, set: (Config, Int) -> Unit) =
+        Slot(key, get, set, SharedPreferences.Editor::putInt, SharedPreferences::getInt)
+
+    private val slots: List<Slot<*>> = listOf(
+        text("combLeft", { it.combLeft }, { c, v -> c.combLeft = v }, shipped = true),
+        text("combRight", { it.combRight }, { c, v -> c.combRight = v }, shipped = true),
+        size("tilt", { it.tilt }, { c, v -> c.tilt = v }),
+        size("combFill", { it.combFill }, { c, v -> c.combFill = v }),
+        size("combAt", { it.combAt }, { c, v -> c.combAt = v }),
+        flag("combHole", { it.combHole }, { c, v -> c.combHole = v }),
+        text("stickyLeft", { it.stickyLeft }, { c, v -> c.stickyLeft = v }, shipped = true),
+        text("stickyRight", { it.stickyRight }, { c, v -> c.stickyRight = v }, shipped = true),
+        letter("doubleTapLeft", { it.doubleTapLeft }, { c, v -> c.doubleTapLeft = v }),
+        letter("doubleTapRight", { it.doubleTapRight }, { c, v -> c.doubleTapRight = v }),
+        span("doubleTapMs", { it.doubleTapMs }, { c, v -> c.doubleTapMs = v }),
+        span("stallMs", { it.stallMs }, { c, v -> c.stallMs = v }),
+        flag("commitOnFirstLift", { it.commitOnFirstLift }, { c, v -> c.commitOnFirstLift = v }),
+        flag("haptics", { it.haptics }, { c, v -> c.haptics = v }),
+        flag("hapticTicks", { it.hapticTicks }, { c, v -> c.hapticTicks = v }),
+        flag("hapticSplit", { it.hapticSplit }, { c, v -> c.hapticSplit = v }),
+        size("hapticStrength", { it.hapticStrength }, { c, v -> c.hapticStrength = v }),
+        span("hapticGapMs", { it.hapticGapMs }, { c, v -> c.hapticGapMs = v }),
+        flag("showDeadCells", { it.showDeadCells }, { c, v -> c.showDeadCells = v }),
+        flag("showLabels", { it.showLabels }, { c, v -> c.showLabels = v }),
+        flag("showChain", { it.showChain }, { c, v -> c.showChain = v }),
+        flag("showPortals", { it.showPortals }, { c, v -> c.showPortals = v }),
+        flag("cloud", { it.cloud }, { c, v -> c.cloud = v }),
+        count("cloudSamples", { it.cloudSamples }, { c, v -> c.cloudSamples = v }),
+        size("cloudAlpha", { it.cloudAlpha }, { c, v -> c.cloudAlpha = v }),
+        flag("touchReadout", { it.touchReadout }, { c, v -> c.touchReadout = v }),
+        flag("oneThumb", { it.oneThumb }, { c, v -> c.oneThumb = v }),
+        size("fieldSplit", { it.fieldSplit }, { c, v -> c.fieldSplit = v }),
+        flag("landscapeSides", { it.landscapeSides }, { c, v -> c.landscapeSides = v }),
+        size("splitLandscape", { it.splitLandscape }, { c, v -> c.splitLandscape = v }),
+        size("landscapeHeight", { it.landscapeHeight }, { c, v -> c.landscapeHeight = v }),
+        size("previewHeight", { it.previewHeight }, { c, v -> c.previewHeight = v }),
+        size("focusGain", { it.focusGain }, { c, v -> c.focusGain = v }),
+        size("markRadius", { it.markRadius }, { c, v -> c.markRadius = v }),
+        size("labelSp", { it.labelSp }, { c, v -> c.labelSp = v }),
+        size("keyboardHeight", { it.keyboardHeight }, { c, v -> c.keyboardHeight = v }),
+    )
+
+    fun save(config: Config, prefs: SharedPreferences) {
+        val out = prefs.edit()
+        out.putInt("layout", LAYOUT)
+        for (slot in slots) slot.save(config, out)
+        out.apply()
     }
 
     fun load(prefs: SharedPreferences): Config {
-        val d = Config()
-        val fresh = prefs.getInt("layout", 0) != LAYOUT
-        return Config(
-            combLeft = if (fresh) d.combLeft else prefs.getString("combLeft", d.combLeft)!!,
-            combRight = if (fresh) d.combRight else prefs.getString("combRight", d.combRight)!!,
-            tilt = prefs.getFloat("tilt", d.tilt),
-            combFill = prefs.getFloat("combFill", d.combFill),
-            combAt = prefs.getFloat("combAt", d.combAt),
-            combHole = prefs.getBoolean("combHole", d.combHole),
-            stickyLeft = prefs.getString("stickyLeft", d.stickyLeft)!!,
-            stickyRight = prefs.getString("stickyRight", d.stickyRight)!!,
-            doubleTapLeft = prefs.getString("doubleTapLeft", null)?.firstOrNull()
-                ?: d.doubleTapLeft,
-            doubleTapRight = prefs.getString("doubleTapRight", null)?.firstOrNull()
-                ?: d.doubleTapRight,
-            doubleTapMs = prefs.getLong("doubleTapMs", d.doubleTapMs),
-            stallMs = prefs.getLong("stallMs", d.stallMs),
-            commitOnFirstLift = prefs.getBoolean("commitOnFirstLift", d.commitOnFirstLift),
-            haptics = prefs.getBoolean("haptics", d.haptics),
-            hapticTicks = prefs.getBoolean("hapticTicks", d.hapticTicks),
-            hapticSplit = prefs.getBoolean("hapticSplit", d.hapticSplit),
-            hapticStrength = prefs.getFloat("hapticStrength", d.hapticStrength),
-            hapticGapMs = prefs.getLong("hapticGapMs", d.hapticGapMs),
-            showDeadCells = prefs.getBoolean("showDeadCells", d.showDeadCells),
-            showLabels = prefs.getBoolean("showLabels", d.showLabels),
-            showChain = prefs.getBoolean("showChain", d.showChain),
-            showPortals = prefs.getBoolean("showPortals", d.showPortals),
-            cloud = prefs.getBoolean("cloud", d.cloud),
-            cloudSamples = prefs.getInt("cloudSamples", d.cloudSamples),
-            cloudAlpha = prefs.getFloat("cloudAlpha", d.cloudAlpha),
-            touchReadout = prefs.getBoolean("touchReadout", d.touchReadout),
-            fieldSplit = prefs.getFloat("fieldSplit", d.fieldSplit),
-            oneThumb = prefs.getBoolean("oneThumb", d.oneThumb),
-            previewHeight = prefs.getFloat("previewHeight", d.previewHeight),
-            focusGain = prefs.getFloat("focusGain", d.focusGain),
-            landscapeSides = prefs.getBoolean("landscapeSides", d.landscapeSides),
-            splitLandscape = prefs.getFloat("splitLandscape", d.splitLandscape),
-            landscapeHeight = prefs.getFloat("landscapeHeight", d.landscapeHeight),
-            markRadius = prefs.getFloat("markRadius", d.markRadius),
-            labelSp = prefs.getFloat("labelSp", d.labelSp),
-            keyboardHeight = prefs.getFloat("keyboardHeight", d.keyboardHeight),
-        )
+        val stale = prefs.getInt("layout", 0) != LAYOUT
+        val config = Config()
+        for (slot in slots) slot.load(config, prefs, stale)
+        return config
     }
 }

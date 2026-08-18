@@ -163,6 +163,13 @@ never crossed.
 Turning right round out of a landing puts the focus back on foot. That keeps
 every motion the board had before the ride existed.
 
+A jump keeps **where in the cell** the focus is, so it arrives at the edge it
+crossed by rather than in the middle of the landing. The middle is half a cell
+the thumb has not travelled yet: the next crossing came half a slide early, one
+motion went two landings, and the picture that said two slides was right while
+the thumb that made one was not. `ChorderTest.a_jump_keeps_the_place_in_the_cell`
+is the claim.
+
 ### Two hops, and why the numbers are fixed
 
 The target is that any key a thumb still wants is **two hops away**: one into a
@@ -204,14 +211,21 @@ The line goes on to where the slide ends. Each stop it passes through keeps one
 arrowhead, and the last one carries **one head per slide it takes to arrive**.
 So the heads are where you are going, not where you go through.
 
-`Comb.slides` is the whole picture, and the touch asks the same functions under
-it. It had to be one answer. The drawing worked the ride out its own way, which
-let it draw a ride out of `S` that ran into `-H`: a thumb crossing that side
-takes the key rather than riding past it. `Comb.onward` answers about **the one
-side being crossed** and nothing else now, and
-`ChorderTest.every_drawn_slide_is_a_slide_a_thumb_can_make` walks every drawn
-stop on the board as thumb motion and fails where the focus does not arrive as
-drawn.
+The key a side aims at is also written **inside the cell that side is crossed
+through**, next to the edge. A ring at the far end says where a side goes and
+the eye has to travel the line to read it; the name is at the thumb, on the
+cell it is about to enter, so a side reads as a key.
+
+`Comb.jump` is the whole picture and the whole touch: the jump one crossing
+makes, asked by the drawing and by the thumb and answered once. It had to be
+one answer. The drawing worked the ride out its own way, which let it draw a
+ride out of `S` that ran into `-H`: a thumb crossing that side takes the key
+rather than riding past it. The gate on which cell carries portals was the
+touch's alone, so the picture offered jumps out of a cell the walk had already
+left. `ChorderTest.every_drawn_slide_is_a_slide_a_thumb_can_make` walks every
+drawn stop on the board as thumb motion and fails where the focus does not
+arrive as drawn, and `CombTest.a_cell_the_walk_has_left_offers_nothing` is the
+other half: a stale cell draws nothing, because it can do nothing.
 
 ## Three kinds of key
 
@@ -331,9 +345,13 @@ a lift can mean: otherwise the second thumb's own lift writes its held keys
 again, and `Rr` comes out as `Rr` and then `r`.
 
 A lift that took only the **armed keys** of its bank arms them for the next
-stroke instead of writing; lifting on them again sends them alone. Two quick
-taps add the side's double-tap key on top of the key under them, so tap tap on
-`-T` releases as `-*T`.
+stroke instead of writing; lifting on them again sends them alone. `#` and `@`
+are those keys. `*` and `+` are not: a bare `*` is the undo stroke, and arming
+a key is not undoing anything, so a tap on `*` has to write it.
+
+Two quick taps add the side's double-tap key on top of the key under them, so
+tap tap on `-T` releases as `-*T`. That is a different mechanism and it still
+carries `*` and `+`.
 
 ## The buzzes
 
@@ -363,10 +381,15 @@ the editor owns, right to left in reach order:
 | | |
 |---|---|
 | the field's action | Go, Search, Send, Next, Done, or whatever the app calls it. A field with no action of its own gets a plain Enter |
-| `⌫` | one character, by code point. Hold it and it repeats |
+| `⌫` | one character back, as a key event. Hold it and it repeats |
 | `↶` | undo one stroke, which is not the same thing |
 | `⌄` | put the keyboard away |
 | `⚙` | the settings |
+
+`⌫` sends a key rather than deleting the surrounding text. Plenty of fields
+answer only the key: a web view, a canvas, a terminal. They report nothing
+about what a delete did either, so there is no failure to fall back from, and
+the one every field understands is the one to send.
 
 Any edit made through the bar gives up the tracked buffer. What reaches the
 editor is the difference between the runtime's buffer and what was last sent,

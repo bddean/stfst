@@ -58,9 +58,12 @@ data class Config(
      * A lift that took only these adds them to the next stroke; lifting on them
      * again sends them alone. They are the ones a chord wants alongside a whole
      * outline rather than instead of one.
+     *
+     * `*` and `+` are not among them. A bare `*` is the undo stroke, and arming
+     * a key is not undoing anything, so a tap on it has to write it.
      */
-    var stickyLeft: String = "#+",
-    var stickyRight: String = "@*",
+    var stickyLeft: String = "#",
+    var stickyRight: String = "@",
     /**
      * The key a double tap adds, per bank, on top of the key under it.
      *

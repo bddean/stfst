@@ -152,8 +152,7 @@ class StenoService : InputMethodService() {
         }
 
         if (keys.sides) {
-            val edge = (resources.displayMetrics.widthPixels *
-                config.splitLandscape.coerceIn(0.15f, 0.5f)).toInt()
+            val edge = keys.sideWidth(resources.displayMetrics.widthPixels.toFloat()).toInt()
             return FrameLayout(this).apply {
                 layoutParams = ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
@@ -291,11 +290,15 @@ class StenoService : InputMethodService() {
         forget()
     }
 
-    /** One character, and by code point, so a pair is not cut in half. */
-    private fun erase() {
-        currentInputConnection?.deleteSurroundingTextInCodePoints(1, 0) ?: return
-        forget()
-    }
+    /**
+     * One character back.
+     *
+     * A key event rather than a delete of the surrounding text. Plenty of
+     * fields answer only the key: a web view, a canvas, a terminal. They report
+     * nothing about what a delete did either, so asking twice is not an option
+     * and the one every field understands is the one to send.
+     */
+    private fun erase() = key(KeyEvent.KEYCODE_DEL, 0)
 
     /**
      * Give up the tracked buffer.
@@ -326,12 +329,18 @@ class StenoService : InputMethodService() {
             val was = Native.text(handle)
             val now = Native.push(handle, keys)
             Native.undo(handle)
-            var common = 0
-            while (common < now.length && common < was.length && now[common] == was[common]) common++
+            val common = shared(now, was)
             // A longer match takes back what the strokes it covers wrote, so
             // say that rather than showing only what is left.
             (if (common < was.length) "⌫" else "") + now.substring(common)
         }
+    }
+
+    /** How many leading characters the two share. */
+    private fun shared(a: String, b: String): Int {
+        var n = 0
+        while (n < a.length && n < b.length && a[n] == b[n]) n++
+        return n
     }
 
     /**
@@ -413,8 +422,7 @@ class StenoService : InputMethodService() {
      */
     private fun show(text: String): String {
         status?.text = text.takeLast(60)
-        var common = 0
-        while (common < text.length && common < sent.length && text[common] == sent[common]) common++
+        val common = shared(text, sent)
         val added = text.substring(common)
         val editor = currentInputConnection ?: return added
         val stale = sent.length - common

@@ -1,7 +1,5 @@
 package cx.yeet.stfst
 
-import kotlin.math.hypot
-
 /** One thumb's progress down its own comb. */
 class Thumb(val bank: Bank) {
     var pointer: Int = NONE
@@ -81,9 +79,6 @@ class Thumb(val bank: Bank) {
 
     val down: Boolean get() = pointer != NONE
 
-    /** The last key taken, or -1. Steno order can only go up from here. */
-    val after: Int get() = keys.maxOrNull() ?: -1
-
     fun release() {
         pointer = NONE
         live = false
@@ -115,9 +110,6 @@ class Chorder(
 
     val left = Thumb(Bank.LEFT)
     val right = Thumb(Bank.RIGHT)
-
-    /** Whether the comb is turned for a landscape screen. Set by the view. */
-    var landscape: Boolean = false
 
     /** Keys armed to join the next stroke: a tapped special, or a double tap's. */
     val sticky = mutableSetOf<Int>()
@@ -160,13 +152,17 @@ class Chorder(
         val thumb = thumb(bank)
         if (thumb.down) return false
         thumb.release()
+        return land(thumb, pointer, x, y)
+    }
+
+    /** A fresh touch starts this thumb's walk, and takes the key it landed on. */
+    private fun land(thumb: Thumb, pointer: Int, x: Float, y: Float): Boolean {
         thumb.pointer = pointer
         thumb.live = true
         thumb.gain = config.focusGain
         thumb.settle(x, y)
-        val spot = comb.hit(bank, thumb.field, tilt, x, y) ?: return false
-        thumb.spot = spot
-        val key = comb.resolve(spot, thumb.keys) ?: return false
+        thumb.spot = comb.hit(thumb.bank, thumb.field, tilt, x, y)
+        val key = thumb.spot?.let { comb.resolve(it, thumb.keys) } ?: return false
         take(thumb, key)
         return true
     }
@@ -203,39 +199,27 @@ class Chorder(
             thumb.inHole = false
         }
 
-        // A portal is a side of the cell the last key was taken in, so it fires
-        // on the way out of that cell and nowhere else.
-        if (was != null && now != was && comb.keyOf(was) == thumb.after && thumb.after >= 0) {
+        // A jump fires on the way out of a cell, and [Comb.jump] says which one:
+        // the same stride again for a thumb still sliding the way it went, or
+        // else the portals of the cell the last key was taken in. Leaving a
+        // landing any other way puts the thumb back on foot, and a key on the
+        // way out is taken rather than ridden past.
+        val riding = thumb.riding
+        if (was != null && now != was) {
             val side = Side.values().firstOrNull {
                 Comb.step(was, it) == (now.col to now.row)
             }
-            val land = side?.let { comb.portal(thumb.bank, was, it, thumb.keys) }
-            if (land != null) {
-                thumb.aim(comb.point(land.spot, comb.place(thumb.bank, thumb.field, tilt)))
+            val land = side?.let { comb.jump(thumb.bank, was, it, riding, thumb.keys) }
+            if (side != null && land != null) {
+                val at = comb.place(thumb.bank, thumb.field, tilt)
+                thumb.aim(comb.into(now, land.spot, at, Point(thumb.focusX, thumb.focusY)))
                 now = land.spot
-                // A portal that aims at a hole means to leave the focus in it,
+                // A jump that aims at a hole means to leave the focus in it,
                 // beside the cluster it rings. Falling through as well would
                 // undo the jump on the next sample.
                 thumb.inHole = now.v == Comb.HOLE
                 thumb.riding = if (land.onKey) null else Ride(land, side)
-            }
-        }
-
-        // The same stride again, for a thumb that keeps sliding the way the
-        // jump went. Leaving the landing any other way puts it back on foot,
-        // and a key on the way out is taken rather than ridden past.
-        val riding = thumb.riding
-        if (riding != null && was == riding.land.spot && now != was) {
-            val gate = Side.values().firstOrNull {
-                Comb.step(riding.land.spot, it) == (now.col to now.row)
-            }
-            val next = gate?.let { comb.onward(thumb.bank, riding, it, thumb.keys) }
-            if (next != null) {
-                thumb.aim(comb.point(next.spot, comb.place(thumb.bank, thumb.field, tilt)))
-                now = next.spot
-                thumb.inHole = now.v == Comb.HOLE
-                thumb.riding = if (next.onKey) null else Ride(next, gate)
-            } else {
+            } else if (riding != null && was == riding.land.spot) {
                 thumb.riding = null
             }
         }
@@ -263,14 +247,7 @@ class Chorder(
         val to = thumb(into)
         if (from === to || to.down) return false
         from.release()
-        to.pointer = pointer
-        to.live = true
-        to.gain = config.focusGain
-        to.settle(x, y)
-        to.spot = comb.hit(into, to.field, tilt, x, y)
-        val key = to.spot?.let { comb.resolve(it, to.keys) } ?: return false
-        take(to, key)
-        return true
+        return land(to, pointer, x, y)
     }
 
     /**

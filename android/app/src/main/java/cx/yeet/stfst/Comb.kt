@@ -52,10 +52,8 @@ class Comb(val order: String, val config: Config) {
         return out
     }
 
-    private val spots: Map<Bank, List<Spot>> = mapOf(
-        Bank.LEFT to parse(config.combLeft),
-        Bank.RIGHT to parse(config.combRight),
-    )
+    private val spots: Map<Bank, List<Spot>> =
+        Bank.values().associateWith { parse(config.comb(it)) }
 
     private val byCell: Map<Bank, Map<Long, Spot>> =
         spots.mapValues { (_, list) -> list.associateBy { at(it.col, it.row) } }
@@ -249,6 +247,25 @@ class Comb(val order: String, val config: Config) {
     }
 
     /**
+     * The same place inside another cell, which is what a jump does to a point.
+     *
+     * A jump that put the focus in the middle of the landing spent half a cell
+     * of a slide the thumb had not made yet, so the next ride fired early and
+     * one motion went two landings. Carrying the offset lands the focus at the
+     * edge it crossed by, and a ride then costs one whole cell like a step.
+     */
+    fun into(from: Spot, to: Spot, at: Placement, p: Point): Point {
+        val here = point(from, at)
+        val there = point(to, at)
+        // A thumb past the edge of the comb still means the cell it overshot,
+        // so the offset can be wider than a cell. Just inside the inradius, and
+        // the landing is inside its own cell whichever way the offset points.
+        val far = hypot(p.x - here.x, p.y - here.y)
+        val keep = if (far > 0f) min(1f, SQ3 * 0.47f * at.radius / far) else 0f
+        return Point(there.x + (p.x - here.x) * keep, there.y + (p.y - here.y) * keep)
+    }
+
+    /**
      * The cell this point falls in, or null when the bank has none.
      *
      * The nearest centre, which inside the lattice is exactly the hexagon and
@@ -387,6 +404,21 @@ class Comb(val order: String, val config: Config) {
         return jumps(bank, from, here).getOrNull(min(slot, STRIDES.size - 1))
     }
 
+    /**
+     * The jump one crossing makes: out of `from`, through `side`.
+     *
+     * The touch and the picture both ask this and nothing else, so the keyboard
+     * cannot draw a jump the thumb will not make. A focus resting on a landing
+     * is offered the same stride again; anywhere else only the cell the last
+     * key was taken in carries portals, because that is where the walk stands.
+     */
+    fun jump(bank: Bank, from: Spot, side: Side, riding: Ride?, taken: List<Int>): Landing? {
+        if (riding != null && riding.land.spot == from) return onward(bank, riding, side, taken)
+        val key = keyOf(from)
+        if (key < 0 || key != taken.maxOrNull()) return null
+        return portal(bank, from, side, taken)
+    }
+
     private val jumped = HashMap<Pair<Bank, Spot>, List<Landing?>>()
 
     /**
@@ -446,7 +478,7 @@ class Comb(val order: String, val config: Config) {
     private fun rideOn(bank: Bank, cur: Ride, taken: List<Int>): Ride? =
         Side.values().sortedBy { turn(angleOf(it), angleOf(cur.side)) }
             .firstNotNullOfOrNull { out ->
-                onward(bank, cur, out, taken)?.let { Ride(it, out) }
+                jump(bank, cur.land.spot, out, cur, taken)?.let { Ride(it, out) }
             }
 
     /**
@@ -468,7 +500,7 @@ class Comb(val order: String, val config: Config) {
         }
         if (riding != null) return listOfNotNull(rideOn(bank, riding, taken)?.let { run(it) })
         return Side.values().mapNotNull { side ->
-            portal(bank, spot, side, taken)?.let { run(Ride(it, side)) }
+            jump(bank, spot, side, null, taken)?.let { run(Ride(it, side)) }
         }
     }
 
@@ -579,11 +611,7 @@ class Comb(val order: String, val config: Config) {
         val next = keys.getOrNull(here + 2) ?: keys.getOrNull(here + 1) ?: return 90f
         val target = buttons.getValue(bank).firstOrNull { it.key == next }?.spots?.firstOrNull()
             ?: return 90f
-        val a = lattice(from)
-        val b = lattice(target)
-        return Math.toDegrees(
-            Math.atan2((b.y - a.y).toDouble(), (b.x - a.x).toDouble())
-        ).toFloat()
+        return heading(lattice(from), lattice(target))
     }
 
     companion object {
@@ -635,13 +663,14 @@ class Comb(val order: String, val config: Config) {
 
         private val ANGLES: Map<Side, Float> = Side.values().associateWith { side ->
             val home = Spot(2, 2, GROUND)
-            val a = lattice(home.col, home.row)
             val (col, row) = step(home, side)
-            val b = lattice(col, row)
-            Math.toDegrees(
-                Math.atan2((b.y - a.y).toDouble(), (b.x - a.x).toDouble())
-            ).toFloat()
+            heading(lattice(home.col, home.row), lattice(col, row))
         }
+
+        /** The heading from `a` to `b`, in degrees clockwise from right. */
+        private fun heading(a: Point, b: Point): Float = Math.toDegrees(
+            Math.atan2((b.y - a.y).toDouble(), (b.x - a.x).toDouble())
+        ).toFloat()
 
         /** The smaller of the two ways round, in degrees. */
         fun turn(a: Float, b: Float): Int {

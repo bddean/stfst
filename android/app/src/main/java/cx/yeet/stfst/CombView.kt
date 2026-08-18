@@ -76,6 +76,9 @@ class CombView(
     /** Whether the two combs stand on the edges with the bar in the gap. */
     val sides: Boolean get() = !embedded && landscape && config.landscapeSides
 
+    /** How wide each edge field is, which whatever sits in the gap must clear. */
+    fun sideWidth(width: Float): Float = width * config.splitLandscape.coerceIn(0.15f, 0.5f)
+
     private val tilt: Float get() = config.tilt
 
     fun apply(fresh: Config) {
@@ -126,7 +129,7 @@ class CombView(
         width: Float,
     ): Pair<ClosedFloatingPointRange<Float>, ClosedFloatingPointRange<Float>> {
         if (landscape && config.landscapeSides) {
-            val wide = width * config.splitLandscape.coerceIn(0.15f, 0.5f)
+            val wide = sideWidth(width)
             return (0f..wide) to ((width - wide)..width)
         }
         val edge = width * config.fieldSplit
@@ -139,7 +142,6 @@ class CombView(
         val (left, right) = spans(width.toFloat())
         val floor = height.toFloat()
         val top = keysTop + if (config.touchReadout) keysDeep * 0.04f else 0f
-        chorder.landscape = landscape
         chorder.place(Bank.LEFT, Field(left.start, top, left.endInclusive, floor))
         chorder.place(Bank.RIGHT, Field(right.start, top, right.endInclusive, floor))
         cut()
@@ -422,33 +424,35 @@ class CombView(
         )
         ink.textAlign = Paint.Align.CENTER
         for (bank in Bank.values()) {
-            val thumb = chorder.thumb(bank)
             val sketch = sketches[bank] ?: continue
             if (config.cloud) drawCloud(canvas, bank, paint)
-            drawComb(canvas, thumb, paint, sketch)
-            drawFocusCell(canvas, thumb, paint, sketch)
-            drawMarks(canvas, thumb, paint, sketch)
-            if (config.showPortals) drawPortals(canvas, thumb, paint, sketch)
-            drawTaken(canvas, thumb, paint, thumb.field)
+            drawBank(canvas, bank, paint, sketch, chorder.thumb(bank).field)
         }
         drawWriting(canvas, paint, keysTop.toFloat())
         val show = glow()
         if (keysTop > 0 && show > 0f) {
             canvas.saveLayerAlpha(0f, 0f, width.toFloat(), keysTop.toFloat(), (show * 255).toInt())
             for (bank in Bank.values()) {
-                val band = bands[bank] ?: continue
-                val thumb = chorder.thumb(bank)
-                drawComb(canvas, thumb, paint, band)
-                drawFocusCell(canvas, thumb, paint, band)
-                if (config.showPortals) drawPortals(canvas, thumb, paint, band)
-                drawMarks(canvas, thumb, paint, band)
-                drawTaken(canvas, thumb, paint, band(bank))
+                drawBank(canvas, bank, paint, bands[bank] ?: continue, band(bank))
             }
             drawWriting(canvas, paint, 0f)
             canvas.restore()
         }
         if (config.touchReadout) drawReadout(canvas, paint)
     }
+
+    /** One bank's whole picture, in the keys and in the band alike. */
+    private fun drawBank(canvas: Canvas, bank: Bank, paint: Palette, sketch: Sketch, where: Field) {
+        val thumb = chorder.thumb(bank)
+        drawComb(canvas, thumb, paint, sketch)
+        drawFocusCell(canvas, thumb, paint, sketch)
+        if (config.showPortals) drawPortals(canvas, thumb, paint, sketch)
+        drawMarks(canvas, thumb, paint, sketch)
+        drawTaken(canvas, thumb, paint, where)
+    }
+
+    /** One button as drawn: its melded outline and where its label sits. */
+    private data class Cut(val button: Button, val path: Path, val middle: Point)
 
     /**
      * The shapes of one bank, which depend on the layout and the field alone.
@@ -459,7 +463,7 @@ class CombView(
      */
     private class Sketch(
         val ground: List<Pair<Spot, Path>>,
-        val keys: List<Triple<Button, Path, Point>>,
+        val keys: List<Cut>,
         val chain: Path?,
         val radius: Float,
         val at: Placement,
@@ -492,7 +496,7 @@ class CombView(
             },
             keys = comb.buttons.getValue(bank).mapNotNull { button ->
                 melded(bank, field, button)?.let {
-                    Triple(button, it, comb.center(bank, field, tilt, button))
+                    Cut(button, it, comb.center(bank, field, tilt, button))
                 }
             },
             chain = chain.takeIf { started },
@@ -502,13 +506,13 @@ class CombView(
         )
     }
 
-    private fun keyCut(sketch: Sketch, spot: Spot): Triple<Button, Path, Point>? =
-        sketch.keys.firstOrNull { (button, _, _) ->
-            button.spots.any { it.col == spot.col && it.row == spot.row }
+    private fun keyCut(sketch: Sketch, spot: Spot): Cut? =
+        sketch.keys.firstOrNull { cut ->
+            cut.button.spots.any { it.col == spot.col && it.row == spot.row }
         }
 
     private fun cellPath(sketch: Sketch, spot: Spot): Path? =
-        keyCut(sketch, spot)?.second ?: sketch.ground.firstOrNull { it.first == spot }?.second
+        keyCut(sketch, spot)?.path ?: sketch.ground.firstOrNull { it.first == spot }?.second
 
     /** Every cell of one bank: the ground it owns, its outline, and its label. */
     private fun drawComb(canvas: Canvas, thumb: Thumb, paint: Palette, sketch: Sketch) {
@@ -566,7 +570,7 @@ class CombView(
                 1 -> paint.text
                 else -> fade(paint.text, 0.3f)
             }
-            canvas.drawText(button.v.toString(), middle.x, middle.y + ink.textSize * 0.35f, ink)
+            label(canvas, button.v, middle)
         }
         ink.strokeWidth = sketch.radius * 0.055f
     }
@@ -603,7 +607,34 @@ class CombView(
                 )
                 from = stop.land.spot
             }
+            drawAim(canvas, paint, sketch, spot, run.first())
         }
+    }
+
+    /**
+     * The key a side aims at, written in the cell that side is crossed through.
+     *
+     * A ring at the far end says where a side goes, and the eye has to travel
+     * the line to read it. The name sits where the thumb already is, just
+     * inside the cell it is about to enter, so a side reads as a key.
+     */
+    private fun drawAim(canvas: Canvas, paint: Palette, sketch: Sketch, from: Spot, stop: Ride) {
+        val middle = comb.point(from, sketch.at)
+        val way = unit(middle, comb.edge(from, stop.side, sketch.at))
+        // Past the side, and short of the crossed cell's own middle, so the two
+        // names do not sit on each other.
+        val out = (Comb.SQ3 * 0.5f + 0.45f) * sketch.radius
+        val at = Point(middle.x + way.x * out, middle.y + way.y * out)
+        val size = ink.textSize
+        ink.style = Paint.Style.FILL
+        // Its own ground. The cell beneath may carry a spent key's letter, and
+        // over the app there is no ground at all.
+        ink.color = paint.back
+        canvas.drawCircle(at.x, at.y, size * 0.62f, ink)
+        ink.textSize = size * 0.8f
+        ink.color = paint.hot
+        label(canvas, order[stop.land.aim], at)
+        ink.textSize = size
     }
 
     /**
@@ -652,7 +683,7 @@ class CombView(
         val path = cellPath(sketch, spot) ?: return
         val cut = keyCut(sketch, spot)
         ink.style = Paint.Style.FILL
-        ink.color = if (cut != null) face(paint, cut.first.key, false) else paint.back
+        ink.color = if (cut != null) face(paint, cut.button.key, false) else paint.back
         canvas.drawPath(path, ink)
         if (cut == null) return
         ink.style = Paint.Style.STROKE
@@ -662,7 +693,12 @@ class CombView(
         if (!config.showLabels) return
         ink.style = Paint.Style.FILL
         ink.color = paint.text
-        canvas.drawText(cut.first.v.toString(), cut.third.x, cut.third.y + ink.textSize * 0.35f, ink)
+        label(canvas, cut.button.v, cut.middle)
+    }
+
+    /** A key's letter, centred on its cell. */
+    private fun label(canvas: Canvas, v: Char, at: Point) {
+        canvas.drawText(v.toString(), at.x, at.y + ink.textSize * 0.35f, ink)
     }
 
     /** The unit step from `a` toward `b`. */
@@ -738,13 +774,13 @@ class CombView(
         val path = cellPath(sketch, spot) ?: return
         // Warm only where a step would take a key; over ground and over a cell
         // the order has passed it says where, not what.
-        val warm = face(paint, cut?.first?.key ?: -1, true)
+        val warm = face(paint, cut?.button?.key ?: -1, true)
         ink.style = Paint.Style.FILL
         ink.color = if (comb.resolve(spot, thumb.keys) != null) warm else fade(warm, 0.45f)
         canvas.drawPath(path, ink)
         if (cut == null || !config.showLabels) return
         ink.color = paint.text
-        canvas.drawText(cut.first.v.toString(), cut.third.x, cut.third.y + ink.textSize * 0.35f, ink)
+        label(canvas, cut.button.v, cut.middle)
     }
 
     /**
