@@ -88,18 +88,22 @@ The host loop both it and `stfst translate` drive is `stfst-board`.
 
 `plover-plugin/` is a Plover dictionary class over these artifacts, so the format
 is portable backwards and a dictionary compiled here works in Plover with no
-further work. Eleven of the thirteen load; `retro-words` and `repeat-word` read
+further work. Twelve of the fourteen load; `retro-words` and `repeat-word` read
 what Plover has no way to tell a dictionary, so they are refused by name at load
-rather than mistranslated.
+rather than mistranslated. It is what Plover runs: `~/.config/plover` names these
+artifacts in its stack.
 
 Nothing is shared with the Rust: the plugin has its own `hfstol` reader and its
 own reading of the record language, which is what makes it evidence that the
 artifact is portable at all. `scripts/check-plugin.py` renders every entry of
 every imported dictionary both ways through Plover's own formatter and compares
-them. 147,188 entries, none differ, and three of Plover's answers were taken over
-ours to get there; `docs/plover.md` names them. Against the
-same seven dictionaries it costs 8 MB resident and 8 ms a stroke, where the JSON
-they came from costs 82 MB and 0.09 ms.
+them. 147,910 entries, none differ, and three of Plover's answers were taken over
+ours to get there. `scripts/check-stack.py` then asks the configured stack and the
+stack it was compiled from what each of 156,496 outlines writes, which is the
+question a per-entry check cannot ask, and it found six more. `docs/plover.md`
+names all of them. Against the same seven dictionaries the plugin costs 8 MB
+resident and 8 ms a stroke, where the JSON they came from costs 82 MB and
+0.09 ms.
 
 ## Morphology, which is not a dictionary
 
@@ -135,7 +139,7 @@ host with no lexicon refuses `{:infl:…}` rather than answering it with rules.
 | `docs/motor.md` | What a thumb motion costs: one synthesised speed profile read three ways, for judging layouts before building them. |
 | `docs/phrasing.md` | The §7 clause grammar: what is a rule and what is a table, and why the retro modifier layer needs a different mechanism. |
 | `docs/parity.md` | Plover's translation language operator by operator, what the record language says instead, and what it still cannot say. |
-| `docs/plover.md` | The Plover plugin: what a second host found, why Plover needs a longest key when a cursor does not, and what reading an artifact costs in Python. |
+| `docs/plover.md` | The Plover plugin: what a second host found, what a second *stack* found after it, why Plover needs a longest key when a cursor does not, and what reading an artifact costs in Python. |
 | `docs/retro.md` | Rewriting text already written: why the window comes after the keys, why the tape carries character classes and not characters, and what is left in the host. |
 | `docs/translation.md` | The runtime: longest match without a declared longest key, what a dictionary is checked for at load, and why reverse lookup is a cheapest-first search. |
 

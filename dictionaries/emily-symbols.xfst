@@ -15,12 +15,11 @@
 ! subset of STKPWHR, and a subset with no row dies at the Glyph composition. So
 ! the table is the only place the 37 patterns are written down.
 !
-! Divergence from emily-symbols.py, deliberate: that file sets
-! attachmentMethod = "space" and implements it by wrapping the glyph in literal
-! spaces and attaching both sides. Here the default carries no attach flag and
-! the host spaces the symbol, while -R and -B attach a side directly. Same
-! visible output in ordinary use, and it makes repetition well defined, which
-! literal-space wrapping does not: [REP3] over " ! " gives " ! ! ! ".
+! This fork sets attachmentMethod = "space", which inverts the two keys: the
+! symbol attaches on both sides by default, and -R and -B open a space instead.
+! What is not copied is how that file writes it, which is literal spaces around
+! the glyph. The flags say the joins and the host spaces the symbol, which also
+! makes repetition well defined: [REP3] over " ! " gives " ! ! ! ".
 
 ! ---- fields, in steno order
 
@@ -29,7 +28,7 @@ define Pat      [ (S) (T) (K) (P) (W) (H) (R) ] ;
 define Variant  [ 0    .x. V0 ] | [ {A}  .x. V1 ]
               | [ {O}  .x. V2 ] | [ {AO} .x. V3 ] ;
 ! -R and -B are independent, so they are two bits and not a four-way table.
-define Attach   Bit({r}, "[AL=0]", "[AL=1]") Bit({b}, "[AR=0]", "[AR=1]") ;
+define Attach   Bit({r}, "[AL=1]", "[AL=0]") Bit({b}, "[AR=1]", "[AR=0]") ;
 define Cap      Bit({g}, "[C=0]", "[C=1]") ;
 ! -T and -S add 2 and 1 to the count, so this one really is a sum.
 define RepKeys  [ 0    .x. "[R=1]" ] | [ {s}  .x. "[R=2]" ]
@@ -37,7 +36,11 @@ define RepKeys  [ 0    .x. "[R=1]" ] | [ {s}  .x. "[R=2]" ]
 
 ! Both halves of the identifier are required, so a stroke missing # or -U has no
 ! path. That is the absence of the Python's `raise KeyError`.
-define Parse [ "#" .x. 0 ] Pat Variant [ {U} .x. 0 ] Attach Cap RepKeys ;
+define Fields [ "#" .x. 0 ] Pat Variant [ {U} .x. 0 ] Attach Cap RepKeys ;
+! Repeating the empty glyph says nothing, and the Python refuses it so that the
+! `U9`-shaped strokes stay clear of wm.py's focus-space keys.
+define BareRepeat [ "#" {U} ({r}) ({b}) ({g}) [ {s} | {t} | {ts} ] ] ;
+define Parse      [ [ Stroke - BareRepeat ] .o. Fields ] ;
 
 ! Glyph consumes only the pattern keys and the variant tag, so the modifier tags
 ! must be carried past it as identity or composition finds no path.
@@ -49,14 +52,16 @@ define Glyph   GlyphPair ModTags ;
 
 define DoAttach [ "[AL=1]" -> "[ATTACH_L]" ,, "[AL=0]" -> 0 ,,
                   "[AR=1]" -> "[ATTACH_R]" ,, "[AR=0]" -> 0 ] ;
-! The glyph table's own case flag wins over the `-G` key, because a stroke that
-! asks for both has asked for the stronger one: `{<}` uppercases the whole next
-! word and `-G` only its first letter. Without this the record would carry two
-! case flags, which is not a state a record can be in.
-! `OneCase` is in the shared table, because both emily dictionaries read the glyph
-! that cases the next word and both have a key that does too.
+! A glyph that cases the next word and `-G` are one case, not two, and a record
+! cannot hold two. `OneCase` is in the shared table, because both emily
+! dictionaries read that glyph and both have a key that cases too.
 define DoCap    [ [ "[C=1]" -> "[CAP_NEXT]" ,, "[C=0]" -> 0 ] .o. OneCase ] ;
 define DoRep    [ "[R=1]" -> 0 ,, "[R=2]" -> "[REP2]" ,,
                   "[R=3]" -> "[REP3]" ,, "[R=4]" -> "[REP4]" ] ;
+! A retrospective space edits the gap already written, so there is no glyph beside
+! it for an attachment to close. -R and -B say nothing on those two rows.
+define DoSpace  [ [ "[ATTACH_L]" | "[ATTACH_R]" ] -> 0
+                  || [ "[CANCEL_SPACE]" | "[RETRO_SPACE]" ] ?* _ ] ;
 
-define Grammar Canon([ Parse .o. Glyph .o. DoAttach .o. DoCap .o. DoRep ]) ;
+define Grammar Canon([ Parse .o. Glyph .o. DoAttach .o. DoSpace
+                       .o. DoCap .o. DoRep ]) ;

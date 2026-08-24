@@ -370,9 +370,18 @@ fn core_items(
     }
 
     match core {
-        "-|" => return set_case(flags, Case::Next).map(|_| Vec::new()),
-        ">" => return set_case(flags, Case::LowerNext).map(|_| Vec::new()),
-        "<" => return set_case(flags, Case::UpperNext).map(|_| Vec::new()),
+        "-|" => {
+            set_case(flags, Case::Next);
+            return Ok(Vec::new());
+        }
+        ">" => {
+            set_case(flags, Case::LowerNext);
+            return Ok(Vec::new());
+        }
+        "<" => {
+            set_case(flags, Case::UpperNext);
+            return Ok(Vec::new());
+        }
         "*!" => return set_space(flags, SpaceOp::Cancel).map(|_| Vec::new()),
         "*?" => return set_space(flags, SpaceOp::Retro).map(|_| Vec::new()),
         "$" => {
@@ -531,7 +540,8 @@ fn long_form(
         }
         ("case", kind) => {
             let case = case_name(kind).ok_or_else(unsupported)?;
-            set_case(flags, case).map(|_| Vec::new())
+            set_case(flags, case);
+            Ok(Vec::new())
         }
         ("retro_case", kind) => Ok(vec![meta(match case_name(kind).ok_or_else(unsupported)? {
             Case::Next => "retro.cap",
@@ -558,7 +568,7 @@ fn long_form(
         }
         ("stop", mark) => {
             join.left = true;
-            set_case(flags, Case::Next)?;
+            set_case(flags, Case::Next);
             Ok(vec![Item::Text(mark.to_string())])
         }
         _ => Err(unsupported()),
@@ -608,14 +618,10 @@ fn peel_attach(d: &str) -> (&str, bool, bool) {
     (d, left, right)
 }
 
-fn set_case(flags: &mut Flags, want: Case) -> Result<(), TranslateError> {
-    match flags.case {
-        Some(have) if have != want => Err(TranslateError::Conflict("capitalisation")),
-        _ => {
-            flags.case = Some(want);
-            Ok(())
-        }
-    }
+/// The last case a translation names is the one Plover spends, so a second one
+/// replaces the first rather than conflicting with it.
+fn set_case(flags: &mut Flags, want: Case) {
+    flags.case = Some(want);
 }
 
 fn set_space(flags: &mut Flags, want: SpaceOp) -> Result<(), TranslateError> {

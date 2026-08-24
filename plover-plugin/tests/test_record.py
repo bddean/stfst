@@ -88,9 +88,19 @@ class ReadsPloverTranslations(unittest.TestCase):
         got = Record.from_translation("!", ["[ATTACH_L]"])
         self.assertEqual(str(got), "![ATTACH_L]")
 
-    def test_a_case_from_the_translation_beats_one_from_the_caller(self):
+    def test_a_case_from_the_caller_beats_one_from_the_translation(self):
+        # The caller's flags come from keys the stroke spells after the glyph, and
+        # Plover spends the last case a translation names.
         got = Record.from_translation("{<}", ["[CAP_NEXT]"])
-        self.assertEqual(str(got), "[UPPER_NEXT]")
+        self.assertEqual(str(got), "[CAP_NEXT]")
+
+    def test_an_empty_atom_closes_the_gap_a_caret_opened(self):
+        # `{}` is Plover's empty text atom: it writes nothing and ends the join,
+        # where a keystroke beside it leaves the join as it found it.
+        self.assertEqual(str(Record.from_translation("{^} {#Tab} {}")),
+                         "[KEY]Tab[END][ATTACH_L]")
+        self.assertEqual(str(Record.from_translation("{^} {#Tab} {^}")),
+                         "[KEY]Tab[END][ATTACH_L][ATTACH_R]")
 
 
 class SpellsRecords(unittest.TestCase):

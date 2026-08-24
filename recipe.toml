@@ -42,6 +42,11 @@ priority = 40
 json = "~/.config/plover/semantic-suffixes.json"
 
 [[dict]]
+name = "leading-vowel"
+priority = 35
+json = "~/.config/plover/leading-vowel.json"
+
+[[dict]]
 name = "typey-type"
 priority = 30
 json = "~/.config/plover/typey-type-full.json"

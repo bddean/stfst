@@ -1,6 +1,7 @@
-! 230 cases from /Users/ben/.config/plover/user.json. A regression file for the import pipeline,
+! 268 cases from /Users/ben/.config/plover/user.json. A regression file for the import pipeline,
 ! not an oracle: the expectations come from our own translation
 ! grammar, which is unit tested separately.
+*Ep	E[GLUE]
 l	ly[ORTHO_L]
 Afrt	after the
 AO*Epbt	even though
@@ -24,13 +25,17 @@ KA*f	cav
 KA*frpb	caravan
 KAEp/PWAr/RA	capybara
 KAO*Ef	Kyiv
+KAOEUpbld	kindly
 KAOEUpl	a couple
 KAOEUrpbd	kinder
 KAUl/KWRAOE	callee
 KAUrl	caller
 KH*p	Ch[ATTACH_R]
+KP*Epbd	extend
 KPApbd	expand
 KPH*Er	Khmer
+KPHAOUgs	communication
+KPHOrpbg	good morning
 KPHOUgt	coming out
 KPHOUt	come out
 KPHOUtd	came out
@@ -57,14 +62,18 @@ PHRAErt	popularity
 PHRAfrpl	platform
 PHREfpblt	pleasantly
 POEpb	pony
+PRAOEUf	preview
 PREpbd	pretend
 PREUbl	predictable
 PREUrb	perish
+PRUbgt	product
+PWHRAOEUpbld	blindly
 PWHRApbg	blank
 PWHROEp	blow up
 PWOEUr	berry
 RAEtd	read the
 RAEUrpbg	ranger
+RAOEpld	readme
 RAOEpt	repeat
 RAOUf	review
 REfbgs	revision
@@ -76,6 +85,8 @@ SEUfrl	silver
 SH*	sh[GLUE]
 SHREfblgt	selective
 SHRO*s	is lost
+SHROEUgs	isolation
+SHROEUt	isolate
 SK*Uft	disgust
 SKEUrpl	skirm
 SKPpbt	and then
@@ -90,20 +101,27 @@ SKPWHOU	and how
 SKREfpbt	scent of
 SKREUpgs	subscription
 SKUft	disgust
+SKWRAEUrt	generate
 SKWRAEUt	generate
 SPHbl	assemble
+SPHArz	summarize
+SPHO*Ur	Seymour
 SPHR	must have
 SPHRb	must have been
 SPHREpbd	splendid
 SPOEUlt	spoilt
 SPWgt	integrate
 SPWAEUrgt	interrogate
+SPWAOEUd	beside
 SR*EUl	vil
 SRl	is really
 SRAOEpbts	convenience
 SRApblg	vantage
 SREUrlg	villager
+ST*	so it
+STHAbg	that being said
 STHAt	so that
+STHO	so this
 STKbl	dissemble
 STKEbl	dissemble
 STKHRAOEUpb	decline
@@ -116,6 +134,7 @@ STKUftd	disgust
 STPAft	so fast
 STPAOEp	fall asleep
 STPHE	if she
+STPHUlg	snuggle
 STR*Ubgt	struct
 STROEU	destroy
 STWOUpb	someone to
@@ -126,6 +145,7 @@ TA/TArs	Tatars
 TAUbt	talk about
 TH*	th[GLUE]
 TH*Ed	they would
+THAbg	that being
 THAEUb	by the way
 THAOEUb	by the
 THAt	that the
@@ -133,12 +153,16 @@ THEUb	think about
 THRAft	at last
 TKAOEt	detail
 TKHRAEUr	declare
+TKHRO	will do
 TKOEUpl	demo
+TKOUfp	do much
+TKPAfrpb	departure
 TKPOr	go for
 TKPWArpb	garden
 TKPWHRElt	let go
 TKPWOg	going to
 TKPWUg	debug
+TOEUpl	time to
 TOfp	top of
 TOUrplt	tournament
 TPAEUrbg	faker
@@ -165,6 +189,7 @@ TPRAEUbt	for a bit
 TPRAOEUpb	frighten
 TPRAOUs	overuse
 TPRAUl	for all
+TPRUpb	first one
 TPW	about it
 TPWRAEU	betray
 TPWUpbs	for once
@@ -174,8 +199,10 @@ Upt	up the
 WA	with a
 WEfbt	eventual
 WEUbg	when I can
+WEUf	which of
 WEUfpblt	eventually
 WH*	wh[GLUE]
+WHAg	what a
 WHAOs	whose
 WHAUp	what's up
 WHEUbg	while I can
@@ -192,6 +219,7 @@ WUft	one of the
 ^HREUf	alive
 ^HROEpb	alone
 ^HROUd	allowed
+^KHRAOUd	include
 ^KUpl	a couple
 ^KWROpb	beyond
 ^PArpbt	apparent
@@ -202,7 +230,9 @@ WUft	one of the
 ^PHRAOEU	apply
 ^PHREfpblt	unpleasantly
 ^PHREfpbt	unpleasant
+^PHREUft	implicit
 ^POpbd	respond
+^PROfplt	improvement
 ^PWHRAOEUpblg	oblige
 ^RAOEUf	arrive
 ^ROE	arrow
@@ -218,16 +248,24 @@ WUft	one of the
 ^SPErbl	especial
 ^SPHbl	assemble
 ^SRAblg	disadvantage
+^SRAOEUf	revive
+^SRErpblt	inadvertently
+^SRErpbt	inadvertent
 ^ST	it is
+^STRAbgt	abstract
 ^TEpbl	potential
 ^THEr	they are
 ^THRs	there is
+^TKPWO	ago
 ^TKPWRAOE	agree
 ^TPfrpbt	unfortunate
 ^TPEUg	configure
 ^TPHOEr	another
+^TPHOEUpbt	anoint
 ^TPHOrpls	enormous
 ^TPOrpbt	unfortunate
+^TWAOEpb	between
+^Ur	you are
 ^WAEUbg	awake
 ^WEU	in which
 ^WRAOEUt	rewrite

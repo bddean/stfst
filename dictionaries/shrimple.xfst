@@ -145,9 +145,11 @@ define Cell       [ [ [ "#" .x. 0 ] [ Filled .o. UpFirst ] ] | Filled ] ;
 define Join       [ Sep .x. 0 ] ;
 define Word       [ Cell [ Join Cell ]* ] ;
 
-! The entry stroke alone announces the mode. Plover returned the literal text
-! `{Shrimple}` for it, which is what a host shows while the mode is open.
-define Enter      [ "^" .x. {Shrimple} ] ;
+! The entry stroke alone announces the mode and writes nothing. `{Shrimple}` is
+! what the Python answers, and Plover knows no meta of that name, so it writes
+! nothing and logs. The empty record says that, where no entry at all would let
+! the stroke fall through the stack.
+define Enter      [ "^" .x. 0 ] ;
 
 define Grammar    Canon([ [ Enter | [ [ "^" .x. 0 ] Join Word ] ] .o. Ortho ]) ;
 

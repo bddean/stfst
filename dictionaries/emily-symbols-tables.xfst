@@ -14,11 +14,12 @@ define Kb "[KEY]" ;   define Ke "[END]" ;
 ! A meta names one operation from a closed table, so the name is a symbol and a
 ! host checks it when it loads the dictionary rather than when a stroke arrives.
 ! A glyph that cases the next word and a key that also cases it are one case, not
-! two, and a record cannot hold two. The glyph wins, because `{<}` cases the whole
-! word and the key only its first letter. Written as a local context: containment
-! would complement over every glyph the table can write.
-define OneCase [ "[CAP_NEXT]" -> 0
-                 || "[UPPER_NEXT]" ("[ATTACH_L]") ("[ATTACH_R]") _ ] ;
+! two, and a record cannot hold two. The key wins, because Plover spends the last
+! case a translation names and the key's comes after the glyph's. Written as a
+! local context: containment would complement over every glyph the table can
+! write.
+define OneCase [ "[UPPER_NEXT]" -> 0
+                 || _ ("[ATTACH_L]") ("[ATTACH_R]") "[CAP_NEXT]" ] ;
 
 define Mcap   "[META=retro.cap]" ;
 define Mupper "[META=retro.upper]" ;

@@ -18,12 +18,13 @@ Both are held to the originals by measurement and not by review:
 |---|---|
 | `scripts/crosscheck-py.sh` | The Python reader against the Rust one, over 42,807 tapes: every tape in the golden files, 40,000 random key sequences, and every outline of a dictionary when one is named. The random ones matter most, because a reader goes wrong on dead ends rather than on entries that exist. |
 | `scripts/check-plugin.py` | Every entry of every imported dictionary, both directions, with Plover as the judge. |
+| `scripts/check-stack.py` | The whole configured stack against the dictionaries it was compiled from. What a per-entry check cannot see is which dictionary wins an outline. |
 
 The chain is Python to Rust to HFST: `crosscheck-ol.sh` already holds the Rust
 reader to `hfst-optimized-lookup`, so the format has one reading and three
 implementations of it.
 
-## No difference in 147,188 entries
+## No difference in 147,910 entries
 
 `check-plugin.py` renders each entry twice through Plover's own formatter, once
 from the original JSON translation and once from the artifact's record spelled
@@ -34,6 +35,59 @@ Getting there took three of Plover's answers over ours, and each is below: where
 an orthographic join ends, what a keystroke leaves behind, and what `{*!}` edits.
 Two of the three are changes to `crates/stfst-text` rather than to the plugin,
 which is what a second host is for.
+
+## An entry check cannot see a stack
+
+`check-plugin.py` asks one dictionary about one entry. `check-stack.py` asks the
+*stack* what an outline writes: it loads the list in `plover.cfg` twice, once as
+configured and once with every artifact replaced by the file it was compiled
+from, and asks both every outline any of them defines. A dictionary that claims
+one outline too many changes what the dictionaries below it get to say, and no
+per-entry check can see that.
+
+It reads 156,496 outlines and it found six things a golden file did not. Five are
+one shape: a generator that sampled its oracle instead of asking it.
+
+**emily-symbols had its attachment inverted, on every symbol.** That fork sets
+`attachmentMethod = "space"`, which swaps the two keys: a symbol attaches on both
+sides by default and `-R`/`-B` open a space. The xfst had the upstream reading
+and called the difference deliberate, claiming "same visible output in ordinary
+use". `#KU` wrote "run+y" in Plover and "run + y" here, and so did 162 others.
+The generator could not catch it, because it read the glyph table and never asked
+`lookup`, so it was an oracle for a third of the dictionary. It asks now, for all
+4,994 strokes, which is every combination of the seven fields.
+
+**Shrimple's entry stroke typed the word "Shrimple".** The Python answers
+`{Shrimple}` for a bare `^`, and Plover knows no meta of that name, so it writes
+nothing. Reading it as literal text made the stroke type it.
+
+**`{}` closes a join, and is not nothing.** `{^} {#Tab} {}` leaves a space and
+`{^} {#Tab}` does not. It is Plover's empty text atom, so it ends the join where a
+keystroke or a case meta beside it leaves the join alone. The reader took the
+last *speaking* atom and skipped `{}` entirely, which made 540 emily strokes
+attach where the Python detached.
+
+**`{&^}` is glue on a caret.** Plover reads a directive's opening characters
+before it reads the carets, so `&`, `#`, `:` and `=` at the front are that meta
+and not text joined rightward. The record `&[ATTACH_R]` was spelled `{&^}`, which
+Plover glued.
+
+**The last case a translation names is the one Plover spends.** `{<}{-|}` writes
+"The" and not "THE". The shared table gave the glyph's case priority over the
+key's, with a reason that was a preference rather than a fact.
+
+**The empty glyph takes no repeat key.** The Python refuses it so that the
+`U9`-shaped strokes stay clear of `wm.py`'s focus-space keys, and the xfst
+allowed 24 strokes the Python did not.
+
+## What the stack check still reports, and why
+
+| | |
+|---|---|
+| 55 | `emily-modifiers` combos that skhd binds. The Python runs the shell command from `lookup` and answers `{#}`; the artifact emits the keystroke and `plover-skhd-relay` runs the command at the output seam instead. The check compares dictionaries, so it cannot see the extension. |
+| 31 | `typey-type` entries the importer refuses, which are that dictionary's own broken translations: `{oxan}`, `{mithracin}`, `{remember}`, four unbalanced braces. Plover writes nothing for any of them either, and three do lose a mark. |
+| 16 | `-B` on the glyph that uppercases the next word. Plover's trailing `{}` spends the pending case, so the key does nothing there today and the artifact honours it. |
+| 1 | `{#Alt_L(Tab Tab)}` becomes two combos, so the modifier is released between the taps. A record holds one key per keystroke, and one hold across two keys has no spelling. |
 
 ## A tape merges what an atom boundary separated
 
@@ -58,7 +112,7 @@ would. Splitting at the first character no word holds asks about "es'" and gets
 Sixty-one entries in typey-type are spelled with a split. Every one of them lands
 where the original translation lands.
 
-## Two differences an entry check cannot see
+## Two differences that need two strokes to show
 
 `check-plugin.py` compares one entry at a time, so a difference that needs two
 strokes to show is out of its reach. Running `tests/translate/basic.strokes`

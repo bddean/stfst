@@ -340,6 +340,13 @@ PLUGIN_COMMANDS = {
 }
 RETRO_METAS = {"retro.cap": "{*-|}", "retro.upper": "{*<}", "retro.lower": "{*>}"}
 
+# Plover reads a directive's opening characters before it reads the carets, so a
+# payload that starts with one of these is that meta: `{&^}` is glue on a caret
+# and not an ampersand joined rightward. A leading caret settles it the other way,
+# which is what makes `{^&^}` an ampersand. `~|` is not here because Plover's
+# carry-capitalisation peels the carets itself.
+SIGILS = ("&", "#", ":", "=")
+
 
 def _escape(text):
     """Text as a Plover atom. Only a brace escapes, and only with a backslash."""
@@ -382,9 +389,10 @@ def _spell(text, left, right):
             return "{^%s}" % inner
         raise Unsupported("attaching leftward around %r" % text)
     if right:
-        # `{x^}` keeps the payload's own spacing, and peeling takes one caret from
-        # each end, so only a payload that opens with one is ambiguous.
-        if text and not text.startswith("^"):
+        # `{x^}` keeps the payload's own spacing. A payload that opens with a caret
+        # or a sigil reads as something else inside the braces, so it stands
+        # outside them and the caret becomes an atom of its own.
+        if text and not text.startswith(("^",) + SIGILS):
             return "{%s^}" % inner
         return "%s{^}" % inner
     # Plover trims a text atom's edges and supplies the word gap itself, which is
@@ -500,15 +508,16 @@ def _translation(self):
     out = []
     if self.space:
         out.append("{*!}" if self.space == "cancel" else "{*?}")
-    if not words and (self.attach_l or self.ortho_l or self.attach_r):
-        # Nothing to hang the carets on. `{^}` is both edges at once, so it is the
-        # answer only when the record wants both.
-        if not (self.attach_l and self.attach_r) or self.ortho_l:
-            raise Unsupported("attaching around a record that writes no word")
-        out.append("{^}")
+    if not words and self.ortho_l:
+        raise Unsupported("an orthographic join with nothing to join")
     if not words and self.carry_cap:
         out.append("{~|}")
     out.extend(a[1] for a in atoms)
+    # A record that writes no word has one attachment Plover can hold: whether the
+    # next word joins. Nothing of its own is there for a left join to close, and
+    # `stfst-text` reads it the same way.
+    if not words and self.attach_r:
+        out.append("{^}")
     if self.case:
         # After the body, because the case is for the next word and Plover would
         # otherwise spend it on this record's own.
@@ -665,6 +674,8 @@ def _peel_attach(d):
     if d == "^":
         return "", True, True
     left = d.startswith("^")
+    if not left and d.startswith(SIGILS):
+        return d, False, False
     if left:
         d = d[1:]
     right = d.endswith("^")
@@ -675,9 +686,9 @@ def _peel_attach(d):
 
 def _from_translation(cls, text, extra):
     record = cls()
-    # Each atom, with how it joins and whether it was written as plain text. A
-    # record concatenates its items with no gaps and Plover's atoms are separate
-    # actions with a space between them, so the gaps have to be put in here.
+    # Each atom, with how it joins and which kind it is. A record concatenates its
+    # items with no gaps and Plover's atoms are separate actions with a space
+    # between them, so the gaps have to be put in here.
     atoms = []
     case_at = None
     for kind, value in _split_pieces(text):
@@ -686,13 +697,15 @@ def _from_translation(cls, text, extra):
             # atom into words and a blank one has none. Whitespace *inside* an atom
             # survives, and so does a directive whose core is a space.
             if value.strip():
-                atoms.append(([("text", value)], _Join(), True))
+                atoms.append(([("text", value)], _Join(), "text"))
             continue
         had_case = record.case is not None
         items, join = _directive(value, record)
         if not had_case and record.case is not None:
             case_at = len(atoms)
-        atoms.append((items, join, False))
+        # `{}` is Plover's empty text atom: it writes nothing and closes the gap,
+        # where a keystroke or a case meta beside it leaves the gap as it found it.
+        atoms.append((items, join, "text" if value == "" else "directive"))
 
     # A pending capital applies to the next *word*, and that word can be in this
     # same record: `{.}so` is ". So". The record language has one case flag for the
@@ -713,7 +726,8 @@ def _from_translation(cls, text, extra):
     # Attachment is the one positional property. The record's left edge is the
     # first atom's and its right edge is the last atom's, where "atom" means one
     # that writes a word or says something about joining.
-    speaking = [(i, j) for i, j, _ in atoms if _writes_word(i) or j.speaks()]
+    speaking = [(i, j) for i, j, kind in atoms
+                if _writes_word(i) or j.speaks() or kind == "text"]
     if speaking:
         record.attach_l = speaking[0][1].left
         record.ortho_l = speaking[0][1].ortho
@@ -722,8 +736,8 @@ def _from_translation(cls, text, extra):
     # A word gap at either end of a text atom is the record's business and not the
     # text's, so Plover's word splitting drops it and the gaps below put back the
     # ones that belong between atoms.
-    for items, _, plain in atoms:
-        if plain and items and items[0][0] == "text":
+    for items, _, kind in atoms:
+        if kind == "text" and items and items[0][0] == "text":
             items[0] = ("text", items[0][1].strip())
 
     # Two atoms that both write and neither of which attaches have a word boundary
@@ -753,10 +767,10 @@ def _from_translation(cls, text, extra):
 def _apply_extra(record, extra):
     """Flags the caller already knows, folded in after the translation.
 
-    A case the translation sets beats the same slot from `extra`, because the
-    caller's flag came from a key and the translation's came from the glyph: `{<}`
-    cases the whole word and the key only its first letter. Everything else is a
-    statement about the same record from two places, so it is an or.
+    The caller's flags come from keys the stroke spells after the glyph, so a case
+    in `extra` beats the glyph's the way a second one does in a translation: Plover
+    spends the last. Everything else is a statement about the same record from two
+    places, so it is an or.
     """
     also = Record()
     also._parse_flags(list(extra))
@@ -764,7 +778,7 @@ def _apply_extra(record, extra):
         if getattr(also, name):
             setattr(record, name, True)
     for name in ("case", "space"):
-        if getattr(also, name) and getattr(record, name) is None:
+        if getattr(also, name) is not None:
             setattr(record, name, getattr(also, name))
 
 
@@ -786,8 +800,7 @@ def _directive(d, record):
 
 
 def _set_case(record, want):
-    if record.case is not None and record.case != want:
-        raise Unsupported("capitalisation twice in one translation")
+    """The last case a translation names is the one Plover spends."""
     record.case = want
 
 
