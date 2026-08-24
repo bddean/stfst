@@ -2,8 +2,8 @@
 
 A second implementation of `stfst_core::system`'s outline parser, reading the
 same system file. Small on purpose, and here for the same reason
-`plover_record.py` is: a generator that asked our compiler what an outline means
-would write a snapshot of our own answer instead of an oracle.
+`plover_stfst.record` is: a generator that asked our compiler what an outline
+means would write a snapshot of our own answer instead of an oracle.
 
 It also replaces the hand-written tapes the earlier generators use. Those were
 safe because a tape is the keys in steno order, but only while a human types them

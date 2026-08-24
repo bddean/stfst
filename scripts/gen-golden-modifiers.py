@@ -24,8 +24,9 @@ import itertools
 import os
 import sys
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import plover_record
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                "..", "plover-plugin"))
+from plover_stfst.record import Record, Unsupported
 
 LEFT = "STKPWHR"
 # The modifier keys, as tape symbols. The right bank is lowercase so that every
@@ -81,7 +82,7 @@ def literal_record(em, fields):
     if not glyph:
         return None
     extra = [tag for key, tag in LIT_FLAGS if key in fields.get("mods", "")]
-    return plover_record.record(glyph, extra)
+    return str(Record.from_translation(glyph, extra))
 
 
 def main(path):
@@ -182,8 +183,8 @@ def main(path):
             fields.get("eu") == "E" and fields.get("cons")
         try:
             want = (literal_record(em, fields) if literal
-                    else plover_record.record(answer))
-        except plover_record.Unsupported:
+                    else str(Record.from_translation(answer)))
+        except Unsupported:
             skipped += 1
             continue
         lines.append(key if want is None else key + "\t" + want)

@@ -5,7 +5,13 @@ Reading the table rather than our output is the point: the file is then an
 oracle, and a transcription error in the xfst shows up as a failure.
 """
 import importlib.util
+import os
 import pathlib
+import sys
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                "..", "plover-plugin"))
+from plover_stfst.record import Record
 
 SRC = pathlib.Path.home() / '.config/plover/emily-symbols.py'
 OUT = pathlib.Path(__file__).resolve().parent.parent / 'tests/golden/emily-symbols.tsv'
@@ -14,24 +20,8 @@ spec = importlib.util.spec_from_file_location('em', SRC)
 em = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(em)
 
-# Plover directives that are not text, mapped to their record equivalents.
-SPECIAL = {
-    '{*!}': '[CANCEL_SPACE]',
-    '{*?}': '[RETRO_SPACE]',
-    '{#space}': '[KEY]space[END]',
-    '{*-|}': '[META=retro.cap][END]',
-    '{*<}': '[META=retro.upper][END]',
-    '{<}': '[UPPER_NEXT]',
-    '{*>}': '[META=retro.lower][END]',
-}
-
-
 def record(translation):
-    if translation in SPECIAL:
-        return SPECIAL[translation]
-    if translation.startswith('{#') and translation.endswith('}'):
-        return '[KEY]' + translation[2:-1] + '[END]'
-    return translation.replace('\\{', '{').replace('\\}', '}')
+    return str(Record.from_translation(translation))
 
 
 lines = [
