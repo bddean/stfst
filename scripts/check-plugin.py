@@ -27,7 +27,10 @@ import json
 import os
 import sys
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "plover-plugin"))
+
+from plover_render import renderer
 
 # Which source each artifact was imported from. Only an imported dictionary has
 # an oracle here: a generated one has no Plover translation to compare against,
@@ -39,39 +42,9 @@ SOURCES = {
     "and-fold": "and-fold.json",
     "semantic-suffixes": "semantic-suffixes.json",
     "repeat-idioms": "repeat-idioms.json",
+    "leading-vowel": "leading-vowel.json",
     "typey-type": "typey-type-full.json",
 }
-
-
-def formatter():
-    """Plover's own formatter, rendering one translation between "run" and "y"."""
-    import plover.formatting as f
-    from plover.steno import Stroke
-    from plover.translation import Translation
-
-    def render(text):
-        buf = [""]
-
-        def erase(n):
-            buf[0] = buf[0][:len(buf[0]) - n]
-
-        fm = f.Formatter()
-        fm.set_output(type("O", (), {
-            "send_backspaces": lambda s, n: erase(n),
-            "send_string": lambda s, x: buf.__setitem__(0, buf[0] + x),
-            # A keystroke and an engine command are not text, so they are not part
-            # of the comparison: what is compared is what lands in the document.
-            "send_key_combination": lambda s, x: None,
-            "send_engine_command": lambda s, x: None,
-        })())
-        seen = []
-        for t in ["run", text, "y"]:
-            tr = Translation([Stroke.from_steno("TEFT")], t)
-            fm.format([], [tr], seen)
-            seen.append(tr)
-        return buf[0]
-
-    return render
 
 
 def check(dictionary, name, render):
@@ -155,7 +128,9 @@ def main(paths):
     # way Plover loads it, by extension, without installing anything.
     registry.register_plugin("dictionary", "stfst", StfstDictionary)
     system.setup("Stenotype Extended")
-    render = formatter()
+    # A keystroke and an engine command are not part of this comparison: both
+    # sides of it write the same one, and only the text is in question.
+    render = renderer()
 
     # Which artifacts Plover can host at all. A dictionary that needs something
     # Plover cannot say is refused by name and with a reason, which is the answer

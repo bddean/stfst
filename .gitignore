@@ -3,3 +3,4 @@
 /result
 /.direnv
 __pycache__/
+/plover-plugin/plover_stfst.egg-info
