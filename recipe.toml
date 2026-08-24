@@ -11,6 +11,9 @@ xfst = ["dictionaries/emily-symbols-tables.xfst", "dictionaries/emily-symbols.xf
 [[dict]]
 name = "shrimple"
 priority = 90
+# A syllable at a time with no end, so the outlines have no longest and a host
+# that needs one has to be told. 40 is what `Shrimple-WSI-English.py` declares.
+strokes = 40
 xfst = ["dictionaries/shrimple-tables.xfst", "dictionaries/shrimple.xfst"]
 
 [[dict]]

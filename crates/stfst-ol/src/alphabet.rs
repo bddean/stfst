@@ -7,6 +7,7 @@ use crate::{OlError, Sym};
 pub struct Alphabet {
     symbols: Vec<String>,
     by_name: HashMap<String, Sym>,
+    input_count: usize,
     longest_input: usize,
 }
 
@@ -35,6 +36,7 @@ impl Alphabet {
         Ok(Alphabet {
             symbols,
             by_name,
+            input_count,
             longest_input,
         })
     }
@@ -53,6 +55,12 @@ impl Alphabet {
     /// understand is refused before a stroke arrives.
     pub fn symbols(&self) -> impl Iterator<Item = &str> {
         self.symbols.iter().map(String::as_str)
+    }
+
+    /// How many symbols an input tape may use. A symbol at or above this can
+    /// never be a transition input, so a traversal need not try it.
+    pub fn input_count(&self) -> usize {
+        self.input_count
     }
 
     pub fn number(&self, name: &str) -> Option<Sym> {

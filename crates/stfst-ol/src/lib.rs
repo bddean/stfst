@@ -9,6 +9,7 @@
 mod alphabet;
 mod chain;
 mod cursor;
+mod input;
 mod search;
 
 pub use alphabet::Alphabet;

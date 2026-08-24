@@ -37,6 +37,11 @@ pub struct Dict {
     /// keys. Zero for a dictionary that only reads strokes, which is most of them.
     #[serde(default)]
     pub words: u8,
+    /// How far a host that needs a longest key should look, for a dictionary
+    /// whose outlines have no longest. Only such a dictionary needs it: where the
+    /// language has a longest outline, the compiler reads it off the automaton.
+    #[serde(default)]
+    pub strokes: Option<u32>,
 }
 
 fn default_version() -> String {

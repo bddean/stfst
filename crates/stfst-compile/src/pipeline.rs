@@ -14,6 +14,7 @@ use stfst_core::window;
 use stfst_core::System;
 
 use crate::prelude;
+use crate::recipe;
 
 /// What the compiler proved about a dictionary before writing it.
 #[derive(Debug)]
@@ -377,6 +378,9 @@ pub struct Declared {
     /// recipe rather than read back: it is a property of the language and not of
     /// the alphabet, and it is the dial that sets what a lookup costs.
     pub words: u8,
+    /// The longest outline, in strokes. `None` when the language has no longest,
+    /// and then no host that needs one can load this dictionary.
+    pub strokes: Option<u32>,
 }
 
 impl Declared {
@@ -397,11 +401,21 @@ impl Declared {
     }
 }
 
-pub fn declare(forward: &Path, words: u8) -> Result<Declared> {
+pub fn declare(forward: &Path, system: &System, dict: &recipe::Dict) -> Result<Declared> {
     let fst = stfst_ol::Automaton::open(forward)
         .with_context(|| format!("reading back {}", forward.display()))?;
+    // The longest outline. A cursor discovers it as the strokes arrive, so no host
+    // here asks; Plover's dictionary API takes a whole outline, so it has to know
+    // before the first stroke. Where the language has no longest, the recipe says
+    // how far to look and an artifact with neither is one Plover cannot load.
+    let strokes = match fst.alphabet().number(&system.separator.to_string()) {
+        Some(sep) => fst.max_occurrences(sep).map(|n| n + 1).or(dict.strokes),
+        // No separator in the alphabet at all: every entry is one stroke.
+        None => Some(1),
+    };
     let mut declared = Declared {
-        words,
+        words: dict.words,
+        strokes,
         ..Declared::default()
     };
     let symbols: Vec<&str> = fst.alphabet().symbols().collect();
@@ -435,20 +449,18 @@ pub fn declare(forward: &Path, words: u8) -> Result<Declared> {
 /// a dictionary it cannot interpret.
 pub fn write_artifact(
     dir: &Path,
-    name: &str,
-    version: &str,
+    dict: &recipe::Dict,
     system: &System,
-    priority: i32,
     forward: &Path,
     reverse: &Path,
-    words: u8,
 ) -> Result<()> {
     std::fs::create_dir_all(dir)?;
     std::fs::copy(forward, dir.join("forward.hfstol"))?;
     if reverse.exists() {
         std::fs::copy(reverse, dir.join("reverse.hfstol"))?;
     }
-    let declared = declare(forward, words)?;
+    let declared = declare(forward, system, dict)?;
+    let (name, version, priority) = (&dict.name, &dict.version, dict.priority);
     std::fs::write(dir.join("tags.txt"), all_tags().join("\n") + "\n")?;
     let keys: Vec<String> = system
         .keys()
@@ -476,7 +488,8 @@ pub fn write_artifact(
              \n[input]\n\
              alphabet = \"keys\"\n\
              order = {:?}\n\
-             separator = {:?}\n",
+             separator = {:?}\n\
+             {}",
             system.name,
             keys.join(", "),
             declared.host(),
@@ -494,6 +507,10 @@ pub fn write_artifact(
             quoted(&declared.metas),
             system.order(),
             system.separator.to_string(),
+            match declared.strokes {
+                Some(n) => format!("strokes = {n}\n"),
+                None => String::new(),
+            },
         ),
     )?;
     Ok(())

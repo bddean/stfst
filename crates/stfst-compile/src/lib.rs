@@ -54,16 +54,7 @@ pub fn compile_recipe(recipe_path: &Path, out: &Path, work: &Path) -> Result<()>
         }
 
         let artifact = out.join(format!("{}.stfst", dict.name));
-        pipeline::write_artifact(
-            &artifact,
-            &dict.name,
-            &dict.version,
-            &system,
-            dict.priority,
-            &forward,
-            &reverse,
-            dict.words,
-        )?;
+        pipeline::write_artifact(&artifact, dict, &system, &forward, &reverse)?;
         let fwd = std::fs::metadata(artifact.join("forward.hfstol"))?.len();
         let rev = std::fs::metadata(artifact.join("reverse.hfstol"))
             .map(|m| m.len())
