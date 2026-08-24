@@ -23,22 +23,17 @@ The chain is Python to Rust to HFST: `crosscheck-ol.sh` already holds the Rust
 reader to `hfst-optimized-lookup`, so the format has one reading and three
 implementations of it.
 
-## The one difference in 147,188 entries
+## No difference in 147,188 entries
 
 `check-plugin.py` renders each entry twice through Plover's own formatter, once
 from the original JSON translation and once from the artifact's record spelled
-back. One entry differs:
+back, and requires the two to land in the same place. Every entry of every
+imported dictionary in the stack does.
 
-```
-ES/AE   want "{^es'}" -> " runnes' y",  got "{^es}{^'}" -> " runes' y"
-```
-
-Both spellings are the same record. They differ because Plover's orthography
-answers `run + es` and `run + es'` differently: the first consults a word list,
-finds no "runnes", and concatenates; the second finds no candidate in the list at
-all and takes the first rule's output. Our host answers `run + es'` the way the
-plugin's spelling does, so the plugin agrees with this repo and disagrees with
-Plover on one entry.
+Getting there took three of Plover's answers over ours, and each is below: where
+an orthographic join ends, what a keystroke leaves behind, and what `{*!}` edits.
+Two of the three are changes to `crates/stfst-text` rather than to the plugin,
+which is what a second host is for.
 
 ## A tape merges what an atom boundary separated
 
@@ -48,35 +43,56 @@ cannot hold the boundary between two adjacent text items, so the record reads
 back as one item, `ed?[ORTHO_L]`. Spelling that as `{^ed?}` is not the same
 translation: Plover writes "runned?" for it and "runed?" for the original.
 
-What recovers the boundary is a fact about orthography rather than a guess.
-Orthography joins a *suffix* to a word, and a suffix is letters: measured over
-Plover's own rules, a join whose suffix starts with anything else is plain
-concatenation. So the plugin splits at the end of the leading letter run and
-spells `{^ed}{^?}`, and the second half is an ortho join no rule can fire on.
+What recovers the boundary is a fact about orthography rather than a guess. A
+join applies to a *suffix*, and a suffix is what can appear inside a word, so the
+plugin splits at the first character that cannot: `{^ed}{^?}`. The rules fire on
+"ed" and the question mark is stuck on after, which is what the two atoms said.
 
-Sixty-one entries in typey-type are spelled with the split, and three of them
-write something different without it. The same reading is what `crates/stfst-text`
-does, which applies the join to the first *word* of the body.
+Where to split is the whole question, and letters are the wrong answer. `run` and
+`es` is "runes" in Plover and here, but `run` and `es'` is "runnes'" in both,
+because an apostrophe is a letter as far as the rules are concerned. Splitting at
+the first non-letter would ask about "es" and write "runes'", which neither host
+would. Splitting at the first character no word holds asks about "es'" and gets
+"runnes'" from both.
 
-## One difference an entry check cannot see
+Sixty-one entries in typey-type are spelled with a split. Every one of them lands
+where the original translation lands.
+
+## Two differences an entry check cannot see
 
 `check-plugin.py` compares one entry at a time, so a difference that needs two
 strokes to show is out of its reach. Running `tests/translate/basic.strokes`
-through Plover with this stack finds one:
+through Plover found both of these, and `crates/stfst-text` has adopted Plover's
+answer to each.
+
+**A keystroke leaves the attachment where it found it.**
 
 ```
 @KR      c[ATTACH_L][ATTACH_R]     "...it is notc"
 @KR-F    [KEY]c[CTRL][END]         "...it is notc"
-PHOR     more                      Plover: "notcmore",  here: "notc more"
+PHOR     more                      "notcmore",  and "notc more" before this
 ```
 
-A keystroke between two words does not clear the pending attachment in Plover,
-and it does here: `crates/stfst-text` ends a unit with that record's own
-`[ATTACH_R]`, and a record that writes no word has none. The importer already
-takes the other view *inside* a record, where a keystroke "passes both along
-instead of deciding either", so the two halves disagree. Nothing else in the
-stack reaches it, and it is a question about `stfst-text` rather than about the
-plugin.
+A record that writes no word left nothing of its own, so what the unit before it
+left passes on. `[CARRY_CAP]` already said that about the pending case, and this
+is the same statement about the rest of the tail. The importer had taken that
+view *inside* a record all along, where a keystroke "passes both along instead of
+deciding either", so the two halves of the format now agree as well.
+
+**`{*!}` edits the gap already written.**
+
+Plover resolves `{*!}` as a macro before the formatter sees it: it joins the last
+two translations, so "run more" becomes "runmore". `[CANCEL_SPACE]` used to mean
+"open no gap before my own text", which is a no-op for the records that carry it,
+because every one of them is the flag alone. It is a retrospective edit now, and
+so is `[RETRO_SPACE]` beside it: one slot, two values, both about the gap between
+the last two units. A unit that joined into the word before it has no gap there,
+and then both are no-ops, which is Plover's answer too.
+
+Plover's `{*?}` is not copied exactly, and that is deliberate. It re-looks-up the
+strokes of the last translation and spaces its pieces, which is a translator
+operation and not a formatting one, and this format keeps the two apart. What
+`[RETRO_SPACE]` does here is the text-level half: put the gap back.
 
 ## Plover needs a longest key, and a cursor does not
 
@@ -136,15 +152,29 @@ formatter output and neither of these reaches the formatter.
 **Macros.** A translation of `=undo`, `{*+}`, `{*}`, `{*!}` or `{*?}` is a macro:
 Plover's translator acts on the whole mapping and the formatter never sees it. A
 record holding one alone spells back to exactly that mapping, so the plugin gets
-Plover's real behaviour. A record holding `[CANCEL_SPACE]` *and* a body would not,
-because `{*!}` beside other atoms is no longer a macro and Plover's formatter
-ignores it, where this format reads it as a leftward attachment. Nothing in the
-stack writes one, so the difference is still on paper.
+Plover's real behaviour. Beside other atoms the same text is not a macro and
+Plover's formatter ignores it, where the record language has one flag for the
+whole record and no way to say "here and not there". Nothing in the stack writes
+one, so that half stays on paper.
 
 **An empty translation is an untranslate.** Plover writes the raw steno for one.
 So a record that writes nothing has to say so, and the plugin spells it `{}`.
 `SPWO*L` in typey-type is `{#}`, a key combo with no keys in it, and it is the
 entry that found this.
+
+## One difference left, and why it is left
+
+`{$}` marks a word finished. Plover joins a suffix to it anyway: "run", `{$}`,
+`{^ing}` is "running" there and "runing" here, because `crates/stfst-text` reads
+`[WORD_END]` as "no rule reaches back past this". Plover's own `{$}` sets
+`word_is_finished`, and what that stops is the *translator* folding a suffix key
+onto the word, which is a different place.
+
+Adopting Plover's answer here is a one-line change to the formatter and a
+question about where `[WORD_END]` belongs, because the flag would then do nothing
+in this host at all: `stfst-dict`'s fold does not consult it either. Nothing in
+the stack strokes `{$}` and a suffix in sequence, so this one is written down
+rather than answered.
 
 ## What is not here
 

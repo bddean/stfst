@@ -58,3 +58,9 @@ RUPB
 -D
 KHAOEULD
 -S
+! The two space operations, which edit the gap already written rather than the
+! one this record is about to open: `{*!}` takes it away and `{*?}` puts it back.
+! The second finds nothing to do here, because the first spent the boundary.
+PHOR
+#AU
+#OU

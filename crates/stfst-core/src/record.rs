@@ -144,9 +144,15 @@ pub enum Case {
     UpperNext,
 }
 
+/// An edit to the gap already written, which is the gap between the last two
+/// translation units. Plover spells them `{*!}` and `{*?}` and resolves both
+/// before its formatter sees them, so both are retrospective and neither says
+/// anything about the record carrying them.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SpaceOp {
+    /// Take the gap away, which makes the two units one word.
     Cancel,
+    /// Put it back.
     Retro,
 }
 
@@ -168,6 +174,7 @@ pub struct Flags {
     pub case: Option<Case>,
     /// `{~|}`: pass the pending capitalisation through to the next word.
     pub carry_cap: bool,
+    /// `{*!}` and `{*?}`: an edit to the gap already written.
     pub space: Option<SpaceOp>,
     /// `{$}`: this translation finishes a word, so nothing later folds into it.
     pub word_end: bool,

@@ -65,6 +65,13 @@ pub struct Tail {
     /// The previous record said its word was finished, so a suffix must not fold
     /// into it: `{$}`.
     pub word_end: bool,
+    /// How many words back the previous unit's own text starts, counted from the
+    /// end of the buffer.
+    ///
+    /// `None` when it wrote nothing, or when it joined into the word before it,
+    /// and those are the cases where a retrospective space operation has no gap
+    /// to edit. Counted from the end because `trim` drops words from the front.
+    pub start: Option<usize>,
 }
 
 /// A persistent output mode, which a `[CMD=mode.*]` sets and only another command

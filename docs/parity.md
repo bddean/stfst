@@ -14,7 +14,7 @@ installed system's 38 orthography rules.
 | `{&a}` | `[GLUE]` |
 | `{-\|}` `{>}` `{<}` | `[CAP_NEXT]` `[LOWER_NEXT]` `[UPPER_NEXT]` |
 | `{~\|'}` | `[CARRY_CAP]` |
-| `{*!}` `{*?}` | `[CANCEL_SPACE]` `[RETRO_SPACE]` |
+| `{*!}` `{*?}` | `[CANCEL_SPACE]` `[RETRO_SPACE]`: the gap between the last two units, taken away and put back |
 | `{$}` | `[WORD_END]` |
 | `{.}` `{,}` `{?}` `{!}` `{:}` `{;}` | a record: `.[ATTACH_L][CAP_NEXT]` |
 | `{#control(c)}` | `[KEY]c[CTRL][END]` |
@@ -115,7 +115,7 @@ word. `{^^}` before the body says "join leftward and apply no rule", which is wh
 **Where the boundary went.** A tape cannot hold the boundary between two adjacent
 text items, so `{^ed}{?}` and `{^ed?}` arrive as the same record and Plover writes
 them differently. What recovers the boundary is that orthography joins a suffix,
-and a suffix is letters. See `docs/plover.md`.
+and a suffix is what can appear inside a word. See `docs/plover.md`.
 
 ## Orthography, which is the operator that mattered
 

@@ -96,7 +96,8 @@ Nothing is shared with the Rust: the plugin has its own `hfstol` reader and its
 own reading of the record language, which is what makes it evidence that the
 artifact is portable at all. `scripts/check-plugin.py` renders every entry of
 every imported dictionary both ways through Plover's own formatter and compares
-them. 147,188 entries, one differs, and `docs/plover.md` says why. Against the
+them. 147,188 entries, none differ, and three of Plover's answers were taken over
+ours to get there; `docs/plover.md` names them. Against the
 same seven dictionaries it costs 8 MB resident and 8 ms a stroke, where the JSON
 they came from costs 82 MB and 0.09 ms.
 

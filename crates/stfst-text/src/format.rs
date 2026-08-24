@@ -55,7 +55,6 @@ impl Text {
         let attached = self.tail.attach
             || flags.attach_l
             || flags.ortho_l
-            || flags.space == Some(SpaceOp::Cancel)
             || (self.tail.glue && flags.glue);
         // An orthographic join is a join *plus* a rewrite, and it only applies to a
         // word the previous record left unfinished.
@@ -71,8 +70,14 @@ impl Text {
             let space = self.mode.space.clone();
             self.gap(&space);
         }
-        if flags.space == Some(SpaceOp::Retro) {
-            self.retro_gap();
+        // Both space operations edit the gap already written, which is the gap
+        // between the last two units. Plover spells them `{*?}` and `{*!}` and
+        // resolves both before its formatter sees them, so this is where they
+        // land here.
+        match flags.space {
+            Some(SpaceOp::Retro) => self.retro_gap(),
+            Some(SpaceOp::Cancel) => self.retro_join(),
+            None => {}
         }
 
         let mut events = Vec::new();
@@ -126,10 +131,20 @@ impl Text {
             self.apply_mode(mode, at, from);
         }
 
+        // A record that wrote no word left nothing of its own, so what the unit
+        // before it left passes on. That is what `[CARRY_CAP]` says about the
+        // case, and Plover says it about all of them: a keystroke between two
+        // words does not open the gap the attachment closed.
+        let kept = wrote.is_none();
         self.tail = Tail {
-            attach: flags.attach_r,
-            glue: flags.glue,
-            word_end: flags.word_end,
+            attach: flags.attach_r || (kept && self.tail.attach),
+            glue: flags.glue || (kept && self.tail.glue),
+            word_end: flags.word_end || (kept && self.tail.word_end),
+            start: match (self.cells.len() > start, kept) {
+                (true, _) => Some(self.cells.len() - start),
+                (false, true) => self.tail.start,
+                (false, false) => None,
+            },
             // `[CARRY_CAP]` passes a pending capitalisation on rather than
             // spending it, which is what lets `{~|'}` write an apostrophe inside a
             // word without eating the capital. A record that wrote nothing passes
@@ -259,13 +274,36 @@ impl Text {
     }
 
     /// `{*?}`: put a space back between the last two words.
+    /// The word whose trailing gap separates the last two units, which is what a
+    /// retrospective space operation edits.
+    fn unit_gap(&self) -> Option<usize> {
+        self.cells.len().checked_sub(self.tail.start? + 1)
+    }
+
+    /// Put the gap between the last two units back: `{*?}`.
     fn retro_gap(&mut self) {
-        let at = self.cells.len().saturating_sub(2);
-        if let Some(cell) = self.cells.get_mut(at) {
+        let space = self.mode.space.clone();
+        if let Some(cell) = self.unit_gap().and_then(|at| self.cells.get_mut(at)) {
             if cell.space.is_empty() {
-                cell.space = " ".to_string();
+                cell.space = space;
             }
         }
+        self.tail.start = None;
+    }
+
+    /// Take the gap between the last two units away, which makes them one word:
+    /// `{*!}`.
+    fn retro_join(&mut self) {
+        if let Some(at) = self.unit_gap() {
+            if at + 1 < self.cells.len() && !self.cells[at].space.is_empty() {
+                let next = self.cells.remove(at + 1);
+                self.cells[at].word.push_str(&next.word);
+                self.cells[at].space = next.space;
+            }
+        }
+        // The boundary is spent either way. A second operation on it has nothing
+        // to edit, which is Plover's answer too.
+        self.tail.start = None;
     }
 
     /// Append text, splitting it into words. It joins the word before it when
@@ -522,6 +560,33 @@ mod tests {
             text(&["[CAP_NEXT]", "'[ATTACH_L][ATTACH_R][CARRY_CAP]", "tis"]),
             "'Tis"
         );
+    }
+
+    #[test]
+    fn a_record_that_writes_no_word_leaves_the_tail_where_it_found_it() {
+        // A keystroke between two words does not open the gap the attachment
+        // closed, which is Plover's answer and the one the importer already gave
+        // inside a record.
+        assert_eq!(text(&["a[ATTACH_R]", "[KEY]c[CTRL][END]", "b"]), "ab");
+        assert_eq!(text(&["a[GLUE]", "[KEY]c[END]", "b[GLUE]"]), "ab");
+        // A flag the record sets is still its own.
+        assert_eq!(text(&["a[ATTACH_R]", "[CMD=mode.reset][END]", "b"]), "ab");
+    }
+
+    #[test]
+    fn a_space_operation_edits_the_gap_already_written() {
+        assert_eq!(text(&["a", "b", "[CANCEL_SPACE]"]), "ab");
+        assert_eq!(text(&["a", "b", "[CANCEL_SPACE]", "c"]), "ab c");
+        // The boundary is spent, so a second operation finds nothing.
+        assert_eq!(text(&["a", "b", "[CANCEL_SPACE]", "[RETRO_SPACE]"]), "ab");
+        // The gap the last unit opened, not the last word gap: `in the` is one
+        // unit and the join goes in front of it.
+        assert_eq!(text(&["a", "in the", "[CANCEL_SPACE]"]), "ain the");
+        // A unit that joined has no gap there, and neither has the first unit.
+        assert_eq!(text(&["a", "b[ATTACH_L]", "[CANCEL_SPACE]"]), "ab");
+        assert_eq!(text(&["a", "[CANCEL_SPACE]"]), "a");
+        assert_eq!(text(&["[CANCEL_SPACE]"]), "");
+        assert_eq!(text(&["a", "b", "[RETRO_SPACE]"]), "a b");
     }
 
     #[test]

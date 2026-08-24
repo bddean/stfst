@@ -392,10 +392,15 @@ def _spell(text, left, right):
     return inner
 
 
+# What can appear inside a word, and so inside a suffix. Plover's orthography
+# rules are written over these; a character outside them ends the suffix.
+WORD_CHARS = "'-"
+
+
 def _letters(text):
-    """How much of the text is a leading run of letters."""
+    """How much of the text could be a suffix."""
     n = 0
-    while n < len(text) and text[n].isalpha():
+    while n < len(text) and (text[n].isalpha() or text[n] in WORD_CHARS):
         n += 1
     return n
 
