@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "plover-stfst"
+version = "0.1.0"
+description = "Compiled finite-state steno dictionaries, read by Plover"
+# `tomllib` reads the manifest. Plover 5 bundles 3.13.
+requires-python = ">=3.11"
+dependencies = ["plover>=4.0.0"]
+
+# The name is the file extension, and an artifact is a directory called
+# `something.stfst`.
+[project.entry-points."plover.dictionary"]
+stfst = "plover_stfst.dictionary:StfstDictionary"
+
+[tool.setuptools]
+packages = ["plover_stfst"]

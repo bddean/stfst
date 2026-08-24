@@ -37,6 +37,19 @@ cut -f1 /tmp/stfst-tapes-py.tsv \
 diff -q /tmp/stfst-tapes-py.tsv /tmp/stfst-tapes-rs.tsv \
     && echo "$(wc -l < /tmp/stfst-tapes-py.tsv) outlines agree"
 
+# The Python halves of the Plover plugin: the record language and the reader. Both
+# run under any python, because a golden generator uses the first as an oracle and
+# an oracle that needed Plover would not run where the generators do.
+echo "== plugin units"
+python3 -m unittest discover plover-plugin/tests 2>&1 | tail -3
+
+# The Python `hfstol` reader against the Rust one, over the same kind of tape list
+# `crosscheck-ol.sh` uses. One artifact, because the answer does not vary by
+# dictionary and the whole stack would cost a minute.
+echo "== python reader"
+scripts/crosscheck-py.sh build/dicts/typey-type.stfst systems/stenotype-extended.toml \
+    | tail -1
+
 # Every artifact in the stack, so adding one to the recipe cannot skip its tests.
 # A dictionary with no golden file has a checker of its own instead, because what
 # it answers depends on more than the tape: see retro-words.
@@ -90,6 +103,10 @@ if [ -f build/morph/ortho.hfstol ] && [ -x "$PLOVER_PYTHON" ]; then
     # document against what Plover puts there, for every entry in the stack.
     echo "== translation against Plover"
     "$PLOVER_PYTHON" scripts/check-translate.py
+    # And the plugin, which is the same question asked of a compiled artifact
+    # rather than of the importer: what Plover writes for the entry it holds.
+    echo "== plover plugin"
+    "$PLOVER_PYTHON" scripts/check-plugin.py
 else
     echo "skipped: no build/morph artifacts, or no Plover python"
 fi

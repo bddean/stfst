@@ -84,6 +84,22 @@ building it changed here.
 
 The host loop both it and `stfst translate` drive is `stfst-board`.
 
+## The Plover plugin
+
+`plover-plugin/` is a Plover dictionary class over these artifacts, so the format
+is portable backwards and a dictionary compiled here works in Plover with no
+further work. Eleven of the thirteen load; `retro-words` and `repeat-word` read
+what Plover has no way to tell a dictionary, so they are refused by name at load
+rather than mistranslated.
+
+Nothing is shared with the Rust: the plugin has its own `hfstol` reader and its
+own reading of the record language, which is what makes it evidence that the
+artifact is portable at all. `scripts/check-plugin.py` renders every entry of
+every imported dictionary both ways through Plover's own formatter and compares
+them. 147,188 entries, one differs, and `docs/plover.md` says why. Against the
+same seven dictionaries it costs 8 MB resident and 8 ms a stroke, where the JSON
+they came from costs 82 MB and 0.09 ms.
+
 ## Morphology, which is not a dictionary
 
 `{^ing}` is not "close the gap": Plover's English system carries 38 rewrite rules
@@ -118,6 +134,7 @@ host with no lexicon refuses `{:infl:…}` rather than answering it with rules.
 | `docs/motor.md` | What a thumb motion costs: one synthesised speed profile read three ways, for judging layouts before building them. |
 | `docs/phrasing.md` | The §7 clause grammar: what is a rule and what is a table, and why the retro modifier layer needs a different mechanism. |
 | `docs/parity.md` | Plover's translation language operator by operator, what the record language says instead, and what it still cannot say. |
+| `docs/plover.md` | The Plover plugin: what a second host found, why Plover needs a longest key when a cursor does not, and what reading an artifact costs in Python. |
 | `docs/retro.md` | Rewriting text already written: why the window comes after the keys, why the tape carries character classes and not characters, and what is left in the host. |
 | `docs/translation.md` | The runtime: longest match without a declared longest key, what a dictionary is checked for at load, and why reverse lookup is a cheapest-first search. |
 
@@ -138,6 +155,7 @@ host with no lexicon refuses `{:infl:…}` rather than answering it with rules.
 | `crates/stfst-dict` | The runtime: the dictionary stack, longest match, record interpretation. |
 | `crates/stfst-text` | The host side of the record language: the word buffer, the formatter, the one general rewrite, and the morphology reader. Names no operation. |
 | `crates/stfst-cli` | `stfst`. Testing only. |
+| `plover-plugin/` | The Plover host: a dictionary class, an `hfstol` reader in Python, and the record language read both ways. |
 
 ## The upper tape is keys, one symbol each
 
@@ -194,7 +212,10 @@ cases:
 - no internal feature tag reaches the artifact
 
 A failure prints a counterexample. Add the dictionary to `recipe.toml` with a
-priority; higher shadows lower, as `plover.cfg` file order does today.
+priority; higher shadows lower, as `plover.cfg` file order does today. A
+dictionary whose outlines have no longest, as `shrimple`'s do not, also needs
+`strokes`: how far a host that cannot ask a cursor should look. Every other
+dictionary gets that read off its automaton.
 
 Imported JSON dictionaries skip those checks, and that is not an omission: the
 import builds records through `stfst_core::Record`, which can only serialise

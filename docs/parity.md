@@ -97,6 +97,26 @@ the dictionary still loads: `plover.quit` means nothing on a phone. A **meta**
 edits text, so an unimplemented one would leave the text quietly wrong, and the
 dictionary is refused.
 
+## The table read backwards
+
+The operator table above is a correspondence, so it has a second direction, and
+the Plover plugin needs it: a record has to be spelled as a translation Plover
+writes the same way. `plover-plugin/plover_stfst/record.py` reads it both ways,
+and `scripts/check-plugin.py` measures the round trip over every entry in the
+stack with Plover's own formatter as the judge. 147,188 entries, one difference.
+
+Two corners the table does not show, because they only appear going back.
+
+**Where the attachment goes.** Plover attaches per atom and a record attaches per
+record, so the record's edges have to land on the first and last atom that write a
+word. `{^^}` before the body says "join leftward and apply no rule", which is what
+`[ATTACH_L]` alone means and what no single directive says.
+
+**Where the boundary went.** A tape cannot hold the boundary between two adjacent
+text items, so `{^ed}{?}` and `{^ed?}` arrive as the same record and Plover writes
+them differently. What recovers the boundary is that orthography joins a suffix,
+and a suffix is letters. See `docs/plover.md`.
+
 ## Orthography, which is the operator that mattered
 
 *Done, and it is three artifacts rather than any host code.*
