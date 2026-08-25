@@ -87,6 +87,7 @@ The last one is the one that matters. For every entry of every imported
 dictionary in the stack, it renders what the plugin writes and what the original
 JSON writes through Plover's own formatter and compares the two, and it asks the
 reverse automaton for the outlines that write each record and requires the record
-back. 147,188 entries, none differ. What it took is in `../docs/plover.md`: three
-of Plover's answers taken over ours, two of them in `crates/stfst-text` rather
-than here.
+back. It also holds the listing to the lookup: what a dictionary lists is what it
+answers for, and neither has an entry the other lacks. Every entry, none
+differing. What it took is in `../docs/plover.md`: three of Plover's answers taken
+over ours, two of them in `crates/stfst-text` rather than here.

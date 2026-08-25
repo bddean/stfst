@@ -24,12 +24,13 @@ The chain is Python to Rust to HFST: `crosscheck-ol.sh` already holds the Rust
 reader to `hfst-optimized-lookup`, so the format has one reading and three
 implementations of it.
 
-## No difference in 147,910 entries
+## No difference in any entry of the stack
 
 `check-plugin.py` renders each entry twice through Plover's own formatter, once
 from the original JSON translation and once from the artifact's record spelled
 back, and requires the two to land in the same place. Every entry of every
-imported dictionary in the stack does.
+imported dictionary in the stack does. 147,911 of them at the last count, which
+moves as `user.json` does.
 
 Getting there took three of Plover's answers over ours, and each is below: where
 an orthographic join ends, what a keystroke leaves behind, and what `{*!}` edits.
@@ -271,6 +272,12 @@ rather than answered.
 
 Reverse lookup answers with the eight shortest outlines, because a generative
 dictionary writes one word with unboundedly many and the suggestions window wants
-the few shortest. `casereverse_lookup` answers with nothing: the automaton relates
-a record to its outlines and a case-folded record is a different record, so
-answering would need a second net rather than a second query.
+the few shortest. A dictionary whose outlines have no longest answers with nothing
+at all: see `docs/latency.md`.
+
+`casereverse_lookup` answers with nothing. The automaton relates a record to its
+outlines and a case-folded record is a different record, so asking it would need a
+second net rather than a second query. The listing could answer instead, by
+folding every entry once the way Plover's own dictionaries do at load, and that is
+left undone on purpose: the walk costs four seconds for `typey-type` and the first
+thing that asks would be a suggestion, on the thread taking the next stroke.

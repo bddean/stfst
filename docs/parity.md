@@ -103,7 +103,8 @@ The operator table above is a correspondence, so it has a second direction, and
 the Plover plugin needs it: a record has to be spelled as a translation Plover
 writes the same way. `plover-plugin/plover_stfst/record.py` reads it both ways,
 and `scripts/check-plugin.py` measures the round trip over every entry in the
-stack with Plover's own formatter as the judge. 147,188 entries, one difference.
+stack with Plover's own formatter as the judge. Every entry, no difference; the
+one that was left is `{$}` before a suffix, and `docs/plover.md` says why it is.
 
 Two corners the table does not show, because they only appear going back.
 

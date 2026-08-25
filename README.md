@@ -97,12 +97,15 @@ Nothing is shared with the Rust: the plugin has its own `hfstol` reader and its
 own reading of the record language, which is what makes it evidence that the
 artifact is portable at all. `scripts/check-plugin.py` renders every entry of
 every imported dictionary both ways through Plover's own formatter and compares
-them. 147,910 entries, none differ, and three of Plover's answers were taken over
-ours to get there. A stack check found six more by asking the configured stack
+them. Every entry, none differing, and three of Plover's answers taken over ours
+to get there. A stack check found six more by asking the configured stack
 and the stack it was compiled from what each of 156,496 outlines writes, which is
 the question a per-entry check cannot ask; it has done its job and `docs/plover.md`
 names all six. Against the same seven dictionaries the plugin costs 8 MB resident
-and 8 ms a stroke, where the JSON they came from costs 82 MB and 0.09 ms.
+where the JSON they came from costs 82 MB. A stroke through the whole live stack
+costs 1.2 ms against the sources' 0.57, and it cost 6.0 until a lookup learned to
+step the cursor the stroke before left. `docs/latency.md` has that and the two
+beside it.
 
 ## Morphology, which is not a dictionary
 
@@ -132,7 +135,7 @@ host with no lexicon refuses `{:infl:…}` rather than answering it with rules.
 |---|---|
 | `docs/key-tape.md` | Why the upper tape is keys and not chords, and where this repo diverges from the design doc. |
 | `docs/M0.md` | The M0 acceptance measurement: size against Plover's in-memory dictionary. |
-| `docs/latency.md` | Per-lookup latency, and why the search frontier is wide. |
+| `docs/latency.md` | Per-lookup latency, why the search frontier is wide, and what the same width costs a host that reads the format in Python. |
 | `docs/encoding.md` | What the artifact costs, why delayed alignment would cost more, and the exact size model. |
 | `docs/modifiers.md` | The `@` keysym namespace, and why a keystroke's modifiers are tags inside the item. |
 | `docs/motor.md` | What a thumb motion costs: one synthesised speed profile read three ways, for judging layouts before building them. |
@@ -220,7 +223,10 @@ A failure prints a counterexample. Add the dictionary to `recipe.toml` with a
 priority; higher shadows lower, as `plover.cfg` file order does today. A
 dictionary whose outlines have no longest, as `shrimple`'s do not, also needs
 `strokes`: how far a host that cannot ask a cursor should look. Every other
-dictionary gets that read off its automaton.
+dictionary gets that read off its automaton. That one also gets no
+`reverse.hfstol`: one word is written by unboundedly many outlines there, so
+"which outlines write this" has no finite answer to rank. See
+`docs/translation.md`.
 
 Imported JSON dictionaries skip those checks, and that is not an omission: the
 import builds records through `stfst_core::Record`, which can only serialise

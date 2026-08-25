@@ -56,8 +56,8 @@ So `Dict::open` refuses, before any stroke:
 Contract item 4. Inversion is a relabelling, but a lookup over the inverted
 relation needs the inverted tables, because `hfstol` indexes by input symbol. So
 the compiler writes a `reverse.hfstol` beside the forward one. It costs about what
-the forward one costs: 12,701 bytes against 12,075 for emily-symbols, 107,364
-against 97,378 for Shrimple, and 6,508,799 against 6,244,845 for typey-type.
+the forward one costs: 11,572 bytes against 10,814 for emily-symbols, and
+6,504,164 against 6,239,766 for typey-type.
 
 The traversal is not the same, though. A forward lookup folds a frontier over a
 tape, and that converges, because many paths agree on one record. The reverse does
@@ -65,7 +65,8 @@ not converge. One word is written by many outlines, so the frontier holds every
 distinct outline prefix and grows with the length of the word. Reversing `tap` in
 Shrimple did not finish.
 
-The fix was to ask the useful question instead. A suggestion window wants the few
+The fix was to ask the useful question instead, and then, for one dictionary, not
+to ask it at all. A suggestion window wants the few
 shortest outlines, not every outline, and for a generative dictionary "every
 outline" is not finite. So `Automaton::cheapest` searches cheapest-first with a
 weight per output symbol from the caller, bounded by a result limit and an
@@ -73,13 +74,28 @@ expansion budget. `Dict::outlines` weighs a key at one and a separator at more
 than a stroke can hold, so fewer strokes wins and fewer keys breaks the tie:
 
 ```
-$ stfst reverse build/dicts/shrimple.stfst --system systems/stenotype-extended.toml
-tap
-tap    ^/TAP   ^/TA/P   ^/TA/-P   ^/-T/AP   ^/T/AP   ...
+$ stfst reverse build/dicts/typey-type.stfst --system systems/stenotype-extended.toml
+taps
+taps   TAPS   TAP/-S
 ```
 
-The trailing `...` is `Outlines::truncated`: a bound ended the search, so more
+A trailing `...` is `Outlines::truncated`: a bound ended the search, so more
 outlines exist. Every outline returned is still no dearer than any left behind.
+
+## A word with no shortest outline has no suggestion
+
+Shrimple is the reason `cheapest` exists and it is also the one dictionary that
+no longer carries a reverse automaton, which is not a retreat from the search but
+the answer the search kept giving. Its outlines have no longest, so one word is
+written by unboundedly many, and "which outlines write this" has no finite answer
+to rank. What came back was 40 ms of Python a word and outlines nobody wanted:
+the cheapest it offers for "because" is four strokes where `typey-type` has one.
+
+So the compiler skips `reverse.hfstol` where the language has no longest outline.
+That is a fact it already reads off the automaton, because a host that needs a
+longest key has to be told one when the automaton cannot say it, which is what a
+recipe's `strokes` is for. `stfst reverse` on such an artifact says it cannot read
+that dictionary backwards rather than searching.
 
 This direction has no oracle and needs none. The two directions are one relation,
 so forward lookup is the check. `scripts/check-reverse.py` reverses a sample of
