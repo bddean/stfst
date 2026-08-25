@@ -79,17 +79,19 @@ table is emily-symbols'. The Python shares it by importing `emily-symbols.py`; h
 recipe's multiple-source form is for. The `-tables` suffix marks transcribed data
 with an upstream owner, and the grammars over it stay separate.
 
-## Where the oracle stops
+## Where the Python stopped being the answer
 
 `tests/golden/emily-modifiers.tsv` covers every table exhaustively: 39 keysym rows
 in four variants, all 29 fingerspelling chords against all 32 modifier
 combinations, all 128 payload chords as numbers, all 512 literal numbers. 3,238
-cases, and two places where the Python cannot be the oracle.
+cases. The expectations came from `emily-modifiers.py` while that dictionary was
+still the definition, with two exceptions where it could not be.
 
 **skhd.** When an `@` combo matches an skhd binding the Python shells out and
 emits nothing, working around skhd not seeing the synthetic events Plover injects
-on macOS. That is host-shaped, so skhd owns it, and the generator empties the
-bindings rather than letting a machine's `skhdrc` decide what a dictionary means.
+on macOS. That is host-shaped, so skhd owns it, and the bindings were emptied
+rather than letting a machine's `skhdrc` decide what a dictionary means.
+`plover-skhd-relay` runs the command at the output seam instead.
 
 **Plover's own escaping.** `_literal_symbol` builds its answer by concatenating
 `{^}` onto the glyph, and two glyphs in the table are `\` and `{`, so

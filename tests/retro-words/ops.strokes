@@ -1,0 +1,2636 @@
+! Every op of retro-words, over buffers chosen to reach the corners: case
+! runs, punctuation, a wrapped word, a long run, and a one-word buffer.
+! Separator rows 7 and 8 are absent: a tab and a newline have no source
+! syntax, so no stroke reaches them.
+!buffer the quick brown fox
+^AP
+!buffer hello world
+^AP
+!buffer one
+^AP
+!buffer ALL CAPS here
+^AP
+!buffer Already Capped Words
+^AP
+!buffer mixedCase getUserName HTTPServer
+^AP
+!buffer kebab-case snake_case dotted.name
+^AP
+!buffer wrapped (already) here
+^AP
+!buffer hello (there world)
+^AP
+!buffer trailing punctuation, and more.
+^AP
+!buffer x1 y2 z3
+^AP
+!buffer a b c d e f g h i j k l m n o p q r s
+^AP
+!buffer quoted "thing" here
+^AP
+!buffer the end
+^AP
+!buffer the quick brown fox
+^ARP
+!buffer hello world
+^ARP
+!buffer one
+^ARP
+!buffer ALL CAPS here
+^ARP
+!buffer Already Capped Words
+^ARP
+!buffer mixedCase getUserName HTTPServer
+^ARP
+!buffer kebab-case snake_case dotted.name
+^ARP
+!buffer wrapped (already) here
+^ARP
+!buffer hello (there world)
+^ARP
+!buffer trailing punctuation, and more.
+^ARP
+!buffer x1 y2 z3
+^ARP
+!buffer a b c d e f g h i j k l m n o p q r s
+^ARP
+!buffer quoted "thing" here
+^ARP
+!buffer the end
+^ARP
+!buffer the quick brown fox
+^AFP
+!buffer hello world
+^AFP
+!buffer one
+^AFP
+!buffer ALL CAPS here
+^AFP
+!buffer Already Capped Words
+^AFP
+!buffer mixedCase getUserName HTTPServer
+^AFP
+!buffer kebab-case snake_case dotted.name
+^AFP
+!buffer wrapped (already) here
+^AFP
+!buffer hello (there world)
+^AFP
+!buffer trailing punctuation, and more.
+^AFP
+!buffer x1 y2 z3
+^AFP
+!buffer a b c d e f g h i j k l m n o p q r s
+^AFP
+!buffer quoted "thing" here
+^AFP
+!buffer the end
+^AFP
+!buffer the quick brown fox
+^AFRP
+!buffer hello world
+^AFRP
+!buffer one
+^AFRP
+!buffer ALL CAPS here
+^AFRP
+!buffer Already Capped Words
+^AFRP
+!buffer mixedCase getUserName HTTPServer
+^AFRP
+!buffer kebab-case snake_case dotted.name
+^AFRP
+!buffer wrapped (already) here
+^AFRP
+!buffer hello (there world)
+^AFRP
+!buffer trailing punctuation, and more.
+^AFRP
+!buffer x1 y2 z3
+^AFRP
+!buffer a b c d e f g h i j k l m n o p q r s
+^AFRP
+!buffer quoted "thing" here
+^AFRP
+!buffer the end
+^AFRP
+!buffer the quick brown fox
+^AB
+!buffer hello world
+^AB
+!buffer one
+^AB
+!buffer ALL CAPS here
+^AB
+!buffer Already Capped Words
+^AB
+!buffer mixedCase getUserName HTTPServer
+^AB
+!buffer kebab-case snake_case dotted.name
+^AB
+!buffer wrapped (already) here
+^AB
+!buffer hello (there world)
+^AB
+!buffer trailing punctuation, and more.
+^AB
+!buffer x1 y2 z3
+^AB
+!buffer a b c d e f g h i j k l m n o p q r s
+^AB
+!buffer quoted "thing" here
+^AB
+!buffer the end
+^AB
+!buffer the quick brown fox
+^ARB
+!buffer hello world
+^ARB
+!buffer one
+^ARB
+!buffer ALL CAPS here
+^ARB
+!buffer Already Capped Words
+^ARB
+!buffer mixedCase getUserName HTTPServer
+^ARB
+!buffer kebab-case snake_case dotted.name
+^ARB
+!buffer wrapped (already) here
+^ARB
+!buffer hello (there world)
+^ARB
+!buffer trailing punctuation, and more.
+^ARB
+!buffer x1 y2 z3
+^ARB
+!buffer a b c d e f g h i j k l m n o p q r s
+^ARB
+!buffer quoted "thing" here
+^ARB
+!buffer the end
+^ARB
+!buffer the quick brown fox
+^AFB
+!buffer hello world
+^AFB
+!buffer one
+^AFB
+!buffer ALL CAPS here
+^AFB
+!buffer Already Capped Words
+^AFB
+!buffer mixedCase getUserName HTTPServer
+^AFB
+!buffer kebab-case snake_case dotted.name
+^AFB
+!buffer wrapped (already) here
+^AFB
+!buffer hello (there world)
+^AFB
+!buffer trailing punctuation, and more.
+^AFB
+!buffer x1 y2 z3
+^AFB
+!buffer a b c d e f g h i j k l m n o p q r s
+^AFB
+!buffer quoted "thing" here
+^AFB
+!buffer the end
+^AFB
+!buffer the quick brown fox
+^AFRB
+!buffer hello world
+^AFRB
+!buffer one
+^AFRB
+!buffer ALL CAPS here
+^AFRB
+!buffer Already Capped Words
+^AFRB
+!buffer mixedCase getUserName HTTPServer
+^AFRB
+!buffer kebab-case snake_case dotted.name
+^AFRB
+!buffer wrapped (already) here
+^AFRB
+!buffer hello (there world)
+^AFRB
+!buffer trailing punctuation, and more.
+^AFRB
+!buffer x1 y2 z3
+^AFRB
+!buffer a b c d e f g h i j k l m n o p q r s
+^AFRB
+!buffer quoted "thing" here
+^AFRB
+!buffer the end
+^AFRB
+!buffer the quick brown fox
+^AE
+!buffer hello world
+^AE
+!buffer one
+^AE
+!buffer ALL CAPS here
+^AE
+!buffer Already Capped Words
+^AE
+!buffer mixedCase getUserName HTTPServer
+^AE
+!buffer kebab-case snake_case dotted.name
+^AE
+!buffer wrapped (already) here
+^AE
+!buffer hello (there world)
+^AE
+!buffer trailing punctuation, and more.
+^AE
+!buffer x1 y2 z3
+^AE
+!buffer a b c d e f g h i j k l m n o p q r s
+^AE
+!buffer quoted "thing" here
+^AE
+!buffer the end
+^AE
+!buffer the quick brown fox
+^AEP
+!buffer hello world
+^AEP
+!buffer one
+^AEP
+!buffer ALL CAPS here
+^AEP
+!buffer Already Capped Words
+^AEP
+!buffer mixedCase getUserName HTTPServer
+^AEP
+!buffer kebab-case snake_case dotted.name
+^AEP
+!buffer wrapped (already) here
+^AEP
+!buffer hello (there world)
+^AEP
+!buffer trailing punctuation, and more.
+^AEP
+!buffer x1 y2 z3
+^AEP
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEP
+!buffer quoted "thing" here
+^AEP
+!buffer the end
+^AEP
+!buffer the quick brown fox
+^AERP
+!buffer hello world
+^AERP
+!buffer one
+^AERP
+!buffer ALL CAPS here
+^AERP
+!buffer Already Capped Words
+^AERP
+!buffer mixedCase getUserName HTTPServer
+^AERP
+!buffer kebab-case snake_case dotted.name
+^AERP
+!buffer wrapped (already) here
+^AERP
+!buffer hello (there world)
+^AERP
+!buffer trailing punctuation, and more.
+^AERP
+!buffer x1 y2 z3
+^AERP
+!buffer a b c d e f g h i j k l m n o p q r s
+^AERP
+!buffer quoted "thing" here
+^AERP
+!buffer the end
+^AERP
+!buffer the quick brown fox
+^AEFP
+!buffer hello world
+^AEFP
+!buffer one
+^AEFP
+!buffer ALL CAPS here
+^AEFP
+!buffer Already Capped Words
+^AEFP
+!buffer mixedCase getUserName HTTPServer
+^AEFP
+!buffer kebab-case snake_case dotted.name
+^AEFP
+!buffer wrapped (already) here
+^AEFP
+!buffer hello (there world)
+^AEFP
+!buffer trailing punctuation, and more.
+^AEFP
+!buffer x1 y2 z3
+^AEFP
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEFP
+!buffer quoted "thing" here
+^AEFP
+!buffer the end
+^AEFP
+!buffer the quick brown fox
+^AEFRP
+!buffer hello world
+^AEFRP
+!buffer one
+^AEFRP
+!buffer ALL CAPS here
+^AEFRP
+!buffer Already Capped Words
+^AEFRP
+!buffer mixedCase getUserName HTTPServer
+^AEFRP
+!buffer kebab-case snake_case dotted.name
+^AEFRP
+!buffer wrapped (already) here
+^AEFRP
+!buffer hello (there world)
+^AEFRP
+!buffer trailing punctuation, and more.
+^AEFRP
+!buffer x1 y2 z3
+^AEFRP
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEFRP
+!buffer quoted "thing" here
+^AEFRP
+!buffer the end
+^AEFRP
+!buffer the quick brown fox
+^AEB
+!buffer hello world
+^AEB
+!buffer one
+^AEB
+!buffer ALL CAPS here
+^AEB
+!buffer Already Capped Words
+^AEB
+!buffer mixedCase getUserName HTTPServer
+^AEB
+!buffer kebab-case snake_case dotted.name
+^AEB
+!buffer wrapped (already) here
+^AEB
+!buffer hello (there world)
+^AEB
+!buffer trailing punctuation, and more.
+^AEB
+!buffer x1 y2 z3
+^AEB
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEB
+!buffer quoted "thing" here
+^AEB
+!buffer the end
+^AEB
+!buffer the quick brown fox
+^AERB
+!buffer hello world
+^AERB
+!buffer one
+^AERB
+!buffer ALL CAPS here
+^AERB
+!buffer Already Capped Words
+^AERB
+!buffer mixedCase getUserName HTTPServer
+^AERB
+!buffer kebab-case snake_case dotted.name
+^AERB
+!buffer wrapped (already) here
+^AERB
+!buffer hello (there world)
+^AERB
+!buffer trailing punctuation, and more.
+^AERB
+!buffer x1 y2 z3
+^AERB
+!buffer a b c d e f g h i j k l m n o p q r s
+^AERB
+!buffer quoted "thing" here
+^AERB
+!buffer the end
+^AERB
+!buffer the quick brown fox
+^AEFB
+!buffer hello world
+^AEFB
+!buffer one
+^AEFB
+!buffer ALL CAPS here
+^AEFB
+!buffer Already Capped Words
+^AEFB
+!buffer mixedCase getUserName HTTPServer
+^AEFB
+!buffer kebab-case snake_case dotted.name
+^AEFB
+!buffer wrapped (already) here
+^AEFB
+!buffer hello (there world)
+^AEFB
+!buffer trailing punctuation, and more.
+^AEFB
+!buffer x1 y2 z3
+^AEFB
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEFB
+!buffer quoted "thing" here
+^AEFB
+!buffer the end
+^AEFB
+!buffer the quick brown fox
+^AEFRB
+!buffer hello world
+^AEFRB
+!buffer one
+^AEFRB
+!buffer ALL CAPS here
+^AEFRB
+!buffer Already Capped Words
+^AEFRB
+!buffer mixedCase getUserName HTTPServer
+^AEFRB
+!buffer kebab-case snake_case dotted.name
+^AEFRB
+!buffer wrapped (already) here
+^AEFRB
+!buffer hello (there world)
+^AEFRB
+!buffer trailing punctuation, and more.
+^AEFRB
+!buffer x1 y2 z3
+^AEFRB
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEFRB
+!buffer quoted "thing" here
+^AEFRB
+!buffer the end
+^AEFRB
+!buffer the quick brown fox
+^AU
+!buffer hello world
+^AU
+!buffer one
+^AU
+!buffer ALL CAPS here
+^AU
+!buffer Already Capped Words
+^AU
+!buffer mixedCase getUserName HTTPServer
+^AU
+!buffer kebab-case snake_case dotted.name
+^AU
+!buffer wrapped (already) here
+^AU
+!buffer hello (there world)
+^AU
+!buffer trailing punctuation, and more.
+^AU
+!buffer x1 y2 z3
+^AU
+!buffer a b c d e f g h i j k l m n o p q r s
+^AU
+!buffer quoted "thing" here
+^AU
+!buffer the end
+^AU
+!buffer the quick brown fox
+^AEL
+!buffer hello world
+^AEL
+!buffer one
+^AEL
+!buffer ALL CAPS here
+^AEL
+!buffer Already Capped Words
+^AEL
+!buffer mixedCase getUserName HTTPServer
+^AEL
+!buffer kebab-case snake_case dotted.name
+^AEL
+!buffer wrapped (already) here
+^AEL
+!buffer hello (there world)
+^AEL
+!buffer trailing punctuation, and more.
+^AEL
+!buffer x1 y2 z3
+^AEL
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEL
+!buffer quoted "thing" here
+^AEL
+!buffer the end
+^AEL
+!buffer the quick brown fox
+^AEPL
+!buffer hello world
+^AEPL
+!buffer one
+^AEPL
+!buffer ALL CAPS here
+^AEPL
+!buffer Already Capped Words
+^AEPL
+!buffer mixedCase getUserName HTTPServer
+^AEPL
+!buffer kebab-case snake_case dotted.name
+^AEPL
+!buffer wrapped (already) here
+^AEPL
+!buffer hello (there world)
+^AEPL
+!buffer trailing punctuation, and more.
+^AEPL
+!buffer x1 y2 z3
+^AEPL
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEPL
+!buffer quoted "thing" here
+^AEPL
+!buffer the end
+^AEPL
+!buffer the quick brown fox
+^AERPL
+!buffer hello world
+^AERPL
+!buffer one
+^AERPL
+!buffer ALL CAPS here
+^AERPL
+!buffer Already Capped Words
+^AERPL
+!buffer mixedCase getUserName HTTPServer
+^AERPL
+!buffer kebab-case snake_case dotted.name
+^AERPL
+!buffer wrapped (already) here
+^AERPL
+!buffer hello (there world)
+^AERPL
+!buffer trailing punctuation, and more.
+^AERPL
+!buffer x1 y2 z3
+^AERPL
+!buffer a b c d e f g h i j k l m n o p q r s
+^AERPL
+!buffer quoted "thing" here
+^AERPL
+!buffer the end
+^AERPL
+!buffer the quick brown fox
+^AEFPL
+!buffer hello world
+^AEFPL
+!buffer one
+^AEFPL
+!buffer ALL CAPS here
+^AEFPL
+!buffer Already Capped Words
+^AEFPL
+!buffer mixedCase getUserName HTTPServer
+^AEFPL
+!buffer kebab-case snake_case dotted.name
+^AEFPL
+!buffer wrapped (already) here
+^AEFPL
+!buffer hello (there world)
+^AEFPL
+!buffer trailing punctuation, and more.
+^AEFPL
+!buffer x1 y2 z3
+^AEFPL
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEFPL
+!buffer quoted "thing" here
+^AEFPL
+!buffer the end
+^AEFPL
+!buffer the quick brown fox
+^AEFRPL
+!buffer hello world
+^AEFRPL
+!buffer one
+^AEFRPL
+!buffer ALL CAPS here
+^AEFRPL
+!buffer Already Capped Words
+^AEFRPL
+!buffer mixedCase getUserName HTTPServer
+^AEFRPL
+!buffer kebab-case snake_case dotted.name
+^AEFRPL
+!buffer wrapped (already) here
+^AEFRPL
+!buffer hello (there world)
+^AEFRPL
+!buffer trailing punctuation, and more.
+^AEFRPL
+!buffer x1 y2 z3
+^AEFRPL
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEFRPL
+!buffer quoted "thing" here
+^AEFRPL
+!buffer the end
+^AEFRPL
+!buffer the quick brown fox
+^AEBL
+!buffer hello world
+^AEBL
+!buffer one
+^AEBL
+!buffer ALL CAPS here
+^AEBL
+!buffer Already Capped Words
+^AEBL
+!buffer mixedCase getUserName HTTPServer
+^AEBL
+!buffer kebab-case snake_case dotted.name
+^AEBL
+!buffer wrapped (already) here
+^AEBL
+!buffer hello (there world)
+^AEBL
+!buffer trailing punctuation, and more.
+^AEBL
+!buffer x1 y2 z3
+^AEBL
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEBL
+!buffer quoted "thing" here
+^AEBL
+!buffer the end
+^AEBL
+!buffer the quick brown fox
+^AERBL
+!buffer hello world
+^AERBL
+!buffer one
+^AERBL
+!buffer ALL CAPS here
+^AERBL
+!buffer Already Capped Words
+^AERBL
+!buffer mixedCase getUserName HTTPServer
+^AERBL
+!buffer kebab-case snake_case dotted.name
+^AERBL
+!buffer wrapped (already) here
+^AERBL
+!buffer hello (there world)
+^AERBL
+!buffer trailing punctuation, and more.
+^AERBL
+!buffer x1 y2 z3
+^AERBL
+!buffer a b c d e f g h i j k l m n o p q r s
+^AERBL
+!buffer quoted "thing" here
+^AERBL
+!buffer the end
+^AERBL
+!buffer the quick brown fox
+^AEFBL
+!buffer hello world
+^AEFBL
+!buffer one
+^AEFBL
+!buffer ALL CAPS here
+^AEFBL
+!buffer Already Capped Words
+^AEFBL
+!buffer mixedCase getUserName HTTPServer
+^AEFBL
+!buffer kebab-case snake_case dotted.name
+^AEFBL
+!buffer wrapped (already) here
+^AEFBL
+!buffer hello (there world)
+^AEFBL
+!buffer trailing punctuation, and more.
+^AEFBL
+!buffer x1 y2 z3
+^AEFBL
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEFBL
+!buffer quoted "thing" here
+^AEFBL
+!buffer the end
+^AEFBL
+!buffer the quick brown fox
+^AEFRBL
+!buffer hello world
+^AEFRBL
+!buffer one
+^AEFRBL
+!buffer ALL CAPS here
+^AEFRBL
+!buffer Already Capped Words
+^AEFRBL
+!buffer mixedCase getUserName HTTPServer
+^AEFRBL
+!buffer kebab-case snake_case dotted.name
+^AEFRBL
+!buffer wrapped (already) here
+^AEFRBL
+!buffer hello (there world)
+^AEFRBL
+!buffer trailing punctuation, and more.
+^AEFRBL
+!buffer x1 y2 z3
+^AEFRBL
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEFRBL
+!buffer quoted "thing" here
+^AEFRBL
+!buffer the end
+^AEFRBL
+!buffer the quick brown fox
+^AUL
+!buffer hello world
+^AUL
+!buffer one
+^AUL
+!buffer ALL CAPS here
+^AUL
+!buffer Already Capped Words
+^AUL
+!buffer mixedCase getUserName HTTPServer
+^AUL
+!buffer kebab-case snake_case dotted.name
+^AUL
+!buffer wrapped (already) here
+^AUL
+!buffer hello (there world)
+^AUL
+!buffer trailing punctuation, and more.
+^AUL
+!buffer x1 y2 z3
+^AUL
+!buffer a b c d e f g h i j k l m n o p q r s
+^AUL
+!buffer quoted "thing" here
+^AUL
+!buffer the end
+^AUL
+!buffer the quick brown fox
+^AEG
+!buffer hello world
+^AEG
+!buffer one
+^AEG
+!buffer ALL CAPS here
+^AEG
+!buffer Already Capped Words
+^AEG
+!buffer mixedCase getUserName HTTPServer
+^AEG
+!buffer kebab-case snake_case dotted.name
+^AEG
+!buffer wrapped (already) here
+^AEG
+!buffer hello (there world)
+^AEG
+!buffer trailing punctuation, and more.
+^AEG
+!buffer x1 y2 z3
+^AEG
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEG
+!buffer quoted "thing" here
+^AEG
+!buffer the end
+^AEG
+!buffer the quick brown fox
+^AEPG
+!buffer hello world
+^AEPG
+!buffer one
+^AEPG
+!buffer ALL CAPS here
+^AEPG
+!buffer Already Capped Words
+^AEPG
+!buffer mixedCase getUserName HTTPServer
+^AEPG
+!buffer kebab-case snake_case dotted.name
+^AEPG
+!buffer wrapped (already) here
+^AEPG
+!buffer hello (there world)
+^AEPG
+!buffer trailing punctuation, and more.
+^AEPG
+!buffer x1 y2 z3
+^AEPG
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEPG
+!buffer quoted "thing" here
+^AEPG
+!buffer the end
+^AEPG
+!buffer the quick brown fox
+^AERPG
+!buffer hello world
+^AERPG
+!buffer one
+^AERPG
+!buffer ALL CAPS here
+^AERPG
+!buffer Already Capped Words
+^AERPG
+!buffer mixedCase getUserName HTTPServer
+^AERPG
+!buffer kebab-case snake_case dotted.name
+^AERPG
+!buffer wrapped (already) here
+^AERPG
+!buffer hello (there world)
+^AERPG
+!buffer trailing punctuation, and more.
+^AERPG
+!buffer x1 y2 z3
+^AERPG
+!buffer a b c d e f g h i j k l m n o p q r s
+^AERPG
+!buffer quoted "thing" here
+^AERPG
+!buffer the end
+^AERPG
+!buffer the quick brown fox
+^AEFPG
+!buffer hello world
+^AEFPG
+!buffer one
+^AEFPG
+!buffer ALL CAPS here
+^AEFPG
+!buffer Already Capped Words
+^AEFPG
+!buffer mixedCase getUserName HTTPServer
+^AEFPG
+!buffer kebab-case snake_case dotted.name
+^AEFPG
+!buffer wrapped (already) here
+^AEFPG
+!buffer hello (there world)
+^AEFPG
+!buffer trailing punctuation, and more.
+^AEFPG
+!buffer x1 y2 z3
+^AEFPG
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEFPG
+!buffer quoted "thing" here
+^AEFPG
+!buffer the end
+^AEFPG
+!buffer the quick brown fox
+^AEFRPG
+!buffer hello world
+^AEFRPG
+!buffer one
+^AEFRPG
+!buffer ALL CAPS here
+^AEFRPG
+!buffer Already Capped Words
+^AEFRPG
+!buffer mixedCase getUserName HTTPServer
+^AEFRPG
+!buffer kebab-case snake_case dotted.name
+^AEFRPG
+!buffer wrapped (already) here
+^AEFRPG
+!buffer hello (there world)
+^AEFRPG
+!buffer trailing punctuation, and more.
+^AEFRPG
+!buffer x1 y2 z3
+^AEFRPG
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEFRPG
+!buffer quoted "thing" here
+^AEFRPG
+!buffer the end
+^AEFRPG
+!buffer the quick brown fox
+^AEBG
+!buffer hello world
+^AEBG
+!buffer one
+^AEBG
+!buffer ALL CAPS here
+^AEBG
+!buffer Already Capped Words
+^AEBG
+!buffer mixedCase getUserName HTTPServer
+^AEBG
+!buffer kebab-case snake_case dotted.name
+^AEBG
+!buffer wrapped (already) here
+^AEBG
+!buffer hello (there world)
+^AEBG
+!buffer trailing punctuation, and more.
+^AEBG
+!buffer x1 y2 z3
+^AEBG
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEBG
+!buffer quoted "thing" here
+^AEBG
+!buffer the end
+^AEBG
+!buffer the quick brown fox
+^AERBG
+!buffer hello world
+^AERBG
+!buffer one
+^AERBG
+!buffer ALL CAPS here
+^AERBG
+!buffer Already Capped Words
+^AERBG
+!buffer mixedCase getUserName HTTPServer
+^AERBG
+!buffer kebab-case snake_case dotted.name
+^AERBG
+!buffer wrapped (already) here
+^AERBG
+!buffer hello (there world)
+^AERBG
+!buffer trailing punctuation, and more.
+^AERBG
+!buffer x1 y2 z3
+^AERBG
+!buffer a b c d e f g h i j k l m n o p q r s
+^AERBG
+!buffer quoted "thing" here
+^AERBG
+!buffer the end
+^AERBG
+!buffer the quick brown fox
+^AEFBG
+!buffer hello world
+^AEFBG
+!buffer one
+^AEFBG
+!buffer ALL CAPS here
+^AEFBG
+!buffer Already Capped Words
+^AEFBG
+!buffer mixedCase getUserName HTTPServer
+^AEFBG
+!buffer kebab-case snake_case dotted.name
+^AEFBG
+!buffer wrapped (already) here
+^AEFBG
+!buffer hello (there world)
+^AEFBG
+!buffer trailing punctuation, and more.
+^AEFBG
+!buffer x1 y2 z3
+^AEFBG
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEFBG
+!buffer quoted "thing" here
+^AEFBG
+!buffer the end
+^AEFBG
+!buffer the quick brown fox
+^AEFRBG
+!buffer hello world
+^AEFRBG
+!buffer one
+^AEFRBG
+!buffer ALL CAPS here
+^AEFRBG
+!buffer Already Capped Words
+^AEFRBG
+!buffer mixedCase getUserName HTTPServer
+^AEFRBG
+!buffer kebab-case snake_case dotted.name
+^AEFRBG
+!buffer wrapped (already) here
+^AEFRBG
+!buffer hello (there world)
+^AEFRBG
+!buffer trailing punctuation, and more.
+^AEFRBG
+!buffer x1 y2 z3
+^AEFRBG
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEFRBG
+!buffer quoted "thing" here
+^AEFRBG
+!buffer the end
+^AEFRBG
+!buffer the quick brown fox
+^AUG
+!buffer hello world
+^AUG
+!buffer one
+^AUG
+!buffer ALL CAPS here
+^AUG
+!buffer Already Capped Words
+^AUG
+!buffer mixedCase getUserName HTTPServer
+^AUG
+!buffer kebab-case snake_case dotted.name
+^AUG
+!buffer wrapped (already) here
+^AUG
+!buffer hello (there world)
+^AUG
+!buffer trailing punctuation, and more.
+^AUG
+!buffer x1 y2 z3
+^AUG
+!buffer a b c d e f g h i j k l m n o p q r s
+^AUG
+!buffer quoted "thing" here
+^AUG
+!buffer the end
+^AUG
+!buffer the quick brown fox
+^AELG
+!buffer hello world
+^AELG
+!buffer one
+^AELG
+!buffer ALL CAPS here
+^AELG
+!buffer Already Capped Words
+^AELG
+!buffer mixedCase getUserName HTTPServer
+^AELG
+!buffer kebab-case snake_case dotted.name
+^AELG
+!buffer wrapped (already) here
+^AELG
+!buffer hello (there world)
+^AELG
+!buffer trailing punctuation, and more.
+^AELG
+!buffer x1 y2 z3
+^AELG
+!buffer a b c d e f g h i j k l m n o p q r s
+^AELG
+!buffer quoted "thing" here
+^AELG
+!buffer the end
+^AELG
+!buffer the quick brown fox
+^AEPLG
+!buffer hello world
+^AEPLG
+!buffer one
+^AEPLG
+!buffer ALL CAPS here
+^AEPLG
+!buffer Already Capped Words
+^AEPLG
+!buffer mixedCase getUserName HTTPServer
+^AEPLG
+!buffer kebab-case snake_case dotted.name
+^AEPLG
+!buffer wrapped (already) here
+^AEPLG
+!buffer hello (there world)
+^AEPLG
+!buffer trailing punctuation, and more.
+^AEPLG
+!buffer x1 y2 z3
+^AEPLG
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEPLG
+!buffer quoted "thing" here
+^AEPLG
+!buffer the end
+^AEPLG
+!buffer the quick brown fox
+^AERPLG
+!buffer hello world
+^AERPLG
+!buffer one
+^AERPLG
+!buffer ALL CAPS here
+^AERPLG
+!buffer Already Capped Words
+^AERPLG
+!buffer mixedCase getUserName HTTPServer
+^AERPLG
+!buffer kebab-case snake_case dotted.name
+^AERPLG
+!buffer wrapped (already) here
+^AERPLG
+!buffer hello (there world)
+^AERPLG
+!buffer trailing punctuation, and more.
+^AERPLG
+!buffer x1 y2 z3
+^AERPLG
+!buffer a b c d e f g h i j k l m n o p q r s
+^AERPLG
+!buffer quoted "thing" here
+^AERPLG
+!buffer the end
+^AERPLG
+!buffer the quick brown fox
+^AEFPLG
+!buffer hello world
+^AEFPLG
+!buffer one
+^AEFPLG
+!buffer ALL CAPS here
+^AEFPLG
+!buffer Already Capped Words
+^AEFPLG
+!buffer mixedCase getUserName HTTPServer
+^AEFPLG
+!buffer kebab-case snake_case dotted.name
+^AEFPLG
+!buffer wrapped (already) here
+^AEFPLG
+!buffer hello (there world)
+^AEFPLG
+!buffer trailing punctuation, and more.
+^AEFPLG
+!buffer x1 y2 z3
+^AEFPLG
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEFPLG
+!buffer quoted "thing" here
+^AEFPLG
+!buffer the end
+^AEFPLG
+!buffer the quick brown fox
+^AEFRPLG
+!buffer hello world
+^AEFRPLG
+!buffer one
+^AEFRPLG
+!buffer ALL CAPS here
+^AEFRPLG
+!buffer Already Capped Words
+^AEFRPLG
+!buffer mixedCase getUserName HTTPServer
+^AEFRPLG
+!buffer kebab-case snake_case dotted.name
+^AEFRPLG
+!buffer wrapped (already) here
+^AEFRPLG
+!buffer hello (there world)
+^AEFRPLG
+!buffer trailing punctuation, and more.
+^AEFRPLG
+!buffer x1 y2 z3
+^AEFRPLG
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEFRPLG
+!buffer quoted "thing" here
+^AEFRPLG
+!buffer the end
+^AEFRPLG
+!buffer the quick brown fox
+^AEBLG
+!buffer hello world
+^AEBLG
+!buffer one
+^AEBLG
+!buffer ALL CAPS here
+^AEBLG
+!buffer Already Capped Words
+^AEBLG
+!buffer mixedCase getUserName HTTPServer
+^AEBLG
+!buffer kebab-case snake_case dotted.name
+^AEBLG
+!buffer wrapped (already) here
+^AEBLG
+!buffer hello (there world)
+^AEBLG
+!buffer trailing punctuation, and more.
+^AEBLG
+!buffer x1 y2 z3
+^AEBLG
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEBLG
+!buffer quoted "thing" here
+^AEBLG
+!buffer the end
+^AEBLG
+!buffer the quick brown fox
+^AERBLG
+!buffer hello world
+^AERBLG
+!buffer one
+^AERBLG
+!buffer ALL CAPS here
+^AERBLG
+!buffer Already Capped Words
+^AERBLG
+!buffer mixedCase getUserName HTTPServer
+^AERBLG
+!buffer kebab-case snake_case dotted.name
+^AERBLG
+!buffer wrapped (already) here
+^AERBLG
+!buffer hello (there world)
+^AERBLG
+!buffer trailing punctuation, and more.
+^AERBLG
+!buffer x1 y2 z3
+^AERBLG
+!buffer a b c d e f g h i j k l m n o p q r s
+^AERBLG
+!buffer quoted "thing" here
+^AERBLG
+!buffer the end
+^AERBLG
+!buffer the quick brown fox
+^AEFBLG
+!buffer hello world
+^AEFBLG
+!buffer one
+^AEFBLG
+!buffer ALL CAPS here
+^AEFBLG
+!buffer Already Capped Words
+^AEFBLG
+!buffer mixedCase getUserName HTTPServer
+^AEFBLG
+!buffer kebab-case snake_case dotted.name
+^AEFBLG
+!buffer wrapped (already) here
+^AEFBLG
+!buffer hello (there world)
+^AEFBLG
+!buffer trailing punctuation, and more.
+^AEFBLG
+!buffer x1 y2 z3
+^AEFBLG
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEFBLG
+!buffer quoted "thing" here
+^AEFBLG
+!buffer the end
+^AEFBLG
+!buffer the quick brown fox
+^AEFRBLG
+!buffer hello world
+^AEFRBLG
+!buffer one
+^AEFRBLG
+!buffer ALL CAPS here
+^AEFRBLG
+!buffer Already Capped Words
+^AEFRBLG
+!buffer mixedCase getUserName HTTPServer
+^AEFRBLG
+!buffer kebab-case snake_case dotted.name
+^AEFRBLG
+!buffer wrapped (already) here
+^AEFRBLG
+!buffer hello (there world)
+^AEFRBLG
+!buffer trailing punctuation, and more.
+^AEFRBLG
+!buffer x1 y2 z3
+^AEFRBLG
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEFRBLG
+!buffer quoted "thing" here
+^AEFRBLG
+!buffer the end
+^AEFRBLG
+!buffer the quick brown fox
+^AULG
+!buffer hello world
+^AULG
+!buffer one
+^AULG
+!buffer ALL CAPS here
+^AULG
+!buffer Already Capped Words
+^AULG
+!buffer mixedCase getUserName HTTPServer
+^AULG
+!buffer kebab-case snake_case dotted.name
+^AULG
+!buffer wrapped (already) here
+^AULG
+!buffer hello (there world)
+^AULG
+!buffer trailing punctuation, and more.
+^AULG
+!buffer x1 y2 z3
+^AULG
+!buffer a b c d e f g h i j k l m n o p q r s
+^AULG
+!buffer quoted "thing" here
+^AULG
+!buffer the end
+^AULG
+!buffer the quick brown fox
+^AET
+!buffer hello world
+^AET
+!buffer one
+^AET
+!buffer ALL CAPS here
+^AET
+!buffer Already Capped Words
+^AET
+!buffer mixedCase getUserName HTTPServer
+^AET
+!buffer kebab-case snake_case dotted.name
+^AET
+!buffer wrapped (already) here
+^AET
+!buffer hello (there world)
+^AET
+!buffer trailing punctuation, and more.
+^AET
+!buffer x1 y2 z3
+^AET
+!buffer a b c d e f g h i j k l m n o p q r s
+^AET
+!buffer quoted "thing" here
+^AET
+!buffer the end
+^AET
+!buffer the quick brown fox
+^AEPT
+!buffer hello world
+^AEPT
+!buffer one
+^AEPT
+!buffer ALL CAPS here
+^AEPT
+!buffer Already Capped Words
+^AEPT
+!buffer mixedCase getUserName HTTPServer
+^AEPT
+!buffer kebab-case snake_case dotted.name
+^AEPT
+!buffer wrapped (already) here
+^AEPT
+!buffer hello (there world)
+^AEPT
+!buffer trailing punctuation, and more.
+^AEPT
+!buffer x1 y2 z3
+^AEPT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEPT
+!buffer quoted "thing" here
+^AEPT
+!buffer the end
+^AEPT
+!buffer the quick brown fox
+^AERPT
+!buffer hello world
+^AERPT
+!buffer one
+^AERPT
+!buffer ALL CAPS here
+^AERPT
+!buffer Already Capped Words
+^AERPT
+!buffer mixedCase getUserName HTTPServer
+^AERPT
+!buffer kebab-case snake_case dotted.name
+^AERPT
+!buffer wrapped (already) here
+^AERPT
+!buffer hello (there world)
+^AERPT
+!buffer trailing punctuation, and more.
+^AERPT
+!buffer x1 y2 z3
+^AERPT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AERPT
+!buffer quoted "thing" here
+^AERPT
+!buffer the end
+^AERPT
+!buffer the quick brown fox
+^AEFPT
+!buffer hello world
+^AEFPT
+!buffer one
+^AEFPT
+!buffer ALL CAPS here
+^AEFPT
+!buffer Already Capped Words
+^AEFPT
+!buffer mixedCase getUserName HTTPServer
+^AEFPT
+!buffer kebab-case snake_case dotted.name
+^AEFPT
+!buffer wrapped (already) here
+^AEFPT
+!buffer hello (there world)
+^AEFPT
+!buffer trailing punctuation, and more.
+^AEFPT
+!buffer x1 y2 z3
+^AEFPT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEFPT
+!buffer quoted "thing" here
+^AEFPT
+!buffer the end
+^AEFPT
+!buffer the quick brown fox
+^AEFRPT
+!buffer hello world
+^AEFRPT
+!buffer one
+^AEFRPT
+!buffer ALL CAPS here
+^AEFRPT
+!buffer Already Capped Words
+^AEFRPT
+!buffer mixedCase getUserName HTTPServer
+^AEFRPT
+!buffer kebab-case snake_case dotted.name
+^AEFRPT
+!buffer wrapped (already) here
+^AEFRPT
+!buffer hello (there world)
+^AEFRPT
+!buffer trailing punctuation, and more.
+^AEFRPT
+!buffer x1 y2 z3
+^AEFRPT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEFRPT
+!buffer quoted "thing" here
+^AEFRPT
+!buffer the end
+^AEFRPT
+!buffer the quick brown fox
+^AEBT
+!buffer hello world
+^AEBT
+!buffer one
+^AEBT
+!buffer ALL CAPS here
+^AEBT
+!buffer Already Capped Words
+^AEBT
+!buffer mixedCase getUserName HTTPServer
+^AEBT
+!buffer kebab-case snake_case dotted.name
+^AEBT
+!buffer wrapped (already) here
+^AEBT
+!buffer hello (there world)
+^AEBT
+!buffer trailing punctuation, and more.
+^AEBT
+!buffer x1 y2 z3
+^AEBT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEBT
+!buffer quoted "thing" here
+^AEBT
+!buffer the end
+^AEBT
+!buffer the quick brown fox
+^AERBT
+!buffer hello world
+^AERBT
+!buffer one
+^AERBT
+!buffer ALL CAPS here
+^AERBT
+!buffer Already Capped Words
+^AERBT
+!buffer mixedCase getUserName HTTPServer
+^AERBT
+!buffer kebab-case snake_case dotted.name
+^AERBT
+!buffer wrapped (already) here
+^AERBT
+!buffer hello (there world)
+^AERBT
+!buffer trailing punctuation, and more.
+^AERBT
+!buffer x1 y2 z3
+^AERBT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AERBT
+!buffer quoted "thing" here
+^AERBT
+!buffer the end
+^AERBT
+!buffer the quick brown fox
+^AEFBT
+!buffer hello world
+^AEFBT
+!buffer one
+^AEFBT
+!buffer ALL CAPS here
+^AEFBT
+!buffer Already Capped Words
+^AEFBT
+!buffer mixedCase getUserName HTTPServer
+^AEFBT
+!buffer kebab-case snake_case dotted.name
+^AEFBT
+!buffer wrapped (already) here
+^AEFBT
+!buffer hello (there world)
+^AEFBT
+!buffer trailing punctuation, and more.
+^AEFBT
+!buffer x1 y2 z3
+^AEFBT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEFBT
+!buffer quoted "thing" here
+^AEFBT
+!buffer the end
+^AEFBT
+!buffer the quick brown fox
+^AEFRBT
+!buffer hello world
+^AEFRBT
+!buffer one
+^AEFRBT
+!buffer ALL CAPS here
+^AEFRBT
+!buffer Already Capped Words
+^AEFRBT
+!buffer mixedCase getUserName HTTPServer
+^AEFRBT
+!buffer kebab-case snake_case dotted.name
+^AEFRBT
+!buffer wrapped (already) here
+^AEFRBT
+!buffer hello (there world)
+^AEFRBT
+!buffer trailing punctuation, and more.
+^AEFRBT
+!buffer x1 y2 z3
+^AEFRBT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEFRBT
+!buffer quoted "thing" here
+^AEFRBT
+!buffer the end
+^AEFRBT
+!buffer the quick brown fox
+^AUT
+!buffer hello world
+^AUT
+!buffer one
+^AUT
+!buffer ALL CAPS here
+^AUT
+!buffer Already Capped Words
+^AUT
+!buffer mixedCase getUserName HTTPServer
+^AUT
+!buffer kebab-case snake_case dotted.name
+^AUT
+!buffer wrapped (already) here
+^AUT
+!buffer hello (there world)
+^AUT
+!buffer trailing punctuation, and more.
+^AUT
+!buffer x1 y2 z3
+^AUT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AUT
+!buffer quoted "thing" here
+^AUT
+!buffer the end
+^AUT
+!buffer the quick brown fox
+^AELT
+!buffer hello world
+^AELT
+!buffer one
+^AELT
+!buffer ALL CAPS here
+^AELT
+!buffer Already Capped Words
+^AELT
+!buffer mixedCase getUserName HTTPServer
+^AELT
+!buffer kebab-case snake_case dotted.name
+^AELT
+!buffer wrapped (already) here
+^AELT
+!buffer hello (there world)
+^AELT
+!buffer trailing punctuation, and more.
+^AELT
+!buffer x1 y2 z3
+^AELT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AELT
+!buffer quoted "thing" here
+^AELT
+!buffer the end
+^AELT
+!buffer the quick brown fox
+^AEPLT
+!buffer hello world
+^AEPLT
+!buffer one
+^AEPLT
+!buffer ALL CAPS here
+^AEPLT
+!buffer Already Capped Words
+^AEPLT
+!buffer mixedCase getUserName HTTPServer
+^AEPLT
+!buffer kebab-case snake_case dotted.name
+^AEPLT
+!buffer wrapped (already) here
+^AEPLT
+!buffer hello (there world)
+^AEPLT
+!buffer trailing punctuation, and more.
+^AEPLT
+!buffer x1 y2 z3
+^AEPLT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEPLT
+!buffer quoted "thing" here
+^AEPLT
+!buffer the end
+^AEPLT
+!buffer the quick brown fox
+^AERPLT
+!buffer hello world
+^AERPLT
+!buffer one
+^AERPLT
+!buffer ALL CAPS here
+^AERPLT
+!buffer Already Capped Words
+^AERPLT
+!buffer mixedCase getUserName HTTPServer
+^AERPLT
+!buffer kebab-case snake_case dotted.name
+^AERPLT
+!buffer wrapped (already) here
+^AERPLT
+!buffer hello (there world)
+^AERPLT
+!buffer trailing punctuation, and more.
+^AERPLT
+!buffer x1 y2 z3
+^AERPLT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AERPLT
+!buffer quoted "thing" here
+^AERPLT
+!buffer the end
+^AERPLT
+!buffer the quick brown fox
+^AEFPLT
+!buffer hello world
+^AEFPLT
+!buffer one
+^AEFPLT
+!buffer ALL CAPS here
+^AEFPLT
+!buffer Already Capped Words
+^AEFPLT
+!buffer mixedCase getUserName HTTPServer
+^AEFPLT
+!buffer kebab-case snake_case dotted.name
+^AEFPLT
+!buffer wrapped (already) here
+^AEFPLT
+!buffer hello (there world)
+^AEFPLT
+!buffer trailing punctuation, and more.
+^AEFPLT
+!buffer x1 y2 z3
+^AEFPLT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEFPLT
+!buffer quoted "thing" here
+^AEFPLT
+!buffer the end
+^AEFPLT
+!buffer the quick brown fox
+^AEFRPLT
+!buffer hello world
+^AEFRPLT
+!buffer one
+^AEFRPLT
+!buffer ALL CAPS here
+^AEFRPLT
+!buffer Already Capped Words
+^AEFRPLT
+!buffer mixedCase getUserName HTTPServer
+^AEFRPLT
+!buffer kebab-case snake_case dotted.name
+^AEFRPLT
+!buffer wrapped (already) here
+^AEFRPLT
+!buffer hello (there world)
+^AEFRPLT
+!buffer trailing punctuation, and more.
+^AEFRPLT
+!buffer x1 y2 z3
+^AEFRPLT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEFRPLT
+!buffer quoted "thing" here
+^AEFRPLT
+!buffer the end
+^AEFRPLT
+!buffer the quick brown fox
+^AEBLT
+!buffer hello world
+^AEBLT
+!buffer one
+^AEBLT
+!buffer ALL CAPS here
+^AEBLT
+!buffer Already Capped Words
+^AEBLT
+!buffer mixedCase getUserName HTTPServer
+^AEBLT
+!buffer kebab-case snake_case dotted.name
+^AEBLT
+!buffer wrapped (already) here
+^AEBLT
+!buffer hello (there world)
+^AEBLT
+!buffer trailing punctuation, and more.
+^AEBLT
+!buffer x1 y2 z3
+^AEBLT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEBLT
+!buffer quoted "thing" here
+^AEBLT
+!buffer the end
+^AEBLT
+!buffer the quick brown fox
+^AERBLT
+!buffer hello world
+^AERBLT
+!buffer one
+^AERBLT
+!buffer ALL CAPS here
+^AERBLT
+!buffer Already Capped Words
+^AERBLT
+!buffer mixedCase getUserName HTTPServer
+^AERBLT
+!buffer kebab-case snake_case dotted.name
+^AERBLT
+!buffer wrapped (already) here
+^AERBLT
+!buffer hello (there world)
+^AERBLT
+!buffer trailing punctuation, and more.
+^AERBLT
+!buffer x1 y2 z3
+^AERBLT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AERBLT
+!buffer quoted "thing" here
+^AERBLT
+!buffer the end
+^AERBLT
+!buffer the quick brown fox
+^AEFBLT
+!buffer hello world
+^AEFBLT
+!buffer one
+^AEFBLT
+!buffer ALL CAPS here
+^AEFBLT
+!buffer Already Capped Words
+^AEFBLT
+!buffer mixedCase getUserName HTTPServer
+^AEFBLT
+!buffer kebab-case snake_case dotted.name
+^AEFBLT
+!buffer wrapped (already) here
+^AEFBLT
+!buffer hello (there world)
+^AEFBLT
+!buffer trailing punctuation, and more.
+^AEFBLT
+!buffer x1 y2 z3
+^AEFBLT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEFBLT
+!buffer quoted "thing" here
+^AEFBLT
+!buffer the end
+^AEFBLT
+!buffer the quick brown fox
+^AEFRBLT
+!buffer hello world
+^AEFRBLT
+!buffer one
+^AEFRBLT
+!buffer ALL CAPS here
+^AEFRBLT
+!buffer Already Capped Words
+^AEFRBLT
+!buffer mixedCase getUserName HTTPServer
+^AEFRBLT
+!buffer kebab-case snake_case dotted.name
+^AEFRBLT
+!buffer wrapped (already) here
+^AEFRBLT
+!buffer hello (there world)
+^AEFRBLT
+!buffer trailing punctuation, and more.
+^AEFRBLT
+!buffer x1 y2 z3
+^AEFRBLT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEFRBLT
+!buffer quoted "thing" here
+^AEFRBLT
+!buffer the end
+^AEFRBLT
+!buffer the quick brown fox
+^AULT
+!buffer hello world
+^AULT
+!buffer one
+^AULT
+!buffer ALL CAPS here
+^AULT
+!buffer Already Capped Words
+^AULT
+!buffer mixedCase getUserName HTTPServer
+^AULT
+!buffer kebab-case snake_case dotted.name
+^AULT
+!buffer wrapped (already) here
+^AULT
+!buffer hello (there world)
+^AULT
+!buffer trailing punctuation, and more.
+^AULT
+!buffer x1 y2 z3
+^AULT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AULT
+!buffer quoted "thing" here
+^AULT
+!buffer the end
+^AULT
+!buffer the quick brown fox
+^AEGT
+!buffer hello world
+^AEGT
+!buffer one
+^AEGT
+!buffer ALL CAPS here
+^AEGT
+!buffer Already Capped Words
+^AEGT
+!buffer mixedCase getUserName HTTPServer
+^AEGT
+!buffer kebab-case snake_case dotted.name
+^AEGT
+!buffer wrapped (already) here
+^AEGT
+!buffer hello (there world)
+^AEGT
+!buffer trailing punctuation, and more.
+^AEGT
+!buffer x1 y2 z3
+^AEGT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEGT
+!buffer quoted "thing" here
+^AEGT
+!buffer the end
+^AEGT
+!buffer the quick brown fox
+^AEPGT
+!buffer hello world
+^AEPGT
+!buffer one
+^AEPGT
+!buffer ALL CAPS here
+^AEPGT
+!buffer Already Capped Words
+^AEPGT
+!buffer mixedCase getUserName HTTPServer
+^AEPGT
+!buffer kebab-case snake_case dotted.name
+^AEPGT
+!buffer wrapped (already) here
+^AEPGT
+!buffer hello (there world)
+^AEPGT
+!buffer trailing punctuation, and more.
+^AEPGT
+!buffer x1 y2 z3
+^AEPGT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEPGT
+!buffer quoted "thing" here
+^AEPGT
+!buffer the end
+^AEPGT
+!buffer the quick brown fox
+^AERPGT
+!buffer hello world
+^AERPGT
+!buffer one
+^AERPGT
+!buffer ALL CAPS here
+^AERPGT
+!buffer Already Capped Words
+^AERPGT
+!buffer mixedCase getUserName HTTPServer
+^AERPGT
+!buffer kebab-case snake_case dotted.name
+^AERPGT
+!buffer wrapped (already) here
+^AERPGT
+!buffer hello (there world)
+^AERPGT
+!buffer trailing punctuation, and more.
+^AERPGT
+!buffer x1 y2 z3
+^AERPGT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AERPGT
+!buffer quoted "thing" here
+^AERPGT
+!buffer the end
+^AERPGT
+!buffer the quick brown fox
+^AEFPGT
+!buffer hello world
+^AEFPGT
+!buffer one
+^AEFPGT
+!buffer ALL CAPS here
+^AEFPGT
+!buffer Already Capped Words
+^AEFPGT
+!buffer mixedCase getUserName HTTPServer
+^AEFPGT
+!buffer kebab-case snake_case dotted.name
+^AEFPGT
+!buffer wrapped (already) here
+^AEFPGT
+!buffer hello (there world)
+^AEFPGT
+!buffer trailing punctuation, and more.
+^AEFPGT
+!buffer x1 y2 z3
+^AEFPGT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEFPGT
+!buffer quoted "thing" here
+^AEFPGT
+!buffer the end
+^AEFPGT
+!buffer the quick brown fox
+^AEFRPGT
+!buffer hello world
+^AEFRPGT
+!buffer one
+^AEFRPGT
+!buffer ALL CAPS here
+^AEFRPGT
+!buffer Already Capped Words
+^AEFRPGT
+!buffer mixedCase getUserName HTTPServer
+^AEFRPGT
+!buffer kebab-case snake_case dotted.name
+^AEFRPGT
+!buffer wrapped (already) here
+^AEFRPGT
+!buffer hello (there world)
+^AEFRPGT
+!buffer trailing punctuation, and more.
+^AEFRPGT
+!buffer x1 y2 z3
+^AEFRPGT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEFRPGT
+!buffer quoted "thing" here
+^AEFRPGT
+!buffer the end
+^AEFRPGT
+!buffer the quick brown fox
+^AEBGT
+!buffer hello world
+^AEBGT
+!buffer one
+^AEBGT
+!buffer ALL CAPS here
+^AEBGT
+!buffer Already Capped Words
+^AEBGT
+!buffer mixedCase getUserName HTTPServer
+^AEBGT
+!buffer kebab-case snake_case dotted.name
+^AEBGT
+!buffer wrapped (already) here
+^AEBGT
+!buffer hello (there world)
+^AEBGT
+!buffer trailing punctuation, and more.
+^AEBGT
+!buffer x1 y2 z3
+^AEBGT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEBGT
+!buffer quoted "thing" here
+^AEBGT
+!buffer the end
+^AEBGT
+!buffer the quick brown fox
+^AERBGT
+!buffer hello world
+^AERBGT
+!buffer one
+^AERBGT
+!buffer ALL CAPS here
+^AERBGT
+!buffer Already Capped Words
+^AERBGT
+!buffer mixedCase getUserName HTTPServer
+^AERBGT
+!buffer kebab-case snake_case dotted.name
+^AERBGT
+!buffer wrapped (already) here
+^AERBGT
+!buffer hello (there world)
+^AERBGT
+!buffer trailing punctuation, and more.
+^AERBGT
+!buffer x1 y2 z3
+^AERBGT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AERBGT
+!buffer quoted "thing" here
+^AERBGT
+!buffer the end
+^AERBGT
+!buffer the quick brown fox
+^AEFBGT
+!buffer hello world
+^AEFBGT
+!buffer one
+^AEFBGT
+!buffer ALL CAPS here
+^AEFBGT
+!buffer Already Capped Words
+^AEFBGT
+!buffer mixedCase getUserName HTTPServer
+^AEFBGT
+!buffer kebab-case snake_case dotted.name
+^AEFBGT
+!buffer wrapped (already) here
+^AEFBGT
+!buffer hello (there world)
+^AEFBGT
+!buffer trailing punctuation, and more.
+^AEFBGT
+!buffer x1 y2 z3
+^AEFBGT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEFBGT
+!buffer quoted "thing" here
+^AEFBGT
+!buffer the end
+^AEFBGT
+!buffer the quick brown fox
+^AEFRBGT
+!buffer hello world
+^AEFRBGT
+!buffer one
+^AEFRBGT
+!buffer ALL CAPS here
+^AEFRBGT
+!buffer Already Capped Words
+^AEFRBGT
+!buffer mixedCase getUserName HTTPServer
+^AEFRBGT
+!buffer kebab-case snake_case dotted.name
+^AEFRBGT
+!buffer wrapped (already) here
+^AEFRBGT
+!buffer hello (there world)
+^AEFRBGT
+!buffer trailing punctuation, and more.
+^AEFRBGT
+!buffer x1 y2 z3
+^AEFRBGT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEFRBGT
+!buffer quoted "thing" here
+^AEFRBGT
+!buffer the end
+^AEFRBGT
+!buffer the quick brown fox
+^AUGT
+!buffer hello world
+^AUGT
+!buffer one
+^AUGT
+!buffer ALL CAPS here
+^AUGT
+!buffer Already Capped Words
+^AUGT
+!buffer mixedCase getUserName HTTPServer
+^AUGT
+!buffer kebab-case snake_case dotted.name
+^AUGT
+!buffer wrapped (already) here
+^AUGT
+!buffer hello (there world)
+^AUGT
+!buffer trailing punctuation, and more.
+^AUGT
+!buffer x1 y2 z3
+^AUGT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AUGT
+!buffer quoted "thing" here
+^AUGT
+!buffer the end
+^AUGT
+!buffer the quick brown fox
+^AEU
+!buffer hello world
+^AEU
+!buffer one
+^AEU
+!buffer ALL CAPS here
+^AEU
+!buffer Already Capped Words
+^AEU
+!buffer mixedCase getUserName HTTPServer
+^AEU
+!buffer kebab-case snake_case dotted.name
+^AEU
+!buffer wrapped (already) here
+^AEU
+!buffer hello (there world)
+^AEU
+!buffer trailing punctuation, and more.
+^AEU
+!buffer x1 y2 z3
+^AEU
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEU
+!buffer quoted "thing" here
+^AEU
+!buffer the end
+^AEU
+!buffer the quick brown fox
+^AEUR
+!buffer hello world
+^AEUR
+!buffer one
+^AEUR
+!buffer ALL CAPS here
+^AEUR
+!buffer Already Capped Words
+^AEUR
+!buffer mixedCase getUserName HTTPServer
+^AEUR
+!buffer kebab-case snake_case dotted.name
+^AEUR
+!buffer wrapped (already) here
+^AEUR
+!buffer hello (there world)
+^AEUR
+!buffer trailing punctuation, and more.
+^AEUR
+!buffer x1 y2 z3
+^AEUR
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEUR
+!buffer quoted "thing" here
+^AEUR
+!buffer the end
+^AEUR
+!buffer the quick brown fox
+^AEUL
+!buffer hello world
+^AEUL
+!buffer one
+^AEUL
+!buffer ALL CAPS here
+^AEUL
+!buffer Already Capped Words
+^AEUL
+!buffer mixedCase getUserName HTTPServer
+^AEUL
+!buffer kebab-case snake_case dotted.name
+^AEUL
+!buffer wrapped (already) here
+^AEUL
+!buffer hello (there world)
+^AEUL
+!buffer trailing punctuation, and more.
+^AEUL
+!buffer x1 y2 z3
+^AEUL
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEUL
+!buffer quoted "thing" here
+^AEUL
+!buffer the end
+^AEUL
+!buffer the quick brown fox
+^AEURL
+!buffer hello world
+^AEURL
+!buffer one
+^AEURL
+!buffer ALL CAPS here
+^AEURL
+!buffer Already Capped Words
+^AEURL
+!buffer mixedCase getUserName HTTPServer
+^AEURL
+!buffer kebab-case snake_case dotted.name
+^AEURL
+!buffer wrapped (already) here
+^AEURL
+!buffer hello (there world)
+^AEURL
+!buffer trailing punctuation, and more.
+^AEURL
+!buffer x1 y2 z3
+^AEURL
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEURL
+!buffer quoted "thing" here
+^AEURL
+!buffer the end
+^AEURL
+!buffer the quick brown fox
+^AEUG
+!buffer hello world
+^AEUG
+!buffer one
+^AEUG
+!buffer ALL CAPS here
+^AEUG
+!buffer Already Capped Words
+^AEUG
+!buffer mixedCase getUserName HTTPServer
+^AEUG
+!buffer kebab-case snake_case dotted.name
+^AEUG
+!buffer wrapped (already) here
+^AEUG
+!buffer hello (there world)
+^AEUG
+!buffer trailing punctuation, and more.
+^AEUG
+!buffer x1 y2 z3
+^AEUG
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEUG
+!buffer quoted "thing" here
+^AEUG
+!buffer the end
+^AEUG
+!buffer the quick brown fox
+^AEURG
+!buffer hello world
+^AEURG
+!buffer one
+^AEURG
+!buffer ALL CAPS here
+^AEURG
+!buffer Already Capped Words
+^AEURG
+!buffer mixedCase getUserName HTTPServer
+^AEURG
+!buffer kebab-case snake_case dotted.name
+^AEURG
+!buffer wrapped (already) here
+^AEURG
+!buffer hello (there world)
+^AEURG
+!buffer trailing punctuation, and more.
+^AEURG
+!buffer x1 y2 z3
+^AEURG
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEURG
+!buffer quoted "thing" here
+^AEURG
+!buffer the end
+^AEURG
+!buffer the quick brown fox
+^AEULG
+!buffer hello world
+^AEULG
+!buffer one
+^AEULG
+!buffer ALL CAPS here
+^AEULG
+!buffer Already Capped Words
+^AEULG
+!buffer mixedCase getUserName HTTPServer
+^AEULG
+!buffer kebab-case snake_case dotted.name
+^AEULG
+!buffer wrapped (already) here
+^AEULG
+!buffer hello (there world)
+^AEULG
+!buffer trailing punctuation, and more.
+^AEULG
+!buffer x1 y2 z3
+^AEULG
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEULG
+!buffer quoted "thing" here
+^AEULG
+!buffer the end
+^AEULG
+!buffer the quick brown fox
+^AEURLG
+!buffer hello world
+^AEURLG
+!buffer one
+^AEURLG
+!buffer ALL CAPS here
+^AEURLG
+!buffer Already Capped Words
+^AEURLG
+!buffer mixedCase getUserName HTTPServer
+^AEURLG
+!buffer kebab-case snake_case dotted.name
+^AEURLG
+!buffer wrapped (already) here
+^AEURLG
+!buffer hello (there world)
+^AEURLG
+!buffer trailing punctuation, and more.
+^AEURLG
+!buffer x1 y2 z3
+^AEURLG
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEURLG
+!buffer quoted "thing" here
+^AEURLG
+!buffer the end
+^AEURLG
+!buffer the quick brown fox
+^AEUT
+!buffer hello world
+^AEUT
+!buffer one
+^AEUT
+!buffer ALL CAPS here
+^AEUT
+!buffer Already Capped Words
+^AEUT
+!buffer mixedCase getUserName HTTPServer
+^AEUT
+!buffer kebab-case snake_case dotted.name
+^AEUT
+!buffer wrapped (already) here
+^AEUT
+!buffer hello (there world)
+^AEUT
+!buffer trailing punctuation, and more.
+^AEUT
+!buffer x1 y2 z3
+^AEUT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEUT
+!buffer quoted "thing" here
+^AEUT
+!buffer the end
+^AEUT
+!buffer the quick brown fox
+^AEURT
+!buffer hello world
+^AEURT
+!buffer one
+^AEURT
+!buffer ALL CAPS here
+^AEURT
+!buffer Already Capped Words
+^AEURT
+!buffer mixedCase getUserName HTTPServer
+^AEURT
+!buffer kebab-case snake_case dotted.name
+^AEURT
+!buffer wrapped (already) here
+^AEURT
+!buffer hello (there world)
+^AEURT
+!buffer trailing punctuation, and more.
+^AEURT
+!buffer x1 y2 z3
+^AEURT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEURT
+!buffer quoted "thing" here
+^AEURT
+!buffer the end
+^AEURT
+!buffer the quick brown fox
+^AEULT
+!buffer hello world
+^AEULT
+!buffer one
+^AEULT
+!buffer ALL CAPS here
+^AEULT
+!buffer Already Capped Words
+^AEULT
+!buffer mixedCase getUserName HTTPServer
+^AEULT
+!buffer kebab-case snake_case dotted.name
+^AEULT
+!buffer wrapped (already) here
+^AEULT
+!buffer hello (there world)
+^AEULT
+!buffer trailing punctuation, and more.
+^AEULT
+!buffer x1 y2 z3
+^AEULT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEULT
+!buffer quoted "thing" here
+^AEULT
+!buffer the end
+^AEULT
+!buffer the quick brown fox
+^AEURLT
+!buffer hello world
+^AEURLT
+!buffer one
+^AEURLT
+!buffer ALL CAPS here
+^AEURLT
+!buffer Already Capped Words
+^AEURLT
+!buffer mixedCase getUserName HTTPServer
+^AEURLT
+!buffer kebab-case snake_case dotted.name
+^AEURLT
+!buffer wrapped (already) here
+^AEURLT
+!buffer hello (there world)
+^AEURLT
+!buffer trailing punctuation, and more.
+^AEURLT
+!buffer x1 y2 z3
+^AEURLT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEURLT
+!buffer quoted "thing" here
+^AEURLT
+!buffer the end
+^AEURLT
+!buffer the quick brown fox
+^AEUGT
+!buffer hello world
+^AEUGT
+!buffer one
+^AEUGT
+!buffer ALL CAPS here
+^AEUGT
+!buffer Already Capped Words
+^AEUGT
+!buffer mixedCase getUserName HTTPServer
+^AEUGT
+!buffer kebab-case snake_case dotted.name
+^AEUGT
+!buffer wrapped (already) here
+^AEUGT
+!buffer hello (there world)
+^AEUGT
+!buffer trailing punctuation, and more.
+^AEUGT
+!buffer x1 y2 z3
+^AEUGT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEUGT
+!buffer quoted "thing" here
+^AEUGT
+!buffer the end
+^AEUGT
+!buffer the quick brown fox
+^AEURGT
+!buffer hello world
+^AEURGT
+!buffer one
+^AEURGT
+!buffer ALL CAPS here
+^AEURGT
+!buffer Already Capped Words
+^AEURGT
+!buffer mixedCase getUserName HTTPServer
+^AEURGT
+!buffer kebab-case snake_case dotted.name
+^AEURGT
+!buffer wrapped (already) here
+^AEURGT
+!buffer hello (there world)
+^AEURGT
+!buffer trailing punctuation, and more.
+^AEURGT
+!buffer x1 y2 z3
+^AEURGT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEURGT
+!buffer quoted "thing" here
+^AEURGT
+!buffer the end
+^AEURGT
+!buffer the quick brown fox
+^AEULGT
+!buffer hello world
+^AEULGT
+!buffer one
+^AEULGT
+!buffer ALL CAPS here
+^AEULGT
+!buffer Already Capped Words
+^AEULGT
+!buffer mixedCase getUserName HTTPServer
+^AEULGT
+!buffer kebab-case snake_case dotted.name
+^AEULGT
+!buffer wrapped (already) here
+^AEULGT
+!buffer hello (there world)
+^AEULGT
+!buffer trailing punctuation, and more.
+^AEULGT
+!buffer x1 y2 z3
+^AEULGT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEULGT
+!buffer quoted "thing" here
+^AEULGT
+!buffer the end
+^AEULGT
+!buffer the quick brown fox
+^AEURLGT
+!buffer hello world
+^AEURLGT
+!buffer one
+^AEURLGT
+!buffer ALL CAPS here
+^AEURLGT
+!buffer Already Capped Words
+^AEURLGT
+!buffer mixedCase getUserName HTTPServer
+^AEURLGT
+!buffer kebab-case snake_case dotted.name
+^AEURLGT
+!buffer wrapped (already) here
+^AEURLGT
+!buffer hello (there world)
+^AEURLGT
+!buffer trailing punctuation, and more.
+^AEURLGT
+!buffer x1 y2 z3
+^AEURLGT
+!buffer a b c d e f g h i j k l m n o p q r s
+^AEURLGT
+!buffer quoted "thing" here
+^AEURLGT
+!buffer the end
+^AEURLGT

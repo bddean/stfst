@@ -1,0 +1,2051 @@
+! Which of the 1,024 strokes in the layout have an entry. Every entry is
+! total, so an entry always answers something, and a grammar that invented
+! a stroke shows up here and nowhere else.
+!buffer one two three
+^A
+!buffer one two three
+^AE
+!buffer one two three
+^AU
+!buffer one two three
+^AF
+!buffer one two three
+^AR
+!buffer one two three
+^AP
+!buffer one two three
+^AB
+!buffer one two three
+^AL
+!buffer one two three
+^AG
+!buffer one two three
+^AT
+!buffer one two three
+^AS
+!buffer one two three
+^AEU
+!buffer one two three
+^AEF
+!buffer one two three
+^AER
+!buffer one two three
+^AEP
+!buffer one two three
+^AEB
+!buffer one two three
+^AEL
+!buffer one two three
+^AEG
+!buffer one two three
+^AET
+!buffer one two three
+^AES
+!buffer one two three
+^AUF
+!buffer one two three
+^AUR
+!buffer one two three
+^AUP
+!buffer one two three
+^AUB
+!buffer one two three
+^AUL
+!buffer one two three
+^AUG
+!buffer one two three
+^AUT
+!buffer one two three
+^AUS
+!buffer one two three
+^AFR
+!buffer one two three
+^AFP
+!buffer one two three
+^AFB
+!buffer one two three
+^AFL
+!buffer one two three
+^AFG
+!buffer one two three
+^AFT
+!buffer one two three
+^AFS
+!buffer one two three
+^ARP
+!buffer one two three
+^ARB
+!buffer one two three
+^ARL
+!buffer one two three
+^ARG
+!buffer one two three
+^ART
+!buffer one two three
+^ARS
+!buffer one two three
+^APB
+!buffer one two three
+^APL
+!buffer one two three
+^APG
+!buffer one two three
+^APT
+!buffer one two three
+^APS
+!buffer one two three
+^ABL
+!buffer one two three
+^ABG
+!buffer one two three
+^ABT
+!buffer one two three
+^ABS
+!buffer one two three
+^ALG
+!buffer one two three
+^ALT
+!buffer one two three
+^ALS
+!buffer one two three
+^AGT
+!buffer one two three
+^AGS
+!buffer one two three
+^ATS
+!buffer one two three
+^AEUF
+!buffer one two three
+^AEUR
+!buffer one two three
+^AEUP
+!buffer one two three
+^AEUB
+!buffer one two three
+^AEUL
+!buffer one two three
+^AEUG
+!buffer one two three
+^AEUT
+!buffer one two three
+^AEUS
+!buffer one two three
+^AEFR
+!buffer one two three
+^AEFP
+!buffer one two three
+^AEFB
+!buffer one two three
+^AEFL
+!buffer one two three
+^AEFG
+!buffer one two three
+^AEFT
+!buffer one two three
+^AEFS
+!buffer one two three
+^AERP
+!buffer one two three
+^AERB
+!buffer one two three
+^AERL
+!buffer one two three
+^AERG
+!buffer one two three
+^AERT
+!buffer one two three
+^AERS
+!buffer one two three
+^AEPB
+!buffer one two three
+^AEPL
+!buffer one two three
+^AEPG
+!buffer one two three
+^AEPT
+!buffer one two three
+^AEPS
+!buffer one two three
+^AEBL
+!buffer one two three
+^AEBG
+!buffer one two three
+^AEBT
+!buffer one two three
+^AEBS
+!buffer one two three
+^AELG
+!buffer one two three
+^AELT
+!buffer one two three
+^AELS
+!buffer one two three
+^AEGT
+!buffer one two three
+^AEGS
+!buffer one two three
+^AETS
+!buffer one two three
+^AUFR
+!buffer one two three
+^AUFP
+!buffer one two three
+^AUFB
+!buffer one two three
+^AUFL
+!buffer one two three
+^AUFG
+!buffer one two three
+^AUFT
+!buffer one two three
+^AUFS
+!buffer one two three
+^AURP
+!buffer one two three
+^AURB
+!buffer one two three
+^AURL
+!buffer one two three
+^AURG
+!buffer one two three
+^AURT
+!buffer one two three
+^AURS
+!buffer one two three
+^AUPB
+!buffer one two three
+^AUPL
+!buffer one two three
+^AUPG
+!buffer one two three
+^AUPT
+!buffer one two three
+^AUPS
+!buffer one two three
+^AUBL
+!buffer one two three
+^AUBG
+!buffer one two three
+^AUBT
+!buffer one two three
+^AUBS
+!buffer one two three
+^AULG
+!buffer one two three
+^AULT
+!buffer one two three
+^AULS
+!buffer one two three
+^AUGT
+!buffer one two three
+^AUGS
+!buffer one two three
+^AUTS
+!buffer one two three
+^AFRP
+!buffer one two three
+^AFRB
+!buffer one two three
+^AFRL
+!buffer one two three
+^AFRG
+!buffer one two three
+^AFRT
+!buffer one two three
+^AFRS
+!buffer one two three
+^AFPB
+!buffer one two three
+^AFPL
+!buffer one two three
+^AFPG
+!buffer one two three
+^AFPT
+!buffer one two three
+^AFPS
+!buffer one two three
+^AFBL
+!buffer one two three
+^AFBG
+!buffer one two three
+^AFBT
+!buffer one two three
+^AFBS
+!buffer one two three
+^AFLG
+!buffer one two three
+^AFLT
+!buffer one two three
+^AFLS
+!buffer one two three
+^AFGT
+!buffer one two three
+^AFGS
+!buffer one two three
+^AFTS
+!buffer one two three
+^ARPB
+!buffer one two three
+^ARPL
+!buffer one two three
+^ARPG
+!buffer one two three
+^ARPT
+!buffer one two three
+^ARPS
+!buffer one two three
+^ARBL
+!buffer one two three
+^ARBG
+!buffer one two three
+^ARBT
+!buffer one two three
+^ARBS
+!buffer one two three
+^ARLG
+!buffer one two three
+^ARLT
+!buffer one two three
+^ARLS
+!buffer one two three
+^ARGT
+!buffer one two three
+^ARGS
+!buffer one two three
+^ARTS
+!buffer one two three
+^APBL
+!buffer one two three
+^APBG
+!buffer one two three
+^APBT
+!buffer one two three
+^APBS
+!buffer one two three
+^APLG
+!buffer one two three
+^APLT
+!buffer one two three
+^APLS
+!buffer one two three
+^APGT
+!buffer one two three
+^APGS
+!buffer one two three
+^APTS
+!buffer one two three
+^ABLG
+!buffer one two three
+^ABLT
+!buffer one two three
+^ABLS
+!buffer one two three
+^ABGT
+!buffer one two three
+^ABGS
+!buffer one two three
+^ABTS
+!buffer one two three
+^ALGT
+!buffer one two three
+^ALGS
+!buffer one two three
+^ALTS
+!buffer one two three
+^AGTS
+!buffer one two three
+^AEUFR
+!buffer one two three
+^AEUFP
+!buffer one two three
+^AEUFB
+!buffer one two three
+^AEUFL
+!buffer one two three
+^AEUFG
+!buffer one two three
+^AEUFT
+!buffer one two three
+^AEUFS
+!buffer one two three
+^AEURP
+!buffer one two three
+^AEURB
+!buffer one two three
+^AEURL
+!buffer one two three
+^AEURG
+!buffer one two three
+^AEURT
+!buffer one two three
+^AEURS
+!buffer one two three
+^AEUPB
+!buffer one two three
+^AEUPL
+!buffer one two three
+^AEUPG
+!buffer one two three
+^AEUPT
+!buffer one two three
+^AEUPS
+!buffer one two three
+^AEUBL
+!buffer one two three
+^AEUBG
+!buffer one two three
+^AEUBT
+!buffer one two three
+^AEUBS
+!buffer one two three
+^AEULG
+!buffer one two three
+^AEULT
+!buffer one two three
+^AEULS
+!buffer one two three
+^AEUGT
+!buffer one two three
+^AEUGS
+!buffer one two three
+^AEUTS
+!buffer one two three
+^AEFRP
+!buffer one two three
+^AEFRB
+!buffer one two three
+^AEFRL
+!buffer one two three
+^AEFRG
+!buffer one two three
+^AEFRT
+!buffer one two three
+^AEFRS
+!buffer one two three
+^AEFPB
+!buffer one two three
+^AEFPL
+!buffer one two three
+^AEFPG
+!buffer one two three
+^AEFPT
+!buffer one two three
+^AEFPS
+!buffer one two three
+^AEFBL
+!buffer one two three
+^AEFBG
+!buffer one two three
+^AEFBT
+!buffer one two three
+^AEFBS
+!buffer one two three
+^AEFLG
+!buffer one two three
+^AEFLT
+!buffer one two three
+^AEFLS
+!buffer one two three
+^AEFGT
+!buffer one two three
+^AEFGS
+!buffer one two three
+^AEFTS
+!buffer one two three
+^AERPB
+!buffer one two three
+^AERPL
+!buffer one two three
+^AERPG
+!buffer one two three
+^AERPT
+!buffer one two three
+^AERPS
+!buffer one two three
+^AERBL
+!buffer one two three
+^AERBG
+!buffer one two three
+^AERBT
+!buffer one two three
+^AERBS
+!buffer one two three
+^AERLG
+!buffer one two three
+^AERLT
+!buffer one two three
+^AERLS
+!buffer one two three
+^AERGT
+!buffer one two three
+^AERGS
+!buffer one two three
+^AERTS
+!buffer one two three
+^AEPBL
+!buffer one two three
+^AEPBG
+!buffer one two three
+^AEPBT
+!buffer one two three
+^AEPBS
+!buffer one two three
+^AEPLG
+!buffer one two three
+^AEPLT
+!buffer one two three
+^AEPLS
+!buffer one two three
+^AEPGT
+!buffer one two three
+^AEPGS
+!buffer one two three
+^AEPTS
+!buffer one two three
+^AEBLG
+!buffer one two three
+^AEBLT
+!buffer one two three
+^AEBLS
+!buffer one two three
+^AEBGT
+!buffer one two three
+^AEBGS
+!buffer one two three
+^AEBTS
+!buffer one two three
+^AELGT
+!buffer one two three
+^AELGS
+!buffer one two three
+^AELTS
+!buffer one two three
+^AEGTS
+!buffer one two three
+^AUFRP
+!buffer one two three
+^AUFRB
+!buffer one two three
+^AUFRL
+!buffer one two three
+^AUFRG
+!buffer one two three
+^AUFRT
+!buffer one two three
+^AUFRS
+!buffer one two three
+^AUFPB
+!buffer one two three
+^AUFPL
+!buffer one two three
+^AUFPG
+!buffer one two three
+^AUFPT
+!buffer one two three
+^AUFPS
+!buffer one two three
+^AUFBL
+!buffer one two three
+^AUFBG
+!buffer one two three
+^AUFBT
+!buffer one two three
+^AUFBS
+!buffer one two three
+^AUFLG
+!buffer one two three
+^AUFLT
+!buffer one two three
+^AUFLS
+!buffer one two three
+^AUFGT
+!buffer one two three
+^AUFGS
+!buffer one two three
+^AUFTS
+!buffer one two three
+^AURPB
+!buffer one two three
+^AURPL
+!buffer one two three
+^AURPG
+!buffer one two three
+^AURPT
+!buffer one two three
+^AURPS
+!buffer one two three
+^AURBL
+!buffer one two three
+^AURBG
+!buffer one two three
+^AURBT
+!buffer one two three
+^AURBS
+!buffer one two three
+^AURLG
+!buffer one two three
+^AURLT
+!buffer one two three
+^AURLS
+!buffer one two three
+^AURGT
+!buffer one two three
+^AURGS
+!buffer one two three
+^AURTS
+!buffer one two three
+^AUPBL
+!buffer one two three
+^AUPBG
+!buffer one two three
+^AUPBT
+!buffer one two three
+^AUPBS
+!buffer one two three
+^AUPLG
+!buffer one two three
+^AUPLT
+!buffer one two three
+^AUPLS
+!buffer one two three
+^AUPGT
+!buffer one two three
+^AUPGS
+!buffer one two three
+^AUPTS
+!buffer one two three
+^AUBLG
+!buffer one two three
+^AUBLT
+!buffer one two three
+^AUBLS
+!buffer one two three
+^AUBGT
+!buffer one two three
+^AUBGS
+!buffer one two three
+^AUBTS
+!buffer one two three
+^AULGT
+!buffer one two three
+^AULGS
+!buffer one two three
+^AULTS
+!buffer one two three
+^AUGTS
+!buffer one two three
+^AFRPB
+!buffer one two three
+^AFRPL
+!buffer one two three
+^AFRPG
+!buffer one two three
+^AFRPT
+!buffer one two three
+^AFRPS
+!buffer one two three
+^AFRBL
+!buffer one two three
+^AFRBG
+!buffer one two three
+^AFRBT
+!buffer one two three
+^AFRBS
+!buffer one two three
+^AFRLG
+!buffer one two three
+^AFRLT
+!buffer one two three
+^AFRLS
+!buffer one two three
+^AFRGT
+!buffer one two three
+^AFRGS
+!buffer one two three
+^AFRTS
+!buffer one two three
+^AFPBL
+!buffer one two three
+^AFPBG
+!buffer one two three
+^AFPBT
+!buffer one two three
+^AFPBS
+!buffer one two three
+^AFPLG
+!buffer one two three
+^AFPLT
+!buffer one two three
+^AFPLS
+!buffer one two three
+^AFPGT
+!buffer one two three
+^AFPGS
+!buffer one two three
+^AFPTS
+!buffer one two three
+^AFBLG
+!buffer one two three
+^AFBLT
+!buffer one two three
+^AFBLS
+!buffer one two three
+^AFBGT
+!buffer one two three
+^AFBGS
+!buffer one two three
+^AFBTS
+!buffer one two three
+^AFLGT
+!buffer one two three
+^AFLGS
+!buffer one two three
+^AFLTS
+!buffer one two three
+^AFGTS
+!buffer one two three
+^ARPBL
+!buffer one two three
+^ARPBG
+!buffer one two three
+^ARPBT
+!buffer one two three
+^ARPBS
+!buffer one two three
+^ARPLG
+!buffer one two three
+^ARPLT
+!buffer one two three
+^ARPLS
+!buffer one two three
+^ARPGT
+!buffer one two three
+^ARPGS
+!buffer one two three
+^ARPTS
+!buffer one two three
+^ARBLG
+!buffer one two three
+^ARBLT
+!buffer one two three
+^ARBLS
+!buffer one two three
+^ARBGT
+!buffer one two three
+^ARBGS
+!buffer one two three
+^ARBTS
+!buffer one two three
+^ARLGT
+!buffer one two three
+^ARLGS
+!buffer one two three
+^ARLTS
+!buffer one two three
+^ARGTS
+!buffer one two three
+^APBLG
+!buffer one two three
+^APBLT
+!buffer one two three
+^APBLS
+!buffer one two three
+^APBGT
+!buffer one two three
+^APBGS
+!buffer one two three
+^APBTS
+!buffer one two three
+^APLGT
+!buffer one two three
+^APLGS
+!buffer one two three
+^APLTS
+!buffer one two three
+^APGTS
+!buffer one two three
+^ABLGT
+!buffer one two three
+^ABLGS
+!buffer one two three
+^ABLTS
+!buffer one two three
+^ABGTS
+!buffer one two three
+^ALGTS
+!buffer one two three
+^AEUFRP
+!buffer one two three
+^AEUFRB
+!buffer one two three
+^AEUFRL
+!buffer one two three
+^AEUFRG
+!buffer one two three
+^AEUFRT
+!buffer one two three
+^AEUFRS
+!buffer one two three
+^AEUFPB
+!buffer one two three
+^AEUFPL
+!buffer one two three
+^AEUFPG
+!buffer one two three
+^AEUFPT
+!buffer one two three
+^AEUFPS
+!buffer one two three
+^AEUFBL
+!buffer one two three
+^AEUFBG
+!buffer one two three
+^AEUFBT
+!buffer one two three
+^AEUFBS
+!buffer one two three
+^AEUFLG
+!buffer one two three
+^AEUFLT
+!buffer one two three
+^AEUFLS
+!buffer one two three
+^AEUFGT
+!buffer one two three
+^AEUFGS
+!buffer one two three
+^AEUFTS
+!buffer one two three
+^AEURPB
+!buffer one two three
+^AEURPL
+!buffer one two three
+^AEURPG
+!buffer one two three
+^AEURPT
+!buffer one two three
+^AEURPS
+!buffer one two three
+^AEURBL
+!buffer one two three
+^AEURBG
+!buffer one two three
+^AEURBT
+!buffer one two three
+^AEURBS
+!buffer one two three
+^AEURLG
+!buffer one two three
+^AEURLT
+!buffer one two three
+^AEURLS
+!buffer one two three
+^AEURGT
+!buffer one two three
+^AEURGS
+!buffer one two three
+^AEURTS
+!buffer one two three
+^AEUPBL
+!buffer one two three
+^AEUPBG
+!buffer one two three
+^AEUPBT
+!buffer one two three
+^AEUPBS
+!buffer one two three
+^AEUPLG
+!buffer one two three
+^AEUPLT
+!buffer one two three
+^AEUPLS
+!buffer one two three
+^AEUPGT
+!buffer one two three
+^AEUPGS
+!buffer one two three
+^AEUPTS
+!buffer one two three
+^AEUBLG
+!buffer one two three
+^AEUBLT
+!buffer one two three
+^AEUBLS
+!buffer one two three
+^AEUBGT
+!buffer one two three
+^AEUBGS
+!buffer one two three
+^AEUBTS
+!buffer one two three
+^AEULGT
+!buffer one two three
+^AEULGS
+!buffer one two three
+^AEULTS
+!buffer one two three
+^AEUGTS
+!buffer one two three
+^AEFRPB
+!buffer one two three
+^AEFRPL
+!buffer one two three
+^AEFRPG
+!buffer one two three
+^AEFRPT
+!buffer one two three
+^AEFRPS
+!buffer one two three
+^AEFRBL
+!buffer one two three
+^AEFRBG
+!buffer one two three
+^AEFRBT
+!buffer one two three
+^AEFRBS
+!buffer one two three
+^AEFRLG
+!buffer one two three
+^AEFRLT
+!buffer one two three
+^AEFRLS
+!buffer one two three
+^AEFRGT
+!buffer one two three
+^AEFRGS
+!buffer one two three
+^AEFRTS
+!buffer one two three
+^AEFPBL
+!buffer one two three
+^AEFPBG
+!buffer one two three
+^AEFPBT
+!buffer one two three
+^AEFPBS
+!buffer one two three
+^AEFPLG
+!buffer one two three
+^AEFPLT
+!buffer one two three
+^AEFPLS
+!buffer one two three
+^AEFPGT
+!buffer one two three
+^AEFPGS
+!buffer one two three
+^AEFPTS
+!buffer one two three
+^AEFBLG
+!buffer one two three
+^AEFBLT
+!buffer one two three
+^AEFBLS
+!buffer one two three
+^AEFBGT
+!buffer one two three
+^AEFBGS
+!buffer one two three
+^AEFBTS
+!buffer one two three
+^AEFLGT
+!buffer one two three
+^AEFLGS
+!buffer one two three
+^AEFLTS
+!buffer one two three
+^AEFGTS
+!buffer one two three
+^AERPBL
+!buffer one two three
+^AERPBG
+!buffer one two three
+^AERPBT
+!buffer one two three
+^AERPBS
+!buffer one two three
+^AERPLG
+!buffer one two three
+^AERPLT
+!buffer one two three
+^AERPLS
+!buffer one two three
+^AERPGT
+!buffer one two three
+^AERPGS
+!buffer one two three
+^AERPTS
+!buffer one two three
+^AERBLG
+!buffer one two three
+^AERBLT
+!buffer one two three
+^AERBLS
+!buffer one two three
+^AERBGT
+!buffer one two three
+^AERBGS
+!buffer one two three
+^AERBTS
+!buffer one two three
+^AERLGT
+!buffer one two three
+^AERLGS
+!buffer one two three
+^AERLTS
+!buffer one two three
+^AERGTS
+!buffer one two three
+^AEPBLG
+!buffer one two three
+^AEPBLT
+!buffer one two three
+^AEPBLS
+!buffer one two three
+^AEPBGT
+!buffer one two three
+^AEPBGS
+!buffer one two three
+^AEPBTS
+!buffer one two three
+^AEPLGT
+!buffer one two three
+^AEPLGS
+!buffer one two three
+^AEPLTS
+!buffer one two three
+^AEPGTS
+!buffer one two three
+^AEBLGT
+!buffer one two three
+^AEBLGS
+!buffer one two three
+^AEBLTS
+!buffer one two three
+^AEBGTS
+!buffer one two three
+^AELGTS
+!buffer one two three
+^AUFRPB
+!buffer one two three
+^AUFRPL
+!buffer one two three
+^AUFRPG
+!buffer one two three
+^AUFRPT
+!buffer one two three
+^AUFRPS
+!buffer one two three
+^AUFRBL
+!buffer one two three
+^AUFRBG
+!buffer one two three
+^AUFRBT
+!buffer one two three
+^AUFRBS
+!buffer one two three
+^AUFRLG
+!buffer one two three
+^AUFRLT
+!buffer one two three
+^AUFRLS
+!buffer one two three
+^AUFRGT
+!buffer one two three
+^AUFRGS
+!buffer one two three
+^AUFRTS
+!buffer one two three
+^AUFPBL
+!buffer one two three
+^AUFPBG
+!buffer one two three
+^AUFPBT
+!buffer one two three
+^AUFPBS
+!buffer one two three
+^AUFPLG
+!buffer one two three
+^AUFPLT
+!buffer one two three
+^AUFPLS
+!buffer one two three
+^AUFPGT
+!buffer one two three
+^AUFPGS
+!buffer one two three
+^AUFPTS
+!buffer one two three
+^AUFBLG
+!buffer one two three
+^AUFBLT
+!buffer one two three
+^AUFBLS
+!buffer one two three
+^AUFBGT
+!buffer one two three
+^AUFBGS
+!buffer one two three
+^AUFBTS
+!buffer one two three
+^AUFLGT
+!buffer one two three
+^AUFLGS
+!buffer one two three
+^AUFLTS
+!buffer one two three
+^AUFGTS
+!buffer one two three
+^AURPBL
+!buffer one two three
+^AURPBG
+!buffer one two three
+^AURPBT
+!buffer one two three
+^AURPBS
+!buffer one two three
+^AURPLG
+!buffer one two three
+^AURPLT
+!buffer one two three
+^AURPLS
+!buffer one two three
+^AURPGT
+!buffer one two three
+^AURPGS
+!buffer one two three
+^AURPTS
+!buffer one two three
+^AURBLG
+!buffer one two three
+^AURBLT
+!buffer one two three
+^AURBLS
+!buffer one two three
+^AURBGT
+!buffer one two three
+^AURBGS
+!buffer one two three
+^AURBTS
+!buffer one two three
+^AURLGT
+!buffer one two three
+^AURLGS
+!buffer one two three
+^AURLTS
+!buffer one two three
+^AURGTS
+!buffer one two three
+^AUPBLG
+!buffer one two three
+^AUPBLT
+!buffer one two three
+^AUPBLS
+!buffer one two three
+^AUPBGT
+!buffer one two three
+^AUPBGS
+!buffer one two three
+^AUPBTS
+!buffer one two three
+^AUPLGT
+!buffer one two three
+^AUPLGS
+!buffer one two three
+^AUPLTS
+!buffer one two three
+^AUPGTS
+!buffer one two three
+^AUBLGT
+!buffer one two three
+^AUBLGS
+!buffer one two three
+^AUBLTS
+!buffer one two three
+^AUBGTS
+!buffer one two three
+^AULGTS
+!buffer one two three
+^AFRPBL
+!buffer one two three
+^AFRPBG
+!buffer one two three
+^AFRPBT
+!buffer one two three
+^AFRPBS
+!buffer one two three
+^AFRPLG
+!buffer one two three
+^AFRPLT
+!buffer one two three
+^AFRPLS
+!buffer one two three
+^AFRPGT
+!buffer one two three
+^AFRPGS
+!buffer one two three
+^AFRPTS
+!buffer one two three
+^AFRBLG
+!buffer one two three
+^AFRBLT
+!buffer one two three
+^AFRBLS
+!buffer one two three
+^AFRBGT
+!buffer one two three
+^AFRBGS
+!buffer one two three
+^AFRBTS
+!buffer one two three
+^AFRLGT
+!buffer one two three
+^AFRLGS
+!buffer one two three
+^AFRLTS
+!buffer one two three
+^AFRGTS
+!buffer one two three
+^AFPBLG
+!buffer one two three
+^AFPBLT
+!buffer one two three
+^AFPBLS
+!buffer one two three
+^AFPBGT
+!buffer one two three
+^AFPBGS
+!buffer one two three
+^AFPBTS
+!buffer one two three
+^AFPLGT
+!buffer one two three
+^AFPLGS
+!buffer one two three
+^AFPLTS
+!buffer one two three
+^AFPGTS
+!buffer one two three
+^AFBLGT
+!buffer one two three
+^AFBLGS
+!buffer one two three
+^AFBLTS
+!buffer one two three
+^AFBGTS
+!buffer one two three
+^AFLGTS
+!buffer one two three
+^ARPBLG
+!buffer one two three
+^ARPBLT
+!buffer one two three
+^ARPBLS
+!buffer one two three
+^ARPBGT
+!buffer one two three
+^ARPBGS
+!buffer one two three
+^ARPBTS
+!buffer one two three
+^ARPLGT
+!buffer one two three
+^ARPLGS
+!buffer one two three
+^ARPLTS
+!buffer one two three
+^ARPGTS
+!buffer one two three
+^ARBLGT
+!buffer one two three
+^ARBLGS
+!buffer one two three
+^ARBLTS
+!buffer one two three
+^ARBGTS
+!buffer one two three
+^ARLGTS
+!buffer one two three
+^APBLGT
+!buffer one two three
+^APBLGS
+!buffer one two three
+^APBLTS
+!buffer one two three
+^APBGTS
+!buffer one two three
+^APLGTS
+!buffer one two three
+^ABLGTS
+!buffer one two three
+^AEUFRPB
+!buffer one two three
+^AEUFRPL
+!buffer one two three
+^AEUFRPG
+!buffer one two three
+^AEUFRPT
+!buffer one two three
+^AEUFRPS
+!buffer one two three
+^AEUFRBL
+!buffer one two three
+^AEUFRBG
+!buffer one two three
+^AEUFRBT
+!buffer one two three
+^AEUFRBS
+!buffer one two three
+^AEUFRLG
+!buffer one two three
+^AEUFRLT
+!buffer one two three
+^AEUFRLS
+!buffer one two three
+^AEUFRGT
+!buffer one two three
+^AEUFRGS
+!buffer one two three
+^AEUFRTS
+!buffer one two three
+^AEUFPBL
+!buffer one two three
+^AEUFPBG
+!buffer one two three
+^AEUFPBT
+!buffer one two three
+^AEUFPBS
+!buffer one two three
+^AEUFPLG
+!buffer one two three
+^AEUFPLT
+!buffer one two three
+^AEUFPLS
+!buffer one two three
+^AEUFPGT
+!buffer one two three
+^AEUFPGS
+!buffer one two three
+^AEUFPTS
+!buffer one two three
+^AEUFBLG
+!buffer one two three
+^AEUFBLT
+!buffer one two three
+^AEUFBLS
+!buffer one two three
+^AEUFBGT
+!buffer one two three
+^AEUFBGS
+!buffer one two three
+^AEUFBTS
+!buffer one two three
+^AEUFLGT
+!buffer one two three
+^AEUFLGS
+!buffer one two three
+^AEUFLTS
+!buffer one two three
+^AEUFGTS
+!buffer one two three
+^AEURPBL
+!buffer one two three
+^AEURPBG
+!buffer one two three
+^AEURPBT
+!buffer one two three
+^AEURPBS
+!buffer one two three
+^AEURPLG
+!buffer one two three
+^AEURPLT
+!buffer one two three
+^AEURPLS
+!buffer one two three
+^AEURPGT
+!buffer one two three
+^AEURPGS
+!buffer one two three
+^AEURPTS
+!buffer one two three
+^AEURBLG
+!buffer one two three
+^AEURBLT
+!buffer one two three
+^AEURBLS
+!buffer one two three
+^AEURBGT
+!buffer one two three
+^AEURBGS
+!buffer one two three
+^AEURBTS
+!buffer one two three
+^AEURLGT
+!buffer one two three
+^AEURLGS
+!buffer one two three
+^AEURLTS
+!buffer one two three
+^AEURGTS
+!buffer one two three
+^AEUPBLG
+!buffer one two three
+^AEUPBLT
+!buffer one two three
+^AEUPBLS
+!buffer one two three
+^AEUPBGT
+!buffer one two three
+^AEUPBGS
+!buffer one two three
+^AEUPBTS
+!buffer one two three
+^AEUPLGT
+!buffer one two three
+^AEUPLGS
+!buffer one two three
+^AEUPLTS
+!buffer one two three
+^AEUPGTS
+!buffer one two three
+^AEUBLGT
+!buffer one two three
+^AEUBLGS
+!buffer one two three
+^AEUBLTS
+!buffer one two three
+^AEUBGTS
+!buffer one two three
+^AEULGTS
+!buffer one two three
+^AEFRPBL
+!buffer one two three
+^AEFRPBG
+!buffer one two three
+^AEFRPBT
+!buffer one two three
+^AEFRPBS
+!buffer one two three
+^AEFRPLG
+!buffer one two three
+^AEFRPLT
+!buffer one two three
+^AEFRPLS
+!buffer one two three
+^AEFRPGT
+!buffer one two three
+^AEFRPGS
+!buffer one two three
+^AEFRPTS
+!buffer one two three
+^AEFRBLG
+!buffer one two three
+^AEFRBLT
+!buffer one two three
+^AEFRBLS
+!buffer one two three
+^AEFRBGT
+!buffer one two three
+^AEFRBGS
+!buffer one two three
+^AEFRBTS
+!buffer one two three
+^AEFRLGT
+!buffer one two three
+^AEFRLGS
+!buffer one two three
+^AEFRLTS
+!buffer one two three
+^AEFRGTS
+!buffer one two three
+^AEFPBLG
+!buffer one two three
+^AEFPBLT
+!buffer one two three
+^AEFPBLS
+!buffer one two three
+^AEFPBGT
+!buffer one two three
+^AEFPBGS
+!buffer one two three
+^AEFPBTS
+!buffer one two three
+^AEFPLGT
+!buffer one two three
+^AEFPLGS
+!buffer one two three
+^AEFPLTS
+!buffer one two three
+^AEFPGTS
+!buffer one two three
+^AEFBLGT
+!buffer one two three
+^AEFBLGS
+!buffer one two three
+^AEFBLTS
+!buffer one two three
+^AEFBGTS
+!buffer one two three
+^AEFLGTS
+!buffer one two three
+^AERPBLG
+!buffer one two three
+^AERPBLT
+!buffer one two three
+^AERPBLS
+!buffer one two three
+^AERPBGT
+!buffer one two three
+^AERPBGS
+!buffer one two three
+^AERPBTS
+!buffer one two three
+^AERPLGT
+!buffer one two three
+^AERPLGS
+!buffer one two three
+^AERPLTS
+!buffer one two three
+^AERPGTS
+!buffer one two three
+^AERBLGT
+!buffer one two three
+^AERBLGS
+!buffer one two three
+^AERBLTS
+!buffer one two three
+^AERBGTS
+!buffer one two three
+^AERLGTS
+!buffer one two three
+^AEPBLGT
+!buffer one two three
+^AEPBLGS
+!buffer one two three
+^AEPBLTS
+!buffer one two three
+^AEPBGTS
+!buffer one two three
+^AEPLGTS
+!buffer one two three
+^AEBLGTS
+!buffer one two three
+^AUFRPBL
+!buffer one two three
+^AUFRPBG
+!buffer one two three
+^AUFRPBT
+!buffer one two three
+^AUFRPBS
+!buffer one two three
+^AUFRPLG
+!buffer one two three
+^AUFRPLT
+!buffer one two three
+^AUFRPLS
+!buffer one two three
+^AUFRPGT
+!buffer one two three
+^AUFRPGS
+!buffer one two three
+^AUFRPTS
+!buffer one two three
+^AUFRBLG
+!buffer one two three
+^AUFRBLT
+!buffer one two three
+^AUFRBLS
+!buffer one two three
+^AUFRBGT
+!buffer one two three
+^AUFRBGS
+!buffer one two three
+^AUFRBTS
+!buffer one two three
+^AUFRLGT
+!buffer one two three
+^AUFRLGS
+!buffer one two three
+^AUFRLTS
+!buffer one two three
+^AUFRGTS
+!buffer one two three
+^AUFPBLG
+!buffer one two three
+^AUFPBLT
+!buffer one two three
+^AUFPBLS
+!buffer one two three
+^AUFPBGT
+!buffer one two three
+^AUFPBGS
+!buffer one two three
+^AUFPBTS
+!buffer one two three
+^AUFPLGT
+!buffer one two three
+^AUFPLGS
+!buffer one two three
+^AUFPLTS
+!buffer one two three
+^AUFPGTS
+!buffer one two three
+^AUFBLGT
+!buffer one two three
+^AUFBLGS
+!buffer one two three
+^AUFBLTS
+!buffer one two three
+^AUFBGTS
+!buffer one two three
+^AUFLGTS
+!buffer one two three
+^AURPBLG
+!buffer one two three
+^AURPBLT
+!buffer one two three
+^AURPBLS
+!buffer one two three
+^AURPBGT
+!buffer one two three
+^AURPBGS
+!buffer one two three
+^AURPBTS
+!buffer one two three
+^AURPLGT
+!buffer one two three
+^AURPLGS
+!buffer one two three
+^AURPLTS
+!buffer one two three
+^AURPGTS
+!buffer one two three
+^AURBLGT
+!buffer one two three
+^AURBLGS
+!buffer one two three
+^AURBLTS
+!buffer one two three
+^AURBGTS
+!buffer one two three
+^AURLGTS
+!buffer one two three
+^AUPBLGT
+!buffer one two three
+^AUPBLGS
+!buffer one two three
+^AUPBLTS
+!buffer one two three
+^AUPBGTS
+!buffer one two three
+^AUPLGTS
+!buffer one two three
+^AUBLGTS
+!buffer one two three
+^AFRPBLG
+!buffer one two three
+^AFRPBLT
+!buffer one two three
+^AFRPBLS
+!buffer one two three
+^AFRPBGT
+!buffer one two three
+^AFRPBGS
+!buffer one two three
+^AFRPBTS
+!buffer one two three
+^AFRPLGT
+!buffer one two three
+^AFRPLGS
+!buffer one two three
+^AFRPLTS
+!buffer one two three
+^AFRPGTS
+!buffer one two three
+^AFRBLGT
+!buffer one two three
+^AFRBLGS
+!buffer one two three
+^AFRBLTS
+!buffer one two three
+^AFRBGTS
+!buffer one two three
+^AFRLGTS
+!buffer one two three
+^AFPBLGT
+!buffer one two three
+^AFPBLGS
+!buffer one two three
+^AFPBLTS
+!buffer one two three
+^AFPBGTS
+!buffer one two three
+^AFPLGTS
+!buffer one two three
+^AFBLGTS
+!buffer one two three
+^ARPBLGT
+!buffer one two three
+^ARPBLGS
+!buffer one two three
+^ARPBLTS
+!buffer one two three
+^ARPBGTS
+!buffer one two three
+^ARPLGTS
+!buffer one two three
+^ARBLGTS
+!buffer one two three
+^APBLGTS
+!buffer one two three
+^AEUFRPBL
+!buffer one two three
+^AEUFRPBG
+!buffer one two three
+^AEUFRPBT
+!buffer one two three
+^AEUFRPBS
+!buffer one two three
+^AEUFRPLG
+!buffer one two three
+^AEUFRPLT
+!buffer one two three
+^AEUFRPLS
+!buffer one two three
+^AEUFRPGT
+!buffer one two three
+^AEUFRPGS
+!buffer one two three
+^AEUFRPTS
+!buffer one two three
+^AEUFRBLG
+!buffer one two three
+^AEUFRBLT
+!buffer one two three
+^AEUFRBLS
+!buffer one two three
+^AEUFRBGT
+!buffer one two three
+^AEUFRBGS
+!buffer one two three
+^AEUFRBTS
+!buffer one two three
+^AEUFRLGT
+!buffer one two three
+^AEUFRLGS
+!buffer one two three
+^AEUFRLTS
+!buffer one two three
+^AEUFRGTS
+!buffer one two three
+^AEUFPBLG
+!buffer one two three
+^AEUFPBLT
+!buffer one two three
+^AEUFPBLS
+!buffer one two three
+^AEUFPBGT
+!buffer one two three
+^AEUFPBGS
+!buffer one two three
+^AEUFPBTS
+!buffer one two three
+^AEUFPLGT
+!buffer one two three
+^AEUFPLGS
+!buffer one two three
+^AEUFPLTS
+!buffer one two three
+^AEUFPGTS
+!buffer one two three
+^AEUFBLGT
+!buffer one two three
+^AEUFBLGS
+!buffer one two three
+^AEUFBLTS
+!buffer one two three
+^AEUFBGTS
+!buffer one two three
+^AEUFLGTS
+!buffer one two three
+^AEURPBLG
+!buffer one two three
+^AEURPBLT
+!buffer one two three
+^AEURPBLS
+!buffer one two three
+^AEURPBGT
+!buffer one two three
+^AEURPBGS
+!buffer one two three
+^AEURPBTS
+!buffer one two three
+^AEURPLGT
+!buffer one two three
+^AEURPLGS
+!buffer one two three
+^AEURPLTS
+!buffer one two three
+^AEURPGTS
+!buffer one two three
+^AEURBLGT
+!buffer one two three
+^AEURBLGS
+!buffer one two three
+^AEURBLTS
+!buffer one two three
+^AEURBGTS
+!buffer one two three
+^AEURLGTS
+!buffer one two three
+^AEUPBLGT
+!buffer one two three
+^AEUPBLGS
+!buffer one two three
+^AEUPBLTS
+!buffer one two three
+^AEUPBGTS
+!buffer one two three
+^AEUPLGTS
+!buffer one two three
+^AEUBLGTS
+!buffer one two three
+^AEFRPBLG
+!buffer one two three
+^AEFRPBLT
+!buffer one two three
+^AEFRPBLS
+!buffer one two three
+^AEFRPBGT
+!buffer one two three
+^AEFRPBGS
+!buffer one two three
+^AEFRPBTS
+!buffer one two three
+^AEFRPLGT
+!buffer one two three
+^AEFRPLGS
+!buffer one two three
+^AEFRPLTS
+!buffer one two three
+^AEFRPGTS
+!buffer one two three
+^AEFRBLGT
+!buffer one two three
+^AEFRBLGS
+!buffer one two three
+^AEFRBLTS
+!buffer one two three
+^AEFRBGTS
+!buffer one two three
+^AEFRLGTS
+!buffer one two three
+^AEFPBLGT
+!buffer one two three
+^AEFPBLGS
+!buffer one two three
+^AEFPBLTS
+!buffer one two three
+^AEFPBGTS
+!buffer one two three
+^AEFPLGTS
+!buffer one two three
+^AEFBLGTS
+!buffer one two three
+^AERPBLGT
+!buffer one two three
+^AERPBLGS
+!buffer one two three
+^AERPBLTS
+!buffer one two three
+^AERPBGTS
+!buffer one two three
+^AERPLGTS
+!buffer one two three
+^AERBLGTS
+!buffer one two three
+^AEPBLGTS
+!buffer one two three
+^AUFRPBLG
+!buffer one two three
+^AUFRPBLT
+!buffer one two three
+^AUFRPBLS
+!buffer one two three
+^AUFRPBGT
+!buffer one two three
+^AUFRPBGS
+!buffer one two three
+^AUFRPBTS
+!buffer one two three
+^AUFRPLGT
+!buffer one two three
+^AUFRPLGS
+!buffer one two three
+^AUFRPLTS
+!buffer one two three
+^AUFRPGTS
+!buffer one two three
+^AUFRBLGT
+!buffer one two three
+^AUFRBLGS
+!buffer one two three
+^AUFRBLTS
+!buffer one two three
+^AUFRBGTS
+!buffer one two three
+^AUFRLGTS
+!buffer one two three
+^AUFPBLGT
+!buffer one two three
+^AUFPBLGS
+!buffer one two three
+^AUFPBLTS
+!buffer one two three
+^AUFPBGTS
+!buffer one two three
+^AUFPLGTS
+!buffer one two three
+^AUFBLGTS
+!buffer one two three
+^AURPBLGT
+!buffer one two three
+^AURPBLGS
+!buffer one two three
+^AURPBLTS
+!buffer one two three
+^AURPBGTS
+!buffer one two three
+^AURPLGTS
+!buffer one two three
+^AURBLGTS
+!buffer one two three
+^AUPBLGTS
+!buffer one two three
+^AFRPBLGT
+!buffer one two three
+^AFRPBLGS
+!buffer one two three
+^AFRPBLTS
+!buffer one two three
+^AFRPBGTS
+!buffer one two three
+^AFRPLGTS
+!buffer one two three
+^AFRBLGTS
+!buffer one two three
+^AFPBLGTS
+!buffer one two three
+^ARPBLGTS
+!buffer one two three
+^AEUFRPBLG
+!buffer one two three
+^AEUFRPBLT
+!buffer one two three
+^AEUFRPBLS
+!buffer one two three
+^AEUFRPBGT
+!buffer one two three
+^AEUFRPBGS
+!buffer one two three
+^AEUFRPBTS
+!buffer one two three
+^AEUFRPLGT
+!buffer one two three
+^AEUFRPLGS
+!buffer one two three
+^AEUFRPLTS
+!buffer one two three
+^AEUFRPGTS
+!buffer one two three
+^AEUFRBLGT
+!buffer one two three
+^AEUFRBLGS
+!buffer one two three
+^AEUFRBLTS
+!buffer one two three
+^AEUFRBGTS
+!buffer one two three
+^AEUFRLGTS
+!buffer one two three
+^AEUFPBLGT
+!buffer one two three
+^AEUFPBLGS
+!buffer one two three
+^AEUFPBLTS
+!buffer one two three
+^AEUFPBGTS
+!buffer one two three
+^AEUFPLGTS
+!buffer one two three
+^AEUFBLGTS
+!buffer one two three
+^AEURPBLGT
+!buffer one two three
+^AEURPBLGS
+!buffer one two three
+^AEURPBLTS
+!buffer one two three
+^AEURPBGTS
+!buffer one two three
+^AEURPLGTS
+!buffer one two three
+^AEURBLGTS
+!buffer one two three
+^AEUPBLGTS
+!buffer one two three
+^AEFRPBLGT
+!buffer one two three
+^AEFRPBLGS
+!buffer one two three
+^AEFRPBLTS
+!buffer one two three
+^AEFRPBGTS
+!buffer one two three
+^AEFRPLGTS
+!buffer one two three
+^AEFRBLGTS
+!buffer one two three
+^AEFPBLGTS
+!buffer one two three
+^AERPBLGTS
+!buffer one two three
+^AUFRPBLGT
+!buffer one two three
+^AUFRPBLGS
+!buffer one two three
+^AUFRPBLTS
+!buffer one two three
+^AUFRPBGTS
+!buffer one two three
+^AUFRPLGTS
+!buffer one two three
+^AUFRBLGTS
+!buffer one two three
+^AUFPBLGTS
+!buffer one two three
+^AURPBLGTS
+!buffer one two three
+^AFRPBLGTS
+!buffer one two three
+^AEUFRPBLGT
+!buffer one two three
+^AEUFRPBLGS
+!buffer one two three
+^AEUFRPBLTS
+!buffer one two three
+^AEUFRPBGTS
+!buffer one two three
+^AEUFRPLGTS
+!buffer one two three
+^AEUFRBLGTS
+!buffer one two three
+^AEUFPBLGTS
+!buffer one two three
+^AEURPBLGTS
+!buffer one two three
+^AEFRPBLGTS
+!buffer one two three
+^AUFRPBLGTS
+!buffer one two three
+^AEUFRPBLGTS

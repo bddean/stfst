@@ -112,8 +112,10 @@ Three keys with nothing to write themselves onto.
 Do-support is exactly the rule for that case, and English applies it: the clause
 has nothing for tense or negation to sit on, so `do` arrives to carry them. So
 this port writes "it doesn't often", "does it often", "it does often", and the
-last one is the emphatic `do` the key asks for. 1,878 strokes differ, and
-`scripts/check-phrasing.py` asserts the list rather than ignoring it.
+last one is the emphatic `do` the key asks for. 1,878 strokes differed while
+`phrasing.py` was still the oracle, and that check asserted the list rather than
+ignoring it. The oracle is retired now, so what the difference bought is here and
+in `tests/golden/phrasing.tsv`, where those strokes are ordinary rows.
 
 Nothing else differs. In particular `@#+K` is "do I do" in both, and that is
 right: `@` names the verb `do`, and a question about it needs do-support like any
@@ -155,19 +157,19 @@ may turn out to be free: fewest keys is fewest marked features here.
 
 ## Checked
 
-`scripts/check-phrasing.py`, 238,138 strokes, 0 differing. Coverage is split the
-way the grammar is:
+`tests/golden/phrasing.tsv`, 4,116 cases. The file is the expectation, and the
+sample is chosen the way the grammar is split:
 
-- **Exhaustive over the clause dimensions**, 196,608 strokes: every left-key set,
-  modality corner, polarity, aspect, tense, contraction mode, question and
-  emphasis, against one ender per shape the grammar distinguishes -- the empty
-  slot, the lone tense key, an adverb, and verbs with a pre-satellite, a
-  post-satellite and neither. That is the part with rules in it.
-- **Exhaustive over the enders**, all 666 of them against nine clause settings.
-  That is the part that is a table.
+- **One case per ender chord**, all 666 of them. That is the part that is a
+  table, and a map is checked by reading every row of it once.
+- **A prime stride through the clause dimensions** and through the rest of the
+  ender table, so the sample cycles every left-key set, modality corner,
+  polarity, aspect, tense, contraction mode, question and emphasis rather than
+  landing on one corner of each. That is the part with rules in it.
 
-The full cross product is 21.9M strokes, and there is no reason to walk it: the
-enders are a finite map, and a map is checked by reading every row of it once.
+The whole language is 21.9M strokes and no file holds it. The expectations were
+recorded from a run that `phrasing.py` had just agreed with over 238,138 strokes,
+which is the last thing that oracle did.
 
 The port cost four bugs and this file's coverage caught all four. The clausal
 "and" landed after an inverted finite word. The infinitive branch never consumed
@@ -241,13 +243,14 @@ stroke, so longest match is untouched.
 
 ### Checked
 
-`scripts/check-phrasing-retro.py`, 492,480 runs, **490,720 exact**. Coverage is the
-product of the dimensions a modifier can touch, which is where the rules are: every
-field of the delta alone, every pair, and the three-deep runs that make the
-order-sensitive fields disagree.
+`tests/golden/phrasing-retro.tsv`, 4,481 cases: a prime stride through the runs of
+one, two and three modifiers, so the sample cycles every field a modifier can
+touch rather than landing on one corner of each. That is where the rules are.
 
-The remaining 1,760 are the clause grammar's own deliberate divergence reaching
-here, the adverb launchpad with no auxiliary, and nothing else differs. In
+The expectations were recorded from the run `phrasing.py` last agreed with, over
+all 492,480 runs: **490,720 exact**. The other 1,760 are the clause grammar's own
+deliberate divergence reaching here, the adverb launchpad with no auxiliary, and
+nothing else differed. In
 particular the modes, the toggles, the counts and the last-writer fields all agree:
 `+*/+*/^+/+A/+K` is "I can", `@+/@+/+K` is "I do do", `+E/+U/+K` is "I've been".
 

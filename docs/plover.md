@@ -18,7 +18,7 @@ Both are held to the originals by measurement and not by review:
 |---|---|
 | `scripts/crosscheck-py.sh` | The Python reader against the Rust one, over 42,807 tapes: every tape in the golden files, 40,000 random key sequences, and every outline of a dictionary when one is named. The random ones matter most, because a reader goes wrong on dead ends rather than on entries that exist. |
 | `scripts/check-plugin.py` | Every entry of every imported dictionary, both directions, with Plover as the judge. |
-| `scripts/check-stack.py` | The whole configured stack against the dictionaries it was compiled from. What a per-entry check cannot see is which dictionary wins an outline. |
+| a stack check | The whole configured stack against the dictionaries it was compiled from. What a per-entry check cannot see is which dictionary wins an outline. Retired with the migration: see below. |
 
 The chain is Python to Rust to HFST: `crosscheck-ol.sh` already holds the Rust
 reader to `hfst-optimized-lookup`, so the format has one reading and three
@@ -38,10 +38,10 @@ which is what a second host is for.
 
 ## An entry check cannot see a stack
 
-`check-plugin.py` asks one dictionary about one entry. `check-stack.py` asks the
-*stack* what an outline writes: it loads the list in `plover.cfg` twice, once as
+`check-plugin.py` asks one dictionary about one entry. The stack check asked the
+*stack* what an outline writes: it loaded the list in `plover.cfg` twice, once as
 configured and once with every artifact replaced by the file it was compiled
-from, and asks both every outline any of them defines. A dictionary that claims
+from, and asked both every outline any of them defines. A dictionary that claims
 one outline too many changes what the dictionaries below it get to say, and no
 per-entry check can see that.
 
@@ -54,8 +54,9 @@ sides by default and `-R`/`-B` open a space. The xfst had the upstream reading
 and called the difference deliberate, claiming "same visible output in ordinary
 use". `#KU` wrote "run+y" in Plover and "run + y" here, and so did 162 others.
 The generator could not catch it, because it read the glyph table and never asked
-`lookup`, so it was an oracle for a third of the dictionary. It asks now, for all
-4,994 strokes, which is every combination of the seven fields.
+`lookup`, so it was an oracle for a third of the dictionary. Asking it instead
+gave all 4,994 strokes, which is every combination of the seven fields, and that
+is what `tests/golden/emily-symbols.tsv` now holds.
 
 **Shrimple's entry stroke typed the word "Shrimple".** The Python answers
 `{Shrimple}` for a bare `^`, and Plover knows no meta of that name, so it writes
@@ -80,7 +81,7 @@ key's, with a reason that was a preference rather than a fact.
 `U9`-shaped strokes stay clear of `wm.py`'s focus-space keys, and the xfst
 allowed 24 strokes the Python did not.
 
-## What the stack check still reports, and why
+## What the stack check reported at the end, and why
 
 | | |
 |---|---|
@@ -88,6 +89,11 @@ allowed 24 strokes the Python did not.
 | 31 | `typey-type` entries the importer refuses, which are that dictionary's own broken translations: `{oxan}`, `{mithracin}`, `{remember}`, four unbalanced braces. Plover writes nothing for any of them either, and three do lose a mark. |
 | 16 | `-B` on the glyph that uppercases the next word. Plover's trailing `{}` spends the pending case, so the key does nothing there today and the artifact honours it. |
 | 1 | `{#Alt_L(Tab Tab)}` becomes two combos, so the modifier is released between the taps. A record holds one key per keystroke, and one hold across two keys has no spelling. |
+
+The check is gone with the migration it was written for. It compared the stack
+against the dictionaries stfst replaced, and those are no longer the definition
+of anything: what each artifact holds is now checked against a file of
+expectations, and `check-plugin.py` still holds every imported entry to Plover.
 
 ## A tape merges what an atom boundary separated
 

@@ -112,14 +112,18 @@ would declare 1 and cost proportionally less.
 needs a meta because Plover cannot say "the last word"; the record language can,
 and the whole plugin becomes one entry per stem.
 
-## Checked against the Python
+## Checked
 
 A golden file over strokes is not enough, because what can go wrong is the
-rewrite, and a rewrite is wrong only for some text. So `scripts/check-retro-words.py`
-runs every entry against fourteen buffers chosen to hit the corners and compares
-the finished text with the Python's own ops, which are pure functions of a word
-window and so run without Plover. 1,316 cases. It also asserts the reachable set:
-all 1,024 strokes in the layout, entry or not.
+rewrite, and a rewrite is wrong only for some text. So the fixture is a stroke
+stream: `tests/retro-words/ops.strokes` runs every entry against fourteen buffers
+chosen to hit the corners, and the expectation is the finished text. 1,316 cases.
+`reach.strokes` asserts the reachable set: all 1,024 strokes in the layout, entry
+or not.
+
+The expectations were recorded from a run that `retro-words.py` had just agreed
+with, over the same cases. Its ops are pure functions of a word window, so it ran
+without Plover, and that is the last thing it did as an oracle.
 
 Three divergences, each deliberate:
 

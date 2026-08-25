@@ -98,12 +98,11 @@ own reading of the record language, which is what makes it evidence that the
 artifact is portable at all. `scripts/check-plugin.py` renders every entry of
 every imported dictionary both ways through Plover's own formatter and compares
 them. 147,910 entries, none differ, and three of Plover's answers were taken over
-ours to get there. `scripts/check-stack.py` then asks the configured stack and the
-stack it was compiled from what each of 156,496 outlines writes, which is the
-question a per-entry check cannot ask, and it found six more. `docs/plover.md`
-names all of them. Against the same seven dictionaries the plugin costs 8 MB
-resident and 8 ms a stroke, where the JSON they came from costs 82 MB and
-0.09 ms.
+ours to get there. A stack check found six more by asking the configured stack
+and the stack it was compiled from what each of 156,496 outlines writes, which is
+the question a per-entry check cannot ask; it has done its job and `docs/plover.md`
+names all six. Against the same seven dictionaries the plugin costs 8 MB resident
+and 8 ms a stroke, where the JSON they came from costs 82 MB and 0.09 ms.
 
 ## Morphology, which is not a dictionary
 
@@ -153,6 +152,7 @@ host with no lexicon refuses `{:infl:…}` rather than answering it with rules.
 | `recipe.toml` | The dictionary stack: what to compile, and at what priority. |
 | `tests/golden/` | Host-independent golden tests: a tape, a tab, the expected records. |
 | `tests/translate/` | Stroke streams and what the stack makes of them, where the answer depends on the history. |
+| `tests/retro-words/` | The same, for one dictionary whose answer reads a window of written text, which a golden file has nowhere to put. |
 | `tests/dicts/`, `tests/probe/` | Fixtures for the parts of the host contract no shipped dictionary uses yet: a context slot, and a carried state. Compiled by `tests/recipe.toml`. |
 | `crates/stfst-core` | Systems, the key tape, the record language, the golden format. No FST dependency, so a host can link it. |
 | `crates/stfst-compile` | The compiler: prelude generation, JSON import, the HFST pipeline. |
@@ -226,6 +226,21 @@ Imported JSON dictionaries skip those checks, and that is not an omission: the
 import builds records through `stfst_core::Record`, which can only serialise
 canonical order, and tapes through the outline parser, which can only emit steno
 order. The checks exist to catch hand-written rules.
+
+Then give it expectations, because `check.sh` fails a dictionary that has none.
+A `tests/golden/<name>.tsv` of tape, tab, record is the usual form, and
+`stfst import --golden` writes one for a JSON import. For a hand-written grammar
+whose language is too big to hold, take a subset that cycles each dimension and
+record what the artifact answers:
+
+```sh
+stfst lookup build/dicts/<name>.stfst --system systems/... < outlines \
+    | awk -F'\t' '{ print $2 (NF < 3 || $3 == "-" ? "" : "\t" $3) }'
+```
+
+A dictionary whose answer depends on more than the tape gets a stroke fixture
+under `tests/<name>/` instead, as `retro-words` does: a `.strokes` file and the
+`.expected` that `stfst translate` writes for it.
 
 ## xfst notes
 

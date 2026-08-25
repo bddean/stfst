@@ -1,0 +1,4124 @@
+! phrasing. A subset: one case per ender chord, then a prime stride through the
+! ender table and through the clause dimensions, so the sample cycles every
+! setting rather than landing on one corner of each. The whole language is 128
+! subject sets times the clause dimensions times 668 enders, which no file holds.
+!
+! The expectations are this grammar's own answers, recorded when phrasing.py was
+! still the oracle and agreed with them. A line that changes here is a change to
+! what a clause writes: read it, then update it.
+#+bgts	do talk
+#+bltz	did build
+#+fbgz	do walk into
+#+fgsz	did give up
+#+fpbd	did know
+#+fpblsz	did move to
+#+fpldz	did apply to
+#+frbgd	did require
+#+frd	did write
+#+frpbg	do also call
+#+frplg	do remove from
+#+gd	did go
+#+lsdz	did also hold
+#+A*
+#+HA*U	can't he have
+#+HEbgsz	is he causing by
+#+HO*EUblgz	shall he not have been just liking
+#+HRbgd	to think
+#+HRbls	to add to
+#+HRfbgsd	to think that
+#+HRfbtz	to become more
+#+HRfltd	to love
+#+HRfpblgtd	to come from
+#+HRfpgd	to go on
+#+HRfpt	to find that
+#+HRfrblz	to feel that
+#+HRfrlgz	to follow by
+#+HRfrpg	to provide by
+#+HRft	to have
+#+HRlgtd	to tell
+#+HRpbgsz	to begin of
+#+HRpblsz	to plan to
+#+HRpgt	to get to
+#+HRplz	to make it
+#+HRrbgtsz	to talk about
+#+HRrbtsd	to decide that
+#+HRrlt	to live in
+#+HRrpblgdz	to never mind
+#+HRrpgz	to appear in
+#+HRrtsd	to start with
+#+HRO*b	not to add
+#+Kbgsz	do I cause by
+#+Kbl	do I allow
+#+Kbsz	do I decide to
+#+Kfblgs	do I ask to
+#+Kfl	do I feel
+#+Kfpbgs	do I begin to
+#+Kfpbltsz	did I plan for
+#+Kfplgtz	did I apply for
+#+Kfrbgt	do I require to
+#+Kfrgsd	did I serve as
+#+Kfrpbgz	did I also call
+#+Kfrplsz	did I replace by
+#+Kgt	do I get
+#+Klts	do I stay
+#+Ktsz	did I start
+#+KA*E	can't I be
+#+KH*Ubgsz	haven't he and I caused by
+#+KHAO*blgz	won't he and I just like
+#+KHOEU	shall he and I have been
+#+KHRO*fbts	shall he and she and I not often
+#+KO*Ublgz	shall I not have just liked
+#+KPblgd	did you and I like
+#+KPbt	do you and I buy
+#+KPlgs	do you and I guess
+#+KPH*EUblgz	haven't you and he and I been just liking
+#+KPHAO*Eb	won't you and he and I be adding
+#+KPHRfbts	do you and he and she and I often
+#+KPHRAO*EUbgsz	won't you and he and she and I have been causing by
+#+KPHRO*Ud	shouldn't you and he and she and I have
+#+KPOEb	shall you and I be adding
+#+KPROEUfbts	shall you and she and I often have been
+#+KPWAd	could this
+#+KPWAO*U	won't this have
+#+KPWHAEU	can this have been
+#+KPWHO*blgz	shall this not just like
+#+KPWHROUb	shall this have added
+#+KPWOEbgsz	shall this be causing by
+#+KPWRAUb	can this have added
+#+KR	are she and I
+#+KRblgtz	did she and I think it
+#+KRgtd	did she and I get
+#+KRpbgdz	did she and I continue to
+#+KRpbltz	do she and I handle of
+#+KRpltsz	did she and I seem to
+#+KROUb	shall she and I have added
+#+KW*EUfbts	hasn't this often been
+#+KWAO*Ed	wouldn't this be
+#+KWHAEd	could this be
+#+KWHAO*EU	won't this have been
+#+KWHOUbgsz	shall this have caused by
+#+KWHRA*	can't this
+#+KWHRO*Eblgz	shall this not be just liking
+#+KWRAblgz	can this just like
+#+KWRAO*Ub	won't this have added
+#+O*Eblgz	shall not be just liking
+#+Pbgz	do you cause
+#+Pblz	do you allow to
+#+Pld	did you look
+#+Pts	do you start
+#+PA*b	can't you add
+#+PH*EUbgsz	haven't you and he been causing by
+#+PHAO*Eblgz	won't you and he be just liking
+#+PHO*	shall you and he not
+#+PHRO*Efbts	shall you and he and she not often be
+#+PROEUb	shall you and she have been adding
+#+PWb	does that add
+#+PWblgtsd	did that accept
+#+PWfbg	does that walk
+#+PWfbsd	did that add that
+#+PWfls	does that look for
+#+PWfpblgs	does that explain how
+#+PWfpbz	does that also know
+#+PWfps	does that also appear
+#+PWfrblgs	does that recall that
+#+PWfrlgd	did that follow by
+#+PWfrpblz	did that form
+#+PWfrz	did that write
+#+PWlgdz	did that help to
+#+PWpbgdz	did that continue to
+#+PWpblgz	does that come to
+#+PWpgdz	did that happen to
+#+PWplts	does that seem to
+#+PWAfbts	can that often
+#+PWAO*Ud	wouldn't that have
+#+PWHAUd	could that have
+#+PWHOEUbgsz	shall that have been causing by
+#+PWHRAEUb	can that have been adding
+#+PWR	is that
+#+PWRbgtd	did that take
+#+PWRbsz	does that decide to
+#+PWRlgz	does that help to
+#+PWRpbld	did that mean
+#+PWRpgd	did that happen
+#+PWRsz	does that use to
+#+PWRAEblgz	can that be just liking
+#+PWRAO*EUb	won't that have been adding
+#+Rblgs	does she ask
+#+Rgdz	did she go to
+#+Rpb	does she need
+#+Rpbls	does she plan
+#+Rplsz	did she seem
+#+RA*Eb	can't she be adding
+#+SAEUb	can have been adding
+#+SHAOEblgz	will they be just liking
+#+SHEUbgsz	have they been causing by
+#+SHO	shall they
+#+SHRAOEb	will he or she be adding
+#+SHREUblgz	have he or she been just liking
+#+SKA*EU	can't we have been
+#+SKAOblgz	will we just like
+#+SKHAEUbgsz	can he or I have been causing by
+#+SKHAO	will he or I
+#+SKHR*U	haven't he or she or I
+#+SKHRA*EUblgz	can't he or she or I have been just liking
+#+SKHUd	had he or I
+#+SKPblgz	do you or I just like
+#+SKPHA*EUd	couldn't you or he or I have been
+#+SKPHAObgsz	will you or he or I cause by
+#+SKPHR*Efbts	aren't you or he or she or I often
+#+SKPHRAOEUd	would you or he or she or I have been
+#+SKPO*Ub	shall you or I not have added
+#+SKPR*E	aren't you or she or I
+#+SKPRA*Ublgz	can't you or she or I have just liked
+#+SKPWAOEfbts	will these often be
+#+SKPWEUb	have these been adding
+#+SKPWHAOEblgz	will these be just liking
+#+SKPWHEUbgsz	have these been causing by
+#+SKPWHO	shall these
+#+SKPWHRO*b	shall these not add
+#+SKPWRA*EUb	can't these have been adding
+#+SKREblgz	are she or I just liking
+#+SKRO*EUb	shall she or I not have been adding
+#+SKUbgsz	have we caused by
+#+SKWA*fbts	can't these often
+#+SKWH*b	don't these add
+#+SKWHAOUfbts	will these often have
+#+SKWHR*bgsz	don't these cause by
+#+SKWHRAOUblgz	will these have just liked
+#+SKWHROE	shall these be
+#+SKWRblgsz	did these ask
+#+SKWRdz	did these use
+#+SKWRfbltd	did these believe that
+#+SKWRflgt	do these love to
+#+SKWRfpbld	did these move
+#+SKWRfpbts	do these turn to
+#+SKWRfpltsd	did these meet with
+#+SKWRfrbld	did these feel that
+#+SKWRfrgz	do these offer to
+#+SKWRfrpblsz	did these form by
+#+SKWRfrsz	did these serve
+#+SKWRld	did these look
+#+SKWRlgsz	do these always
+#+SKWRpbd	did these need
+#+SKWRpblgts	do these expect to
+#+SKWRpd	did these appear
+#+SKWRplsd	did these seem
+#+SKWRrbgsd	did these carry
+#+SKWRrblz	did these share
+#+SKWRrlgdz	did these realize that
+#+SKWRrpbgtsz	did these consider to
+#+SKWRrpbz	do these run for
+#+SKWRrptz	did these put it
+#+SKWRAOEbgsz	will these be causing by
+#+SKWROd	should these
+#+SPA*Ub	can't you have added
+#+SPHA*bgsz	can't you or he cause by
+#+SPHAOE	will you or he be
+#+SPHEUd	had you or he been
+#+SPHR*EU	haven't you or he or she been
+#+SPHROblgz	shall you or he or she just like
+#+SPRAOb	will you or she add
+#+SPRUblgz	have you or she just liked
+#+SPWA*Efbts	can't those often be
+#+SPWH*Eb	aren't those adding
+#+SPWHAOEUfbts	will those often have been
+#+SPWHROb	shall those add
+#+SPWRAOUbgsz	will those have caused by
+#+SPWROEd	should those be
+#+SRA*EUb	can't one have been adding
+#+STAOEd	would and it be
+#+STEUfbts	have and it often been
+#+STHAEUfbts	can and he often have been
+#+STHR*	aren't and he and she
+#+STHRA*Eblgz	can't and he and she be just liking
+#+STKAUfbts	can and I often have
+#+STKHA*d	couldn't and he and I
+#+STKHO*Ebgsz	shall and he and I not be causing by
+#+STKHRA*Eb	can't and he and she and I be adding
+#+STKPAUblgz	can and you and I have just liked
+#+STKPE	are and you and I
+#+STKPHbgsz	do and you and he and I cause by
+#+STKPHA*E	can't and you and he and I be
+#+STKPHO*Ublgz	shall and you and he and I not have just liked
+#+STKPHROEUb	shall and you and he and she and I have been adding
+#+STKPRA*b	can't and you and she and I add
+#+STKPWEfbts	is whatever often
+#+STKPWHAfbts	can whatever often
+#+STKPWHAO*Ud	wouldn't whatever have
+#+STKPWHRd	was whatever
+#+STKPWHRAEbgsz	can whatever be causing by
+#+STKPWHRAO*EUblgz	won't whatever have been just liking
+#+STKPWHRO*U	shall whatever not have
+#+STKPWO*EUd	shouldn't whatever have been
+#+STKPWR*EUbgsz	hasn't whatever been causing by
+#+STKPWRAO*Eblgz	won't whatever be just liking
+#+STKPWRO*	shall whatever not
+#+STKRAEUblgz	can and she and I have been just liking
+#+STKRU	have and she and I
+#+STKWb	does whatever add
+#+STKWHAOd	would whatever
+#+STKWHRAEfbts	can whatever often be
+#+STKWHRAO*EUd	wouldn't whatever have been
+#+STKWHUfbts	has whatever often
+#+STKWO*Ufbts	shall whatever not often have
+#+STKWRA*U	can't whatever have
+#+STKWREbgsz	is whatever causing by
+#+STKWRO*EUblgz	shall whatever not have been just liking
+#+STPd	were and you
+#+STPAEbgsz	can and you be causing by
+#+STPAO*EUblgz	won't and you have been just liking
+#+STPHA*Ed	couldn't and you and he be
+#+STPHO*Ubgsz	shall and you and he not have caused by
+#+STPHRA*Ub	can't and you and he and she have added
+#+STPO*U	shall and you not have
+#+STPRA*blgz	can't and you and she just like
+#+STPREU	have and you and she been
+#+STPWEb	is whatever adding
+#+STPWHAOEd	would whatever be
+#+STPWHEUfbts	has whatever often been
+#+STPWHRAbgsz	can whatever cause by
+#+STPWHRAO*Ublgz	won't whatever have just liked
+#+STPWHRO*E	shall whatever not be
+#+STPWO*EUfbts	shall whatever not often have been
+#+STPWRA*EU	can't whatever have been
+#+STPWRAOblgz	will whatever just like
+#+STPWRUbgsz	has whatever caused by
+#+STRbgsdz	did and she cause by
+#+STRbltd	did and she build
+#+STRfbgts	do and she talk to
+#+STRfg	do and she give
+#+STRfltz	did and she love
+#+STRfpblgtz	did and she come from
+#+STRfpgsz	did and she pass on
+#+STRfr	do and she write
+#+STRfrbt	do and she also show
+#+STRfrlz	did and she follow
+#+STRfrpgsz	did and she also offer
+#+STRftsz	did and she start to
+#+STRlgtz	did and she tell
+#+STRpbgts	do and she expect
+#+STRpblts	do and she mean to
+#+STRpgtsz	did and she stop by
+#+STRpsz	do and she pass through
+#+STRrbld	did and she share
+#+STRrd	did and she work
+#+STRrltsz	did and she stay in
+#+STRrpblgt	do and she remember that
+#+STRrplgd	did and she play with
+#+STRs	do and she say
+#+STRAUbgsz	can and she have caused by
+#+STREd	were and she
+#+STRO*EU	shall and she not have been
+#+STWHAOfbts	will whatever often
+#+STWHR*fbts	doesn't whatever often
+#+STWHRAOUd	would whatever have
+#+STWHUb	has whatever added
+#+STWO*Eb	shall whatever not be adding
+#+STWRA*Ud	couldn't whatever have
+#+STWRO*EUbgsz	shall whatever not have been causing by
+#+SW*fbts	don't there often
+#+SWAOUd	would there have
+#+SWHA*Ufbts	can't whoever often have
+#+SWHR*Ub	hasn't whoever added
+#+SWHRAO*fbts	won't whoever often
+#+SWR*d	wasn't whichever
+#+SWRA*Ebgsz	can't whichever be causing by
+#+SWRAOU	will whichever have
+#+T	is it
+#+Tblgd	did it like
+#+Tbtsd	did it just want
+#+Tfbls	does it believe to
+#+Tflgd	did it leave
+#+Tfpbgtd	did it check out
+#+Tfpbsd	did it know that
+#+Tfpgt	does it never
+#+Tfplsz	did it seem like
+#+Tfrbgtsz	did it carry on
+#+Tfrgts	does it forget to
+#+Tfrpblgd	did it also include
+#+Tfrptz	did it also provide
+#+Tgtsz	did it set
+#+Tltz	does it live with
+#+TEfbts	is it often
+#+TH*Ufbts	and hasn't he often
+#+THAO*d	and wouldn't he
+#+THROUfbts	and to have been
+#+TK*Efbts	and am I not often
+#+TKAOEUd	and would I have been
+#+TKH*blgz	and don't he and I just like
+#+TKHAOUb	and will he and I have added
+#+TKHRAb	and can he and she and I add
+#+TKHRAO*Ufbts	and won't he and she and I often have
+#+TKPA*EUfbts	and can't you and I often have been
+#+TKPHA	and can you and he and I
+#+TKPHOEblgz	and shall you and he and I be just liking
+#+TKPHROEb	and shall you and he and she and I be adding
+#+TKPR*EUb	and haven't you and she and I been adding
+#+TKPRAO*Efbts	and won't you and she and I often be
+#+TKPWAOEUbgsz	will what have been causing by
+#+TKPWH*Ufbts	hasn't what often
+#+TKPWHAO*d	wouldn't what
+#+TKPWHRAUfbts	can what often have
+#+TKPWOUd	should what have
+#+TKPWR*Ebgsz	isn't what causing by
+#+TKPWRAOEUblgz	will what have been just liking
+#+TKPWROU	shall what have
+#+TKROfbts	and shall she and I often
+#+TKW*Ed	wasn't what
+#+TKWA*Ubgsz	can't what have caused by
+#+TKWAOEU	will what have been
+#+TKWHAO*bgsz	won't what cause by
+#+TKWHOEUd	should what have been
+#+TKWHR*EUfbts	hasn't what often been
+#+TKWHRAO*Ed	wouldn't what be
+#+TKWRAE	can what be
+#+TKWROUblgz	shall what have just liked
+#+TO*EUd	shouldn't it have been
+#+TP*bgsz	and don't you cause by
+#+TPblgsz	and did you ask
+#+TPbtsd	and did you just want
+#+TPlgtd	and did you tell
+#+TPAOUblgz	and will you have just liked
+#+TPH*Eblgz	and aren't you and he just liking
+#+TPHAOEUb	and will you and he have been adding
+#+TPHRAEb	and can you and he and she be adding
+#+TPHRAO*EUfbts	and won't you and he and she often have been
+#+TPOE	and shall you be
+#+TPROEfbts	and shall you and she often be
+#+TPW*Ud	hadn't what
+#+TPWA*EUbgsz	can't what have been causing by
+#+TPWAO*	won't what
+#+TPWHAO*Ebgsz	won't what be causing by
+#+TPWHO*d	shouldn't what
+#+TPWHR*Ubgsz	hasn't what caused by
+#+TPWHRAO*blgz	won't what just like
+#+TPWHROEU	shall what have been
+#+TPWRAU	can what have
+#+TPWROEUblgz	shall what have been just liking
+#+TR*Ebgsz	and isn't she causing by
+#+TRbg	and does she think
+#+TRblsz	and did she add to
+#+TRld	and did she look
+#+TRpbgt	and does she pick
+#+TRpbsz	and does she understand that
+#+TRpsd	and did she pass
+#+TRAOEUblgz	and will she have been just liking
+#+TROU	and shall she have
+#+TWH*EUd	hadn't what been
+#+TWHAO*E	won't what be
+#+TWHObgsz	shall what cause by
+#+TWHRAO*Ubgsz	won't what have caused by
+#+TWHRO*Ed	shouldn't what be
+#+TWOb	shall what add
+#+TWR*Ublgz	hasn't what just liked
+#+TWRAO*b	won't what add
+#+WAOd	would there
+#+WHAEfbts	can who often be
+#+WHAO*EUd	wouldn't who have been
+#+WHRAEUd	could who have been
+#+WHRO*bgsz	shall who not cause by
+#+WRAbgsz	can which cause by
+#+WRAO*Ublgz	won't which have just liked
+#+WRO*E	shall which not be
+#+WUfbts	has there often
+#@+A*Ud
+#@+HAOEbgsz	will he be causing by
+#@+HOd	should he do
+#@+HRbgsz	to cause by
+#@+HRA*E	not to be doing
+#@+HRO*Ublgz	not to just have liked
+#@+KA*EUd	couldn't I have been doing
+#@+KAObgsz	will I cause by
+#@+KHAO*Ubgsz	won't he and I have caused by
+#@+KHO*Ed	shouldn't he and I be doing
+#@+KHRblgz	do he and she and I just like
+#@+KHRO*Ub	shall he and she and I not have added
+#@+KPAU	can you and I have done
+#@+KPHd	did you and he and I do
+#@+KPHAEbgsz	can you and he and I be causing by
+#@+KPHAO*EUblgz	won't you and he and I have been just liking
+#@+KPHO*U	shall you and he and I not have done
+#@+KPHRAOfbts	will you and he and she and I often
+#@+KPHRUb	have you and he and she and I added
+#@+KPOEUblgz	shall you and I have been just liking
+#@+KPRO*Eb	shall you and she and I not be adding
+#@+KPWAUfbts	can this often have
+#@+KPWHA*Ed	couldn't this be doing
+#@+KPWHO*Ubgsz	shall this not have caused by
+#@+KPWHRAEU	can this have been doing
+#@+KPWHRO*blgz	shall this not just like
+#@+KPWRA*blgz	can't this just like
+#@+KPWREU	has this been doing
+#@+KRAEU	can she and I have been doing
+#@+KRO*blgz	shall she and I not just like
+#@+KWAEb	can this be adding
+#@+KWAO*EUfbts	won't this often have been
+#@+KWHAEUfbts	can this often have been
+#@+KWHRA*Ud	couldn't this have done
+#@+KWHRO*EUbgsz	shall this not have been causing by
+#@+KWRAUbgsz	can this have caused by
+#@+KWREd	was this doing
+#@+KWRO*EU	shall this not have been doing
+#@+O*EUbgsz	shall not have been causing by
+#@+P*E	aren't you doing
+#@+PA*Ublgz	can't you have just liked
+#@+PHfbts	do you and he often
+#@+PHAO*EUbgsz	won't you and he have been causing by
+#@+PHO*Ud	shouldn't you and he have done
+#@+PHREblgz	are you and he and she just liking
+#@+PHRO*EUb	shall you and he and she not have been adding
+#@+PRA*	can't you and she do
+#@+PRO*Eblgz	shall you and she not be just liking
+#@+PWAUb	can that have added
+#@+PWHA*fbts	can't that often
+#@+PWHR*	doesn't that do
+#@+PWHRA*Eblgz	can't that be just liking
+#@+PWRAEUbgsz	can that have been causing by
+#@+PWRAO	will that do
+#@+PWRUd	had that done
+#@+R*U	hasn't she done
+#@+RA*EUblgz	can't she have been just liking
+#@+S*
+#@+SA*Eblgz	can't be just liking
+#@+SHAOEUbgsz	will they have been causing by
+#@+SHOUd	should they have done
+#@+SHR*Ebgsz	aren't he or she causing by
+#@+SHRAOEUblgz	will he or she have been just liking
+#@+SHROU	shall he or she have done
+#@+SKAOUbgsz	will we have caused by
+#@+SKH*fbts	don't he or I often
+#@+SKHAOUd	would he or I have done
+#@+SKHRAd	could he or she or I do
+#@+SKHRAO*U	won't he or she or I have done
+#@+SKHROEbgsz	shall he or she or I be causing by
+#@+SKOEd	should we be doing
+#@+SKPA*EU	can't you or I have been doing
+#@+SKPAOblgz	will you or I just like
+#@+SKPHOEfbts	shall you or he or I often be
+#@+SKPHR*EUb	haven't you or he or she or I been adding
+#@+SKPHRAO*Efbts	won't you or he or she or I often be
+#@+SKPR*EUd	hadn't you or she or I been doing
+#@+SKPRAO*E	won't you or she or I be doing
+#@+SKPRObgsz	shall you or she or I cause by
+#@+SKPUbgsz	have you or I caused by
+#@+SKPW*Eblgz	aren't these just liking
+#@+SKPWAOEUb	will these have been adding
+#@+SKPWHAOEUbgsz	will these have been causing by
+#@+SKPWHOUd	should these have done
+#@+SKPWHRbgsz	do these cause by
+#@+SKPWHRA*E	can't these be doing
+#@+SKPWHRO*Ublgz	shall these not have just liked
+#@+SKPWRA	can these do
+#@+SKPWROEblgz	shall these be just liking
+#@+SKRAOEblgz	will she or I be just liking
+#@+SKREUbgsz	have she or I been causing by
+#@+SKRO	shall she or I do
+#@+SKWA*Ub	can't these have added
+#@+SKWH*Ublgz	haven't these just liked
+#@+SKWHAO*b	won't these add
+#@+SKWHRAO*bgsz	won't these cause by
+#@+SKWHROEUd	should these have been doing
+#@+SKWROUfbts	shall these often have
+#@+SP*EU	haven't you been doing
+#@+SPH*Efbts	aren't you or he often
+#@+SPHAOEUd	would you or he have been doing
+#@+SPHRAEd	could you or he or she be doing
+#@+SPHRAO*EU	won't you or he or she have been doing
+#@+SPHROUbgsz	shall you or he or she have caused by
+#@+SPOblgz	shall you just like
+#@+SPR*bgsz	don't you or she cause by
+#@+SPRAOUblgz	will you or she have just liked
+#@+SPROE	shall you or she be doing
+#@+SPWA*EUb	can't those have been adding
+#@+SPWH*EUblgz	haven't those been just liking
+#@+SPWHAO*Eb	won't those be adding
+#@+SPWHRAE	can those be doing
+#@+SPWHROUblgz	shall those have just liked
+#@+SPWROEUfbts	shall those often have been
+#@+SRA	can one do
+#@+SROEblgz	shall one be just liking
+#@+ST*Eb	aren't and it adding
+#@+STAOEUfbts	will and it often have been
+#@+STHA*Eb	can't and he be adding
+#@+STHR*Ud	hadn't and he and she done
+#@+STHRA*EUbgsz	can't and he and she have been causing by
+#@+STHRAO*	won't and he and she do
+#@+STKA*b	can't and I add
+#@+STKHA*Ufbts	can't and he and I often have
+#@+STKHR*U	haven't and he and she and I done
+#@+STKHRA*EUblgz	can't and he and she and I have been just liking
+#@+STKPA*bgsz	can't and you and I cause by
+#@+STKPAOE	will and you and I be doing
+#@+STKPEUd	had and you and I been doing
+#@+STKPHA*EUd	couldn't and you and he and I have been doing
+#@+STKPHAObgsz	will and you and he and I cause by
+#@+STKPHRA*	can't and you and he and she and I do
+#@+STKPHRO*Eblgz	shall and you and he and she and I not be just liking
+#@+STKPR*E	aren't and you and she and I doing
+#@+STKPRA*Ublgz	can't and you and she and I have just liked
+#@+STKPWAOEfbts	will whatever often be
+#@+STKPWEUb	has whatever been adding
+#@+STKPWHAUb	can whatever have added
+#@+STKPWHRAOd	would whatever do
+#@+STKPWHRUfbts	has whatever often
+#@+STKPWRfbts	does whatever often
+#@+STKPWRAO*EUbgsz	won't whatever have been causing by
+#@+STKPWRO*Ud	shouldn't whatever have done
+#@+STKR*d	didn't and she and I do
+#@+STKRA*Ebgsz	can't and she and I be causing by
+#@+STKRAOU	will and she and I have done
+#@+STKWAOb	will whatever add
+#@+STKWH*b	doesn't whatever add
+#@+STKWHAOUfbts	will whatever often have
+#@+STKWHRAEUb	can whatever have been adding
+#@+STKWRAOEbgsz	will whatever be causing by
+#@+STKWROd	should whatever do
+#@+STKWUblgz	has whatever just liked
+#@+STPAOd	would and you do
+#@+STPHA*EUfbts	can't and you and he often have been
+#@+STPHR*EU	haven't and you and he and she been doing
+#@+STPHROblgz	shall and you and he and she just like
+#@+STPR*Ed	weren't and you and she doing
+#@+STPRA*Ubgsz	can't and you and she have caused by
+#@+STPRAOEU	will and you and she have been doing
+#@+STPUfbts	have and you often
+#@+STPWAOEb	will whatever be adding
+#@+STPWEUblgz	has whatever been just liking
+#@+STPWH*Eb	isn't whatever adding
+#@+STPWHAOEUfbts	will whatever often have been
+#@+STPWHREfbts	is whatever often
+#@+STPWHRO*EUd	shouldn't whatever have been doing
+#@+STPWRAOUbgsz	will whatever have caused by
+#@+STPWROEd	should whatever be doing
+#@+STRAOEd	would and she be doing
+#@+STREUfbts	have and she often been
+#@+STWA*U	can't whatever have done
+#@+STWEbgsz	is whatever causing by
+#@+STWH*blgz	doesn't whatever just like
+#@+STWHAOUb	will whatever have added
+#@+STWHR*Ub	hasn't whatever added
+#@+STWHRAO*fbts	won't whatever often
+#@+STWO*EUblgz	shall whatever not have been just liking
+#@+STWROfbts	shall whatever often
+#@+SW*Ub	haven't there added
+#@+SWAO*fbts	won't there often
+#@+SWHOb	shall whoever add
+#@+SWHRAblgz	can whoever just like
+#@+SWHRAO*Ub	won't whoever have added
+#@+SWR*Ufbts	hasn't whichever often
+#@+SWRAO*d	wouldn't whichever do
+#@+TAOEfbts	will it often be
+#@+TEUb	has it been adding
+#@+THAb	and can he add
+#@+THAO*Ufbts	and won't he often have
+#@+THRO*b	and not to add
+#@+TK*EUb	and haven't I been adding
+#@+TKAO*Efbts	and won't I often be
+#@+TKH*Ubgsz	and haven't he and I caused by
+#@+TKHAO*blgz	and won't he and I just like
+#@+TKHOEU	and shall he and I have been doing
+#@+TKHRAUblgz	and can he and she and I have just liked
+#@+TKHRE	and are he and she and I doing
+#@+TKPHAUd	and could you and he and I have done
+#@+TKPHOEUbgsz	and shall you and he and I have been causing by
+#@+TKPHRAU	and can you and he and she and I have done
+#@+TKPHROEUblgz	and shall you and he and she and I have been just liking
+#@+TKPOEb	and shall you and I be adding
+#@+TKPR	and do you and she and I do
+#@+TKPRAEblgz	and can you and she and I be just liking
+#@+TKPRAO*EUb	and won't you and she and I have been adding
+#@+TKPWHAb	can what add
+#@+TKPWHAO*Ufbts	won't what often have
+#@+TKPWHRA*b	can't what add
+#@+TKPWO*fbts	shall what not often
+#@+TKPWRAO*Ebgsz	won't what be causing by
+#@+TKPWRO*d	shouldn't what do
+#@+TKROUb	and shall she and I have added
+#@+TKW*EUfbts	hasn't what often been
+#@+TKWAO*Ed	wouldn't what be doing
+#@+TKWHO*Efbts	shall what not often be
+#@+TKWHRAEb	can what be adding
+#@+TKWHRAO*EUfbts	won't what often have been
+#@+TKWRAEUd	could what have been doing
+#@+TKWRO*bgsz	shall what not cause by
+#@+TPAO*bgsz	and won't you cause by
+#@+TPH*EUbgsz	and haven't you and he been causing by
+#@+TPHAO*Eblgz	and won't you and he be just liking
+#@+TPHO*	and shall you and he not do
+#@+TPHRAEUblgz	and can you and he and she have been just liking
+#@+TPHRU	and have you and he and she done
+#@+TPOEUd	and should you have been doing
+#@+TPROEUb	and shall you and she have been adding
+#@+TPWAfbts	can what often
+#@+TPWAO*Ud	wouldn't what have done
+#@+TPWHb	does what add
+#@+TPWHO*Ufbts	shall what not often have
+#@+TPWHRAO*Ubgsz	won't what have caused by
+#@+TPWHRO*Ed	shouldn't what be doing
+#@+TPWRA*d	couldn't what do
+#@+TPWRO*Ebgsz	shall what not be causing by
+#@+TRAO*Ebgsz	and won't she be causing by
+#@+TRO*d	and shouldn't she do
+#@+TWAE	can what be doing
+#@+TWHAEfbts	can what often be
+#@+TWHAO*EUd	wouldn't what have been doing
+#@+TWHREb	is what adding
+#@+TWHRO*EUfbts	shall what not often have been
+#@+TWOUblgz	shall what have just liked
+#@+TWRAbgsz	can what cause by
+#@+TWRAO*Ublgz	won't what have just liked
+#@+TWRO*E	shall what not be doing
+#@+W*b	doesn't there add
+#@+WAOUfbts	will there often have
+#@+WHAEUb	can who have been adding
+#@+WHRA*Efbts	can't who often be
+#@+WREfbts	is which often
+#@+WRO*EUd	shouldn't which have been doing
+#@^+HO*b	shall he not add
+#@^+HROEfbts	to be being
+#@^+KHAOEb	will he and I be adding
+#@^+KHEUblgz	have he and I been just liking
+#@^+KHRAOUbgsz	will he and she and I have caused by
+#@^+KHROEd	should he and she and I be doing
+#@^+KOEUb	shall I have been adding
+#@^+KPA*Ufbts	can you and I not often have
+#@^+KPH*b	do you and he and I not add
+#@^+KPHAOUfbts	will you and he and I often have
+#@^+KPHR*Ubgsz	have you and he and she and I not caused by
+#@^+KPHRAO*blgz	will you and he and she and I not just like
+#@^+KPHROEU	shall you and he and she and I have been doing
+#@^+KPRAOEbgsz	will you and she and I be causing by
+#@^+KPROd	should you and she and I do
+#@^+KPW*E	is this not doing
+#@^+KPWA*Ublgz	can this not have just liked
+#@^+KPWHOEb	shall this be adding
+#@^+KPWHRA*EUfbts	can this not often have been
+#@^+KPWR*EUfbts	has this not often been
+#@^+KPWRAO*Ed	would this not be doing
+#@^+KRA*EUfbts	can she and I not often have been
+#@^+KW*d	did this not do
+#@^+KWA*Ebgsz	can this not be causing by
+#@^+KWAOU	will this have done
+#@^+KWH*U	has this not done
+#@^+KWHA*EUblgz	can this not have been just liking
+#@^+KWHROUb	shall this have added
+#@^+KWR*Eb	is this not adding
+#@^+KWRAOEUfbts	will this often have been
+#@^+OUb	shall have added
+#@^+PAEfbts	can you often be
+#@^+PAO*EUd	would you not have been doing
+#@^+PH*blgz	do you and he not just like
+#@^+PHAOUb	will you and he have added
+#@^+PHRAOEUbgsz	will you and he and she have been causing by
+#@^+PHROUd	should you and he and she have done
+#@^+PROfbts	shall you and she often
+#@^+PW*Ed	was that not doing
+#@^+PWA*Ubgsz	can that not have caused by
+#@^+PWAOEU	will that have been doing
+#@^+PWH*EU	has that not been doing
+#@^+PWHOblgz	shall that just like
+#@^+PWHRAfbts	can that often
+#@^+PWHRAO*Ud	would that not have done
+#@^+PWR*Ub	has that not added
+#@^+PWRAO*fbts	will that not often
+#@^+RAUfbts	can she often have
+#@^+SAfbts
+#@^+SAO*Ud
+#@^+SHblgz	do they just like
+#@^+SHO*Ub	shall they not have added
+#@^+SHRb	do he or she add
+#@^+SHRO*Ufbts	shall he or she not often have
+#@^+SKHAblgz	can he or I just like
+#@^+SKHAO*Ub	will he or I not have added
+#@^+SKHRA*b	can he or she or I not add
+#@^+SKO*Eb	shall we not be adding
+#@^+SKPHA*	can you or he or I not do
+#@^+SKPHO*Eblgz	shall you or he or I not be just liking
+#@^+SKPHRAEUbgsz	can you or he or she or I have been causing by
+#@^+SKPHRAO	will you or he or she or I do
+#@^+SKPHRUd	had you or he or she or I done
+#@^+SKPOEUfbts	shall you or I often have been
+#@^+SKPRAEUb	can you or she or I have been adding
+#@^+SKPWfbts	do these often
+#@^+SKPWAO*EUbgsz	will these not have been causing by
+#@^+SKPWHblgz	do these just like
+#@^+SKPWHO*Ub	shall these not have added
+#@^+SKPWHROEfbts	shall these often be
+#@^+SKPWO*Ud	should these not have done
+#@^+SKPWRA*fbts	can these not often
+#@^+SKRO*fbts	shall she or I not often
+#@^+SKWAEd	could these be doing
+#@^+SKWAO*EU	will these not have been doing
+#@^+SKWHEfbts	are these often
+#@^+SKWHO*EUd	should these not have been doing
+#@^+SKWHREblgz	are these just liking
+#@^+SKWHRO*EUb	shall these not have been adding
+#@^+SKWOUbgsz	shall these have caused by
+#@^+SKWRbgsz	do these cause by
+#@^+SKWRA*E	can these not be doing
+#@^+SKWRO*Ublgz	shall these not have just liked
+#@^+SPAEUfbts	can you often have been
+#@^+SPH	do you or he do
+#@^+SPHAEblgz	can you or he be just liking
+#@^+SPHAO*EUb	will you or he not have been adding
+#@^+SPHRA*Eb	can you or he or she not be adding
+#@^+SPRO*Efbts	shall you or she not often be
+#@^+SPWAUd	could those have done
+#@^+SPWHAOd	would those do
+#@^+SPWHRA*Efbts	can those not often be
+#@^+SPWHUfbts	have those often
+#@^+SPWOEUbgsz	shall those have been causing by
+#@^+SPWRA*U	can those not have done
+#@^+SPWREbgsz	are those causing by
+#@^+SPWRO*EUblgz	shall those not have been just liking
+#@^+SRA*fbts	can one not often
+#@^+STd	did and it do
+#@^+STAEbgsz	can and it be causing by
+#@^+STAO*EUblgz	will and it not have been just liking
+#@^+STHAd	could and he do
+#@^+STHAO*U	will and he not have done
+#@^+STHOEbgsz	shall and he be causing by
+#@^+STHRAUb	can and he and she have added
+#@^+STK*EUd	had and I not been doing
+#@^+STKAO*E	will and I not be doing
+#@^+STKHAE	can and he and I be doing
+#@^+STKHOUblgz	shall and he and I have just liked
+#@^+STKHRAUfbts	can and he and she and I often have
+#@^+STKObgsz	shall and I cause by
+#@^+STKP*EUb	have and you and I not been adding
+#@^+STKPAO*Efbts	will and you and I not often be
+#@^+STKPHOEUb	shall and you and he and I have been adding
+#@^+STKPHROfbts	shall and you and he and she and I often
+#@^+STKPRAEfbts	can and you and she and I often be
+#@^+STKPRAO*EUd	would and you and she and I not have been doing
+#@^+STKPW*EUbgsz	has whatever not been causing by
+#@^+STKPWAO*Eblgz	will whatever not be just liking
+#@^+STKPWH*Ed	was whatever not doing
+#@^+STKPWHA*Ubgsz	can whatever not have caused by
+#@^+STKPWHAOEU	will whatever have been doing
+#@^+STKPWHR*Ublgz	has whatever not just liked
+#@^+STKPWHRAO*b	will whatever not add
+#@^+STKPWO*	shall whatever not do
+#@^+STKPWR*blgz	does whatever not just like
+#@^+STKPWRAOUb	will whatever have added
+#@^+STKRAb	can and she and I add
+#@^+STKRAO*Ufbts	will and she and I not often have
+#@^+STKWAO*bgsz	will whatever not cause by
+#@^+STKWHAbgsz	can whatever cause by
+#@^+STKWHAO*Ublgz	will whatever not have just liked
+#@^+STKWHO*E	shall whatever not be doing
+#@^+STKWHR*Ud	had whatever not done
+#@^+STKWHRA*EUbgsz	can whatever not have been causing by
+#@^+STKWHRAO*	will whatever not do
+#@^+STKWOEUd	should whatever have been doing
+#@^+STKWRO*b	shall whatever not add
+#@^+STO*U	shall and it not have done
+#@^+STP*Ublgz	have and you not just liked
+#@^+STPAO*b	will and you not add
+#@^+STPHAU	can and you and he have done
+#@^+STPHOEUblgz	shall and you and he have been just liking
+#@^+STPHRAEUfbts	can and you and he and she often have been
+#@^+STPRAEb	can and you and she be adding
+#@^+STPRAO*EUfbts	will and you and she not often have been
+#@^+STPWAO*Ebgsz	will whatever not be causing by
+#@^+STPWHd	did whatever do
+#@^+STPWHAEbgsz	can whatever be causing by
+#@^+STPWHAO*EUblgz	will whatever not have been just liking
+#@^+STPWHO*U	shall whatever not have done
+#@^+STPWHR*Eblgz	is whatever not just liking
+#@^+STPWHRAOEUb	will whatever have been adding
+#@^+STPWO*d	should whatever not do
+#@^+STPWRO*Eb	shall whatever not be adding
+#@^+STR*EUblgz	have and she not been just liking
+#@^+STRAO*Eb	will and she not be adding
+#@^+STWHAO*Ubgsz	will whatever not have caused by
+#@^+STWHO*Ed	should whatever not be doing
+#@^+STWHRAUbgsz	can whatever have caused by
+#@^+STWHREd	was whatever doing
+#@^+STWHRO*EU	shall whatever not have been doing
+#@^+STWOUfbts	shall whatever often have
+#@^+STWRAEU	can whatever have been doing
+#@^+STWRO*blgz	shall whatever not just like
+#@^+SWAUbgsz	can there have caused by
+#@^+SWEd	were there doing
+#@^+SWHAEUd	could whoever have been doing
+#@^+SWHO*bgsz	shall whoever not cause by
+#@^+SWHRAOEd	would whoever be doing
+#@^+SWHREUfbts	has whoever often been
+#@^+SWO*EU	shall there not have been doing
+#@^+SWRAUblgz	can whichever have just liked
+#@^+SWRE	is whichever doing
+#@^+T*EUbgsz	has it not been causing by
+#@^+TAO*Eblgz	will it not be just liking
+#@^+THA*bgsz	and can he not cause by
+#@^+THAOE	and will he be doing
+#@^+THEUd	and had he been doing
+#@^+THRA*EUd	and not to have been doing
+#@^+THRAObgsz	and to cause by
+#@^+TKAEUbgsz	and can I have been causing by
+#@^+TKAO	and will I do
+#@^+TKHEb	and are he and I adding
+#@^+TKHO*EUfbts	and shall he and I not often have been
+#@^+TKHR*Efbts	and are he and she and I not often
+#@^+TKHRAOEUd	and would he and she and I have been doing
+#@^+TKPA*d	and could you and I not do
+#@^+TKPHA*Ub	and can you and he and I not have added
+#@^+TKPHRA*Ufbts	and can you and he and she and I not often have
+#@^+TKPO*Ebgsz	and shall you and I not be causing by
+#@^+TKPR*fbts	and do you and she and I not often
+#@^+TKPRAOUd	and would you and she and I have done
+#@^+TKPWA*EU	can what not have been doing
+#@^+TKPWAOblgz	will what just like
+#@^+TKPWHA*bgsz	can what not cause by
+#@^+TKPWHAOE	will what be doing
+#@^+TKPWHEUd	had what been doing
+#@^+TKPWHR*EUd	had what not been doing
+#@^+TKPWHRAO*E	will what not be doing
+#@^+TKPWHRObgsz	shall what cause by
+#@^+TKPWRAOb	will what add
+#@^+TKPWRUblgz	has what just liked
+#@^+TKPWUbgsz	has what caused by
+#@^+TKRA*Ed	and could she and I not be doing
+#@^+TKRO*Ubgsz	and shall she and I not have caused by
+#@^+TKUd	and had I done
+#@^+TKWAEUblgz	can what have been just liking
+#@^+TKWHAOEblgz	will what be just liking
+#@^+TKWHEUbgsz	has what been causing by
+#@^+TKWHO	shall what do
+#@^+TKWHR*d	did what not do
+#@^+TKWHRA*Ebgsz	can what not be causing by
+#@^+TKWHRAOU	will what have done
+#@^+TKWRA*EUb	can what not have been adding
+#@^+TKWU	has what done
+#@^+TO*	shall it not do
+#@^+TPEblgz	and are you just liking
+#@^+TPHAOfbts	and will you and he often
+#@^+TPHR*Ufbts	and have you and he and she not often
+#@^+TPHRAO*d	and would you and he and she not do
+#@^+TPHUb	and have you and he added
+#@^+TPO*EUb	and shall you not have been adding
+#@^+TPRA*Ud	and could you and she not have done
+#@^+TPRO*EUbgsz	and shall you and she not have been causing by
+#@^+TPWA*blgz	can what not just like
+#@^+TPWEU	has what been doing
+#@^+TPWH*bgsz	does what not cause by
+#@^+TPWHAOUblgz	will what have just liked
+#@^+TPWHOE	shall what be doing
+#@^+TPWHRAOEb	will what be adding
+#@^+TPWHREUblgz	has what been just liking
+#@^+TPWROb	shall what add
+#@^+TRAOb	and will she add
+#@^+TRUblgz	and has she just liked
+#@^+TWA*Efbts	can what not often be
+#@^+TWH*	does what not do
+#@^+TWHA*Eblgz	can what not be just liking
+#@^+TWHR*Ebgsz	is what not causing by
+#@^+TWHRAOEUblgz	will what have been just liking
+#@^+TWHROU	shall what have done
+#@^+TWRAOEfbts	will what often be
+#@^+TWREUb	has what been adding
+#@^+WAbgsz	can there cause by
+#@^+WAO*Ublgz	will there not have just liked
+#@^+WH*Ud	had who not done
+#@^+WHA*EUbgsz	can who not have been causing by
+#@^+WHAO*	will who not do
+#@^+WHRA	can who do
+#@^+WHROEblgz	shall who be just liking
+#@^+WO*E	shall there not be doing
+#@^+WR*Eblgz	is which not just liking
+#@^+WRAOEUb	will which have been adding
+#^+*b	do not add
+#^+*blgtsd	did not accept
+#^+*fbg	do not walk
+#^+*fbsd	did not add that
+#^+*fls	do not look for
+#^+*fpblgs	do not explain how
+#^+*fpbz	do not also know
+#^+*fps	do not also appear
+#^+*frblgs	do not recall that
+#^+*frlgd	did not follow by
+#^+*frpblz	did not form
+#^+*frz	did not write
+#^+*lgdz	did not help to
+#^+*pbgdz	did not continue to
+#^+*pblgz	do not come to
+#^+*pgdz	did not happen to
+#^+*plts	do not seem to
+#^+*rbgtd	did not create
+#^+*rbsz	do not wish to
+#^+*rlgz	do not realize that
+#^+*rpbld	did not learn
+#^+*rpgd	did not appear in
+#^+*rsz	did not receive
+#^+HOUfbts	shall he often have
+#^+HR*blgd	not to like
+#^+HR*btsd	not to just want
+#^+HR*fbls	not to believe to
+#^+HR*flgd	not to leave
+#^+HR*fpbgtd	not to check out
+#^+HR*fpbsd	not to know that
+#^+HR*fpgt	not to be
+#^+HR*fplsz	not to seem like
+#^+HR*frbgtsz	not to carry on
+#^+HR*frgts	not to forget to
+#^+HR*frpblgd	not to also include
+#^+HR*frptz	not to also provide
+#^+HR*gtsz	not to set
+#^+HR*ltz	not to live with
+#^+HR*pblgsz	not to explain
+#^+HR*pbtsd	not to understand of
+#^+HR*plgtd	not to happen in
+#^+HR*rbg	not to call
+#^+HR*rblsz	not to share with
+#^+HR*rld	not to lead
+#^+HR*rpbgt	not to return to
+#^+HR*rpbsz	not to run on
+#^+HR*rpsd	not to produce
+#^+HRA*EUd	not to have been being
+#^+HRAObgsz	to cause by
+#^+K*bgdz	did I not cause
+#^+K*blsd	did I not add to
+#^+K*fbgsz	did I not think that
+#^+K*fbz	did I not become
+#^+K*flts	do I not love it
+#^+K*fpblgts	do I not just imagine
+#^+K*fpgdz	did I not pay for
+#^+K*fptd	did I not find that
+#^+K*frbs	do I not show that
+#^+K*frls	do I not also serve
+#^+K*frpgd	did I not provide by
+#^+K*ftd	did I not have
+#^+K*lgts	do I not set up
+#^+K*pbgt	do I not pick
+#^+K*pblt	do I not handle
+#^+K*pgtd	did I not get to
+#^+K*ps	do I not pass
+#^+K*rbgtz	do I not care about
+#^+K*rbtsz	did I not decide that
+#^+K*rltd	did I not live in
+#^+K*rpblgs	do I not explain that
+#^+K*rpl	do I not remain
+#^+K*rtsz	did I not start with
+#^+KHEb	are he and I adding
+#^+KHO*EUfbts	shall he and I not often have been
+#^+KHRA*EU	can he and she and I not have been
+#^+KHRAOblgz	will he and she and I just like
+#^+KHRUbgsz	have he and she and I caused by
+#^+KOEfbts	shall I often be
+#^+KPA*d	could you and I not
+#^+KPHAOd	would you and he and I
+#^+KPHR*blgz	do you and he and she and I not just like
+#^+KPHRAOUb	will you and he and she and I have added
+#^+KPHUfbts	have you and he and I often
+#^+KPO*Ebgsz	shall you and I not be causing by
+#^+KPRA*U	can you and she and I not have
+#^+KPREbgsz	are you and she and I causing by
+#^+KPRO*EUblgz	shall you and she and I not have been just liking
+#^+KPWA*b	can this not add
+#^+KPWHA*EUfbts	can this not often have been
+#^+KPWHRA*Ed	could this not be
+#^+KPWHRO*Ubgsz	shall this not have caused by
+#^+KPWR*Ed	was this not
+#^+KPWRA*Ubgsz	can this not have caused by
+#^+KPWRAOEU	will this have been
+#^+KRA*Ed	could she and I not be
+#^+KRO*Ubgsz	shall she and I not have caused by
+#^+KWAEUblgz	can this have been just liking
+#^+KWHA*Eb	can this not be adding
+#^+KWHROfbts	shall this often
+#^+KWRAOEd	would this be
+#^+KWREUfbts	has this often been
+#^+KWU	has this
+#^+Ofbts
+#^+P*EUd	had you not been
+#^+PAO*E	will you not be
+#^+PHAOfbts	will you and he often
+#^+PHRAOEblgz	will you and he and she be just liking
+#^+PHREUbgsz	have you and he and she been causing by
+#^+PHRO	shall you and he and she
+#^+PHUb	have you and he added
+#^+PObgsz	shall you cause by
+#^+PRA*Ud	could you and she not have
+#^+PRO*EUbgsz	shall you and she not have been causing by
+#^+PW*bl	does that not allow
+#^+PW*bsz	does that not decide to
+#^+PW*fblgs	does that not ask to
+#^+PW*fl	does that not feel
+#^+PW*fpbgs	does that not begin to
+#^+PW*fpbltsz	did that not plan for
+#^+PW*fplgtz	did that not apply for
+#^+PW*frbgt	does that not require to
+#^+PW*frgsd	did that not serve as
+#^+PW*frpbgz	did that not also call
+#^+PW*frplsz	did that not replace by
+#^+PW*gt	does that not get
+#^+PW*lts	does that not stay
+#^+PW*pblgd	did that not come
+#^+PW*pbt	does that not turn
+#^+PW*plgs	does that not play in
+#^+PW*r	does that not work
+#^+PW*rblgtz	did that not break down
+#^+PW*rgtd	did that not hear about
+#^+PW*rpbgdz	did that not open up
+#^+PW*rpbltz	did that not return from
+#^+PW*rpltsz	did that not replace with
+#^+PW*tsz	did that not start
+#^+PWA*blgz	can that not just like
+#^+PWEU	has that been
+#^+PWHA*Ub	can that not have added
+#^+PWHR*Ud	had that not
+#^+PWHRA*EUbgsz	can that not have been causing by
+#^+PWHRAO*	will that not
+#^+PWR*fbts	does that not often
+#^+PWRAOUd	would that have
+#^+RAd	could she
+#^+RAO*U	will she not have
+#^+ROEbgsz	shall she be causing by
+#^+S*Ud
+#^+SA*EUbgsz	can not have been causing by
+#^+SAO*
+#^+SHO*fbts	shall they not often
+#^+SHRAO*Ebgsz	will he or she not be causing by
+#^+SHRO*d	should he or she not
+#^+SKH*Ub	have he or I not added
+#^+SKHAO*fbts	will he or I not often
+#^+SKHRAUfbts	can he or she or I often have
+#^+SKOEUfbts	shall we often have been
+#^+SKPAOUbgsz	will you or I have caused by
+#^+SKPHOEUb	shall you or he or I have been adding
+#^+SKPHR	are you or he or she or I
+#^+SKPHRAEblgz	can you or he or she or I be just liking
+#^+SKPHRAO*EUb	will you or he or she or I not have been adding
+#^+SKPOEd	should you or I be
+#^+SKPRAEfbts	can you or she or I often be
+#^+SKPRAO*EUd	would you or she or I not have been
+#^+SKPW*EUbgsz	have these not been causing by
+#^+SKPWAO*Eblgz	will these not be just liking
+#^+SKPWHO*fbts	shall these not often
+#^+SKPWHRA*EUd	could these not have been
+#^+SKPWHRAObgsz	will these cause by
+#^+SKPWO*	shall these not
+#^+SKPWRAUd	could these have
+#^+SKPWROEUbgsz	shall these have been causing by
+#^+SKRAOEUbgsz	will she or I have been causing by
+#^+SKROUd	should she or I have
+#^+SKW*EU	have these not been
+#^+SKWHAbgsz	can these cause by
+#^+SKWHAO*Ublgz	will these not have just liked
+#^+SKWHO*E	shall these not be
+#^+SKWHRO*Efbts	shall these not often be
+#^+SKWOblgz	shall these just like
+#^+SKWR*bgtsd	did these not talk
+#^+SKWR*blz	do these not allow to
+#^+SKWR*fbl	do these not believe
+#^+SKWR*fgt	do these not also give
+#^+SKWR*fpbdz	did these not also know
+#^+SKWR*fpblt	do these not mean that
+#^+SKWR*fplg	do these not make sure
+#^+SKWR*frbgdz	did these not require for
+#^+SKWR*frg	do these not offer
+#^+SKWR*frpbgd	did these not also call
+#^+SKWR*frplgd	did these not remove from
+#^+SKWR*gdz	did these not go to
+#^+SKWR*lsz	do these not also hold
+#^+SKWR*pbl	do these not mean
+#^+SKWR*pbs	do these not understand
+#^+SKWR*pldz	did these not make it
+#^+SKWR*ptsd	did these not stop
+#^+SKWR*rblgsd	did these not ask for
+#^+SKWR*rgs	do these not work on
+#^+SKWR*rpbd	did these not run
+#^+SKWR*rpblsd	did these not learn to
+#^+SKWR*rplt	do these not remain in
+#^+SKWR*td	did these not want
+#^+SKWRO*b	shall these not add
+#^+SPAEd	could you be
+#^+SPAO*EU	will you not have been
+#^+SPH*EUb	have you or he not been adding
+#^+SPHAO*Efbts	will you or he not often be
+#^+SPHRAEUfbts	can you or he or she often have been
+#^+SPOUbgsz	shall you have caused by
+#^+SPRAO*bgsz	will you or she not cause by
+#^+SPROEUd	should you or she have been
+#^+SPWA	can those
+#^+SPWHd	were those
+#^+SPWHAEbgsz	can those be causing by
+#^+SPWHAO*EUblgz	will those not have been just liking
+#^+SPWHO*U	shall those not have
+#^+SPWHRAEUd	could those have been
+#^+SPWHRO*bgsz	shall those not cause by
+#^+SPWOEblgz	shall those be just liking
+#^+SPWRO*Eb	shall those not be adding
+#^+SRAUd	could one have
+#^+SROEUbgsz	shall one have been causing by
+#^+ST*EUblgz	have and it not been just liking
+#^+STAO*Eb	will and it not be adding
+#^+STH*U	have and he not
+#^+STHA*EUblgz	can and he not have been just liking
+#^+STHRAfbts	can and he and she often
+#^+STHRAO*Ud	would and he and she not have
+#^+STK*E	are and I not
+#^+STKA*Ublgz	can and I not have just liked
+#^+STKHOb	shall and he and I add
+#^+STKHRAd	could and he and she and I
+#^+STKHRAO*U	will and he and she and I not have
+#^+STKHROEbgsz	shall and he and she and I be causing by
+#^+STKP*Efbts	are and you and I not often
+#^+STKPAOEUd	would and you and I have been
+#^+STKPHOEfbts	shall and you and he and I often be
+#^+STKPHRA*Ud	could and you and he and she and I not have
+#^+STKPHRO*EUbgsz	shall and you and he and she and I not have been causing by
+#^+STKPR*EUd	had and you and she and I not been
+#^+STKPRAO*E	will and you and she and I not be
+#^+STKPRObgsz	shall and you and she and I cause by
+#^+STKPW*Eblgz	is whatever not just liking
+#^+STKPWAOEUb	will whatever have been adding
+#^+STKPWHA*blgz	can whatever not just like
+#^+STKPWHEU	has whatever been
+#^+STKPWHR*b	does whatever not add
+#^+STKPWHRAOUfbts	will whatever often have
+#^+STKPWRAOfbts	will whatever often
+#^+STKPWRUb	has whatever added
+#^+STKR*Ufbts	have and she and I not often
+#^+STKRAO*d	would and she and I not
+#^+STKW*bgsz	does whatever not cause by
+#^+STKWAOUblgz	will whatever have just liked
+#^+STKWH*Ublgz	has whatever not just liked
+#^+STKWHAO*b	will whatever not add
+#^+STKWHR*	is whatever not
+#^+STKWHRA*Eblgz	can whatever not be just liking
+#^+STKWOE	shall whatever be
+#^+STKWROUfbts	shall whatever often have
+#^+STP*b	do and you not add
+#^+STPAOUfbts	will and you often have
+#^+STPHOEb	shall and you and he be adding
+#^+STPHRAEd	could and you and he and she be
+#^+STPHRAO*EU	will and you and he and she not have been
+#^+STPHROUbgsz	shall and you and he and she have caused by
+#^+STPR*EUfbts	have and you and she not often been
+#^+STPRAO*Ed	would and you and she not be
+#^+STPW*Ebgsz	is whatever not causing by
+#^+STPWAOEUblgz	will whatever have been just liking
+#^+STPWH*EUblgz	has whatever not been just liking
+#^+STPWHAO*Eb	will whatever not be adding
+#^+STPWHRAOEfbts	will whatever often be
+#^+STPWHREUb	has whatever been adding
+#^+STPWOU	shall whatever have
+#^+STPWROEUfbts	shall whatever often have been
+#^+STR*blgsz	did and she not ask
+#^+STR*dz	did and she not use
+#^+STR*Eb	are and she not adding
+#^+STR*fbltd	did and she not believe that
+#^+STR*flgt	do and she not love to
+#^+STR*fpbld	did and she not move
+#^+STR*fpbts	do and she not turn to
+#^+STR*fpltsd	did and she not meet with
+#^+STR*frbld	did and she not feel that
+#^+STR*frgz	do and she not offer to
+#^+STR*frpblsz	did and she not form by
+#^+STR*frsz	did and she not serve
+#^+STR*ld	did and she not look
+#^+STR*lgsz	do and she not always
+#^+STR*pbd	did and she not need
+#^+STR*pblgts	do and she not expect to
+#^+STR*pd	did and she not appear
+#^+STR*plsd	did and she not seem
+#^+STR*rbgsd	did and she not carry
+#^+STR*rblz	did and she not share
+#^+STR*rlgdz	did and she not realize that
+#^+STR*rpbgtsz	did and she not consider to
+#^+STR*rpbz	do and she not run for
+#^+STR*rptz	did and she not put it
+#^+STRAOEUfbts	will and she often have been
+#^+STWAOEbgsz	will whatever be causing by
+#^+STWH*Ubgsz	has whatever not caused by
+#^+STWHAO*blgz	will whatever not just like
+#^+STWHOEU	shall whatever have been
+#^+STWHRAblgz	can whatever just like
+#^+STWHRAO*Ub	will whatever not have added
+#^+STWOd	should whatever
+#^+STWROUb	shall whatever have added
+#^+SWAblgz	can there just like
+#^+SWAO*Ub	will there not have added
+#^+SWHAE	can whoever be
+#^+SWHOUblgz	shall whoever have just liked
+#^+SWHRAUbgsz	can whoever have caused by
+#^+SWHREd	was whoever
+#^+SWHRO*EU	shall whoever not have been
+#^+SWRAb	can whichever add
+#^+SWRAO*Ufbts	will whichever not often have
+#^+T*bgsz	does it not cause by
+#^+T*blts	does it not allow for
+#^+T*Eblgz	is it not just liking
+#^+T*fbgtsd	did it not talk to
+#^+T*fgd	did it not give
+#^+T*flz	does it not feel like
+#^+T*fpblgz	did it not include
+#^+T*fpgz	does it not pay for
+#^+T*frb	does it not show
+#^+T*frbtd	did it not also show
+#^+T*frp	does it not provide
+#^+T*frpgz	did it not provide by
+#^+T*ftz	did it not have
+#^+T*lgz	does it not help to
+#^+T*pbgtsd	did it not expect
+#^+T*pbltsd	did it not mean to
+#^+T*pgtz	did it not get to
+#^+T*pt	does it not put
+#^+T*rblg	does it not break
+#^+T*rdz	did it not work with
+#^+T*rltz	did it not live in
+#^+T*rpblgtd	did it not remember that
+#^+T*rplgz	did it not play with
+#^+T*sd	did it not say
+#^+TAOEUb	will it have been adding
+#^+THAUblgz	and can he have just liked
+#^+THE	and is he
+#^+THRbgsz	and to cause by
+#^+THRA*E	and not to be being
+#^+THRO*Ublgz	and not to just have liked
+#^+TK	and am I
+#^+TKAEblgz	and can I be just liking
+#^+TKAO*EUb	and will I not have been adding
+#^+TKHAO*Ubgsz	and will he and I not have caused by
+#^+TKHO*Ed	and should he and I not be
+#^+TKHRA*bgsz	and can he and she and I not cause by
+#^+TKHRAOE	and will he and she and I be
+#^+TKHREUd	and had he and she and I been
+#^+TKPAU	and can you and I have
+#^+TKPHA*fbts	and can you and he and I not often
+#^+TKPHRA*d	and could you and he and she and I not
+#^+TKPHRO*Ebgsz	and shall you and he and she and I not be causing by
+#^+TKPOEUblgz	and shall you and I have been just liking
+#^+TKPRAEUbgsz	and can you and she and I have been causing by
+#^+TKPRAO	and will you and she and I
+#^+TKPRUd	and had you and she and I
+#^+TKPWblgz	does what just like
+#^+TKPWHAUblgz	can what have just liked
+#^+TKPWHE	is what
+#^+TKPWHR*E	is what not
+#^+TKPWHRA*Ublgz	can what not have just liked
+#^+TKPWO*Ub	shall what not have added
+#^+TKPWRb	does what add
+#^+TKPWRO*Ufbts	shall what not often have
+#^+TKRAEU	and can she and I have been
+#^+TKRO*blgz	and shall she and I not just like
+#^+TKWAEb	can what be adding
+#^+TKWAO*EUfbts	will what not often have been
+#^+TKWHEblgz	is what just liking
+#^+TKWHO*EUb	shall what not have been adding
+#^+TKWHRAEUblgz	can what have been just liking
+#^+TKWHRU	has what
+#^+TKWRA*Efbts	can what not often be
+#^+TPHfbts	and do you and he often
+#^+TPHAO*EUbgsz	and will you and he not have been causing by
+#^+TPHO*Ud	and should you and he not have
+#^+TPHR*d	and were you and he and she not
+#^+TPHRA*Ebgsz	and can you and he and she not be causing by
+#^+TPHRAOU	and will you and he and she have
+#^+TPO*Efbts	and shall you not often be
+#^+TPRA*	and can you and she not
+#^+TPRO*Eblgz	and shall you and she not be just liking
+#^+TPWAUb	can what have added
+#^+TPWHAOb	will what add
+#^+TPWHREb	is what adding
+#^+TPWHRO*EUfbts	shall what not often have been
+#^+TPWHUblgz	has what just liked
+#^+TPWRA*Ufbts	can what not often have
+#^+TRb	and does she add
+#^+TRO*Ufbts	and shall she not often have
+#^+TWAEUd	could what have been
+#^+TWHAEUb	can what have been adding
+#^+TWHRAOEb	will what be adding
+#^+TWHREUblgz	has what been just liking
+#^+TWO*bgsz	shall what not cause by
+#^+TWREfbts	is what often
+#^+TWRO*EUd	should what not have been
+#^+W*Ublgz	has there not just liked
+#^+WAO*b	will there not add
+#^+WH*	is who not
+#^+WHA*Eblgz	can who not be just liking
+#^+WHRA*EUb	can who not have been adding
+#^+WRAOEfbts	will which often be
+#^+WREUb	has which been adding
++
++*bld	didn't allow
++*bt	don't buy
++*Ebl	aren't allowing
++*Ebsz	aren't deciding to
++*Efblgs	aren't asking to
++*Efl	aren't feeling
++*Efpbgs	aren't beginning to
++*Efpbltsz	weren't planning for
++*Efplgtz	weren't applying for
++*Efrbgt	aren't requiring to
++*Efrgsd	weren't serving as
++*Efrpbgz	weren't also calling
++*Efrplsz	weren't replacing by
++*Egt	aren't getting
++*Elts	aren't staying
++*Epblgd	weren't coming
++*Epbt	aren't turning
++*Eplgs	aren't playing in
++*Er	aren't working
++*Erblgtz	weren't breaking down
++*Ergtd	weren't hearing about
++*Erpbgdz	weren't opening up
++*Erpbltz	weren't returning from
++*Erpltsz	weren't replacing with
++*Etsz	weren't starting
++*fblgsd	didn't ask to
++*fld	didn't feel
++*fpbgsd	didn't begin to
++*fpbltz	didn't mean that
++*fplgz	didn't make sure
++*frbgtd	didn't require to
++*frgsz	didn't serve as
++*frpbl	don't form
++*frplz	didn't remove
++*gtd	didn't get
++*ltsd	didn't stay
++*pblgdz	didn't come to
++*pbtd	didn't turn
++*plgsd	didn't play in
++*rb	don't read
++*rblgz	don't break up
++*rgtz	didn't hear about
++*rpbgs	don't consider
++*rpblz	don't learn about
++*rpltz	didn't remain in
++*tz	don't want to
++blgsd	asked
++bz	use in
++fblt	believe that
++flgsz	guessed that
++fpbl	move
++fpbtd	needed for
++fplts	meet with
++frbl	feel that
++frgtz	forgot
++frpblsd	formed by
++frps
++frsd	served
++l	look
++AEblgz	can be just liking
++AO*EUb	won't have been adding
++AOUblgs	will have asked
++AOUbtz	would've bought
++AOUfblsz	would've believed to
++AOUflgsd	would've guessed that
++AOUfpbgz	will have checked in
++AOUfpbt	will have needed for
++AOUfpltd	would've met
++AOUfrbgz	will have required for
++AOUfrgtsz	would've forgotten to
++AOUfrlt
++AOUfrpbls	will have formed by
++AOUfrs	will have served
++AOUgz	will have gone to
++AOUp	will have appeared
++AOUpblgtd	would've imagined
++AOUpbtz	will have turned out
++AOUplgz	will have paid attention
++AOUrbgdz	would've cared
++AOUrbltd	would've led by
++AOUrlg	will have looked at
++AOUrpbgts	will have considered to
++AOUrpbtd	would've returned
++AOUrpt	will have put it
++HAEUblgz	he can have been just liking
++HR*bgt	not to take
++HR*bltsd	not to allow for
++HR*Ebgsz	not to be causing by
++HR*Eblts	not to be allowing for
++HR*Efbgtsd	not to be talking to
++HR*Efgd	not to be giving
++HR*Eflz	not to be feeling like
++HR*Efpblgz	not to be including
++HR*Efpgz	not to be paying for
++HR*Efrb	not to be showing
++HR*Efrbtd	not to also be showing
++HR*Efrp	not to be providing
++HR*Efrpgz	not to be providing by
++HR*Eftz	not to be having
++HR*Elgz	not to be helping to
++HR*Epbgtsd	not to be expecting
++HR*Epbltsd	not to be meaning to
++HR*Epgtz	not to be getting to
++HR*Ept	not to be putting
++HR*Erblg	not to be breaking
++HR*Erdz	not to be working with
++HR*Erltz	not to be living in
++HR*Erpblgtd	not to be remembering that
++HR*Erplgz	not to be playing with
++HR*Esd	not to be saying
++HR*fbgtsz	not to talk to
++HR*fgs	not to give up
++HR*fp	not to change
++HR*fpbls	not to move to
++HR*fpl	not to apply
++HR*frbd	not to show
++HR*frbtz	not to also show
++HR*frpb	not to need to
++HR*frpl	not to remove
++HR*fz	not to find out
++HR*ls	not to send
++HR*pbgtsz	not to expect
++HR*pbltsz	not to mean to
++HR*pgz	not to happen to
++HR*ptd	not to put
++HR*rblgd	not to break
++HR*rg	not to hear
++HR*rlz	not to realize
++HR*rpblgtz	not to remember that
++HR*rpls	not to replace
++HR*sdz	not to use to
++HRbgz	to cause
++HRbsdz	to decide to
++HRfblgd	to like to
++HRfgz	to give
++HRfpbgdz	to check in
++HRfpbltsd	to plan for
++HRfplgtd	to apply for
++HRfrbgsz	to call for
++HRfrgs	to serve as
++HRfrpbgsz	to bring in
++HRfrplsd	to replace by
++HRgsz	to see
++HRltdz	to live with
++HRpblg	to come
++HRpbsz	to understand that
++HRplgdz	to pay attention
++HRpz	to pay
++HRrblgtd	to break down
++HRrgt	to hear about
++HRrpbgd	to bring
++HRrpbltd	to return from
++HRrpltsd	to replace with
++HRtsd	to start
++HRAb	to add
++HRAO*Ufbts	not to have been
++HRAOUbgtz	to have taken
++HRAOUbsd	to have decided
++HRAOUfblg	to have liked to
++HRAOUfgtz	to also have given
++HRAOUfpbgd	to have checked
++HRAOUfpblts	to have planned for
++HRAOUfplgt	to have applied for
++HRAOUfrbgsd	to have called for
++HRAOUfrgdz	to have offered to
++HRAOUfrpbgsd	to have brought in
++HRAOUfrpls	to have replaced by
++HRAOUgsd	to have seen
++HRAOUltd	to have lived
++HRAOUpbldz	to have minded
++HRAOUpbsdz	to have understood that
++HRAOUplgd	to have played
++HRAOUptz	to have put on
++HRAOUrblgt	to have broken down
++HRAOUrgsz	to have worked on
++HRAOUrpbg	to have brought
++HRAOUrpblt	to have returned from
++HRAOUrplts	to have replaced with
++HRAOUts	to have started
++HU	he's
++K*blgs	I don't ask
++K*btz	I didn't buy
++K*Eblgdz	I wasn't just liking
++K*Ebtsz	I wasn't just wanting
++K*Efblsd	I wasn't believing to
++K*Eflgs	I'm not guessing that
++K*Efpbgtz	I wasn't checking out
++K*Efpbsz	I wasn't knowing that
++K*Efplt	I'm not meeting
++K*Efpts	I'm not just
++K*Efrbgtz	I wasn't requiring to
++K*Efrgtsd	I wasn't forgetting to
++K*Efrpblgz	I wasn't also including
++K*Efrpz	I'm not choosing to
++K*Egtz	I wasn't getting
++K*Elz	I'm not holding
++K*Epblgt	I'm not imagining
++K*Epbtsz	I wasn't understanding of
++K*Eplgtz	I wasn't happening in
++K*Erbgd	I wasn't calling
++K*Erblt	I'm not leading by
++K*Erldz	I wasn't realizing
++K*Erpbgtd	I wasn't returning to
++K*Erpbt	I'm not returning
++K*Erpsz	I wasn't producing
++K*fblsz	I didn't believe to
++K*flgsd	I didn't guess that
++K*fpbgz	I don't check in
++K*fpbt	I don't need for
++K*fpltd	I didn't meet
++K*frbgz	I don't require for
++K*frgtsz	I didn't forget to
++K*frlt	I don't also
++K*frpbls	I don't form by
++K*frs	I don't serve
++K*gz	I don't go to
++K*p	I don't appear
++K*pblgtd	I didn't imagine
++K*pbtz	I don't turn out
++K*plgz	I don't pay attention
++K*rbgdz	I didn't care
++K*rbltd	I didn't lead by
++K*rlg	I don't look at
++K*rpbgts	I don't consider to
++K*rpbtd	I didn't return
++K*rpt	I don't put it
++Kb	I add
++Kbd	I added
++Kbdz	I used in
++Kbg	I think
++Kbgd	I thought
++Kbgdz	I caused
++Kbgs	I keep
++Kbgsd	I kept
++Kbgsdz	I caused by
++Kbgsz	I cause by
++Kbgt	I take
++Kbgtd	I took
++Kbgts	I talk
++Kbgtsd	I talked
++Kbgtsz	I talked
++Kbgtz	I took
++Kbgz	I cause
++Kbl	I allow
++Kbld	I allowed
++Kbldz	I allowed to
++Kblg	I like
++Kblgd	I liked
++Kblgdz	I just liked
++Kblgs	I ask
++Kblgsd	I asked
++Kblgsz	I asked
++Kblgt	I think it
++Kblgtd	I thought it
++Kblgts	I accept
++Kblgtsd	I accepted
++Kblgtsz	I accepted
++Kblgtz	I thought it
++Kblgz	I just like
++Kbls	I add to
++Kblsd	I added to
++Kblsz	I added to
++Kblt	I build
++Kbltd	I built
++Kblts	I allow for
++Kbltsd	I allowed for
++Kbltsz	I allowed for
++Kbltz	I built
++Kblz	I allow to
++Kbs	I decide
++Kbsd	I decided
++Kbsdz	I decided to
++Kbsz	I decide to
++Kbt	I buy
++Kbtd	I bought
++Kbts	I just want
++Kbtsd	I just wanted
++Kbtsz	I just wanted
++Kbtz	I bought
++Kbz	I use in
++Kdz	I used
++Kf	I find
++Kfb	I become
++Kfbd	I became
++Kfbg	I walk
++Kfbgd	I walked
++Kfbgdz	I walked into
++Kfbgs	I think that
++Kfbgsd	I thought that
++Kfbgsz	I thought that
++Kfbgt	I walk in
++Kfbgtd	I walked in
++Kfbgts	I talk to
++Kfbgtsd	I talked to
++Kfbgtsz	I talked to
++Kfbgtz	I walked in
++Kfbgz	I walk into
++Kfbl	I believe
++Kfbld	I believed
++Kfblg	I like to
++Kfblgd	I liked to
++Kfblgs	I ask to
++Kfblgsd	I asked to
++Kfblgsz	I asked to
++Kfblgz	I liked to
++Kfbls	I believe to
++Kfblsd	I believed to
++Kfblsz	I believed to
++Kfblt	I believe that
++Kfbltd	I believed that
++Kfbltz	I believed that
++Kfblz	I believed
++Kfbs	I add that
++Kfbsd	I added that
++Kfbsz	I added that
++Kfbt	I become more
++Kfbtd	I became more
++Kfbts	I often
++Kfbtz	I became more
++Kfbz	I became
++Kfd	I found
++Kfdz	I found out
++Kfg	I give
++Kfgd	I gave
++Kfgs	I give up
++Kfgsd	I gave up
++Kfgsz	I gave up
++Kfgt	I also give
++Kfgtd	I also gave
++Kfgtz	I also gave
++Kfgz	I gave
++Kfl	I feel
++Kfld	I felt
++Kfldz	I felt like
++Kflg	I leave
++Kflgd	I left
++Kflgs	I guess that
++Kflgsd	I guessed that
++Kflgsz	I guessed that
++Kflgt	I love to
++Kflgtd	I loved to
++Kflgtz	I loved to
++Kflgz	I left
++Kfls	I look for
++Kflsd	I looked for
++Kflsz	I looked for
++Kflt	I love
++Kfltd	I loved
++Kflts	I love it
++Kfltsd	I loved it
++Kfltsz	I loved it
++Kfltz	I loved
++Kflz	I feel like
++Kfp	I change
++Kfpb	I know
++Kfpbd	I knew
++Kfpbdz	I also knew
++Kfpbg	I check
++Kfpbgd	I checked
++Kfpbgdz	I checked in
++Kfpbgs	I begin to
++Kfpbgsd	I began to
++Kfpbgsz	I began to
++Kfpbgt	I check out
++Kfpbgtd	I checked out
++Kfpbgtz	I checked out
++Kfpbgz	I check in
++Kfpbl	I move
++Kfpbld	I moved
++Kfpbldz	I opened in
++Kfpblg	I include
++Kfpblgd	I included
++Kfpblgs	I explain how
++Kfpblgsd	I explained how
++Kfpblgsz	I explained how
++Kfpblgt	I come from
++Kfpblgtd	I came from
++Kfpblgts	I just imagine
++Kfpblgtsd	I just imagined
++Kfpblgtsz	I just imagined
++Kfpblgtz	I came from
++Kfpblgz	I included
++Kfpbls	I move to
++Kfpblsd	I moved to
++Kfpblsz	I moved to
++Kfpblt	I mean that
++Kfpbltd	I meant that
++Kfpblts	I plan for
++Kfpbltsd	I planned for
++Kfpbltsz	I planned for
++Kfpbltz	I meant that
++Kfpblz	I open in
++Kfpbs	I know that
++Kfpbsd	I knew that
++Kfpbsz	I knew that
++Kfpbt	I need for
++Kfpbtd	I needed for
++Kfpbts	I turn to
++Kfpbtsd	I turned to
++Kfpbtsz	I turned to
++Kfpbtz	I needed for
++Kfpbz	I also know
++Kfpd	I changed
++Kfpdz	I chose
++Kfpg	I go on
++Kfpgd	I went on
++Kfpgdz	I paid for
++Kfpgs	I pass on
++Kfpgsd	I passed on
++Kfpgsz	I passed on
++Kfpgt	I never
++Kfpgz	I pay for
++Kfpl	I apply
++Kfpld	I applied
++Kfpldz	I applied to
++Kfplg	I make sure
++Kfplgd	I made sure
++Kfplgt	I apply for
++Kfplgtd	I applied for
++Kfplgtz	I applied for
++Kfplgz	I made sure
++Kfpls	I seem like
++Kfplsd	I seemed like
++Kfplsz	I seemed like
++Kfplt	I meet
++Kfpltd	I met
++Kfplts	I meet with
++Kfpltsd	I met with
++Kfpltsz	I met with
++Kfpltz	I met
++Kfplz	I apply to
++Kfps	I also appear
++Kfpsd	I also appeared
++Kfpsdz	I chose from
++Kfpsz	I choose from
++Kfpt	I find that
++Kfptd	I found that
++Kfpts	I just
++Kfptz	I found that
++Kfpz	I choose
++Kfr	I write
++Kfrb	I show
++Kfrbd	I showed
++Kfrbg	I require
++Kfrbgd	I required
++Kfrbgdz	I required for
++Kfrbgs	I call for
++Kfrbgsd	I called for
++Kfrbgsz	I called for
++Kfrbgt	I require to
++Kfrbgtd	I required to
++Kfrbgts	I carry on
++Kfrbgtsd	I carried on
++Kfrbgtsz	I carried on
++Kfrbgtz	I required to
++Kfrbgz	I require for
++Kfrbl	I feel that
++Kfrbld	I felt that
++Kfrblg	I recall
++Kfrblgd	I recalled
++Kfrblgdz	I really cared
++Kfrblgs	I recall that
++Kfrblgsd	I recalled that
++Kfrblgsz	I recalled that
++Kfrblgz	I really care
++Kfrblz	I felt that
++Kfrbs	I show that
++Kfrbsd	I showed that
++Kfrbsz	I showed that
++Kfrbt	I also show
++Kfrbtd	I also showed
++Kfrbtz	I also showed
++Kfrbz	I showed
++Kfrd	I wrote
++Kfrg	I offer
++Kfrgd	I offered
++Kfrgdz	I offered to
++Kfrgs	I serve as
++Kfrgsd	I served as
++Kfrgsz	I served as
++Kfrgt	I forget
++Kfrgtd	I forgot
++Kfrgts	I forget to
++Kfrgtsd	I forgot to
++Kfrgtsz	I forgot to
++Kfrgtz	I forgot
++Kfrgz	I offer to
++Kfrl	I follow
++Kfrld	I followed
++Kfrlg	I follow by
++Kfrlgd	I followed by
++Kfrlgt	I never forget
++Kfrlgtd	I never forgot
++Kfrlgtz	I never forgot
++Kfrlgz	I followed by
++Kfrls	I also serve
++Kfrlsd	I also served
++Kfrlsz	I also served
++Kfrlt	I also
++Kfrlz	I followed
++Kfrp	I provide
++Kfrpb	I need to
++Kfrpbd	I needed to
++Kfrpbg	I also call
++Kfrpbgd	I also called
++Kfrpbgs	I bring in
++Kfrpbgsd	I brought in
++Kfrpbgsz	I brought in
++Kfrpbgz	I also called
++Kfrpbl	I form
++Kfrpbld	I formed
++Kfrpblg	I also include
++Kfrpblgd	I also included
++Kfrpblgz	I also included
++Kfrpbls	I form by
++Kfrpblsd	I formed by
++Kfrpblsz	I formed by
++Kfrpblt	I form in
++Kfrpbltd	I formed in
++Kfrpbltz	I formed in
++Kfrpblz	I formed
++Kfrpbz	I needed to
++Kfrpd	I provided
++Kfrpdz	I chose to
++Kfrpg	I provide by
++Kfrpgd	I provided by
++Kfrpgs	I also offer
++Kfrpgsd	I also offered
++Kfrpgsz	I also offered
++Kfrpgz	I provided by
++Kfrpl	I remove
++Kfrpld	I removed
++Kfrplg	I remove from
++Kfrplgd	I removed from
++Kfrplgz	I removed from
++Kfrpls	I replace by
++Kfrplsd	I replaced by
++Kfrplsz	I replaced by
++Kfrplz	I removed
++Kfrps	I actually
++Kfrpt	I also provide
++Kfrptd	I also provided
++Kfrptz	I also provided
++Kfrpz	I choose to
++Kfrs	I serve
++Kfrsd	I served
++Kfrsz	I served
++Kfrt	I write about
++Kfrtd	I wrote about
++Kfrtz	I wrote about
++Kfrz	I wrote
++Kfs	I save
++Kfsd	I saved
++Kfsz	I saved
++Kft	I have
++Kftd	I had
++Kfts	I start to
++Kftsd	I started to
++Kftsz	I started to
++Kftz	I had
++Kfz	I find out
++Kg	I go
++Kgd	I went
++Kgdz	I went to
++Kgs	I see
++Kgsd	I saw
++Kgsz	I saw
++Kgt	I get
++Kgtd	I got
++Kgts	I set
++Kgtsd	I set
++Kgtsz	I set
++Kgtz	I got
++Kgz	I go to
++Kl	I look
++Kld	I looked
++Kldz	I held
++Klg	I help
++Klgd	I helped
++Klgdz	I helped to
++Klgs	I guess
++Klgsd	I guessed
++Klgsz	I always
++Klgt	I tell
++Klgtd	I told
++Klgts	I set up
++Klgtsd	I set up
++Klgtsz	I set up
++Klgtz	I told
++Klgz	I help to
++Kls	I send
++Klsd	I sent
++Klsdz	I also held
++Klsz	I also hold
++Klt	I live
++Kltd	I lived
++Kltdz	I lived with
++Klts	I stay
++Kltsd	I stayed
++Kltsdz	I stayed at
++Kltsz	I stay at
++Kltz	I live with
++Klz	I hold
++Ks	I say
++Ksd	I said
++Ksdz	I used to
++Ksz	I use to
++Kt	I want
++Ktd	I wanted
++Ktdz	I wanted to
++Kts	I start
++Ktsd	I started
++Ktsz	I started
++Ktz	I want to
++Kz	I use
++KAOUblgts	I'll have accepted
++KAOUfbd	I'd have become
++KAOUfbs	I'll have added that
++KAOUflgz	I'd have left
++KAOUfpblgd	I'd have included
++KAOUfpbtz	I'd have needed for
++KAOUfplz	I'll have applied to
++KAOUfrblgdz	I'd have really cared
++KAOUfrlg	I'll have followed by
++KAOUfrpbltz	I'd have formed in
++KAOUfrtz	I'd have written about
++KAOUlgd	I'd have helped
++KAOUpbgd	I'd have continued
++KAOUpblgtz	I'll have imagined that
++KAOUpgd	I'd have happened
++KAOUpltd	I'd have let
++KAOUrbgt	I'll have created
++KAOUrbsdz	I'd have wished to
++KAOUrlgsz	I'd have guessed it
++KAOUrpbl	I'll have learned
++KAOUrpg	I'll have appeared in
++KAOUrsd	I'd have received
++KAUblgz	I can have just liked
++KE	I'm
++KH*EU	he and I haven't been
++KHOblgz	he and I shall just like
++KHRAfbts	he and she and I can often
++KHRAO*Ud	he and she and I wouldn't have
++KP	you and I are
++KP*Eb	you and I aren't adding
++KPb	you and I add
++KPbd	you and I added
++KPbdz	you and I used in
++KPbg	you and I think
++KPbgd	you and I thought
++KPbgdz	you and I caused
++KPbgs	you and I keep
++KPbgsd	you and I kept
++KPbgsdz	you and I caused by
++KPbgsz	you and I cause by
++KPbgt	you and I take
++KPbgtd	you and I took
++KPbgtdz
++KPbgts	you and I talk
++KPbgtsd	you and I talked
++KPbgtsz	you and I talked
++KPbgtz	you and I took
++KPbgz	you and I cause
++KPbl	you and I allow
++KPbld	you and I allowed
++KPbldz	you and I allowed to
++KPblg	you and I like
++KPblgd	you and I liked
++KPblgdz	you and I just liked
++KPblgs	you and I ask
++KPblgsd	you and I asked
++KPblgsz	you and I asked
++KPblgt	you and I think it
++KPblgtd	you and I thought it
++KPblgtdz
++KPblgts	you and I accept
++KPblgtsd	you and I accepted
++KPblgtsz	you and I accepted
++KPblgtz	you and I thought it
++KPblgz	you and I just like
++KPbls	you and I add to
++KPblsd	you and I added to
++KPblsdz
++KPblsz	you and I added to
++KPblt	you and I build
++KPbltd	you and I built
++KPbltdz
++KPblts	you and I allow for
++KPbltsd	you and I allowed for
++KPbltsz	you and I allowed for
++KPbltz	you and I built
++KPblz	you and I allow to
++KPbs	you and I decide
++KPbsd	you and I decided
++KPbsdz	you and I decided to
++KPbsz	you and I decide to
++KPbt	you and I buy
++KPbtd	you and I bought
++KPbtdz
++KPbts	you and I just want
++KPbtsd	you and I just wanted
++KPbtsz	you and I just wanted
++KPbtz	you and I bought
++KPbz	you and I use in
++KPd	you and I were
++KPdz	you and I used
++KPg	you and I go
++KPgd	you and I went
++KPgdz	you and I went to
++KPgs	you and I see
++KPgsd	you and I saw
++KPgsz	you and I saw
++KPgt	you and I get
++KPgtd	you and I got
++KPgts	you and I set
++KPgtsd	you and I set
++KPgtsz	you and I set
++KPgtz	you and I got
++KPgz	you and I go to
++KPl	you and I look
++KPld	you and I looked
++KPldz	you and I held
++KPlg	you and I help
++KPlgd	you and I helped
++KPlgdz	you and I helped to
++KPlgs	you and I guess
++KPlgsd	you and I guessed
++KPlgsz	you and I always
++KPlgt	you and I tell
++KPlgtd	you and I told
++KPlgtz	you and I told
++KPlgz	you and I help to
++KPls	you and I send
++KPlsd	you and I sent
++KPlsz	you and I also hold
++KPlt	you and I live
++KPltd	you and I lived
++KPlts	you and I stay
++KPltsd	you and I stayed
++KPltsz	you and I stay at
++KPltz	you and I live with
++KPlz	you and I hold
++KPs	you and I say
++KPsd	you and I said
++KPsdz	you and I used to
++KPsz	you and I use to
++KPt	you and I want
++KPtd	you and I wanted
++KPtdz	you and I wanted to
++KPts	you and I start
++KPtsd	you and I started
++KPtsz	you and I started
++KPtz	you and I want to
++KPz	you and I use
++KPAOEUfbts	you and I will often have been
++KPHOEb	you and he and I shall be adding
++KPHRAUd	you and he and she and I could've
++KPHROEUbgsz	you and he and she and I shall have been causing by
++KPR*EUfbts	you and she and I haven't often been
++KPRAO*Ed	you and she and I wouldn't be
++KPW*Ebgsz	this isn't causing by
++KPWAOEUblgz	this will have been just liking
++KPWHAblgz	this can just like
++KPWHAO*Ub	this won't have added
++KPWHR*Ub	this hasn't added
++KPWHRAO*fbts	this won't often
++KPWOU	this shall have
++KPWRO*fbts	this shall not often
++KR	she and I are
++KR*Ub	she and I haven't added
++KRb	she and I add
++KRbd	she and I added
++KRbdz	she and I used in
++KRbg	she and I think
++KRbgd	she and I thought
++KRbgdz	she and I caused
++KRbgs	she and I keep
++KRbgsd	she and I kept
++KRbgsdz	she and I caused by
++KRbgsz	she and I cause by
++KRbgt	she and I take
++KRbgtd	she and I took
++KRbgtdz
++KRbgts	she and I talk
++KRbgtsd	she and I talked
++KRbgtsz	she and I talked
++KRbgtz	she and I took
++KRbgz	she and I cause
++KRbl	she and I allow
++KRbld	she and I allowed
++KRblg	she and I like
++KRblgd	she and I liked
++KRblgdz	she and I just liked
++KRblgs	she and I ask
++KRblgsd	she and I asked
++KRblgsz	she and I asked
++KRblgt	she and I think it
++KRblgtd	she and I thought it
++KRblgtz	she and I thought it
++KRblgz	she and I just like
++KRbls	she and I add to
++KRblsd	she and I added to
++KRblsz	she and I added to
++KRblt	she and I build
++KRbltd	she and I built
++KRbltz	she and I built
++KRblz	she and I allow to
++KRbs	she and I decide
++KRbsd	she and I decided
++KRbsdz	she and I decided to
++KRbsz	she and I decide to
++KRbt	she and I buy
++KRbtd	she and I bought
++KRbts	she and I just want
++KRbtsd	she and I just wanted
++KRbtsz	she and I just wanted
++KRbtz	she and I bought
++KRbz	she and I use in
++KRd	she and I were
++KRdz	she and I used
++KRg	she and I go
++KRgd	she and I went
++KRgdz	she and I went to
++KRgs	she and I see
++KRgsd	she and I saw
++KRgsz	she and I saw
++KRgt	she and I get
++KRgtd	she and I got
++KRgts	she and I set
++KRgtz	she and I got
++KRgz	she and I go to
++KRl	she and I look
++KRld	she and I looked
++KRldz	she and I held
++KRlg	she and I help
++KRlgd	she and I helped
++KRlgdz	she and I helped to
++KRlgs	she and I guess
++KRlgsd	she and I guessed
++KRlgsz	she and I always
++KRlgt	she and I tell
++KRlgz	she and I help to
++KRls	she and I send
++KRlsd	she and I sent
++KRlsz	she and I also hold
++KRlt	she and I live
++KRltd	she and I lived
++KRlts	she and I stay
++KRltsd	she and I stayed
++KRltsz	she and I stay at
++KRltz	she and I live with
++KRlz	she and I hold
++KRp	she and I appear
++KRpb	she and I need
++KRpbd	she and I needed
++KRpbdz	she and I opened
++KRpbg	she and I continue
++KRpbgd	she and I continued
++KRpbgdz	she and I continued to
++KRpbgs	she and I begin
++KRpbgsd	she and I began
++KRpbgsz	she and I begin of
++KRpbgt	she and I pick
++KRpbgtd	she and I picked
++KRpbgts	she and I expect
++KRpbgtsd	she and I expected
++KRpbgtsz	she and I expected
++KRpbgtz	she and I pick up
++KRpbgz	she and I continue to
++KRpbl	she and I mean
++KRpbld	she and I meant
++KRpbldz	she and I minded
++KRpblg	she and I come
++KRpblgd	she and I came
++KRpblgdz	she and I came to
++KRpblgs	she and I explain
++KRpblgsd	she and I explained
++KRpblgsz	she and I explained
++KRpblgt	she and I imagine
++KRpblgtd	she and I imagined
++KRpblgtz	she and I imagine that
++KRpblgz	she and I come to
++KRpbls	she and I plan
++KRpblsd	she and I planned
++KRpblsz	she and I plan to
++KRpblt	she and I handle
++KRpbltd	she and I handled
++KRpbltz	she and I handle of
++KRpblz	she and I mind
++KRpbs	she and I understand
++KRpbsd	she and I understood
++KRpbsz	she and I understand that
++KRpbt	she and I turn
++KRpbtd	she and I turned
++KRpbtz	she and I turn out
++KRpbz	she and I open
++KRpd	she and I appeared
++KRpdz	she and I paid
++KRpg	she and I happen
++KRpgd	she and I happened
++KRpgs	she and I say that
++KRpgsd	she and I said that
++KRpgsz	she and I said that
++KRpgz	she and I happen to
++KRpl	she and I make
++KRpld	she and I made
++KRplg	she and I play
++KRplgd	she and I played
++KRplgz	she and I pay attention
++KRpls	she and I seem
++KRplsd	she and I seemed
++KRplsz	she and I seemed
++KRplt	she and I let
++KRpltd	she and I let
++KRplts	she and I seem to
++KRpltsd	she and I seemed to
++KRpltsz	she and I seemed to
++KRpltz	she and I let
++KRplz	she and I make it
++KRps	she and I pass
++KRpsd	she and I passed
++KRpsz	she and I pass through
++KRpt	she and I put
++KRptd	she and I put
++KRptz	she and I put on
++KRpz	she and I pay
++KRs	she and I say
++KRsd	she and I said
++KRsz	she and I use to
++KRt	she and I want
++KRtd	she and I wanted
++KRts	she and I start
++KRtsd	she and I started
++KRtsz	she and I started
++KRtz	she and I want to
++KRz	she and I use
++KRAO*fbts	she and I won't often
++KWAOUbgsz	this will have caused by
++KWH*Ubgsz	this hasn't caused by
++KWHAO*blgz	this won't just like
++KWHOEU	this shall have been
++KWHR	this is
++KWHRAEblgz	this can be just liking
++KWHRAO*EUb	this won't have been adding
++KWOEd	this should be
++KWROUb	this shall have added
++Pb	you add
++Pblgtdz
++Pbz	you use in
++Pls	you send
++PHA	you and he can
++PHOEblgz	you and he shall be just liking
++PHRAEfbts	you and he and she can often be
++PHRAO*EUd	you and he and she wouldn't have been
++PO*Ufbts	you shall not often have
++PR*EUb	you and she haven't been adding
++PRAO*Efbts	you and she won't often be
++PW*bgs	that doesn't keep
++PW*blsz	that didn't add to
++PW*Ebgdz	that wasn't causing
++PW*Eblsd	that wasn't adding to
++PW*Efbgsz	that wasn't thinking that
++PW*Efbz	that wasn't becoming
++PW*Eflts	that isn't loving it
++PW*Efpblgts	that isn't just imagining
++PW*Efpgdz	that wasn't paying for
++PW*Efptd	that wasn't finding that
++PW*Efrbs	that isn't showing that
++PW*Efrls	that isn't also serving
++PW*Efrpgd	that wasn't providing by
++PW*Eftd	that wasn't having
++PW*Elgts	that isn't setting up
++PW*Epbgt	that isn't picking
++PW*Epblt	that isn't handling
++PW*Epgtd	that wasn't getting to
++PW*Eps	that isn't passing
++PW*Erbgtz	that isn't caring about
++PW*Erbtsz	that wasn't deciding that
++PW*Erltd	that wasn't living in
++PW*Erpblgs	that isn't explaining that
++PW*Erpl	that isn't remaining
++PW*Ertsz	that wasn't starting with
++PW*fbgt	that doesn't walk in
++PW*fd	that didn't find
++PW*fltsd	that didn't love it
++PW*fpblgtsd	that didn't just imagine
++PW*fpgs	that doesn't pass on
++PW*fptz	that didn't find that
++PW*frbsd	that didn't show that
++PW*frlsd	that didn't also serve
++PW*frpgs	that doesn't also offer
++PW*fts	that doesn't start to
++PW*lgtsd	that didn't set up
++PW*pbgtd	that didn't pick
++PW*pbltd	that didn't handle
++PW*pgts	that doesn't stop by
++PW*psd	that didn't pass
++PW*rbgz	that doesn't care
++PW*rbtz	that didn't try to
++PW*rlts	that doesn't stay in
++PW*rpblgsd	that didn't explain that
++PW*rpld	that didn't remain
++PW*rtz	that didn't try
++PWbgts	that talks
++PWbltz	that built
++PWfbgz	that walks into
++PWfgsz	that gave up
++PWfpbd	that knew
++PWfpblsz	that moved to
++PWfpldz	that applied to
++PWfrbgd	that required
++PWfrd	that wrote
++PWfrpbg	that also calls
++PWfrplg	that removes from
++PWgd	that went
++PWlsdz	that also held
++PWpbgz	that continues to
++PWpblz	that minds
++PWpld	that made
++PWpts	that stops
++PWt	that wants
++PWAOEUbgsz	that'll have been causing by
++PWAOUbgtd	that'd have taken
++PWAOUbltsz	that'd have allowed for
++PWAOUfbgtz	that'd have walked in
++PWAOUfgsd	that'd have given up
++PWAOUfpb	that'll have known
++PWAOUfpblsd	that'd have moved to
++PWAOUfpld	that'd have applied
++PWAOUfrbg	that'll have required
++PWAOUfrbz	that'd have shown
++PWAOUfrpbd	that'd have needed to
++PWAOUfrpld	that'd have removed
++PWAOUg	that'll have gone
++PWAOUlsd	that'd have sent
++PWAOUpbgtz	that'll have picked up
++PWAOUpbltz	that'll have handled of
++PWAOUpl	that'll have made
++PWAOUptdz	that'd have put on
++PWAOUrblgdz	that'd have broken up
++PWAOUrgd	that'd have heard
++PWAOUrp	that'll have reached
++PWAOUrpblgz	that'll have never minded
++PWAOUrplsd	that'd have replaced
++PWAOUsz	that'll have used to
++PWH*EUbgsz	that hasn't been causing by
++PWHAO*Eblgz	that won't be just liking
++PWHO*	that shall not
++PWHRO*Efbts	that shall not often be
++PWOUd	that should've
++PWRblgs	that asks
++PWRgdz	that went to
++PWRpb	that needs
++PWRpbls	that plans
++PWRplsz	that seemed
++PWROEUb	that shall have been adding
++Rbgs	she keeps
++Rbltz	she built
++Rlgd	she helped
++Rpbgtsd	she expected
++Rpbtz	she turns out
++Rptd	she put
++REb	she's adding
++RO*EUfbts	she shall not often have been
++SH*	they aren't
++SHA*Eblgz	they can't be just liking
++SHRA*Eb	he or she can't be adding
++SKA*blgz	we can't just like
++SKEU	we've been
++SKHA*	he or I can't
++SKHO*Eblgz	he or I shall not be just liking
++SKHRAOEb	he or she or I will be adding
++SKHREUblgz	he or she or I have been just liking
++SKPAUb	you or I can have added
++SKPHA*bgsz	you or he or I can't cause by
++SKPHAOE	you or he or I will be
++SKPHEUd	you or he or I had been
++SKPHRA*EUd	you or he or she or I couldn't have been
++SKPHRAObgsz	you or he or she or I will cause by
++SKPRAOb	you or she or I will add
++SKPRUblgz	you or she or I have just liked
++SKPWA*Efbts	these can't often be
++SKPWH*	these aren't
++SKPWHA*Eblgz	these can't be just liking
++SKPWHRAb	these can add
++SKPWHRAO*Ufbts	these won't often have
++SKPWRAOEfbts	these will often be
++SKPWREUb	these have been adding
++SKRAEUb	she or I can have been adding
++SKWfbts	these often
++SKWAO*EUbgsz	these won't have been causing by
++SKWHA*Ufbts	these can't often have
++SKWHR*E	these aren't
++SKWHRA*Ublgz	these can't have just liked
++SKWO*Ud	these shouldn't have
++SKWR*bdz	these didn't use in
++SKWR*blgtz	these didn't think it
++SKWR*d	these weren't
++SKWR*Ebd	these weren't adding
++SKWR*Eblgtsz	these weren't accepting
++SKWR*Efbgd	these weren't walking
++SKWR*Efbsz	these weren't adding that
++SKWR*Eflsd	these weren't looking for
++SKWR*Efpblgsd	these weren't explaining how
++SKWR*Efpd	these weren't changing
++SKWR*Efpsd	these weren't also appearing
++SKWR*Efrblgsd	these weren't recalling that
++SKWR*Efrlgt	these aren't never forgetting
++SKWR*Efrpbz	these weren't needing to
++SKWR*Efs	these aren't saving
++SKWR*Elgs	these aren't guessing
++SKWR*Epbgs	these aren't beginning
++SKWR*Epbls	these aren't planning
++SKWR*Epgs	these aren't saying that
++SKWR*Epltsd	these weren't seeming to
++SKWR*Erbgtdz	these weren't caring about
++SKWR*Erbt	these aren't trying to
++SKWR*Erls	these aren't leading to
++SKWR*Erpbldz	these weren't learning about
++SKWR*Erpgs	these aren't producing by
++SKWR*Ert	these aren't trying
++SKWR*fbgdz	these didn't walk into
++SKWR*fbt	these don't become more
++SKWR*flsz	these didn't look for
++SKWR*fpblgsz	these didn't explain how
++SKWR*fpdz	these didn't choose
++SKWR*fpsdz	these didn't choose from
++SKWR*frblgsz	these didn't recall that
++SKWR*frlgtd	these didn't never forget
++SKWR*frpd	these didn't provide
++SKWR*fsd	these didn't save
++SKWR*lgsd	these didn't guess
++SKWR*pbgsd	these didn't begin
++SKWR*pblsd	these didn't plan
++SKWR*pgsd	these didn't say that
++SKWR*pltsz	these didn't seem to
++SKWR*rbgts	these don't talk about
++SKWR*rbtd	these didn't try to
++SKWR*rlsd	these didn't lead to
++SKWR*rpblg	these don't remember
++SKWR*rpgsd	these didn't produce by
++SKWR*rtd	these didn't try
++SKWRbgsdz	these caused by
++SKWRbltd	these built
++SKWRfbgts	these talk to
++SKWRfg	these give
++SKWRfltz	these loved
++SKWRfpblgtz	these came from
++SKWRfpgsz	these passed on
++SKWRfr	these write
++SKWRfrbt	these also show
++SKWRfrlz	these followed
++SKWRfrpgsz	these also offered
++SKWRftsz	these started to
++SKWRlgtz	these told
++SKWRpbgts	these expect
++SKWRpblts	these mean to
++SKWRpgtsz	these stopped by
++SKWRpsz	these pass through
++SKWRrbld	these shared
++SKWRrd	these worked
++SKWRrltsz	these stayed in
++SKWRrpblgt	these remember that
++SKWRrplgd	these played with
++SKWRs	these say
++SKWRA*Ebgsz	these can't be causing by
++SKWRAOU	these will have
++SKWRAOUbgsd	these would've kept
++SKWRAOUblt	these will have built
++SKWRAOUfbgtd	these would've walked in
++SKWRAOUfdz	these would've found out
++SKWRAOUfltsz	these would've loved it
++SKWRAOUfpblgtsz	these would've just imagined
++SKWRAOUfpgsd	these would've passed on
++SKWRAOUfpz	these will have chosen
++SKWRAOUfrbsz	these would've shown that
++SKWRAOUfrlsz	these would've also served
++SKWRAOUfrpgsd	these would've also offered
++SKWRAOUftsd	these would've started to
++SKWRAOUlgtsz	these would've set up
++SKWRAOUpbgtdz	these would've picked up
++SKWRAOUpbltdz	these would've handled of
++SKWRAOUpgtsd	these would've stopped by
++SKWRAOUpsdz	these would've passed through
++SKWRAOUrbl	these will have shared
++SKWRAOUrbz	these will have read it
++SKWRAOUrltsd	these would've stayed in
++SKWRAOUrpblgsz	these would've explained that
++SKWRAOUrplg	these will have played with
++SKWRAOUrz	these will have worked with
++SO*Efbts
++SPAOfbts	you'll often
++SPHbgsz	you or he cause by
++SPHA*E	you or he can't be
++SPHO*Ublgz	you or he shall not have just liked
++SPHR*blgz	you or he or she don't just like
++SPHRAOUb	you or he or she will have added
++SPRA*b	you or she can't add
++SPUb	you've added
++SPWEfbts	those are often
++SPWHA*EUfbts	those can't often have been
++SPWHR*b	those don't add
++SPWHRAOUfbts	those will often have
++SPWO*EUd	those shouldn't have been
++SPWR*Ed	those weren't
++SPWRA*Ubgsz	those can't have caused by
++SPWRAOEU	those will have been
++SRAOEfbts	one will often be
++SREUb	one has been adding
++STA*Ed	and it couldn't be
++STHAO*Ubgsz	and he won't have caused by
++STHO*Ed	and he shouldn't be
++STHREblgz	and he and she are just liking
++STHRO*EUb	and he and she shall not have been adding
++STKAO*Ebgsz	and I won't be causing by
++STKHd	and he and I were
++STKHAEbgsz	and he and I can be causing by
++STKHAO*EUblgz	and he and I won't have been just liking
++STKHO*U	and he and I shall not have
++STKHREb	and he and she and I are adding
++STKHRO*EUfbts	and he and she and I shall not often have been
++STKO*d	and I shouldn't
++STKPHAUblgz	and you and he and I can have just liked
++STKPHE	and you and he and I are
++STKPHR*EUb	and you and he and she and I haven't been adding
++STKPHRAO*Efbts	and you and he and she and I won't often be
++STKPO*b	and you and I shall not add
++STKPRb	and you and she and I add
++STKPRO*Ufbts	and you and she and I shall not often have
++STKPWAEUd	whatever could've been
++STKPWHAOEUbgsz	whatever will have been causing by
++STKPWHOUd	whatever should've
++STKPWHRAU	whatever can have
++STKPWHROEUblgz	whatever shall have been just liking
++STKPWO*bgsz	whatever shall not cause by
++STKPWRA	whatever can
++STKPWROEblgz	whatever shall be just liking
++STKRO*Eb	and she and I shall not be adding
++STKWAUfbts	whatever can often have
++STKWHA*d	whatever couldn't
++STKWHO*Ebgsz	whatever shall not be causing by
++STKWHRAO*bgsz	whatever won't cause by
++STKWHROEUd	whatever should've been
++STKWRAEUblgz	whatever can have been just liking
++STKWRU	whatever has
++STO*Ubgsz	and it shall not have caused by
++STPAU	and you can have
++STPHAUbgsz	and you and he can have caused by
++STPHEd	and you and he were
++STPHO*EU	and you and he shall not have been
++STPHRAOfbts	and you and he and she will often
++STPHRUb	and you and he and she have added
++STPOEUblgz	and you shall have been just liking
++STPRblgz	and you and she just like
++STPRO*Ub	and you and she shall not have added
++STPWAEUfbts	whatever can often have been
++STPWHA*Ed	whatever couldn't be
++STPWHO*Ubgsz	whatever shall not have caused by
++STPWHRAE	whatever can be
++STPWHROUblgz	whatever shall have just liked
++STPWRA*blgz	whatever can't just like
++STPWREU	whatever has been
++STR*bgtsz	and she didn't talk
++STR*bs	and she don't decide
++STR*Ebgtsd	and she weren't talking
++STR*Eblz	and she aren't allowing to
++STR*Efbl	and she aren't believing
++STR*Efgt	and she aren't also giving
++STR*Efpbdz	and she weren't also knowing
++STR*Efpblt	and she aren't meaning that
++STR*Efplg	and she aren't making sure
++STR*Efrbgdz	and she weren't requiring for
++STR*Efrg	and she aren't offering
++STR*Efrpbgd	and she weren't also calling
++STR*Efrplgd	and she weren't removing from
++STR*Egdz	and she weren't going to
++STR*Elsz	and she aren't also holding
++STR*Epbl	and she aren't meaning
++STR*Epbs	and she aren't understanding
++STR*Epldz	and she weren't making it
++STR*Eptsd	and she weren't stopping
++STR*Erblgsd	and she weren't asking for
++STR*Ergs	and she aren't working on
++STR*Erpbd	and she weren't running
++STR*Erpblsd	and she weren't learning to
++STR*Erplt	and she aren't remaining in
++STR*Etd	and she weren't wanting
++STR*fbld	and she didn't believe
++STR*fgtd	and she didn't also give
++STR*fpbg	and she don't check
++STR*fpbltd	and she didn't mean that
++STR*fplgd	and she didn't make sure
++STR*frbgs	and she don't call for
++STR*frgd	and she didn't offer
++STR*frpbgs	and she don't bring in
++STR*frplgz	and she didn't remove from
++STR*gs	and she don't see
++STR*lt	and she don't live
++STR*pbld	and she didn't mean
++STR*pbsd	and she didn't understand
++STR*plg	and she don't play
++STR*ptsz	and she didn't stop
++STR*rblgsz	and she didn't ask for
++STR*rgsd	and she didn't work on
++STR*rpbdz	and she didn't run for
++STR*rpblsz	and she didn't learn to
++STR*rpltd	and she didn't remain in
++STR*tdz	and she didn't want to
++STRblg	and she like
++STRbts	and she just want
++STRfblgz	and she liked to
++STRfbts	and she often
++STRflg	and she leave
++STRfpbgt	and she check out
++STRfpbs	and she know that
++STRfplsd	and she seemed like
++STRfrbgtsd	and she carried on
++STRfrgtd	and she forgot
++STRfrpblg	and she also include
++STRfrptd	and she also provided
++STRgtsd	and she set
++STRltsz	and she stay at
++STRpblgsd	and she explained
++STRpbts	and she understand of
++STRplgt	and she happen in
++STRrbdz	and she read it
++STRrblsd	and she shared with
++STRrl	and she lead
++STRrpbgsz	and she considered
++STRrpbsd	and she ran on
++STRrps	and she produce
++STRAEU	and she can have been
++STRAOUbldz	and she would've allowed to
++STRAOUbtd	and she would've bought
++STRAOUfblgsz	and she would've asked to
++STRAOUfldz	and she would've felt like
++STRAOUfpbgsz	and she would've begun to
++STRAOUfpblz	and she will have opened in
++STRAOUfpls	and she will have seemed like
++STRAOUfrbgts	and she will have carried on
++STRAOUfrgt	and she will have forgotten
++STRAOUfrpbld	and she would've formed
++STRAOUfrpt	and she will have also provided
++STRAOUgts	and she will have set
++STRAOUltsdz	and she would've stayed at
++STRAOUpblgs	and she will have explained
++STRAOUpbtdz	and she would've turned out
++STRAOUplgsz	and she would've played in
++STRAOUrbd	and she would've read
++STRAOUrbls	and she will have shared with
++STRAOUrgz	and she will have never heard
++STRAOUrpbgsd	and she would've considered
++STRAOUrpbs	and she will have run on
++STRAOUrplz	and she would've remained
++STRAOUz	and she will have used
++STRO*blgz	and she shall not just like
++STWAEb	whatever can be adding
++STWAO*EUfbts	whatever won't often have been
++STWHA*fbts	whatever can't often
++STWHRA*Ud	whatever couldn't have
++STWHRO*EUbgsz	whatever shall not have been causing by
++STWRAEUbgsz	whatever can have been causing by
++STWRAO	whatever will
++STWRUd	whatever had
++SWA*Ud	there couldn't have
++SWHAOd	whoever would
++SWHROfbts	whoever shall often
++SWHUfbts	whoever has often
++SWO*EUbgsz	there shall not have been causing by
++SWRA*U	whichever can't have
++SWREbgsz	whichever is causing by
++SWRO*EUblgz	whichever shall not have been just liking
++T*blgtd	it didn't think it
++T*Eblgt	it isn't thinking it
++T*Ef	it isn't finding
++T*Efbltz	it wasn't believing that
++T*Eflgtd	it wasn't loving to
++T*Efpbldz	it wasn't opening in
++T*Efpbtsd	it wasn't turning to
++T*Efpltsz	it wasn't meeting with
++T*Efrblg	it isn't recalling
++T*Efrl	it isn't following
++T*Efrpblt	it isn't forming in
++T*Efrt	it isn't writing about
++T*Eldz	it wasn't holding
++T*Epbdz	it wasn't opening
++T*Epblgtsd	it wasn't expecting to
++T*Epdz	it wasn't paying
++T*Eplsz	it wasn't seeming
++T*Erbgsdz	it wasn't carrying out
++T*Erbs	it isn't wishing
++T*Ergts	it isn't still
++T*Erlgs	it isn't guessing it
++T*Erpbgtz	it wasn't returning to
++T*Erpd	it wasn't reaching
++T*Erpz	it isn't reaching out
++T*fb	it doesn't become
++T*fblz	it didn't believe
++T*flgtz	it didn't love to
++T*fpblg	it doesn't include
++T*fpbtsz	it didn't turn to
++T*fpltz	it didn't meet
++T*frblgd	it didn't recall
++T*frld	it didn't follow
++T*frpbltd	it didn't form in
++T*frtd	it didn't write about
++T*lg	it doesn't help
++T*pbg	it doesn't continue
++T*pblgtsz	it didn't expect to
++T*pg	it doesn't happen
++T*plt	it doesn't let
++T*rbgsz	it doesn't carry out
++T*rbsd	it didn't wish
++T*rlgsd	it didn't guess it
++T*rlgt	it doesn't really
++T*rpbgz	it doesn't open up
++T*rpdz	it didn't reach out
++T*rs	it doesn't receive
++Tbgd	it thought
++Tbls	it adds to
++Tfbgsd	it thought that
++Tfbtz	it became more
++Tfltd	it loved
++Tfpblgtd	it came from
++Tfpgd	it went on
++Tfpt	it finds that
++Tfrblz	it felt that
++Tfrlgz	it followed by
++Tfrpg	it provides by
++Tft	it has
++Tlgtd	it told
++TAEUd	it could've been
++TAOUbg	it'll have thought
++TAOUblgz	it'll have just liked
++TAOUfbgs	it'll have thought that
++TAOUfbtd	it'd have become more
++TAOUflt	it'll have loved
++TAOUfpblgt	it'll have come from
++TAOUfpg	it'll have gone on
++TAOUfpsz	it'll have chosen from
++TAOUfrblgz	it'll have really cared
++TAOUfrlgtz	it'd have never forgotten
++TAOUfrpdz	it'd have chosen to
++TAOUfsz	it'd have saved
++TAOUlgt	it'll have told
++TAOUpbgsdz	it'd have begun of
++TAOUpblsdz	it'd have planned to
++TAOUpgsz	it'd have said that
++TAOUpltz	it'd have let
++TAOUrbgtsd	it'd have talked about
++TAOUrbts	it'll have decided that
++TAOUrlsz	it'd have led to
++TAOUrpblgd	it'd have remembered
++TAOUrpgsz	it'd have produced by
++TAOUrts	it'll have started with
++THAOEbgsz	and he'll be causing by
++THOd	and he should
++THR*Ufbts	and not to have been
++THRAO*d	and not to be
++TKA*EUd	and I couldn't have been
++TKAObgsz	and I'll cause by
++TKHA*Ub	and he and I can't have added
++TKHROUfbts	and he and she and I shall often have
++TKPAOEd	and you and I would be
++TKPEUfbts	and you and I have often been
++TKPH*Eblgz	and you and he and I aren't just liking
++TKPHAOEUb	and you and he and I will have been adding
++TKPHR*Eb	and you and he and she and I aren't adding
++TKPHRAOEUfbts	and you and he and she and I will often have been
++TKPROEfbts	and you and she and I shall often be
++TKPW*Ud	what hadn't
++TKPWA*EUbgsz	what can't have been causing by
++TKPWAO*	what won't
++TKPWHAOEbgsz	what'll be causing by
++TKPWHOd	what should
++TKPWHRAO*Ebgsz	what won't be causing by
++TKPWHRO*d	what shouldn't
++TKPWR*U	what hasn't
++TKPWRA*EUblgz	what can't have been just liking
++TKR*fbts	and she and I don't often
++TKRAOUd	and she and I would've
++TKWA*EU	what can't have been
++TKWAOblgz	what'll just like
++TKWH*EUd	what hadn't been
++TKWHAO*E	what won't be
++TKWHObgsz	what shall cause by
++TKWHRAOUbgsz	what'll have caused by
++TKWHROEd	what should be
++TKWR*Ublgz	what hasn't just liked
++TKWRAO*b	what won't add
++TKWUbgsz	what's caused by
++TO*bgsz	it shall not cause by
++TP*E	and you aren't
++TPbgsz	and you cause by
++TPblsz	and you added to
++TPgt	and you get
++TPlz	and you hold
++TPA*Ublgz	and you can't have just liked
++TPHA*EUb	and you and he can't have been adding
++TPHROEUfbts	and you and he and she shall often have been
++TPR*Efbts	and you and she aren't often
++TPRAOEUd	and you and she would've been
++TPWAOEblgz	what'll be just liking
++TPWEUbgsz	what's been causing by
++TPWHAd	what could
++TPWHAO*U	what won't have
++TPWHOEbgsz	what shall be causing by
++TPWHR*EU	what hasn't been
++TPWHROblgz	what shall just like
++TPWO	what shall
++TPWR*EUblgz	what hasn't been just liking
++TPWRAO*Eb	what won't be adding
++TR*U	and she hasn't
++TRbgtsz	and she talked
++TRbtsd	and she just wanted
++TRlt	and she lives
++TRpblgdz	and she came to
++TRpgz	and she happens to
++TRtsd	and she started
++TRA*EUblgz	and she can't have been just liking
++TW*b	what doesn't add
++TWAOUfbts	what'll often have
++TWH*bgsz	what doesn't cause by
++TWHAOUblgz	what'll have just liked
++TWHOE	what shall be
++TWHRAEd	what could be
++TWHRAO*EU	what won't have been
++TWHROUbgsz	what shall have caused by
++TWROb	what shall add
++WA*d	there couldn't
++WHAO*bgsz	who won't cause by
++WHOEUd	who should've been
++WHRAbgsz	who can cause by
++WHRAO*Ublgz	who won't have just liked
++WHRO*E	who shall not be
++WO*Ebgsz	there shall not be causing by
++WRAE	which can be
++WROUblgz	which shall have just liked
+@+bgtd	did take
+@+bltsz	did allow for
+@+fbgtz	did walk in
+@+fgsd	did give up
+@+fpb	do know
+@+fpblsd	did move to
+@+fpld	did apply
+@+frbg	do require
+@+frbz	did show
+@+frpbd	did need to
+@+frpld	did remove
+@+g	do go
+@+lsd	did send
+@+AEUbgsz	can have been causing by
+@+AO
+@+AO*EUbgdz	wouldn't have been causing
+@+AO*EUblsd	wouldn't have been adding to
+@+AO*EUfbgsz	wouldn't have been thinking that
+@+AO*EUfbz	wouldn't have been becoming
+@+AO*EUflts	won't have been loving it
+@+AO*EUfpblgts	won't have been just imagining
+@+AO*EUfpgdz	wouldn't have been paying for
+@+AO*EUfptd	wouldn't have been finding that
+@+AO*EUfrbs	won't have been showing that
+@+AO*EUfrls	won't have been also serving
+@+AO*EUfrpgd	wouldn't have been providing by
+@+AO*EUftd	wouldn't have been having
+@+AO*EUlgts	won't have been setting up
+@+AO*EUpbgt	won't have been picking
+@+AO*EUpblt	won't have been handling
+@+AO*EUpgtd	wouldn't have been getting to
+@+AO*EUps	won't have been passing
+@+AO*EUrbgtz	won't have been caring about
+@+AO*EUrbtsz	wouldn't have been deciding that
+@+AO*EUrltd	wouldn't have been living in
+@+AO*EUrpblgs	won't have been explaining that
+@+AO*EUrpl	won't have been remaining
+@+AO*EUrtsz	wouldn't have been starting with
+@+H*d	he didn't do
+@+HA*Ebgsz	he can't be causing by
+@+HAOU	he'll have done
+@+HRbg	to think
+@+HRblgz	to just like
+@+HRfbgs	to think that
+@+HRfbtd	to become more
+@+HRflt	to love
+@+HRfpblgt	to come from
+@+HRfpg	to go on
+@+HRfpsz	to choose from
+@+HRfrblgz	to really care
+@+HRfrlgtz	to never forget
+@+HRfrpdz	to choose to
+@+HRfsz	to save
+@+HRlgt	to tell
+@+HRpbgsdz	to begin of
+@+HRpblsdz	to plan to
+@+HRpgsz	to say that
+@+HRpltz	to let
+@+HRrbgtsd	to talk about
+@+HRrbts	to decide that
+@+HRrlsz	to lead to
+@+HRrpblgd	to remember
+@+HRrpgsz	to produce by
+@+HRrts	to start with
+@+HRAO*EUblgt	not to have been thinking it
+@+HRAO*EUf	not to have been finding
+@+HRAO*EUfbltz	not to have been believing that
+@+HRAO*EUflgtd	not to have been loving to
+@+HRAO*EUfpbldz	not to have been opening in
+@+HRAO*EUfpbtsd	not to have been turning to
+@+HRAO*EUfpltsz	not to have been meeting with
+@+HRAO*EUfrblg	not to have been recalling
+@+HRAO*EUfrl	not to have been following
+@+HRAO*EUfrpblt	not to have been forming in
+@+HRAO*EUfrt	not to have been writing about
+@+HRAO*EUldz	not to have been holding
+@+HRAO*EUpbdz	not to have been opening
+@+HRAO*EUpblgtsd	not to have been expecting to
+@+HRAO*EUpdz	not to have been paying
+@+HRAO*EUplsz	not to have been seeming
+@+HRAO*EUrbgsdz	not to have been carrying out
+@+HRAO*EUrbs	not to have been wishing
+@+HRAO*EUrgts	not to have been being
+@+HRAO*EUrlgs	not to have been guessing it
+@+HRAO*EUrpbgtz	not to have been returning to
+@+HRAO*EUrpd	not to have been reaching
+@+HRAO*EUrpz	not to have been reaching out
+@+HRAUblgz	to just have liked
+@+HRE	to be doing
+@+Kbgz	I do cause
+@+Kbsdz	I did decide to
+@+Kfblgd	I did like to
+@+Kfgz	I did give
+@+Kfpbgdz	I did check in
+@+Kfpbltsd	I did plan for
+@+Kfplgtd	I did apply for
+@+Kfrbgsz	I did call for
+@+Kfrgs	I do serve as
+@+Kfrpbgsz	I did bring in
+@+Kfrplsd	I did replace by
+@+Kgsz	I did see
+@+Kltdz	I did live with
+@+Ktsd	I did start
+@+KA*bgsz	I can't cause by
+@+KAO*EUbgt	I won't have been taking
+@+KAO*EUbltsd	I wouldn't have been allowing for
+@+KAO*EUfbgtsz	I wouldn't have been talking to
+@+KAO*EUfgs	I won't have been giving up
+@+KAO*EUfp	I won't have been changing
+@+KAO*EUfpbls	I won't have been moving to
+@+KAO*EUfpl	I won't have been applying
+@+KAO*EUfrbd	I wouldn't have been showing
+@+KAO*EUfrbtz	I wouldn't have been also showing
+@+KAO*EUfrpb	I won't have been needing to
+@+KAO*EUfrpl	I won't have been removing
+@+KAO*EUfz	I won't have been finding out
+@+KAO*EUls	I won't have been sending
+@+KAO*EUpbgtsz	I wouldn't have been expecting
+@+KAO*EUpbltsz	I wouldn't have been meaning to
+@+KAO*EUpgz	I won't have been happening to
+@+KAO*EUptd	I wouldn't have been putting
+@+KAO*EUrblgd	I wouldn't have been breaking
+@+KAO*EUrg	I won't have been hearing
+@+KAO*EUrlz	I won't have been realizing
+@+KAO*EUrpblgtz	I wouldn't have been remembering that
+@+KAO*EUrpls	I won't have been replacing
+@+KAO*EUsdz	I wouldn't have been using to
+@+KAOE	I'll be doing
+@+KEUd	I'd been doing
+@+KHAEd	he and I could be doing
+@+KHAO*EU	he and I won't have been doing
+@+KHOUbgsz	he and I shall have caused by
+@+KHRAUb	he and she and I can have added
+@+KP*EUblgz	you and I haven't been just liking
+@+KPblg	you and I do like
+@+KPbsz	you and I do decide to
+@+KPlgdz	you and I did help to
+@+KPz	you and I do use
+@+KPAO*Eb	you and I won't be adding
+@+KPHAU	you and he and I can have done
+@+KPHOEUblgz	you and he and I shall have been just liking
+@+KPHRA*fbts	you and he and she and I can't often
+@+KPRAEb	you and she and I can be adding
+@+KPRAO*EUfbts	you and she and I won't often have been
+@+KPWAO*Ebgsz	this won't be causing by
+@+KPWHAUbgsz	this can have caused by
+@+KPWHEd	this was doing
+@+KPWHO*EU	this shall not have been doing
+@+KPWHRAblgz	this can just like
+@+KPWHRAO*Ub	this won't have added
+@+KPWO*d	this shouldn't do
+@+KPWRblgz	this does just like
+@+KPWRO*Ub	this shall not have added
+@+KRblgtd	she and I did think it
+@+KRgt	she and I do get
+@+KRpbgd	she and I did continue
+@+KRpbltd	she and I did handle
+@+KRpltsd	she and I did seem to
+@+KRAblgz	she and I can just like
+@+KRAO*Ub	she and I won't have added
+@+KWHAO*Ubgsz	this won't have caused by
+@+KWHO*Ed	this shouldn't be doing
+@+KWHRAEUbgsz	this can have been causing by
+@+KWHRAO	this will do
+@+KWHRUd	this had done
+@+KWOEUfbts	this shall often have been
+@+KWRAEU	this can have been doing
+@+KWRO*blgz	this shall not just like
+@+Pbgtz	you did take
+@+Pbltz	you did build
+@+Pl	you do look
+@+Ptdz	you did want to
+@+PAOb	you'll add
+@+PHAUd	you and he could've done
+@+PHOEUbgsz	you and he shall have been causing by
+@+PHRAEUb	you and he and she can have been adding
+@+PR	you and she do
+@+PRAEblgz	you and she can be just liking
+@+PRAO*EUb	you and she won't have been adding
+@+PUblgz	you've just liked
+@+PWblgts	that does accept
+@+PWfbd	that did become
+@+PWfbs	that does add that
+@+PWflgz	that did leave
+@+PWfpblgd	that did include
+@+PWfpbtz	that did need for
+@+PWfplz	that does apply to
+@+PWfrblgdz	that did really care
+@+PWfrlg	that does follow by
+@+PWfrpbltz	that did form in
+@+PWfrtz	that did write about
+@+PWlgd	that did help
+@+PWpbgd	that did continue
+@+PWpblgtz	that does imagine that
+@+PWpgd	that did happen
+@+PWpltd	that did let
+@+PWAO*EUblgdz	that wouldn't have been just liking
+@+PWAO*EUbtsz	that wouldn't have been just wanting
+@+PWAO*EUfblsd	that wouldn't have been believing to
+@+PWAO*EUflgs	that won't have been guessing that
+@+PWAO*EUfpbgtz	that wouldn't have been checking out
+@+PWAO*EUfpbsz	that wouldn't have been knowing that
+@+PWAO*EUfplt	that won't have been meeting
+@+PWAO*EUfpts	that won't just have been
+@+PWAO*EUfrbgtz	that wouldn't have been requiring to
+@+PWAO*EUfrgtsd	that wouldn't have been forgetting to
+@+PWAO*EUfrpblgz	that wouldn't have been also including
+@+PWAO*EUfrpz	that won't have been choosing to
+@+PWAO*EUgtz	that wouldn't have been getting
+@+PWAO*EUlz	that won't have been holding
+@+PWAO*EUpblgt	that won't have been imagining
+@+PWAO*EUpbtsz	that wouldn't have been understanding of
+@+PWAO*EUplgtz	that wouldn't have been happening in
+@+PWAO*EUrbgd	that wouldn't have been calling
+@+PWAO*EUrblt	that won't have been leading by
+@+PWAO*EUrldz	that wouldn't have been realizing
+@+PWAO*EUrpbgtd	that wouldn't have been returning to
+@+PWAO*EUrpbt	that won't have been returning
+@+PWAO*EUrpsz	that wouldn't have been producing
+@+PWHfbts	that does often
+@+PWHAO*EUbgsz	that won't have been causing by
+@+PWHO*Ud	that shouldn't have done
+@+PWHREblgz	that's just liking
+@+PWHRO*EUb	that shall not have been adding
+@+PWO*fbts	that shall not often
+@+PWRbgt	that does take
+@+PWRbsdz	that did decide to
+@+PWRlgsz	that does always
+@+PWRpbl	that does mean
+@+PWRpg	that does happen
+@+PWRsd	that did say
+@+PWRA*	that can't do
+@+PWRO*Eblgz	that shall not be just liking
+@+Rblgdz	she did just like
+@+Rgd	she did go
+@+Rp	she does appear
+@+Rpblgz	she does come to
+@+Rplsd	she did seem
+@+RAOEb	she'll be adding
+@+REUblgz	she's been just liking
+@+Sz	do use
+@+SEblgz	are just liking
+@+SH*Ud	they hadn't done
+@+SHA*EUbgsz	they can't have been causing by
+@+SHAO*	they won't do
+@+SHR*U	he or she haven't done
+@+SHRA*EUblgz	he or she can't have been just liking
+@+SK*Ed	we weren't doing
+@+SKA*Ubgsz	we can't have caused by
+@+SKAOEU	we'll have been doing
+@+SKHA*Ud	he or I couldn't have done
+@+SKHO*EUbgsz	he or I shall not have been causing by
+@+SKHR*Ebgsz	he or she or I aren't causing by
+@+SKHRAOEUblgz	he or she or I will have been just liking
+@+SKHROU	he or she or I shall have done
+@+SKPA*blgz	you or I can't just like
+@+SKPEU	you or I have been doing
+@+SKPH*Efbts	you or he or I aren't often
+@+SKPHAOEUd	you or he or I would've been doing
+@+SKPHROEfbts	you or he or she or I shall often be
+@+SKPR*bgsz	you or she or I don't cause by
+@+SKPRAOUblgz	you or she or I will have just liked
+@+SKPROE	you or she or I shall be doing
+@+SKPWA*EUb	these can't have been adding
+@+SKPWH*Ud	these hadn't done
+@+SKPWHA*EUbgsz	these can't have been causing by
+@+SKPWHAO*	these won't do
+@+SKPWHRAUblgz	these can have just liked
+@+SKPWHRE	these are doing
+@+SKPWR*Eblgz	these aren't just liking
+@+SKPWRAOEUb	these will have been adding
+@+SKR*	she or I don't do
+@+SKRA*Eblgz	she or I can't be just liking
+@+SKWAOfbts	these will often
+@+SKWHOb	these shall add
+@+SKWHR*EUd	these hadn't been doing
+@+SKWHRAO*E	these won't be doing
+@+SKWHRObgsz	these shall cause by
+@+SKWR*Ufbts	these haven't often
+@+SKWRblgsd	these did ask
+@+SKWRbz	these do use in
+@+SKWRfblt	these do believe that
+@+SKWRflgsz	these did guess that
+@+SKWRfpbl	these do move
+@+SKWRfpbtd	these did need for
+@+SKWRfplts	these do meet with
+@+SKWRfrbl	these do feel that
+@+SKWRfrgtz	these did forget
+@+SKWRfrpblsd	these did form by
+@+SKWRfrps	these do actually
+@+SKWRfrsd	these did serve
+@+SKWRl	these do look
+@+SKWRpb	these do need
+@+SKWRpblgtdz	these did imagine that
+@+SKWRpbz	these do open
+@+SKWRpls	these do seem
+@+SKWRrbgs	these do carry
+@+SKWRrbltz	these did lead by
+@+SKWRrlgd	these did look at
+@+SKWRrpbgtsd	these did consider to
+@+SKWRrpbtz	these did return
+@+SKWRrptd	these did put it
+@+SKWRAO*d	these wouldn't do
+@+SKWRAO*EUbld	these wouldn't have been allowing
+@+SKWRAO*EUbt	these won't have been buying
+@+SKWRAO*EUfblgsd	these wouldn't have been asking to
+@+SKWRAO*EUfld	these wouldn't have been feeling
+@+SKWRAO*EUfpbgsd	these wouldn't have been beginning to
+@+SKWRAO*EUfpbltz	these wouldn't have been meaning that
+@+SKWRAO*EUfplgz	these wouldn't have been making sure
+@+SKWRAO*EUfrbgtd	these wouldn't have been requiring to
+@+SKWRAO*EUfrgsz	these wouldn't have been serving as
+@+SKWRAO*EUfrpbl	these won't have been forming
+@+SKWRAO*EUfrplz	these wouldn't have been removing
+@+SKWRAO*EUgtd	these wouldn't have been getting
+@+SKWRAO*EUltsd	these wouldn't have been staying
+@+SKWRAO*EUpblgdz	these wouldn't have been coming to
+@+SKWRAO*EUpbtd	these wouldn't have been turning
+@+SKWRAO*EUplgsd	these wouldn't have been playing in
+@+SKWRAO*EUrb	these won't have been reading
+@+SKWRAO*EUrblgz	these won't have been breaking up
+@+SKWRAO*EUrgtz	these wouldn't have been hearing about
+@+SKWRAO*EUrpbgs	these won't have been considering
+@+SKWRAO*EUrpblz	these won't have been learning about
+@+SKWRAO*EUrpltz	these wouldn't have been remaining in
+@+SKWRAO*EUtz	these won't have been wanting to
+@+SKWUb	these have added
+@+SO*EUb	shall not have been adding
+@+SP*blgz	you don't just like
+@+SPAOUb	you'll have added
+@+SPHA*EUd	you or he couldn't have been doing
+@+SPHAObgsz	you or he will cause by
+@+SPHR*Ubgsz	you or he or she haven't caused by
+@+SPHRAO*blgz	you or he or she won't just like
+@+SPHROEU	you or he or she shall have been doing
+@+SPR*E	you or she aren't doing
+@+SPRA*Ublgz	you or she can't have just liked
+@+SPWAOEfbts	those will often be
+@+SPWEUb	those have been adding
+@+SPWHOEb	those shall be adding
+@+SPWHR*Ublgz	those haven't just liked
+@+SPWHRAO*b	those won't add
+@+SPWR*EUfbts	those haven't often been
+@+SPWRAO*Ed	those wouldn't be doing
+@+SR*Eblgz	one isn't just liking
+@+SRAOEUb	one will have been adding
+@+STA*EUfbts	and it can't often have been
+@+STHEb	and he are adding
+@+STHO*EUfbts	and he shall not often have been
+@+STHRAOEblgz	and he and she will be just liking
+@+STHREUbgsz	and he and she have been causing by
+@+STHRO	and he and she shall do
+@+STKb	and I do add
+@+STKHAOd	and he and I would do
+@+STKHRAOEb	and he and she and I will be adding
+@+STKHREUblgz	and he and she and I have been just liking
+@+STKHUfbts	and he and I have often
+@+STKO*Ufbts	and I shall not often have
+@+STKPbgsz	and you and I do cause by
+@+STKPA*E	and you and I can't be doing
+@+STKPHA*bgsz	and you and he and I can't cause by
+@+STKPHAOE	and you and he and I will be doing
+@+STKPHEUd	and you and he and I had been doing
+@+STKPHR	and you and he and she and I do
+@+STKPHRAEblgz	and you and he and she and I can be just liking
+@+STKPHRAO*EUb	and you and he and she and I won't have been adding
+@+STKPO*Ublgz	and you and I shall not have just liked
+@+STKPRAOb	and you and she and I will add
+@+STKPRUblgz	and you and she and I have just liked
+@+STKPWA*Efbts	whatever can't often be
+@+STKPWHO*fbts	whatever shall not often
+@+STKPWHRA*d	whatever couldn't do
+@+STKPWHRO*Ebgsz	whatever shall not be causing by
+@+STKPWRAUd	whatever could've done
+@+STKPWROEUbgsz	whatever shall have been causing by
+@+STKRA*U	and she and I can't have done
+@+STKREbgsz	and she and I are causing by
+@+STKRO*EUblgz	and she and I shall not have been just liking
+@+STKWA*b	whatever can't add
+@+STKWHA*Ufbts	whatever can't often have
+@+STKWHRO*Efbts	whatever shall not often be
+@+STKWR*d	whatever didn't do
+@+STKWRA*Ebgsz	whatever can't be causing by
+@+STKWRAOU	whatever will have done
+@+STPA*d	and you couldn't do
+@+STPHAOEd	and you and he would be doing
+@+STPHEUfbts	and you and he have often been
+@+STPHR*blgz	and you and he and she don't just like
+@+STPHRAOUb	and you and he and she will have added
+@+STPO*Ebgsz	and you shall not be causing by
+@+STPRA*EU	and you and she can't have been doing
+@+STPRAOblgz	and you and she will just like
+@+STPRUbgsz	and you and she have caused by
+@+STPWA*Eb	whatever can't be adding
+@+STPWHA*EUfbts	whatever can't often have been
+@+STPWHRAEUd	whatever could've been doing
+@+STPWHRO*bgsz	whatever shall not cause by
+@+STPWR*Ed	whatever wasn't doing
+@+STPWRA*Ubgsz	whatever can't have caused by
+@+STPWRAOEU	whatever will have been doing
+@+STRbgsd	and she did keep
+@+STRblt	and she do build
+@+STRfbgtd	and she did walk in
+@+STRfdz	and she did find out
+@+STRfltsz	and she did love it
+@+STRfpblgtsz	and she did just imagine
+@+STRfpgsd	and she did pass on
+@+STRfpz	and she do choose
+@+STRfrbsz	and she did show that
+@+STRfrlsz	and she did also serve
+@+STRfrpgsd	and she did also offer
+@+STRftsd	and she did start to
+@+STRlgtsz	and she did set up
+@+STRpbgtdz	and she did pick up
+@+STRpbltdz	and she did handle of
+@+STRpgtsd	and she did stop by
+@+STRpsdz	and she did pass through
+@+STRrbl	and she do share
+@+STRrbz	and she do read it
+@+STRrltsd	and she did stay in
+@+STRrpblgsz	and she did explain that
+@+STRrplg	and she do play with
+@+STRrz	and she do work with
+@+STRA*Ed	and she couldn't be doing
+@+STRAO*EUbd	and she wouldn't have been adding
+@+STRAO*EUblgtsz	and she wouldn't have been accepting
+@+STRAO*EUfbgd	and she wouldn't have been walking
+@+STRAO*EUfbsz	and she wouldn't have been adding that
+@+STRAO*EUflsd	and she wouldn't have been looking for
+@+STRAO*EUfpblgsd	and she wouldn't have been explaining how
+@+STRAO*EUfpd	and she wouldn't have been changing
+@+STRAO*EUfpsd	and she wouldn't have been also appearing
+@+STRAO*EUfrblgsd	and she wouldn't have been recalling that
+@+STRAO*EUfrlgt	and she won't have been never forgetting
+@+STRAO*EUfrpbz	and she wouldn't have been needing to
+@+STRAO*EUfs	and she won't have been saving
+@+STRAO*EUlgs	and she won't have been guessing
+@+STRAO*EUpbgs	and she won't have been beginning
+@+STRAO*EUpbls	and she won't have been planning
+@+STRAO*EUpgs	and she won't have been saying that
+@+STRAO*EUpltsd	and she wouldn't have been seeming to
+@+STRAO*EUrbgtdz	and she wouldn't have been caring about
+@+STRAO*EUrbt	and she won't have been trying to
+@+STRAO*EUrls	and she won't have been leading to
+@+STRAO*EUrpbldz	and she wouldn't have been learning about
+@+STRAO*EUrpgs	and she won't have been producing by
+@+STRAO*EUrt	and she won't have been trying
+@+STRO*Ubgsz	and she shall not have caused by
+@+STWAEUblgz	whatever can have been just liking
+@+STWHA*Ub	whatever can't have added
+@+STWHROfbts	whatever shall often
+@+STWR*fbts	whatever doesn't often
+@+STWRAOUd	whatever would've done
+@+STWU	whatever has done
+@+SWH*b	whoever doesn't add
+@+SWHAOUfbts	whoever will often have
+@+SWHROUb	whoever shall have added
+@+SWOfbts	there shall often
+@+SWRAOEbgsz	whichever will be causing by
+@+SWROd	whichever should do
+@+Tblg	it does like
+@+Tbts	it does just want
+@+Tfblgz	it did like to
+@+Tfbts	it does often
+@+Tflg	it does leave
+@+Tfpbgt	it does check out
+@+Tfpbs	it does know that
+@+Tfplsd	it did seem like
+@+Tfrbgtsd	it did carry on
+@+Tfrgtd	it did forget
+@+Tfrpblg	it does also include
+@+Tfrptd	it did also provide
+@+Tgtsd	it did set
+@+Tltsz	it does stay at
+@+TA*Efbts	it can't often be
+@+TAO*EUbgtsz	it wouldn't have been talking
+@+TAO*EUbs	it won't have been deciding
+@+TAO*EUfbld	it wouldn't have been believing
+@+TAO*EUfgtd	it wouldn't have been also giving
+@+TAO*EUfpbg	it won't have been checking
+@+TAO*EUfpbltd	it wouldn't have been meaning that
+@+TAO*EUfplgd	it wouldn't have been making sure
+@+TAO*EUfrbgs	it won't have been calling for
+@+TAO*EUfrgd	it wouldn't have been offering
+@+TAO*EUfrpbgs	it won't have been bringing in
+@+TAO*EUfrplgz	it wouldn't have been removing from
+@+TAO*EUgs	it won't have been seeing
+@+TAO*EUlt	it won't have been living
+@+TAO*EUpbld	it wouldn't have been meaning
+@+TAO*EUpbsd	it wouldn't have been understanding
+@+TAO*EUplg	it won't have been playing
+@+TAO*EUptsz	it wouldn't have been stopping
+@+TAO*EUrblgsz	it wouldn't have been asking for
+@+TAO*EUrgsd	it wouldn't have been working on
+@+TAO*EUrpbdz	it wouldn't have been running for
+@+TAO*EUrpblsz	it wouldn't have been learning to
+@+TAO*EUrpltd	it wouldn't have been remaining in
+@+TAO*EUtdz	it wouldn't have been wanting to
+@+THOUfbts	and he shall often have
+@+THRAb	and to add
+@+THRAO*Ufbts	and not to have been
+@+TKH*EU	and he and I haven't been doing
+@+TKHOblgz	and he and I shall just like
+@+TKHRO*b	and he and she and I shall not add
+@+TKOEfbts	and I shall often be
+@+TKP*Eb	and you and I aren't adding
+@+TKPAOEUfbts	and you and I will often have been
+@+TKPH*EUbgsz	and you and he and I haven't been causing by
+@+TKPHAO*Eblgz	and you and he and I won't be just liking
+@+TKPHO*	and you and he and I shall not do
+@+TKPHR*EUblgz	and you and he and she and I haven't been just liking
+@+TKPHRAO*Eb	and you and he and she and I won't be adding
+@+TKPROEUb	and you and she and I shall have been adding
+@+TKPWAfbts	what can often
+@+TKPWAO*Ud	what wouldn't have done
+@+TKPWHOUfbts	what shall often have
+@+TKPWHRb	what does add
+@+TKPWHRO*Ufbts	what shall not often have
+@+TKPWRAd	what could do
+@+TKPWRAO*U	what won't have done
+@+TKPWROEbgsz	what shall be causing by
+@+TKR*Ub	and she and I haven't added
+@+TKRAO*fbts	and she and I won't often
+@+TKWAOUbgsz	what'll have caused by
+@+TKWHAEfbts	what can often be
+@+TKWHAO*EUd	what wouldn't have been doing
+@+TKWHROEUfbts	what shall often have been
+@+TKWOEd	what should be doing
+@+TKWRAbgsz	what can cause by
+@+TKWRAO*Ublgz	what won't have just liked
+@+TKWRO*E	what shall not be doing
+@+TP*EUd	and you hadn't been doing
+@+TPblgsd	and you did ask
+@+TPbts	and you do just want
+@+TPlgt	and you do tell
+@+TPAO*E	and you won't be doing
+@+TPHA	and you and he can do
+@+TPHOEblgz	and you and he shall be just liking
+@+TPHRO*Eb	and you and he and she shall not be adding
+@+TPObgsz	and you shall cause by
+@+TPR*EUb	and you and she haven't been adding
+@+TPRAO*Efbts	and you and she won't often be
+@+TPWAOEUbgsz	what'll have been causing by
+@+TPWHAUfbts	what can often have
+@+TPWHRAEd	what could be doing
+@+TPWHRAO*EU	what won't have been doing
+@+TPWHROUbgsz	what shall have caused by
+@+TPWOUd	what should've done
+@+TPWRd	what did
+@+TPWRAEbgsz	what can be causing by
+@+TPWRAO*EUblgz	what won't have been just liking
+@+TPWRO*U	what shall not have done
+@+TRbdz	and she did use in
+@+TRblsd	and she did add to
+@+TRl	and she does look
+@+TRpbgsz	and she does begin of
+@+TRpbsd	and she did understand
+@+TRps	and she does pass
+@+TRAd	and she could do
+@+TRAO*U	and she won't have done
+@+TROEbgsz	and she shall be causing by
+@+TW*Ublgz	what hasn't just liked
+@+TWAO*b	what won't add
+@+TWHAO*bgsz	what won't cause by
+@+TWHOEUd	what should've been doing
+@+TWHRAEUfbts	what can often have been
+@+TWRAE	what can be doing
+@+TWROUblgz	what shall have just liked
+@+Ud
+@+WA*Ufbts	there can't often have
+@+WHO*Efbts	who shall not often be
+@+WHREfbts	who's often
+@+WHRO*EUd	who shouldn't have been doing
+@+WRAEUd	which could've been doing
+@+WRO*bgsz	which shall not cause by
+@^+*Ub	have not added
+@^+AO*fbts
+@^+HAb	he can add
+@^+HAO*Ufbts	he will not often have
+@^+HR*Efbts	not to be being
+@^+HRAOEUd	to have been doing
+@^+K*EUb	I have not been adding
+@^+KAO*Efbts	I will not often be
+@^+KHA*Eb	he and I can not be adding
+@^+KHR*Ed	he and she and I were not doing
+@^+KHRA*Ubgsz	he and she and I can not have caused by
+@^+KHRAOEU	he and she and I will have been doing
+@^+KPAOd	you and I would do
+@^+KPHA*Ufbts	you and he and I can not often have
+@^+KPHR*EU	you and he and she and I have not been doing
+@^+KPHROblgz	you and he and she and I shall just like
+@^+KPR*d	you and she and I did not do
+@^+KPRA*Ebgsz	you and she and I can not be causing by
+@^+KPRAOU	you and she and I will have done
+@^+KPUfbts	you and I have often
+@^+KPWAOb	this will add
+@^+KPWH*Eb	this is not adding
+@^+KPWHAOEUfbts	this will often have been
+@^+KPWHRAOEd	this would be doing
+@^+KPWHREUfbts	this has often been
+@^+KPWRAOUbgsz	this will have caused by
+@^+KPWROEd	this should be doing
+@^+KPWUblgz	this has just liked
+@^+KRAOEd	she and I would be doing
+@^+KREUfbts	she and I have often been
+@^+KWA*U	this can not have done
+@^+KWEbgsz	this is causing by
+@^+KWHAOEb	this will be adding
+@^+KWHEUblgz	this has been just liking
+@^+KWHR*Ub	this has not added
+@^+KWHRAO*fbts	this will not often
+@^+KWO*EUblgz	this shall not have been just liking
+@^+KWRA*EUfbts	this can not often have been
+@^+PAO*bgsz	you will not cause by
+@^+PHA*Ub	you and he can not have added
+@^+PHR*Ud	you and he and she had not done
+@^+PHRA*EUbgsz	you and he and she can not have been causing by
+@^+PHRAO*	you and he and she will not do
+@^+POEUd	you should have been doing
+@^+PR*fbts	you and she do not often
+@^+PRAOUd	you and she would have done
+@^+PWA*EU	that can not have been doing
+@^+PWAOblgz	that will just like
+@^+PWH*blgz	that does not just like
+@^+PWHAOUb	that will have added
+@^+PWHRAOEUbgsz	that will have been causing by
+@^+PWHROUd	that should have done
+@^+PWROfbts	that shall often
+@^+PWUbgsz	that has caused by
+@^+RAO*Ebgsz	she will not be causing by
+@^+RO*d	she should not do
+@^+SAOEUbgsz	will have been causing by
+@^+SHAUb	they can have added
+@^+SHRAUfbts	he or she can often have
+@^+SKAEb	we can be adding
+@^+SKAO*EUfbts	we will not often have been
+@^+SKHOUb	he or I shall have added
+@^+SKHRb	he or she or I do add
+@^+SKHRO*Ufbts	he or she or I shall not often have
+@^+SKP*EUfbts	you or I have not often been
+@^+SKPAO*Ed	you or I would not be doing
+@^+SKPH	you or he or I do
+@^+SKPHAEblgz	you or he or I can be just liking
+@^+SKPHAO*EUb	you or he or I will not have been adding
+@^+SKPHRA*	you or he or she or I can not do
+@^+SKPHRO*Eblgz	you or he or she or I shall not be just liking
+@^+SKPRO*Efbts	you or she or I shall not often be
+@^+SKPWAUd	these could have done
+@^+SKPWHAUb	these can have added
+@^+SKPWHR*Efbts	these are not often
+@^+SKPWHRAOEUd	these would have been doing
+@^+SKPWOEUbgsz	these shall have been causing by
+@^+SKPWRfbts	these do often
+@^+SKPWRAO*EUbgsz	these will not have been causing by
+@^+SKPWRO*Ud	these should not have done
+@^+SKRAfbts	she or I can often
+@^+SKRAO*Ud	she or I would not have done
+@^+SKW*Ubgsz	these have not caused by
+@^+SKWAO*blgz	these will not just like
+@^+SKWHAEUd	these could have been doing
+@^+SKWHO*bgsz	these shall not cause by
+@^+SKWHRAEUb	these can have been adding
+@^+SKWOEU	these shall have been doing
+@^+SKWRAUblgz	these can have just liked
+@^+SKWRE	these are doing
+@^+SOUd
+@^+SPAO*Ubgsz	you will not have caused by
+@^+SPHOEUb	you or he shall have been adding
+@^+SPHREb	you or he or she are adding
+@^+SPHRO*EUfbts	you or he or she shall not often have been
+@^+SPO*Ed	you should not be doing
+@^+SPRAEfbts	you or she can often be
+@^+SPRAO*EUd	you or she would not have been doing
+@^+SPW*EUbgsz	those have not been causing by
+@^+SPWAO*Eblgz	those will not be just liking
+@^+SPWHA*d	those could not do
+@^+SPWHO*Ebgsz	those shall not be causing by
+@^+SPWHREfbts	those are often
+@^+SPWHRO*EUd	those should not have been doing
+@^+SPWO*	those shall not do
+@^+SPWRAEUblgz	those can have been just liking
+@^+SPWRU	those have done
+@^+SRfbts	one does often
+@^+SRAO*EUbgsz	one will not have been causing by
+@^+SRO*Ud	one should not have done
+@^+STAU	and it can have done
+@^+STH*Ebgsz	and he are not causing by
+@^+STHAOEUblgz	and he will have been just liking
+@^+STHOU	and he shall have done
+@^+STHRO*fbts	and he and she shall not often
+@^+STK*bgsz	and I do not cause by
+@^+STKAOUblgz	and I will have just liked
+@^+STKH*Ublgz	and he and I have not just liked
+@^+STKHAO*b	and he and I will not add
+@^+STKHRAO*Ebgsz	and he and she and I will not be causing by
+@^+STKHRO*d	and he and she and I should not do
+@^+STKOE	and I shall be doing
+@^+STKPH*EUb	and you and he and I have not been adding
+@^+STKPHAO*Efbts	and you and he and I will not often be
+@^+STKPHR*fbts	and you and he and she and I do not often
+@^+STKPHRAOUd	and you and he and she and I would have done
+@^+STKPOEfbts	and you and I shall often be
+@^+STKPRAO*bgsz	and you and she and I will not cause by
+@^+STKPROEUd	and you and she and I should have been doing
+@^+STKPWA	whatever can do
+@^+STKPWHA*EU	whatever can not have been doing
+@^+STKPWHAOblgz	whatever will just like
+@^+STKPWHROb	whatever shall add
+@^+STKPWHUbgsz	whatever has caused by
+@^+STKPWOEblgz	whatever shall be just liking
+@^+STKPWRA*Ub	whatever can not have added
+@^+STKROUfbts	and she and I shall often have
+@^+STKW*EUd	whatever had not been doing
+@^+STKWAO*E	whatever will not be doing
+@^+STKWHAE	whatever can be doing
+@^+STKWHOUblgz	whatever shall have just liked
+@^+STKWHRAOEblgz	whatever will be just liking
+@^+STKWHREUbgsz	whatever has been causing by
+@^+STKWHRO	whatever shall do
+@^+STKWObgsz	whatever shall cause by
+@^+STKWRAb	whatever can add
+@^+STKWRAO*Ufbts	whatever will not often have
+@^+STOEUblgz	and it shall have been just liking
+@^+STPH*EUblgz	and you and he have not been just liking
+@^+STPHAO*Eb	and you and he will not be adding
+@^+STPHRAO*Ubgsz	and you and he and she will not have caused by
+@^+STPHRO*Ed	and you and he and she should not be doing
+@^+STPOb	and you shall add
+@^+STPROEUfbts	and you and she shall often have been
+@^+STPWAd	whatever could do
+@^+STPWAO*U	whatever will not have done
+@^+STPWHAU	whatever can have done
+@^+STPWHOEUblgz	whatever shall have been just liking
+@^+STPWHRA*EUb	whatever can not have been adding
+@^+STPWOEbgsz	whatever shall be causing by
+@^+STPWRAEb	whatever can be adding
+@^+STPWRAO*EUfbts	whatever will not often have been
+@^+STROEb	and she shall be adding
+@^+STW*Ufbts	whatever has not often
+@^+STWAO*d	whatever would not do
+@^+STWHAEd	whatever could be doing
+@^+STWHAO*EU	whatever will not have been doing
+@^+STWHOUbgsz	whatever shall have caused by
+@^+STWHRAEU	whatever can have been doing
+@^+STWHRO*blgz	whatever shall not just like
+@^+STWRAblgz	whatever can just like
+@^+STWRAO*Ub	whatever will not have added
+@^+SWAEU	there can have been doing
+@^+SWHAbgsz	whoever can cause by
+@^+SWHAO*Ublgz	whoever will not have just liked
+@^+SWHO*E	whoever shall not be doing
+@^+SWHRA*Ed	whoever could not be doing
+@^+SWHRO*Ubgsz	whoever shall not have caused by
+@^+SWO*blgz	there shall not just like
+@^+SWRO*b	whichever shall not add
+@^+TA	it can do
+@^+THbgsz	and he does cause by
+@^+THA*E	and he can not be doing
+@^+THO*Ublgz	and he shall not have just liked
+@^+THRA*bgsz	and not to cause by
+@^+THRAOE	and to be doing
+@^+THREUd	and to have been doing
+@^+TKA*	and I can not do
+@^+TKHAEUfbts	and he and I can often have been
+@^+TKHRA*EUd	and he and she and I could not have been doing
+@^+TKHRAObgsz	and he and she and I will cause by
+@^+TKO*Eblgz	and I shall not be just liking
+@^+TKPd	and you and I did
+@^+TKPAEbgsz	and you and I can be causing by
+@^+TKPAO*EUblgz	and you and I will not have been just liking
+@^+TKPHAOfbts	and you and he and I will often
+@^+TKPHRAOd	and you and he and she and I would do
+@^+TKPHRUfbts	and you and he and she and I have often
+@^+TKPHUb	and you and he and I have added
+@^+TKPO*U	and you and I shall not have done
+@^+TKPRA*Ud	and you and she and I could not have done
+@^+TKPRO*EUbgsz	and you and she and I shall not have been causing by
+@^+TKPWA*blgz	what can not just like
+@^+TKPWEU	what has been doing
+@^+TKPWHbgsz	what does cause by
+@^+TKPWHA*E	what can not be doing
+@^+TKPWHO*Ublgz	what shall not have just liked
+@^+TKPWHR*bgsz	what does not cause by
+@^+TKPWHRAOUblgz	what will have just liked
+@^+TKPWHROE	what shall be doing
+@^+TKPWRA*b	what can not add
+@^+TKRAUbgsz	and she and I can have caused by
+@^+TKREd	and she and I were doing
+@^+TKRO*EU	and she and I shall not have been doing
+@^+TKWH*	what does not do
+@^+TKWHA*Eblgz	what can not be just liking
+@^+TKWHRA*U	what can not have done
+@^+TKWHREbgsz	what is causing by
+@^+TKWHRO*EUblgz	what shall not have been just liking
+@^+TKWO*Eb	what shall not be adding
+@^+TKWRAOEfbts	what will often be
+@^+TKWREUb	what has been adding
+@^+TOEblgz	it shall be just liking
+@^+TPAEUb	and you can have been adding
+@^+TPHA*fbts	and you and he can not often
+@^+TPHRAOEbgsz	and you and he and she will be causing by
+@^+TPHROd	and you and he and she should do
+@^+TPRAEUbgsz	and you and she can have been causing by
+@^+TPRAO	and you and she will do
+@^+TPRUd	and you and she had done
+@^+TPWblgz	what does just like
+@^+TPWH*E	what is not doing
+@^+TPWHA*Ublgz	what can not have just liked
+@^+TPWHRA*Eb	what can not be adding
+@^+TPWO*Ub	what shall not have added
+@^+TPWR*b	what does not add
+@^+TPWRAOUfbts	what will often have
+@^+TRA*b	and she can not add
+@^+TWEfbts	what is often
+@^+TWHEblgz	what is just liking
+@^+TWHO*EUb	what shall not have been adding
+@^+TWHR*U	what has not done
+@^+TWHRA*EUblgz	what can not have been just liking
+@^+TWO*EUd	what should not have been doing
+@^+TWRA*Efbts	what can not often be
+@^+WAE	there can be doing
+@^+WHAOEblgz	who will be just liking
+@^+WHEUbgsz	who has been causing by
+@^+WHO	who shall do
+@^+WHR*Eblgz	who is not just liking
+@^+WHRAOEUb	who will have been adding
+@^+WOUblgz	there shall have just liked
+@^+WRA*EUb	which can not have been adding
+^+*fbts
+^+bgs	keep
+^+blsz	added to
+^+fbgt	walk in
+^+fd	found
+^+fltsd	loved it
+^+fpblgtsd	just imagined
+^+fpgs	pass on
+^+fptz	found that
+^+frbsd	showed that
+^+frlsd	also served
+^+frpgs	also offer
+^+fts	start to
+^+lgtsd	set up
+^+AOUd
+^+H*Ufbts	he has not often
+^+HAO*d	he would not
+^+HRblgtd	to think it
+^+HRfb	to become
+^+HRfblz	to believe
+^+HRflgtz	to love to
+^+HRfpblg	to include
+^+HRfpbtsz	to turn to
+^+HRfpltz	to meet
+^+HRfrblgd	to recall
+^+HRfrld	to follow
+^+HRfrpbltd	to form in
+^+HRfrtd	to write about
+^+HRlg	to help
+^+HRpbg	to continue
+^+HRpblgtsz	to expect to
+^+HRpg	to happen
+^+HRplt	to let
+^+HRrbgsz	to carry out
+^+HRrbsd	to wish
+^+HRrlgsd	to guess it
+^+HRrlgt	to be
+^+HRrpbgz	to open up
+^+HRrpdz	to reach out
+^+HRrs	to receive
+^+HRA*bgsz	not to cause by
+^+HRAOE	to be being
+^+HREUd	to have been being
+^+K*Efbts	I am not often
+^+Kbgtd	I took
+^+Kbltsz	I allowed for
+^+Kfbgtz	I walked in
+^+Kfgsd	I gave up
+^+Kfpb	I know
+^+Kfpblsd	I moved to
+^+Kfpld	I applied
+^+Kfrbg	I require
+^+Kfrbz	I showed
+^+Kfrpbd	I needed to
+^+Kfrpld	I removed
+^+Kg	I go
+^+Klsd	I sent
+^+Ksz	I use to
+^+KAOEUd	I would have been
+^+KHAEUfbts	he and I can often have been
+^+KHRA*blgz	he and she and I can not just like
+^+KHREU	he and she and I have been
+^+KPbgtz	you and I took
+^+KPbltz	you and I built
+^+KPd	you and I were
+^+KPl	you and I look
+^+KPtdz	you and I wanted to
+^+KPAEbgsz	you and I can be causing by
+^+KPAO*EUblgz	you and I will not have been just liking
+^+KPHA*d	you and he and I could not
+^+KPHO*Ebgsz	you and he and I shall not be causing by
+^+KPHRA*Ub	you and he and she and I can not have added
+^+KPO*U	you and I shall not have
+^+KPRAEUblgz	you and she and I can have been just liking
+^+KPRU	you and she and I have
+^+KPWb	this adds
+^+KPWHAOEd	this would be
+^+KPWHEUfbts	this has often been
+^+KPWHRAUbgsz	this can have caused by
+^+KPWHREd	this was
+^+KPWHRO*EU	this shall not have been
+^+KPWO*Ufbts	this shall not often have
+^+KPWRA*EU	this can not have been
+^+KPWRAOblgz	this will just like
+^+KPWRUbgsz	this has caused by
+^+KRblgdz	she and I just liked
+^+KRgd	she and I went
+^+KRp	she and I appear
+^+KRpblgz	she and I come to
+^+KRplsd	she and I seemed
+^+KRAUbgsz	she and I can have caused by
+^+KREd	she and I were
+^+KRO*EU	she and I shall not have been
+^+KWHEb	this is adding
+^+KWHO*EUfbts	this shall not often have been
+^+KWHR*fbts	this does not often
+^+KWHRAOUd	this would have
+^+KWO*Eb	this shall not be adding
+^+KWRA*Ed	this could not be
+^+KWRO*Ubgsz	this shall not have caused by
+^+P*bgsz	you do not cause by
+^+Pbgtd	you took
+^+Pbltd	you built
+^+Pgts	you set
+^+Psd	you said
+^+PAOUblgz	you will have just liked
+^+PHA*fbts	you and he can not often
+^+PHR*	you and he and she are not
+^+PHRA*Eblgz	you and he and she can not be just liking
+^+POE	you shall be
+^+PRAEUbgsz	you and she can have been causing by
+^+PRAO	you and she will
+^+PRUd	you and she had
+^+PWblgs	that asks
+^+PWblgz	that just likes
+^+PWbtz	that bought
+^+PWfblsz	that believed to
+^+PWflgsd	that guessed that
+^+PWfpbgz	that checks in
+^+PWfpbt	that needs for
+^+PWfpltd	that met
+^+PWfrbgz	that requires for
+^+PWfrgtsz	that forgot to
+^+PWfrlt	that also
+^+PWfrpbls	that forms by
+^+PWfrs	that serves
+^+PWgz	that goes to
+^+PWp	that appears
+^+PWpblgtd	that imagined
+^+PWpbtz	that turns out
+^+PWplgz	that pays attention
+^+PWHAOfbts	that will often
+^+PWHRAOEblgz	that will be just liking
+^+PWHREUbgsz	that has been causing by
+^+PWHRO	that shall
+^+PWHUb	that has added
+^+PWO*Ub	that shall not have added
+^+PWRbgdz	that caused
+^+PWRbltd	that built
+^+PWRlg	that helps
+^+PWRpbgts	that expects
+^+PWRpbtd	that turned
+^+PWRpt	that puts
+^+PWRA*Ud	that could not have
+^+PWRO*EUbgsz	that shall not have been causing by
+^+R*Ebgsz	she is not causing by
+^+Rbgz	she causes
+^+Rbtz	she bought
+^+Rlts	she stays
+^+Rpblgsd	she explained
+^+Rpld	she made
+^+Rtz	she wants to
+^+RAOEUblgz	she will have been just liking
+^+ROU	she shall have
+^+SAOEblgz	will be just liking
+^+SEUbgsz	have been causing by
+^+SHAfbts	they can often
+^+SHAO*Ud	they would not have
+^+SHRAd	he or she could
+^+SHRAO*U	he or she will not have
+^+SHROEbgsz	he or she shall be causing by
+^+SK*EUfbts	we have not often been
+^+SKAO*Ed	we would not be
+^+SKHOfbts	he or I shall often
+^+SKHRAO*Ebgsz	he or she or I will not be causing by
+^+SKHRO*d	he or she or I should not
+^+SKP*Ed	you or I were not
+^+SKPA*Ubgsz	you or I can not have caused by
+^+SKPAOEU	you or I will have been
+^+SKPH*EUb	you or he or I have not been adding
+^+SKPHAO*Efbts	you or he or I will not often be
+^+SKPHROEUb	you or he or she or I shall have been adding
+^+SKPRAO*bgsz	you or she or I will not cause by
+^+SKPROEUd	you or she or I should have been
+^+SKPWA	these can
+^+SKPWHAfbts	these can often
+^+SKPWHAO*Ud	these would not have
+^+SKPWHRA*bgsz	these can not cause by
+^+SKPWHRAOE	these will be
+^+SKPWHREUd	these had been
+^+SKPWOEblgz	these shall be just liking
+^+SKPWR*EUbgsz	these have not been causing by
+^+SKPWRAO*Eblgz	these will not be just liking
+^+SKPWRO*	these shall not
+^+SKR*Ud	she or I had not
+^+SKRA*EUbgsz	she or I can not have been causing by
+^+SKRAO*	she or I will not
+^+SKW*blgz	these do not just like
+^+SKWAOUb	these will have added
+^+SKWHAE	these can be
+^+SKWHOUblgz	these shall have just liked
+^+SKWHRAEfbts	these can often be
+^+SKWHRAO*EUd	these would not have been
+^+SKWRbldz	these allowed to
+^+SKWRbtd	these bought
+^+SKWRfblgsz	these asked to
+^+SKWRfldz	these felt like
+^+SKWRfpbgsz	these began to
+^+SKWRfpblz	these open in
+^+SKWRfpls	these seem like
+^+SKWRfrbgts	these carry on
+^+SKWRfrgt	these forget
+^+SKWRfrpbld	these formed
+^+SKWRfrpt	these also provide
+^+SKWRgts	these set
+^+SKWRltsdz	these stayed at
+^+SKWRpblgs	these explain
+^+SKWRpbtdz	these turned out
+^+SKWRplgsz	these played in
+^+SKWRrbd	these read
+^+SKWRrbls	these share with
+^+SKWRrgz	these never hear
+^+SKWRrpbgsd	these considered
+^+SKWRrpbs	these run on
+^+SKWRrplz	these remained
+^+SKWRz	these use
+^+SKWRAb	these can add
+^+SKWRAO*Ufbts	these will not often have
+^+SO
+^+SP*Ubgsz	you have not caused by
+^+SPAO*blgz	you will not just like
+^+SPHOEfbts	you or he shall often be
+^+SPHRAO*Ubgsz	you or he or she will not have caused by
+^+SPHRO*Ed	you or he or she should not be
+^+SPOEU	you shall have been
+^+SPR*EUd	you or she had not been
+^+SPRAO*E	you or she will not be
+^+SPRObgsz	you or she shall cause by
+^+SPW*Eblgz	those are not just liking
+^+SPWAOEUb	those will have been adding
+^+SPWHAU	those can have
+^+SPWHOEUblgz	those shall have been just liking
+^+SPWHRAbgsz	those can cause by
+^+SPWHRAO*Ublgz	those will not have just liked
+^+SPWHRO*E	those shall not be
+^+SPWRAEb	those can be adding
+^+SPWRAO*EUfbts	those will not often have been
+^+SR*EUbgsz	one has not been causing by
+^+SRAO*Eblgz	one will not be just liking
+^+SRO*	one shall not
+^+STHAOEb	and he will be adding
+^+STHEUblgz	and he have been just liking
+^+STHRAOEUbgsz	and he and she will have been causing by
+^+STHROUd	and he and she should have
+^+STKAOb	and I will add
+^+STKH*b	and he and I do not add
+^+STKHAOUfbts	and he and I will often have
+^+STKHR*Ebgsz	and he and she and I are not causing by
+^+STKHRAOEUblgz	and he and she and I will have been just liking
+^+STKHROU	and he and she and I shall have
+^+STKPA*EUd	and you and I could not have been
+^+STKPAObgsz	and you and I will cause by
+^+STKPH*Efbts	and you and he and I are not often
+^+STKPHAOEUd	and you and he and I would have been
+^+STKPHRAEUbgsz	and you and he and she and I can have been causing by
+^+STKPHRAO	and you and he and she and I will
+^+STKPHRUd	and you and he and she and I had
+^+STKPR*bgsz	and you and she and I do not cause by
+^+STKPRAOUblgz	and you and she and I will have just liked
+^+STKPROE	and you and she and I shall be
+^+STKPWA*EUb	whatever can not have been adding
+^+STKPWHblgz	whatever just likes
+^+STKPWHO*Ub	whatever shall not have added
+^+STKPWHRA*Ufbts	whatever can not often have
+^+STKPWRA*fbts	whatever can not often
+^+STKRAOEbgsz	and she and I will be causing by
+^+STKROd	and she and I should
+^+STKUblgz	and I have just liked
+^+STKW*E	whatever is not
+^+STKWA*Ublgz	whatever can not have just liked
+^+STKWHOb	whatever shall add
+^+STKWHREblgz	whatever is just liking
+^+STKWHRO*EUb	whatever shall not have been adding
+^+STKWR*Ufbts	whatever has not often
+^+STKWRAO*d	whatever would not
+^+STOEb	and it shall be adding
+^+STPA*Ufbts	and you can not often have
+^+STPH*Eb	and you and he are not adding
+^+STPHAOEUfbts	and you and he will often have been
+^+STPHR*Ubgsz	and you and he and she have not caused by
+^+STPHRAO*blgz	and you and he and she will not just like
+^+STPHROEU	and you and he and she shall have been
+^+STPRAOUbgsz	and you and she will have caused by
+^+STPROEd	and you and she should be
+^+STPW*U	whatever has not
+^+STPWA*EUblgz	whatever can not have been just liking
+^+STPWHOEb	whatever shall be adding
+^+STPWHRA*Efbts	whatever can not often be
+^+STPWR*EUfbts	whatever has not often been
+^+STPWRAO*Ed	whatever would not be
+^+STRbdz	and she used in
+^+STRblgtz	and she thought it
+^+STRfbgdz	and she walked into
+^+STRfbt	and she become more
+^+STRflsz	and she looked for
+^+STRfpblgsz	and she explained how
+^+STRfpdz	and she chose
+^+STRfpsdz	and she chose from
+^+STRfrblgsz	and she recalled that
+^+STRfrlgtd	and she never forgot
+^+STRfrpd	and she provided
+^+STRfsd	and she saved
+^+STRlgsd	and she guessed
+^+STRpbgsd	and she began
+^+STRpblsd	and she planned
+^+STRpgsd	and she said that
+^+STRpltsz	and she seemed to
+^+STRrbgts	and she talk about
+^+STRrbtd	and she tried to
+^+STRrlsd	and she led to
+^+STRrpblg	and she remember
+^+STRrpgsd	and she produced by
+^+STRrtd	and she tried
+^+STRA*EUfbts	and she can not often have been
+^+STW*d	whatever was not
+^+STWA*Ebgsz	whatever can not be causing by
+^+STWAOU	whatever will have
+^+STWH*EU	whatever has not been
+^+STWHOblgz	whatever shall just like
+^+STWHROUb	whatever shall have added
+^+STWR*Ub	whatever has not added
+^+STWRAO*fbts	whatever will not often
+^+SWH*Ublgz	whoever has not just liked
+^+SWHAO*b	whoever will not add
+^+SWHRAEU	whoever can have been
+^+SWHRO*blgz	whoever shall not just like
+^+SWOUb	there shall have added
+^+SWROUfbts	whichever shall often have
+^+Tbgtz	it took
+^+Tbsd	it decided
+^+Tfblg	it likes to
+^+Tfgtz	it also gave
+^+Tfpbgd	it checked
+^+Tfpblts	it plans for
+^+Tfplgt	it applies for
+^+Tfrbgsd	it called for
+^+Tfrgdz	it offered to
+^+Tfrpbgsd	it brought in
+^+Tfrpls	it replaces by
+^+Tgsd	it saw
+^+Tltd	it lived
+^+Tts	it starts
+^+TA*EUb	it can not have been adding
+^+THO*b	and he shall not add
+^+THRAUblgz	and to just have liked
+^+THRE	and to be being
+^+TKHAEd	and he and I could be
+^+TKHAO*EU	and he and I will not have been
+^+TKHOUbgsz	and he and I shall have caused by
+^+TKHRbgsz	and he and she and I cause by
+^+TKHRA*E	and he and she and I can not be
+^+TKHRO*Ublgz	and he and she and I shall not have just liked
+^+TKOEUb	and I shall have been adding
+^+TKP*EUblgz	and you and I have not been just liking
+^+TKPAO*Eb	and you and I will not be adding
+^+TKPHfbts	and you and he and I often
+^+TKPHAO*EUbgsz	and you and he and I will not have been causing by
+^+TKPHO*Ud	and you and he and I should not have
+^+TKPHRd	and you and he and she and I were
+^+TKPHRAEbgsz	and you and he and she and I can be causing by
+^+TKPHRAO*EUblgz	and you and he and she and I will not have been just liking
+^+TKPHRO*U	and you and he and she and I shall not have
+^+TKPRA*	and you and she and I can not
+^+TKPRO*Eblgz	and you and she and I shall not be just liking
+^+TKPWAUb	what can have added
+^+TKPWHO*b	what shall not add
+^+TKPWHRAOb	what will add
+^+TKPWHRUblgz	what has just liked
+^+TKPWRAUfbts	what can often have
+^+TKRAblgz	and she and I can just like
+^+TKRAO*Ub	and she and I will not have added
+^+TKWHAEUb	what can have been adding
+^+TKWHRO*Eb	what shall not be adding
+^+TKWOEUfbts	what shall often have been
+^+TKWREfbts	what is often
+^+TKWRO*EUd	what should not have been
+^+TPbldz	and you allowed to
+^+TPbsdz	and you decided to
+^+TPlgd	and you helped
+^+TPtz	and you want to
+^+TPAEfbts	and you can often be
+^+TPAO*EUd	and you would not have been
+^+TPHAUd	and you and he could have
+^+TPHOEUbgsz	and you and he shall have been causing by
+^+TPHRA*U	and you and he and she can not have
+^+TPHREbgsz	and you and he and she are causing by
+^+TPHRO*EUblgz	and you and he and she shall not have been just liking
+^+TPR	and you and she are
+^+TPRAEblgz	and you and she can be just liking
+^+TPRAO*EUb	and you and she will not have been adding
+^+TPWHA*b	what can not add
+^+TPWHRAEUfbts	what can often have been
+^+TPWO*fbts	what shall not often
+^+TPWRAOd	what would
+^+TPWRUfbts	what has often
+^+TRblgt	and she thinks it
+^+TRgsz	and she saw
+^+TRpbg	and she continues
+^+TRpblt	and she handles
+^+TRplts	and she seems to
+^+TRAUfbts	and she can often have
+^+TWAbgsz	what can cause by
+^+TWAO*Ublgz	what will not have just liked
+^+TWHO*Efbts	what shall not often be
+^+TWHRA*Eb	what can not be adding
+^+TWO*E	what shall not be
+^+TWRAEUd	what could have been
+^+TWRO*bgsz	what shall not cause by
+^+WHEblgz	who is just liking
+^+WHO*EUb	who shall not have been adding
+^+WHRAOEfbts	who will often be
+^+WHREUb	who has been adding
+^+WOb	there shall add
+^+WRA*Efbts	which can not often be

@@ -14,6 +14,25 @@ cargo test --workspace
 cargo build --release -q
 B=./target/release/stfst
 
+# A stroke fixture: what these dictionaries write for a stream, against what they
+# wrote when the file was recorded. Translation is not a per-tape question, so a
+# golden file cannot ask it.
+fixtures() {
+    local dir=$1 case
+    shift
+    for case in "$dir"/*.strokes; do
+        if $B translate "$@" --system systems/stenotype-extended.toml \
+            --strokes "$case" | diff -u "${case%.strokes}.expected" - > /dev/null; then
+            echo "$(basename "$case") ok"
+        else
+            $B translate "$@" --system systems/stenotype-extended.toml \
+                --strokes "$case" | diff -u "${case%.strokes}.expected" - || true
+            echo "$(basename "$case") FAILED" >&2
+            exit 1
+        fi
+    done
+}
+
 if [ -z "${STFST_NO_COMPILE:-}" ]; then
     echo "== compile"
     $B compile recipe.toml > /dev/null
@@ -51,8 +70,9 @@ scripts/crosscheck-py.sh build/dicts/typey-type.stfst systems/stenotype-extended
     | tail -1
 
 # Every artifact in the stack, so adding one to the recipe cannot skip its tests.
-# A dictionary with no golden file has a checker of its own instead, because what
-# it answers depends on more than the tape: see retro-words.
+# A dictionary whose answer depends on more than the tape has a stroke fixture
+# under `tests/` instead, because a golden file has nowhere to put the buffer:
+# see `tests/retro-words`.
 for artifact in build/dicts/*.stfst; do
     dict=$(basename "$artifact" .stfst)
     echo "== $dict"
@@ -60,13 +80,11 @@ for artifact in build/dicts/*.stfst; do
         $B test "$artifact" "tests/golden/$dict.tsv" | tail -1
         # The reverse direction has no oracle of its own; forward lookup is the check.
         scripts/check-reverse.py "$artifact" "tests/golden/$dict.tsv"
+    elif [ -d "tests/$dict" ]; then
+        fixtures "tests/$dict" "$artifact"
     else
-        checker="scripts/check-$dict.py"
-        if [ ! -x "$checker" ]; then
-            echo "$dict has neither a golden file nor $checker" >&2
-            exit 1
-        fi
-        "$checker" "$artifact"
+        echo "$dict has neither tests/golden/$dict.tsv nor tests/$dict" >&2
+        exit 1
     fi
 done
 
@@ -74,19 +92,7 @@ done
 # checked against a fixture instead of being taken on trust. Needs
 # `stfst compile tests/recipe.toml --out build/test-dicts --work build/test-work`.
 echo "== contract"
-for case in tests/probe/*.strokes; do
-    if $B translate build/test-dicts/probe.stfst \
-        --system systems/stenotype-extended.toml --strokes "$case" \
-        | diff -u "${case%.strokes}.expected" - > /dev/null; then
-        echo "$(basename "$case") ok"
-    else
-        $B translate build/test-dicts/probe.stfst \
-            --system systems/stenotype-extended.toml --strokes "$case" \
-            | diff -u "${case%.strokes}.expected" - || true
-        echo "$(basename "$case") FAILED" >&2
-        exit 1
-    fi
-done
+fixtures tests/probe build/test-dicts/probe.stfst
 
 # Morphology. Skipped rather than failed where the artifacts are absent: they are
 # built from data that ships with Plover rather than checked in, so a machine can
@@ -119,22 +125,11 @@ if [ -n "${STFST_RETRO:-}" ]; then
     echo "== phrasing-retro"
     $B compile recipe-retro.toml --out build/retro-dicts --work build/retro-work \
         > /dev/null
-    "$PLOVER_PYTHON" scripts/check-phrasing-retro.py build/retro-dicts/phrasing-retro.stfst
+    $B test build/retro-dicts/phrasing-retro.stfst tests/golden/phrasing-retro.tsv \
+        | tail -1
 fi
 
 # Translation is not a per-tape question, so it needs its own fixture: a stroke
 # stream through the whole stack, where the answer depends on the history.
 echo "== translate"
-for case in tests/translate/*.strokes; do
-    if $B translate build/dicts/*.stfst \
-        --system systems/stenotype-extended.toml --strokes "$case" \
-        | diff -u "${case%.strokes}.expected" - > /dev/null; then
-        echo "$(basename "$case") ok"
-    else
-        $B translate build/dicts/*.stfst \
-            --system systems/stenotype-extended.toml --strokes "$case" \
-            | diff -u "${case%.strokes}.expected" - || true
-        echo "$(basename "$case") FAILED" >&2
-        exit 1
-    fi
-done
+fixtures tests/translate build/dicts/*.stfst
