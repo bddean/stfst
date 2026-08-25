@@ -23,6 +23,12 @@ struct Path {
     out: u32,
 }
 
+/// A closed start frontier, held by the automaton and cloned into each cursor.
+pub struct Start {
+    frontier: Vec<Path>,
+    out: Chain,
+}
+
 #[derive(Clone)]
 pub struct Cursor<'a> {
     fst: &'a Automaton,
@@ -35,7 +41,8 @@ pub struct Cursor<'a> {
 }
 
 impl<'a> Cursor<'a> {
-    pub(crate) fn new(fst: &'a Automaton) -> Self {
+    /// The frontier before any symbol, closed. `Automaton` reads this once.
+    pub(crate) fn closed(fst: &'a Automaton) -> Start {
         let start = Path {
             loc: Loc::START,
             out: ROOT,
@@ -49,7 +56,22 @@ impl<'a> Cursor<'a> {
         };
         cursor.seen.insert(start);
         cursor.close();
-        cursor
+        Start {
+            frontier: cursor.frontier,
+            out: cursor.out,
+        }
+    }
+
+    pub(crate) fn start(fst: &'a Automaton, start: &Start) -> Self {
+        // `seen` is not carried: a step clears it before it reads it, so the
+        // closure's entries are dead the moment this returns.
+        Cursor {
+            fst,
+            out: start.out.clone(),
+            frontier: start.frontier.clone(),
+            seen: HashSet::default(),
+            taken: Vec::new(),
+        }
     }
 
     /// Read one input symbol.

@@ -158,7 +158,32 @@ longest key had to be told one.
 
 **The start state is closed once.** A cursor followed the epsilon transitions out
 of state zero on every lookup. For `phrasing` that closure is 186 paths, and 125
-of the 175 microseconds a lookup cost. It is the same closure every time.
+of the 175 microseconds a lookup cost. It is the same closure every time, so the
+automaton reads it once and a cursor clones it.
+
+This one is the Rust reader's too, which is the only one of the three that is.
+`stfst translate --quiet`, 9,000 single strokes, whole stack: `phrasing` goes
+from 10 microseconds a stroke to 1.1, and the stack from 87 to 76. The other two
+do not port. The engine already advances a candidate per dictionary rather than
+walking from the start, and the reverse automaton `shrimple` no longer carries
+was never in the Rust host's hot path.
+
+## The remaining cost is one dictionary's frontier
+
+Where a stroke goes in the Rust engine, 9,000 single strokes, each dictionary
+alone against the whole stack's 0.68 seconds:
+
+| | |
+|---|---|
+| `typey-type` | 0.63 s |
+| `phrasing` | 0.01 s |
+| the other twelve | 0.01 s each or less |
+
+Eighty-one per cent of a stroke is one dictionary, and it is the frontier again:
+46.6 paths a step, 719 at the widest. Nothing in the reader answers that. The
+artifact would have to be delayed-aligned, which `hfst-lexc` cannot build at this
+size, so the builder would have to be written here. At 76 microseconds against a
+16 ms frame there is no reason to.
 
 Pairwise alignment is still what makes the frontier wide, and it still stays:
 `docs/M0.md` measured `hfst-lexc` at tens of gigabytes for a delayed-aligned

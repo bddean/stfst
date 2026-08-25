@@ -14,10 +14,12 @@ mod search;
 
 pub use alphabet::Alphabet;
 pub use cursor::Cursor;
+use cursor::Start;
 pub use search::Cheapest;
 
 use std::ops::Deref;
 use std::path::Path;
+use std::sync::OnceLock;
 
 pub type Sym = u16;
 
@@ -74,6 +76,9 @@ pub struct Automaton {
     index_len: u32,
     trans_at: usize,
     trans_len: u32,
+    /// The frontier before any symbol. Every cursor starts here, and for an
+    /// automaton that guesses early the closure is most of what one costs.
+    start: OnceLock<Start>,
 }
 
 impl Automaton {
@@ -155,6 +160,7 @@ impl Automaton {
             index_len,
             trans_at,
             trans_len,
+            start: OnceLock::new(),
         })
     }
 
@@ -163,7 +169,7 @@ impl Automaton {
     }
 
     pub fn cursor(&self) -> Cursor<'_> {
-        Cursor::new(self)
+        Cursor::start(self, self.start.get_or_init(|| Cursor::closed(self)))
     }
 
     /// Every record the automaton returns for a tape. `None` means the tape
