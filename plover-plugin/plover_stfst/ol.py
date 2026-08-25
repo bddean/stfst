@@ -129,6 +129,7 @@ class Automaton:
             symbols.append(bytes(data[p:end]).decode("utf-8"))
             p = end + 1
 
+        self._start = None
         self.index_at = p
         self.trans_at = p + self.index_len * INDEX_ENTRY
         end = self.trans_at + self.trans_len * TRANSITION_ENTRY
@@ -207,8 +208,62 @@ class Automaton:
             at += TRANSITION_ENTRY
         return out
 
+    def out_arcs(self, loc):
+        """Every transition out of `loc`, as (input, output, target).
+
+        `arcs` answers what one symbol does, which is what a cursor asks. A walk
+        of the whole language asks what the state does.
+        """
+        if loc < TRANSITION_TABLE_START:
+            return [(want, output, target)
+                    for want in range(len(self.alphabet.symbols))
+                    for output, target in self.arcs(loc, want)]
+        out = []
+        group = loc - TRANSITION_TABLE_START + 1
+        at = self.trans_at + group * TRANSITION_ENTRY
+        while group < self.trans_len:
+            sym, output, target = _TRANSITION.unpack_from(self.data, at)
+            if sym == NO_SYMBOL:
+                break
+            out.append((sym, output, target))
+            group += 1
+            at += TRANSITION_ENTRY
+        return out
+
+    def pairs(self):
+        """Every (input, output) the automaton relates, as symbol tuples.
+
+        None where a cycle puts infinitely many in the language, which is the
+        answer for a dictionary that writes a syllable at a time with no end.
+        """
+        out = []
+        if self.is_final(0):
+            out.append(((), ()))
+        stack = [(0, (), (), iter(self.out_arcs(0)))]
+        on_path = {0}
+        while stack:
+            loc, tape, record, arcs = stack[-1]
+            for sym, output, target in arcs:
+                if target in on_path:
+                    return None
+                tape = tape if sym == EPSILON else tape + (sym,)
+                record = record if output == EPSILON else record + (output,)
+                if self.is_final(target):
+                    out.append((tape, record))
+                on_path.add(target)
+                stack.append((target, tape, record, iter(self.out_arcs(target))))
+                break
+            else:
+                on_path.discard(loc)
+                stack.pop()
+        return out
+
     def cursor(self):
-        return Cursor(self)
+        # The closure of state zero is the same every time, and for an automaton
+        # that guesses early it is most of what a lookup costs.
+        if self._start is None:
+            self._start = Cursor(self).frontier
+        return Cursor(self, self._start)
 
     def lookup(self, tape):
         """Every record for a tape, or None if the tape is not readable here."""
@@ -284,10 +339,18 @@ class Cursor:
 
     __slots__ = ("fst", "frontier")
 
-    def __init__(self, fst):
+    def __init__(self, fst, frontier=None):
         self.fst = fst
+        if frontier is not None:
+            self.frontier = list(frontier)
+            return
         self.frontier = [(0, ())]
         self._close()
+
+    def clone(self):
+        """A cursor in the same place. A path is immutable, so this is a copy of
+        the list holding them."""
+        return Cursor(self.fst, self.frontier)
 
     def live(self):
         """How many paths are live. Zero means no stroke can extend what has been

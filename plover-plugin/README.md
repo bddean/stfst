@@ -46,6 +46,27 @@ rewrites a window needs the host to say something on every stroke, and Plover's
 dictionary API has no way to say it. The manifest declares each of those, so the
 refusal is one comparison and it happens before a stroke arrives.
 
+## What a dictionary answers
+
+Three questions. What an outline writes, what writes some text, and what the
+dictionary holds.
+
+The third is the one a `StenoDictionary` answers out of `self._dict`, which an
+artifact never fills. The automaton has the keyspace though, because the keyspace
+is the language, so the plugin walks it on the first ask and holds the result:
+145,314 entries for `typey-type`, in four seconds. Plover's dictionary editor and
+`casereverse_lookup` read a dictionary this way, and so does `stenodrill`.
+
+A dictionary that writes a syllable at a time holds infinitely many entries and
+lists none. That is discovered on the walk, as a cycle, rather than declared.
+The same fact takes its reverse automaton away: one word is written by
+unboundedly many outlines there, so "which outlines write this" is a
+cheapest-first search that costs the host 40 ms and answers with outlines longer
+than the ones another dictionary already offers.
+
+A lookup steps the cursor the last stroke left rather than walking from the
+start. `docs/latency.md` has the measurements.
+
 ## Layout
 
 | | |

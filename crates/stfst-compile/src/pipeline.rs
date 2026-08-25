@@ -381,6 +381,9 @@ pub struct Declared {
     /// The longest outline, in strokes. `None` when the language has no longest,
     /// and then no host that needs one can load this dictionary.
     pub strokes: Option<u32>,
+    /// Whether the language itself has a longest outline, before the recipe
+    /// fills one in.
+    pub bounded: bool,
 }
 
 impl Declared {
@@ -408,14 +411,15 @@ pub fn declare(forward: &Path, system: &System, dict: &recipe::Dict) -> Result<D
     // here asks; Plover's dictionary API takes a whole outline, so it has to know
     // before the first stroke. Where the language has no longest, the recipe says
     // how far to look and an artifact with neither is one Plover cannot load.
-    let strokes = match fst.alphabet().number(&system.separator.to_string()) {
-        Some(sep) => fst.max_occurrences(sep).map(|n| n + 1).or(dict.strokes),
+    let longest = match fst.alphabet().number(&system.separator.to_string()) {
+        Some(sep) => fst.max_occurrences(sep).map(|n| n + 1),
         // No separator in the alphabet at all: every entry is one stroke.
         None => Some(1),
     };
     let mut declared = Declared {
         words: dict.words,
-        strokes,
+        bounded: longest.is_some(),
+        strokes: longest.or(dict.strokes),
         ..Declared::default()
     };
     let symbols: Vec<&str> = fst.alphabet().symbols().collect();
@@ -456,10 +460,15 @@ pub fn write_artifact(
 ) -> Result<()> {
     std::fs::create_dir_all(dir)?;
     std::fs::copy(forward, dir.join("forward.hfstol"))?;
-    if reverse.exists() {
-        std::fs::copy(reverse, dir.join("reverse.hfstol"))?;
-    }
     let declared = declare(forward, system, dict)?;
+    // A word an unbounded dictionary writes has unboundedly many outlines, so
+    // "what writes this" has no finite answer and the cheapest few are a search
+    // the host would pay for on every stroke.
+    if declared.bounded && reverse.exists() {
+        std::fs::copy(reverse, dir.join("reverse.hfstol"))?;
+    } else {
+        let _ = std::fs::remove_file(dir.join("reverse.hfstol"));
+    }
     let (name, version, priority) = (&dict.name, &dict.version, dict.priority);
     std::fs::write(dir.join("tags.txt"), all_tags().join("\n") + "\n")?;
     let keys: Vec<String> = system

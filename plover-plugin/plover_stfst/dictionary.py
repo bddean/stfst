@@ -53,6 +53,10 @@ class StfstDictionary(StenoDictionary):
         self._separator = None      # the tape symbol between strokes
         self._separator_sym = None  # and its number in the forward alphabet
         self._tape = {}          # steno -> tape symbol numbers, memoised
+        self._cursors = {}       # outline -> the cursor after it, or None
+        self._older = {}
+        self._generation = 0
+        self._entries = None     # outline -> translation, walked on first ask
         self._weight = []
 
     def _load(self, filename):
@@ -82,6 +86,10 @@ class StfstDictionary(StenoDictionary):
             raise ValueError("%s has no longest outline, so Plover cannot bound "
                              "its lookups: give it `strokes` in the recipe" % name)
         self._longest_key = strokes
+        # A stroke asks about one outline per length and again on a retry, so a
+        # generation wide enough for a stroke's worth of questions is one that
+        # never drops what the next stroke wants. Two of them are kept.
+        self._generation = 4 * strokes + 32
         unknown = [k for k in needs["keys"] if k not in plover.system.KEYS]
         if unknown:
             raise ValueError("%s is for another steno system: this one has no "
@@ -109,6 +117,48 @@ class StfstDictionary(StenoDictionary):
             sep = self._back.alphabet.number(self._separator)
             if sep is not None:
                 self._weight[sep] = len(needs["keys"]) + 1
+
+    # ---- what it holds
+
+    def __iter__(self):
+        return iter(self._listing())
+
+    def __len__(self):
+        return len(self._listing())
+
+    def items(self):
+        return self._listing().items()
+
+    def __contains__(self, key):
+        return self.get(key) is not None
+
+    def _listing(self):
+        """Every outline this artifact holds, against what it writes.
+
+        Walked out of the automaton on the first ask and then held. A dictionary
+        that writes a syllable at a time relates one word to outlines with no
+        longest, so it lists none rather than a prefix of them.
+        """
+        if self._entries is not None:
+            return self._entries
+        self._entries = {}
+        pairs = self._fst.pairs()
+        if pairs is None:
+            log.info("%s: outlines with no longest, so it lists none", self.path)
+            return self._entries
+        alphabet = self._fst.alphabet
+        for tape, record in pairs:
+            outline = self._outline(alphabet.render(tape))
+            if outline is None:
+                continue
+            try:
+                self._entries[outline] = Record.parse(
+                    [alphabet.symbol(s) for s in record]).translation()
+            except Unsupported:
+                # What `get` answers nothing for is not listed either, so the two
+                # agree on what this dictionary holds.
+                pass
+        return self._entries
 
     # ---- what an outline writes
 
@@ -138,19 +188,9 @@ class StfstDictionary(StenoDictionary):
         asks for a single translation, so the first is the answer and the order is
         the automaton's.
         """
-        cursor = self._fst.cursor()
-        for n, steno in enumerate(key):
-            if n:
-                if self._separator_sym is None:
-                    return None
-                cursor.step(self._separator_sym)
-            syms = self._symbols(steno)
-            if syms is None:
-                return None
-            for sym in syms:
-                cursor.step(sym)
-            if not cursor.live():
-                return None
+        cursor = self._cursor(tuple(key))
+        if cursor is None:
+            return None
         alphabet = self._fst.alphabet
         for output in cursor.outputs():
             try:
@@ -158,6 +198,40 @@ class StfstDictionary(StenoDictionary):
             except Unsupported as e:
                 log.error("%s: %s does not parse: %s", self.path, "/".join(key), e)
         return None
+
+    def _cursor(self, key):
+        """The cursor after this outline, or None where no entry extends it.
+
+        Plover hands over a whole outline, so a lookup would walk from the start
+        every time. It asks about one outline per length though, and each of them
+        is what it asked one stroke shorter on the stroke before, so the walk is a
+        step from a cursor already taken.
+        """
+        if not key:
+            return None
+        for held in (self._cursors, self._older):
+            if key in held:
+                return held[key]
+        cursor = None
+        if len(key) == 1:
+            cursor = self._fst.cursor()
+        elif self._separator_sym is not None:
+            base = self._cursor(key[:-1])
+            if base is not None:
+                cursor = base.clone()
+                cursor.step(self._separator_sym)
+        syms = None if cursor is None else self._symbols(key[-1])
+        if syms is None:
+            cursor = None
+        else:
+            for sym in syms:
+                cursor.step(sym)
+            if not cursor.live():
+                cursor = None
+        if len(self._cursors) >= self._generation:
+            self._older, self._cursors = self._cursors, {}
+        self._cursors[key] = cursor
+        return cursor
 
     def _symbols(self, steno):
         """One written stroke as tape symbol numbers, in steno order.

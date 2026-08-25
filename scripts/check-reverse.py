@@ -43,6 +43,11 @@ def cases(path, count):
 
 
 def main(artifact, golden, count=200):
+    if not os.path.exists(os.path.join(artifact, "reverse.hfstol")):
+        # A dictionary whose outlines have no longest carries no reverse
+        # automaton, because "what writes this" has no finite answer there.
+        print("no reverse automaton")
+        return 0
     pairs = cases(golden, int(count))
     records = [r for _, r in pairs]
     found = {}

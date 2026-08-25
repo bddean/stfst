@@ -189,14 +189,45 @@ translator:
 
 Ten times smaller and ninety times slower, which is the trade a Python frontier
 walk makes. A stroke arrives about every 250 ms at 200 words a minute, so 8 ms is
-comfortable rather than fast. The whole loadable stack of eleven costs 9 ms and
-1 MB more, because most lookups die on their first key.
+comfortable rather than fast.
 
-The frontier is what the time goes on: 58 live paths a step on typey-type, and
-about 810 arc reads a lookup. The Rust reader does the same walk in 8.8 us. The
-gap is the interpreter, so closing it would mean inlining the table reads into
-the cursor, and that trades the one thing this plugin exists to demonstrate,
-which is that the format is cheap to read again.
+That number was measured one lookup at a time, and a host does not ask one lookup
+at a time. Measured instead on the live stack, twenty strokes of prose through
+Plover's own translator and formatter, and the trailing four phrases through
+reverse lookup the way `plover-spacebar-suggestions` asks for them:
+
+| | the sources | the artifacts | after |
+|---|---|---|---|
+| forward, per stroke | 0.57 ms | 6.0 ms | 1.2 ms |
+| reverse, per phrase | nothing measurable | 16.1 ms | 2.9 ms |
+
+Sixty-four milliseconds a stroke went on suggestions alone, on the thread that
+takes the next stroke. `docs/latency.md` has the three findings and what each one
+cost. The short form is that a lookup is now one step from the cursor the stroke
+before left, that a dictionary whose outlines have no longest carries no reverse
+automaton, and that the start state is closed once rather than per lookup.
+
+The frontier is still what the time goes on, and it is still the interpreter that
+makes it cost: the Rust reader does the same walk in 8.8 us. Closing that gap
+would mean inlining the table reads into the cursor, and that trades the one
+thing this plugin exists to demonstrate, which is that the format is cheap to
+read again.
+
+## A dictionary lists what it holds
+
+Plover reads a dictionary as a set of entries in two places, its dictionary
+editor and `casereverse_lookup`, and `stenodrill` reads the stack the same way to
+build a deck. An artifact answered none of them, because a `StenoDictionary`
+lists `self._dict` and nothing fills that here.
+
+An automaton has the keyspace though: it is the language, and walking it is a
+walk of the transition table. So the plugin lists what it holds, on the first ask
+and then held, which for `typey-type` is 145,314 entries in four seconds. A
+dictionary that writes a syllable at a time holds infinitely many and lists none,
+and a cycle on the walk is how that is discovered rather than declared.
+
+`check-plugin.py` holds the listing to the lookup: what a dictionary lists is
+what it answers for, and neither has an entry the other lacks.
 
 ## Two things Plover resolves before a dictionary is a dictionary
 

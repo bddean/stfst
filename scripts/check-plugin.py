@@ -56,7 +56,8 @@ def check(dictionary, name, render):
     # unnecessary here. The compiler reads it off the automaton and the manifest
     # carries it, so the source is the oracle.
     longest = max(len(normalize_steno(o)) for o in raw)
-    bad = {"writes": [], "reads": [], "missing": [], "back": []}
+    bad = {"writes": [], "reads": [], "missing": [], "back": [], "listed": []}
+    answered = set()
     if dictionary.longest_key != longest:
         bad["strokes"] = [(name, longest, dictionary.longest_key)]
     counted = 0
@@ -87,6 +88,7 @@ def check(dictionary, name, render):
         except Unsupported as e:
             bad["writes"].append((outline, translation, "no spelling: %s" % e))
             continue
+        answered.add(key)
         # A newline cannot be compared a line at a time, and the golden files
         # already cover the entries that hold one.
         if spelled != translation and "\n" not in translation:
@@ -96,6 +98,14 @@ def check(dictionary, name, render):
                                       "%r -> %r" % (spelled, ours)))
         if at % stride == 0:
             bad["back"].extend(_back(dictionary, key, spelled, held))
+    # A dictionary lists what it answers for. Plover's dictionary editor reads a
+    # dictionary as a set of entries, and so does anything else that wants to
+    # know what is in one rather than what one outline writes.
+    listed = set(dictionary)
+    for key in sorted(listed - answered):
+        bad["listed"].append(("/".join(key), "an entry", "listed, answers nothing"))
+    for key in sorted(answered - listed):
+        bad["listed"].append(("/".join(key), "listed", "answers but is not listed"))
     return counted, bad
 
 

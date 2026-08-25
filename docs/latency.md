@@ -112,10 +112,58 @@ and the rest of the translation on epsilon arcs that follow it at once. Every
 shorter entry sharing a prefix therefore hangs a dead output tail off our path,
 and after one key `typey-type` has 68 live paths. Delayed alignment would fix it,
 and `docs/encoding.md` prices that at 1.8 times the artifact. Not worth it at 8.8
-us against a 16 ms frame, so this width stays and this is the reason why.
+us against a 16 ms frame, so this width stays and this is the reason why. That
+price is the Rust reader's. The section below measures what the same width costs
+Plover, which is a different number and a different answer.
 
 The two causes were independent, which the numbers show: reordering the record
 did nothing at all for `typey-type`, whose records mostly carry no flags.
+
+## The same width costs a hundred times more in Plover
+
+Everything above is measured against `stfst-ol`. Plover runs the Python reader,
+where the frontier that costs 8.8 us costs 206, and 24 lookups a stroke go to
+`typey-type` alone.
+
+The live stack, twenty strokes of prose through Plover's own translator and
+formatter. The reverse column is one phrase, and
+`plover-spacebar-suggestions` asks for the trailing four on every translation:
+
+| | the sources | the artifacts | after |
+|---|---|---|---|
+| forward, per stroke | 0.57 ms | 6.0 ms | 1.2 ms |
+| reverse, per phrase | nothing measurable | 16.1 ms | 2.9 ms |
+
+The sources cost nothing backwards because a JSON dictionary builds its reverse
+index at load and a Python one has no reverse lookup at all. So the migration put
+about 70 milliseconds a stroke on the thread that takes the next stroke, and 64
+of them were suggestions.
+
+**A lookup is one step, not a walk.** Plover's dictionary API takes a whole
+outline, so a lookup walked from the start every time. The outlines it asks about
+are the suffixes of the recent strokes though, and each of those is what it asked
+one stroke shorter on the stroke before. The plugin now keeps a cursor per
+outline in two generations, and a lookup steps a cursor already taken:
+`typey-type` goes from 206 us to 19. This is the candidate window the Rust engine
+keeps, recovered from the one question Plover knows how to ask.
+
+**A word with no shortest outline has no suggestion.** `shrimple` writes a
+syllable at a time, so one word is written by unboundedly many outlines and
+"which outlines write this" is a cheapest-first search rather than a lookup. It
+cost 40 ms a word, 85 per cent of the reverse total, and it never won: the
+cheapest outline it offers for `because` is four strokes where `typey-type` has
+one. An artifact whose outlines have no longest now carries no `reverse.hfstol`.
+That is the fact the recipe already had to declare, because a host that needs a
+longest key had to be told one.
+
+**The start state is closed once.** A cursor followed the epsilon transitions out
+of state zero on every lookup. For `phrasing` that closure is 186 paths, and 125
+of the 175 microseconds a lookup cost. It is the same closure every time.
+
+Pairwise alignment is still what makes the frontier wide, and it still stays:
+`docs/M0.md` measured `hfst-lexc` at tens of gigabytes for a delayed-aligned
+`typey-type`, so the builder that would fix it cannot be written with the tool
+that builds the rest.
 
 ## Reading the format
 
