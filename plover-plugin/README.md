@@ -6,7 +6,7 @@ Plover asks a dictionary two questions: what does this outline write, and what
 writes this text. An artifact answers both, so the plugin translates vocabulary
 and not machinery. A stroke becomes a key tape, a record becomes a Plover
 translation, and the reverse automaton answers the second question that
-`phrasing.py` answers today with ten nested loops.
+`phrasing.py` answered with ten nested loops.
 
 This is M1 of `FST-DICT-DESIGN.md`, and its point is the format rather than the
 speed: one plugin per engine, and then every dictionary this repo ever compiles

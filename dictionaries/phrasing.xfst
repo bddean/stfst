@@ -1,5 +1,5 @@
-! Phrasing: a generative clause engine on the `+` namespace, ported from
-! phrasing.py (PHRASING-DESIGN.md).
+! Phrasing: a generative clause engine on the `+` namespace
+! (~/.config/plover/PHRASING-DESIGN.md).
 !
 ! This dictionary is the reason the format exists. Its table is 21.9M chords, and
 ! §7 measures a tenth of that at 150MB of baked JSON, so it cannot be a dictionary
@@ -22,8 +22,10 @@
 ! Both middle tapes are internal. Composition leaves their symbols in the
 ! alphabet and the compiler prunes them, so what reaches a host is keys to text.
 !
-! `phrasing-tables.xfst` holds what is a finite map by nature: the subject
-! sublanguage, the right bank, and the conjugation. Every rule is here.
+! Two files hold what is a finite map by nature. `phrasing-subjects.xfst` is the
+! subject sublanguage, hand-written, and it is where the design of the left bank
+! lives. `phrasing-lexicon.xfst` is the right bank and the conjugation, generated
+! from the mined verb table. Every rule is here.
 
 define Kill(X)  [ X .x. 0 ] ;
 define Say(X)   [ 0 .x. X ] ;

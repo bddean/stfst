@@ -4,7 +4,7 @@ Plover asks a dictionary two questions: what does this outline write, and what
 writes this text. An artifact answers both, so the plugin is a translation of
 vocabulary and not of machinery: strokes become a key tape, a record becomes a
 Plover translation, and the reverse automaton answers the second question that
-`phrasing.py` currently answers with ten nested loops.
+`phrasing.py` answered with ten nested loops.
 
 What Plover cannot host is refused at load rather than mistranslated. A
 dictionary that reads a context slot, carries a state, splices a bound word or

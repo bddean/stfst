@@ -8,7 +8,8 @@ system = "systems/stenotype-extended.toml"
 name = "phrasing-retro"
 priority = 9
 xfst = [
-    "dictionaries/phrasing-tables.xfst",
+    "dictionaries/phrasing-subjects.xfst",
+    "dictionaries/phrasing-lexicon.xfst",
     "dictionaries/phrasing.xfst",
     "dictionaries/phrasing-retro.xfst",
 ]

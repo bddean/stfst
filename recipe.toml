@@ -59,7 +59,11 @@ json = "~/.config/plover/and-fold.json"
 [[dict]]
 name = "phrasing"
 priority = 10
-xfst = ["dictionaries/phrasing-tables.xfst", "dictionaries/phrasing.xfst"]
+xfst = [
+    "dictionaries/phrasing-subjects.xfst",
+    "dictionaries/phrasing-lexicon.xfst",
+    "dictionaries/phrasing.xfst",
+]
 
 # The retro family. `plover.cfg` has these four disabled, so they sit below
 # everything it enables and cannot shadow a working entry. They are here because
