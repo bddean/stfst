@@ -99,7 +99,8 @@ define Net [ [ A1 .o. A2 .o. A3 .o. A4 .o. A5 .o. A6 .o. A7 .o. A8 .o. A9 ]
 ! ---- applying the delta to the clause, once, whatever the run length
 define SlotV  [ Adv | [ (SatPre) Lemma (SatPost) ] ] ;
 define Slot   [ "[V0]" | SlotV ] ;
-define Nom    [ [ "[SUBJ]" Word "[/SUBJ]" ("[C]") ] | "[INF]" | 0 ] ;
+define Nom    [ [ "[SUBJ]" Word "[/SUBJ]" ("[C]") ]
+              | "[INF]" | "[PASS]" | "[IMP]" | "[LETS]" | 0 ] ;
 define Bun    [ ("[Q]") ("[EMPH]") Mode ("[AND]") Nom Agr Modl Pol Asp Tns Slot ] ;
 ! Each field of the clause has its own alphabet, so naming the new value places it
 ! and `Bun` is what pins where.
@@ -128,9 +129,12 @@ define ApPg  OnD("[dG1]", At(AddPg)) ;
 define ApPf  OnD("[dU1]", At(AddPf)) ;
 define ApQ   OnD("[dq1]", [ [ [ "[Q]" .x. 0 ] | [ 0 .x. "[Q]" ] ] ("[EMPH]") Mode
                             ("[AND]") Nom Agr Modl Pol Asp Tns Slot ]) ;
+! `S` on a subjectless clause has only the agreement to grow, except on the
+! imperative, where growing the addressee to include the speaker is "let's".
 define ApGr  OnD("[dg1]", [ ("[Q]") ("[EMPH]") Mode ("[AND]")
-                            [ Grown | "[INF]" | 0 ] [ Agr .x. "[pl]" ]
-                            Modl Pol Asp Tns Slot ]) ;
+                            [ Grown | "[INF]" | "[PASS]"
+                            | [ "[IMP]" .x. "[LETS]" ] | "[LETS]" | 0 ]
+                            [ Agr .x. "[pl]" ] Modl Pol Asp Tns Slot ]) ;
 ! `@` on an empty verb slot names the verb `do`, exactly as an inline `@` does. A
 ! second one finds a verb there, so it does both.
 define SetEm [ ("[Q]") [ [ 0 .x. "[EMPH]" ] | "[EMPH]" ] Mode ("[AND]")

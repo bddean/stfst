@@ -3,7 +3,7 @@
 `FST-DICT-DESIGN.md` §7 names the dictionary the format exists for, and it is the
 one that cannot be a dictionary file: 32,768 clause settings times 668 right-bank
 enders is 21.9M chords, and §7 measures a tenth of that at 150MB of baked JSON.
-Here it is a grammar, in 698KB, and the whole single-stroke language lives in it.
+Here it is a grammar, in 552KB, and the whole single-stroke language lives in it.
 It was ported from the user's `phrasing.py`; that file is gone and these three are
 the source:
 
@@ -78,7 +78,26 @@ already determined:
   table is simply partial there and the separate `not` is what falls out. No set
   of selectors to keep in step.
 - **The mids** are polarity-independent, because only the finite head takes a
-  negative form. One table of three, not two.
+  negative form. One table of four, not two.
+
+## Three clause types have no subject, and each pays a different price
+
+`Chain` has six branches and three of them name no subject: the infinitive
+(`+HR`), the passive (`+PH`) and the imperative (`+KH`). What separates them is
+how much of the clause grammar still applies.
+
+The passive is the cheap one. It is the corner table again with `be` on the end
+of the chain and the main verb in the past participle, so every modality by
+aspect corner has a passive twin and `Arrange` needs nothing new: the tape it
+gets is the same `Agr Pol Tns Fid` selector plus a tail. The one new symbol is
+`[M:being]`, for "is being written".
+
+The infinitive and the imperative are the expensive ones to state and the cheap
+ones to build, because they leave the corner table behind. Neither has tense or
+agreement, so modality has nothing to inflect and is killed rather than read. The
+imperative writes its own words, and `[NOAUX]` is what tells `Arrange` the clause
+opens on a word rather than on a subject, which is the same signal a subjectless
+`+EB` "are adding" already sent.
 
 ## Contraction is a priority union
 
@@ -136,10 +155,15 @@ is, and an earlier note in this file that called it a bug was wrong.
 | | |
 |---|---|
 | Domain | 32,768 clause settings times 668 enders |
-| Artifact | 698KB forward, 589KB reverse |
-| Lookup | 19 µs median, 33 µs p95 |
-| Frontier | 52 paths per step on average, 665 at the widest |
-| Grammar | 25,907 states, 39,605 arcs |
+| Artifact | 552KB forward, 471KB reverse |
+| Lookup | 13 µs median, 41 µs p95 |
+| Frontier | 37 paths per step on average, 665 at the widest |
+| Grammar | 19,306 states, 31,396 arcs |
+
+Measured over `tests/golden/phrasing.tsv` as the probe list, which is why the
+frontier average fell rather than the grammar getting cheaper per path: a
+thousand of those probes are the dropped coordinate subjects and they die at the
+left bank.
 
 The frontier is the interesting number and it is eight times the prototype's.
 Every branch that says a finite word before reading the ender that confirms it

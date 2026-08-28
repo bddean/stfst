@@ -9,13 +9,16 @@
 ! `[AND]` is the clausal conjunction (§4.1a): it precedes the whole clause rather
 ! than the subject, so an inverted question is "and am I", not "am and I".
 ! `[INF]` is the nonfinite "to" clause (§4.1b), which has no subject word.
+! `[PASS]` is the passive (§4.1d) and `[IMP]`/`[LETS]` the imperative (§4.1e).
+! None of the three names a subject, and each takes a left-key set the coordinate
+! subjects left free.
 !
 ! The rules that read this map are in `phrasing.xfst`; the mined verb lexicon is
 ! in `phrasing-lexicon.xfst`.
 
 ! Left keys to a subject and its agreement: 84 of the 128 sets have an entry.
 ! 2 more head a clause only when a verb follows, in `NoSubject` below. The
-! remaining 42 name nothing, and a stroke that reaches one has no translation.
+! remaining 38 name nothing, and a stroke that reaches one has no translation.
 ! They held the coordinate subjects, "you and I" through "and you and he and she
 ! and I", which nobody wrote. Left free rather than refilled: an empty chord is
 ! visible and a wrong one is not.
@@ -38,7 +41,9 @@ define Subjects [
     [ [ "T" "H" ] .x. [ "[AND]" "[SUBJ]" {he} "[/SUBJ]" "[C]" "[3sg]" ] ] |
     [ [ "T" "R" ] .x. [ "[AND]" "[SUBJ]" {she} "[/SUBJ]" "[C]" "[3sg]" ] ] |
     [ [ "K" "W" ] .x. [ "[SUBJ]" {this} "[/SUBJ]" "[3sg]" ] ] |
+    [ [ "K" "H" ] .x. [ "[IMP]" "[pl]" ] ] |
     [ [ "P" "W" ] .x. [ "[SUBJ]" {that} "[/SUBJ]" "[C]" "[3sg]" ] ] |
+    [ [ "P" "H" ] .x. [ "[PASS]" "[3sg]" ] ] |
     [ [ "W" "H" ] .x. [ "[SUBJ]" {who} "[/SUBJ]" "[C]" "[3sg]" ] ] |
     [ [ "W" "R" ] .x. [ "[SUBJ]" {which} "[/SUBJ]" "[3sg]" ] ] |
     [ [ "H" "R" ] .x. [ "[INF]" "[3sg]" ] ] |
@@ -48,7 +53,9 @@ define Subjects [
     [ [ "S" "T" "H" ] .x. [ "[SUBJ]" [ {and} " " {he} ] "[/SUBJ]" "[pl]" ] ] |
     [ [ "S" "T" "R" ] .x. [ "[SUBJ]" [ {and} " " {she} ] "[/SUBJ]" "[pl]" ] ] |
     [ [ "S" "K" "W" ] .x. [ "[SUBJ]" {these} "[/SUBJ]" "[pl]" ] ] |
+    [ [ "S" "K" "H" ] .x. [ "[LETS]" "[pl]" ] ] |
     [ [ "S" "P" "W" ] .x. [ "[SUBJ]" {those} "[/SUBJ]" "[pl]" ] ] |
+    [ [ "S" "P" "H" ] .x. [ "[PASS]" "[pl]" ] ] |
     [ [ "S" "W" "H" ] .x. [ "[SUBJ]" {whoever} "[/SUBJ]" "[3sg]" ] ] |
     [ [ "S" "W" "R" ] .x. [ "[SUBJ]" {whichever} "[/SUBJ]" "[3sg]" ] ] |
     [ [ "T" "K" "W" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |

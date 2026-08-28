@@ -7,8 +7,8 @@
 ! phrasing.py last agreed with: 490,720 exact and 1,760 the launchpad divergence
 ! docs/phrasing.md names.
 !
-! A line with no tab claims the run has no entry. 394 of them end on a dropped
-! coordinate subject, and they assert the drop rather than ignoring it.
+! A line with no tab claims the run has no entry. 222 do, and they end on a
+! dropped coordinate subject or on a passive with no verb.
 #+*/#+/+PHAOEUd
 #+*/#+/+SKU	we haven't
 #+*/#+/+SWAO*Efbts	there'll often be
@@ -45,7 +45,7 @@
 #+*/+AO*/+SWAO	will there
 #+*/+AO*/+TKAOUb	and will I have added
 #+*/+AO*/^+KAO*Ufbts	will I not often have
-#+*/+AO*/^+PHA*Eg
+#+*/+AO*/^+PHA*Eg	will not be being gone
 #+*/+AO*/^+PWAO*d	would that not
 #+*/+AO*EUb	will have been adding
 #+*/+AO/+HRAO*EUd	to have been being
@@ -83,12 +83,12 @@
 #+*/+O/^+KA*Eg	shall I be going
 #+*/+O/^+PH*
 #+*/+O/^+SW*Ub	shall there have added
-#+*/+PH*Eg
+#+*/+PH*Eg	is being gone
 #+*/+PHA*
 #+*/+PHA*EUfbts
-#+*/+PHAO*Ug
+#+*/+PHAO*Ug	will have been gone
 #+*/+PHAOEd
-#+*/+PHAUb
+#+*/+PHAUb	can't have been added
 #+*/+PHd
 #+*/+PW*Ufbts	has that often
 #+*/+PWA*Eg	can that be going
@@ -163,7 +163,7 @@
 #+*/+d/^+SKA*Ud	could we have
 #+*/+d/^+TAOfbts	would it not often
 #+*/+d/^+TKPW*EUg	had what been going
-#+*/+g/+PHA*EUg
+#+*/+g/+PHA*EUg	can have been being gone
 #+*/+g/+PWAO*Ud	would that have been
 #+*/+g/+Tfbts	isn't it often
 #+*/+g/^+HRA*fbts	to be being
@@ -210,13 +210,13 @@
 #+*/^+KAOUg	will I not have gone
 #+*/^+KEg	am I not going
 #+*/^+PH*Ufbts
-#+*/^+PHA*Eg
+#+*/^+PHA*Eg	can be being gone
 #+*/^+PHAO*
 #+*/^+PHAO*EUfbts
-#+*/^+PHAOUb
+#+*/^+PHAOUb	will not have been added
 #+*/^+PHAd
 #+*/^+PHEU
-#+*/^+PHEb
+#+*/^+PHEb	is not being added
 #+*/^+PW*g	does that go
 #+*/^+PWA*Ufbts	can that often have
 #+*/^+PWAEU	can that not have been
@@ -320,11 +320,11 @@
 #+/+O/^+TKPW*g	shall what not go
 #+/+PH*Ud
 #+/+PH*fbts
-#+/+PHAEUg
+#+/+PHAEUg	can have been being gone
 #+/+PHAO*EUd
 #+/+PHAO*Efbts
 #+/+PHAOU
-#+/+PHAOb
+#+/+PHAOb	will be added
 #+/+PHE
 #+/+PW*EUb	hasn't that been adding
 #+/+PWA*Ud	couldn't that have
@@ -343,7 +343,7 @@
 #+/+S/+T*EU	haven't they been
 #+/+S/+WUfbts	have there often
 #+/+S/^+HRAOEU	to have been being
-#+/+S/^+PHAO*Eb
+#+/+S/^+PHAO*Eb	will not be being added
 #+/+S/^+SK*g	do we not go
 #+/+SK*EUd	hadn't we been
 #+/+SK*Efbts	aren't we often
@@ -381,7 +381,7 @@
 #+/+TKd	and was I
 #+/+TUfbts	has it often
 #+/+U/+HRAO*E	not to have been being
-#+/+U/+PHAO*EUb
+#+/+U/+PHAO*EUb	won't have been being added
 #+/+U/+SK*Ug	haven't we gone
 #+/+U/^+REd	had she been
 #+/+U/^+TA	can it have
@@ -394,7 +394,7 @@
 #+/+WAfbts	can there often
 #+/+WEUb	has there been adding
 #+/+d/+KAOEUfbts	would I often have been
-#+/+d/+PHAUg
+#+/+d/+PHAUg	could have been gone
 #+/+d/+PWAOEd	would that be
 #+/+d/^+HR*EUfbts	not to have been being
 #+/+d/^+SWA*	could there not
@@ -416,12 +416,12 @@
 #+/^+KAOEfbts	will I often be
 #+/^+KUd	had I
 #+/^+Kfbts	do I often
-#+/^+PH*EUb
+#+/^+PH*EUb	has not been being added
 #+/^+PHA*Ud
 #+/^+PHA*fbts
 #+/^+PHAE
-#+/^+PHAOEUg
-#+/^+PHUg
+#+/^+PHAOEUg	will have been being gone
+#+/^+PHUg	has been gone
 #+/^+PW	is that
 #+/^+PW*Ed	was that not
 #+/^+PWA*EUb	can that not have been adding
@@ -499,12 +499,12 @@
 +*/+KAOE	I won't be
 +*/+KAUg	I can't have gone
 +*/+KEUfbts	I haven't often been
-+*/+PH*Eg
++*/+PH*Eg	is being gone
 +*/+PHA*
 +*/+PHA*EUfbts
-+*/+PHAO*Ug
++*/+PHAO*Ug	will have been gone
 +*/+PHAOEd
-+*/+PHAUb
++*/+PHAUb	can't have been added
 +*/+PHd
 +*/+PW*Ufbts	that's often
 +*/+PWA*Eg	that can be going
@@ -579,13 +579,13 @@
 +*/^+KAOUg	I will not have gone
 +*/^+KEg	I am not going
 +*/^+PH*Ufbts
-+*/^+PHA*Eg
++*/^+PHA*Eg	can be being gone
 +*/^+PHAO*
 +*/^+PHAO*EUfbts
-+*/^+PHAOUb
++*/^+PHAOUb	will not have been added
 +*/^+PHAd
 +*/^+PHEU
-+*/^+PHEb
++*/^+PHEb	is not being added
 +*/^+PW*g	that goes
 +*/^+PWA*Ufbts	that can often have
 +*/^+PWAEU	that can not have been
@@ -652,7 +652,7 @@
 +*E/+*/+SWA*U	there can't have been
 +*E/+*/+TKAOb	and I'll be adding
 +*E/+*/^+KAO*fbts	I will not often be
-+*E/+*/^+PHAEUg
++*E/+*/^+PHAEUg	can have been being gone
 +*E/+*/^+PWAOUd	that would have been
 +*E/+/+HRA*Ud	to have been being
 +*E/+/+PHAOfbts
@@ -674,7 +674,7 @@
 +*E/+AO/^+TK*EUd	and I would have been
 +*E/+Ab	can't be adding
 +*E/+E/+KAUfbts	I can't often have been
-+*E/+E/+PHEg
++*E/+E/+PHEg	isn't being gone
 +*E/+E/+PWAd	that couldn't be
 +*E/+E/^+SWEU	there have not been
 +*E/+E/^+TK*Eb	and I am adding
@@ -701,9 +701,9 @@
 +*E/+O/+WAfbts	there shall not often be
 +*E/+O/^+SKAUg	we shall not have been going
 +*E/+O/^+TKPWEUb	what shall not have been adding
-+*E/+PH*EUg
++*E/+PH*EUg	has been being gone
 +*E/+PHA*U
-+*E/+PHA*b
++*E/+PHA*b	can be being added
 +*E/+PHAOEUd
 +*E/+PHAOEfbts
 +*E/+PHUd
@@ -777,7 +777,7 @@
 +*E/+WAOb	there won't be adding
 +*E/+WE	there isn't
 +*E/+d/+HR*EU	to have been being
-+*E/+d/+PHAEb
++*E/+d/+PHAEb	couldn't be being added
 +*E/+d/+PWAOg	that wouldn't be going
 +*E/+d/^+KAOU	I would not have been
 +*E/+d/^+SWAEUd	there could not have been
@@ -802,7 +802,7 @@
 +*E/@+/^+RAOEU	she will not have been doing
 +*E/@+/^+WAO*Eb	there will be adding
 +*E/^+/+HRA*EU	to have been being
-+*E/^+/+PHAOEb
++*E/^+/+PHAOEb	will not be being added
 +*E/^+/+SKg	we are not going
 +*E/^+/^+SWAOEUd	there would not have been
 +*E/^+/^+TKAO*Efbts	and I will often be
@@ -823,12 +823,12 @@
 +*E/^+KAb	I can not be adding
 +*E/^+KEUg	I have not been going
 +*E/^+PH*E
-+*E/^+PHA*EUg
++*E/^+PHA*EUg	can have been being gone
 +*E/^+PHAO*U
-+*E/^+PHAO*b
++*E/^+PHAO*b	will be being added
 +*E/^+PHAUd
 +*E/^+PHAfbts
-+*E/^+PHEUb
++*E/^+PHEUb	has not been being added
 +*E/^+PW*Ug	that has been going
 +*E/^+PWA*E	that can be
 +*E/^+PWAEUb	that can not have been adding
@@ -940,8 +940,8 @@
 +/+O/^+KA*Ud	I shouldn't have
 +/+O/^+SW*EUg	there shall not have been going
 +/+PH*d
-+/+PHA*Ub
-+/+PHAEg
++/+PHA*Ub	can't have been added
++/+PHAEg	can be being gone
 +/+PHAO
 +/+PHAO*Ed
 +/+PHAOEUfbts
@@ -1024,7 +1024,7 @@
 +/@+/+T*	it doesn't do
 +/@+/+TKAO*EUfbts	and I'll not often have been
 +/@+/^+HRAO	to do
-+/@+/^+PHAOUb
++/@+/^+PHAOUb	will have been added
 +/@+/^+SKEg	we're going
 +/^+/+A*Ub	can't have added
 +/^+/+K*d	I wasn't
@@ -1050,12 +1050,12 @@
 +/^+KAUb	I can have added
 +/^+Kd	I was
 +/^+PH*EU
-+/^+PH*Eb
++/^+PH*Eb	isn't being added
 +/^+PHA*d
-+/^+PHAO*Ub
-+/^+PHAOEg
++/^+PHAO*Ub	won't have been added
++/^+PHAOEg	will be being gone
 +/^+PHAUfbts
-+/^+PHg
++/^+PHg	is gone
 +/^+PWA*EU	that can't have been
 +/^+PWA*Eb	that can't be adding
 +/^+PWAO*d	that'd not
@@ -1135,12 +1135,12 @@
 +A/+KAb	I can add
 +A/+KEUg	I can have been going
 +A/+PH*E
-+A/+PHA*EUg
++A/+PHA*EUg	can't have been being gone
 +A/+PHAO*U
-+A/+PHAO*b
++A/+PHAO*b	can't be added
 +A/+PHAUd
 +A/+PHAfbts
-+A/+PHEUb
++A/+PHEUb	can have been being added
 +A/+PW*Ug	that can't have gone
 +A/+PWA*E	that can't be
 +A/+PWAEUb	that can have been adding
@@ -1221,10 +1221,10 @@
 +A/^+KAOU	I can have
 +A/^+KAOb	I can add
 +A/^+KE	I can be
-+A/^+PH*Ug
++A/^+PH*Ug	can not have been gone
 +A/^+PHA*E
-+A/^+PHAEUb
-+A/^+PHAO*EUg
++A/^+PHAEUb	can have been being added
++A/^+PHAO*EUg	can not have been being gone
 +A/^+PHAOUd
 +A/^+PHAOfbts
 +A/^+PHEd
@@ -1299,7 +1299,7 @@
 +AO*/+*/^+KAO*d	I would not
 +AO*/+*/^+SWA*Eg	there will not be going
 +AO*/+*E/+HRA*	not to be being
-+AO*/+*E/+PHA*Ub
++AO*/+*E/+PHA*Ub	won't have been being added
 +AO*/+*E/+PWAO*Eg	that won't be going
 +AO*/+*E/^+KAO*EU	I will not have been
 +AO*/+*E/^+SWAOd	there would be
@@ -1321,7 +1321,7 @@
 +AO*/+AO/+SW*E	there'll be
 +AO*/+AO/+TK*EUb	and I'll have been adding
 +AO*/+AO/^+KAEUfbts	I will not often have been
-+AO*/+AO/^+PHUg
++AO*/+AO/^+PHUg	will not have been gone
 +AO*/+AO/^+PWAEd	that would not be
 +AO*/+AOUb	won't have added
 +AO*/+E/+AO*b	will be adding
@@ -1352,12 +1352,12 @@
 +AO*/+O/^+TA*g	it will go
 +AO*/+O/^+TKPWEU	what will not have been
 +AO*/+PH*EU
-+AO*/+PH*Eb
++AO*/+PH*Eb	will be being added
 +AO*/+PHA*d
-+AO*/+PHAO*Ub
-+AO*/+PHAOEg
++AO*/+PHAO*Ub	will have been added
++AO*/+PHAOEg	won't be being gone
 +AO*/+PHAUfbts
-+AO*/+PHg
++AO*/+PHg	won't be gone
 +AO*/+PWA*EU	that'll have been
 +AO*/+PWA*Eb	that'll be adding
 +AO*/+PWAO*d	that'd
@@ -1484,10 +1484,10 @@
 +AO*/^+KEU	I will not have been
 +AO*/^+KEb	I will not be adding
 +AO*/^+PHA*EU
-+AO*/^+PHA*Eb
++AO*/^+PHA*Eb	will be being added
 +AO*/^+PHAO*d
 +AO*/^+PHAOUfbts
-+AO*/^+PHAg
++AO*/^+PHAg	will not be gone
 +AO*/^+PHEUd
 +AO*/^+PHEfbts
 +AO*/^+PW*U	that will have
@@ -1547,7 +1547,7 @@
 +AO*/^+WU	there will not have
 +AO*/^+Wb	there will not add
 +AO/+*/+KAO*Ufbts	I'll often have
-+AO/+*/+PHA*Eg
++AO/+*/+PHA*Eg	will be being gone
 +AO/+*/+PWAO*d	that'd
 +AO/+*/^+HRAUfbts	not to have been
 +AO/+*/^+SWA*EU	there will have been
@@ -1582,10 +1582,10 @@
 +AO/+O/^+TA*U	it will not have
 +AO/+O/^+WAEfbts	there will often be
 +AO/+PHA*EU
-+AO/+PHA*Eb
++AO/+PHA*Eb	won't be being added
 +AO/+PHAO*d
 +AO/+PHAOUfbts
-+AO/+PHAg
++AO/+PHAg	will be gone
 +AO/+PHEUd
 +AO/+PHEfbts
 +AO/+PW*U	that won't have
@@ -1648,7 +1648,7 @@
 +AO/+d/+SWA*Ed	there wouldn't be
 +AO/+d/+TKA*EUfbts	and I wouldn't often have been
 +AO/+d/^+HRA	to be
-+AO/+d/^+PHAUb
++AO/+d/^+PHAUb	would have been added
 +AO/+d/^+PWAOEg	that would be going
 +AO/^+A*g	will not go
 +AO/^+AOEb	will be adding
@@ -1665,12 +1665,12 @@
 +AO/^+KAO*Eg	I will not be going
 +AO/^+KAOd	I would
 +AO/^+PH*U
-+AO/^+PH*b
++AO/^+PH*b	will not be added
 +AO/^+PHAEUd
 +AO/^+PHAEfbts
 +AO/^+PHAO*EU
-+AO/^+PHAO*Eb
-+AO/^+PHAOg
++AO/^+PHAO*Eb	will not be being added
++AO/^+PHAOg	will be gone
 +AO/^+PW*EUg	that will not have been going
 +AO/^+PWA*U	that will not have
 +AO/^+PWA*b	that will not add
@@ -1762,19 +1762,19 @@
 +E/+KAOUg	I'll have been going
 +E/+KEg	I'm going
 +E/+O/+HR*	not to be being
-+E/+O/+PH*Ub
++E/+O/+PH*Ub	shall not have been being added
 +E/+O/+PWA*Eg	that shall not be going
 +E/+O/^+KA*EU	I shall not have been
 +E/+O/^+SWAd	there should be
 +E/+O/^+TKAUfbts	and I shall often have been
 +E/+PH*Ufbts
-+E/+PHA*Eg
++E/+PHA*Eg	can't be being gone
 +E/+PHAO*
 +E/+PHAO*EUfbts
-+E/+PHAOUb
++E/+PHAOUb	will have been being added
 +E/+PHAd
 +E/+PHEU
-+E/+PHEb
++E/+PHEb	is being added
 +E/+PW*g	that isn't going
 +E/+PWA*Ufbts	that can't often have been
 +E/+PWAEU	that can have been
@@ -1854,11 +1854,11 @@
 +E/^+KAO*Ed	I would not be
 +E/^+KAOEUfbts	I will often have been
 +E/^+KUfbts	I have often been
-+E/^+PH*g
++E/^+PH*g	is not being gone
 +E/^+PHA*Ufbts
 +E/^+PHAEU
-+E/^+PHAEb
-+E/^+PHAO*Eg
++E/^+PHAEb	can be being added
++E/^+PHAO*Eg	will not be being gone
 +E/^+PHAOd
 +E/^+PW*EUd	that had not been
 +E/^+PW*Efbts	that is not often
@@ -1928,7 +1928,7 @@
 +O/+A/+SWAEU	there shall have been
 +O/+A/+TKA*Eb	and I shall not be adding
 +O/+A/^+KAOEfbts	I shall often be
-+O/+A/^+PHAg
++O/+A/^+PHAg	shall be gone
 +O/+A/^+PWA*EUd	that should not have been
 +O/+AO*Eb	shall not be adding
 +O/+AOg	shall go
@@ -1948,10 +1948,10 @@
 +O/+KEfbts	I shall often be
 +O/+PHA*EUd
 +O/+PHA*Efbts
-+O/+PHAO*g
++O/+PHAO*g	shall not be gone
 +O/+PHAU
-+O/+PHAb
-+O/+PHEUg
++O/+PHAb	shall be added
++O/+PHEUg	shall have been being gone
 +O/+PW*Ud	that shouldn't have
 +O/+PW*fbts	that shall not often
 +O/+PWAEUg	that shall have been going
@@ -2033,11 +2033,11 @@
 +O/^+KAOg	I shall go
 +O/^+PH*Ud
 +O/^+PH*fbts
-+O/^+PHAEUg
++O/^+PHAEUg	shall have been being gone
 +O/^+PHAO*EUd
 +O/^+PHAO*Efbts
 +O/^+PHAOU
-+O/^+PHAOb
++O/^+PHAOb	shall be added
 +O/^+PHE
 +O/^+PW*EUb	that shall not have been adding
 +O/^+PWA*Ud	that should not have
@@ -2140,10 +2140,10 @@
 +S/+O/^+HREUg	to have been going
 +S/+O/^+PWA*fbts	those shall not often
 +S/+O/^+TKAUd	and we should have
-+S/+PH*Ug
++S/+PH*Ug	haven't been gone
 +S/+PHA*E
-+S/+PHAEUb
-+S/+PHAO*EUg
++S/+PHAEUb	can have been being added
++S/+PHAO*EUg	won't have been being gone
 +S/+PHAOUd
 +S/+PHAOfbts
 +S/+PHEd
@@ -2232,11 +2232,11 @@
 +S/^+KUg	we have gone
 +S/^+PH*
 +S/^+PH*EUfbts
-+S/^+PHA*Ug
++S/^+PHA*Ug	can not have been gone
 +S/^+PHAEd
 +S/^+PHAO*E
-+S/^+PHAOEUb
-+S/^+PHUb
++S/^+PHAOEUb	will have been being added
++S/^+PHUb	have been added
 +S/^+PW*Eg	those are not going
 +S/^+PWA*	those can not
 +S/^+PWA*EUfbts	those can not often have been
@@ -2308,7 +2308,7 @@
 +U/+A/^+*b	can not have added
 +U/+A/^+WAEUg	there can have been going
 +U/+AO/+KA*Efbts	I won't often have been
-+U/+AO/+PH*g
++U/+AO/+PH*g	won't have been gone
 +U/+AO/+PWAEUd	that'd have been
 +U/+AO/^+HREfbts	to have been being
 +U/+AO/^+SW*U	there will not have
@@ -2340,13 +2340,13 @@
 +U/+O/^+SKAEUfbts	we shall often have been
 +U/+O/^+Ug	shall have gone
 +U/+O/^+WAEd	there should have been
-+U/+PH*Ub
++U/+PH*Ub	hasn't been added
 +U/+PHA
 +U/+PHA*Ed
 +U/+PHAEUfbts
-+U/+PHAO*EUb
-+U/+PHAOUg
-+U/+PHEg
++U/+PHAO*EUb	won't have been being added
++U/+PHAOUg	will have been gone
++U/+PHEg	has been being gone
 +U/+PW*d	that hadn't
 +U/+PWA*Ub	that can't have added
 +U/+PWAEg	that can have been going
@@ -2430,8 +2430,8 @@
 +U/^+KAOEUb	I will have been adding
 +U/^+KUb	I have added
 +U/^+PH*d
-+U/^+PHA*Ub
-+U/^+PHAEg
++U/^+PHA*Ub	can not have been added
++U/^+PHAEg	can have been being gone
 +U/^+PHAO
 +U/^+PHAO*Ed
 +U/^+PHAOEUfbts
@@ -2501,10 +2501,10 @@
 +d/#+/+*/+KAO*EU	would I have been
 +d/#+/+*/+KAOEUb	wouldn't I have been adding
 +d/#+/+*/+KAg	couldn't I go
-+d/#+/+*/+PHA*b
++d/#+/+*/+PHA*b	could be added
 +d/#+/+*/+PHAO
 +d/#+/+*/+PHAO*EUfbts
-+d/#+/+*/+PHEg
++d/#+/+*/+PHEg	wasn't being gone
 +d/#+/+*/+PWA*	could that
 +d/#+/+*/+PWAO*EUd	would that have been
 +d/#+/+*/+PWAOEUfbts	wouldn't that often have been
@@ -2538,7 +2538,7 @@
 +d/#+/+*/^+KAEUfbts	could I not often have been
 +d/#+/+*/^+Kb	did I not add
 +d/#+/+*/^+PH*fbts
-+d/#+/+*/^+PHAOEUg
++d/#+/+*/^+PHAOEUg	would not have been being gone
 +d/#+/+*/^+PHAd
 +d/#+/+*/^+PW*d	was that
 +d/#+/+*/^+PWA*EUg	could that have been going
@@ -2575,7 +2575,7 @@
 +d/#+/+A/+KA*Ub	couldn't I have added
 +d/#+/+A/+KAOU	could I have
 +d/#+/+A/+KEUg	could I have been going
-+d/#+/+A/+PH*EUb
++d/#+/+A/+PH*EUb	couldn't have been being added
 +d/#+/+A/+PHAEU
 +d/#+/+A/+PHAO*Ud
 +d/#+/+A/+PHAOUfbts
@@ -2611,7 +2611,7 @@
 +d/#+/+A/^+K*Ufbts	could I not often have
 +d/#+/+A/^+KAO*Eg	could I not be going
 +d/#+/+A/^+KAUd	could I have
-+d/#+/+A/^+PHA*Ug
++d/#+/+A/^+PHA*Ug	could not have been gone
 +d/#+/+A/^+PHEUd
 +d/#+/+A/^+PWAO*Eb	could that not be adding
 +d/#+/+A/^+PWAUg	could that have gone
@@ -2647,8 +2647,8 @@
 +d/#+/@+/+KA*Ed	couldn't I be doing
 +d/#+/@+/+KAEfbts	could I often be
 +d/#+/@+/+KU	had I done
-+d/#+/@+/+PH*Ud
-+d/#+/@+/+PHAOEg
++d/#+/@+/+PH*Ud	hadn't been done
++d/#+/@+/+PHAOEg	would be being gone
 +d/#+/@+/+PHUfbts
 +d/#+/@+/+PWA*Eg	couldn't that be going
 +d/#+/@+/+PWUd	had that done
@@ -2684,8 +2684,8 @@
 +d/#+/@+/^+K*Eg	was I not going
 +d/#+/@+/^+KAO*	would I not do
 +d/#+/@+/^+KAOb	would I add
-+d/#+/@+/^+PHA*E
-+d/#+/@+/^+PHAEb
++d/#+/@+/^+PHA*E	could not be being done
++d/#+/@+/^+PHAEb	could be being added
 +d/#+/@+/^+PHAO*fbts
 +d/#+/@+/^+PW*Eb	was that not adding
 +d/#+/@+/^+PWAE	could that be doing
@@ -2734,8 +2734,8 @@
 +d/+E/+*/+KA*EUg	I could've been going
 +d/+E/+*/+Kfbts	I wasn't often
 +d/+E/+*/+PHAO*EU
-+d/+E/+*/+PHAOEUb
-+d/+E/+*/+PHAg
++d/+E/+*/+PHAOEUb	wouldn't have been being added
++d/+E/+*/+PHAg	couldn't be being gone
 +d/+E/+*/+PW*g	that was going
 +d/+E/+*/+PWA*EUb	that could've been adding
 +d/+E/+*/+PWAOEU	that wouldn't have been
@@ -2773,7 +2773,7 @@
 +d/+E/+*/^+PH*
 +d/+E/+*/^+PHA*EUd
 +d/+E/+*/^+PHAEUfbts
-+d/+E/+*/^+PHb
++d/+E/+*/^+PHb	was not being added
 +d/+E/+*/^+PW	that was not
 +d/+E/+*/^+PW*EUfbts	that had often been
 +d/+E/+*/^+PWAEUd	that could not have been
@@ -2807,9 +2807,9 @@
 +d/+E/+A/+HREUb	to have been adding
 +d/+E/+A/+KAO*Eb	I couldn't be adding
 +d/+E/+A/+KAUg	I could've been going
-+d/+E/+A/+PHA*Ub
++d/+E/+A/+PHA*Ub	couldn't have been being added
 +d/+E/+A/+PHAOU
-+d/+E/+A/+PHEUg
++d/+E/+A/+PHEUg	could've been being gone
 +d/+E/+A/+PWA*U	that couldn't have been
 +d/+E/+A/+PWAO*Efbts	that couldn't often be
 +d/+E/+A/+PWAUb	that could've been adding
@@ -2844,7 +2844,7 @@
 +d/+E/+A/^+KAOEd	I could be
 +d/+E/+A/^+KUb	I could have been adding
 +d/+E/+A/^+PH*Ufbts
-+d/+E/+A/^+PHAO*Eg
++d/+E/+A/^+PHAO*Eg	could not be being gone
 +d/+E/+A/^+PHAUd
 +d/+E/+A/^+PW*Ud	that could not have been
 +d/+E/+A/^+PWAOEg	that could be going
@@ -2879,9 +2879,9 @@
 +d/+E/@+/+KAE	I could be doing
 +d/+E/@+/+KAO*d	I wouldn't be doing
 +d/+E/@+/+KAOfbts	I'd often be
-+d/+E/@+/+PHA*Ed
++d/+E/@+/+PHA*Ed	couldn't be being done
 +d/+E/@+/+PHAEfbts
-+d/+E/@+/+PHU
++d/+E/@+/+PHU	had been being done
 +d/+E/@+/+PW*Efbts	that wasn't often
 +d/+E/@+/+PWAEd	that could be doing
 +d/+E/@+/+PWAO*g	that wouldn't be going
@@ -2918,9 +2918,9 @@
 +d/+E/@+/^+KA*g	I could not be going
 +d/+E/@+/^+KAO*EUb	I would not have been adding
 +d/+E/@+/^+KEd	I was doing
-+d/+E/@+/^+PH*Eg
-+d/+E/@+/^+PHAO*
-+d/+E/@+/^+PHAOb
++d/+E/@+/^+PH*Eg	was not being gone
++d/+E/@+/^+PHAO*	would not be being done
++d/+E/@+/^+PHAOb	would be being added
 +d/+E/@+/^+PWA*b	that could not be adding
 +d/+E/@+/^+PWAO	that would be doing
 +d/+E/@+/^+PWAO*EUfbts	that would not often have been
@@ -2964,11 +2964,11 @@
 +d/+KEUb	I'd been adding
 +d/+PH
 +d/+PH*Ed
-+d/+PHA*EUb
++d/+PHA*EUb	couldn't have been being added
 +d/+PHAO*Ud
 +d/+PHAO*fbts
 +d/+PHAOE
-+d/+PHAUg
++d/+PHAUg	could've been gone
 +d/+PHEUfbts
 +d/+PW*Ub	that hadn't added
 +d/+PWA	that could
@@ -3034,7 +3034,7 @@
 +d/^+/+*/+KAEUd	I could not have been
 +d/^+/+*/+KAO*Ug	I would have gone
 +d/^+/+*/+PH*d
-+d/^+/+*/+PHA*EUg
++d/^+/+*/+PHA*EUg	could have been being gone
 +d/^+/+*/+PHfbts
 +d/^+/+*/+PWAEUg	that could not have been going
 +d/^+/+*/+PWAO*Ub	that would have added
@@ -3070,7 +3070,7 @@
 +d/^+/+*/^+KA*Ub	I could have added
 +d/^+/+*/^+KAOU	I would not have
 +d/^+/+*/^+KEUg	I had not been going
-+d/^+/+*/^+PH*EUb
++d/^+/+*/^+PH*EUb	had been being added
 +d/^+/+*/^+PHAEU
 +d/^+/+*/^+PHAO*Ud
 +d/^+/+*/^+PHAOUfbts
@@ -3107,8 +3107,8 @@
 +d/^+/+A/+K*Ud	I could not have
 +d/^+/+A/+KAOEg	I could be going
 +d/^+/+A/+KUfbts	I could often have
-+d/^+/+A/+PHAO*Eb
-+d/^+/+A/+PHAUg
++d/^+/+A/+PHAO*Eb	could not be being added
++d/^+/+A/+PHAUg	could have been gone
 +d/^+/+A/+PW*Ug	that could not have gone
 +d/^+/+A/+PWAO*E	that could not be
 +d/^+/+A/+PWAOEb	that could be adding
@@ -3147,7 +3147,7 @@
 +d/^+/+A/^+PH*U
 +d/^+/+A/^+PHA*Efbts
 +d/^+/+A/^+PHAOEd
-+d/^+/+A/^+PHUb
++d/^+/+A/^+PHUb	could have been added
 +d/^+/+A/^+PWA*Ed	that could not be
 +d/^+/+A/^+PWAEfbts	that could often be
 +d/^+/+A/^+PWU	that could have
@@ -3181,9 +3181,9 @@
 +d/^+/@+/+KAO	I would do
 +d/^+/@+/+KAO*EUfbts	I would not often have been
 +d/^+/@+/+KEg	I was going
-+d/^+/@+/+PH*Eb
-+d/^+/@+/+PHAE
-+d/^+/@+/+PHAO*d
++d/^+/@+/+PH*Eb	was not being added
++d/^+/@+/+PHAE	could be being done
++d/^+/@+/+PHAO*d	would not be done
 +d/^+/@+/+PHAOfbts
 +d/^+/@+/+PW*E	that was not doing
 +d/^+/@+/+PWA*fbts	that could not often
@@ -3218,9 +3218,9 @@
 +d/^+/@+/^+K*fbts	I did not often
 +d/^+/@+/^+KAOEUg	I would have been going
 +d/^+/@+/^+KAd	I could do
-+d/^+/@+/^+PHA*g
-+d/^+/@+/^+PHAO*EUb
-+d/^+/@+/^+PHEd
++d/^+/@+/^+PHA*g	could not be gone
++d/^+/@+/^+PHAO*EUb	would not have been being added
++d/^+/@+/^+PHEd	was being done
 +d/^+/@+/^+PWAO*EU	that would not have been doing
 +d/^+/@+/^+PWAOEUb	that would have been adding
 +d/^+/@+/^+PWAg	that could go
@@ -3262,13 +3262,13 @@
 +d/^+KAOUd	I would have
 +d/^+KAOfbts	I would often
 +d/^+KEd	I was
-+d/^+PH*Ub
++d/^+PH*Ub	had not been added
 +d/^+PHA
 +d/^+PHA*Ed
 +d/^+PHAEUfbts
-+d/^+PHAO*EUb
-+d/^+PHAOUg
-+d/^+PHEg
++d/^+PHAO*EUb	would not have been being added
++d/^+PHAOUg	would have been gone
++d/^+PHEg	was being gone
 +d/^+PW*d	that was not
 +d/^+PWA*Ub	that could not have added
 +d/^+PWAEg	that could be going
@@ -3342,7 +3342,7 @@
 +g/+/+HRA*Ufbts	not to have been being
 +g/+/+SWAOEU	there'll have been
 +g/+/+TKAO*Eb	and I'll not be adding
-+g/+/^+PHAOg
++g/+/^+PHAOg	will be being gone
 +g/+/^+PWAO*EUd	that'd not have been
 +g/+/^+TEfbts	it's often
 +g/+A*EUb	can't have been adding
@@ -3352,7 +3352,7 @@
 +g/+A/^+RA	she can be
 +g/+A/^+WAUb	there can have been adding
 +g/+AO/+HRE	to be being
-+g/+AO/+PHEUb
++g/+AO/+PHEUb	will have been being added
 +g/+AO/+PWAUg	that'll have been going
 +g/+AO/^+AO*Ug	will not have been going
 +g/+AO/^+KA*	I will not be
@@ -3386,11 +3386,11 @@
 +g/+O/^+WAg	there shall be going
 +g/+PH*
 +g/+PH*EUfbts
-+g/+PHA*Ug
++g/+PHA*Ug	can't have been being gone
 +g/+PHAEd
 +g/+PHAO*E
-+g/+PHAOEUb
-+g/+PHUb
++g/+PHAOEUb	will have been being added
++g/+PHUb	has been being added
 +g/+PW*Eg	that isn't going
 +g/+PWA*	that can't be
 +g/+PWA*EUfbts	that can't often have been
@@ -3404,7 +3404,7 @@
 +g/+RAEb	she can be adding
 +g/+RAO*Eg	she won't be going
 +g/+RAOd	she'd be
-+g/+S/+PHAO*Eg
++g/+S/+PHAO*Eg	won't be being gone
 +g/+S/+SK*d	we weren't
 +g/+S/+T*Ufbts	they haven't often been
 +g/+S/^+HRAOUfbts	to have been being
@@ -3450,7 +3450,7 @@
 +g/+U/+HRAO*fbts	not to have been being
 +g/+U/+RE	she's been
 +g/+U/+WEUb	there's been adding
-+g/+U/^+PHAO*Ug
++g/+U/^+PHAO*Ug	will not have been being gone
 +g/+U/^+SK*Ed	we had not been
 +g/+U/^+T*EUfbts	it has not often been
 +g/+W*Ub	there hasn't been adding
@@ -3498,12 +3498,12 @@
 +g/^+KAOE	I will be
 +g/^+KAUg	I can have been going
 +g/^+KEUfbts	I have often been
-+g/^+PH*Eg
++g/^+PH*Eg	is not being gone
 +g/^+PHA*
 +g/^+PHA*EUfbts
-+g/^+PHAO*Ug
++g/^+PHAO*Ug	will not have been being gone
 +g/^+PHAOEd
-+g/^+PHAUb
++g/^+PHAUb	can have been being added
 +g/^+PHd
 +g/^+PW*Ufbts	that has not often been
 +g/^+PWA*Eg	that can not be going
@@ -3564,7 +3564,7 @@
 +z/#+/+HRAOEfbts	to be being
 +z/#+/+SWAO*U	won't there have
 +z/#+/+Wb	do there add
-+z/#+/^+PHAOEUg
++z/#+/^+PHAOEUg	will have been being gone
 +z/#+/^+SKUd	had we
 +z/#+/^+T*fbts	do they not often
 +z/+*/+RA*E	they can be
@@ -3580,7 +3580,7 @@
 +z/+/^+RAOEg	they'll be going
 +z/+A*EUg	can't have been going
 +z/+A/+KAOfbts	we can often
-+z/+A/+PH*EUg
++z/+A/+PH*EUg	can't have been being gone
 +z/+A/+PWA*Ud	those couldn't have
 +z/+A/^+HR*fbts	not to be
 +z/+A/^+SWAE	there can be
@@ -3619,12 +3619,12 @@
 +z/+O/+SW*EUfbts	there shall not often have been
 +z/+O/^+HRUb	to have added
 +z/+O/^+TKAEg	and we shall be going
-+z/+PH*EUb
++z/+PH*EUb	haven't been being added
 +z/+PHA*Ud
 +z/+PHA*fbts
 +z/+PHAE
-+z/+PHAOEUg
-+z/+PHUg
++z/+PHAOEUg	will have been being gone
++z/+PHUg	have been gone
 +z/+PW	those are
 +z/+PW*Ed	those weren't
 +z/+PWA*EUb	those can't have been adding
@@ -3704,12 +3704,12 @@
 +z/+g/+TE	they're
 +z/+g/+TKAO*fbts	and we won't often be
 +z/+g/^+HRA*E	not to be being
-+z/+g/^+PHA*EUb
++z/+g/^+PHA*EUb	can not have been being added
 +z/+g/^+PWAO*Ug	those will not have been going
 +z/@+/+HRAOg	to go
 +z/@+/+SKEfbts	we're often
 +z/@+/+TKAO*EUd	and we wouldn't have been doing
-+z/@+/^+PHAOU
++z/@+/^+PHAOU	will have been done
 +z/@+/^+SWAO*b	there will not add
 +z/@+/^+TEUg	they have been going
 +z/^+*Ug	have not gone
@@ -3738,11 +3738,11 @@
 +z/^+KEUb	we have been adding
 +z/^+PH
 +z/^+PH*Ed
-+z/^+PHA*EUb
++z/^+PHA*EUb	can not have been being added
 +z/^+PHAO*Ud
 +z/^+PHAO*fbts
 +z/^+PHAOE
-+z/^+PHAUg
++z/^+PHAUg	can have been gone
 +z/^+PHEUfbts
 +z/^+PW*Ub	those have not added
 +z/^+PWA	those can
@@ -3800,7 +3800,7 @@
 +z/^+WAOEUb	there will have been adding
 +z/^+WUb	there have added
 @+/#+/+HRAOU	to have done
-@+/#+/+PHAO*b
+@+/#+/+PHAO*b	won't be added
 @+/#+/+SKEUg	have we been going
 @+/#+/^+SWAO*Ud	would there not have done
 @+/#+/^+T*E	is it not doing
@@ -3815,7 +3815,7 @@
 @+/+A/+SWAUd	there could've done
 @+/+A/+TKA*fbts	and I can't often
 @+/+A/^+HR*E	not to be doing
-@+/+A/^+PH*EUb
+@+/+A/^+PH*EUb	can not have been being added
 @+/+A/^+PWA*Ug	that can not have gone
 @+/+AO/+W*EUg	there won't have been going
 @+/+AO/+b	will add
@@ -3846,15 +3846,15 @@
 @+/+O/+SWA	there shall do
 @+/+O/+TKAUb	and I shall have added
 @+/+O/^+KA*Ufbts	I shall not often have
-@+/+O/^+PH*Eg
+@+/+O/^+PH*Eg	shall not be being gone
 @+/+O/^+PWA*d	that should not do
-@+/+PH*U
-@+/+PH*b
-@+/+PHAEUd
+@+/+PH*U	hasn't been done
+@+/+PH*b	isn't added
+@+/+PHAEUd	could've been being done
 @+/+PHAEfbts
-@+/+PHAO*EU
-@+/+PHAO*Eb
-@+/+PHAOg
+@+/+PHAO*EU	won't have been being done
+@+/+PHAO*Eb	won't be being added
+@+/+PHAOg	will be gone
 @+/+PW*EUg	that hasn't been going
 @+/+PWA*U	that can't have done
 @+/+PWA*b	that can't add
@@ -3913,7 +3913,7 @@
 @+/+TKPWAOEUfbts	what'll often have been
 @+/+TKPWUfbts	what's often
 @+/+TUb	it's added
-@+/+U/+PHb
+@+/+U/+PHb	has been added
 @+/+U/+PW*EUg	that hasn't been going
 @+/+U/+TKPWAO*U	what won't have done
 @+/+U/^+AOEUg	will have been going
@@ -3951,12 +3951,12 @@
 @+/^+KAOEb	I will be adding
 @+/^+KU	I have done
 @+/^+Kb	I do add
-@+/^+PH*EUg
-@+/^+PHA*U
-@+/^+PHA*b
-@+/^+PHAOEUd
+@+/^+PH*EUg	has not been being gone
+@+/^+PHA*U	can not have been done
+@+/^+PHA*b	can not be added
+@+/^+PHAOEUd	would have been being done
 @+/^+PHAOEfbts
-@+/^+PHUd
+@+/^+PHUd	had been done
 @+/^+PHfbts
 @+/^+PW*E	that is not doing
 @+/^+PWA*EUg	that can not have been going
@@ -4076,16 +4076,16 @@
 ^+*/+O/+SW*EUd	there should have been
 ^+*/+O/+TKAEfbts	and I shall not often be
 ^+*/+O/^+HRU	not to have been
-^+*/+O/^+PH*b
+^+*/+O/^+PH*b	shall be added
 ^+*/+O/^+PWAEUg	that shall not have been going
 ^+*/+PH*EUd
 ^+*/+PH*Efbts
-^+*/+PHA*g
+^+*/+PHA*g	can be gone
 ^+*/+PHAO*Ufbts
 ^+*/+PHAOEU
-^+*/+PHAOEb
+^+*/+PHAOEb	will not be being added
 ^+*/+PHU
-^+*/+PHb
+^+*/+PHb	is not added
 ^+*/+PWA*EUd	that could have been
 ^+*/+PWA*Efbts	that can often be
 ^+*/+PWAO*g	that will go
@@ -4174,7 +4174,7 @@
 ^+*/+z/^+PHA*Ufbts
 ^+*/+z/^+PWAO*Eb	those will be adding
 ^+*/+z/^+TKAOEU	and we will not have been
-^+*/@+/+PHAOUg
+^+*/@+/+PHAOUg	will not have been gone
 ^+*/@+/+SKEd	we were not doing
 ^+*/@+/+TEUfbts	it has not often been
 ^+*/@+/^+HRA*EUfbts	to have been being
@@ -4206,10 +4206,10 @@
 ^+*/^+KEfbts	I am not often
 ^+*/^+PHA*EUd
 ^+*/^+PHA*Efbts
-^+*/^+PHAO*g
+^+*/^+PHAO*g	will be gone
 ^+*/^+PHAU
-^+*/^+PHAb
-^+*/^+PHEUg
+^+*/^+PHAb	can not be added
+^+*/^+PHEUg	has not been being gone
 ^+*/^+PW*Ud	that had
 ^+*/^+PW*fbts	that often
 ^+*/^+PWAEUg	that can not have been going
@@ -4276,7 +4276,7 @@
 ^+/#+/^+TKEfbts	and am I often
 ^+/#+/^+WAO*EUd	would there not have been
 ^+/+*/+HRAU	not to have been
-^+/+*/+PHA*b
+^+/+*/+PHA*b	can be added
 ^+/+*/+PWAOEUg	that will not have been going
 ^+/+*/^+KAO*E	I will be
 ^+/+*/^+SWA*Ud	there could have
@@ -4300,7 +4300,7 @@
 ^+/+E/+KAEU	I can have been
 ^+/+E/+SW*d	there were not
 ^+/+E/+TK*Ufbts	and I have not often been
-^+/+E/^+PHEb
+^+/+E/^+PHEb	is being added
 ^+/+E/^+PWAg	that can be going
 ^+/+E/^+TKPWAO*EU	what will not have been
 ^+/+HR*EUg	not to have been going
@@ -4322,11 +4322,11 @@
 ^+/+O/+WAE	there shall be
 ^+/+O/^+R*Ug	she shall not have gone
 ^+/+O/^+TA*Ed	it should not be
-^+/+PH*g
+^+/+PH*g	is not gone
 ^+/+PHA*Ufbts
 ^+/+PHAEU
-^+/+PHAEb
-^+/+PHAO*Eg
+^+/+PHAEb	can be being added
+^+/+PHAO*Eg	will not be being gone
 ^+/+PHAOd
 ^+/+PW*EUd	that had not been
 ^+/+PW*Efbts	that is not often
@@ -4428,12 +4428,12 @@
 ^+/^+Kg	I go
 ^+/^+PH*EUd
 ^+/^+PH*Efbts
-^+/^+PHA*g
+^+/^+PHA*g	can not be gone
 ^+/^+PHAO*Ufbts
 ^+/^+PHAOEU
-^+/^+PHAOEb
+^+/^+PHAOEb	will be being added
 ^+/^+PHU
-^+/^+PHb
+^+/^+PHb	is added
 ^+/^+PWA*EUd	that could not have been
 ^+/^+PWA*Efbts	that can not often be
 ^+/^+PWAO*g	that will not go

@@ -42,10 +42,11 @@ define Asp   [ "[SIMPLE]" | "[PERF]" | "[PROG]" | "[PERFPROG]" ] ;
 define Tns   [ "[PRES]" | "[PAST]" ] ;
 define Fid   [ "[F:be]" | "[F:have]" | "[F:do]"
              | "[F:can]" | "[F:shall]" | "[F:will]" ] ;
-define Mid   [ "[M:have]" | "[M:be]" | "[M:been]" ] ;
+define Mid   [ "[M:have]" | "[M:be]" | "[M:been]" | "[M:being]" ] ;
 
 define Feature  [ "[Q]" | "[EMPH]" | Mode | "[SUBJ]" | "[/SUBJ]" | "[C]" | "[AND]"
-                | "[INF]" | "[NOAUX]" | Agr | Modl | Pol | Asp | Tns | "[V0]"
+                | "[INF]" | "[PASS]" | "[IMP]" | "[LETS]"
+                | "[NOAUX]" | Agr | Modl | Pol | Asp | Tns | "[V0]"
                 | Lemma | SatPre | SatPost | Adv | Fid | Mid ] ;
 ! Anything that is not a feature symbol: the subject word, and the verb words
 ! that `Chain` has already spelled.
@@ -164,6 +165,42 @@ define Infinitive [ [ Kill("[Q]") | 0 ] [ Kill("[EMPH]") | 0 ] Kill(Mode)
     | [ Inf("[PERFPROG]", Say([ " " {have} " " {been} ]))
         [ [ VPrespart (SatPostW) ] | [ KV0Adv Say([ " " {being} ]) ] ] ] ] ] ;
 
+! The passive (§4.1d) is the same chain with `be` added to its end and the main
+! verb in the past participle, so every corner above has one here. It names no
+! subject, and the number key supplies the agreement the missing subject would:
+! `+PH` is "is written" and `+SPH` is "are written". A verb is required, because
+! the passive of the empty slot is nothing and the passive of an adverb is not a
+! clause.
+define SBeing  Say("[M:being]") ;
+define PCls(M)   [ M (SatPreW) VPastpart (SatPostW) ] ;
+define Passive [ [ "[Q]" | 0 ] [ Kill("[EMPH]") | 0 ] Mode Kill("[PASS]")
+    [ [ AnyMod(KSim)       PCls(SBe)   ]                 ! will be written
+    | [ AnyMod(KPf)        PCls(SHvBn) ]                 ! will have been written
+    | [ AnyMod(KPg)        PCls(Say([ "[M:be]" "[M:being]" ])) ]
+    | [ AnyMod(KPP)        PCls(Say([ "[M:have]" "[M:been]" "[M:being]" ])) ]
+    | [ NoMod(KSim, FBe)   PCls(0)     ]                 ! is written
+    | [ NoMod(KPf, FHave)  PCls(SBeen) ]                 ! has been written
+    | [ NoMod(KPg, FBe)    PCls(SBeing) ]                ! is being written
+    | [ NoMod(KPP, FHave)  PCls(Say([ "[M:been]" "[M:being]" ])) ] ] ] ;
+
+! The imperative (§4.1e) has no subject, no tense and no agreement, so modality
+! and aspect have nothing to inflect and are ignored, as they are on an
+! infinitive. `@` is the emphatic "do go", and negation is do-support either way.
+! `[NOAUX]` is what tells `Arrange` the clause opens on a word of its own rather
+! than on a subject, so the leading space goes.
+define ImpVerb  [ [ (SatPreW) VBase (SatPostW) ] | [ KV0 Say([ " " {be} ]) ] | AdvW ] ;
+define ImpTail(A, N)  [ Kill(Agr) Kill(Modl)
+                        [ [ Kill("[AFF]") A ] | [ Kill("[NEG]") N ] ]
+                        Kill(Asp) Kill(Tns) ImpVerb ] ;
+define SayDont  Say([ " " {don} "'" {t} ]) ;
+define Imperative [ [ Kill("[Q]") | 0 ]
+    [ [ Kill("[EMPH]") Mode Say("[NOAUX]") Kill("[IMP]")
+        ImpTail(Say([ " " {do} ]), SayDont) ]
+    | [ Mode Say("[NOAUX]") Kill("[IMP]") ImpTail(0, SayDont) ]
+    | [ [ Kill("[EMPH]") | 0 ] Mode Say("[NOAUX]") Kill("[LETS]")
+        ImpTail(Say([ " " {let} "'" {s} ]),
+                Say([ " " {let} "'" {s} " " {not} ])) ] ] ] ;
+
 ! Emphasis and the question are the two reasons for do-support that are read
 ! before the subject, so the branch that needs one says so in its prefix.
 define SubjRec  [ [ "[AND]" | 0 ]
@@ -178,7 +215,9 @@ define Chain [ [ PfxAny    Corners ]
              | [ PfxTrig   DoSup(Pol) ]
              | [ PfxNoTrig DoSup("[NEG]") ]
              | [ PfxNoTrig NoAux ]
-             | Infinitive ] ;
+             | Infinitive
+             | Passive
+             | Imperative ] ;
 
 ! ========================================================== Arrange: English
 !
@@ -265,7 +304,8 @@ define Merge [ Kill(Agr) Kill("[AFF]") Kill("[PAST]") ModVe Chr* Kill("[M:have]"
 ! The mid slots, spelled. They are polarity-independent: only the finite head
 ! ever takes a negative form, so negation never reaches them.
 define MidW  [ [ "[M:have]" .x. [ " " {have} ] ] | [ "[M:be]" .x. [ " " {be} ] ]
-             | [ "[M:been]" .x. [ " " {been} ] ] ] ;
+             | [ "[M:been]" .x. [ " " {been} ] ]
+             | [ "[M:being]" .x. [ " " {being} ] ] ] ;
 define Tail  [ [ Chr | MidW ]* ] ;
 
 ! "there're" does not surface, so `there` keeps the full form with `are` and

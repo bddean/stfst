@@ -7,8 +7,9 @@
 ! still the oracle and agreed with them. A line that changes here is a change to
 ! what a clause writes: read it, then update it.
 !
-! A line with no tab claims the stroke has no entry. 969 of them are the dropped
-! coordinate subjects, and they assert the drop rather than ignoring it.
+! A line with no tab claims the stroke has no entry. 942 do, and nearly all of
+! them are the dropped coordinate subjects: the file asserts the drop rather than
+! ignoring it. The others are a modifier stroke and a passive with no verb.
 #+bgts	do talk
 #+bltz	did build
 #+fbgz	do walk into
@@ -66,9 +67,9 @@
 #+Klts	do I stay
 #+Ktsz	did I start
 #+KA*E	can't I be
-#+KH*Ubgsz
-#+KHAO*blgz
-#+KHOEU
+#+KH*Ubgsz	don't cause by
+#+KHAO*blgz	don't just like
+#+KHOEU	be
 #+KHRO*fbts
 #+KO*Ublgz	shall I not have just liked
 #+KPblgd
@@ -110,8 +111,8 @@
 #+Pld	did you look
 #+Pts	do you start
 #+PA*b	can't you add
-#+PH*EUbgsz
-#+PHAO*Eblgz
+#+PH*EUbgsz	hasn't been being caused by
+#+PHAO*Eblgz	won't be being just liked
 #+PHO*
 #+PHRO*Efbts
 #+PROEUb
@@ -160,11 +161,11 @@
 #+SHREUblgz
 #+SKA*EU	can't we have been
 #+SKAOblgz	will we just like
-#+SKHAEUbgsz
-#+SKHAO
+#+SKHAEUbgsz	let's cause by
+#+SKHAO	let's be
 #+SKHR*U
 #+SKHRA*EUblgz
-#+SKHUd
+#+SKHUd	let's be
 #+SKPblgz
 #+SKPHA*EUd
 #+SKPHAObgsz
@@ -215,7 +216,7 @@
 #+SKWRAOEbgsz	will these be causing by
 #+SKWROd	should these
 #+SPA*Ub	can't you have added
-#+SPHA*bgsz
+#+SPHA*bgsz	can't be caused by
 #+SPHAOE
 #+SPHEUd
 #+SPHR*EU
@@ -432,8 +433,8 @@
 #@+HRO*Ublgz	not to just have liked
 #@+KA*EUd	couldn't I have been doing
 #@+KAObgsz	will I cause by
-#@+KHAO*Ubgsz
-#@+KHO*Ed
+#@+KHAO*Ubgsz	don't cause by
+#@+KHO*Ed	don't do
 #@+KHRblgz
 #@+KHRO*Ub
 #@+KPAU
@@ -466,8 +467,8 @@
 #@+P*E	aren't you doing
 #@+PA*Ublgz	can't you have just liked
 #@+PHfbts
-#@+PHAO*EUbgsz
-#@+PHO*Ud
+#@+PHAO*EUbgsz	won't have been being caused by
+#@+PHO*Ud	shouldn't have been done
 #@+PHREblgz
 #@+PHRO*EUb
 #@+PRA*
@@ -489,8 +490,8 @@
 #@+SHRAOEUblgz
 #@+SHROU
 #@+SKAOUbgsz	will we have caused by
-#@+SKH*fbts
-#@+SKHAOUd
+#@+SKH*fbts	let's not often
+#@+SKHAOUd	let's do
 #@+SKHRAd
 #@+SKHRAO*U
 #@+SKHROEbgsz
@@ -524,7 +525,7 @@
 #@+SKWROUfbts	shall these often have
 #@+SP*EU	haven't you been doing
 #@+SPH*Efbts
-#@+SPHAOEUd
+#@+SPHAOEUd	would have been being done
 #@+SPHRAEd
 #@+SPHRAO*EU
 #@+SPHROUbgsz
@@ -679,8 +680,8 @@
 #@+WRO*EUd	shouldn't which have been doing
 #@^+HO*b	shall he not add
 #@^+HROEfbts	to be being
-#@^+KHAOEb
-#@^+KHEUblgz
+#@^+KHAOEb	do add
+#@^+KHEUblgz	do just like
 #@^+KHRAOUbgsz
 #@^+KHROEd
 #@^+KOEUb	shall I have been adding
@@ -710,8 +711,8 @@
 #@^+OUb	shall have added
 #@^+PAEfbts	can you often be
 #@^+PAO*EUd	would you not have been doing
-#@^+PH*blgz
-#@^+PHAOUb
+#@^+PH*blgz	is not just liked
+#@^+PHAOUb	will have been added
 #@^+PHRAOEUbgsz
 #@^+PHROUd
 #@^+PROfbts
@@ -731,8 +732,8 @@
 #@^+SHO*Ub	shall they not have added
 #@^+SHRb
 #@^+SHRO*Ufbts
-#@^+SKHAblgz
-#@^+SKHAO*Ub
+#@^+SKHAblgz	let's just like
+#@^+SKHAO*Ub	let's not add
 #@^+SKHRA*b
 #@^+SKO*Eb	shall we not be adding
 #@^+SKPHA*
@@ -761,9 +762,9 @@
 #@^+SKWRA*E	can these not be doing
 #@^+SKWRO*Ublgz	shall these not have just liked
 #@^+SPAEUfbts	can you often have been
-#@^+SPH
-#@^+SPHAEblgz
-#@^+SPHAO*EUb
+#@^+SPH	are done
+#@^+SPHAEblgz	can be being just liked
+#@^+SPHAO*EUb	will not have been being added
 #@^+SPHRA*Eb
 #@^+SPRO*Efbts
 #@^+SPWAUd	could those have done
@@ -1002,8 +1003,8 @@
 #^+K*rpblgs	do I not explain that
 #^+K*rpl	do I not remain
 #^+K*rtsz	did I not start with
-#^+KHEb
-#^+KHO*EUfbts
+#^+KHEb	add
+#^+KHO*EUfbts	don't often
 #^+KHRA*EU
 #^+KHRAOblgz
 #^+KHRUbgsz
@@ -1039,7 +1040,7 @@
 #^+PHRAOEblgz
 #^+PHREUbgsz
 #^+PHRO
-#^+PHUb
+#^+PHUb	has been added
 #^+PObgsz	shall you cause by
 #^+PRA*Ud
 #^+PRO*EUbgsz
@@ -1083,8 +1084,8 @@
 #^+SHO*fbts	shall they not often
 #^+SHRAO*Ebgsz
 #^+SHRO*d
-#^+SKH*Ub
-#^+SKHAO*fbts
+#^+SKH*Ub	let's not add
+#^+SKHAO*fbts	let's not often
 #^+SKHRAUfbts
 #^+SKOEUfbts	shall we often have been
 #^+SKPAOUbgsz
@@ -1137,7 +1138,7 @@
 #^+SKWRO*b	shall these not add
 #^+SPAEd	could you be
 #^+SPAO*EU	will you not have been
-#^+SPH*EUb
+#^+SPH*EUb	have not been being added
 #^+SPHAO*Efbts
 #^+SPHRAEUfbts
 #^+SPOUbgsz	shall you have caused by
@@ -1984,8 +1985,8 @@
 +KAOUrsd	I'd have received
 +KAUblgz	I can have just liked
 +KE	I'm
-+KH*EU
-+KHOblgz
++KH*EU	don't be
++KHOblgz	just like
 +KHRAfbts
 +KHRAO*Ud
 +KP
@@ -2296,7 +2297,7 @@
 +Pbz	you use in
 +Pls	you send
 +PHA
-+PHOEblgz
++PHOEblgz	shall be being just liked
 +PHRAEfbts
 +PHRAO*EUd
 +PO*Ufbts	you shall not often have
@@ -2414,8 +2415,8 @@
 +SHRA*Eb
 +SKA*blgz	we can't just like
 +SKEU	we've been
-+SKHA*
-+SKHO*Eblgz
++SKHA*	let's not be
++SKHO*Eblgz	let's not just like
 +SKHRAOEb
 +SKHREUblgz
 +SKPAUb
@@ -2537,9 +2538,9 @@
 +SKWRAOUrz	these will have worked with
 +SO*Efbts
 +SPAOfbts	you'll often
-+SPHbgsz
++SPHbgsz	are caused by
 +SPHA*E
-+SPHO*Ublgz
++SPHO*Ublgz	shall not have been just liked
 +SPHR*blgz
 +SPHRAOUb
 +SPRA*b
@@ -3012,9 +3013,9 @@
 @+KAO*EUsdz	I wouldn't have been using to
 @+KAOE	I'll be doing
 @+KEUd	I'd been doing
-@+KHAEd
-@+KHAO*EU
-@+KHOUbgsz
+@+KHAEd	do
+@+KHAO*EU	don't do
+@+KHOUbgsz	do cause by
 @+KHRAUb
 @+KP*EUblgz
 @+KPblg
@@ -3056,8 +3057,8 @@
 @+Pl	you do look
 @+Ptdz	you did want to
 @+PAOb	you'll add
-@+PHAUd
-@+PHOEUbgsz
+@+PHAUd	could've been done
+@+PHOEUbgsz	shall have been being caused by
 @+PHRAEUb
 @+PR
 @+PRAEblgz
@@ -3133,8 +3134,8 @@
 @+SK*Ed	we weren't doing
 @+SKA*Ubgsz	we can't have caused by
 @+SKAOEU	we'll have been doing
-@+SKHA*Ud
-@+SKHO*EUbgsz
+@+SKHA*Ud	let's not do
+@+SKHO*EUbgsz	let's not cause by
 @+SKHR*Ebgsz
 @+SKHRAOEUblgz
 @+SKHROU
@@ -3213,8 +3214,8 @@
 @+SO*EUb	shall not have been adding
 @+SP*blgz	you don't just like
 @+SPAOUb	you'll have added
-@+SPHA*EUd
-@+SPHAObgsz
+@+SPHA*EUd	couldn't have been being done
+@+SPHAObgsz	will be caused by
 @+SPHR*Ubgsz
 @+SPHRAO*blgz
 @+SPHROEU
@@ -3466,7 +3467,7 @@
 @^+HRAOEUd	to have been doing
 @^+K*EUb	I have not been adding
 @^+KAO*Efbts	I will not often be
-@^+KHA*Eb
+@^+KHA*Eb	don't add
 @^+KHR*Ed
 @^+KHRA*Ubgsz
 @^+KHRAOEU
@@ -3497,7 +3498,7 @@
 @^+KWO*EUblgz	this shall not have been just liking
 @^+KWRA*EUfbts	this can not often have been
 @^+PAO*bgsz	you will not cause by
-@^+PHA*Ub
+@^+PHA*Ub	can not have been added
 @^+PHR*Ud
 @^+PHRA*EUbgsz
 @^+PHRAO*
@@ -3519,7 +3520,7 @@
 @^+SHRAUfbts
 @^+SKAEb	we can be adding
 @^+SKAO*EUfbts	we will not often have been
-@^+SKHOUb
+@^+SKHOUb	let's add
 @^+SKHRb
 @^+SKHRO*Ufbts
 @^+SKP*EUfbts
@@ -3550,7 +3551,7 @@
 @^+SKWRE	these are doing
 @^+SOUd
 @^+SPAO*Ubgsz	you will not have caused by
-@^+SPHOEUb
+@^+SPHOEUb	shall have been being added
 @^+SPHREb
 @^+SPHRO*EUfbts
 @^+SPO*Ed	you should not be doing
@@ -3770,7 +3771,7 @@
 ^+Klsd	I sent
 ^+Ksz	I use to
 ^+KAOEUd	I would have been
-^+KHAEUfbts
+^+KHAEUfbts	often
 ^+KHRA*blgz
 ^+KHREU
 ^+KPbgtz
@@ -3874,7 +3875,7 @@
 ^+SHROEbgsz
 ^+SK*EUfbts	we have not often been
 ^+SKAO*Ed	we would not be
-^+SKHOfbts
+^+SKHOfbts	let's often
 ^+SKHRAO*Ebgsz
 ^+SKHRO*d
 ^+SKP*Ed
