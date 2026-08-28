@@ -13,8 +13,12 @@
 ! The rules that read this map are in `phrasing.xfst`; the mined verb lexicon is
 ! in `phrasing-lexicon.xfst`.
 
-! Left keys to a subject and its agreement: 126 of the 128 sets name one.
-! The other 2 head a clause only when a verb follows.
+! Left keys to a subject and its agreement: 84 of the 128 sets have an entry.
+! 2 more head a clause only when a verb follows, in `NoSubject` below. The
+! remaining 42 name nothing, and a stroke that reaches one has no translation.
+! They held the coordinate subjects, "you and I" through "and you and he and she
+! and I", which nobody wrote. Left free rather than refilled: an empty chord is
+! visible and a wrong one is not.
 define Subjects [
     [ [ "T" ] .x. [ "[SUBJ]" {it} "[/SUBJ]" "[C]" "[3sg]" ] ] |
     [ [ "K" ] .x. [ "[SUBJ]" {I} "[/SUBJ]" "[C]" "[1sg]" ] ] |
@@ -33,13 +37,8 @@ define Subjects [
     [ [ "T" "W" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |
     [ [ "T" "H" ] .x. [ "[AND]" "[SUBJ]" {he} "[/SUBJ]" "[C]" "[3sg]" ] ] |
     [ [ "T" "R" ] .x. [ "[AND]" "[SUBJ]" {she} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "K" "P" ] .x. [ "[SUBJ]" [ {you} " " {and} " " {I} ] "[/SUBJ]" "[pl]" ] ] |
     [ [ "K" "W" ] .x. [ "[SUBJ]" {this} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "K" "H" ] .x. [ "[SUBJ]" [ {he} " " {and} " " {I} ] "[/SUBJ]" "[pl]" ] ] |
-    [ [ "K" "R" ] .x. [ "[SUBJ]" [ {she} " " {and} " " {I} ] "[/SUBJ]" "[pl]" ] ] |
     [ [ "P" "W" ] .x. [ "[SUBJ]" {that} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "P" "H" ] .x. [ "[SUBJ]" [ {you} " " {and} " " {he} ] "[/SUBJ]" "[pl]" ] ] |
-    [ [ "P" "R" ] .x. [ "[SUBJ]" [ {you} " " {and} " " {she} ] "[/SUBJ]" "[pl]" ] ] |
     [ [ "W" "H" ] .x. [ "[SUBJ]" {who} "[/SUBJ]" "[C]" "[3sg]" ] ] |
     [ [ "W" "R" ] .x. [ "[SUBJ]" {which} "[/SUBJ]" "[3sg]" ] ] |
     [ [ "H" "R" ] .x. [ "[INF]" "[3sg]" ] ] |
@@ -48,95 +47,58 @@ define Subjects [
     [ [ "S" "T" "W" ] .x. [ "[SUBJ]" {whatever} "[/SUBJ]" "[3sg]" ] ] |
     [ [ "S" "T" "H" ] .x. [ "[SUBJ]" [ {and} " " {he} ] "[/SUBJ]" "[pl]" ] ] |
     [ [ "S" "T" "R" ] .x. [ "[SUBJ]" [ {and} " " {she} ] "[/SUBJ]" "[pl]" ] ] |
-    [ [ "S" "K" "P" ] .x. [ "[SUBJ]" [ {you} " " {or} " " {I} ] "[/SUBJ]" "[pl]" ] ] |
     [ [ "S" "K" "W" ] .x. [ "[SUBJ]" {these} "[/SUBJ]" "[pl]" ] ] |
-    [ [ "S" "K" "H" ] .x. [ "[SUBJ]" [ {he} " " {or} " " {I} ] "[/SUBJ]" "[pl]" ] ] |
-    [ [ "S" "K" "R" ] .x. [ "[SUBJ]" [ {she} " " {or} " " {I} ] "[/SUBJ]" "[pl]" ] ] |
     [ [ "S" "P" "W" ] .x. [ "[SUBJ]" {those} "[/SUBJ]" "[pl]" ] ] |
-    [ [ "S" "P" "H" ] .x. [ "[SUBJ]" [ {you} " " {or} " " {he} ] "[/SUBJ]" "[pl]" ] ] |
-    [ [ "S" "P" "R" ] .x. [ "[SUBJ]" [ {you} " " {or} " " {she} ] "[/SUBJ]" "[pl]" ] ] |
     [ [ "S" "W" "H" ] .x. [ "[SUBJ]" {whoever} "[/SUBJ]" "[3sg]" ] ] |
     [ [ "S" "W" "R" ] .x. [ "[SUBJ]" {whichever} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "S" "H" "R" ] .x. [ "[SUBJ]" [ {he} " " {or} " " {she} ] "[/SUBJ]" "[pl]" ] ] |
-    [ [ "T" "K" "P" ] .x. [ "[AND]" "[SUBJ]" [ {you} " " {and} " " {I} ] "[/SUBJ]" "[pl]" ] ] |
     [ [ "T" "K" "W" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "T" "K" "H" ] .x. [ "[AND]" "[SUBJ]" [ {he} " " {and} " " {I} ] "[/SUBJ]" "[pl]" ] ] |
-    [ [ "T" "K" "R" ] .x. [ "[AND]" "[SUBJ]" [ {she} " " {and} " " {I} ] "[/SUBJ]" "[pl]" ] ] |
     [ [ "T" "P" "W" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "T" "P" "H" ] .x. [ "[AND]" "[SUBJ]" [ {you} " " {and} " " {he} ] "[/SUBJ]" "[pl]" ] ] |
-    [ [ "T" "P" "R" ] .x. [ "[AND]" "[SUBJ]" [ {you} " " {and} " " {she} ] "[/SUBJ]" "[pl]" ] ] |
     [ [ "T" "W" "H" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |
     [ [ "T" "W" "R" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |
     [ [ "T" "H" "R" ] .x. [ "[AND]" "[INF]" "[3sg]" ] ] |
     [ [ "K" "P" "W" ] .x. [ "[SUBJ]" {this} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "K" "P" "H" ] .x. [ "[SUBJ]" [ {you} " " {and} " " {he} " " {and} " " {I} ] "[/SUBJ]" "[pl]" ] ] |
-    [ [ "K" "P" "R" ] .x. [ "[SUBJ]" [ {you} " " {and} " " {she} " " {and} " " {I} ] "[/SUBJ]" "[pl]" ] ] |
     [ [ "K" "W" "H" ] .x. [ "[SUBJ]" {this} "[/SUBJ]" "[3sg]" ] ] |
     [ [ "K" "W" "R" ] .x. [ "[SUBJ]" {this} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "K" "H" "R" ] .x. [ "[SUBJ]" [ {he} " " {and} " " {she} " " {and} " " {I} ] "[/SUBJ]" "[pl]" ] ] |
     [ [ "P" "W" "H" ] .x. [ "[SUBJ]" {that} "[/SUBJ]" "[C]" "[3sg]" ] ] |
     [ [ "P" "W" "R" ] .x. [ "[SUBJ]" {that} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "P" "H" "R" ] .x. [ "[SUBJ]" [ {you} " " {and} " " {he} " " {and} " " {she} ] "[/SUBJ]" "[pl]" ] ] |
     [ [ "W" "H" "R" ] .x. [ "[SUBJ]" {who} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "S" "T" "K" "P" ] .x. [ "[SUBJ]" [ {and} " " {you} " " {and} " " {I} ] "[/SUBJ]" "[pl]" ] ] |
     [ [ "S" "T" "K" "W" ] .x. [ "[SUBJ]" {whatever} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "S" "T" "K" "H" ] .x. [ "[SUBJ]" [ {and} " " {he} " " {and} " " {I} ] "[/SUBJ]" "[pl]" ] ] |
-    [ [ "S" "T" "K" "R" ] .x. [ "[SUBJ]" [ {and} " " {she} " " {and} " " {I} ] "[/SUBJ]" "[pl]" ] ] |
     [ [ "S" "T" "P" "W" ] .x. [ "[SUBJ]" {whatever} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "S" "T" "P" "H" ] .x. [ "[SUBJ]" [ {and} " " {you} " " {and} " " {he} ] "[/SUBJ]" "[pl]" ] ] |
-    [ [ "S" "T" "P" "R" ] .x. [ "[SUBJ]" [ {and} " " {you} " " {and} " " {she} ] "[/SUBJ]" "[pl]" ] ] |
     [ [ "S" "T" "W" "H" ] .x. [ "[SUBJ]" {whatever} "[/SUBJ]" "[3sg]" ] ] |
     [ [ "S" "T" "W" "R" ] .x. [ "[SUBJ]" {whatever} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "S" "T" "H" "R" ] .x. [ "[SUBJ]" [ {and} " " {he} " " {and} " " {she} ] "[/SUBJ]" "[pl]" ] ] |
     [ [ "S" "K" "P" "W" ] .x. [ "[SUBJ]" {these} "[/SUBJ]" "[pl]" ] ] |
-    [ [ "S" "K" "P" "H" ] .x. [ "[SUBJ]" [ {you} " " {or} " " {he} " " {or} " " {I} ] "[/SUBJ]" "[pl]" ] ] |
-    [ [ "S" "K" "P" "R" ] .x. [ "[SUBJ]" [ {you} " " {or} " " {she} " " {or} " " {I} ] "[/SUBJ]" "[pl]" ] ] |
     [ [ "S" "K" "W" "H" ] .x. [ "[SUBJ]" {these} "[/SUBJ]" "[pl]" ] ] |
     [ [ "S" "K" "W" "R" ] .x. [ "[SUBJ]" {these} "[/SUBJ]" "[pl]" ] ] |
-    [ [ "S" "K" "H" "R" ] .x. [ "[SUBJ]" [ {he} " " {or} " " {she} " " {or} " " {I} ] "[/SUBJ]" "[pl]" ] ] |
     [ [ "S" "P" "W" "H" ] .x. [ "[SUBJ]" {those} "[/SUBJ]" "[pl]" ] ] |
     [ [ "S" "P" "W" "R" ] .x. [ "[SUBJ]" {those} "[/SUBJ]" "[pl]" ] ] |
-    [ [ "S" "P" "H" "R" ] .x. [ "[SUBJ]" [ {you} " " {or} " " {he} " " {or} " " {she} ] "[/SUBJ]" "[pl]" ] ] |
     [ [ "S" "W" "H" "R" ] .x. [ "[SUBJ]" {whoever} "[/SUBJ]" "[3sg]" ] ] |
     [ [ "T" "K" "P" "W" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "T" "K" "P" "H" ] .x. [ "[AND]" "[SUBJ]" [ {you} " " {and} " " {he} " " {and} " " {I} ] "[/SUBJ]" "[pl]" ] ] |
-    [ [ "T" "K" "P" "R" ] .x. [ "[AND]" "[SUBJ]" [ {you} " " {and} " " {she} " " {and} " " {I} ] "[/SUBJ]" "[pl]" ] ] |
     [ [ "T" "K" "W" "H" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |
     [ [ "T" "K" "W" "R" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "T" "K" "H" "R" ] .x. [ "[AND]" "[SUBJ]" [ {he} " " {and} " " {she} " " {and} " " {I} ] "[/SUBJ]" "[pl]" ] ] |
     [ [ "T" "P" "W" "H" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |
     [ [ "T" "P" "W" "R" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "T" "P" "H" "R" ] .x. [ "[AND]" "[SUBJ]" [ {you} " " {and} " " {he} " " {and} " " {she} ] "[/SUBJ]" "[pl]" ] ] |
     [ [ "T" "W" "H" "R" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |
     [ [ "K" "P" "W" "H" ] .x. [ "[SUBJ]" {this} "[/SUBJ]" "[3sg]" ] ] |
     [ [ "K" "P" "W" "R" ] .x. [ "[SUBJ]" {this} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "K" "P" "H" "R" ] .x. [ "[SUBJ]" [ {you} " " {and} " " {he} " " {and} " " {she} " " {and} " " {I} ] "[/SUBJ]" "[pl]" ] ] |
     [ [ "K" "W" "H" "R" ] .x. [ "[SUBJ]" {this} "[/SUBJ]" "[3sg]" ] ] |
     [ [ "P" "W" "H" "R" ] .x. [ "[SUBJ]" {that} "[/SUBJ]" "[C]" "[3sg]" ] ] |
     [ [ "S" "T" "K" "P" "W" ] .x. [ "[SUBJ]" {whatever} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "S" "T" "K" "P" "H" ] .x. [ "[SUBJ]" [ {and} " " {you} " " {and} " " {he} " " {and} " " {I} ] "[/SUBJ]" "[pl]" ] ] |
-    [ [ "S" "T" "K" "P" "R" ] .x. [ "[SUBJ]" [ {and} " " {you} " " {and} " " {she} " " {and} " " {I} ] "[/SUBJ]" "[pl]" ] ] |
     [ [ "S" "T" "K" "W" "H" ] .x. [ "[SUBJ]" {whatever} "[/SUBJ]" "[3sg]" ] ] |
     [ [ "S" "T" "K" "W" "R" ] .x. [ "[SUBJ]" {whatever} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "S" "T" "K" "H" "R" ] .x. [ "[SUBJ]" [ {and} " " {he} " " {and} " " {she} " " {and} " " {I} ] "[/SUBJ]" "[pl]" ] ] |
     [ [ "S" "T" "P" "W" "H" ] .x. [ "[SUBJ]" {whatever} "[/SUBJ]" "[3sg]" ] ] |
     [ [ "S" "T" "P" "W" "R" ] .x. [ "[SUBJ]" {whatever} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "S" "T" "P" "H" "R" ] .x. [ "[SUBJ]" [ {and} " " {you} " " {and} " " {he} " " {and} " " {she} ] "[/SUBJ]" "[pl]" ] ] |
     [ [ "S" "T" "W" "H" "R" ] .x. [ "[SUBJ]" {whatever} "[/SUBJ]" "[3sg]" ] ] |
     [ [ "S" "K" "P" "W" "H" ] .x. [ "[SUBJ]" {these} "[/SUBJ]" "[pl]" ] ] |
     [ [ "S" "K" "P" "W" "R" ] .x. [ "[SUBJ]" {these} "[/SUBJ]" "[pl]" ] ] |
-    [ [ "S" "K" "P" "H" "R" ] .x. [ "[SUBJ]" [ {you} " " {or} " " {he} " " {or} " " {she} " " {or} " " {I} ] "[/SUBJ]" "[pl]" ] ] |
     [ [ "S" "K" "W" "H" "R" ] .x. [ "[SUBJ]" {these} "[/SUBJ]" "[pl]" ] ] |
     [ [ "S" "P" "W" "H" "R" ] .x. [ "[SUBJ]" {those} "[/SUBJ]" "[pl]" ] ] |
     [ [ "T" "K" "P" "W" "H" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |
     [ [ "T" "K" "P" "W" "R" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "T" "K" "P" "H" "R" ] .x. [ "[AND]" "[SUBJ]" [ {you} " " {and} " " {he} " " {and} " " {she} " " {and} " " {I} ] "[/SUBJ]" "[pl]" ] ] |
     [ [ "T" "K" "W" "H" "R" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |
     [ [ "T" "P" "W" "H" "R" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |
     [ [ "K" "P" "W" "H" "R" ] .x. [ "[SUBJ]" {this} "[/SUBJ]" "[3sg]" ] ] |
     [ [ "S" "T" "K" "P" "W" "H" ] .x. [ "[SUBJ]" {whatever} "[/SUBJ]" "[3sg]" ] ] |
     [ [ "S" "T" "K" "P" "W" "R" ] .x. [ "[SUBJ]" {whatever} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "S" "T" "K" "P" "H" "R" ] .x. [ "[SUBJ]" [ {and} " " {you} " " {and} " " {he} " " {and} " " {she} " " {and} " " {I} ] "[/SUBJ]" "[pl]" ] ] |
     [ [ "S" "T" "K" "W" "H" "R" ] .x. [ "[SUBJ]" {whatever} "[/SUBJ]" "[3sg]" ] ] |
     [ [ "S" "T" "P" "W" "H" "R" ] .x. [ "[SUBJ]" {whatever} "[/SUBJ]" "[3sg]" ] ] |
     [ [ "S" "K" "P" "W" "H" "R" ] .x. [ "[SUBJ]" {these} "[/SUBJ]" "[pl]" ] ] |
