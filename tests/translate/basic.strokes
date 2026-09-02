@@ -3,7 +3,7 @@
 ! Lines starting with ! are comments to stfst translate, except !undo.
 TP-PL
 TAP
-#TRU
+TR-TZ
 1
 5
 *T
@@ -62,5 +62,5 @@ KHAOEULD
 ! one this record is about to open: `{*!}` takes it away and `{*?}` puts it back.
 ! The second finds nothing to do here, because the first spent the boundary.
 PHOR
-#AU
-#OU
+ATZ
+OTZ

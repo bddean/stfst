@@ -90,7 +90,7 @@ A frontier is wide when the automaton emits output that the input has not yet
 decided, because then it must guess and carry every guess. The two dictionaries
 used to do this for different reasons. One is fixed and one is not.
 
-**Fixed: a record used to lead with its flags.** `emily-symbols` reads `#TRU` and
+**Fixed: a record used to lead with its flags.** `emily-symbols` reads `TR-TZ` and
 had to have emitted `[ATTACH_L]` or not, though `-R` and `-B` had not arrived, so
 one key in there were 96 live paths, one per flag combination. Flag keys are last
 in steno order, so moving the flags to the end of a record lets a dictionary emit

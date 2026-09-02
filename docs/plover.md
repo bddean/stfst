@@ -56,7 +56,7 @@ and called the difference deliberate, claiming "same visible output in ordinary
 use". `#KU` wrote "run+y" in Plover and "run + y" here, and so did 162 others.
 The generator could not catch it, because it read the glyph table and never asked
 `lookup`, so it was an oracle for a third of the dictionary. Asking it instead
-gave all 4,994 strokes, which is every combination of the seven fields, and that
+gave all 4,994 strokes, which is every combination of the six fields, and that
 is what `tests/golden/emily-symbols.tsv` now holds.
 
 **Shrimple's entry stroke typed the word "Shrimple".** The Python answers

@@ -1,9 +1,10 @@
 ! Emily's symbol dictionary, mirrored to the left hand.
 !
-! Seven independent fields in steno order:
+! Six independent fields. Repeat counts on -F and -P and attachment sets on -R
+! and -B, so those two interleave on the board:
 !
-!   #      STKPWHR      AO        U       rb       g       ts
-!   id     pattern      variant   id      attach   cap     repeat
+!   STKPWHR   AO        f       r          p       b          g     tz
+!   pattern   variant   rep +1  attach-l   rep +2  attach-r   cap   id
 !
 ! The table is `emily-symbols-tables.xfst`, which `emily-modifiers` shares.
 ! Everything here is a rule, so adding a row to it gives all of that row's
@@ -28,24 +29,27 @@ define Pat      [ (S) (T) (K) (P) (W) (H) (R) ] ;
 define Variant  [ 0    .x. V0 ] | [ {A}  .x. V1 ]
               | [ {O}  .x. V2 ] | [ {AO} .x. V3 ] ;
 ! -R and -B are independent, so they are two bits and not a four-way table.
-define Attach   Bit({r}, "[AL=1]", "[AL=0]") Bit({b}, "[AR=1]", "[AR=0]") ;
+define AttachL  Bit({r}, "[AL=1]", "[AL=0]") ;
+define AttachR  Bit({b}, "[AR=1]", "[AR=0]") ;
 define Cap      Bit({g}, "[C=0]", "[C=1]") ;
-! -T and -S add 2 and 1 to the count, so this one really is a sum.
-define RepKeys  [ 0    .x. "[R=1]" ] | [ {s}  .x. "[R=2]" ]
-              | [ {t}  .x. "[R=3]" ] | [ {ts} .x. "[R=4]" ] ;
+! The count is a sum, and attachment splits the two bits, so `DoRep` adds them
+! where the tags fall rather than reading one field.
+define Rep1     Bit({f}, "[R1=0]", "[R1=1]") ;
+define Rep2     Bit({p}, "[R2=0]", "[R2=1]") ;
 
-! Both halves of the identifier are required, so a stroke missing # or -U has no
+! Both halves of the identifier are required, so a stroke missing -T or -Z has no
 ! path. That is the absence of the Python's `raise KeyError`.
-define Fields [ "#" .x. 0 ] Pat Variant [ {U} .x. 0 ] Attach Cap RepKeys ;
-! Repeating the empty glyph says nothing, and the Python refuses it so that the
-! `U9`-shaped strokes stay clear of wm.py's focus-space keys.
-define BareRepeat [ "#" {U} ({r}) ({b}) ({g}) [ {s} | {t} | {ts} ] ] ;
+define Fields     Pat Variant Rep1 AttachL Rep2 AttachR Cap [ {tz} .x. 0 ] ;
+! Repeating the empty glyph says nothing.
+define BareRepeat [ [ [ {f} ({r}) ({p}) ] | [ ({r}) {p} ] ]
+                    ({b}) ({g}) {tz} ] ;
 define Parse      [ [ Stroke - BareRepeat ] .o. Fields ] ;
 
 ! Glyph consumes only the pattern keys and the variant tag, so the modifier tags
 ! must be carried past it as identity or composition finds no path.
-define ModTags [ "[AL=0]" | "[AL=1]" ] [ "[AR=0]" | "[AR=1]" ]
-               [ "[C=0]" | "[C=1]" ] [ "[R=1]" | "[R=2]" | "[R=3]" | "[R=4]" ] ;
+define ModTags [ "[R1=0]" | "[R1=1]" ] [ "[AL=0]" | "[AL=1]" ]
+               [ "[R2=0]" | "[R2=1]" ] [ "[AR=0]" | "[AR=1]" ]
+               [ "[C=0]" | "[C=1]" ] ;
 define Glyph   GlyphPair ModTags ;
 
 ! ---- modifier logic, written once
@@ -56,12 +60,15 @@ define DoAttach [ "[AL=1]" -> "[ATTACH_L]" ,, "[AL=0]" -> 0 ,,
 ! cannot hold two. `OneCase` is in the shared table, because both emily
 ! dictionaries read that glyph and both have a key that cases too.
 define DoCap    [ [ "[C=1]" -> "[CAP_NEXT]" ,, "[C=0]" -> 0 ] .o. OneCase ] ;
-define DoRep    [ "[R=1]" -> 0 ,, "[R=2]" -> "[REP2]" ,,
-                  "[R=3]" -> "[REP3]" ,, "[R=4]" -> "[REP4]" ] ;
+define DoRep    [ [ "[R2=0]" -> 0        || "[R1=0]" ?* _ ,,
+                    "[R2=1]" -> "[REP3]" || "[R1=0]" ?* _ ,,
+                    "[R2=0]" -> "[REP2]" || "[R1=1]" ?* _ ,,
+                    "[R2=1]" -> "[REP4]" || "[R1=1]" ?* _ ]
+                  .o. [ [ "[R1=0]" | "[R1=1]" ] -> 0 ] ] ;
 ! A retrospective space edits the gap already written, so there is no glyph beside
 ! it for an attachment to close. -R and -B say nothing on those two rows.
 define DoSpace  [ [ "[ATTACH_L]" | "[ATTACH_R]" ] -> 0
                   || [ "[CANCEL_SPACE]" | "[RETRO_SPACE]" ] ?* _ ] ;
 
 define Grammar Canon([ Parse .o. Glyph .o. DoAttach .o. DoSpace
-                       .o. DoCap .o. DoRep ]) ;
+                       .o. DoRep .o. DoCap ]) ;

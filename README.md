@@ -34,12 +34,12 @@ shadow a working entry.
 
 | Dictionary | Source | Forward | Reverse |
 |---|---|---|---|
-| emily-symbols | xfst over a shared glyph table | 12,434 | 13,066 |
+| emily-symbols | xfst over a shared glyph table | 12,882 | 12,590 |
 | shrimple | xfst over a generated table | 97,084 | 107,940 |
 | user | JSON, imported | 20,137 | 20,103 |
 | phrases | JSON, imported | 11,752 | 11,958 |
 | commands | JSON, imported | 5,605 | 5,949 |
-| emily-modifiers | xfst over generated tables | 61,920 | 58,304 |
+| emily-modifiers | xfst over generated tables | 61,374 | 57,944 |
 | semantic-suffixes | JSON, imported | 594 | 638 |
 | typey-type | JSON, imported | 6,239,766 | 6,504,164 |
 | and-fold | JSON, imported | 40,093 | 38,241 |

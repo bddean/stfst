@@ -17,9 +17,10 @@ define Kb "[KEY]" ;   define Ke "[END]" ;
 ! two, and a record cannot hold two. The key wins, because Plover spends the last
 ! case a translation names and the key's comes after the glyph's. Written as a
 ! local context: containment would complement over every glyph the table can
-! write.
+! write. The repeat count is in that context because `emily-symbols` writes it
+! from keys that come before `-G`.
 define OneCase [ "[UPPER_NEXT]" -> 0
-                 || _ ("[ATTACH_L]") ("[ATTACH_R]") "[CAP_NEXT]" ] ;
+                 || _ ("[ATTACH_L]") (Rep) ("[ATTACH_R]") "[CAP_NEXT]" ] ;
 
 define Mcap   "[META=retro.cap]" ;
 define Mupper "[META=retro.upper]" ;
