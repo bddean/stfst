@@ -1,0 +1,40 @@
+! `repeat-word`: a connective, then the previous word again. `[COPY1]` is the
+! word the host bound to its first register, and the dictionary never sees it,
+! which is what keeps the automaton finite.
+!
+! `scripts/check-hold.py` replays every case through a real Plover engine and
+! compares, because a bound word is the other thing Plover's dictionary API has
+! no way to pass to a lookup.
+
+!buffer
+KAT
+^SKP
+!buffer
+HAOER
+^OR
+!buffer
+KAT
+^-T
+!buffer
+KAT
+^*F
+
+! The register is bound before the record writes, so the echo is the word the
+! stroke found and not the one it just wrote.
+!buffer
+KAT
+^SKP
+^SKP
+
+! A unit that wrote two words leaves the newest as the register.
+!buffer
+-FT
+^SKP
+
+! Undo takes the connective and its echo back together, because they are one
+! translation.
+!buffer
+KAT
+^SKP
+!undo
+^OR

@@ -33,37 +33,40 @@ Order is priority, as it is for every other Plover dictionary, so the list in
 
 ## What loads
 
-Every dictionary in `recipe.toml` except two, and each of those is refused by
-name and by what it asked for rather than mistranslated:
+Every dictionary in `recipe.toml`. What is left to refuse is a carried state and
+the `W1` context slot, and no dictionary in the stack asks for either; the
+fixture that does is refused by what it asked for rather than by a version:
 
 ```
-retro-words  reads 16 words of what is already written
-repeat-word  reads 1 bound words
+probe refused: reads a carried state, which Plover has no way to tell a dictionary
 ```
 
-Both need the host to say something *before* the answer, and Plover's dictionary
-API has one argument: the outline. The manifest declares what each dictionary
-asks for, so the refusal is one comparison and it happens before a stroke
-arrives.
+By ability and not by a host version. The manifest still carries a version,
+because that is what a host with no plugin of its own compares, but a version is
+one number and these are separate abilities.
 
-By ability and not by a version number. The manifest still carries a host
-version, because that is what a host with no plugin of its own compares, but a
-version is one number and these are separate abilities: this plugin holds a
-stroke and shows a window of text nobody has written yet, and cannot show one of
-text already written, which no single number says.
+## What a lookup cannot be told
 
-## Holding a stroke
+Plover asks one question and passes one argument: the outline. So four things an
+artifact can ask for have no way in, and each is a meta the dictionary answers
+with instead. `plover_stfst/host.py` is all four and the extension they need:
 
-Two kinds of record belong to the unit *after* their keys, so neither can be
-written when those keys arrive. A **tail** is `[AFTER]`: text that follows the
-next word, joined by the host's orthography. A **frame** reads that word as a
-window and writes over it.
+| a dictionary asks for | the meta | when it writes |
+|---|---|---|
+| a bound word, `[COPY1]` | `stfst_copy` | at once: the word is behind the cursor |
+| a window of written text, `words = 16` | `stfst_retro` | at once, over the words it rewrote |
+| a window of the text after it, `next = 2` | `stfst_hold` then `stfst_frame` | when a unit writes a word |
+| a tail, `[AFTER]` | `stfst_hold` then the tail itself | when a unit writes a word |
 
-Plover asks one question, "what does this outline mean", and both answers depend
-on what the next stroke means, which another dictionary owns. So a dictionary
-here answers with `{:stfst_hold:…}`, a meta that writes nothing and carries what
-the wait needs, and the extension writes the answer when a translation puts a
-word on screen:
+A window record is not text: its class glyphs stand for the characters of the
+span, so `window.py` encodes the span the way the tape carries it and
+`Record.rewrite` substitutes them back with Python's own casing. Both windowed
+kinds take the words back with `prev_replace`, which is how Plover's own retro
+metas rewrite what is written.
+
+The last two wait, and that is what the extension is for. A tail and a frame
+belong to the unit *after* their keys, and the answer depends on what the next
+stroke means, which another dictionary owns:
 
 ```
 ^*G      ->  {:stfst_hold:tail:\{:infl:ing\}}   nothing, "ing" waiting
@@ -75,18 +78,15 @@ HAOER    ->  here                               a word, so the frame reads it
              from here to
 ```
 
-A frame's own answer is not known until the window arrives, so its marker stands
-for a *live* candidate rather than a match. That makes a dictionary of frames a
-fallback, and a fallback in Plover means the **bottom** of the dictionary list: a
-lower dictionary answers only where nothing above it did, which is what
-`stfst-board` gets by asking for a held candidate after everything else.
+**The extension has to be enabled in Plover's configuration**, like any other,
+and `pip install -e` again after a change to the entry points.
 
-`window.py` is what a frame needs beyond that: the span it is shown does not
-reach the tape as characters but as the class each one belongs to, so the rule
-never learns which letter it was and `Record.rewrite` applies Python's own casing
-when it puts the answer back. `frame()` walks the context slots, then the keys,
-then the window, which is one cursor from the start rather than the memoised walk
-an ordinary lookup does: a frame is asked once per hold.
+A windowed entry's own answer is unknown until the window arrives, so a lookup
+can only say that the keys *begin* one. A dictionary that says so claims the
+stroke, so **a windowed dictionary belongs at the bottom of `plover.cfg`**, where
+it claims only what nothing above it wanted. That is the one place the two hosts
+differ: `stfst-board` asks for a live candidate after everything else and lets
+the stroke fall through where the rule turns out not to apply.
 
 Two things about Plover shape the extension. `Translator._listeners` is a **set**,
 so the hook may run before the formatter or after it: nothing may depend on
@@ -97,15 +97,12 @@ the word's own translation, by growing its `english` where the formatter has not
 run and by taking the word back and writing it again where it has, so that one
 `*` undoes both as it does in the Rust host.
 
-**The extension has to be enabled in Plover's configuration**, like any other,
-and `pip install -e` again after a change to the entry points.
-
 `scripts/check-hold.py` is the check, and it drives a real translator: every case
-of `tests/ahead`, `tests/hole` and `tests/frames` replayed through Plover and
-compared against what `stfst translate` wrote for the same strokes. Those
-fixtures list their artifacts in priority order, highest first, which is the
-order Plover reads a collection in: a fixture that listed them any other way
-would be asking the two hosts different questions, and one that did caught it.
+of five fixtures replayed through Plover and compared against what `stfst
+translate` wrote for the same strokes, 1,363 of them. Those fixtures list their
+artifacts in priority order, highest first, which is the order Plover reads a
+collection in: a fixture that listed them any other way would be asking the two
+hosts different questions, and one that did caught it.
 
 ## What a dictionary answers
 
@@ -135,7 +132,7 @@ start. `docs/latency.md` has the measurements.
 | `plover_stfst/ol.py` | The `hfstol` reader: mapped, no decode, no dependency. A second implementation of `crates/stfst-ol`. |
 | `plover_stfst/record.py` | The record language and Plover's translation language, each read as the other. Needs no Plover, because the golden generators use it as an oracle. |
 | `plover_stfst/dictionary.py` | The `plover.dictionary` entry point. |
-| `plover_stfst/hold.py` | The `plover.meta` and `plover.extension` entry points: a stroke whose answer waits for the unit after it. |
+| `plover_stfst/host.py` | The `plover.meta` and `plover.extension` entry points: what a lookup cannot be told. |
 | `plover_stfst/window.py` | Text as the tape carries it, for a frame: a class per character, and the characters beside them. |
 
 ## Checks
@@ -144,7 +141,7 @@ start. `docs/latency.md` has the measurements.
 python3 -m unittest discover plover-plugin/tests   # the record language, the reader
 scripts/crosscheck-py.sh build/dicts/typey-type.stfst systems/stenotype-extended.toml
 "$PLOVER_PYTHON" scripts/check-plugin.py           # every entry, judged by Plover
-"$PLOVER_PYTHON" scripts/check-hold.py             # a held tail, through an engine
+"$PLOVER_PYTHON" scripts/check-hold.py             # five fixtures, through an engine
 ```
 
 The last one is the one that matters. For every entry of every imported

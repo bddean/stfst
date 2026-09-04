@@ -24,24 +24,35 @@ sys.path.insert(0, os.path.join(ROOT, "plover-plugin"))
 
 BUFFER, UNDO = "!buffer", "!undo"
 
+# Every fixture whose answer depends on something a lookup cannot be told. Named
+# one by one rather than globbed, because `tests/retro-words/reach.strokes` is
+# not a question both hosts can be asked: it asserts which strokes have no entry,
+# and Plover writes the raw steno for one where `stfst-board` writes nothing.
+DEFAULT = [
+    "tests/ahead/ahead.strokes",
+    "tests/frames/frames.strokes",
+    "tests/hole/hole.strokes",
+    "tests/repeat-word/repeat-word.strokes",
+    "tests/retro-words/ops.strokes",
+]
+
 
 def cases(strokes_path, expected_path):
-    """Each case as its strokes and the text the Rust host ended with.
+    """Each case as its seed, its strokes, and the text the Rust host ended with.
 
     A case is a `!buffer` line and what follows it, in both files, so the two
-    split the same way and nothing has to count lines. Only an empty buffer:
-    Plover cannot start from text nobody stroked, so a fixture that seeds one is
-    not a question this can ask.
+    split the same way and nothing has to count lines. A buffer that names text
+    is text nobody stroked, which Plover has no `seed` for: what it does have is
+    a translation, so the seed goes in as one.
     """
-    strokes = []
+    strokes, seeds = [], []
     for line in open(strokes_path):
-        line = line.strip()
+        line = line.rstrip()
         if line.startswith(BUFFER):
-            if line != BUFFER:
-                raise SystemExit("%s: a seeded buffer is not a question Plover "
-                                 "can be asked" % strokes_path)
             strokes.append([])
+            seeds.append(line[len(BUFFER):].strip())
             continue
+        line = line.strip()
         if not line or (line.startswith("!") and line != UNDO):
             continue
         if strokes:
@@ -57,7 +68,7 @@ def cases(strokes_path, expected_path):
             # escaped and a backslash doubled.
             texts[-1] = (parts[-1][1:-1].replace('\\"', '"')
                          .replace("\\\\", "\\"))
-    return [(s, t) for s, t in zip(strokes, texts) if s]
+    return [(seed, s, t) for seed, s, t in zip(seeds, strokes, texts) if s]
 
 
 def engine_for(translator):
@@ -82,15 +93,16 @@ def main(paths):
     from plover.formatting import Formatter
     from plover.steno import Stroke, normalize_steno
     from plover.steno_dictionary import StenoDictionaryCollection
-    from plover.translation import Translator
+    from plover.translation import Translation, Translator
     from plover_stfst.dictionary import StfstDictionary
-    from plover_stfst.hold import Ahead, stfst_frame, stfst_hold, waiting
+    from plover_stfst import host
+    from plover_stfst.host import Ahead, waiting
 
     registry.update()
     # What the entry points do, done by hand, so nothing has to be installed.
     registry.register_plugin("dictionary", "stfst", StfstDictionary)
-    registry.register_plugin("meta", "stfst_hold", stfst_hold)
-    registry.register_plugin("meta", "stfst_frame", stfst_frame)
+    for meta in ("stfst_copy", "stfst_retro", "stfst_hold", "stfst_frame"):
+        registry.register_plugin("meta", meta, getattr(host, meta))
     system.setup("Stenotype Extended")
 
     bad = total = 0
@@ -103,7 +115,7 @@ def main(paths):
         dicts = [load_dictionary(os.path.join(ROOT, p.strip()))
                  for p in open(listed) if p.strip()]
         expected = fixture[:-len(".strokes")] + ".expected"
-        for strokes, want in cases(fixture, expected):
+        for seed, strokes, want in cases(fixture, expected):
             buf = [""]
             out = type("Output", (), {
                 "send_backspaces":
@@ -119,6 +131,12 @@ def main(paths):
             translator.add_listener(formatter.format)
             waiting.clear()
             Ahead(engine_for(translator)).start()
+            if seed:
+                # Text the fixture starts from. A translation of its own, so a
+                # window reads it the way it reads anything else written.
+                translator.translate_translation(
+                    Translation([Stroke.from_steno("TEFT")], seed))
+                translator.flush()
             for steno in strokes:
                 keys = "*" if steno == UNDO else normalize_steno(steno)[0]
                 translator.translate_stroke(Stroke.from_steno(keys))
@@ -130,14 +148,14 @@ def main(paths):
             if got == want.strip():
                 continue
             bad += 1
-            print("%s: %s\n  plover %r\n  stfst  %r"
-                  % (os.path.basename(fixture), "/".join(strokes), got, want))
+            print("%s: %s%s\n  plover %r\n  stfst  %r"
+                  % (os.path.basename(fixture), "%r " % seed if seed else "",
+                     "/".join(strokes), got, want))
     print("%d cases, %d differ" % (total, bad))
     return 1 if bad else 0
 
 
 if __name__ == "__main__":
-    args = sys.argv[1:] or [f for d in ("ahead", "hole", "frames")
-                            for f in sorted(glob.glob(
-                                os.path.join(ROOT, "tests", d, "*.strokes")))]
-    sys.exit(main(args))
+    args = sys.argv[1:] or DEFAULT
+    sys.exit(main([os.path.join(ROOT, p) if not os.path.isabs(p) else p
+                   for p in args]))

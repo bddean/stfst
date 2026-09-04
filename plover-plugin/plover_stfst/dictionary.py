@@ -22,7 +22,7 @@ from plover.registry import registry
 from plover.steno import Stroke
 from plover.steno_dictionary import StenoDictionary
 
-from . import hold, window
+from . import host, window
 from .ol import Automaton
 from .record import PLUGIN_COMMANDS, Record, Unsupported
 
@@ -35,8 +35,6 @@ from .record import PLUGIN_COMMANDS, Record, Unsupported
 # the answer, and Plover's dictionary API has one argument: the outline. A
 # dictionary that asks is unavailable here rather than broken.
 CANNOT = {
-    "words": lambda n: "%d words of what is already written" % n,
-    "registers": lambda n: "%d bound words" % n,
     "state": lambda _: "a carried state",
     "context": lambda slots: _slots(slots),
 }
@@ -82,6 +80,7 @@ class StfstDictionary(StenoDictionary):
         self._entries = None     # outline -> translation, walked on first ask
         self._weight = []
         self._next = 0           # words of the *next* unit this reads, if any
+        self._words = 0          # words of written text it reads, if any
         self._context = ()       # the context slots it reads, in table order
         self._significant = ""   # the characters it named, so they reach it raw
 
@@ -112,14 +111,16 @@ class StfstDictionary(StenoDictionary):
             raise ValueError("%s has no longest outline, so Plover cannot bound "
                              "its lookups: give it `strokes` in the recipe" % name)
         self._longest_key = strokes
-        # A frame reads the text the next unit writes, so its answer waits for a
-        # word: `plover_stfst.hold` is what holds the stroke, and it needs to
-        # know this dictionary by name to ask it again.
+        # A window is text the host shows, and `plover_stfst.host` is what shows
+        # it: after the keys for a retro window, and after the next unit's word
+        # for a frame. Either way the artifact has to be asked again once that
+        # text is there, so it goes in a registry a meta's argument can name.
         self._next = needs.get("next", 0)
+        self._words = needs.get("words", 0)
         self._context = tuple(s for s in SLOTS if s in needs["context"])
         self._significant = needs.get("significant", "")
-        if self._next:
-            hold.frames.append(self)
+        if self._next or self._words:
+            host.windows.append(self)
         # A stroke asks about one outline per length and again on a retry, so a
         # generation wide enough for a stroke's worth of questions is one that
         # never drops what the next stroke wants. Two of them are kept.
@@ -176,11 +177,11 @@ class StfstDictionary(StenoDictionary):
         if self._entries is not None:
             return self._entries
         self._entries = {}
-        if self._next:
-            # Half of every tape here is text the writer has not written, so
-            # there is no outline-to-translation pair to list.
-            log.info("%s: a frame writes what it is shown, so it lists nothing",
-                     self.path)
+        if self._next or self._words:
+            # Half of every tape here is the text the rule was shown, so there is
+            # no outline-to-translation pair to list.
+            log.info("%s: a window rule writes what it is shown, so it lists "
+                     "nothing", self.path)
             return self._entries
         pairs = self._fst.pairs()
         if pairs is None:
@@ -209,8 +210,8 @@ class StfstDictionary(StenoDictionary):
         return value
 
     def get(self, key, fallback=None):
-        if self._next:
-            return self._frame_marker(key) or fallback
+        if self._next or self._words:
+            return self._window_marker(key) or fallback
         record = self._record(key)
         if record is None:
             return fallback
@@ -223,36 +224,38 @@ class StfstDictionary(StenoDictionary):
                      self.path, "/".join(key), record, e)
             return fallback
 
-    # ---- a frame: the text it reads is not written yet
+    # ---- a window: text the host shows, which a lookup cannot be told
     #
-    # Plover asks one question, "what does this outline mean", and a frame's
-    # answer depends on what the *next* stroke means, which another dictionary
-    # owns. So the answer here is a marker that writes nothing, and the extension
-    # in `plover_stfst.hold` asks again once a unit has written a word.
+    # Plover asks one question, "what does this outline mean". A retro window is
+    # text the engine has and a lookup is not given; a frame's window is not
+    # written yet at all. So the answer here is a marker, and the metas in
+    # `plover_stfst.host` ask this dictionary again once the text is there.
 
-    def frame_words(self):
-        """The most words a frame of this dictionary can be shown."""
-        return self._next
+    def window_words(self):
+        """The most words a window of this dictionary can be shown."""
+        return self._next or self._words
 
-    def _frame_marker(self, key):
-        """The held translation for an outline some frame begins, or None.
+    def _window_marker(self, key):
+        """The marker for an outline this dictionary's window rules begin.
 
         Live and not final: whether the entry matches at all is unknown until the
-        window arrives, which is the whole reason the stroke waits. A dictionary
-        of frames therefore has to sit below everything in `plover.cfg`, so that
-        it answers only where nothing else did, exactly as it is a fallback in
-        `stfst-board`.
+        window arrives. So a windowed dictionary has to sit below everything in
+        `plover.cfg`, where it answers only what nothing else did, which is the
+        fallback it is in `stfst-board`.
         """
-        if not any(self._frame_cursor(key, cap) for cap in ("off", "on")):
+        if not any(self._window_cursor(key, cap) for cap in ("off", "on")):
             return None
-        return "%sframe:%d:%s}" % (hold.HOLD, hold.frames.index(self),
-                                   "/".join(key))
+        if self._next:
+            return "%sframe:%d:%s}" % (host.HOLD, host.windows.index(self),
+                                       "/".join(key))
+        return "{:stfst_retro:%d:%s}" % (host.windows.index(self),
+                                         "/".join(key))
 
-    def _frame_cursor(self, key, cap):
+    def _window_cursor(self, key, cap):
         """A cursor over the context slots and then the keys, or None if dead.
 
-        Not the memoised walk `_cursor` does: a frame's keys are read under a
-        prefix, and it is asked once per hold rather than once per stroke.
+        Not the memoised walk `_cursor` does: these keys are read under a
+        prefix, and they are asked once per window rather than once per stroke.
         """
         alphabet = self._fst.alphabet
         cursor = self._fst.cursor()
@@ -274,15 +277,15 @@ class StfstDictionary(StenoDictionary):
                 cursor.step(sym)
         return cursor if cursor.live() else None
 
-    def frame(self, key, span, cap):
-        """What a frame writes over the span it was shown, or None.
+    def window(self, key, span, cap):
+        """What a window rule writes over the span it was shown, or None.
 
         The window goes on the tape after the keys, one symbol per character, and
         what comes back is a record whose class glyphs stand for those characters
         in order. So the casing is applied here, with Python's own Unicode rules,
         and the transducer only decided where.
         """
-        cursor = self._frame_cursor(tuple(key), cap)
+        cursor = self._window_cursor(tuple(key), cap)
         if cursor is None:
             return None
         alphabet = self._fst.alphabet

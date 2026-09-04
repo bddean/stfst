@@ -1,17 +1,31 @@
-"""The stroke that waits, in Plover.
+r"""What a dictionary needs the host to say, where a lookup cannot be told it.
 
-Two kinds of record belong to the unit *after* their keys, so neither can be
-written when those keys arrive. A **tail** is `[AFTER]`: text that follows the
-next word, joined by the host's orthography. A **frame** reads that word as a
-window and writes over it, which is what `next = 2` in a recipe declares.
+Plover asks a dictionary one question and passes it one argument: the outline. So
+four things an artifact can ask for have no way in, and each is a meta the
+dictionary answers with instead. Three of them read text the engine has, and the
+fourth waits for text nobody has written yet.
 
-Plover asks a dictionary one question, "what does this outline mean", and both
-answers depend on what the next stroke means, which another dictionary owns. So
-a dictionary here answers with `{:stfst_hold:…}`, a meta that writes nothing and
-carries what the wait needs, and this extension writes the answer when a
-translation puts a word on screen.
+| a dictionary asks for | the meta | when it writes |
+|---|---|---|
+| a bound word, `[COPY1]` | `stfst_copy` | at once: the word is behind the cursor |
+| a window of written text, `words = 16` | `stfst_retro` | at once, over the words it rewrote |
+| a window of the text after it, `next = 2` | `stfst_hold` then `stfst_frame` | when a unit writes a word |
+| a tail, `[AFTER]` | `stfst_hold` then the tail itself | when a unit writes a word |
 
-    ^*G      ->  {:stfst_hold:tail:\\{:infl:ing\\}}   nothing, "ing" waiting
+A window record is not text: its class glyphs stand for the characters of the
+span, so `window.py` encodes the span and `Record.rewrite` substitutes them back.
+Both windowed kinds take the words back with `prev_replace`, which is how
+Plover's own retro metas rewrite what is already written.
+
+## What waits, and why it takes an extension
+
+A tail and a frame belong to the unit *after* their keys, and the answer depends
+on what the next stroke means, which another dictionary owns. So the dictionary
+answers with `{:stfst_hold:…}`, which writes nothing and carries what the wait
+needs, and the extension writes the answer when a translation puts a word on
+screen.
+
+    ^*G      ->  {:stfst_hold:tail:\{:infl:ing\}}   nothing, "ing" waiting
     RUPB     ->  run                                a word, so the tail lands
                  running
 
@@ -19,15 +33,19 @@ translation puts a word on screen.
     HAOER    ->  here                               a word, so the frame reads it
                  from here to
 
-A frame's own answer is not known until the window arrives, so its marker is a
-*live* candidate rather than a match. That makes a dictionary of frames a
-fallback, and a fallback in Plover means the bottom of `plover.cfg`: a lower
-dictionary answers only where nothing above it did, which is what `stfst-board`
-gets by asking for a held candidate after everything else.
+## What a live candidate costs
+
+Whether a windowed entry matches at all is unknown until the window arrives, so
+its marker stands for a *live* candidate rather than a match. That makes a
+windowed dictionary a fallback, and a fallback in Plover means the bottom of the
+dictionary list, because the first dictionary in a collection wins. It also means
+such a dictionary claims a stroke that begins one of its entries even where the
+rule turns out not to apply: `stfst-board` lets that stroke fall through to a
+lower dictionary and this cannot, which is the one place the two hosts differ.
 
 ## Why the marker is read twice
 
-`Translator._listeners` is a *set*, so this extension's hook may run before the
+`Translator._listeners` is a *set*, so the extension's hook may run before the
 formatter or after it. Nothing here may depend on which: the hook cannot read
 `Translation.formatting`, because it may not exist yet, and it cannot let a meta
 be what arms the wait, because a meta runs inside the formatter. So the hook
@@ -44,9 +62,10 @@ from plover.translation import Translation
 
 HOLD = "{:stfst_hold:"
 
-# The frame dictionaries, in load order, so a marker can name one: a frame needs
-# its artifact again after the window arrives, and a meta's argument is text.
-frames = []
+# The windowed dictionaries, in load order, so a marker can name one: a window
+# has to be harvested against the artifact after the text arrives, and a meta's
+# argument is text.
+windows = []
 
 # Every directive that writes nothing, by the shape of its first character. A
 # word is what a hold waits for, so this only has to be right about whether
@@ -166,37 +185,82 @@ def stfst_hold(ctx, arg):
     return ctx.copy_last_action()
 
 
-def stfst_frame(ctx, arg):
-    """A frame, now that the words it reads are written: rewrite them.
+def stfst_copy(ctx, arg):
+    """`[COPY1]`: the host's nth bound word, spliced in.
 
-    `Ahead` appends this to the word's own translation, so the words are in the
-    context and `prev_replace` is what takes them back. What the frame is shown
-    is the words *this* translation wrote and no older text, so a frame cannot
-    reach back over what was already there.
+    The word never reaches the transducer, which is what keeps the automaton
+    finite: a dictionary that had to know it would need a path per word. `1` is
+    the newest, as the registers are numbered.
     """
-    index, cap, outline = arg.split(":", 2)
-    dictionary = frames[int(index)]
+    action = ctx.new_action()
+    # The registers are bound before the record writes, so a word this record has
+    # already written is not one of them. Counting them back off the context is
+    # what makes the index stable: each word written shifts the whole span by
+    # one, so the same register is the same word all the way through.
+    own = len("".join(a.text or "" for a in ctx.translated_actions).split())
+    at = int(arg) + own
+    tokens = [t.rstrip() for t in ctx.last_words(count=at)]
+    action.text = tokens[-at] if len(tokens) >= at else ""
+    return action
+
+
+def _rewrite(ctx, dictionary, outline, tokens, cap="off"):
+    """Take those words back and write what the window rule made of them.
+
+    `prev_replace` is how Plover's own retro metas rewrite what is written, and
+    the whitespace after the last word sits outside anything a rule may touch, so
+    it goes back on the end.
+    """
     action = ctx.copy_last_action()
     action.text = ""
-    own = len("".join(a.text or "" for a in ctx.translated_actions).split())
-    if not own or own > dictionary.frame_words():
-        # More words than the frame declared is text it cannot be shown, so it
-        # does not fire: showing the last few would frame the tail of a phrase.
-        return action
-    tokens = ctx.last_words(count=own)
-    if len(tokens) < own:
-        return action
     span = "".join(tokens)
-    text = dictionary.frame(outline.split("/"), span.strip(), cap)
+    text = dictionary.window(outline.split("/"), span.strip(), cap)
     if text is None:
         return action
     action.prev_replace = span
     action.prev_attach = True
-    # The whitespace after the last word sits outside anything a frame may
-    # touch, so it goes back on the end.
     action.text = text + span[len(span.rstrip()):]
     action.word = None
     return action
+
+
+def stfst_retro(ctx, arg):
+    """A window of text already written: rewrite it.
+
+    The stroke needs nothing to wait for, because the words are behind the
+    cursor. What it is shown is the last `words` of them, which is the dial the
+    recipe set.
+    """
+    index, outline = arg.split(":", 1)
+    dictionary = windows[int(index)]
+    tokens = ctx.last_words(count=dictionary.window_words())
+    if not tokens:
+        return ctx.copy_last_action()
+    return _rewrite(ctx, dictionary, outline, tokens)
+
+
+def stfst_frame(ctx, arg):
+    """A frame, now that the words it reads are written: rewrite them.
+
+    `Ahead` appends this to the word's own translation, so the words are in the
+    context. What the frame is shown is the words *this* translation wrote and no
+    older text, so a frame cannot reach back over what was already there.
+    """
+    index, cap, outline = arg.split(":", 2)
+    dictionary = windows[int(index)]
+    own = len("".join(a.text or "" for a in ctx.translated_actions).split())
+    if not own or own > dictionary.window_words():
+        # More words than the frame declared is text it cannot be shown, so it
+        # does not fire: showing the last few would frame the tail of a phrase.
+        action = ctx.copy_last_action()
+        action.text = ""
+        return action
+    tokens = ctx.last_words(count=own)
+    if len(tokens) < own:
+        action = ctx.copy_last_action()
+        action.text = ""
+        return action
+    return _rewrite(ctx, dictionary, outline, tokens, cap)
 
 
 class Ahead:

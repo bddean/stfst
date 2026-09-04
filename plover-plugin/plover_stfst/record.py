@@ -17,7 +17,7 @@ record this module cannot spell is a dictionary entry Plover does not get, which
 is a loss it can report; a wrong spelling is a loss it cannot.
 """
 
-from .window import CASELESS, DIGIT, LETTER, OTHER, SPACE, UPPER
+from .window import CASELESS, DIGIT, LETTER, OTHER, SPACE, UPPER, sig_char
 
 # The flag tags, in canonical tape order. `stfst_core::record::FLAG_TAGS`.
 FLAG_TAGS = [
@@ -304,6 +304,11 @@ def _parse_body(symbols):
         elif s in CLASS_TAGS:
             body.append(("glyph", s))
             i += 1
+        elif sig_char(s) is not None:
+            # A character the grammar named reaches both tapes as itself, so on
+            # this one it is text like any other.
+            body.append(("text", sig_char(s)))
+            i += 1
         elif counted(s, "COPY") is not None:
             body.append(("copy", counted(s, "COPY")))
             i += 1
@@ -549,8 +554,13 @@ def _translation(self):
             atoms.append([False, _command(item[1], item[2])])
         elif kind == "meta":
             atoms.append([False, _meta(item[1], item[2])])
+        elif kind == "copy":
+            # A bound word is a word, but the record's own space is what separates
+            # it from what came before, so it takes no join of its own and does
+            # not count as one of the words the gap rules read.
+            atoms.append([False, "{:stfst_copy:%d}" % item[1]])
         else:
-            raise Unsupported("%s, which needs a window or a register" % kind)
+            raise Unsupported("%s, which needs a window" % kind)
 
     words = [a for a in atoms if a[0]]
     for n, atom in enumerate(words):

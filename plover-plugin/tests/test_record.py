@@ -131,10 +131,23 @@ class SpellsRecords(unittest.TestCase):
         self.assertEqual(Record.parse(list("ab") + ["[REP3]"]).translation(), "ababab")
 
     def test_what_plover_cannot_hold_is_refused(self):
-        for tape in (["a", "[REPLACE1]"], ["[COPY1]"], ["[LETTER]"], ["[DROP]"],
+        for tape in (["a", "[REPLACE1]"], ["[LETTER]"], ["[DROP]"],
                      ["a", "[STATE]", "x", "[END]"]):
             with self.subTest(tape):
                 self.assertRaises(Unsupported, Record.parse(tape).translation)
+
+    def test_a_bound_word_is_a_meta(self):
+        # `plover_stfst.host` is what knows the word, because a lookup is not
+        # told it and a meta reads the text the engine has.
+        self.assertEqual(Record.parse(list("and ") + ["[COPY1]"]).translation(),
+                         "and {:stfst_copy:1}")
+
+    def test_a_window_record_is_rewritten_and_not_spelled(self):
+        # A class glyph stands for a character of the span, so it has no Plover
+        # translation at all: `rewrite` is the direction that reads one.
+        record = Record.parse(list("(") + ["[UPPER]", "[LETTER]"] + list(")"))
+        self.assertRaises(Unsupported, record.translation)
+        self.assertEqual(record.rewrite(["c", "at"[0]]), "(Ca)")
 
 
 class TheTape(unittest.TestCase):

@@ -260,31 +260,34 @@ undo a pop here too.
 
 ### Plover
 
-A dictionary cannot hold a stroke: it answers "what does this outline mean", and
-here the answer depends on what the *next* stroke means, which another
-dictionary owns. So `plover_stfst.hold` is two metas and an extension.
-`{:stfst_hold:…}` is what a dictionary answers with and writes nothing;
-`{:stfst_frame:…}` writes a frame once the word is there, taking the word back
-with `prev_replace` the way Plover's own retro metas do; and the extension moves
-the one to the other when a translation puts a word on screen.
+Plover asks a dictionary one question and passes one argument: the outline. So
+neither a tail nor a frame can be answered by a lookup, and `plover_stfst/host.py`
+answers with a meta instead. `{:stfst_hold:…}` writes nothing and carries what
+the wait needs; `{:stfst_frame:…}` writes a frame once the word is there, taking
+the words back with `prev_replace` the way Plover's own retro metas do; and the
+extension moves the one to the other when a translation puts a word on screen.
 
-A frame's answer is not known until the window arrives, so its marker stands for
-a live candidate rather than a match, which makes a dictionary of frames a
-fallback. In Plover that means the bottom of the dictionary list, because the
-first dictionary in a collection wins.
+Two more metas came out of the same corner and retired the two Python plugins
+this family was ported from. `{:stfst_retro:…}` is a window of text already
+written, so `retro-words` is an artifact in `plover.cfg` now, and
+`{:stfst_copy:1}` is a bound word, so `repeat-word` is one too. Every dictionary
+in `recipe.toml` loads there.
 
-Two discoveries paid for the pair. `Translator._listeners` is a **set**, so the
-extension's hook may run before the formatter or after it and nothing may depend
-on which: the hook reads the translation's own text for the marker rather than
+A windowed entry's own answer is unknown until the window arrives, so a lookup
+can only say that the keys *begin* one, and the dictionary that says so claims
+the stroke. A windowed dictionary therefore belongs at the bottom of
+`plover.cfg`, where it claims only what nothing above it wanted, and that is the
+one place the two hosts differ: `stfst-board` asks for a live candidate after
+everything else and lets the stroke fall through where the rule does not apply.
+
+Two discoveries paid for the extension. `Translator._listeners` is a **set**, so
+its hook may run before the formatter or after it and nothing may depend on
+which: the hook reads the translation's own text for the marker rather than
 letting the meta arm the wait, and it reads the text again to decide whether a
 word was written rather than asking `Translation.formatting`, which may not exist
 yet. And what lands has to become part of the word's own translation, either by
 growing its `english` before it is formatted or by taking the word back and
 writing it again after, so that one `*` undoes both as it does here.
-
-What Plover still refuses is a window of text *already* written, and a bound
-word: `retro-words` and `repeat-word`. Both are the same shape of work as the
-frame, since the extension knows the text and could hand it over.
 
 ### What is checked
 
@@ -297,9 +300,11 @@ stroke, and an undo that leaves it waiting again.
 
 `tests/ahead` and `tests/hole` are the two tails, and both are skipped where
 `build/morph` is absent, because what they prove is an inflection.
-`scripts/check-hold.py` replays every case of all three through a real Plover
-engine and compares, which is the two hosts agreeing on a mechanism neither
-holds in the same place. Those fixtures list their artifacts in priority order,
+`scripts/check-hold.py` replays five fixtures through a real Plover engine and
+compares: 1,363 cases, no difference, which is the two hosts agreeing on
+everything a lookup cannot be told. `tests/repeat-word` and
+`tests/retro-words/ops.strokes` are two of the five, so the 1,316 retro
+operations over fourteen buffers are answered the same way by both. Those fixtures list their artifacts in priority order,
 highest first, because that is the order Plover reads a collection in and the
 order `Stack::open` sorts a recipe into; a fixture that listed them any other
 way would be asking the two hosts different questions, and one that did was

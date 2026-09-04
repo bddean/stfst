@@ -42,6 +42,18 @@ def sig_symbol(c):
     return "[=%s]" % c
 
 
+def sig_char(symbol):
+    """The character a named symbol stands for, or None for anything else.
+
+    A named character is literal on *both* tapes, so a record can hold one and a
+    reader has to know it: `retro-words` writes brackets around a word that way.
+    """
+    if not (symbol.startswith("[=") and symbol.endswith("]")):
+        return None
+    inner = symbol[2:-1]
+    return inner if len(inner) == 1 else None
+
+
 def encode(span, significant):
     """A span as `(symbols, chars)`: the whole window including its delimiters,
     and the characters the class glyphs stand for, in order.

@@ -15,18 +15,19 @@ dependencies = ["plover>=4.0.0"]
 [project.entry-points."plover.dictionary"]
 stfst = "plover_stfst.dictionary:StfstDictionary"
 
-# A stroke whose answer belongs to the unit after it: a `[AFTER]` tail, or a
-# frame reading the word it goes around. `stfst_hold` is what a dictionary
-# answers with and writes nothing, `stfst_frame` writes a frame once the word is
-# there, and the extension moves the one to the other. Same package as the
-# dictionary; the extension still has to be enabled in Plover's configuration,
-# like any other.
+# What a dictionary needs the host to say, where a lookup cannot be told it: a
+# bound word, a window of written text, a window of the text after it, and a
+# tail. The last two wait for a word, which is what the extension is for. Same
+# package as the dictionary; the extension still has to be enabled in Plover's
+# configuration, like any other.
 [project.entry-points."plover.meta"]
-stfst_hold = "plover_stfst.hold:stfst_hold"
-stfst_frame = "plover_stfst.hold:stfst_frame"
+stfst_copy = "plover_stfst.host:stfst_copy"
+stfst_retro = "plover_stfst.host:stfst_retro"
+stfst_hold = "plover_stfst.host:stfst_hold"
+stfst_frame = "plover_stfst.host:stfst_frame"
 
 [project.entry-points."plover.extension"]
-stfst = "plover_stfst.hold:Ahead"
+stfst = "plover_stfst.host:Ahead"
 
 [tool.setuptools]
 packages = ["plover_stfst"]

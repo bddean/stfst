@@ -102,26 +102,21 @@ The host loop both it and `stfst translate` drive is `stfst-board`.
 
 `plover-plugin/` is a Plover dictionary class over these artifacts, so the format
 is portable backwards and a dictionary compiled here works in Plover with no
-further work. Every dictionary in the stack loads there except two:
-`retro-words` and `repeat-word` read what Plover has no way to tell a
-dictionary, and each is refused by name and by what it asked for rather than
-mistranslated:
+further work, and now every dictionary in `recipe.toml` loads there.
 
-```
-retro-words refused: reads 16 words of what is already written
-```
+Four things an artifact can ask for have no way through Plover's dictionary API,
+which passes a lookup one argument: a bound word, a window of written text, a
+window of the text after it, and a tail. `plover_stfst/host.py` answers each with
+a meta and an extension, so `retro-words` and `repeat-word` are artifacts in
+`plover.cfg` rather than the Python plugins they were ported from, and `frames`,
+`ahead` and phrasing's hole ender work on the desktop too. A dictionary is
+refused only by ability, never by a version number: the version is one number
+and these are separate abilities.
 
-A dictionary is refused by ability and not by a version number, because the
-version is one number and these are separate abilities. What the plugin gained
-is `plover_stfst.hold`: two metas and an extension that hold a stroke whose
-answer belongs to the unit after it, so `frames`, `ahead` and phrasing's hole
-all work in Plover. A frame is the harder half, because it reads the word it
-goes around, so `window.py` encodes that word the way the tape carries it and
-the record's class glyphs are substituted back with Python's own casing.
-`scripts/check-hold.py` drives a whole engine and compares every case of
-`tests/ahead`, `tests/hole` and `tests/frames` against what `stfst translate`
-writes for the same strokes. It is what Plover runs: `~/.config/plover` names these
-artifacts in its stack.
+`scripts/check-hold.py` is what holds that half honest. It drives a whole Plover
+engine over five stroke fixtures and compares the text at the end of every case
+against what `stfst translate` wrote for the same strokes: 1,363 cases, no
+difference, including the 1,316 `retro-words` operations over fourteen buffers.
 
 Nothing is shared with the Rust: the plugin has its own `hfstol` reader and its
 own reading of the record language, which is what makes it evidence that the

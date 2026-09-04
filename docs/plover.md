@@ -268,6 +268,41 @@ in this host at all: `stfst-dict`'s fold does not consult it either. Nothing in
 the stack strokes `{$}` and a suffix in sequence, so this one is written down
 rather than answered.
 
+## What a lookup cannot be told
+
+Plover asks a dictionary one question and passes it one argument: the outline. So
+four things an artifact can ask for have no way in, and each of them was a
+refusal at load until the metas in `plover_stfst/host.py` answered it instead.
+
+| a dictionary asks for | the meta | when it writes |
+|---|---|---|
+| a bound word, `[COPY1]` | `stfst_copy` | at once: the word is behind the cursor |
+| a window of written text, `words = 16` | `stfst_retro` | at once, over the words it rewrote |
+| a window of the text after it, `next = 2` | `stfst_hold` then `stfst_frame` | when a unit writes a word |
+| a tail, `[AFTER]` | `stfst_hold` then the tail itself | when a unit writes a word |
+
+Both windowed kinds take the words back with `prev_replace`, which is how
+Plover's own retro metas rewrite what is already written, and the class glyphs of
+a window record are substituted with `Record.rewrite`. So `retro-words` and
+`repeat-word` are artifacts in `plover.cfg` now rather than the Python plugins
+they were ported from, and `frames`, `ahead` and phrasing's hole ender work here
+too. Every dictionary in `recipe.toml` loads.
+
+What it costs is one divergence, and it is about *which* dictionary answers
+rather than what it writes. A windowed entry's own answer is unknown until the
+window arrives, so a lookup can only say that the keys begin one, and a
+dictionary that says so claims the stroke: `^A` writes nothing here, where
+`stfst-board` lets it fall through to a lower dictionary. A windowed dictionary
+therefore belongs at the bottom of `plover.cfg`, and there it claims only what
+nothing above it wanted.
+
+`scripts/check-hold.py` is what holds this half to the Rust one. It drives a real
+translator over the same fixtures `stfst translate` answers, and compares the
+text at the end of every case: 1,363 of them, no difference, including the 1,316
+retro-words operations over fourteen buffers. `reach.strokes` is the one fixture
+it cannot ask, because that one asserts which strokes have *no* entry and Plover
+writes the raw steno where `stfst-board` writes nothing.
+
 ## What is not here
 
 Reverse lookup answers with the eight shortest outlines, because a generative
