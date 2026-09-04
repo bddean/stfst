@@ -53,7 +53,10 @@ def cases(strokes_path, expected_path):
             texts.append("")
             continue
         if texts and len(parts) > 1 and parts[-1].startswith('"'):
-            texts[-1] = parts[-1][1:-1]
+            # The text column is `{:?}` from Rust, so a quote in the text is
+            # escaped and a backslash doubled.
+            texts[-1] = (parts[-1][1:-1].replace('\\"', '"')
+                         .replace("\\\\", "\\"))
     return [(s, t) for s, t in zip(strokes, texts) if s]
 
 
@@ -81,16 +84,21 @@ def main(paths):
     from plover.steno_dictionary import StenoDictionaryCollection
     from plover.translation import Translator
     from plover_stfst.dictionary import StfstDictionary
-    from plover_stfst.hold import Ahead, stfst_ahead, waiting
+    from plover_stfst.hold import Ahead, stfst_frame, stfst_hold, waiting
 
     registry.update()
     # What the entry points do, done by hand, so nothing has to be installed.
     registry.register_plugin("dictionary", "stfst", StfstDictionary)
-    registry.register_plugin("meta", "stfst_ahead", stfst_ahead)
+    registry.register_plugin("meta", "stfst_hold", stfst_hold)
+    registry.register_plugin("meta", "stfst_frame", stfst_frame)
     system.setup("Stenotype Extended")
 
     bad = total = 0
     for fixture in paths:
+        # In priority order, highest first, which is the order Plover reads a
+        # collection in and the order `Stack::open` sorts a recipe into. A
+        # fixture that listed them any other way would be asking the two hosts
+        # different questions.
         listed = os.path.join(os.path.dirname(fixture), "artifacts")
         dicts = [load_dictionary(os.path.join(ROOT, p.strip()))
                  for p in open(listed) if p.strip()]
@@ -129,7 +137,7 @@ def main(paths):
 
 
 if __name__ == "__main__":
-    args = sys.argv[1:] or [f for d in ("ahead", "hole")
+    args = sys.argv[1:] or [f for d in ("ahead", "hole", "frames")
                             for f in sorted(glob.glob(
                                 os.path.join(ROOT, "tests", d, "*.strokes")))]
     sys.exit(main(args))

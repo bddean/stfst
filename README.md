@@ -102,22 +102,25 @@ The host loop both it and `stfst translate` drive is `stfst-board`.
 
 `plover-plugin/` is a Plover dictionary class over these artifacts, so the format
 is portable backwards and a dictionary compiled here works in Plover with no
-further work. Every dictionary in the stack loads there except three:
-`retro-words`, `repeat-word` and `frames` read what Plover has no way to tell a
+further work. Every dictionary in the stack loads there except two:
+`retro-words` and `repeat-word` read what Plover has no way to tell a
 dictionary, and each is refused by name and by what it asked for rather than
 mistranslated:
 
 ```
-frames refused: reads 2 words of what is written next and the context slot CAP
+retro-words refused: reads 16 words of what is already written
 ```
 
 A dictionary is refused by ability and not by a version number, because the
 version is one number and these are separate abilities. What the plugin gained
-instead is `plover_stfst.hold`, a meta and an extension that hold a stroke whose
-record ends in `[AFTER]`, so phrasing's hole ender and `ahead` work in Plover
-too. `scripts/check-hold.py` drives a whole engine and compares every case of
-`tests/ahead` and `tests/hole` against what `stfst translate` writes for the same
-strokes. It is what Plover runs: `~/.config/plover` names these
+is `plover_stfst.hold`: two metas and an extension that hold a stroke whose
+answer belongs to the unit after it, so `frames`, `ahead` and phrasing's hole
+all work in Plover. A frame is the harder half, because it reads the word it
+goes around, so `window.py` encodes that word the way the tape carries it and
+the record's class glyphs are substituted back with Python's own casing.
+`scripts/check-hold.py` drives a whole engine and compares every case of
+`tests/ahead`, `tests/hole` and `tests/frames` against what `stfst translate`
+writes for the same strokes. It is what Plover runs: `~/.config/plover` names these
 artifacts in its stack.
 
 Nothing is shared with the Rust: the plugin has its own `hfstol` reader and its

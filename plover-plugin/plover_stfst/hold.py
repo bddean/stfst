@@ -1,44 +1,55 @@
-"""The stroke that waits: `[AFTER]` in Plover.
+"""The stroke that waits, in Plover.
 
-A record's tail belongs to the unit after it, so it cannot be written when its
-keys arrive. `stfst-board` holds the stroke. Plover's dictionary API has no way
-to: a dictionary answers "what does this outline mean", and the answer here
-depends on what the *next* stroke means, which another dictionary owns.
+Two kinds of record belong to the unit *after* their keys, so neither can be
+written when those keys arrive. A **tail** is `[AFTER]`: text that follows the
+next word, joined by the host's orthography. A **frame** reads that word as a
+window and writes over it, which is what `next = 2` in a recipe declares.
 
-So the tail leaves the dictionary inside a meta, `{:stfst_ahead:…}`, which writes
-nothing, and an extension writes it when a translation puts a word on screen.
+Plover asks a dictionary one question, "what does this outline mean", and both
+answers depend on what the next stroke means, which another dictionary owns. So
+a dictionary here answers with `{:stfst_hold:…}`, a meta that writes nothing and
+carries what the wait needs, and this extension writes the answer when a
+translation puts a word on screen.
 
-    ^*G   ->  {:stfst_ahead:\\{^ing\\}}    nothing on screen, "ing" waiting
-    RUPB  ->  run                         a word, so the tail lands
-              running
+    ^*G      ->  {:stfst_hold:tail:\\{:infl:ing\\}}   nothing, "ing" waiting
+    RUPB     ->  run                                a word, so the tail lands
+                 running
 
-Two plugins for one mechanism, because a dictionary can only hand the formatter a
-meta and only an extension hook sees the next translation.
+    STPR*T   ->  {:stfst_hold:frame:0:STPR*T}       nothing, a frame waiting
+    HAOER    ->  here                               a word, so the frame reads it
+                 from here to
+
+A frame's own answer is not known until the window arrives, so its marker is a
+*live* candidate rather than a match. That makes a dictionary of frames a
+fallback, and a fallback in Plover means the bottom of `plover.cfg`: a lower
+dictionary answers only where nothing above it did, which is what `stfst-board`
+gets by asking for a held candidate after everything else.
 
 ## Why the marker is read twice
 
-`Translator._listeners` is a *set*, so the extension's hook may run before the
+`Translator._listeners` is a *set*, so this extension's hook may run before the
 formatter or after it. Nothing here may depend on which: the hook cannot read
-`Translation.formatting`, because it may not exist yet, and it cannot let the
-meta be what arms the wait, because the meta runs inside the formatter. So the
-hook reads the translation's own text for the marker and for whether a word was
-written, and the meta exists only to write nothing where the marker sits.
+`Translation.formatting`, because it may not exist yet, and it cannot let a meta
+be what arms the wait, because a meta runs inside the formatter. So the hook
+reads the translation's own text, both for the marker and for whether a word was
+written, and the metas only write.
 
-The tail lands as a translation of its own, so Plover's orthography and any meta
-inside it read the word from the formatter's history, where a word written by the
-same translation would not be. One `*` takes the tail back and a second takes the
-word; `stfst-board` undoes both at once, and that is the one place the two hosts
-differ.
+What lands becomes part of the word's own translation, by growing its `english`
+where the formatter has not run yet and by taking the word back and writing it
+again where it has. So one `*` undoes the word and what waited for it together,
+as it does in `stfst-board`.
 """
-import re
-
 from plover.formatting import ATOM_RE
 from plover.translation import Translation
 
-MARKER = "{:stfst_ahead:"
+HOLD = "{:stfst_hold:"
+
+# The frame dictionaries, in load order, so a marker can name one: a frame needs
+# its artifact again after the window arrives, and a meta's argument is text.
+frames = []
 
 # Every directive that writes nothing, by the shape of its first character. A
-# word is what a held tail waits for, so this only has to be right about whether
+# word is what a hold waits for, so this only has to be right about whether
 # *something* was written.
 SILENT = ("#", ":", "*", "$", "-|", ">", "<", "^^")
 SILENT_EXACT = ("", "^", "&", "~|")
@@ -57,16 +68,16 @@ def _unescape(text):
     return "".join(out)
 
 
-def split_tail(english):
-    """A translation as its body and the tail it holds, or `None` for no tail.
+def split_hold(english):
+    """A translation as its body and what its marker holds, or `None` for none.
 
-    The marker's argument is a translation of its own with its braces escaped, so
-    the atom ends at the first brace that is not.
+    The argument is `kind:rest`, and a tail's rest is a translation of its own
+    with its braces escaped, so the atom ends at the first brace that is not.
     """
-    at = english.find(MARKER)
+    at = english.find(HOLD)
     if at < 0:
         return english, None
-    i = at + len(MARKER)
+    i = at + len(HOLD)
     arg = []
     while i < len(english):
         if english[i] == "\\" and i + 1 < len(english):
@@ -78,14 +89,15 @@ def split_tail(english):
             break
         arg.append(english[i])
         i += 1
-    return english[:at] + english[i:], _unescape("".join(arg))
+    kind, _, rest = "".join(arg).partition(":")
+    return english[:at] + english[i:], (kind, _unescape(rest))
 
 
 def writes_text(english):
     """Whether a translation puts anything on screen.
 
-    Not "is it non-empty": a command, a case directive and a held tail all write
-    nothing, and a tail waits for a word rather than for a stroke.
+    Not "is it non-empty": a command, a case directive and a held marker all
+    write nothing, and a hold waits for a word rather than for a stroke.
     """
     for atom in ATOM_RE.findall(english):
         atom = atom.strip()
@@ -106,18 +118,33 @@ def writes_text(english):
     return False
 
 
-class _Waiting:
-    """The tail this engine is holding, and nothing else: one engine, one hold.
+def cap_pending(translator):
+    """Whether a capital is waiting for the next word.
 
-    A second `[AFTER]` before the first has landed replaces it, as it does in
-    `stfst-board`: what waits is one record, not a queue.
+    A frame reads it, because the word is written before the frame is: at the
+    start of a sentence the word has taken the capital already, and a frame with
+    a word of its own has to take it back. The newest translation that has been
+    formatted is what says, and a marker's own translation writes nothing, so it
+    carries the answer through either order.
+    """
+    for translation in reversed(translator.get_state().translations):
+        if translation.formatting:
+            return "on" if translation.formatting[-1].next_case else "off"
+    return "off"
+
+
+class _Waiting:
+    """What this engine is holding: the text to append to the next word.
+
+    One hold, not a queue. A second before the first has landed replaces it, as
+    it does in `stfst-board`.
     """
 
     def __init__(self):
         self.text = None
-        # The translation a tail last landed on, and the tail. What undo needs:
-        # taking the word back leaves the tail waiting again, as the mark does in
-        # `stfst-board`.
+        # The translation a hold last landed on, and what it appended. What undo
+        # needs: taking the word back leaves the hold waiting again, as the mark
+        # does in `stfst-board`.
         self.landed = None
 
     def arm(self, text):
@@ -130,13 +157,50 @@ class _Waiting:
 waiting = _Waiting()
 
 
-def stfst_ahead(ctx, arg):
-    """The meta: write nothing. `Ahead` is what reads the argument."""
+def stfst_hold(ctx, arg):
+    """The marker a dictionary answers with: write nothing.
+
+    `Ahead` reads the argument off the translation, not from here, because a meta
+    runs inside the formatter and the hook may have run already.
+    """
     return ctx.copy_last_action()
 
 
+def stfst_frame(ctx, arg):
+    """A frame, now that the words it reads are written: rewrite them.
+
+    `Ahead` appends this to the word's own translation, so the words are in the
+    context and `prev_replace` is what takes them back. What the frame is shown
+    is the words *this* translation wrote and no older text, so a frame cannot
+    reach back over what was already there.
+    """
+    index, cap, outline = arg.split(":", 2)
+    dictionary = frames[int(index)]
+    action = ctx.copy_last_action()
+    action.text = ""
+    own = len("".join(a.text or "" for a in ctx.translated_actions).split())
+    if not own or own > dictionary.frame_words():
+        # More words than the frame declared is text it cannot be shown, so it
+        # does not fire: showing the last few would frame the tail of a phrase.
+        return action
+    tokens = ctx.last_words(count=own)
+    if len(tokens) < own:
+        return action
+    span = "".join(tokens)
+    text = dictionary.frame(outline.split("/"), span.strip(), cap)
+    if text is None:
+        return action
+    action.prev_replace = span
+    action.prev_attach = True
+    # The whitespace after the last word sits outside anything a frame may
+    # touch, so it goes back on the end.
+    action.text = text + span[len(span.rstrip()):]
+    action.word = None
+    return action
+
+
 class Ahead:
-    """The extension: land a held tail on the next word."""
+    """The extension: write what a held stroke was waiting for."""
 
     def __init__(self, engine):
         self._engine = engine
@@ -150,30 +214,41 @@ class Ahead:
 
     def _translated(self, undo, do):
         for translation in undo:
-            _, tail = split_tail(translation.english or "")
-            if tail is not None:
+            _, held = split_hold(translation.english or "")
+            if held is not None:
                 # The stroke that held it is gone, so nothing is waiting.
                 waiting.clear()
             elif waiting.landed and translation is waiting.landed[0]:
-                # The word a tail landed on is gone, so the tail waits again.
+                # The word a hold landed on is gone, so it waits again.
                 waiting.arm(waiting.landed[1])
                 waiting.landed = None
         for translation in do:
-            english = translation.english or ""
-            body, tail = split_tail(english)
-            # In this order, so a stroke that both lands a tail and holds one of
-            # its own does the two in the order it wrote them.
+            body, held = split_hold(translation.english or "")
+            # In this order, so a stroke that both lands a hold and starts one
+            # does the two in the order it wrote them.
             if waiting.text is not None and writes_text(body):
                 self._land(translation)
-            if tail is not None:
-                waiting.arm(tail)
+            if held is not None:
+                waiting.arm(self._append_for(*held))
+
+    def _append_for(self, kind, rest):
+        """What the next word's translation gets, for each kind of hold.
+
+        A tail is text the formatter can write where it stands. A frame has to
+        read the word first, so what lands is a meta, and the capital it reads is
+        the one pending *now*: the word will have spent it by then.
+        """
+        if kind == "tail":
+            return rest
+        index, outline = rest.split(":", 1)
+        return "{:stfst_frame:%s:%s:%s}" % (
+            index, cap_pending(self._engine.translator), outline)
 
     def _land(self, translation):
-        """Write the tail with the word, as one translation.
+        """Write it with the word, as one translation.
 
-        One translation and not a second one after it, so that one `*` takes back
-        both, as `stfst-board` does, and so that a meta in the tail is read in
-        the same pass as the word.
+        One translation and not a second after it, so that one `*` takes back
+        both and so that a meta in it reads the word from the same pass.
 
         Two ways to write it, because this hook does not know whether the
         formatter has run: `formatting` is what says. Before it, the translation
@@ -182,12 +257,12 @@ class Ahead:
         flicker and cannot be helped.
         """
         text = waiting.text
-        # Cleared before the tail is written, because writing it tells this hook
+        # Cleared before anything is written, because writing it tells this hook
         # again and there is nothing left to wait for.
         waiting.clear()
-        waiting.landed = (translation, text)
         if not translation.formatting:
             translation.english += text
+            waiting.landed = (translation, text)
             return
         translator = self._engine.translator
         translator.untranslate_translation(translation)

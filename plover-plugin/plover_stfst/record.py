@@ -17,6 +17,8 @@ record this module cannot spell is a dictionary entry Plover does not get, which
 is a loss it can report; a wrong spelling is a loss it cannot.
 """
 
+from .window import CASELESS, DIGIT, LETTER, OTHER, SPACE, UPPER
+
 # The flag tags, in canonical tape order. `stfst_core::record::FLAG_TAGS`.
 FLAG_TAGS = [
     "[CANCEL_SPACE]", "[RETRO_SPACE]", "[ATTACH_L]", "[ORTHO_L]", "[ATTACH_R]",
@@ -34,7 +36,7 @@ MOD_TAGS = [
     ("[FN]", "fn"),
 ]
 
-CLASS_TAGS = ["[LETTER]", "[UPPER]", "[CASELESS]", "[DIGIT]", "[OTHER]", "[SP]"]
+CLASS_TAGS = [LETTER, UPPER, CASELESS, DIGIT, OTHER, SPACE]
 
 ESCAPE = "[U+]"
 DROP = "[DROP]"
@@ -113,6 +115,40 @@ class Record:
 
     def __str__(self):
         return "".join(self.symbols())
+
+    def rewrite(self, chars):
+        """This record as text, against the window it was shown.
+
+        A class glyph means "the next character of the window", in order, and a
+        `[DROP]` means the next character is not written. So a rule accounts for
+        every one of them and the host does the casing, which is why full Unicode
+        casing needs no case table in the automaton.
+
+        Only a window record reaches this, and a window record is text: anything
+        that needs a gap of its own or a flag to place it is refused, because a
+        rewrite has nowhere to put one.
+        """
+        # A record with the same body and no flags spells the same tape iff this
+        # one has none either.
+        if self.symbols() != Record(self.body).symbols():
+            raise Unsupported("a flag on a window record")
+        out, taken = [], 0
+        for item in self.body:
+            kind = item[0]
+            if kind == "text":
+                out.append(item[1])
+            elif kind == "drop":
+                taken += 1
+            elif kind == "glyph":
+                if taken >= len(chars):
+                    raise Unsupported("a window of %d characters, and the record "
+                                      "asks for %d" % (len(chars), taken + 1))
+                c, taken = chars[taken], taken + 1
+                out.append({LETTER: c.lower(), UPPER: c.upper()}
+                           .get(item[1], c))
+            else:
+                raise Unsupported("%s in a window record" % kind)
+        return "".join(out)
 
     def translation(self):
         """This record as a Plover translation.
@@ -495,10 +531,10 @@ def _translation(self):
         raise Unsupported("[REPLACE%d]" % self.replace)
     # The tail is not part of what this translation writes. It is a translation
     # of its own, held by `plover_stfst.hold` until a unit writes a word, and the
-    # meta is how the body carries it there.
+    # marker is how the body carries it there.
     tail = ""
     if self.after is not None:
-        tail = "{:stfst_ahead:%s}" % _escape_meta(self.after.translation())
+        tail = "{:stfst_hold:tail:%s}" % _escape_meta(self.after.translation())
 
     # Every atom, and whether it puts a word on screen. Only a word takes a gap
     # beside it, so only a word decides where the joins go.
