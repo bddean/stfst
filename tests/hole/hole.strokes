@@ -1,0 +1,91 @@
+! The hole ender of `phrasing.xfst`: the verb of the clause is the word written
+! next, so the clause is stroked first and the word after it.
+!
+! Its own directory, and not part of `tests/golden/phrasing.tsv`, because what a
+! golden file asks is what one outline means and what these ask is what two of
+! them write together. The inflection is `{:infl:…}`, a lexicon, so this needs
+! `build/morph` and `check.sh` skips it where those are absent.
+!
+! `scripts/check-hold.py` replays every case here through a real Plover engine
+! and compares, so each line is two hosts' answer.
+
+! ---- the verb hole, `-RG`, over the corners of the clause
+!buffer
++T-RG
+RUPB
+!buffer
++T-RGD
+RUPB
+!buffer
++TERG
+RUPB
+!buffer
++TURG
+RUPB
+
+! A modal takes the base form, so the hole asks for nothing at all and the word
+! stands as it was written.
+!buffer
++TARG
+RUPB
+
+! The passive, the negative and the question, which are the same corners a verb
+! of its own would take.
+!buffer
++PH-RG
+RUPB
+!buffer
++K*RG
+RUPB
+!buffer
+#+T-RG
+RUPB
+
+! An irregular, which is why the tail is a lexicon and not a rule.
+!buffer
++T-RGD
+TKPW
+!buffer
++TURG
+TKPW
+
+! ---- the adverb ender, which carries the hole always
+! An adverb inflects for nothing, so a clause ending on one has no verb for its
+! tense or aspect to inflect either: the word written next is that verb, and no
+! key says so. `-D` is the tense it is everywhere else, which is a past the
+! launchpad never had.
+!buffer
++T-FBTS
+RUPB
+!buffer
++T-FBTSD
+RUPB
+!buffer
++TEFBTS
+RUPB
+!buffer
++TEFBTSD
+RUPB
+!buffer
++T*FBTS
+RUPB
+!buffer
++T-RGTS
+KAER
+
+! The passive of an adverb ender was no clause at all, and now it is one.
+!buffer
++PH-FBTS
+WREU
+
+! An infinitive keeps the adverb and takes the verb, where it used to drop the
+! adverb and write "be".
+!buffer
++HR-FBTS
+RUPB
+
+! ---- what the hole displaced
+!buffer
++T-RGT
+!buffer
++T-RPGT

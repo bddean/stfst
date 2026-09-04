@@ -32,45 +32,59 @@ what file order means there. `main.json` is disabled there and absent here. The
 retro family is disabled there too, and sits below everything enabled so it cannot
 shadow a working entry.
 
-| Dictionary | Source | Forward | Reverse |
-|---|---|---|---|
-| emily-symbols | xfst over a shared glyph table | 12,882 | 12,590 |
-| shrimple | xfst over a generated table | 97,084 | 107,940 |
-| user | JSON, imported | 20,137 | 20,103 |
-| phrases | JSON, imported | 11,752 | 11,958 |
-| commands | JSON, imported | 5,605 | 5,949 |
-| emily-modifiers | xfst over generated tables | 61,374 | 57,944 |
-| semantic-suffixes | JSON, imported | 594 | 638 |
-| typey-type | JSON, imported | 6,239,766 | 6,504,164 |
-| and-fold | JSON, imported | 40,093 | 38,241 |
-| phrasing | xfst, a clause grammar over 21.9M chords | 698,313 | 588,857 |
-| retro-words | xfst over a window of written text | 406,095 | none |
-| repeat-idioms | JSON, imported | 80,658 | 80,498 |
-| repeat-word | flat source in the record language | 1,311 | 1,247 |
+| Dictionary | Source |
+|---|---|
+| emily-symbols | xfst over a shared glyph table |
+| shrimple | xfst over a generated table |
+| user | JSON, imported |
+| phrases | JSON, imported |
+| commands | JSON, imported |
+| emily-modifiers | xfst over generated tables |
+| semantic-suffixes | JSON, imported |
+| leading-vowel | JSON, imported |
+| typey-type | JSON, imported |
+| and-fold | JSON, imported |
+| phrasing | xfst, a clause grammar over 21.9M chords |
+| frames | xfst over a window of text not written yet |
+| ahead | flat source in the record language |
+| retro-words | xfst over a window of written text |
+| repeat-idioms | JSON, imported |
+| repeat-word | flat source in the record language |
 
-15.1 MB for both directions of everything, against 93.6 MB resident for the
-Plover-style dictionary and its reverse index in `docs/M0.md`. The whole stack
-compiles in 51 seconds.
+`stfst compile recipe.toml` prints what each artifact weighs and what it took, so
+this table does not: both directions of the whole set are about 15 MB and it
+compiles in about a minute, against 93.6 MB resident for the Plover-style
+dictionary and its reverse index in `docs/M0.md`.
 
-`retro-words` has no reverse automaton, and that is not an omission: it rewrites
-text rather than writing a word, so the question a suggestion window asks has no
-answer for it. See `docs/retro.md`.
+`retro-words` and `frames` have no reverse automaton, and that is not an
+omission: they rewrite text rather than writing a word, so the question a
+suggestion window asks has no answer for them. `shrimple` has none for the other
+reason, which is that its language has no longest outline. See `docs/retro.md`.
+
+`frames`, `ahead` and phrasing's hole ender read text that is not written yet:
+the host holds the stroke and answers when the next unit writes a word. A
+template goes around it (`STPR*T` then "here" is "from here to"), an inflection
+follows it (`^PW*EU` then "run" is "by running"), and phrasing's `-RG` says the
+verb of a whole clause is the word coming next, so `+TERG` then "run" is "it's
+running" with every other key of the clause still meaning what it meant. Every
+adverb ender says the same thing, so `+T-FBTS` then "run" is "it often runs" and
+`-D` there is the past that an adverb launchpad never had.
 
 `semantic-retro.json` is absent: its entries are clause rewrites over a part-of-speech
 tagger, which is the one thing this format deliberately cannot hold. See
 `docs/parity.md`.
 
-Thirty-one entries in the whole set do not import, and each is named by
+A few dozen entries in the whole set do not import, and each is named by
 `stfst import --report`. All are brace atoms naming no operation (`{pgh}`, `{--}`,
-`{...}`, four unbalanced ones), and Plover types nothing for any of them, so they
+`{...}`, a few unbalanced ones), and Plover types nothing for any of them, so they
 are dead entries in typey-type. A control character is no longer among them: text
 names one by its code point, `[U+]0A[END]`, which is what makes `commands.json`'s
 newline key an ordinary translation.
 
 What the whole set writes is checked against Plover's own formatter rather than
-against our last answer: `scripts/check-translate.py` renders every translation both
-ways and compares. 146,540 compared, none differ. See `docs/parity.md`, which also
-lists the five bugs that check found on its first run.
+against our last answer: `scripts/check-translate.py` renders every translation
+both ways and compares, and none differ. See `docs/parity.md`, which also lists
+the five bugs that check found on its first run.
 
 ## The keyboard
 
@@ -88,9 +102,22 @@ The host loop both it and `stfst translate` drive is `stfst-board`.
 
 `plover-plugin/` is a Plover dictionary class over these artifacts, so the format
 is portable backwards and a dictionary compiled here works in Plover with no
-further work. Twelve of the fourteen load; `retro-words` and `repeat-word` read
-what Plover has no way to tell a dictionary, so they are refused by name at load
-rather than mistranslated. It is what Plover runs: `~/.config/plover` names these
+further work. Every dictionary in the stack loads there except three:
+`retro-words`, `repeat-word` and `frames` read what Plover has no way to tell a
+dictionary, and each is refused by name and by what it asked for rather than
+mistranslated:
+
+```
+frames refused: reads 2 words of what is written next and the context slot CAP
+```
+
+A dictionary is refused by ability and not by a version number, because the
+version is one number and these are separate abilities. What the plugin gained
+instead is `plover_stfst.hold`, a meta and an extension that hold a stroke whose
+record ends in `[AFTER]`, so phrasing's hole ender and `ahead` work in Plover
+too. `scripts/check-hold.py` drives a whole engine and compares every case of
+`tests/ahead` and `tests/hole` against what `stfst translate` writes for the same
+strokes. It is what Plover runs: `~/.config/plover` names these
 artifacts in its stack.
 
 Nothing is shared with the Rust: the plugin has its own `hfstol` reader and its

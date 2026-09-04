@@ -115,6 +115,11 @@ echo "== ahead"
 if [ -f build/morph/ortho.hfstol ]; then
     # shellcheck disable=SC2046
     fixtures tests/ahead $(cat tests/ahead/artifacts)
+    # And the same mechanism as a phrasing ender, where the form the deferred word
+    # takes is the one the clause was already going to give its verb.
+    echo "== hole"
+    # shellcheck disable=SC2046
+    fixtures tests/hole $(cat tests/hole/artifacts)
 else
     echo "skipped: no build/morph artifacts"
 fi

@@ -5,24 +5,28 @@
 
 ! The verb set.
 define Lemma [
-    "[V:accept]" | "[V:add]" | "[V:allow]" | "[V:appear]" | "[V:apply]" | "[V:ask]" |
-    "[V:become]" | "[V:begin]" | "[V:believe]" | "[V:break]" | "[V:bring]" | "[V:build]" |
-    "[V:buy]" | "[V:call]" | "[V:care]" | "[V:carry]" | "[V:cause]" | "[V:change]" |
-    "[V:check]" | "[V:choose]" | "[V:come]" | "[V:consider]" | "[V:continue]" | "[V:create]" |
-    "[V:decide]" | "[V:do]" | "[V:expect]" | "[V:explain]" | "[V:feel]" | "[V:find]" |
-    "[V:follow]" | "[V:forget]" | "[V:form]" | "[V:get]" | "[V:give]" | "[V:go]" |
-    "[V:guess]" | "[V:handle]" | "[V:happen]" | "[V:have]" | "[V:hear]" | "[V:help]" |
-    "[V:hold]" | "[V:imagine]" | "[V:include]" | "[V:keep]" | "[V:know]" | "[V:lead]" |
-    "[V:learn]" | "[V:leave]" | "[V:let]" | "[V:like]" | "[V:live]" | "[V:look]" |
-    "[V:love]" | "[V:make]" | "[V:mean]" | "[V:meet]" | "[V:mind]" | "[V:move]" |
-    "[V:need]" | "[V:offer]" | "[V:open]" | "[V:pass]" | "[V:pay]" | "[V:pick]" |
-    "[V:plan]" | "[V:play]" | "[V:produce]" | "[V:provide]" | "[V:put]" | "[V:reach]" |
-    "[V:read]" | "[V:realize]" | "[V:recall]" | "[V:receive]" | "[V:remain]" | "[V:remember]" |
-    "[V:remove]" | "[V:replace]" | "[V:require]" | "[V:return]" | "[V:run]" | "[V:save]" |
-    "[V:say]" | "[V:see]" | "[V:seem]" | "[V:send]" | "[V:serve]" | "[V:set]" |
-    "[V:share]" | "[V:show]" | "[V:start]" | "[V:stay]" | "[V:stop]" | "[V:take]" |
-    "[V:talk]" | "[V:tell]" | "[V:think]" | "[V:try]" | "[V:turn]" | "[V:understand]" |
-    "[V:use]" | "[V:walk]" | "[V:want]" | "[V:wish]" | "[V:work]" | "[V:write]" ] ;
+    "[V:_]" | "[V:accept]" | "[V:add]" | "[V:allow]" | "[V:appear]" | "[V:apply]" |
+    "[V:ask]" | "[V:become]" | "[V:begin]" | "[V:believe]" | "[V:break]" | "[V:bring]" |
+    "[V:build]" | "[V:buy]" | "[V:call]" | "[V:care]" | "[V:carry]" | "[V:cause]" |
+    "[V:change]" | "[V:check]" | "[V:choose]" | "[V:come]" | "[V:consider]" | "[V:continue]" |
+    "[V:create]" | "[V:decide]" | "[V:do]" | "[V:expect]" | "[V:explain]" | "[V:feel]" |
+    "[V:find]" | "[V:follow]" | "[V:forget]" | "[V:form]" | "[V:get]" | "[V:give]" |
+    "[V:go]" | "[V:guess]" | "[V:handle]" | "[V:happen]" | "[V:have]" | "[V:hear]" |
+    "[V:help]" | "[V:hold]" | "[V:imagine]" | "[V:include]" | "[V:keep]" | "[V:know]" |
+    "[V:lead]" | "[V:learn]" | "[V:leave]" | "[V:let]" | "[V:like]" | "[V:live]" |
+    "[V:look]" | "[V:love]" | "[V:make]" | "[V:mean]" | "[V:meet]" | "[V:mind]" |
+    "[V:move]" | "[V:need]" | "[V:offer]" | "[V:open]" | "[V:pass]" | "[V:pay]" |
+    "[V:pick]" | "[V:plan]" | "[V:play]" | "[V:produce]" | "[V:provide]" | "[V:put]" |
+    "[V:reach]" | "[V:read]" | "[V:realize]" | "[V:recall]" | "[V:receive]" | "[V:remain]" |
+    "[V:remember]" | "[V:remove]" | "[V:replace]" | "[V:require]" | "[V:return]" | "[V:run]" |
+    "[V:save]" | "[V:say]" | "[V:see]" | "[V:seem]" | "[V:send]" | "[V:serve]" |
+    "[V:set]" | "[V:share]" | "[V:show]" | "[V:start]" | "[V:stay]" | "[V:stop]" |
+    "[V:take]" | "[V:talk]" | "[V:tell]" | "[V:think]" | "[V:try]" | "[V:turn]" |
+    "[V:understand]" | "[V:use]" | "[V:walk]" | "[V:want]" | "[V:wish]" | "[V:work]" |
+    "[V:write]" ] ;
+
+! The hole, named so the grammar need not spell it.
+define Hole "[V:_]" ;
 
 
 ! The pre-verb satellite words, a menu slot on the
@@ -71,7 +75,7 @@ define SatPostW [
     [ [ "[POST:with]" ] .x. [ [ " " {with} ] ] ] ] ;
 
 
-! The 260 pres-tense verb chords.
+! The 261 pres-tense verb chords.
 define RhsPres [
     [ [ "b" ] .x. [ "[V:add]" ] ] |
     [ [ "b" "g" ] .x. [ "[V:think]" ] ] |
@@ -283,9 +287,9 @@ define RhsPres [
     [ [ "r" "b" "t" ] .x. [ "[V:try]" "[POST:to]" ] ] |
     [ [ "r" "b" "t" "s" ] .x. [ "[V:decide]" "[POST:that]" ] ] |
     [ [ "r" "b" "z" ] .x. [ "[V:read]" "[POST:it]" ] ] |
-    [ [ "r" "g" ] .x. [ "[V:hear]" ] ] |
+    [ [ "r" "g" ] .x. [ "[V:_]" ] ] |
     [ [ "r" "g" "s" ] .x. [ "[V:work]" "[POST:on]" ] ] |
-    [ [ "r" "g" "t" ] .x. [ "[V:hear]" "[POST:about]" ] ] |
+    [ [ "r" "g" "t" ] .x. [ "[V:hear]" ] ] |
     [ [ "r" "g" "z" ] .x. [ "[PRE:never]" "[V:hear]" ] ] |
     [ [ "r" "l" ] .x. [ "[V:lead]" ] ] |
     [ [ "r" "l" "g" ] .x. [ "[V:look]" "[POST:at]" ] ] |
@@ -315,6 +319,7 @@ define RhsPres [
     [ [ "r" "p" "b" "z" ] .x. [ "[V:run]" "[POST:for]" ] ] |
     [ [ "r" "p" "g" ] .x. [ "[V:appear]" "[POST:in]" ] ] |
     [ [ "r" "p" "g" "s" ] .x. [ "[V:produce]" "[POST:by]" ] ] |
+    [ [ "r" "p" "g" "t" ] .x. [ "[V:hear]" "[POST:about]" ] ] |
     [ [ "r" "p" "l" ] .x. [ "[V:remain]" ] ] |
     [ [ "r" "p" "l" "g" ] .x. [ "[V:play]" "[POST:with]" ] ] |
     [ [ "r" "p" "l" "s" ] .x. [ "[V:replace]" ] ] |
@@ -335,7 +340,7 @@ define RhsPres [
     [ [ "z" ] .x. [ "[V:use]" ] ] ] ;
 
 
-! The 398 past-tense verb chords.
+! The 399 past-tense verb chords.
 define RhsPast [
     [ [ "b" "d" ] .x. [ "[V:add]" ] ] |
     [ [ "b" "d" "z" ] .x. [ "[V:use]" "[POST:in]" ] ] |
@@ -659,12 +664,11 @@ define RhsPast [
     [ [ "r" "b" "t" "z" ] .x. [ "[V:try]" "[POST:to]" ] ] |
     [ [ "r" "d" ] .x. [ "[V:work]" ] ] |
     [ [ "r" "d" "z" ] .x. [ "[V:work]" "[POST:with]" ] ] |
-    [ [ "r" "g" "d" ] .x. [ "[V:hear]" ] ] |
+    [ [ "r" "g" "d" ] .x. [ "[V:_]" ] ] |
     [ [ "r" "g" "d" "z" ] .x. [ "[PRE:never]" "[V:hear]" ] ] |
     [ [ "r" "g" "s" "d" ] .x. [ "[V:work]" "[POST:on]" ] ] |
     [ [ "r" "g" "s" "z" ] .x. [ "[V:work]" "[POST:on]" ] ] |
-    [ [ "r" "g" "t" "d" ] .x. [ "[V:hear]" "[POST:about]" ] ] |
-    [ [ "r" "g" "t" "z" ] .x. [ "[V:hear]" "[POST:about]" ] ] |
+    [ [ "r" "g" "t" "d" ] .x. [ "[V:hear]" ] ] |
     [ [ "r" "l" "d" ] .x. [ "[V:lead]" ] ] |
     [ [ "r" "l" "d" "z" ] .x. [ "[V:realize]" ] ] |
     [ [ "r" "l" "g" "d" ] .x. [ "[V:look]" "[POST:at]" ] ] |
@@ -708,6 +712,8 @@ define RhsPast [
     [ [ "r" "p" "g" "d" ] .x. [ "[V:appear]" "[POST:in]" ] ] |
     [ [ "r" "p" "g" "s" "d" ] .x. [ "[V:produce]" "[POST:by]" ] ] |
     [ [ "r" "p" "g" "s" "z" ] .x. [ "[V:produce]" "[POST:by]" ] ] |
+    [ [ "r" "p" "g" "t" "d" ] .x. [ "[V:hear]" "[POST:about]" ] ] |
+    [ [ "r" "p" "g" "t" "z" ] .x. [ "[V:hear]" "[POST:about]" ] ] |
     [ [ "r" "p" "g" "z" ] .x. [ "[V:appear]" "[POST:in]" ] ] |
     [ [ "r" "p" "l" "d" ] .x. [ "[V:remain]" ] ] |
     [ [ "r" "p" "l" "g" "d" ] .x. [ "[V:play]" "[POST:with]" ] ] |
@@ -737,20 +743,33 @@ define RhsPast [
     [ [ "t" "s" "z" ] .x. [ "[V:start]" ] ] ] ;
 
 
-! Adverb enders (§4.6): a verb-less clause launchpad.
+! Adverb enders (§4.6). Each one carries the hole: an
+! adverb inflects for nothing, so a clause that ends on one
+! has no verb to inflect either, and the word written next
+! is that verb. `-d` is the tense it always was.
 define Adv [
     "[ADV:often]" | "[ADV:never]" | "[ADV:just]" | "[ADV:also]" | "[ADV:actually]" | "[ADV:always]" |
     "[ADV:still]" | "[ADV:really]" ] ;
 
-define AdvChords [
-    [ [ "f" "b" "t" "s" ] .x. [ "[ADV:often]" ] ] |
-    [ [ "f" "p" "g" "t" ] .x. [ "[ADV:never]" ] ] |
-    [ [ "f" "p" "t" "s" ] .x. [ "[ADV:just]" ] ] |
-    [ [ "f" "r" "l" "t" ] .x. [ "[ADV:also]" ] ] |
-    [ [ "f" "r" "p" "s" ] .x. [ "[ADV:actually]" ] ] |
-    [ [ "l" "g" "s" "z" ] .x. [ "[ADV:always]" ] ] |
-    [ [ "r" "g" "t" "s" ] .x. [ "[ADV:still]" ] ] |
-    [ [ "r" "l" "g" "t" ] .x. [ "[ADV:really]" ] ] ] ;
+define AdvPres [
+    [ [ "f" "b" "t" "s" ] .x. [ "[ADV:often]" "[V:_]" ] ] |
+    [ [ "f" "p" "g" "t" ] .x. [ "[ADV:never]" "[V:_]" ] ] |
+    [ [ "f" "p" "t" "s" ] .x. [ "[ADV:just]" "[V:_]" ] ] |
+    [ [ "f" "r" "l" "t" ] .x. [ "[ADV:also]" "[V:_]" ] ] |
+    [ [ "f" "r" "p" "s" ] .x. [ "[ADV:actually]" "[V:_]" ] ] |
+    [ [ "l" "g" "s" "z" ] .x. [ "[ADV:always]" "[V:_]" ] ] |
+    [ [ "r" "g" "t" "s" ] .x. [ "[ADV:still]" "[V:_]" ] ] |
+    [ [ "r" "l" "g" "t" ] .x. [ "[ADV:really]" "[V:_]" ] ] ] ;
+
+define AdvPast [
+    [ [ "f" "b" "t" "s" "d" ] .x. [ "[ADV:often]" "[V:_]" ] ] |
+    [ [ "f" "p" "g" "t" "d" ] .x. [ "[ADV:never]" "[V:_]" ] ] |
+    [ [ "f" "p" "t" "s" "d" ] .x. [ "[ADV:just]" "[V:_]" ] ] |
+    [ [ "f" "r" "l" "t" "d" ] .x. [ "[ADV:also]" "[V:_]" ] ] |
+    [ [ "f" "r" "p" "s" "d" ] .x. [ "[ADV:actually]" "[V:_]" ] ] |
+    [ [ "l" "g" "s" "d" "z" ] .x. [ "[ADV:always]" "[V:_]" ] ] |
+    [ [ "r" "g" "t" "s" "d" ] .x. [ "[ADV:still]" "[V:_]" ] ] |
+    [ [ "r" "l" "g" "t" "d" ] .x. [ "[ADV:really]" "[V:_]" ] ] ] ;
 
 define AdvW [
     [ [ "[ADV:often]" ] .x. [ [ " " {often} ] ] ] |
@@ -765,6 +784,7 @@ define AdvW [
 
 ! The base form of each verb.
 define VBase [
+    [ [ "[V:_]" ] .x. [ 0 ] ] |
     [ [ "[V:accept]" ] .x. [ [ " " {accept} ] ] ] |
     [ [ "[V:add]" ] .x. [ [ " " {add} ] ] ] |
     [ [ "[V:allow]" ] .x. [ [ " " {allow} ] ] ] |
@@ -877,6 +897,7 @@ define VBase [
 
 ! The 3sg form of each verb.
 define V3sg [
+    [ [ "[V:_]" ] .x. [ [ "[AFTER]" "[META=infl]" {s} "[END]" "[END]" ] ] ] |
     [ [ "[V:accept]" ] .x. [ [ " " {accepts} ] ] ] |
     [ [ "[V:add]" ] .x. [ [ " " {adds} ] ] ] |
     [ [ "[V:allow]" ] .x. [ [ " " {allows} ] ] ] |
@@ -989,6 +1010,7 @@ define V3sg [
 
 ! The past form of each verb.
 define VPast [
+    [ [ "[V:_]" ] .x. [ [ "[AFTER]" "[META=infl]" {ed} "[END]" "[END]" ] ] ] |
     [ [ "[V:accept]" ] .x. [ [ " " {accepted} ] ] ] |
     [ [ "[V:add]" ] .x. [ [ " " {added} ] ] ] |
     [ [ "[V:allow]" ] .x. [ [ " " {allowed} ] ] ] |
@@ -1101,6 +1123,7 @@ define VPast [
 
 ! The prespart form of each verb.
 define VPrespart [
+    [ [ "[V:_]" ] .x. [ [ "[AFTER]" "[META=infl]" {ing} "[END]" "[END]" ] ] ] |
     [ [ "[V:accept]" ] .x. [ [ " " {accepting} ] ] ] |
     [ [ "[V:add]" ] .x. [ [ " " {adding} ] ] ] |
     [ [ "[V:allow]" ] .x. [ [ " " {allowing} ] ] ] |
@@ -1213,6 +1236,7 @@ define VPrespart [
 
 ! The pastpart form of each verb.
 define VPastpart [
+    [ [ "[V:_]" ] .x. [ [ "[AFTER]" "[META=infl]" {en} "[END]" "[END]" ] ] ] |
     [ [ "[V:accept]" ] .x. [ [ " " {accepted} ] ] ] |
     [ [ "[V:add]" ] .x. [ [ " " {added} ] ] ] |
     [ [ "[V:allow]" ] .x. [ [ " " {allowed} ] ] ] |

@@ -114,6 +114,11 @@ impl Morph {
     pub fn inflect(&self, word: &str, mode: &str) -> Option<String> {
         let mode = match mode {
             "ed" => "ed",
+            // The past participle, which is a mode of its own: "she had run" and
+            // "she ran" are two forms, and only whatever asked knows which is
+            // meant. A rule cannot make it, so off the lexicon it falls back to
+            // the same `ed` join.
+            "en" => "en",
             "ing" => "ing",
             "ofs" | "s" => "s",
             "ofz" | "z" => "z",
@@ -125,6 +130,7 @@ impl Morph {
             return Some(match_case(&form, word, false));
         }
         Some(match mode {
+            "en" => self.join(word, "ed"),
             // A possessive is a rule and not vocabulary: an apostrophe after a
             // final `s`, and `'s` otherwise. The words that break it are thirteen
             // pronouns, and those are in the lexicon with the rest.

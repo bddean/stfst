@@ -33,7 +33,13 @@ import sys
 # The modes `{:infl:…}` can ask for, and the plain suffix each falls back to.
 # `ofz` is absent on purpose: a possessive is `'s`, or `'` after an `s`, and a
 # rule that short is host code. The one lexical part of it is thirteen pronouns.
-MODES = {"ed": "ed", "ing": "ing", "s": "s"}
+#
+# `en` is the past participle, and it is a mode of its own rather than something
+# `ed` works out from the word before it. "she had run" and "she ran" are the two
+# forms of one verb, and what knows which is meant is whatever asked: a phrasing
+# corner that puts `have` in the chain has already decided. A host guessing from
+# the previous word would be a second, worse copy of that decision.
+MODES = {"ed": "ed", "ing": "ing", "s": "s", "en": "ed"}
 
 
 def escape(s):
@@ -61,12 +67,12 @@ def entries(pairs):
 
 
 def verb_form(word, lemma, mode, tables, inflect):
-    if mode == "ed":
+    if mode in ("ed", "en"):
         if word in tables.BE_PAST:
             return tables.BE_PAST[word]
         if word in tables.MODAL_PAST:
             return tables.MODAL_PAST[word]
-        tag = "VBD"
+        tag = "VBD" if mode == "ed" else "VBN"
     else:
         tag = {"ing": "VBG", "s": "VBZ"}[mode]
     forms = inflect(lemma, tag)

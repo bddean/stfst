@@ -3,7 +3,7 @@
 `FST-DICT-DESIGN.md` §7 names the dictionary the format exists for, and it is the
 one that cannot be a dictionary file: 32,768 clause settings times 668 right-bank
 enders is 21.9M chords, and §7 measures a tenth of that at 150MB of baked JSON.
-Here it is a grammar, in 552KB, and the whole single-stroke language lives in it.
+Here it is a grammar, in 592KB, and the whole single-stroke language lives in it.
 It was ported from the user's `phrasing.py`; that file is gone and these three are
 the source:
 
@@ -150,15 +150,97 @@ right: `@` names the verb `do`, and a question about it needs do-support like an
 other lexical verb. `do I do` reads oddly alone and correctly as the launchpad it
 is, and an earlier note in this file that called it a bug was wrong.
 
+## The hole: the verb is the word you write next
+
+`-RG` names no verb. It says the main verb of this clause is whatever the next
+unit writes, so the clause is stroked first and the word after it:
+
+```
++TERG  RUPB   ->   it's running
++TURG  TKPW   ->   it's gone
++T*RG  RUPB   ->   it doesn't run
+#+T-RG RUPB   ->   does it run
++PH-RG RUPB   ->   is run
+```
+
+Nothing in `Chain` or `Arrange` knows about it, and that is the point of putting
+it here rather than in a dictionary of phrases. The hole is a **lemma**: the
+chord maps to `[V:_]`, and the five form relations map `[V:_]` to the tail that
+asks the host for that form. So the corner that would have chosen a past
+participle chooses `{:infl:en}`, and agreement, aspect, modality, the passive,
+question inversion and do-support keep working with nothing added.
+
+A base form asks for nothing at all, because the word as written *is* the base
+form: `+TARG` is "it can" and the record ends there.
+
+The tail is `{:infl:…}` and not `{^ing}` because a lexicon knows that the past of
+"run" is "ran" and the participle is "run", and a rule knows neither. `en` is a
+mode of its own for the same reason it is not `ed`: a passive has no
+have-auxiliary to read, so nothing downstream can work out which was meant, and
+whatever chose the corner already knew.
+
+### What it cost
+
+One verb moved, and the reservation lives in `gen-phrasing-lexicon.py` rather
+than in the mined table, because the pipeline that writes that table rewrites it.
+
+| chord | was | is |
+|---|---|---|
+| `-RG` `-RGD` | hear | **the hole** |
+| `-RGT` `-RGTD` | hear about | hear |
+| `-RPGT` `-RPGTD` `-RPGTZ` | free | hear about |
+
+`-RG` is two keys, and every two-key chord in the right bank is a top-100 verb
+except this one: main-verb "hear" is rank 96, and the grammar handles auxiliary
+"have" and "be" itself. `-RGTS` looks free in the verb table and is the adverb
+"still", which is why `reassign` checks both tables and why this note exists.
+
+### The adverb ender carries it always
+
+An adverb inflects for nothing, so a clause that ends on one has no verb for its
+tense or its aspect to inflect either. The word written next *is* that verb, and
+no key has to say so:
+
+```
++T-FBTS     RUPB   ->   it often runs
++TEFBTS     RUPB   ->   it's often running
++T*FBTS     RUPB   ->   it doesn't often run
++PH-FBTS    WREU   ->   is often written
++HR-FBTS    RUPB   ->   to often run
+```
+
+An adverb ender used to be a launchpad *because* the clause had no verb, which is
+what made do-support fire on `+T*FBTS` and what made the passive of one no clause
+at all. Now `Cls`, `NoAux`, `DoSup`, `PCls`, `Infinitive` and `ImpVerb` each read
+an adverb as a verb's neighbour rather than as its absence, and three things fall
+out that were missing:
+
+| | was | is |
+|---|---|---|
+| the past | nothing: `+T-FBTSD` had no entry | "it often ran", and `-d` is the tense it is everywhere else |
+| the passive | no clause | "is often written" |
+| an infinitive | "to be", the adverb dropped | "to often run" |
+
+`+TEFBTSD` is "it was often ⟨-ing⟩" and `+TAfbtsd` is "it could often": every
+aspect and modality setting gains its own past, because the key that spells the
+tense is free again.
+
+What it costs is the bare launchpad. `+TEFBTS` used to write "it's often" and
+stop, which is what you want before a word that is not a verb, and now it waits
+to inflect one: "it's often true" comes out as "it's often truing". The stroke
+for that sentence is `+TE` and then the words. That trade is deliberate: an
+adverb ender before a non-verb is rarer than one before a verb, and the reading
+that needed a marker key was the common one.
+
 ## Measured
 
 | | |
 |---|---|
 | Domain | 32,768 clause settings times 668 enders |
-| Artifact | 552KB forward, 471KB reverse |
-| Lookup | 13 µs median, 41 µs p95 |
-| Frontier | 37 paths per step on average, 665 at the widest |
-| Grammar | 19,306 states, 31,396 arcs |
+| Artifact | 592KB forward, 514KB reverse, the hole included |
+| Lookup | 11 µs median, 27 µs p95 |
+| Frontier | 38 paths per step on average, 816 at the widest |
+| Grammar | 21,301 states, 34,011 arcs |
 
 Measured over `tests/golden/phrasing.tsv` as the probe list, which is why the
 frontier average fell rather than the grammar getting cheaper per path: a

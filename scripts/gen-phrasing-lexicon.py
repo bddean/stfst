@@ -28,6 +28,60 @@ FORMS = ("base", "3sg", "past", "prespart", "pastpart")
 DO = {"base": "do", "3sg": "does", "past": "did",
       "prespart": "doing", "pastpart": "done"}
 
+# ---- the hole
+#
+# `-RG` says the verb of this clause is the word you write next, so no chord
+# there can name a verb. The reservation lives here and not in the mined table,
+# because the pipeline that writes that table rewrites it.
+#
+# The hole is a lemma like any other, which is what keeps it out of every rule:
+# `Chain` picks the form the corner needs, and the form relation maps the hole to
+# the tail that asks the host for it. So agreement, aspect, modality, the
+# passive, the question and do-support all keep working with nothing added.
+HOLE = "_"
+HOLE_SYM = '"[V:%s]"' % HOLE
+HOLE_CHORDS = {"RG": "pres", "RGD": "past"}
+# "hear" moves out of the way and its satellite form moves further. The family
+# stays together and the least common of the three pays: bare "hear" costs a key
+# and "hear about" costs two. `-RGTS` is not free for it, adverb or not: that is
+# "still".
+MOVES = {"RG": "RGT", "RGD": "RGTD",
+         "RGT": "RPGT", "RGTD": "RPGTD", "RGTZ": "RPGTZ"}
+# What the deferred word is asked for, per form the corner chose. A base form
+# asks nothing: the word as written *is* the base form, so "it can often run" is
+# a hole with no tail at all.
+HOLE_TAIL = {"base": None, "3sg": "s", "past": "ed",
+             "prespart": "ing", "pastpart": "en"}
+
+
+def reassign(table):
+    """The mined table with the hole reserved and what it displaced moved.
+
+    Every destination is checked against the adverbs as well as the verbs, which
+    is not pedantry: `-RGTS` looks free in the verb table and is "still".
+    """
+    out = {}
+    for chord, row in sorted(table["rhs"].items()):
+        moved = MOVES.get(chord, chord)
+        if moved in out or moved in table["adv"]:
+            raise SystemExit("-%s is taken, so %s cannot move there"
+                             % (moved, row[0]))
+        out[moved] = row
+    for chord, tense in HOLE_CHORDS.items():
+        if chord in out or chord in table["adv"]:
+            raise SystemExit("the hole chord -%s is not free: give it a move"
+                             % chord)
+        out[chord] = [HOLE, 0, tense]
+    return out
+
+
+def hole_tail(form):
+    """The record tail that asks the host to inflect the next unit's word."""
+    mode = HOLE_TAIL[form]
+    if mode is None:
+        return "0"
+    return '[ "[AFTER]" "[META=infl]" {%s} "[END]" "[END]" ]' % mode
+
 
 def literal(text):
     """A text as xfst symbols.
@@ -50,6 +104,14 @@ def literal(text):
     if run:
         out.append("{" + run + "}")
     return "[ " + " ".join(out) + " ]" if len(out) > 1 else out[0]
+
+
+ORDER = "FRPBLGTSDZ"
+
+
+def canon(chord):
+    """A key set in steno order, which is the only order a chord is written in."""
+    return "".join(k for k in ORDER if k in chord)
 
 
 def right(chord):
@@ -78,7 +140,7 @@ def verb_rows(table):
     rows = {"pres": [], "past": []}
     sats = {"PRE": set(), "POST": set()}
     lemmas = {"do"}
-    for chord, (lemma, sat, tense) in sorted(table["rhs"].items()):
+    for chord, (lemma, sat, tense) in sorted(reassign(table).items()):
         lemmas.add(lemma)
         out = ['"[V:%s]"' % lemma]
         if sat:
@@ -106,6 +168,8 @@ def main(path):
     rows, sats, lemmas = verb_rows(table)
     out.append(alphabet("Lemma", ['"[V:%s]"' % v for v in lemmas],
                         "! The verb set.\n"))
+    out.append("! The hole, named so the grammar need not spell it.\n"
+               "define Hole %s ;\n" % HOLE_SYM)
     for pos in ("Pre", "Post"):
         rs = sats[pos.upper()]
         out.append(alphabet("Sat" + pos, [t for t, _ in rs],
@@ -120,16 +184,23 @@ def main(path):
 
     advs = sorted(table["adv"].items())
     out.append(alphabet("Adv", ['"[ADV:%s]"' % w for _, w in advs],
-                        "\n! Adverb enders (§4.6): a verb-less clause launchpad.\n"))
-    out.append(relation("AdvChords",
-                        [(right(c), '"[ADV:%s]"' % w) for c, w in advs]))
+                        "\n! Adverb enders (§4.6). Each one carries the hole: an\n"
+                        "! adverb inflects for nothing, so a clause that ends on one\n"
+                        "! has no verb to inflect either, and the word written next\n"
+                        "! is that verb. `-d` is the tense it always was.\n"))
+    for tense, keys in (("Pres", lambda c: c), ("Past", lambda c: canon(c + "D"))):
+        out.append(relation(
+            "Adv" + tense,
+            [(right(keys(c)), '"[ADV:%s]" %s' % (w, HOLE_SYM)) for c, w in advs]))
     out.append(relation("AdvW",
                         [('"[ADV:%s]"' % w, literal(" " + w)) for _, w in advs]))
 
     for form in FORMS:
         out.append(relation(
             "V" + form.capitalize(),
-            [('"[V:%s]"' % v, literal(" " + verbword(table, v, form)))
+            [('"[V:%s]"' % v,
+              hole_tail(form) if v == HOLE
+              else literal(" " + verbword(table, v, form)))
              for v in lemmas],
             "\n! The %s form of each verb.\n" % form))
     print("\n".join(out))

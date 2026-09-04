@@ -70,7 +70,17 @@ define AspKeys  [ [ [ "E" "U" ] .x. "[PERFPROG]" ] | [ "E" .x. "[PROG]" ]
 ! -- `+T-D` is "it was" -- and sits in no verb chord, so nothing is shadowed.
 define EmptySlot [ [ Say("[PRES]") | [ "d" .x. "[PAST]" ] ] Say("[V0]") ] ;
 define VerbEnd  [ [ Say("[PRES]") RhsPres ] | [ Say("[PAST]") RhsPast ] ] ;
-define AdvEnd   [ Say("[PRES]") AdvChords ] ;
+! An adverb ender carries the hole, always: an adverb inflects for nothing, so a
+! clause that ends on one has no verb for its tense or its aspect to inflect
+! either, and the word written next is that verb. So `-d` here is the tense it is
+! everywhere else rather than a key that says which reading was meant.
+!
+! The clause therefore always has a main verb, which is what the adverb branches
+! of `Cls`, `NoAux`, `DoSup`, `PCls`, `Infinitive` and `ImpVerb` say below. The
+! launchpad's do-support was there *because* there was nothing for tense to sit
+! on; now it fires only where negation or a question needs carrying, as it does
+! for a verb of its own.
+define AdvEnd   [ [ Say("[PRES]") AdvPres ] | [ Say("[PAST]") AdvPast ] ] ;
 
 ! A left-key set that names no subject still heads a clause when the right bank
 ! names a verb: `+EB` is "are adding". It gets no empty slot and no adverb ender,
@@ -115,7 +125,7 @@ define AnyMod(KA)  [ [ Agr Kill("[CAN]")   Pol KA Tns Say("[F:can]")   ]
                    | [ Agr Kill("[SHALL]") Pol KA Tns Say("[F:shall]") ]
                    | [ Agr Kill("[WILL]")  Pol KA Tns Say("[F:will]")  ] ] ;
 define NoMod(KA, F)  [ Agr KNo Pol KA Tns F ] ;
-define Cls(M, F)     [ [ M KV0 ] | [ AdvW M ] | [ M (SatPreW) F (SatPostW) ] ] ;
+define Cls(M, F)  [ [ M KV0 ] | [ AdvW M F ] | [ M (SatPreW) F (SatPostW) ] ] ;
 
 define SHave  Say("[M:have]") ;
 define SBe    Say("[M:be]") ;
@@ -139,40 +149,43 @@ define Corners [
 ! carrying, and that is negation, a question, or emphasis. Without one, the verb
 ! carries its own tense and there is no operator at all.
 define Copula  [ NoMod(KSim, FBe) KV0 ] ;
-define DoSup(P)  [ Agr KNo P KSim Tns Say("[F:do]")
-                   [ AdvW | [ (SatPreW) VBase (SatPostW) ] ] ] ;
+! A main verb with whatever stands beside it: its own satellites, or the adverb
+! whose ender brought it. Only one of the two, because no chord names both.
+define Nbr(F)  [ [ (SatPreW) F (SatPostW) ] | [ AdvW F ] ] ;
+define DoSup(P)  [ Agr KNo P KSim Tns Say("[F:do]") Nbr(VBase) ] ;
 define Bare(A, T)  [ Say("[NOAUX]") Kill(A) KNo Kill("[AFF]") KSim Kill(T) ] ;
-define NoAux [ [ Bare("[3sg]", "[PRES]")               (SatPreW) V3sg  (SatPostW) ]
-             | [ Bare([ "[1sg]" | "[pl]" ], "[PRES]")  (SatPreW) VBase (SatPostW) ]
-             | [ Bare(Agr, "[PAST]")                   (SatPreW) VPast (SatPostW) ]
-             | [ Bare(Agr, Tns) AdvW ] ] ;
+define NoAux [ [ Bare("[3sg]", "[PRES]")               Nbr(V3sg)  ]
+             | [ Bare([ "[1sg]" | "[pl]" ], "[PRES]")  Nbr(VBase) ]
+             | [ Bare(Agr, "[PAST]")                   Nbr(VPast) ] ] ;
 
 ! A non-finite "to" clause (§4.1b) has no subject and no agreement, so modality,
 ! tense and the question have nothing to inflect and are ignored. Negation is the
 ! "not to" form, and a clausal "and" precedes both.
-define KV0Adv  [ KV0 | Kill(Adv) ] ;
+!
+! An adverb sits between the "to" and the verb, which only an adverb ender
+! reaches, and it brings a verb with it: "to often run" rather than "to be".
 define Inf(A, S)  [ Kill(A) Kill(Tns) (SatPreW) S ] ;
 define Infinitive [ [ Kill("[Q]") | 0 ] [ Kill("[EMPH]") | 0 ] Kill(Mode)
     [ [ "[AND]" .x. [ {and} " " ] ] | 0 ]
     Kill("[INF]") Kill(Agr) Kill(Modl)
     [ [ "[AFF]" .x. {to} ] | [ "[NEG]" .x. [ {not} " " {to} ] ] ]
     [ [ Inf("[SIMPLE]", 0)
-        [ [ VBase     (SatPostW) ] | [ KV0Adv Say([ " " {be} ])    ] ] ]
+        [ [ (AdvW) VBase     (SatPostW) ] | [ KV0 Say([ " " {be} ])    ] ] ]
     | [ Inf("[PERF]", Say([ " " {have} ]))
-        [ [ VPastpart (SatPostW) ] | [ KV0Adv Say([ " " {been} ])  ] ] ]
+        [ [ (AdvW) VPastpart (SatPostW) ] | [ KV0 Say([ " " {been} ])  ] ] ]
     | [ Inf("[PROG]", Say([ " " {be} ]))
-        [ [ VPrespart (SatPostW) ] | [ KV0Adv Say([ " " {being} ]) ] ] ]
+        [ [ (AdvW) VPrespart (SatPostW) ] | [ KV0 Say([ " " {being} ]) ] ] ]
     | [ Inf("[PERFPROG]", Say([ " " {have} " " {been} ]))
-        [ [ VPrespart (SatPostW) ] | [ KV0Adv Say([ " " {being} ]) ] ] ] ] ] ;
+        [ [ (AdvW) VPrespart (SatPostW) ] | [ KV0 Say([ " " {being} ]) ] ] ] ] ] ;
 
 ! The passive (§4.1d) is the same chain with `be` added to its end and the main
 ! verb in the past participle, so every corner above has one here. It names no
 ! subject, and the number key supplies the agreement the missing subject would:
 ! `+PH` is "is written" and `+SPH` is "are written". A verb is required, because
-! the passive of the empty slot is nothing and the passive of an adverb is not a
-! clause.
+! the passive of the empty slot is nothing; an adverb ender has one now, so
+! "+PH-FBTS" is "is often written" where it used to be no clause at all.
 define SBeing  Say("[M:being]") ;
-define PCls(M)   [ M (SatPreW) VPastpart (SatPostW) ] ;
+define PCls(M)   [ [ AdvW M VPastpart ] | [ M (SatPreW) VPastpart (SatPostW) ] ] ;
 define Passive [ [ "[Q]" | 0 ] [ Kill("[EMPH]") | 0 ] Mode Kill("[PASS]")
     [ [ AnyMod(KSim)       PCls(SBe)   ]                 ! will be written
     | [ AnyMod(KPf)        PCls(SHvBn) ]                 ! will have been written
@@ -188,7 +201,8 @@ define Passive [ [ "[Q]" | 0 ] [ Kill("[EMPH]") | 0 ] Mode Kill("[PASS]")
 ! infinitive. `@` is the emphatic "do go", and negation is do-support either way.
 ! `[NOAUX]` is what tells `Arrange` the clause opens on a word of its own rather
 ! than on a subject, so the leading space goes.
-define ImpVerb  [ [ (SatPreW) VBase (SatPostW) ] | [ KV0 Say([ " " {be} ]) ] | AdvW ] ;
+define ImpVerb  [ [ (SatPreW) VBase (SatPostW) ] | [ KV0 Say([ " " {be} ]) ]
+                | [ AdvW VBase ] ] ;
 define ImpTail(A, N)  [ Kill(Agr) Kill(Modl)
                         [ [ Kill("[AFF]") A ] | [ Kill("[NEG]") N ] ]
                         Kill(Asp) Kill(Tns) ImpVerb ] ;
