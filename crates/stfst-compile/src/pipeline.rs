@@ -11,7 +11,7 @@ use stfst_core::context;
 use stfst_core::host;
 use stfst_core::record::{all_tags, copy_tag, is_tag};
 use stfst_core::window;
-use stfst_core::System;
+use stfst_core::{Shown, System};
 
 use crate::prelude;
 use crate::recipe;
@@ -374,16 +374,18 @@ pub struct Declared {
     /// straight out of the alphabet, which is why they are symbols.
     pub commands: Vec<String>,
     pub metas: Vec<String>,
-    /// How many words of already-written text the host must show. Declared in the
-    /// recipe rather than read back: it is a property of the language and not of
-    /// the alphabet, and it is the dial that sets what a lookup costs.
-    pub words: u8,
+    /// The text the host must show, if any. Declared in the recipe rather than
+    /// read back: it is a property of the language and not of the alphabet, and
+    /// its word count is the dial that sets what a lookup costs.
+    pub shown: Option<Shown>,
     /// The longest outline, in strokes. `None` when the language has no longest,
     /// and then no host that needs one can load this dictionary.
     pub strokes: Option<u32>,
     /// Whether the language itself has a longest outline, before the recipe
     /// fills one in.
     pub bounded: bool,
+    /// Whether some record waits for the unit after it: `[AFTERn]`.
+    pub after: bool,
 }
 
 impl Declared {
@@ -391,10 +393,16 @@ impl Declared {
     /// host version 2, so a dictionary that uses neither stays loadable by a host
     /// that implements neither.
     pub fn host(&self) -> u32 {
+        // A held stroke is host 3, whether the record reads the text it waits for
+        // or only follows it. A host that shows written text has no reason to hold
+        // anything, so it would run either against the wrong words.
+        if self.after || self.shown.is_some_and(Shown::deferred) {
+            return 3;
+        }
         let plain = self.context.is_empty()
             && !self.state
             && self.registers == 0
-            && self.words == 0;
+            && self.shown.is_none();
         // Commands and metas do not raise the version: host 1 had them, and the
         // only change is that the manifest now says which ones.
         match plain {
@@ -417,7 +425,7 @@ pub fn declare(forward: &Path, system: &System, dict: &recipe::Dict) -> Result<D
         None => Some(1),
     };
     let mut declared = Declared {
-        words: dict.words,
+        shown: dict.shown()?,
         bounded: longest.is_some(),
         strokes: longest.or(dict.strokes),
         ..Declared::default()
@@ -429,6 +437,9 @@ pub fn declare(forward: &Path, system: &System, dict: &recipe::Dict) -> Result<D
         }
     }
     declared.state = symbols.contains(&context::STATE_OPEN);
+    // A record that waits for the unit after it needs a host that holds a stroke,
+    // and the alphabet is what says so.
+    declared.after = symbols.contains(&stfst_core::record::AFTER);
     for n in 1..=stfst_core::record::MAX_COUNT {
         if symbols.contains(&copy_tag(n).as_str()) {
             declared.registers = declared.registers.max(n);
@@ -490,7 +501,8 @@ pub fn write_artifact(
              context = [{}]\n\
              state = {}\n\
              registers = {}\n\
-             words = {}\n\
+             after = {}\n\
+             {}\
              significant = {:?}\n\
              commands = [{}]\n\
              metas = [{}]\n\
@@ -510,7 +522,12 @@ pub fn write_artifact(
                 .join(", "),
             declared.state,
             declared.registers,
-            declared.words,
+            declared.after,
+            match declared.shown {
+                Some(Shown::Written(n)) => format!("words = {n}\n"),
+                Some(Shown::Next(n)) => format!("next = {n}\n"),
+                None => String::new(),
+            },
             declared.significant.iter().collect::<String>(),
             quoted(&declared.commands),
             quoted(&declared.metas),

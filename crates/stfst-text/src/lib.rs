@@ -172,6 +172,13 @@ impl Text {
         self.units
     }
 
+    /// How many words the buffer holds. A caller that has to know what a unit
+    /// wrote compares this across it: the tail's `start` cannot answer, because a
+    /// record that wrote nothing passes the previous unit's start on.
+    pub fn words(&self) -> usize {
+        self.cells.len()
+    }
+
     /// Everything written, as one string.
     pub fn to_string(&self) -> String {
         let mut out = String::new();

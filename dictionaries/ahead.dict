@@ -1,0 +1,53 @@
+! Ahead: a word that comes before the hole, and the hole takes a gerund.
+!
+! An alternative to folding, and the point is that it never surprises. A folded
+! `-G` is free but only where the folded stroke has no entry of its own: `RUPBG`
+! is "rung", so "run" plus a folded `-G` never happens and the writer has to know
+! which words those are. Stroking the suffix afterwards is a stroke either way.
+! So the inflection rides on a word that was going to be stroked anyway, and the
+! stroke that writes "by" also says what the next word will be.
+!
+!   ^PW*EU  RUPB   ->   "by running"
+!   ^STO*P  TKPW   ->   "stop going"
+!
+! `[AFTER]` is what waits: the tail of the record is written after the unit that
+! follows it. The tail is `{:infl:ing}` and not `{^ing}`, because a lexicon knows
+! that the gerund of "lie" is "lying" and a rule does not. Nothing here reads the
+! word: there is no window and no letter on the tape.
+!
+! ---- keys
+!
+! The word's own brief and `*` for the hole. No key names the suffix, because
+! every word here takes the same one: a preposition or one of these verbs governs
+! a gerund and nothing else.
+!
+! `^` is the family stem, as in `retro-words` and `repeat-word`. Not `S-`, which
+! `frames` uses: these briefs are short, and `S` plus `HE` is `SHE`.
+!
+! A subject before the hole is not here. "he is _ing" is a clause, so it belongs
+! in phrasing, where a hole can be an ender and the whole aspect grammar still
+! applies to it: agreement, negation, the question, do-support. A flat table here
+! would be that grammar written out badly.
+
+! ---- prepositions
+^PW*EU	by[AFTER][META=infl]ing[END][END]
+^A*F	after[AFTER][META=infl]ing[END][END]
+^PW*FR	before[AFTER][META=infl]ing[END][END]
+^WO*UT	without[AFTER][META=infl]ing[END][END]
+^WHAO*EUL	while[AFTER][META=infl]ing[END][END]
+^WO*RT	worth[AFTER][META=infl]ing[END][END]
+
+! ---- verbs that govern a gerund
+^KAO*EP	keep[AFTER][META=infl]ing[END][END]
+^STA*RT	start[AFTER][META=infl]ing[END][END]
+^STO*P	stop[AFTER][META=infl]ing[END][END]
+^TKPW*EUPB	begin[AFTER][META=infl]ing[END][END]
+^T*PB	continue[AFTER][META=infl]ing[END][END]
+^TPHO*EUPBLG	enjoy[AFTER][META=infl]ing[END][END]
+^TP*EURB	finish[AFTER][META=infl]ing[END][END]
+^PHAO*EUPBD	mind[AFTER][META=infl]ing[END][END]
+^R*EUFBG	risk[AFTER][META=infl]ing[END][END]
+^K*R	consider[AFTER][META=infl]ing[END][END]
+^PHA*PBLG	imagine[AFTER][META=infl]ing[END][END]
+^S*UG	suggest[AFTER][META=infl]ing[END][END]
+^TKPW*UP	give up[AFTER][META=infl]ing[END][END]

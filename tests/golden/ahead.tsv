@@ -1,0 +1,22 @@
+! 19 cases from dictionaries/ahead.dict. The source is already outline to record, so
+! this file checks the outline parse and the compile, not the
+! meaning of an entry.
+^PW*EU	by[AFTER][META=infl]ing[END][END]
+^A*f	after[AFTER][META=infl]ing[END][END]
+^PW*fr	before[AFTER][META=infl]ing[END][END]
+^WO*Ut	without[AFTER][META=infl]ing[END][END]
+^WHAO*EUl	while[AFTER][META=infl]ing[END][END]
+^WO*rt	worth[AFTER][META=infl]ing[END][END]
+^KAO*Ep	keep[AFTER][META=infl]ing[END][END]
+^STA*rt	start[AFTER][META=infl]ing[END][END]
+^STO*p	stop[AFTER][META=infl]ing[END][END]
+^TKPW*EUpb	begin[AFTER][META=infl]ing[END][END]
+^T*pb	continue[AFTER][META=infl]ing[END][END]
+^TPHO*EUpblg	enjoy[AFTER][META=infl]ing[END][END]
+^TP*EUrb	finish[AFTER][META=infl]ing[END][END]
+^PHAO*EUpbd	mind[AFTER][META=infl]ing[END][END]
+^R*EUfbg	risk[AFTER][META=infl]ing[END][END]
+^K*r	consider[AFTER][META=infl]ing[END][END]
+^PHA*pblg	imagine[AFTER][META=infl]ing[END][END]
+^S*Ug	suggest[AFTER][META=infl]ing[END][END]
+^TKPW*Up	give up[AFTER][META=infl]ing[END][END]

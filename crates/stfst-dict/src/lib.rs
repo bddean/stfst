@@ -8,7 +8,7 @@ mod dict;
 mod session;
 
 pub use dict::{Dict, Input, Manifest, Meta, Outlines, Requires, HOST_VERSION};
-pub use session::{Match, Session};
+pub use session::{Held, Match, Session};
 
 use std::path::PathBuf;
 
@@ -30,6 +30,8 @@ pub enum DictError {
     Automaton(#[from] stfst_ol::OlError),
     #[error("{name} wants host {wants}, and this host is {HOST_VERSION}")]
     HostTooOld { name: String, wants: u32 },
+    #[error("{name} declares both `words` and `next`, and a tape has one window")]
+    TwoWindows { name: String },
     #[error("{name} reads context slot {slot}, which is not in the contract's table")]
     UnknownSlot { name: String, slot: String },
     #[error("{name} asks for the {kind} {op}, which this host does not implement")]

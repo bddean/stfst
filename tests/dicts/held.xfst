@@ -1,0 +1,37 @@
+! A fixture, not a dictionary. It exercises the other direction of a window: text
+! the host has not written yet. `ahead.dict` is the other half, where a record
+! follows that text rather than reading it.
+!
+! A frame writes around a word: "from" and "to" go either side of whatever the
+! next unit writes. The keys come first, as they must, and the text they read
+! comes after them, as it must. What is new is when: the host cannot run this
+! lookup when the keys arrive, so it holds the stroke and asks again once a unit
+! has written something. The grammar reads the same window either way, and
+! nothing here says which direction it is: `next = 2` in the recipe does.
+!
+! Three frames, chosen for what they prove:
+!
+!   TPR   from _ to        one word, so a two-word unit does not match at all
+!   PW    between _ and    one word or two
+!   TKPW  Dear _,          a class change, so the host cases a word it was
+!                          shown after the keys had gone
+
+define Kill(X)  [ X .x. 0 ] ;
+define Say(X)   [ 0 .x. X ] ;
+
+! No character is named, so every character reaches the rules as its class.
+define Char     AnyClass ;
+define NotSp    [ Char - Sp ] ;
+define Word     [ NotSp+ ] ;
+define Span     [ Word [ Sp+ Word ]* ] ;
+! A capital where the window had a letter. Which letter it was never reaches
+! here: the host applies its own casing when it puts the answer back.
+define Cap      [ [ Lo .x. Up ] NotSp* ] ;
+
+define Frame(Open, Read, Close)
+    [ Kill(WinOpen) Say(Open) Read Say(Close) Kill(WinEnd) ] ;
+
+define Grammar Canon(
+    [ [ Kill(T) Kill(P) Kill(R) Frame([ {from} " " ], Word, [ " " {to} ]) ]
+    | [ Kill(P) Kill(W) Frame([ {between} " " ], Span, [ " " {and} ]) ]
+    | [ Kill(T) Kill(K) Kill(P) Kill(W) Frame([ {Dear} " " ], Cap, {,}) ] ]) ;

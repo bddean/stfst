@@ -121,7 +121,11 @@ pub fn translate(s: &str) -> Result<Record, TranslateError> {
     // "runia" where Plover writes "runnia". The join applies to the first word, so
     // the first word has to be its own item.
     body.retain(|item| !matches!(item, Item::Text(t) if t.is_empty()));
-    Ok(Record { flags, body })
+    Ok(Record {
+        flags,
+        body,
+        after: None,
+    })
 }
 
 /// Apply a case to the first letter of some text, which is what a pending capital

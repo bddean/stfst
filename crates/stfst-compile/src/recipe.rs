@@ -3,10 +3,12 @@
 //! A recipe names each dictionary and where its source is. Nothing about the
 //! dictionary set is hardcoded, so a user's own stack is their own recipe file.
 
+use std::num::NonZeroU8;
 use std::path::{Path, PathBuf};
 
 use anyhow::{bail, Context, Result};
 use serde::Deserialize;
+use stfst_core::Shown;
 
 #[derive(Debug, Deserialize)]
 pub struct Recipe {
@@ -37,6 +39,10 @@ pub struct Dict {
     /// keys. Zero for a dictionary that only reads strokes, which is most of them.
     #[serde(default)]
     pub words: u8,
+    /// How many words of the *next* unit's text it is shown instead, which is what
+    /// a frame reads: the stroke is held until that text exists. See `Shown`.
+    #[serde(default)]
+    pub next: u8,
     /// How far a host that needs a longest key should look, for a dictionary
     /// whose outlines have no longest. Only such a dictionary needs it: where the
     /// language has a longest outline, the compiler reads it off the automaton.
@@ -49,6 +55,18 @@ fn default_version() -> String {
 }
 
 impl Dict {
+    /// The text this dictionary reads, if any. A dictionary reads one span or
+    /// none: a rule over the words before the keys and a rule over the words
+    /// after them would need two windows on one tape.
+    pub fn shown(&self) -> Result<Option<Shown>> {
+        match (NonZeroU8::new(self.words), NonZeroU8::new(self.next)) {
+            (Some(_), Some(_)) => bail!("{}: has both `words` and `next`", self.name),
+            (Some(n), None) => Ok(Some(Shown::Written(n))),
+            (None, Some(n)) => Ok(Some(Shown::Next(n))),
+            (None, None) => Ok(None),
+        }
+    }
+
     pub fn source(&self) -> Result<Source<'_>> {
         let mut found: Vec<Source<'_>> = Vec::new();
         if !self.xfst.is_empty() {

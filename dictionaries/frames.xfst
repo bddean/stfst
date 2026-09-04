@@ -1,0 +1,86 @@
+! Frames: a template around the word you have not written yet.
+!
+! `TPR` writes "from" and `-T` writes "to", so `STPR*T` writes "from _ to": the
+! brief for each end of the template, `*` for the hole, and `S-` for the family.
+!
+! Three of the fifteen briefs collide under `S-` and two of them are gone for it:
+! `SA*S` is "ass" and `SO*RPB` is a word of its own, so "as _ as" and "_ or not"
+! are not here. `SAO*EURT` survives because what it collided with was a `-T`
+! fold, and a fold is a last resort: a held stroke matched the keys as written
+! and only its answer waits, so it is asked first.
+!
+! The keys come first and the text they read comes after them, which is a window
+! read forwards. The host writes nothing when the keys arrive, holds the stroke,
+! and asks again once a unit has written a word or two; `next = 2` in the recipe
+! is that dial. See docs/retro.md.
+!
+! A held stroke is host 3, so Plover refuses this by version and the keyboard
+! runs it.
+!
+! ---- the capital
+!
+! The word comes first, so the word takes any capital that was pending: after a
+! full stop the host has already written "Here". A frame that writes a word of
+! its own has to take that capital back, or the sentence opens in the middle of
+! itself:
+!
+!   TP-PL  ^TPR*T  HAOER   ->   ". From here to"   and not  ". from Here to"
+!
+! So a frame with a word of its own reads the `CAP` slot, and where a capital was
+! pending it capitalises its own first word and lowers the window's first letter.
+! Both are derived: `Cap` shifts a literal's first letter and `SpanLo` unshifts
+! the window's, so no entry writes the same word twice. A frame that writes only
+! punctuation leaves the capital where it is.
+
+define Kill(X)  [ X .x. 0 ] ;
+define Say(X)   [ 0 .x. X ] ;
+
+! No character is named, so every character of the window arrives as its class
+! and the host does the casing.
+define Char     AnyClass ;
+define NotSp    [ Char - Sp ] ;
+define Word     [ NotSp+ ] ;
+! One word or two, which is what `next = 2` shows. A unit that wrote more than
+! two words is not shown at all, so a frame cannot fire on the tail of a phrase.
+define Span     [ Word [ Sp+ Word ]* ] ;
+! The same, with the first letter lowered. Only the first glyph changes class.
+define Unshift  [ [ Up .x. Lo ] | [ Char - Up ] ] ;
+define SpanLo   [ Unshift NotSp* [ Sp+ Word ]* ] ;
+
+define Read(Body)  [ Kill(WinOpen) Body Kill(WinEnd) ] ;
+
+! A literal with its first letter capitalised. The record's text is literal on
+! both tapes, so the host's casing never sees it and this is where the capital
+! has to come from.
+define Shift    [ [ a .x. A ] | [ b .x. B ] | [ c .x. C ] | [ d .x. D ]
+                | [ e .x. E ] | [ f .x. F ] | [ g .x. G ] | [ h .x. H ]
+                | [ i .x. I ] | [ j .x. J ] | [ k .x. K ] | [ l .x. L ]
+                | [ m .x. M ] | [ n .x. N ] | [ o .x. O ] | [ p .x. P ]
+                | [ q .x. Q ] | [ r .x. R ] | [ s .x. S ] | [ t .x. T ]
+                | [ u .x. U ] | [ v .x. V ] | [ w .x. W ] | [ x .x. X ]
+                | [ y .x. Y ] | [ z .x. Z ] ] ;
+define Cap(W)   [ [ W .o. [ Shift ?* ] ].l ] ;
+
+! A template with a word at each end, in both cases of its first word.
+define Frame(K, Head, Tail)
+    [ [ Kill("[CAP=off]") Kill(K) Read([ Say([ Head " " ])      Span   Say([ " " Tail ]) ]) ]
+    | [ Kill("[CAP=on]")  Kill(K) Read([ Say([ Cap(Head) " " ]) SpanLo Say([ " " Tail ]) ]) ] ] ;
+
+! A pair around the word, punctuation only, so the capital stays on the word.
+define Pair(K, Open, Close)
+    [ Kill(CtxCAP) Kill(K) Read([ Say(Open) Span Say(Close) ]) ] ;
+
+define Grammar Canon(
+    [ Frame([ S T P R "*" t ],           {from},    {to})
+    | Frame([ S T P R "*" l ],           {from},    {until})
+    | Frame([ S T W A O "*" E p b d ],   {between}, {and})
+    | Frame([ S T P H O "*" b t ],       {not},     {but})
+    | Frame([ S T P "*" p b ],           {if},      {then})
+    | Frame([ S P H O "*" r p b ],       {more},    {than})
+    | Frame([ S H R "*" E p b s ],       {less},    {than})
+    | Frame([ S A O "*" E U r t ],       {either},  {or})
+    | Frame([ S T P H A O "*" E U r t ], {neither}, {nor})
+    | Frame([ S P W O "*" t d ],         {both},    {and})
+    | Pair( [ S K W O "*" E t ],         %", %")
+    | Pair( [ S P R "*" E p b ],         %(, %))
+    | Pair( [ S P W A "*" b g t ],       %[, %]) ]) ;

@@ -1,0 +1,11 @@
+! A fixture, not a dictionary. The words a frame goes around, and the units that
+! are not a word at all: one that joins into the word before it, one that writes
+! nothing, and a two-stroke entry over a frame's own stroke.
+
+HAOEUR	here
+KAT	cat
+TWA	two words
+SKWR	s[ATTACH_L]
+PHRO	[CMD=plover.suggestions][END]
+TPR/KAT	tractor
+KWRS/KAT	scat

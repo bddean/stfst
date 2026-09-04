@@ -130,6 +130,18 @@ pub fn replace_tag(n: u8) -> String {
     format!("[REPLACE{n}]")
 }
 
+/// `[AFTER]`: what follows it waits for the unit after this one.
+///
+/// `I am[AFTER]ing[ORTHO_L][END]` writes "I am" now and joins "ing" to whatever
+/// the next unit writes, so a suffix reaches a word nobody has written yet. The
+/// tail is a record of its own, and it carries its own flags because the join is
+/// the whole point: `[ORTHO_L]` is what makes `run` and `ing` into `running`.
+///
+/// Delimited rather than counted. A record that *reads* the text it waits for
+/// declares a window instead; this one only follows it, so the transducer never
+/// sees a letter and the host's own orthography does the work.
+pub const AFTER: &str = "[AFTER]";
+
 pub fn is_tag(symbol: &str) -> bool {
     symbol.len() > 1 && symbol.starts_with('[') && symbol.ends_with(']')
 }
@@ -278,6 +290,12 @@ pub enum Item {
 pub struct Record {
     pub flags: Flags,
     pub body: Vec<Item>,
+    /// What this record writes after the unit that follows it, from `[AFTER]`.
+    ///
+    /// A record of its own, so it carries the flags that say how to join, and it
+    /// holds no tail itself: one record waits for one unit, and a tail of a tail
+    /// is a queue nothing asks for.
+    pub after: Option<Box<Record>>,
 }
 
 #[derive(Debug, thiserror::Error, PartialEq, Eq)]
@@ -300,23 +318,42 @@ pub enum RecordError {
     UnterminatedState,
     #[error("[U+]{0}[END] does not name a character that needs escaping")]
     BadEscape(String),
+    #[error("an [AFTER] tail holds another one, and one record waits for one unit")]
+    NestedAfter,
 }
 
 impl Record {
     pub fn text(s: impl Into<String>) -> Record {
         Record {
-            flags: Flags::default(),
             body: vec![Item::Text(s.into())],
+            ..Record::default()
         }
     }
 
     /// Parse a tape symbol sequence. Each element is either a tag (`[KEY]`) or
     /// a single character of text.
     pub fn parse_symbols(symbols: &[&str]) -> Result<Record, RecordError> {
+        // The tail is last and delimited, so it comes off first and what is left
+        // is an ordinary record. Nothing else can hold an `[AFTER]`: an argument
+        // is text, and a tag is not a character.
+        let (symbols, after) = match symbols.iter().position(|s| *s == AFTER) {
+            None => (symbols, None),
+            Some(i) => {
+                let tail = &symbols[i + 1..];
+                let Some(inner) = tail.strip_suffix(&["[END]"]) else {
+                    return Err(RecordError::Unterminated(AFTER.to_string()));
+                };
+                let after = Record::parse_symbols(inner)?;
+                if after.after.is_some() {
+                    return Err(RecordError::NestedAfter);
+                }
+                (&symbols[..i], Some(Box::new(after)))
+            }
+        };
         let mut body = Vec::new();
         let i = Self::parse_body(symbols, &mut body)?;
         let flags = Self::parse_flags(&symbols[i..])?;
-        Ok(Record { flags, body })
+        Ok(Record { flags, body, after })
     }
 
     /// The trailing closed tags.
@@ -515,6 +552,11 @@ impl Record {
         if let Some(n) = f.replace {
             out.push(replace_tag(n.get()));
         }
+        if let Some(after) = &self.after {
+            out.push(AFTER.to_string());
+            out.extend(after.to_symbols());
+            out.push("[END]".into());
+        }
         out
     }
 
@@ -621,6 +663,7 @@ pub fn all_tags() -> Vec<String> {
     for n in 1..=MAX_COUNT {
         out.push(replace_tag(n));
     }
+    out.push(AFTER.to_string());
     out.extend(host::COMMANDS.iter().map(|c| host::command_tag(c)));
     out.extend(host::METAS.iter().map(|m| host::meta_tag(m)));
     out.extend(Class::ALL.iter().map(|c| c.tag().to_string()));

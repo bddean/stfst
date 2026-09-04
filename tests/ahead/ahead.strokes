@@ -1,0 +1,50 @@
+! The gerund leaders of `ahead.dict`: the word before the hole, stroked first,
+! and the hole takes an -ing.
+!
+! Its own directory, and not part of `tests/frames`, because what these prove is
+! the inflection: `{:infl:ing}` is a lexicon, so it needs the artifacts in
+! `build/morph`, and whether those are built is a property of the machine.
+! `check.sh` skips this the way it skips the other morphology checks.
+!
+! Nothing here reads the word. The tail waits for the unit after it, and the
+! host joins it: `scripts/check-hold.py` asks Plover the same questions.
+
+! ---- the ordinary case, including what a rule would get wrong
+!buffer
+^PW*EU
+RUPB
+!buffer
+^A*F
+HRAOEUBG
+!buffer
+^KAO*EP
+STOP
+!buffer
+^WHAO*EUL
+KAER
+!buffer
+^STO*P
+TKPW
+
+! ---- a unit that writes nothing does not take the tail
+!buffer
+^PW*EU
+KHR-BG
+RUPB
+
+! ---- a second leader before the first has landed
+! The tail waits for text, and the second leader's own word is text, so the
+! first tail lands on that: "by keeping", and then the second tail waits for the
+! word. Both hosts do it, and a writer who wanted "by keep running" has
+! mis-stroked rather than found a corner.
+!buffer
+^PW*EU
+^KAO*EP
+RUPB
+
+! ---- undo puts the tail back, because the mark carries it
+!buffer
+^STO*P
+RUPB
+!undo
+TKPW

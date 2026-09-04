@@ -32,6 +32,34 @@
 //! so a rule may insert and delete those freely. What a rule must not do is
 //! reorder what it keeps, and that is the whole correspondence.
 
+use std::num::NonZeroU8;
+
+/// Which text a dictionary is shown, and how many words of it.
+///
+/// The same tape and the same rewrite either way. What differs is when the host
+/// can run the lookup: `Written` reads the words already on screen, so the
+/// answer is ready with the keys, while `Next` reads the words the following
+/// unit writes, so the stroke is held until that unit exists. A frame is the
+/// case that needs it: "from" and "to" go around a word nobody has written yet.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Shown {
+    Written(NonZeroU8),
+    Next(NonZeroU8),
+}
+
+impl Shown {
+    pub fn words(self) -> u8 {
+        match self {
+            Shown::Written(n) | Shown::Next(n) => n.get(),
+        }
+    }
+
+    /// Whether the text this dictionary reads is still to come.
+    pub fn deferred(self) -> bool {
+        matches!(self, Shown::Next(_))
+    }
+}
+
 /// The delimiters. The window opens once, after the keys, and runs to the end of
 /// the tape.
 pub const WINDOW_OPEN: &str = "[W]";

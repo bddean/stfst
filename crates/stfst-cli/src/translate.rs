@@ -18,7 +18,17 @@ use stfst_dict::Stack;
 const UNDO: &str = "!undo";
 /// A line that seeds the text, so a case can start from something already
 /// written without stroking it.
-const BUFFER: &str = "!buffer ";
+const BUFFER: &str = "!buffer";
+
+/// The text a `!buffer` line seeds, which is nothing at all for a line that
+/// names none: a fixture that starts from an empty document says so.
+fn buffer(line: &str) -> Option<&str> {
+    let rest = line.strip_prefix(BUFFER)?;
+    match rest.is_empty() {
+        true => Some(rest),
+        false => rest.strip_prefix(' '),
+    }
+}
 
 pub fn run(
     artifacts: &[PathBuf],
@@ -52,7 +62,7 @@ pub fn run(
     let mut queue: VecDeque<String> = strokes.into();
     while let Some(line) = queue.pop_front() {
         let line = line.trim();
-        if let Some(seed) = line.strip_prefix(BUFFER) {
+        if let Some(seed) = buffer(line) {
             board.seed(seed);
             say!("{line}\t{:?}", board.text());
             continue;
@@ -81,9 +91,10 @@ pub fn run(
             outline.0.len()
         );
         for step in board.push(outline.0[0])? {
-            let label = step.refired.as_deref().unwrap_or(line);
+            let label = step.label.as_deref().unwrap_or(line);
             match step.outcome {
                 Outcome::Unmatched => say!("{label}\t-\t{:?}", step.text),
+                Outcome::Held => say!("{label}\t...\t{:?}", step.text),
                 Outcome::Stack { name, arg } => say!("{label}\t{name}\t{arg:?}"),
                 Outcome::Engine { name } => say!("{label}\t{name}\t{:?}", step.text),
                 Outcome::Match {

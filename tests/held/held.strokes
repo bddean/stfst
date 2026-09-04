@@ -1,0 +1,98 @@
+! A frame around a word, where the word arrives after the frame. `...` in the
+! second column is a held stroke: its keys are read and the text they read is
+! not written yet. A frame reports under its own outline, on the line after the
+! word it went around.
+!
+! The frames are in `tests/dicts/frames.xfst`, the words in `words.dict`.
+
+! ---- the ordinary case
+!buffer
+TPR
+HAOEUR
+
+! Two frames in a row: the second one gets the word and the first is gone.
+!buffer
+TPR
+TKPW
+KAT
+
+! ---- what a frame is shown
+! One word or two, and the frame that reads one does not match two at all.
+!buffer
+PW
+TWA
+!buffer
+TPR
+TWA
+
+! The window is the unit's own words, so a frame cannot reach back over text
+! that was already there.
+!buffer already written
+TPR
+KAT
+
+! ---- units that are not a word
+! A record that joins into the word before it wrote no word of its own, and a
+! command wrote nothing at all. The frame waits through both.
+!buffer word
+TPR
+SKWR
+PHRO
+HAOEUR
+
+! A command right after the frame, with a word already in the buffer. What the
+! frame waits for is the words written since its keys, and the command wrote
+! none, so the word that was already there is not its window.
+!buffer word
+TPR
+PHRO
+KAT
+
+! ---- a longer match over the frame's own stroke
+! The frame's stroke turns out to be the first half of an entry in another
+! dictionary, so the frame never happened.
+!buffer
+TPR
+KAT
+KAT
+
+! ---- undo
+! Taking the word back leaves the frame waiting again, because the frame the
+! stroke found is what the mark puts back.
+!buffer
+TKPW
+HAOEUR
+!undo
+KAT
+
+! ---- a record that follows the next unit rather than reading it
+! `[AFTER]`: the tail is stroked first and the host joins it to the word the next
+! unit writes. Nothing is read, so there is no window and no glyph in the record,
+! and the stroke is an ordinary match rather than a held one: what waits is the
+! tail, and the body writes at once.
+!buffer
+KWRS
+KAT
+
+! It waits through a unit that wrote nothing, as a frame does.
+!buffer
+KWRS
+PHRO
+KAT
+
+! A body and a tail: the body writes now and the tail waits for the word.
+!buffer
+KWRT
+KAT
+
+! A longer match over the held stroke, so the record never lands.
+!buffer
+KWRS
+KAT
+
+! Undo puts the held tail back, because the mark carries it.
+!buffer
+KWRS
+HAOEUR
+!undo
+KAT

@@ -81,7 +81,14 @@ for artifact in build/dicts/*.stfst; do
         # The reverse direction has no oracle of its own; forward lookup is the check.
         scripts/check-reverse.py "$artifact" "tests/golden/$dict.tsv"
     elif [ -d "tests/$dict" ]; then
-        fixtures "tests/$dict" "$artifact"
+        # A frame is shown text another dictionary wrote, so a fixture may name
+        # the artifacts it needs instead of taking its own.
+        if [ -f "tests/$dict/artifacts" ]; then
+            # shellcheck disable=SC2046
+            fixtures "tests/$dict" $(cat "tests/$dict/artifacts")
+        else
+            fixtures "tests/$dict" "$artifact"
+        fi
     else
         echo "$dict has neither tests/golden/$dict.tsv nor tests/$dict" >&2
         exit 1
@@ -93,6 +100,24 @@ done
 # `stfst compile tests/recipe.toml --out build/test-dicts --work build/test-work`.
 echo "== contract"
 fixtures tests/probe build/test-dicts/probe.stfst
+
+# A held stroke, both kinds: a frame that reads the text after its keys, and a
+# record that only follows it. Three dictionaries, because the word comes from
+# another one, and that is the whole reason the host holds anything.
+echo "== held"
+fixtures tests/held build/test-dicts/held.stfst build/test-dicts/ahead.stfst \
+    build/test-dicts/words.stfst
+
+# What a held suffix writes is the host's own orthography, so this fixture needs
+# the artifacts that hold it, and is skipped rather than failed where they are
+# absent.
+echo "== ahead"
+if [ -f build/morph/ortho.hfstol ]; then
+    # shellcheck disable=SC2046
+    fixtures tests/ahead $(cat tests/ahead/artifacts)
+else
+    echo "skipped: no build/morph artifacts"
+fi
 
 # Morphology. Skipped rather than failed where the artifacts are absent: they are
 # built from data that ships with Plover rather than checked in, so a machine can
@@ -113,6 +138,11 @@ if [ -f build/morph/ortho.hfstol ] && [ -x "$PLOVER_PYTHON" ]; then
     # rather than of the importer: what Plover writes for the entry it holds.
     echo "== plover plugin"
     "$PLOVER_PYTHON" scripts/check-plugin.py
+    # A held tail is the one mechanism whose Plover half is not a dictionary, so
+    # it is checked through a whole engine against the same fixture the Rust host
+    # answered.
+    echo "== plover hold"
+    "$PLOVER_PYTHON" scripts/check-hold.py
 else
     echo "skipped: no build/morph artifacts, or no Plover python"
 fi

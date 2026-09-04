@@ -25,10 +25,21 @@ from plover.steno_dictionary import StenoDictionary
 from .ol import Automaton
 from .record import PLUGIN_COMMANDS, Record, Unsupported
 
-# The host contract this plugin implements: `FST-DICT-DESIGN.md` §5, items 1 to
-# 4. Items 5 and 6 need a Plover API that does not exist, so a dictionary that
-# uses them is unavailable here rather than broken.
-HOST_VERSION = 1
+# What this plugin cannot do, by the manifest field that asks for it. Not a host
+# version: the version is one number and these are separate abilities, and the
+# gate has to be the ability. `[AFTER]` is absent because `plover_stfst.hold` is
+# what does it.
+#
+# Every one of these needs the host to say something on the input tape *before*
+# the answer, and Plover's dictionary API has one argument: the outline. A
+# dictionary that asks is unavailable here rather than broken.
+CANNOT = {
+    "words": lambda n: "%d words of what is already written" % n,
+    "next": lambda n: "%d words of what is written next" % n,
+    "registers": lambda n: "%d bound words" % n,
+    "state": lambda _: "a carried state",
+    "context": lambda slots: "the context slot " + ", ".join(slots),
+}
 
 # What Plover writes for itself. Every one is a built-in meta, so no dictionary
 # needs a plugin to get it; `infl` is the exception and is checked for by name.
@@ -39,6 +50,13 @@ BUILTIN_METAS = frozenset(["retro.cap", "retro.upper", "retro.lower",
 # dictionary writes one word with unboundedly many outlines, so "every outline"
 # is not a finite answer and the suggestions window wants the few shortest.
 REVERSE_LIMIT = 8
+
+# How many nodes the search may look at per outline it wants. A phrasing
+# automaton emits keys the text has not yet chosen, so the cheap end of its
+# search holds tens of thousands of nodes and a word it does not write costs the
+# whole budget. Over 120 sampled translations against every artifact here, 512
+# returns what 4096 returns and costs an eighth as much.
+REVERSE_BUDGET = 512
 
 
 class StfstDictionary(StenoDictionary):
@@ -63,11 +81,11 @@ class StfstDictionary(StenoDictionary):
         manifest = _manifest(filename)
         name = manifest["dict"]["name"]
         needs = manifest["requires"]
-        if needs["host"] > HOST_VERSION:
+        wants = _why(needs)
+        if wants:
             raise ValueError(
-                "%s needs host %d, and Plover is host %d: it reads %s, which "
-                "Plover has no way to tell a dictionary"
-                % (name, needs["host"], HOST_VERSION, _why(needs)))
+                "%s reads %s, which Plover has no way to tell a dictionary"
+                % (name, wants))
         missing = sorted(set(needs["metas"]) - _metas())
         if missing:
             raise ValueError("%s asks for the meta %s, which this Plover does "
@@ -266,7 +284,7 @@ class StfstDictionary(StenoDictionary):
         if input_syms is None:
             return []
         tapes, _ = self._back.cheapest(input_syms, self._weight, REVERSE_LIMIT,
-                                       REVERSE_LIMIT * 4096)
+                                       REVERSE_LIMIT * REVERSE_BUDGET)
         out = []
         for tape in tapes:
             outline = self._outline(alphabet.render(tape))
@@ -291,16 +309,12 @@ def _manifest(path):
 
 
 def _why(needs):
-    """Which part of the host contract this dictionary needs, by name."""
-    wants = []
-    if needs["context"]:
-        wants.append("the context slot " + ", ".join(needs["context"]))
-    if needs["state"]:
-        wants.append("a carried state")
-    if needs["registers"]:
-        wants.append("%d bound words" % needs["registers"])
-    if needs["words"]:
-        wants.append("%d words of what is already written" % needs["words"])
+    """What this dictionary asks for that Plover cannot say, by name.
+
+    Empty for one it can host, which is what makes this the load gate.
+    """
+    wants = [say(needs[field]) for field, say in CANNOT.items()
+             if needs.get(field)]
     return " and ".join(wants)
 
 

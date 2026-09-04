@@ -1,20 +1,21 @@
 //! One compiled dictionary, and what it promises the host.
 
+use std::num::NonZeroU8;
 use std::path::Path;
 
 use serde::Deserialize;
 use stfst_core::context;
 use stfst_core::record::{all_tags, is_tag};
-use stfst_core::{Capabilities, Emission, Prefix, Record, Stroke, System, Window};
+use stfst_core::{Capabilities, Emission, Prefix, Record, Shown, Stroke, System, Window};
 use stfst_ol::{Automaton, Cursor, Sym};
 
 use crate::DictError;
 
 /// The host contract version this crate implements: `FST-DICT-DESIGN.md` §5,
-/// items 1 to 6. Version 1 was items 1 to 4; a dictionary that needs neither a
-/// context slot, nor a carried state, nor a bound word still declares 1 and
-/// still loads in a host that implements only those.
-pub const HOST_VERSION: u32 = 2;
+/// items 1 to 6, and a held stroke. Version 1 was items 1 to 4; a dictionary
+/// that needs neither a context slot, nor a carried state, nor a bound word
+/// still declares 1 and still loads in a host that implements only those.
+pub const HOST_VERSION: u32 = 3;
 
 #[derive(Debug, Deserialize)]
 pub struct Manifest {
@@ -48,6 +49,15 @@ pub struct Requires {
     /// How many words of already-written text the host must show, after the keys.
     #[serde(default)]
     pub words: u8,
+    /// How many words of the next unit's text the host must show instead. The
+    /// text is not written when the keys arrive, so the host holds the stroke
+    /// until it is.
+    #[serde(default)]
+    pub next: u8,
+    /// Whether some record's tail waits for the unit after it: `[AFTER]`. The
+    /// same hold as `next` without the reading, and a host that has one has both.
+    #[serde(default)]
+    pub after: bool,
     /// The characters this dictionary named, so the host sends them as themselves
     /// and everything else as its class. Read out of the grammar by the compiler,
     /// so a host and a dictionary cannot disagree about it.
@@ -83,6 +93,7 @@ pub struct Dict {
     encoding: Encoding,
     /// The named characters, as a slice for `Window::encode`.
     significant: Vec<char>,
+    shown: Option<Shown>,
 }
 
 /// The same relation with the tapes swapped. Optimized lookup only walks the
@@ -198,12 +209,22 @@ impl Dict {
             false => None,
         };
         let significant = manifest.requires.significant.chars().collect();
+        let shown = match (
+            NonZeroU8::new(manifest.requires.words),
+            NonZeroU8::new(manifest.requires.next),
+        ) {
+            (Some(_), Some(_)) => return Err(DictError::TwoWindows { name }),
+            (Some(n), None) => Some(Shown::Written(n)),
+            (None, Some(n)) => Some(Shown::Next(n)),
+            (None, None) => None,
+        };
         Ok(Dict {
             manifest,
             fst,
             back,
             encoding,
             significant,
+            shown,
         })
     }
 
@@ -255,9 +276,9 @@ impl Dict {
         self.manifest.requires.registers
     }
 
-    /// How many words of written text this dictionary is shown.
-    pub fn words(&self) -> u8 {
-        self.manifest.requires.words
+    /// The text this dictionary is shown, and how much of it.
+    pub fn shown(&self) -> Option<Shown> {
+        self.shown
     }
 
     /// Encode a span the way this dictionary expects to read it.

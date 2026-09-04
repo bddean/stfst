@@ -10,7 +10,7 @@ use stfst_core::context::{self, Slot};
 use stfst_core::host;
 use stfst_core::window::{self, Class};
 use stfst_core::record::{
-    all_tags, copy_tag, repeat_tag, replace_tag, FLAG_TAGS, MAX_COUNT, MOD_TAGS,
+    all_tags, copy_tag, repeat_tag, replace_tag, AFTER, FLAG_TAGS, MAX_COUNT, MOD_TAGS,
 };
 use stfst_core::System;
 
@@ -187,6 +187,7 @@ pub fn generate_for(system: &System, used: Option<&[String]>) -> String {
         .map(|n| format!("\"{}\"", replace_tag(n)))
         .collect();
     out.push_str(&format!("define Replace [ {} ] ;\n", replaces.join(" | ")));
+
     // Built from the same groups the parser reads, so a new flag cannot be legal
     // for one and illegal for the other.
     let slots: Vec<String> = stfst_core::record::FLAG_GROUPS
@@ -197,8 +198,16 @@ pub fn generate_for(system: &System, used: Option<&[String]>) -> String {
         })
         .collect();
     out.push_str(&format!(
-        "define Record [ Item* {} (Rep) (Replace) ] ;\n\n",
+        "define Plain [ Item* {} (Rep) (Replace) ] ;\n",
         slots.join(" ")
+    ));
+    out.push_str(&format!(
+        "! A record's deferred tail waits for the unit after this one, and carries\n\
+         ! its own flags: the join is the point. `Plain` is a record without one,\n\
+         ! which is also what a tail is, so nothing here recurses. A hoist moves a\n\
+         ! flag to the end of the record, so a grammar that writes a tail places\n\
+         ! its own flags by hand and the acceptor check proves it did.\n\
+         define Record [ Plain ( \"{AFTER}\" Plain \"[END]\" ) ] ;\n\n"
     ));
 
     out.push_str(

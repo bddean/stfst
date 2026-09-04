@@ -16,7 +16,7 @@
 //! state as they were at `p`, and replay has to reproduce them. So undo is a pop
 //! and redo is a replay, which is what host contract items 5 and 6 ask for.
 
-use stfst_core::{Context, Emission, Prefix, State, Stroke, Window};
+use stfst_core::{Context, Emission, Prefix, Shown, State, Stroke, Window};
 use stfst_ol::Cursor;
 
 use crate::{DictError, Stack};
@@ -40,6 +40,35 @@ pub struct Match {
     /// `PWABGS` is `PWABG` plus whatever `-S` means, and the base dictionary knows
     /// nothing about the suffix. Host contract item 8.
     pub suffix: Option<Emission>,
+}
+
+/// A candidate in a dictionary that reads the text after its keys.
+///
+/// Nothing can be harvested when the keys arrive, so the host keeps this and
+/// asks again once a unit has written something. The cursor comes with it rather
+/// than the strokes: it has read the keys already, and the frame's own stroke is
+/// history the moment the next one lands.
+#[derive(Clone)]
+pub struct Held<'a> {
+    dict: usize,
+    strokes: std::ops::Range<usize>,
+    words: u8,
+    cursor: Cursor<'a>,
+}
+
+impl Held<'_> {
+    /// The most words this candidate can read. A host that has fewer shows
+    /// fewer, and then a rule that wanted more does not match.
+    pub fn words(&self) -> u8 {
+        self.words
+    }
+
+    /// Where its keys are in the stroke history. A held stroke is not the stroke
+    /// being read, and it can be several strokes back: it waits through every
+    /// unit that writes no word.
+    pub fn strokes(&self) -> std::ops::Range<usize> {
+        self.strokes.clone()
+    }
 }
 
 /// One live candidate: a dictionary, where it started, and how far it has read.
@@ -233,10 +262,13 @@ impl<'a> Session<'a> {
                 continue;
             }
             let dict = self.stack.dict(live.dict);
-            let (outputs, window) = match dict.words() {
-                0 => (live.cursor.outputs(), None),
-                n => {
-                    let window = dict.window(&span(n));
+            let (outputs, window) = match dict.shown() {
+                None => (live.cursor.outputs(), None),
+                // The text a frame reads is not written yet, so nothing can be
+                // harvested here. `held` offers the candidate to the host instead.
+                Some(shown) if shown.deferred() => continue,
+                Some(shown) => {
+                    let window = dict.window(&span(shown.words()));
                     (dict.harvest(&live.cursor, &window), Some(window))
                 }
             };
@@ -244,11 +276,8 @@ impl<'a> Session<'a> {
                 best = Some((live, outputs, window));
             }
         }
-        // A fold is a fallback, as it is in Plover: only when nothing matches the
-        // stroke as it was written. Otherwise `PWABGS` would fold when it has an
-        // entry of its own.
         let Some((live, outputs, window)) = best else {
-            return self.folded_best(&span);
+            return Ok(None);
         };
         Ok(Some(Match {
             dict: live.dict,
@@ -259,8 +288,62 @@ impl<'a> Session<'a> {
         }))
     }
 
+    /// The candidate the host should hold, for a stroke nothing else matched.
+    ///
+    /// A fallback, as a fold is: a dictionary that reads what follows its keys
+    /// answers only where nothing answers already, because whether it answers at
+    /// all is unknown until that text exists.
+    pub fn held(&self) -> Option<Held<'a>> {
+        let now = self.history.len().saturating_sub(1);
+        let mut best: Option<(&Live<'a>, Shown)> = None;
+        for live in &self.live {
+            let Some(shown) = self.stack.dict(live.dict).shown() else {
+                continue;
+            };
+            if !shown.deferred() || !self.enabled(now, live.dict) {
+                continue;
+            }
+            if best.is_some_and(|(b, _)| live.start >= b.start) {
+                continue;
+            }
+            best = Some((live, shown));
+        }
+        let (live, shown) = best?;
+        Some(Held {
+            dict: live.dict,
+            strokes: live.start..self.history.len(),
+            words: shown.words(),
+            cursor: live.cursor.clone(),
+        })
+    }
+
+    /// What a held candidate says, now that the text it reads is written.
+    ///
+    /// `None` where the keys began an entry and finished none, which is the
+    /// answer a held stroke cannot give any earlier.
+    pub fn resolve(&self, held: &Held<'_>, span: &str) -> Result<Option<Match>, DictError> {
+        let dict = self.stack.dict(held.dict);
+        let window = dict.window(span);
+        let outputs = dict.harvest(&held.cursor, &window);
+        if outputs.is_empty() {
+            return Ok(None);
+        }
+        Ok(Some(Match {
+            dict: held.dict,
+            strokes: held.strokes.len(),
+            emissions: dict.interpret(&outputs)?,
+            window: Some(window),
+            suffix: None,
+        }))
+    }
+
     /// The best match that needed a key folded off the last stroke, with what that
     /// key means on its own.
+    ///
+    /// A fallback, as it is in Plover: a host asks only where nothing matched the
+    /// stroke as it was written, or `PWABGS` would fold when it has an entry of
+    /// its own. A held candidate comes first, because it *is* a match on the
+    /// stroke as written and only its answer has to wait.
     ///
     /// Host contract item 8, and the answer to where a suffix rule lives when the
     /// base word is in a dictionary that has never heard of the suffix: not in a
@@ -270,9 +353,9 @@ impl<'a> Session<'a> {
     /// stroke that matched nothing, which is the rare case, and building it eagerly
     /// cost a cursor per key per candidate on *every* stroke: 63 microseconds a
     /// stroke against 13. The replay is the same one undo uses.
-    fn folded_best(
+    pub fn folded_with(
         &self,
-        span: &impl Fn(u8) -> String,
+        span: impl Fn(u8) -> String,
     ) -> Result<Option<Match>, DictError> {
         let Some(newest) = self.history.len().checked_sub(1) else {
             return Ok(None);
@@ -305,10 +388,13 @@ impl<'a> Session<'a> {
                         continue;
                     }
                     entry.feed(&mut cursor, bare, start < newest);
-                    let (outputs, window) = match entry.words() {
-                        0 => (cursor.outputs(), None),
-                        n => {
-                            let window = entry.window(&span(n));
+                    let (outputs, window) = match entry.shown() {
+                        None => (cursor.outputs(), None),
+                        // A fold of a held stroke would be a fallback to a
+                        // fallback, and the keys a frame reads are its own.
+                        Some(shown) if shown.deferred() => continue,
+                        Some(shown) => {
+                            let window = entry.window(&span(shown.words()));
                             (entry.harvest(&cursor, &window), Some(window))
                         }
                     };

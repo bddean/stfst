@@ -14,5 +14,5 @@ pub mod window;
 pub use context::{Context, Prefix, State};
 pub use host::Capabilities;
 pub use record::{Case, Emission, Flags, Item, Record, RecordError, SpaceOp};
-pub use window::{Class, Glyph, Window};
+pub use window::{Class, Glyph, Shown, Window};
 pub use system::{Key, Outline, OutlineError, Side, Stroke, System, SystemError};

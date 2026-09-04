@@ -40,6 +40,9 @@ ESCAPE = "[U+]"
 DROP = "[DROP]"
 STATE_OPEN, STATE_CLOSE = "[STATE]", "[END]"
 
+# `[AFTER]…[END]`: the record's tail, written after the unit that follows it.
+AFTER = "[AFTER]"
+
 # `stfst_core::host`. A host implements a fixed set of operations, so the set is
 # closed and a name outside it is an error rather than a request.
 COMMANDS = [
@@ -96,6 +99,9 @@ class Record:
         self.repeat = flags.pop("repeat", 1)
         self.replace = flags.pop("replace", None)
         self.state = flags.pop("state", None)
+        # The tail: a record of its own, written after the unit that follows this
+        # one. `plover_stfst.hold` is what waits with it.
+        self.after = flags.pop("after", None)
         if flags:
             raise TypeError("no such flag: %s" % ", ".join(sorted(flags)))
 
@@ -135,6 +141,17 @@ class Record:
     def parse(cls, symbols):
         """A tape as a record. Each symbol is a tag or one character of text."""
         symbols = list(symbols)
+        # The tail is last and delimited, so it comes off first and what is left
+        # is an ordinary record.
+        after = None
+        if AFTER in symbols:
+            i = symbols.index(AFTER)
+            if symbols[-1] != STATE_CLOSE:
+                raise Unsupported("unterminated [AFTER]")
+            after = cls.parse(symbols[i + 1:-1])
+            if after.after is not None:
+                raise Unsupported("an [AFTER] tail holds another one")
+            symbols = symbols[:i]
         state = None
         # `[STATE]` cannot appear inside an item, so the last one opens the block
         # and the tape has to end with its `[END]`.
@@ -145,7 +162,7 @@ class Record:
             state = "".join(symbols[opens[-1] + 1:-1])
             symbols = symbols[:opens[-1]]
         body, i = _parse_body(symbols)
-        record = cls(body, state=state)
+        record = cls(body, state=state, after=after)
         record._parse_flags(symbols[i:])
         return record
 
@@ -213,6 +230,10 @@ class Record:
             out.append("[REP%d]" % self.repeat)
         if self.replace is not None:
             out.append("[REPLACE%d]" % self.replace)
+        if self.after is not None:
+            out.append(AFTER)
+            out.extend(self.after.symbols())
+            out.append(STATE_CLOSE)
         if self.state is not None:
             out.append(STATE_OPEN)
             out.extend(self.state)
@@ -445,6 +466,16 @@ def _command(name, arg):
     return "{PLOVER:%s%s}" % (plover.upper(), ":" + arg if arg else "")
 
 
+def _escape_meta(text):
+    """A translation as the argument of a meta.
+
+    Plover reads an atom up to the first unescaped brace, so a translation nested
+    inside one has to escape its own. `\\{` and `\\}` are Plover's own escapes,
+    which `_unescape_atom` undoes before a plugin sees the argument.
+    """
+    return text.replace("\\", "\\\\").replace("{", "\\{").replace("}", "\\}")
+
+
 def _meta(name, arg):
     if name in RETRO_METAS:
         if arg:
@@ -462,6 +493,12 @@ def _translation(self):
         raise Unsupported("a carried state")
     if self.replace is not None:
         raise Unsupported("[REPLACE%d]" % self.replace)
+    # The tail is not part of what this translation writes. It is a translation
+    # of its own, held by `plover_stfst.hold` until a unit writes a word, and the
+    # meta is how the body carries it there.
+    tail = ""
+    if self.after is not None:
+        tail = "{:stfst_ahead:%s}" % _escape_meta(self.after.translation())
 
     # Every atom, and whether it puts a word on screen. Only a word takes a gap
     # beside it, so only a word decides where the joins go.
@@ -524,6 +561,7 @@ def _translation(self):
         out.append({"cap": "{-|}", "lower": "{>}", "upper": "{<}"}[self.case])
     if self.word_end:
         out.append("{$}")
+    out.append(tail)
     # An empty translation is an untranslate in Plover, and an untranslate writes
     # the raw steno. A record that writes nothing has to say so.
     return "".join(out) or "{}"

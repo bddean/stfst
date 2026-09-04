@@ -5,3 +5,26 @@ system = "../systems/stenotype-extended.toml"
 name = "probe"
 priority = 1
 xfst = ["dicts/probe.xfst"]
+
+# The other direction of a window: a frame reads the text the *next* unit writes,
+# so the host holds the stroke until there is some. `words` is absent and `next`
+# is here in its place: one tape has one window.
+[[dict]]
+name = "held"
+priority = 3
+next = 2
+xfst = ["dicts/held.xfst"]
+
+# The other kind of held stroke: a record that only follows the next unit, so
+# nothing is read and the host's own join does the work.
+[[dict]]
+name = "ahead"
+priority = 2
+plain = "dicts/ahead.dict"
+
+# What the frames go around, so the fixture is a stroke stream through two
+# dictionaries rather than a lookup.
+[[dict]]
+name = "words"
+priority = 1
+plain = "dicts/words.dict"

@@ -1,0 +1,61 @@
+! The templates of `frames.xfst` against the words they go around, so the
+! fixture needs typey-type and phrases as well: what a frame is shown is what
+! another dictionary wrote. `artifacts` names them.
+!
+! `...` in the second column is a held stroke: its keys are read and the text
+! they belong to is not written yet. The line after the word reports the frame,
+! under its own outline.
+
+! ---- templates
+!buffer
+STPR*T
+HAOER
+!buffer
+STPHO*BT
+HAOER
+!buffer
+SPHO*RPB
+HAOER
+!buffer
+STPHAO*EURT
+HAOER
+
+! A brief whose only claim on the stroke was a `-T` fold. A fold is a last
+! resort, so the frame comes first: this writes "either here or" and not
+! "either here" plus "the".
+!buffer
+SAO*EURT
+HAOER
+
+! The word comes first, so the word took the capital. A frame with a word of its
+! own moves it: ". From here to", not ". from Here to".
+!buffer
+TP-PL
+STPR*T
+HAOER
+
+! Two words, which is what `next = 2` shows, and their own capitals stay.
+!buffer
+STPR*T
+TPHORB
+!buffer
+STWAO*EPBD
+-FT
+
+! Three words is more than a frame is shown, so it does not fire and the phrase
+! stands as it was written.
+!buffer
+STPR*T
+PHO*RPB
+
+! A pair writes punctuation only, so the capital stays on the word.
+!buffer
+TP-PL
+SKWO*ET
+HAOER
+!buffer
+SPR*EPB
+HAOER
+!buffer
+SPWA*BGT
+HAOER

@@ -1,0 +1,13 @@
+! A fixture, not a dictionary. A record whose tail waits for the unit after it,
+! which is `[AFTER]`: the keys come first and the text the tail attaches to comes
+! later.
+!
+! Nothing here reads that text. The tail only follows it, so the join is the
+! host's: `[ORTHO_L]` is the same orthography a folded suffix key gets. The cases
+! are chosen to agree with a plain join, because whether this machine has the
+! orthography artifacts is a property of the machine and not of the mechanism.
+
+! A tail and nothing else, so the stroke writes nothing at all.
+KWRS	[AFTER]s[ORTHO_L][END]
+! A body and a tail: "and" now, "too" after the next unit's word.
+KWRT	and[AFTER]too[END]
