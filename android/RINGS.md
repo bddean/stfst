@@ -1,5 +1,10 @@
 # Rings: what to build
 
+The brief the rings were built from, kept as it was written. The keyboard has
+moved on since: the modifiers left the rim for a row, the pinky keys became one
+upgrade bit, and ring 2 is staggered rather than lined up. `README.md` is what
+ships.
+
 This replaces the comb. `docs/rings.html` is the working demo and the reference
 for every rule below; it is a single file with the layout, the hit test, the take
 rule and the corpus scoring in about 300 lines of JavaScript, and it replays

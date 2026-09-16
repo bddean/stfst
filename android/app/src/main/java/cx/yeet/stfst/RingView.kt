@@ -10,9 +10,11 @@ import android.graphics.Path
 import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
+import kotlin.math.floor
 import kotlin.math.hypot
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.math.pow
 
 /**
  * The keyboard itself: two thumb banks of nested rings, and the touch handling
@@ -101,6 +103,13 @@ class RingView(
         val screen = resources.displayMetrics.heightPixels
         val share = if (landscape && !embedded) config.landscapeHeight else config.keyboardHeight
         var keys = (screen * share.coerceIn(0.15f, 0.95f)).toInt()
+        // Square rings want a square bank, and depth past that is room the app
+        // gives up for nothing.
+        if (config.squareBanks) {
+            val (left, _) = spans(width.toFloat())
+            val square = (left.endInclusive - left.start) / (1f - config.rowHeight)
+            keys = min(keys, square.toInt())
+        }
         var band = (screen * config.previewHeight.coerceIn(0f, 0.6f)).toInt()
         // The window is what it is. Measuring past it would put the top of the
         // keys off the glass, so the keys and the band give up room together.
@@ -179,6 +188,7 @@ class RingView(
                 if (!doubleTap(bank, x, y, event.eventTime)) {
                     chorder.flush()
                     downs[pointer] = Tap(x, y, event.eventTime)
+                    armLongPress(bank, pointer)
                 }
                 if (chorder.down(bank, pointer, x, y)) haptics.take(bank)
                 tell(bank)
@@ -191,7 +201,10 @@ class RingView(
                     record(event, at, thumb.bank)
                     downs[pointer]?.let {
                         val far = hypot(event.getX(at) - it.x, event.getY(at) - it.y)
-                        if (far > height * 0.02f) downs.remove(pointer)
+                        if (far > height * 0.02f) {
+                            downs.remove(pointer)
+                            dropLongPress(pointer)
+                        }
                     }
                     // One hand can write a whole stroke: a touch that arrives
                     // in the other field is handed over, and the field it left
@@ -220,6 +233,7 @@ class RingView(
             MotionEvent.ACTION_UP, MotionEvent.ACTION_POINTER_UP -> {
                 val pointer = event.getPointerId(event.actionIndex)
                 val down = downs.remove(pointer)
+                dropLongPress(pointer)
                 val thumb = chorder.forPointer(pointer)
                 val tap = config.doubleTapMs > 0 && down != null &&
                     event.eventTime - down.time <= config.doubleTapMs
@@ -234,6 +248,7 @@ class RingView(
 
             MotionEvent.ACTION_CANCEL -> {
                 downs.clear()
+                for (pointer in presses.keys.toList()) dropLongPress(pointer)
                 lastTaps.clear()
                 chorder.reset()
             }
@@ -288,6 +303,34 @@ class RingView(
         return true
     }
 
+    /** The timers waiting to see a touch stand still long enough to be a press. */
+    private val presses = mutableMapOf<Int, Runnable>()
+
+    /**
+     * A touch that stands still on its cell arms the bank's long-press key.
+     *
+     * The other way to a modifier without a trip to the row: the thumb is
+     * already on the key it wants, and staying put costs it no travel.
+     */
+    private fun armLongPress(bank: Bank, pointer: Int) {
+        if (config.longPressMs <= 0) return
+        val key = order.indexOf(config.longPress(bank))
+        if (key < 0) return
+        val task = Runnable {
+            presses.remove(pointer)
+            if (downs[pointer] == null || chorder.forPointer(pointer) == null) return@Runnable
+            chorder.stick(key)
+            haptics.take(bank)
+            invalidate()
+        }
+        presses[pointer] = task
+        postDelayed(task, config.longPressMs)
+    }
+
+    private fun dropLongPress(pointer: Int) {
+        presses.remove(pointer)?.let { removeCallbacks(it) }
+    }
+
     private fun armFlush() {
         flusher?.let { removeCallbacks(it) }
         val task = Runnable {
@@ -317,13 +360,15 @@ class RingView(
             Color.red(color), Color.green(color), Color.blue(color)
         )
 
+    /**
+     * Two tones, and the texture carries the kind: a key is an outline on the
+     * ground until it is in the chord, and then it is filled.
+     */
     private class Palette(
-        val edge: Int,
-        val text: Int,
-        val hot: Int,
-        val back: Int,
-        /** The ground each kind of key stands on, plain and in the chord. */
-        val tints: Map<Kind, Tint>,
+        /** The ground, and a label on a cell in the chord. */
+        val ground: Int,
+        /** Labels, outlines, and a cell in the chord. */
+        val ink: Int,
     )
 
     /**
@@ -335,8 +380,6 @@ class RingView(
      */
     private enum class Kind { PLAIN, VOWEL, MOD }
 
-    private class Tint(val face: Int, val warm: Int)
-
     private fun kindOf(key: Int): Kind = when {
         key < 0 -> Kind.PLAIN
         order[key].uppercaseChar() in "AOEU" -> Kind.VOWEL
@@ -344,8 +387,21 @@ class RingView(
         else -> Kind.PLAIN
     }
 
-    private fun face(paint: Palette, key: Int, held: Boolean): Int =
-        paint.tints.getValue(kindOf(key)).let { if (held) it.warm else it.face }
+    /**
+     * The dither a kind of key is drawn with: how far apart the dots are and
+     * how big they are, in fractions of the bank.
+     *
+     * The consonants are the many, and they get the plain face. The other two
+     * differ in the size of the dot as well as the spacing, so they can be told
+     * apart without reading either.
+     */
+    private class Grain(val spacing: Float, val radius: Float)
+
+    private fun grainOf(kind: Kind): Grain? = when (kind) {
+        Kind.PLAIN -> null
+        Kind.VOWEL -> Grain(0.019f, 0.0030f)
+        Kind.MOD -> Grain(0.026f, 0.0045f)
+    }
 
     /**
      * How far the band over the app has faded in: 0 gone, 1 there.
@@ -366,40 +422,21 @@ class RingView(
         return glow * glow * (3f - 2f * glow)
     }
 
+    private fun labelSize(): Float = TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_SP, config.labelSp, resources.displayMetrics
+    )
+
     override fun onDraw(canvas: Canvas) {
-        val dark = (resources.configuration.uiMode and
-            Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
-        val paint = Palette(
-            edge = if (dark) Color.rgb(70, 74, 84) else Color.rgb(206, 210, 218),
-            text = if (dark) Color.rgb(232, 234, 238) else Color.rgb(24, 26, 30),
-            hot = Color.rgb(64, 132, 240),
-            back = if (dark) Color.rgb(18, 18, 20) else Color.rgb(246, 246, 248),
-            tints = mapOf(
-                Kind.PLAIN to Tint(
-                    if (dark) Color.rgb(38, 40, 46) else Color.WHITE,
-                    if (dark) Color.rgb(30, 58, 104) else Color.rgb(206, 226, 255),
-                ),
-                Kind.VOWEL to Tint(
-                    if (dark) Color.rgb(30, 48, 40) else Color.rgb(235, 248, 240),
-                    if (dark) Color.rgb(28, 84, 58) else Color.rgb(196, 236, 212),
-                ),
-                Kind.MOD to Tint(
-                    if (dark) Color.rgb(46, 40, 56) else Color.rgb(246, 241, 250),
-                    if (dark) Color.rgb(72, 56, 108) else Color.rgb(226, 214, 246),
-                ),
-            ),
-        )
+        val paint = Palette(ground = Color.WHITE, ink = Color.rgb(24, 24, 24))
         // Only the fields get a ground, and only where the keys are. Above them
         // and between them the app shows through, which is what the band is for.
         ink.style = Paint.Style.FILL
-        ink.color = paint.back
+        ink.color = paint.ground
         for (bank in Bank.values()) {
             val field = chorder.thumb(bank).field
             canvas.drawRect(field.left, keysTop.toFloat(), field.right, height.toFloat(), ink)
         }
-        ink.textSize = TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_SP, config.labelSp, resources.displayMetrics
-        )
+        ink.textSize = labelSize()
         ink.textAlign = Paint.Align.CENTER
         for (bank in Bank.values()) {
             val sketch = sketches[bank] ?: continue
@@ -428,8 +465,14 @@ class RingView(
         drawTaken(canvas, thumb, paint, where)
     }
 
-    /** One cell as drawn: its outline, its keys, and where its label sits. */
-    private class Cut(val cell: Cell, val keys: List<Int>, val path: Path, val middle: Point)
+    /** One cell as drawn: its outline, its dither, its keys, and its label's place. */
+    private class Cut(
+        val cell: Cell,
+        val keys: List<Int>,
+        val path: Path,
+        val grain: Path?,
+        val middle: Point,
+    )
 
     /**
      * The shapes of one bank, which depend on the layout and the field alone.
@@ -444,60 +487,185 @@ class RingView(
     private var bands: Map<Bank, Sketch> = emptyMap()
 
     private fun cut() {
+        // The dither is cut around the labels, so their size has to be known here.
+        ink.textSize = labelSize()
         sketches = Bank.values().associateWith { carve(it, chorder.thumb(it).field) }
         bands = if (keysTop <= 0) emptyMap()
         else Bank.values().associateWith { carve(it, band(it)) }
     }
 
-    private fun carve(bank: Bank, field: Field): Sketch = Sketch(
-        cuts = ring.cells(bank).mapNotNull { cell ->
-            polygon(ring.outline(bank, field, cell))?.let {
-                Cut(
-                    cell, ring.keys(bank, cell), it,
-                    ring.point(bank, field, ring.centre(bank, cell)),
-                )
+    private fun carve(bank: Bank, field: Field): Sketch {
+        val unit = min(field.width, field.height)
+        return Sketch(
+            cuts = ring.cells(bank).mapNotNull { cell ->
+                val outline = ring.outline(bank, field, cell)
+                val path = polygon(outline) ?: return@mapNotNull null
+                val keys = ring.keys(bank, cell)
+                val middle = ring.middle(bank, field, cell)
+                // The row says what it is by being the row, so the dither is
+                // for the rings, where the kinds are mixed.
+                val kind = if (cell.isRow) null else keys.firstOrNull()?.let { kindOf(it) }
+                val name = if (ring.isUpgrade(bank, cell)) UPGRADE else spell(keys)
+                val grain = kind?.let { grainOf(it) }
+                    ?.let { stipple(outline, middle, name, unit, it) }
+                Cut(cell, keys, path, grain, middle)
+            },
+            field = field,
+            unit = unit,
+        )
+    }
+
+    /** A candidate dot: where it is, how deep inside the cell, and its rank. */
+    private class Dot(val x: Float, val y: Float, val deep: Float, val rank: Float)
+
+    /**
+     * The dither inside one cell.
+     *
+     * Dots of one size, placed by [Noise] so they neither line up nor clump,
+     * thinning out to nothing at the cell's rim and around its label. A dither
+     * running under a letter is what makes the letter hard to read, and the
+     * fade is what buys the texture without paying that.
+     *
+     * What the fade changes is how many dots there are, not how big they are,
+     * because a prefix of [Noise] is a blue-noise set at a lower density and a
+     * shrinking dot is a blur.
+     */
+    private fun stipple(
+        outline: List<Point>,
+        middle: Point,
+        text: String,
+        unit: Float,
+        grain: Grain,
+    ): Path? {
+        // One period of the pattern on the glass. It tiles seamlessly, so this
+        // only sets how far apart a repeat of the same arrangement is.
+        val tile = unit * 0.5f
+        val perTile = ((tile / (grain.spacing * unit)).pow(2)).toInt().coerceIn(1, Noise.COUNT)
+        val radius = grain.radius * unit
+        val hole = unit * 0.015f
+        val holeX = ink.measureText(text) * 0.5f + hole
+        val holeY = ink.textSize * 0.5f + hole
+        var left = Float.MAX_VALUE
+        var top = Float.MAX_VALUE
+        var right = -Float.MAX_VALUE
+        var bottom = -Float.MAX_VALUE
+        for (p in outline) {
+            left = min(left, p.x); right = max(right, p.x)
+            top = min(top, p.y); bottom = max(bottom, p.y)
+        }
+        val points = Noise.points
+        val dots = ArrayList<Dot>()
+        var deepest = 0f
+        for (ty in floor(top / tile).toInt()..floor(bottom / tile).toInt()) {
+            for (tx in floor(left / tile).toInt()..floor(right / tile).toInt()) {
+                for (i in 0 until perTile) {
+                    val x = (tx + points[i].x) * tile
+                    val y = (ty + points[i].y) * tile
+                    if (x < left || x > right || y < top || y > bottom) continue
+                    if (!inside(outline, x, y)) continue
+                    val deep = edgeFar(outline, x, y)
+                    deepest = max(deepest, deep)
+                    dots.add(Dot(x, y, deep, (i + 0.5f) / perTile))
+                }
             }
-        },
-        field = field,
-        unit = min(field.width, field.height),
-    )
+        }
+        // The rim bands are thinner than the fade wants to be, and a fade wider
+        // than the cell leaves a clump down the middle rather than a texture.
+        val band = min(unit * 0.022f, deepest * 0.55f)
+        val path = Path()
+        var any = false
+        for (dot in dots) {
+            val rim = fringe(dot.deep / band - 0.3f)
+            val far = hypot((dot.x - middle.x) / holeX, (dot.y - middle.y) / holeY)
+            if (dot.rank > min(rim, fringe((far - 1f) / 0.7f))) continue
+            path.addCircle(dot.x, dot.y, radius, Path.Direction.CW)
+            any = true
+        }
+        return if (any) path else null
+    }
+
+    /** Smooth 0 below, 1 above, for fading a dither in over a distance. */
+    private fun fringe(t: Float): Float =
+        t.coerceIn(0f, 1f).let { it * it * (3f - 2f * it) }
+
+    private fun inside(poly: List<Point>, x: Float, y: Float): Boolean {
+        var hit = false
+        var j = poly.size - 1
+        for (i in poly.indices) {
+            val a = poly[i]
+            val b = poly[j]
+            if ((a.y > y) != (b.y > y) &&
+                x < (b.x - a.x) * (y - a.y) / (b.y - a.y) + a.x
+            ) hit = !hit
+            j = i
+        }
+        return hit
+    }
+
+    /** How far a point inside a polygon is from its boundary. */
+    private fun edgeFar(poly: List<Point>, x: Float, y: Float): Float {
+        var best = Float.MAX_VALUE
+        for (i in poly.indices) {
+            val a = poly[i]
+            val b = poly[(i + 1) % poly.size]
+            val dx = b.x - a.x
+            val dy = b.y - a.y
+            val len = dx * dx + dy * dy
+            val t = if (len == 0f) 0f else (((x - a.x) * dx + (y - a.y) * dy) / len).coerceIn(0f, 1f)
+            best = min(best, hypot(x - (a.x + t * dx), y - (a.y + t * dy)))
+        }
+        return best
+    }
 
     private fun cutAt(sketch: Sketch, cell: Cell): Cut? = sketch.cuts.firstOrNull { it.cell == cell }
 
-    /** Every cell of one bank: its ground, its outline, and its label. */
+    /**
+     * What a cell is to the chord in hand. Three different answers: in the
+     * chord, still takeable, or spent by steno order.
+     */
+    private enum class State { HELD, LIVE, DEAD }
+
+    private fun stateOf(cut: Cut, thumb: Thumb): State = when {
+        ring.isUpgrade(thumb.bank, cut.cell) ->
+            if (chorder.upgrade) State.HELD else State.LIVE
+        cut.keys.isEmpty() -> State.DEAD
+        cut.keys.all { it in thumb.keys || it in chorder.sticky } -> State.HELD
+        cut.keys.any { ring.live(it, thumb.keys) } -> State.LIVE
+        else -> State.DEAD
+    }
+
+    /** Every cell of one bank: its face, its dither, its outline, and its label. */
     private fun drawCells(canvas: Canvas, thumb: Thumb, paint: Palette, sketch: Sketch) {
-        val held = (thumb.keys + chorder.sticky).toSet()
         for (cut in sketch.cuts) {
-            // Three things a cell can be, and they are three different answers:
-            // in the chord, still available, or spent by steno order.
-            val state = when {
-                cut.keys.all { it in held } -> 2
-                cut.keys.any { ring.live(it, thumb.keys) } -> 1
-                else -> 0
-            }
-            if (state == 0 && !config.showDeadCells) continue
+            val state = stateOf(cut, thumb)
+            if (state == State.DEAD && !config.showDeadCells) continue
             ink.style = Paint.Style.FILL
-            // A spent key gives up its hue. Kind is a question about live keys,
-            // so held and spent stay one step apart whatever kind it is.
-            ink.color = if (state == 0) fade(paint.tints.getValue(Kind.PLAIN).face, 0.3f)
-            else face(paint, cut.keys.first(), state == 2)
+            ink.color = if (state == State.HELD) paint.ink else paint.ground
             canvas.drawPath(cut.path, ink)
-            ink.style = Paint.Style.STROKE
-            ink.strokeWidth = sketch.unit * if (state == 2) 0.009f else 0.005f
-            ink.color = when (state) {
-                2 -> paint.hot
-                1 -> paint.edge
-                else -> fade(paint.edge, 0.4f)
+            // The dither flips with the cell, so the kind of key still reads
+            // once the cell is in the chord.
+            cut.grain?.let {
+                ink.color = when (state) {
+                    State.HELD -> fade(paint.ground, 0.9f)
+                    State.LIVE -> fade(paint.ink, 0.35f)
+                    State.DEAD -> fade(paint.ink, 0.1f)
+                }
+                canvas.drawPath(it, ink)
             }
-            canvas.drawPath(cut.path, ink)
+            if (state != State.HELD) {
+                ink.style = Paint.Style.STROKE
+                ink.strokeWidth = sketch.unit * 0.005f
+                ink.color = fade(paint.ink, if (state == State.LIVE) 0.55f else 0.15f)
+                canvas.drawPath(cut.path, ink)
+            }
             if (!config.showLabels) continue
             ink.style = Paint.Style.FILL
             ink.color = when (state) {
-                2 -> paint.hot
-                1 -> paint.text
-                else -> fade(paint.text, 0.3f)
+                State.HELD -> paint.ground
+                State.LIVE -> paint.ink
+                State.DEAD -> fade(paint.ink, 0.25f)
             }
-            label(canvas, cut.keys, cut.middle)
+            label(canvas, text(thumb.bank, cut), cut.middle, markOf(thumb.bank, cut, state))
         }
     }
 
@@ -512,14 +680,17 @@ class RingView(
         if (!thumb.live) return
         val cell = thumb.cell ?: return
         val cut = cutAt(sketch, cell) ?: return
-        val warm = face(paint, cut.keys.first(), true)
+        val takes = ring.taking(thumb.bank, cell, thumb.keys).isNotEmpty()
         ink.style = Paint.Style.FILL
-        ink.color = if (ring.taking(thumb.bank, cell, thumb.keys).isNotEmpty()) warm
-        else fade(warm, 0.45f)
+        ink.color = if (takes) paint.ink else fade(paint.ink, 0.35f)
         canvas.drawPath(cut.path, ink)
+        cut.grain?.let {
+            ink.color = fade(paint.ground, if (takes) 0.9f else 0.5f)
+            canvas.drawPath(it, ink)
+        }
         if (!config.showLabels) return
-        ink.color = paint.text
-        label(canvas, cut.keys, cut.middle)
+        ink.color = if (takes) paint.ground else paint.ink
+        label(canvas, text(thumb.bank, cut), cut.middle)
     }
 
     /**
@@ -530,19 +701,53 @@ class RingView(
      */
     private fun drawMark(canvas: Canvas, thumb: Thumb, paint: Palette, where: Field) {
         if (!thumb.live) return
-        val at = ring.point(
-            thumb.bank, where, ring.polar(thumb.bank, thumb.field, thumb.atX, thumb.atY)
-        )
+        val at = ring.mirror(thumb.bank, thumb.field, where, thumb.atX, thumb.atY)
+        val r = config.markRadius * min(where.width, where.height)
         ink.style = Paint.Style.FILL
-        ink.color = paint.hot
-        canvas.drawCircle(at.x, at.y, config.markRadius * min(where.width, where.height), ink)
+        ink.color = paint.ink
+        canvas.drawCircle(at.x, at.y, r, ink)
+        // A ring of the ground around it, so the mark shows on a cell whose
+        // face is the ink as well as on one whose face is not.
+        ink.style = Paint.Style.STROKE
+        ink.strokeWidth = r * 0.4f
+        ink.color = paint.ground
+        canvas.drawCircle(at.x, at.y, r * 1.2f, ink)
     }
 
-    /** A cell's keys, centred on it. */
-    private fun label(canvas: Canvas, keys: List<Int>, at: Point) {
-        if (keys.isEmpty()) return
-        val text = keys.joinToString("") { order[it].toString() }
+    /**
+     * What a label says about its cell's state beyond its tone: a strike for a
+     * key steno order has passed, an underline for one armed for the next
+     * stroke.
+     */
+    private enum class Mark { NONE, SPENT, ARMED }
+
+    private fun markOf(bank: Bank, cut: Cut, state: State): Mark = when {
+        state == State.DEAD -> Mark.SPENT
+        cut.keys.isNotEmpty() && cut.keys.all { it in chorder.sticky } -> Mark.ARMED
+        else -> Mark.NONE
+    }
+
+    private fun spell(keys: List<Int>): String = keys.joinToString("") { order[it].toString() }
+
+    /**
+     * What a cell says now. The upgrade names what it writes rather than the
+     * key it is, and a key it has lifted is drawn as what it would write.
+     */
+    private fun text(bank: Bank, cut: Cut): String =
+        if (ring.isUpgrade(bank, cut.cell)) UPGRADE
+        else spell(cut.keys.map { chorder.lift(it) })
+
+    /** A cell's label, centred on it, under the mark its state calls for. */
+    private fun label(canvas: Canvas, text: String, at: Point, mark: Mark = Mark.NONE) {
+        if (text.isEmpty()) return
         canvas.drawText(text, at.x, at.y + ink.textSize * 0.35f, ink)
+        if (mark == Mark.NONE) return
+        val half = ink.measureText(text) * 0.5f + ink.textSize * 0.16f
+        val y = at.y + if (mark == Mark.SPENT) 0f else ink.textSize * 0.72f
+        ink.style = Paint.Style.STROKE
+        ink.strokeWidth = ink.textSize * 0.075f
+        canvas.drawLine(at.x - half, y, at.x + half, y, ink)
+        ink.style = Paint.Style.FILL
     }
 
     private fun polygon(points: List<Point>): Path? {
@@ -584,7 +789,7 @@ class RingView(
         val text = if (chorder.mask() == wroteFor) wrote else ""
         if (text.isEmpty()) return
         ink.style = Paint.Style.FILL
-        ink.color = fade(paint.text, 0.8f)
+        ink.color = fade(paint.ink, 0.8f)
         canvas.drawText(
             text.takeLast(48), width * 0.5f, top + ink.textSize * 2.4f, ink
         )
@@ -596,7 +801,7 @@ class RingView(
         val keys = (thumb.keys + armed).distinct()
         if (keys.isEmpty()) return
         ink.style = Paint.Style.FILL
-        ink.color = paint.hot
+        ink.color = paint.ink
         // In steno order, not take order, so what is shown is the outline.
         canvas.drawText(
             keys.sorted().joinToString("") { order[it].toString() },
@@ -609,7 +814,7 @@ class RingView(
         val field = chorder.thumb(bank).field
         val unit = min(field.width, field.height)
         ink.style = Paint.Style.FILL
-        ink.color = fade(paint.hot, config.cloudAlpha)
+        ink.color = fade(paint.ink, config.cloudAlpha)
         for (touch in cloud) {
             // Panels report one, the other, or neither. Fall through to the dot.
             val major = when {
@@ -635,7 +840,7 @@ class RingView(
      */
     private fun drawReadout(canvas: Canvas, paint: Palette) {
         ink.style = Paint.Style.FILL
-        ink.color = fade(paint.text, 0.65f)
+        ink.color = fade(paint.ink, 0.65f)
         for (bank in Bank.values()) {
             val touch = clouds[bank]?.lastOrNull() ?: continue
             val field = chorder.thumb(bank).field
@@ -649,6 +854,9 @@ class RingView(
     }
 
     companion object {
+        /** What the upgrade's own key says: the keys it writes, not one it is. */
+        private const val UPGRADE = "DZ"
+
         /** How long the band takes to come and go. */
         private const val FADE_MS = 130f
     }

@@ -37,7 +37,7 @@ class RingTest {
     fun a_tap_lands_inside_the_cell_it_is_answered_by() {
         for (bank in Bank.values()) {
             for (cell in ring.cells(bank)) {
-                val p = ring.point(bank, field(bank), ring.centre(bank, cell))
+                val p = ring.middle(bank, field(bank), cell)
                 assertEquals(
                     "$bank $cell, holding ${spell(ring.keys(bank, cell))}",
                     cell, ring.hit(bank, field(bank), p.x, p.y),
@@ -57,7 +57,9 @@ class RingTest {
     fun every_chord_is_a_path_a_thumb_can_make() {
         var walked = 0
         for ((bank, chord) in chords()) {
-            assertEquals("$bank $chord", spell(keys(chord)), write(bank, keys(chord)))
+            // The floats are in the row, which a walk neither reaches nor needs.
+            val onRings = keys(chord).filterNot { it in ring.floats(bank) }
+            assertEquals("$bank $chord", spell(onRings), write(bank, keys(chord)))
             walked++
         }
         assertTrue("there should be chords to walk", walked > 1000)
@@ -70,7 +72,9 @@ class RingTest {
     @Test
     fun every_key_is_reachable() {
         for (bank in Bank.values()) {
-            val keys = ring.cells(bank).flatMap { ring.keys(bank, it) }.distinct()
+            // The row is not walked to, so reachability is about the rings.
+            val keys = ring.cells(bank).filterNot { it.isRow }
+                .flatMap { ring.keys(bank, it) }.distinct()
             for (from in keys) {
                 for (to in keys.filter { ring.live(it, listOf(from)) }) {
                     val chord = setOf(from, to)
@@ -84,32 +88,35 @@ class RingTest {
     }
 
     /**
-     * The gaps of every ring line up, so a straight run from the hub to the rim
-     * takes nothing and a float is a run straight out.
+     * Every cell of the rim is a run straight out from the hub, taking nothing
+     * on the way.
+     *
+     * Not at any one angle: the ground between the keys of a ring is what the
+     * run passes through, so the property is that some line out from the middle
+     * lands on the cell and crosses nothing else.
      */
     @Test
-    fun the_corridor_is_open() {
+    fun the_rim_is_a_run_straight_out() {
         for (bank in Bank.values()) {
-            val floats = ring.floats(bank)
-            for (spoke in 0 until 6) {
-                val deg = 30f + spoke * 60f
-                var r = 0.02f
-                var reachedFloat = false
-                while (r <= 1f) {
-                    val cell = ring.cellAt(bank, Polar(r, deg))
-                    val keys = ring.keys(bank, cell)
-                    if (keys.isNotEmpty() && !ring.isHub(cell)) {
-                        assertEquals(
-                            "the corridor at $deg\u00b0 in $bank should be clear to the rim",
-                            keys.toSet(), keys.filter { it in floats }.toSet(),
-                        )
-                        reachedFloat = true
-                    }
-                    r += 0.005f
-                }
-                assertTrue("the corridor at $deg\u00b0 in $bank should end on a float", reachedFloat)
-            }
+            val rim = ring.cells(bank).filter { it.level == 2 }
+            assertTrue("$bank should have a rim", rim.isNotEmpty())
+            for (cell in rim) assertTrue(
+                "no run out from the middle reaches $cell in $bank alone",
+                (-30..30).any { step -> runsOut(bank, cell, ring.centre(bank, cell).deg + step) },
+            )
         }
+    }
+
+    /** Whether a line out from the middle at this angle lands on [cell] and nothing else. */
+    private fun runsOut(bank: Bank, cell: Cell, deg: Float): Boolean {
+        var r = 0.02f
+        while (r <= 1f) {
+            val at = ring.cellAt(bank, Polar(r, deg))
+            if (at == cell) return true
+            if (!ring.isHub(at) && ring.keys(bank, at).isNotEmpty()) return false
+            r += 0.005f
+        }
+        return false
     }
 
     /**
@@ -124,7 +131,7 @@ class RingTest {
         val shippedLeft = share(ring, Bank.LEFT, left)
         assertTrue("the left bank writes ${pct(shippedLeft)} in one motion", shippedLeft > 0.9)
         for (order in arrangements("PHRWK")) {
-            val config = config.copy(ringLeft = "./S/ST/T .$order AOAOAO ^#+^#+")
+            val config = config.copy(ringLeft = "S/ST/T $order AOAOAO")
             val other = share(Ring(ORDER, config), Bank.LEFT, left)
             assertTrue(
                 "$order writes ${pct(other)} of the left corpus, over ${pct(shippedLeft)}",
@@ -136,7 +143,7 @@ class RingTest {
         val shippedRight = share(ring, Bank.RIGHT, right)
         assertTrue("the right ring writes ${pct(shippedRight)} in one motion", shippedRight > 0.95)
         for (order in arrangements("frbglp")) {
-            val config = config.copy(ringRight = "./E/EU/U $order tststs dzdzdz *@*@*@")
+            val config = config.copy(ringRight = "E/EU/U $order tststs")
             val other = share(Ring(ORDER, config), Bank.RIGHT, right)
             assertTrue(
                 "$order writes ${pct(other)} of the right corpus, over ${pct(shippedRight)}",
@@ -144,8 +151,8 @@ class RingTest {
             )
         }
 
-        // The pinky keys are two keys everywhere rather than four in four of
-        // six slots, so every combination of them is one motion.
+        // The pinky keys are one bit over the stroke, so nothing about them
+        // costs a motion.
         assertEquals(1.0, share(ring, Bank.RIGHT, corpus("R2")), 0.0001)
     }
 
@@ -180,7 +187,9 @@ class RingTest {
     private fun write(bank: Bank, keys: List<Int>): String {
         val chorder = Chorder(ring, config) {}
         chorder.place(bank, field(bank))
-        val points = samples(bank, ring.path(bank, keys).stops)
+        val stops = ring.path(bank, keys).stops
+        if (stops.isEmpty()) return ""
+        val points = samples(bank, stops)
         chorder.down(bank, 0, points[0].x, points[0].y)
         for (p in points.drop(1)) chorder.move(0, p.x, p.y)
         return spell(chorder.thumb(bank).keys)

@@ -18,8 +18,35 @@ data class Config(
      * floats, which is why they repeat round it; a key in two slots is nothing
      * special, because a key is a set of cells.
      */
-    var ringLeft: String = "./S/ST/T .PHRWK AOAOAO ^#+^#+",
-    var ringRight: String = "./E/EU/U frbglp tststs dzdzdz *@*@*@",
+    var ringLeft: String = "S/ST/T PHRWK AOAOAO",
+    var ringRight: String = "E/EU/U frbglp tststs",
+    /**
+     * The modifiers, one key to a slot, left to right under the rings.
+     *
+     * They are off the rings because steno order cannot kill one: a key no walk
+     * can spend is a key no walk should have to reach. A tap on one arms it for
+     * the next stroke, and holding it puts it in the stroke in hand.
+     */
+    var modsLeft: String = "^ # +",
+    var modsRight: String = "* @ > d z",
+    /**
+     * The upgrade: what each key becomes while it is on, in pairs.
+     *
+     * The pinky writes `-D` for `-T` and `-Z` for `-S`, one key at a time, so
+     * the row carries one bit for the whole stroke rather than a ring of its
+     * own. A stroke that wants both a key and its upgrade takes the plain `-D`
+     * or `-Z` of the row instead.
+     */
+    var upgrade: String = "td sz",
+    /** The row's share of a bank's height. */
+    var rowHeight: Float = 0.13f,
+    /**
+     * Keep each bank's rings square, and take only the depth that needs.
+     *
+     * A thumb sweeps an arc, and a ring stretched to a tall bank answers the
+     * same sweep with different keys at different angles.
+     */
+    var squareBanks: Boolean = true,
     /**
      * The radii between the bands, outward, as fractions of the bank's reach.
      *
@@ -27,8 +54,37 @@ data class Config(
      * the tightest thing about this layout, which is why the numbers are here
      * rather than in the geometry.
      */
-    var radiiLeft: String = "0 .31 .56 .78 1",
-    var radiiRight: String = "0 .27 .47 .65 .83 1",
+    var radiiLeft: String = "0 .34 .67 1",
+    var radiiRight: String = "0 .34 .67 1",
+    /**
+     * The superellipse exponent at the hub and at the rim: 2 is a circle, and
+     * the larger it grows the closer a ring comes to a rectangle.
+     *
+     * It rises outward, so the middle stays round, where a thumb turns, and the
+     * outer rings take the corners of the bank, where the room is. An outer
+     * ring is therefore the widest, which is what the keys out there need.
+     */
+    var shapeHub: Float = 2.6f,
+    var shapeRim: Float = 3.2f,
+    /**
+     * A ring key's width, as a fraction of the bank's reach.
+     *
+     * One width for every ring, so the ground between two rings grows outward
+     * as the rings themselves do. The ground is what a slide passes through on
+     * its way to a further key, which is what a narrow key buys.
+     */
+    var keyWidth: Float = 0.22f,
+    /**
+     * How much of its slot a ring key's body runs along: 0 is a circle, 1 fills
+     * the slot and leaves its neighbours no ground between them.
+     */
+    var keySpread: Float = 0.45f,
+    /**
+     * The width left at a key's ends, as a fraction of [keyWidth]. 1 is a
+     * rounded end, and less tapers the key towards a point, which widens the
+     * corridor a slide takes between two keys of one ring.
+     */
+    var keyEnds: Float = 1f,
     /**
      * How far the rings are turned, in degrees.
      *
@@ -63,6 +119,16 @@ data class Config(
      * turns double taps off, and quick taps stop waiting.
      */
     var doubleTapMs: Long = 250L,
+    /**
+     * The key a long press adds, per bank, on top of the key under it.
+     *
+     * The other way to a modifier without a trip to the row, and the one a
+     * thumb already on its key can take.
+     */
+    var longPressLeft: Char = '#',
+    var longPressRight: Char = '@',
+    /** How long a touch must stand still on its cell to count as a long press. */
+    var longPressMs: Long = 400L,
 
     /**
      * Lifting one thumb writes the stroke, and the thumb still down keeps its
@@ -94,7 +160,7 @@ data class Config(
     /** No two ticks closer together than this, or a walk is one long buzz. */
     var hapticGapMs: Long = 28L,
 
-    /** Draw the cells steno order has passed, faded. */
+    /** Draw the cells steno order has passed, sunk towards the ground and struck through. */
     var showDeadCells: Boolean = true,
     var showLabels: Boolean = true,
 
@@ -161,8 +227,17 @@ data class Config(
 ) {
     fun sticky(bank: Bank): String = if (bank == Bank.LEFT) stickyLeft else stickyRight
 
+    fun mods(bank: Bank): String = if (bank == Bank.LEFT) modsLeft else modsRight
+
+    /** The upgrade as pairs of glyphs: what each key writes while it is on. */
+    fun upgrades(): List<Pair<Char, Char>> = upgrade.trim().split(Regex("\\s+"))
+        .filter { it.length == 2 }.map { it[0] to it[1] }
+
     fun doubleTap(bank: Bank): Char =
         if (bank == Bank.LEFT) doubleTapLeft else doubleTapRight
+
+    fun longPress(bank: Bank): Char =
+        if (bank == Bank.LEFT) longPressLeft else longPressRight
 
     fun ring(bank: Bank): String = if (bank == Bank.LEFT) ringLeft else ringRight
 

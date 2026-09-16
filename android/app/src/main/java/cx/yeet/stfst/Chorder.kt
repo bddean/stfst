@@ -57,6 +57,26 @@ class Chorder(
     /** Keys armed to join the next stroke: a tapped special, or a double tap's. */
     val sticky = mutableSetOf<Int>()
 
+    /**
+     * The upgrade: one bit over the whole stroke, which writes `-D` for every
+     * `-T` it holds and `-Z` for every `-S`.
+     *
+     * The pinky presses those one at a time, so what the board needs is a mode
+     * and not a key. A stroke wanting `-T` and `-D` at once takes the row's
+     * plain `-D` instead.
+     */
+    var upgrade = false
+        private set
+
+    /** What a key writes now: itself, or what the upgrade lifts it to. */
+    fun lift(key: Int): Int = if (upgrade) lifted[key] ?: key else key
+
+    private val lifted: Map<Int, Int> = config.upgrades().mapNotNull { (from, to) ->
+        val a = ring.order.indexOf(from)
+        val b = ring.order.indexOf(to)
+        if (a >= 0 && b >= 0) a to b else null
+    }.toMap()
+
     /** A quick tap's stroke, waiting out the double-tap window. */
     private var held = 0L
 
@@ -110,6 +130,7 @@ class Chorder(
         thumb.atY = y
         val cell = ring.hit(thumb.bank, thumb.field, x, y)
         thumb.cell = cell
+        if (ring.isUpgrade(thumb.bank, cell)) return turn()
         return take(thumb, ring.taking(thumb.bank, cell, thumb.keys))
     }
 
@@ -132,6 +153,7 @@ class Chorder(
         if (now == thumb.cell) return false
         thumb.cell = now
         if (ring.isHub(now)) return false
+        if (ring.isUpgrade(thumb.bank, now)) return turn()
         return take(thumb, ring.taking(thumb.bank, now, thumb.keys))
     }
 
@@ -188,6 +210,13 @@ class Chorder(
         return stroke
     }
 
+    /** Turn the upgrade on, or off again on a second entry. */
+    private fun turn(): Boolean {
+        upgrade = !upgrade
+        pending = true
+        return true
+    }
+
     /** Arm a key to join the next stroke, the way a tapped special does. */
     fun stick(key: Int) {
         sticky.add(key)
@@ -208,6 +237,7 @@ class Chorder(
 
     private fun emit(stroke: Long) {
         sticky.clear()
+        upgrade = false
         write(stroke)
     }
 
@@ -215,6 +245,7 @@ class Chorder(
     fun reset() {
         pending = false
         held = 0L
+        upgrade = false
         sticky.clear()
         for (thumb in listOf(left, right)) {
             thumb.keys.clear()
@@ -225,7 +256,7 @@ class Chorder(
     /** Both banks as one bit per key, plus the armed keys: what a stroke is. */
     fun mask(): Long {
         var bits = 0L
-        for (key in left.keys + right.keys + sticky) bits = bits or (1L shl key)
+        for (key in left.keys + right.keys + sticky) bits = bits or (1L shl lift(key))
         return bits
     }
 

@@ -19,7 +19,7 @@ object Prefs {
      * saved before the rings existed is the old default rather than a choice,
      * and keeping it would hide the new one behind a settings screen.
      */
-    private const val LAYOUT = 5
+    private const val LAYOUT = 6
 
     private class Slot<T>(
         val key: String,
@@ -88,6 +88,9 @@ object Prefs {
         size("splitLandscape", { it.splitLandscape }, { c, v -> c.splitLandscape = v }),
         size("landscapeHeight", { it.landscapeHeight }, { c, v -> c.landscapeHeight = v }),
         size("previewHeight", { it.previewHeight }, { c, v -> c.previewHeight = v }),
+        size("keyWidth", { it.keyWidth }, { c, v -> c.keyWidth = v }),
+        size("keySpread", { it.keySpread }, { c, v -> c.keySpread = v }),
+        size("keyEnds", { it.keyEnds }, { c, v -> c.keyEnds = v }),
         size("markRadius", { it.markRadius }, { c, v -> c.markRadius = v }),
         size("labelSp", { it.labelSp }, { c, v -> c.labelSp = v }),
         size("keyboardHeight", { it.keyboardHeight }, { c, v -> c.keyboardHeight = v }),

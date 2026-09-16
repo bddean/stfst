@@ -41,18 +41,17 @@ take-on-entry is that rule.
 
 ```
 LEFT                                RIGHT
-hub    · | S | ST | T               hub    · | E | EU | U     (tap only)
-ring 1 · P H R W K                  ring 1 F R B G L P
+hub    S | ST | T                   hub    E | EU | U        (tap only)
+ring 1 P H R W K                    ring 1 F R B G L P
 ring 2 A O A O A O                  ring 2 T S T S T S
-rim    ^ # + ^ # +                  ring 3 D Z D Z D Z
-                                    rim    * @ * @ * @
+row    ^ # +                        row    * @ DZ -D -Z
 ```
 
-Six slots to a ring on both banks, with a gap of 13° between every pair. The
-gaps line up between rings, so a straight run from the hub to the rim takes
-nothing. That corridor is load-bearing: 12.4% of strokes cross the right ring 1
-taking nothing (`-ES`, `-ET`), 2.7% cross the left ring 1 taking nothing
-(`SA-`).
+The hub is a pie and fills its circle. A ring key is a body rather than a slice
+of its ring: one width for every ring, drawn along the middle of its slot with
+rounded ends, and everything around it is ground. That ground is what a slide
+passes through on its way to a further key, and it is the width, the length and
+the taper of the key that set how much of it there is. All three are settings.
 
 Four facts about the shape, each measured against 340k strokes of
 `typey-type-full.json`:
@@ -61,8 +60,29 @@ Four facts about the shape, each measured against 340k strokes of
 |---|---|
 | the ring order is the steno board folded | the two rows joined at both ends. `T P H R W K` beats every other cyclic order of the left consonants, and `F R B G L P` does the same on the right |
 | the hub is a pie of complete answers | landing takes the whole choice, so the hub is ground from then on and you can leave at any angle. `S T` in the left hub is worth 3.6 points over `S` alone, and the ring drops to five cells at 72° |
-| a key may hold several cells | floats and vowels repeat round their ring, because a float is never killed by steno order and a thumb that travels round the rim to find one takes every float on the way |
-| the pinky folds radially | `-D` is straight out through `-T`, `-Z` straight out through `-S`. `-TS` is 2351 strokes and `-DZ` is 1466, while `-TZ` is 26 and `-SD` is 3, so two keys repeated everywhere beats four keys in four of six slots |
+| a key may hold several cells | the vowels repeat round their ring, so one is always within reach of wherever the thumb left ring 1 |
+| the pinky is a mode, not a ring | `-D` is `-T` upgraded and `-Z` is `-S` upgraded, and the pinky presses them one at a time. `-TS` is 2351 strokes and `-DZ` is 1466, while `-TZ` is 26 and `-SD` is 3, so one bit over the stroke buys nearly all of it, and the row carries a plain `-D` and `-Z` for the rest |
+
+## The modifiers stand in a row
+
+Steno order cannot kill a modifier, so a modifier is a key no walk can spend —
+and a key no walk can spend is a key no walk should have to reach. They are off
+the rings, in a row under them: `^ # +` on the left, `* @ DZ -D -Z` on the
+right. A tap arms one for the next stroke; holding it puts it in the stroke in
+hand, the way any cell does.
+
+Two shortcuts reach a modifier without the trip. **Two quick taps** add the
+side's double-tap key, so tap tap on `-T` releases as `-*T`. **Standing still**
+on a cell adds the side's long-press key, which is the modifier a thumb already
+on the key it wants can take without moving.
+
+## The upgrade
+
+`DZ` is not a key. It is one bit over the whole stroke: while it is on, every
+`-T` in the stroke writes `-D` and every `-S` writes `-Z`, and the board says
+so by relabelling those cells. The pinky writes those keys one at a time, so a
+mode expresses it more cheaply than a ring of its own; a stroke that wants `-T`
+and `-D` at once takes the row's plain `-D` instead.
 
 ## A layout is one value per cell
 
@@ -71,46 +91,56 @@ character, or several keys between slashes, and a dot is ground. The left bank
 ships as:
 
 ```
-./S/ST/T .PHRWK AOAOAO ^#+^#+
+S/ST/T PHRWK AOAOAO
 ```
 
-Edit it in the settings. Everything else is recovered from that text:
+Edit it in the settings, and the row beside it. Everything else is recovered
+from that text:
 
 | | |
 |---|---|
 | the walk | steno order over the keys the text names |
-| the rim | the outermost ring. Its keys are the floats, which is why they repeat round it |
-| a float | a key steno order cannot kill: takeable however far the thumb has gone, and crossing back inward leaves the rings as they were |
+| a float | a key of the row: steno order cannot kill one, so no walk can spend it |
 | a duplicate | the same key in two slots. Nothing special: a key is a set of cells |
-| a spoke | where the gaps of every ring line up |
+| the turn | a band whose keys repeat is turned half a slot, so it is staggered against the band inside it |
+| a spoke | every angle a ring marks out, each slot's middle and each boundary's |
 | the hub is tap-only | it is level 0. Landing on a slice takes the slice; entering it from a ring takes nothing |
-
-The hub and the rim are turned half a slot: the rim so its cells sit on the
-spokes, which makes a float a run straight out, and the hub so its cuts fall on
-the bank's own axes.
 
 ## The geometry
 
-One formula for the drawing and for the hit test. A bank is a rect; in its
+One formula for the drawing and for the hit test. A bank is a square; in its
 normalised frame the rings are superellipses.
 
 ```kotlin
-// u = (x - cx) / a, v = (y - cy) / b
-r  = (|u|^p + |v|^p)^(1/p)                       // which ring, p = 3.5
+// u = (x - cx) / a, v = (y - cy) / a
+p  = pHub + (pRim - pHub) * r                    // 2.6 in the middle, 4.5 at the rim
+r  = (|u|^p + |v|^p)^(1/p)                       // which ring
 θ  = atan2(v, u)                                 // where on it
 // and back, for drawing and for a cell's centre:
 k  = r / (|cos θ|^p + |sin θ|^p)^(1/p)
-x  = cx + a*k*cos θ ;  y = cy + b*k*sin θ
+x  = cx + a*k*cos θ ;  y = cy + a*k*sin θ
 ```
 
-`p` interpolates circle to rounded rectangle. At 3.5 the rings fill a
-rectangular bank instead of wasting the corners, which is what portrait needs.
+`p` interpolates circle to rounded rectangle, and it rises outward: the middle
+stays round, where a thumb turns, and the outer rings take the corners of the
+bank, where the room is. So a ring is wider the further out it sits, which is
+what the outer keys need. The exponent depends on the answer, so reading a
+touch back repeats the question until it lands on its own exponent.
 
-Radii are fractions of `r = 1`, outward: left `0 .31 .56 .78 1`, right
-`0 .27 .47 .65 .83 1`, and both are settings, because the radial budget in
-portrait is the tightest thing here. Model degrees run from straight up in the
-bank's own direction: the right bank's angles run the other way, so both thumbs
-sweep mirrored arcs and "against the walk" is the same motion for each hand.
+The bank is square because a thumb sweeps an arc: a ring stretched to a tall
+bank would answer the same sweep with different keys at different angles. The
+keyboard therefore takes only the depth a square bank and its row need.
+
+A key is the set of places within half its width of the arc through the middle
+of its slot, which is a capsule, and a circle when the arc has no length. The
+width is divided by the stretch at the key's own angle, so a key in a corner of
+the bank is the same size as one on an axis rather than a stretched one.
+
+Radii are fractions of `r = 1`, outward: `0 .34 .67 1` on both banks, and they
+are settings, because the radial budget is the tightest thing here. Model
+degrees run from straight up in the bank's own direction: the right bank's
+angles run the other way, so both thumbs sweep mirrored arcs and "against the
+walk" is the same motion for each hand.
 
 `Ring` answers all of it, and the drawing asks `Ring` rather than working the
 shapes out a second way, so the picture cannot disagree with the decision.
@@ -125,10 +155,10 @@ second motion, not a failure.
 
 | | |
 |---|---|
-| left, `· P H R W K`, `S T` in the hub | 93.3% |
+| left, `P H R W K`, `S T` in the hub | 93.3% |
 | left, steno order round the ring | 70.7% |
 | right ring 1, `F R B G L P` | 97.2% |
-| right pinky combinations | 100% |
+| right pinky combinations | 100%: the upgrade costs no motion at all |
 
 `RingTest.the_order_is_the_one_measured` recomputes those shares from the
 checked-in corpus and fails if any other arrangement of the same keys round the
@@ -143,17 +173,29 @@ cell is stepped over, and fails where the keys that come out are not the chord.
 
 ## Three kinds of key
 
-The vowels and the modifiers stand on their own ground: a green tint for
-`AOEU`, a violet one for the modifiers, plain for the rest. Which is which is
-read off the glyph, so a key that spells nothing is a modifier and a layout
-that moves one does not have to say so twice.
+The board has no hue. It is white and near-white, close enough that a dither
+laid on it reads as a tone rather than as noise, and what a key is shows in the
+texture of its face: a fine blue-noise dither for the vowels, a coarse one for
+a modifier, a plain face for the consonants, which are the many. Which is which
+is read off the glyph, so a key that spells nothing is a modifier and a layout
+that moves one does not have to say so twice. The row has no dither, because
+being the row already says what its keys are.
+
+The dither thins out at the cell's rim and around its label, because a texture
+running under a letter is what makes the letter hard to read. What the fade
+changes is how many dots there are, not how big they are.
 
 Across that, every cell is in one of three states, because they are three
-different answers: **in the chord** (the tint at full strength, a hot rim and a
-hot letter), **still takeable**, and **spent by steno order**. A spent key
-gives up its hue as well as most of its strength, so the state reads the same
-whatever kind of key it is: kind is a question about live keys.
-`Show cells already passed` hides the spent ones.
+different answers:
+
+| | |
+|---|---|
+| in the chord | the face and the ink swap, and the dither with them, so the kind of key still reads |
+| still takeable | the plain face, and a thin outline |
+| spent by steno order | the face sinks towards the ground and the label is struck through |
+
+A key armed for the next stroke is drawn as one in the chord, with its label
+underlined. `Show cells already passed` hides the spent ones.
 
 ## What the stroke would write
 
@@ -235,8 +277,9 @@ are those keys. `*` and `+` are not: a bare `*` is the undo stroke, and arming
 a key is not undoing anything, so a tap on `*` has to write it.
 
 Two quick taps add the side's double-tap key on top of the key under them, so
-tap tap on `-T` releases as `-*T`. That is a different mechanism and it still
-carries `*` and `+`.
+tap tap on `-T` releases as `-*T`, and a touch that stands still adds the
+side's long-press key. Both are shortcuts past the row, and both still carry
+`*` and `+`.
 
 ## The buzzes
 
@@ -307,6 +350,9 @@ guessed at. Both are off by default.
 
 ## Building
 
+`make install` from the repo root does all of this and pushes the APK to the
+phone over adb. It leaves the dictionaries alone; `make dicts` rebuilds those.
+
 ```sh
 stfst compile recipe.toml     # the dictionaries
 scripts/build-morph.sh        # optional; without it a suffix join is a plain join
@@ -347,6 +393,8 @@ which is why cargo runs inside `nix develop`.
 
 `Ring`, `Chorder` and `Notes` are plain Kotlin so they can be tested without a
 device, and the tests in `app/src/test` are the ones worth reading first.
+`PreviewTest` draws the banks into `app/build/preview-*.png`, idle and mid
+chord, which is how the drawing is looked at without a phone.
 `docs/rings.html` is the working demo the layout was measured in.
 
 ## Not carried over

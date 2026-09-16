@@ -1,0 +1,50 @@
+# Build the keyboard and put it on the phone: `make install`.
+#
+# The dictionaries are not rebuilt here. `make dicts` runs the HFST pipeline,
+# which takes minutes, and everything else is seconds.
+
+ADB ?= $(or $(shell command -v adb),$(HOME)/Library/Android/sdk/platform-tools/adb)
+GRADLE ?= $(or $(shell command -v gradle),nix run nixpkgs\#gradle --)
+CARGO ?= cargo
+
+APK := android/app/build/outputs/apk/release/app-release.apk
+LIB := android/app/src/main/jniLibs/arm64-v8a/libstfst.so
+ASSETS := android/app/src/main/assets/runtime
+DICTS := build/dicts/.compiled
+
+RUST_SRC := $(shell find crates -name '*.rs') Cargo.toml Cargo.lock
+APP_SRC := $(shell find android/app/src -type f -not -path '*/assets/*')
+
+.PHONY: install apk native assets dicts test clean-apk
+
+install: $(APK)
+	$(ADB) install -r $(APK)
+	@echo "installed; enable it under Settings > Keyboards if this is a first install"
+
+apk: $(APK)
+native: $(LIB)
+assets: $(ASSETS)
+
+$(APK): $(LIB) $(ASSETS) $(APP_SRC) android/app/build.gradle.kts android/build.gradle.kts
+	cd android && $(GRADLE) :app:assembleRelease
+
+$(LIB): $(RUST_SRC)
+	android/build-native.sh
+
+# The compiled dictionaries and the key system, as the app reads them.
+$(ASSETS): $(DICTS) systems/stenotype-extended.toml
+	android/sync-assets.sh
+
+# A directory's mtime says nothing about what is under it, so the compile
+# stamps itself.
+$(DICTS): recipe.toml $(wildcard dictionaries/*)
+	$(CARGO) run --release -p stfst-cli -- compile recipe.toml
+	touch $@
+
+dicts: $(DICTS)
+
+test:
+	cd android && $(GRADLE) :app:testDebugUnitTest
+
+clean-apk:
+	rm -rf android/app/build/outputs

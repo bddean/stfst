@@ -35,7 +35,7 @@ class ChorderTest {
     /** Where a key is drawn, which is the point a thumb aims at. */
     private fun at(bank: Bank, symbol: Char): Point {
         val cell = ring.cellsOf(bank, key(symbol)).first()
-        return ring.point(bank, field(bank), ring.centre(bank, cell))
+        return ring.middle(bank, field(bank), cell)
     }
 
     private fun touch(bank: Bank, pointer: Int, symbol: Char) {
@@ -178,6 +178,39 @@ class ChorderTest {
         for (symbol in "AO") walk(Bank.LEFT, symbol)
         walk(Bank.LEFT, '#')
         assertEquals("PAO#", keys(Bank.LEFT))
+    }
+
+    /** Where a row key is drawn, the upgrade included, which holds no key. */
+    private fun rowAt(bank: Bank, slot: Int): Point =
+        ring.middle(bank, field(bank), Cell(Cell.ROW, slot))
+
+    /**
+     * The upgrade is one bit over the whole stroke: while it is on, `-T`
+     * writes `-D`, and writing the stroke ends it.
+     */
+    @Test
+    fun the_upgrade_writes_the_lifted_key() {
+        val up = rowAt(Bank.RIGHT, 2)
+        chorder.down(Bank.RIGHT, 0, up.x, up.y)
+        chorder.up(0)
+        assertTrue("the upgrade is armed", chorder.upgrade)
+        assertTrue("arming writes nothing", written.isEmpty())
+
+        touch(Bank.RIGHT, 1, 't')
+        chorder.up(1)
+        assertEquals(listOf(mask("d")), written)
+        assertTrue("a written stroke ends the upgrade", !chorder.upgrade)
+    }
+
+    /** A second entry turns it off again, so it is a switch and not a latch. */
+    @Test
+    fun the_upgrade_turns_off_again() {
+        val up = rowAt(Bank.RIGHT, 2)
+        chorder.down(Bank.RIGHT, 0, up.x, up.y)
+        chorder.up(0)
+        chorder.down(Bank.RIGHT, 0, up.x, up.y)
+        chorder.up(0)
+        assertTrue("the upgrade is off", !chorder.upgrade)
     }
 
     /** A stroke goes out once, however many thumbs were holding keys. */

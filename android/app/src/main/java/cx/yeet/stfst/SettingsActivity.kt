@@ -84,13 +84,24 @@ class SettingsActivity : Activity() {
                 "the middle.\n\n" +
                 "A layout is the hub first, then the rings outward, separated " +
                 "by spaces. A slot is one character, or several keys between " +
-                "slashes, and a dot is ground. The outermost ring is the rim, " +
-                "and its keys are the floats: steno order never kills one, " +
-                "which is why they repeat round it. A key in two slots is " +
-                "nothing special, because a key is a set of cells."),
+                "slashes, and a dot is ground. A band whose keys repeat is " +
+                "turned half a slot, so it is staggered against the band " +
+                "inside it and a run straight out from the hub lands on one " +
+                "of its cells. A key in two slots is nothing special, because " +
+                "a key is a set of cells.\n\n" +
+                "The modifiers are not on the rings: steno order cannot kill " +
+                "one, so a key no walk can spend is a key no walk should have " +
+                "to reach. They stand in a row under the rings."),
         Text("Left rings", { it.ringLeft }, { c, v -> c.ringLeft = v },
             "hub, then the rings outward"),
         Text("Right rings", { it.ringRight }, { c, v -> c.ringRight = v }),
+        Text("Left row", { it.modsLeft }, { c, v -> c.modsLeft = v },
+            "the modifiers under the rings, one key to a slot. A slot of > is " +
+                "the upgrade: while it is on, the stroke writes -D for -T and " +
+                "-Z for -S"),
+        Text("Right row", { it.modsRight }, { c, v -> c.modsRight = v }),
+        Text("The upgrade", { it.upgrade }, { c, v -> c.upgrade = v },
+            "pairs: what each key writes while the upgrade is on"),
         Text("Left radii", { it.radiiLeft }, { c, v -> c.radiiLeft = v },
             "where the bands meet, outward, as fractions of the bank's reach. " +
                 "One more number than there are bands"),
@@ -127,6 +138,15 @@ class SettingsActivity : Activity() {
                 "on -T releases as -*T"),
         Text("Right double tap", { it.doubleTapRight.toString() },
             { c, v -> v.firstOrNull()?.let { c.doubleTapRight = it } }),
+        Text("Left long press", { it.longPressLeft.toString() },
+            { c, v -> v.firstOrNull()?.let { c.longPressLeft = it } },
+            "the key a touch standing still on its cell adds, which is the " +
+                "modifier a thumb already on its key can take"),
+        Text("Right long press", { it.longPressRight.toString() },
+            { c, v -> v.firstOrNull()?.let { c.longPressRight = it } }),
+        Range("Long press (ms)", 0f, 900f, { it.longPressMs.toFloat() },
+            { c, v -> c.longPressMs = v.toLong() },
+            "zero turns long presses off", unit = "ms"),
         Range("Double tap window (ms)", 0f, 500f, { it.doubleTapMs.toFloat() },
             { c, v -> c.doubleTapMs = v.toLong() },
             "two taps this close together are a double tap, so a quick tap's " +
@@ -152,7 +172,30 @@ class SettingsActivity : Activity() {
         Flag("Show labels", { it.showLabels }, { c, v -> c.showLabels = v }),
         Flag("Show cells already passed", { it.showDeadCells },
             { c, v -> c.showDeadCells = v },
-            "faded. They are ground now, and they stop looking like keys"),
+            "sunk towards the ground, with the label struck through"),
+        Flag("Square banks", { it.squareBanks }, { c, v -> c.squareBanks = v },
+            "a thumb sweeps an arc, and a ring stretched to a tall bank " +
+                "answers the same sweep with different keys at different " +
+                "angles. The keyboard takes only the depth a square needs"),
+        Range("Row height", 0f, 0.3f, { it.rowHeight }, { c, v -> c.rowHeight = v },
+            "the modifier row's share of a bank", unit = "of the bank"),
+        Range("Roundness at the hub", 2f, 8f, { it.shapeHub }, { c, v -> c.shapeHub = v },
+            "2 is a circle, and the larger it grows the closer a ring comes " +
+                "to a rectangle"),
+        Range("Roundness at the rim", 2f, 8f, { it.shapeRim }, { c, v -> c.shapeRim = v },
+            "it rises outward, so the middle stays round and the outer rings " +
+                "take the corners, where the room is"),
+        Range("Key width", 0.05f, 0.4f, { it.keyWidth }, { c, v -> c.keyWidth = v },
+            "one width for every ring, so the ground between two rings grows " +
+                "outward as the rings do. That ground is what a slide passes " +
+                "through on its way to a further key", unit = "of the reach"),
+        Range("Key length", 0f, 1f, { it.keySpread }, { c, v -> c.keySpread = v },
+            "how much of its slot a key runs along: 0 is a circle, 1 leaves " +
+                "its neighbours no ground between them", unit = "of the slot"),
+        Range("Key ends", 0f, 1f, { it.keyEnds }, { c, v -> c.keyEnds = v },
+            "the width left at a key's ends. 1 is a rounded end, and less " +
+                "tapers it to a point, which widens the corridor between two " +
+                "keys of one ring", unit = "of the width"),
         Range("Label size (sp)", 8f, 28f, { it.labelSp }, { c, v -> c.labelSp = v },
             unit = "sp"),
         Range("Keyboard height", 0.2f, 0.8f, { it.keyboardHeight },
