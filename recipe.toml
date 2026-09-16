@@ -74,16 +74,16 @@ xfst = [
 # not "in and in").
 
 # The forward half of the same idea: a template around the word you write next,
-# and an inflection stroked before it. Both need a host that holds a stroke, so
-# both are host 3 and Plover refuses them by version; the keyboard runs them.
-# `docs/retro.md` has the mechanism and why the record language could not do it.
+# and an inflection stroked before it. Each writes its own word at once and holds
+# only what belongs after the next unit, which is `[AFTER]`, so both are host 3
+# and both hosts run them: the keyboard holds the tail itself and
+# `plover_stfst.host` is an extension for it. `docs/retro.md` has the mechanism
+# and why the record language could not do it.
 
 [[dict]]
 name = "frames"
 priority = 6
-# The words a frame is shown, which is the next unit's own text and no more.
-next = 2
-xfst = ["dictionaries/frames.xfst"]
+plain = "dictionaries/frames.dict"
 
 [[dict]]
 name = "ahead"

@@ -232,6 +232,52 @@ for that sentence is `+TE` and then the words. That trade is deliberate: an
 adverb ender before a non-verb is rarer than one before a verb, and the reading
 that needed a marker key was the common one.
 
+## The other hole: the subject's noun is the word you write next
+
+A determiner subject writes the determiner and holds the rest of the clause, so
+the noun goes in the middle:
+
+```
++PR-B    KAT   ->   the cat adds
++SPR-B   KATS  ->   the cats add
++KP-B    KAT   ->   a cat adds
++PRE-B   KAT   ->   the cat is adding
+#+PR-B   KAT   ->   does the cat add
+```
+
+`S` pluralizes, as it does for every other subject. Three chords, on three of
+the left-key sets the coordinate subjects freed:
+
+| chord | → | `+S` | → |
+|---|---|---|---|
+| `+KP` | a | `+SKP` | some |
+| `+KR` | an | `+SKR` | some |
+| `+PR` | the | `+SPR` | the (pl) |
+
+`a` and `an` are separate chords rather than one entry, because the body writes
+before the noun arrives and so cannot see which one the noun wants. Their plural
+is "some" either way: the a/an split is spelling, and "some" has none.
+
+The mechanism is the tail, and the subject map is where it is stated: the
+subject is `[SUBJ]the[HOLD][/SUBJ]` with no `[C]`, because "the cat's" reads as a
+possessive. `Arrange` writes the subject and then the space before the next
+word, so the hole is always followed by that space and everything after it is
+the tail. One rewrite closes it:
+
+```
+the[HOLD] is adding    ->   the[AFTER]is adding[END]
+is the[HOLD] adding    ->   is the[AFTER]adding[END]
+```
+
+Question inversion needs nothing of its own, because the subject is still
+followed by the space that the finite word left. A hole with *nothing* after it
+holds nothing, since there is no tail to wait with: `#+PR` is "is the", and the
+noun follows it as ordinary text.
+
+One record waits for one unit, so a clause cannot have two holes. A determiner
+subject therefore takes no adverb ender and no `-RG` verb: `+PRrg` and `+PRfbts`
+have no entry, and `tests/golden/phrasing.tsv` asserts both.
+
 ## Measured
 
 | | |
@@ -272,7 +318,7 @@ may turn out to be free: fewest keys is fewest marked features here.
 
 ## Checked
 
-`tests/golden/phrasing.tsv`, 4,116 cases. The file is the expectation, and the
+`tests/golden/phrasing.tsv`, 4,172 cases. The file is the expectation, and the
 sample is chosen the way the grammar is split:
 
 - **One case per ender chord**, all 666 of them. That is the part that is a
@@ -281,6 +327,8 @@ sample is chosen the way the grammar is split:
   ender table, so the sample cycles every left-key set, modality corner,
   polarity, aspect, tense, contraction mode, question and emphasis rather than
   landing on one corner of each. That is the part with rules in it.
+- **The determiner subjects**, each dimension once, and their two exclusions as
+  no-entry rows: a clause that already holds its noun cannot also hold its verb.
 
 The whole language is 21.9M strokes and no file holds it. The expectations were
 recorded from a run that `phrasing.py` had just agreed with over 238,138 strokes,

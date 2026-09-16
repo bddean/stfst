@@ -87,12 +87,19 @@ define AdvEnd   [ [ Say("[PRES]") AdvPres ] | [ Say("[PAST]") AdvPast ] ] ;
 ! because those would leave nothing to say.
 define Cl(S, E)  [ S ModKeys PolKey AspKeys E ] ;
 
+! A determiner subject holds the noun, so the clause already has a hole and
+! cannot have a second one: no adverb ender, and no `-RG` verb. One record waits
+! for one unit.
+define NoVerbHole  ~[ ?* Hole ?* ] ;
+define DetCl  [ Cl(Determiners, [ EmptySlot | VerbEnd ]) .o. NoVerbHole ] ;
+
 define Chord [ [ [ "#" .x. "[Q]" ] | 0 ]
                [ [ "@" .x. "[EMPH]" ] | 0 ]
                [ [ "^" .x. "[FULL]" ] | Say("[RED]") ]
                Kill("+")
                [ Cl(Subjects, [ EmptySlot | VerbEnd | AdvEnd ])
-               | Cl(NoSubject, VerbEnd) ] ] ;
+               | Cl(NoSubject, VerbEnd)
+               | DetCl ] ] ;
 
 ! `@` on an empty verb slot names the verb `do` (§5): the unmarked verb is `be`
 ! and the key already says the word. Naming spends the bit, so what is left is an
@@ -393,4 +400,17 @@ define Arrange [
                 Decl([ IsNeg .o. AffW ], [ SayNot Tail ]))))
 ] ;
 
-define Grammar  Canon([ Bundle .o. Chain .o. Arrange ]) ;
+! The determiner's hole, closed. `Arrange` writes the subject and then the space
+! before the next word, so the hole is always followed by that space and what
+! comes after it is the tail: `the[HOLD] is adding` is "the" now and "is adding"
+! after the noun. A hole with nothing after it holds nothing, because there is no
+! tail to wait with, so `+#PR` is "is the" and the noun follows it as ordinary
+! text.
+define NoHold  ~[ ?* "[HOLD]" ?* ] ;
+define CloseHole [
+    NoHold
+  | [ [ ?* "[HOLD]" " " ?* ] .o. [ "[HOLD]" " " -> "[AFTER]" ]
+      .o. [ ?* [ 0 .x. "[END]" ] ] ]
+  | [ [ ?* "[HOLD]" ] .o. [ "[HOLD]" -> 0 ] ] ] ;
+
+define Grammar  Canon([ Bundle .o. Chain .o. Arrange .o. CloseHole ]) ;

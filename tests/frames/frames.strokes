@@ -1,10 +1,9 @@
-! The templates of `frames.xfst` against the words they go around, so the
-! fixture needs typey-type and phrases as well: what a frame is shown is what
-! another dictionary wrote. `artifacts` names them.
+! The templates of `frames.dict` against the words they go around, so the
+! fixture needs typey-type and phrases as well: the word a frame goes around is
+! what another dictionary wrote. `artifacts` names them.
 !
-! `...` in the second column is a held stroke: its keys are read and the text
-! they belong to is not written yet. The line after the word reports the frame,
-! under its own outline.
+! The head writes with the keys, so a frame's stroke is an ordinary match. The
+! line after the word is its tail, reported under the same outline.
 
 ! ---- templates
 !buffer
@@ -27,14 +26,14 @@ HAOER
 SAO*EURT
 HAOER
 
-! The word comes first, so the word took the capital. A frame with a word of its
-! own moves it: ". From here to", not ". from Here to".
+! The head comes first, so the head takes the capital: ". From here to", not
+! ". from Here to".
 !buffer
 TP-PL
 STPR*T
 HAOER
 
-! Two words, which is what `next = 2` shows, and their own capitals stay.
+! A unit of two words, whose own capitals stay.
 !buffer
 STPR*T
 TPHORB
@@ -42,13 +41,14 @@ TPHORB
 STWAO*EPBD
 -FT
 
-! Three words is more than a frame is shown, so it does not fire and the phrase
-! stands as it was written.
+! A whole phrase in the hole. The tail follows the unit however many words it
+! wrote, because it never reads them.
 !buffer
 STPR*T
 PHO*RPB
 
-! A pair writes punctuation only, so the capital stays on the word.
+! A pair writes punctuation, which has no letter to take the capital, so it
+! passes it on and the word keeps it.
 !buffer
 TP-PL
 SKWO*ET
@@ -59,3 +59,12 @@ HAOER
 !buffer
 SPWA*BGT
 HAOER
+
+! ---- what a frame shows while it waits
+! The close is on screen from the keys, so a writer sees the frame closed and
+! the word lands inside it. Nothing has landed here: the case ends with the
+! stroke, and the text is the preview.
+!buffer
+STPR*T
+!buffer
+SKWO*ET

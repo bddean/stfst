@@ -17,7 +17,8 @@ stfst = "plover_stfst.dictionary:StfstDictionary"
 
 # What a dictionary needs the host to say, where a lookup cannot be told it: a
 # bound word, a window of written text, a window of the text after it, and a
-# tail. The last two wait for a word, which is what the extension is for. Same
+# tail. The last two wait for a word, which is what the extension is for, and
+# `stfst_drop` is how a tail's preview comes back off the screen. Same
 # package as the dictionary; the extension still has to be enabled in Plover's
 # configuration, like any other.
 [project.entry-points."plover.meta"]
@@ -25,9 +26,13 @@ stfst_copy = "plover_stfst.host:stfst_copy"
 stfst_retro = "plover_stfst.host:stfst_retro"
 stfst_hold = "plover_stfst.host:stfst_hold"
 stfst_frame = "plover_stfst.host:stfst_frame"
+stfst_drop = "plover_stfst.host:stfst_drop"
 
 [project.entry-points."plover.extension"]
 stfst = "plover_stfst.host:Ahead"
+# Optional, and separate because it is a development loop and not a dictionary:
+# it reloads an artifact that has been rebuilt, so a change needs no restart.
+stfst_reload = "plover_stfst.reload:Reload"
 
 [tool.setuptools]
 packages = ["plover_stfst"]

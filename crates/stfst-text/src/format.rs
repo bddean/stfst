@@ -140,6 +140,7 @@ impl Text {
             attach: flags.attach_r || (kept && self.tail.attach),
             glue: flags.glue || (kept && self.tail.glue),
             word_end: flags.word_end || (kept && self.tail.word_end),
+            wrote: !kept,
             start: match (self.cells.len() > start, kept) {
                 (true, _) => Some(self.cells.len() - start),
                 (false, true) => self.tail.start,
@@ -249,6 +250,9 @@ impl Text {
                 last.space = space;
             }
         }
+        // The rest of the tail is the one the rewritten words left, because a
+        // rewrite takes their place rather than following them.
+        self.tail.wrote = !text.is_empty();
         Ok(events)
     }
 
@@ -539,6 +543,25 @@ mod tests {
             out.apply(&record, &registers).unwrap();
         }
         out.to_string()
+    }
+
+    /// The record's body written, then what its tail shows while it waits.
+    fn preview(record: &str) -> String {
+        let mut out = Text::default();
+        let record = Record::parse_display(record).unwrap();
+        let registers = out.registers(9);
+        out.apply(&record, &registers).unwrap();
+        out.preview(record.after.as_ref().unwrap())
+    }
+
+    #[test]
+    fn a_waiting_tail_shows_its_close_around_a_word_that_is_not_there() {
+        assert_eq!(preview("from[AFTER]to[END]"), "from to");
+        assert_eq!(preview("\"[ATTACH_R][CARRY_CAP][AFTER]\"[ATTACH_L][END]"), "\"\"");
+        // A join wants a word nobody has written, so the hyphen stands for it
+        // rather than the tail joining the body: "ands" would be a lie.
+        assert_eq!(preview("and[AFTER]s[ORTHO_L][END]"), "and -s");
+        assert_eq!(preview("by[AFTER][META=infl]ing[END][END]"), "by -ing");
     }
 
     #[test]

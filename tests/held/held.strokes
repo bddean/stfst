@@ -85,6 +85,13 @@ KAT
 KWRT
 KAT
 
+! The same join a frame waits through, under a tail. A tail waits for text rather
+! than for a word, because it follows the text rather than reading it, so a
+! record that joined into the word before it is the unit it wanted.
+!buffer word
+KWRT
+SKWR
+
 ! A longer match over the held stroke, so the record never lands.
 !buffer
 KWRS

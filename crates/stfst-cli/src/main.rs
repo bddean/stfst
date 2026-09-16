@@ -53,13 +53,19 @@ enum Command {
         #[arg(long)]
         golden: Option<PathBuf>,
     },
-    /// Compile every dictionary in a recipe.
+    /// Compile every dictionary in a recipe whose sources have changed.
     Compile {
         recipe: PathBuf,
         #[arg(short, long, default_value = "build/dicts")]
         out: PathBuf,
         #[arg(long, default_value = "build/work")]
         work: PathBuf,
+        /// Only this dictionary, by its name in the recipe. Repeatable.
+        #[arg(long = "dict")]
+        dicts: Vec<String>,
+        /// Compile one whose artifact is newer than its sources anyway.
+        #[arg(long)]
+        force: bool,
     },
     /// Look up outlines in a compiled artifact.
     Lookup {
@@ -284,8 +290,9 @@ fn main() -> Result<()> {
                 None => print!("{}", compiled.lexc),
             }
         }
-        Command::Compile { recipe, out, work } => {
-            stfst_compile::compile_recipe(&recipe, &out, &work)?;
+        Command::Compile { recipe, out, work, dicts, force } => {
+            let which = stfst_compile::Which { names: dicts, force };
+            stfst_compile::compile_recipe(&recipe, &out, &work, &which)?;
         }
         Command::Lookup {
             artifact,

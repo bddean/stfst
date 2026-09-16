@@ -52,29 +52,34 @@ pub enum Outcome {
     },
 }
 
-/// A stroke that wrote nothing yet, because its record belongs to the text after
-/// it.
+/// A record, or part of one, that belongs to the text after the stroke that
+/// wrote it.
 #[derive(Clone)]
 struct Waiting<'a> {
     /// Where its keys are in the stroke history, so the step it writes can report
     /// under its own outline.
     strokes: std::ops::Range<usize>,
-    /// How many words the text held when the keys were read. What it waits for is
-    /// the words written since, and a unit that writes none is not the one it
-    /// wants: a command writes nothing, and an attached record joins into the word
-    /// before it.
-    words: usize,
     kind: Kind<'a>,
 }
 
-/// The two kinds of held stroke, which the host holds the same way.
+/// The two kinds of held stroke, which differ in what they wait for.
 #[derive(Clone)]
 enum Kind<'a> {
     /// A frame *reads* the text it waits for, so what waits is the candidate: it
-    /// cannot be harvested until there is a window to harvest against.
-    Frame(Held<'a>),
-    /// A suffix only *follows* that text, so what waits is the record, and the
-    /// host's own join does the work when it lands.
+    /// cannot be harvested until there is a window to harvest against. It waits
+    /// for a *word*, because words are what it is shown.
+    Frame {
+        held: Held<'a>,
+        /// How many words the text held when the keys were read. What the frame
+        /// reads is the words written since, and a unit that wrote none is not
+        /// the one it wants: a command writes nothing, and an attached record
+        /// joins into the word before it.
+        words: usize,
+    },
+    /// A tail only *follows* that text, so what waits is the record, and the
+    /// host's own join does the work when it lands. It waits for text rather than
+    /// for a word: `(` joined to the word after it wrote no word of its own, and
+    /// the `)` still belongs after that word.
     After {
         record: Record,
         /// The dictionary it came from, for the step it writes to name.
@@ -158,8 +163,19 @@ impl<'a> Board<'a> {
         }
     }
 
+    /// The text as it shows, which is not only what the strokes have written: a
+    /// tail that is still waiting shows its close, so a frame is closed around
+    /// the word before the word is there. See `Text::preview`.
     pub fn text(&self) -> String {
-        self.text.to_string()
+        match &self.held {
+            Some(Waiting {
+                kind: Kind::After { record, .. },
+                ..
+            }) => self.text.preview(record),
+            // A frame reads the text it waits for, so its answer is not known
+            // yet and there is nothing honest to show.
+            _ => self.text.to_string(),
+        }
     }
 
     /// How many strokes have been read, and how wide the candidate set ever got.
@@ -202,6 +218,8 @@ impl<'a> Board<'a> {
             let read = self.read(stroke)?;
             // The newest snap may be an engine command's survivor rather than
             // this stroke's placeholder; either way it now reads this text.
+            // What the strokes wrote, without a waiting tail's preview: a snap is
+            // compared against the text as a prefix.
             if let Some(last) = self.snaps.back_mut() {
                 *last = self.text.to_string();
             }
@@ -215,7 +233,7 @@ impl<'a> Board<'a> {
             if let Some((outcome, label)) = read.framed {
                 steps.push(Step {
                     outcome,
-                    text: self.text.to_string(),
+                    text: self.text(),
                     label: Some(label),
                 });
             }
@@ -250,8 +268,10 @@ impl<'a> Board<'a> {
             if let Some(held) = self.session.held() {
                 self.held = Some(Waiting {
                     strokes: held.strokes(),
-                    words: self.text.words(),
-                    kind: Kind::Frame(held),
+                    kind: Kind::Frame {
+                        words: self.text.words(),
+                        held,
+                    },
                 });
                 return Ok(self.unframed(Outcome::Held));
             }
@@ -327,7 +347,7 @@ impl<'a> Board<'a> {
             };
             return Ok(Read {
                 outcome: Outcome::Engine { name: name.clone() },
-                text: self.text.to_string(),
+                text: self.text(),
                 framed: None,
                 fire,
             });
@@ -353,7 +373,6 @@ impl<'a> Board<'a> {
             let end = self.session.history().len();
             self.held = Some(Waiting {
                 strokes: end - m.strokes..end,
-                words: self.text.words(),
                 kind: Kind::After {
                     record: (**tail).clone(),
                     dict: m.dict,
@@ -362,7 +381,7 @@ impl<'a> Board<'a> {
         }
         Ok(Read {
             outcome,
-            text: self.text.to_string(),
+            text: self.text(),
             framed,
             fire: None,
         })
@@ -373,7 +392,7 @@ impl<'a> Board<'a> {
     fn unframed(&self, outcome: Outcome) -> Read {
         Read {
             outcome,
-            text: self.text.to_string(),
+            text: self.text(),
             framed: None,
             fire: None,
         }
@@ -402,9 +421,9 @@ impl<'a> Board<'a> {
         }
     }
 
-    /// Write the frame that was waiting for a word, if this unit wrote one.
+    /// Write what was waiting for this unit, if this unit is the one it wanted.
     ///
-    /// The window is the unit's own words and nothing older, so a frame cannot
+    /// A frame is shown the unit's own words and nothing older, so it cannot
     /// reach past the text it was stroked for. A unit that wrote more words than
     /// the frame declared is text the frame cannot be shown, so it does not fire:
     /// showing the last few would frame the tail of a phrase.
@@ -412,15 +431,18 @@ impl<'a> Board<'a> {
         let Some(held) = self.held.take() else {
             return Ok(None);
         };
-        let wrote = self.text.words().saturating_sub(held.words);
-        if wrote == 0 {
-            // Nothing was written since the keys were read, so what waits waits on.
+        let landed = match held.kind {
+            Kind::Frame { words, .. } => self.text.words() > words,
+            Kind::After { .. } => self.text.tail().wrote,
+        };
+        if !landed {
+            // This unit is not the one it waits for, so it waits on.
             self.held = Some(held);
             return Ok(None);
         }
         let label = self.outline(held.strokes.clone());
         let outcome = match held.kind {
-            Kind::Frame(ref frame) => self.frame(frame, wrote)?,
+            Kind::Frame { ref held, words } => self.frame(held, self.text.words() - words)?,
             Kind::After { ref record, dict } => {
                 let registers = self.text.registers(9);
                 self.text.apply(record, &registers)?;

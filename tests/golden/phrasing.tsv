@@ -7,9 +7,10 @@
 ! still the oracle and agreed with them. A line that changes here is a change to
 ! what a clause writes: read it, then update it.
 !
-! A line with no tab claims the stroke has no entry. 942 do, and nearly all of
+! A line with no tab claims the stroke has no entry. 562 do, and nearly all of
 ! them are the dropped coordinate subjects: the file asserts the drop rather than
-! ignoring it. The others are a modifier stroke and a passive with no verb.
+! ignoring it. The others are a modifier stroke, a passive with no verb, and a
+! determiner subject under a second hole.
 #+bgts	do talk
 #+bltz	did build
 #+fbgz	do walk into
@@ -72,15 +73,15 @@
 #+KHOEU	be
 #+KHRO*fbts
 #+KO*Ublgz	shall I not have just liked
-#+KPblgd
-#+KPbt
-#+KPlgs
+#+KPblgd	did a[AFTER]like[END]
+#+KPbt	does a[AFTER]buy[END]
+#+KPlgs	does a[AFTER]guess[END]
 #+KPH*EUblgz
 #+KPHAO*Eb
 #+KPHRfbts
 #+KPHRAO*EUbgsz
 #+KPHRO*Ud
-#+KPOEb
+#+KPOEb	shall a[AFTER]be adding[END]
 #+KPROEUfbts
 #+KPWAd	could this
 #+KPWAO*U	won't this have
@@ -89,13 +90,13 @@
 #+KPWHROUb	shall this have added
 #+KPWOEbgsz	shall this be causing by
 #+KPWRAUb	can this have added
-#+KR
-#+KRblgtz
-#+KRgtd
-#+KRpbgdz
-#+KRpbltz
-#+KRpltsz
-#+KROUb
+#+KR	is an
+#+KRblgtz	did an[AFTER]think it[END]
+#+KRgtd	did an[AFTER]get[END]
+#+KRpbgdz	did an[AFTER]continue to[END]
+#+KRpbltz	does an[AFTER]handle of[END]
+#+KRpltsz	did an[AFTER]seem to[END]
+#+KROUb	shall an[AFTER]have added[END]
 #+KW*EUfbts	hasn't this often been[AFTER][META=infl]ing[END][END]
 #+KWAO*Ed	wouldn't this be
 #+KWHAEd	could this be
@@ -115,7 +116,7 @@
 #+PHAO*Eblgz	won't be being just liked
 #+PHO*
 #+PHRO*Efbts
-#+PROEUb
+#+PROEUb	shall the[AFTER]have been adding[END]
 #+PWb	does that add
 #+PWblgtsd	did that accept
 #+PWfbg	does that walk
@@ -166,12 +167,12 @@
 #+SKHR*U
 #+SKHRA*EUblgz
 #+SKHUd	let's be
-#+SKPblgz
+#+SKPblgz	do some[AFTER]just like[END]
 #+SKPHA*EUd
 #+SKPHAObgsz
 #+SKPHR*Efbts
 #+SKPHRAOEUd
-#+SKPO*Ub
+#+SKPO*Ub	shall some[AFTER]not have added[END]
 #+SKPR*E
 #+SKPRA*Ublgz
 #+SKPWAOEfbts	will these often be[AFTER][META=infl]ing[END][END]
@@ -181,8 +182,8 @@
 #+SKPWHO	shall these
 #+SKPWHRO*b	shall these not add
 #+SKPWRA*EUb	can't these have been adding
-#+SKREblgz
-#+SKRO*EUb
+#+SKREblgz	are some[AFTER]just liking[END]
+#+SKRO*EUb	shall some[AFTER]not have been adding[END]
 #+SKUbgsz	have we caused by
 #+SKWA*fbts	can't these often
 #+SKWH*b	don't these add
@@ -221,8 +222,8 @@
 #+SPHEUd
 #+SPHR*EU
 #+SPHROblgz
-#+SPRAOb
-#+SPRUblgz
+#+SPRAOb	will the[AFTER]add[END]
+#+SPRUblgz	have the[AFTER]just liked[END]
 #+SPWA*Efbts	can't those often be[AFTER][META=infl]ing[END][END]
 #+SPWH*Eb	aren't those adding
 #+SPWHAOEUfbts	will those often have been[AFTER][META=infl]ing[END][END]
@@ -437,14 +438,14 @@
 #@+KHO*Ed	don't do
 #@+KHRblgz
 #@+KHRO*Ub
-#@+KPAU
+#@+KPAU	can a[AFTER]have done[END]
 #@+KPHd
 #@+KPHAEbgsz
 #@+KPHAO*EUblgz
 #@+KPHO*U
 #@+KPHRAOfbts
 #@+KPHRUb
-#@+KPOEUblgz
+#@+KPOEUblgz	shall a[AFTER]have been just liking[END]
 #@+KPRO*Eb
 #@+KPWAUfbts	can this often have[AFTER][META=infl]en[END][END]
 #@+KPWHA*Ed	couldn't this be doing
@@ -453,8 +454,8 @@
 #@+KPWHRO*blgz	shall this not just like
 #@+KPWRA*blgz	can't this just like
 #@+KPWREU	has this been doing
-#@+KRAEU
-#@+KRO*blgz
+#@+KRAEU	can an[AFTER]have been doing[END]
+#@+KRO*blgz	shall an[AFTER]not just like[END]
 #@+KWAEb	can this be adding
 #@+KWAO*EUfbts	won't this often have been[AFTER][META=infl]ing[END][END]
 #@+KWHAEUfbts	can this often have been[AFTER][META=infl]ing[END][END]
@@ -471,8 +472,8 @@
 #@+PHO*Ud	shouldn't have been done
 #@+PHREblgz
 #@+PHRO*EUb
-#@+PRA*
-#@+PRO*Eblgz
+#@+PRA*	can't the[AFTER]do[END]
+#@+PRO*Eblgz	shall the[AFTER]not be just liking[END]
 #@+PWAUb	can that have added
 #@+PWHA*fbts	can't that often
 #@+PWHR*	doesn't that do
@@ -496,15 +497,15 @@
 #@+SKHRAO*U
 #@+SKHROEbgsz
 #@+SKOEd	should we be doing
-#@+SKPA*EU
-#@+SKPAOblgz
+#@+SKPA*EU	can't some[AFTER]have been doing[END]
+#@+SKPAOblgz	will some[AFTER]just like[END]
 #@+SKPHOEfbts
 #@+SKPHR*EUb
 #@+SKPHRAO*Efbts
 #@+SKPR*EUd
 #@+SKPRAO*E
 #@+SKPRObgsz
-#@+SKPUbgsz
+#@+SKPUbgsz	have some[AFTER]caused by[END]
 #@+SKPW*Eblgz	aren't these just liking
 #@+SKPWAOEUb	will these have been adding
 #@+SKPWHAOEUbgsz	will these have been causing by
@@ -514,9 +515,9 @@
 #@+SKPWHRO*Ublgz	shall these not have just liked
 #@+SKPWRA	can these do
 #@+SKPWROEblgz	shall these be just liking
-#@+SKRAOEblgz
-#@+SKREUbgsz
-#@+SKRO
+#@+SKRAOEblgz	will some[AFTER]be just liking[END]
+#@+SKREUbgsz	have some[AFTER]been causing by[END]
+#@+SKRO	shall some[AFTER]do[END]
 #@+SKWA*Ub	can't these have added
 #@+SKWH*Ublgz	haven't these just liked
 #@+SKWHAO*b	won't these add
@@ -530,9 +531,9 @@
 #@+SPHRAO*EU
 #@+SPHROUbgsz
 #@+SPOblgz	shall you just like
-#@+SPR*bgsz
-#@+SPRAOUblgz
-#@+SPROE
+#@+SPR*bgsz	don't the[AFTER]cause by[END]
+#@+SPRAOUblgz	will the[AFTER]have just liked[END]
+#@+SPROE	shall the[AFTER]be doing[END]
 #@+SPWA*EUb	can't those have been adding
 #@+SPWH*EUblgz	haven't those been just liking
 #@+SPWHAO*Eb	won't those be adding
@@ -1009,12 +1010,12 @@
 #^+KHRAOblgz
 #^+KHRUbgsz
 #^+KOEfbts	shall I often be[AFTER][META=infl]ing[END][END]
-#^+KPA*d
+#^+KPA*d	could a[AFTER]not[END]
 #^+KPHAOd
 #^+KPHR*blgz
 #^+KPHRAOUb
 #^+KPHUfbts
-#^+KPO*Ebgsz
+#^+KPO*Ebgsz	shall a[AFTER]not be causing by[END]
 #^+KPRA*U
 #^+KPREbgsz
 #^+KPRO*EUblgz
@@ -1025,8 +1026,8 @@
 #^+KPWR*Ed	was this not
 #^+KPWRA*Ubgsz	can this not have caused by
 #^+KPWRAOEU	will this have been
-#^+KRA*Ed
-#^+KRO*Ubgsz
+#^+KRA*Ed	could an[AFTER]not be[END]
+#^+KRO*Ubgsz	shall an[AFTER]not have caused by[END]
 #^+KWAEUblgz	can this have been just liking
 #^+KWHA*Eb	can this not be adding
 #^+KWHROfbts	shall this often
@@ -1042,8 +1043,8 @@
 #^+PHRO
 #^+PHUb	has been added
 #^+PObgsz	shall you cause by
-#^+PRA*Ud
-#^+PRO*EUbgsz
+#^+PRA*Ud	could the[AFTER]not have[END]
+#^+PRO*EUbgsz	shall the[AFTER]not have been causing by[END]
 #^+PW*bl	does that not allow
 #^+PW*bsz	does that not decide to
 #^+PW*fblgs	does that not ask to
@@ -1088,12 +1089,12 @@
 #^+SKHAO*fbts	let's not often
 #^+SKHRAUfbts
 #^+SKOEUfbts	shall we often have been[AFTER][META=infl]ing[END][END]
-#^+SKPAOUbgsz
+#^+SKPAOUbgsz	will some[AFTER]have caused by[END]
 #^+SKPHOEUb
 #^+SKPHR
 #^+SKPHRAEblgz
 #^+SKPHRAO*EUb
-#^+SKPOEd
+#^+SKPOEd	should some[AFTER]be[END]
 #^+SKPRAEfbts
 #^+SKPRAO*EUd
 #^+SKPW*EUbgsz	have these not been causing by
@@ -1104,8 +1105,8 @@
 #^+SKPWO*	shall these not
 #^+SKPWRAUd	could these have
 #^+SKPWROEUbgsz	shall these have been causing by
-#^+SKRAOEUbgsz
-#^+SKROUd
+#^+SKRAOEUbgsz	will some[AFTER]have been causing by[END]
+#^+SKROUd	should some[AFTER]have[END]
 #^+SKW*EU	have these not been
 #^+SKWHAbgsz	can these cause by
 #^+SKWHAO*Ublgz	will these not have just liked
@@ -1142,8 +1143,8 @@
 #^+SPHAO*Efbts	will not often be being[AFTER][META=infl]en[END][END]
 #^+SPHRAEUfbts
 #^+SPOUbgsz	shall you have caused by
-#^+SPRAO*bgsz
-#^+SPROEUd
+#^+SPRAO*bgsz	will the[AFTER]not cause by[END]
+#^+SPROEUd	should the[AFTER]have been[END]
 #^+SPWA	can those
 #^+SPWHd	were those
 #^+SPWHAEbgsz	can those be causing by
@@ -1989,117 +1990,117 @@
 +KHOblgz	just like
 +KHRAfbts
 +KHRAO*Ud
-+KP
-+KP*Eb
-+KPb
-+KPbd
-+KPbdz
-+KPbg
-+KPbgd
-+KPbgdz
-+KPbgs
-+KPbgsd
-+KPbgsdz
-+KPbgsz
-+KPbgt
-+KPbgtd
++KP	a[AFTER]is[END]
++KP*Eb	a[AFTER]isn't adding[END]
++KPb	a[AFTER]adds[END]
++KPbd	a[AFTER]added[END]
++KPbdz	a[AFTER]used in[END]
++KPbg	a[AFTER]thinks[END]
++KPbgd	a[AFTER]thought[END]
++KPbgdz	a[AFTER]caused[END]
++KPbgs	a[AFTER]keeps[END]
++KPbgsd	a[AFTER]kept[END]
++KPbgsdz	a[AFTER]caused by[END]
++KPbgsz	a[AFTER]causes by[END]
++KPbgt	a[AFTER]takes[END]
++KPbgtd	a[AFTER]took[END]
 +KPbgtdz
-+KPbgts
-+KPbgtsd
-+KPbgtsz
-+KPbgtz
-+KPbgz
-+KPbl
-+KPbld
-+KPbldz
-+KPblg
-+KPblgd
-+KPblgdz
-+KPblgs
-+KPblgsd
-+KPblgsz
-+KPblgt
-+KPblgtd
++KPbgts	a[AFTER]talks[END]
++KPbgtsd	a[AFTER]talked[END]
++KPbgtsz	a[AFTER]talked[END]
++KPbgtz	a[AFTER]took[END]
++KPbgz	a[AFTER]causes[END]
++KPbl	a[AFTER]allows[END]
++KPbld	a[AFTER]allowed[END]
++KPbldz	a[AFTER]allowed to[END]
++KPblg	a[AFTER]likes[END]
++KPblgd	a[AFTER]liked[END]
++KPblgdz	a[AFTER]just liked[END]
++KPblgs	a[AFTER]asks[END]
++KPblgsd	a[AFTER]asked[END]
++KPblgsz	a[AFTER]asked[END]
++KPblgt	a[AFTER]thinks it[END]
++KPblgtd	a[AFTER]thought it[END]
 +KPblgtdz
-+KPblgts
-+KPblgtsd
-+KPblgtsz
-+KPblgtz
-+KPblgz
-+KPbls
-+KPblsd
++KPblgts	a[AFTER]accepts[END]
++KPblgtsd	a[AFTER]accepted[END]
++KPblgtsz	a[AFTER]accepted[END]
++KPblgtz	a[AFTER]thought it[END]
++KPblgz	a[AFTER]just likes[END]
++KPbls	a[AFTER]adds to[END]
++KPblsd	a[AFTER]added to[END]
 +KPblsdz
-+KPblsz
-+KPblt
-+KPbltd
++KPblsz	a[AFTER]added to[END]
++KPblt	a[AFTER]builds[END]
++KPbltd	a[AFTER]built[END]
 +KPbltdz
-+KPblts
-+KPbltsd
-+KPbltsz
-+KPbltz
-+KPblz
-+KPbs
-+KPbsd
-+KPbsdz
-+KPbsz
-+KPbt
-+KPbtd
++KPblts	a[AFTER]allows for[END]
++KPbltsd	a[AFTER]allowed for[END]
++KPbltsz	a[AFTER]allowed for[END]
++KPbltz	a[AFTER]built[END]
++KPblz	a[AFTER]allows to[END]
++KPbs	a[AFTER]decides[END]
++KPbsd	a[AFTER]decided[END]
++KPbsdz	a[AFTER]decided to[END]
++KPbsz	a[AFTER]decides to[END]
++KPbt	a[AFTER]buys[END]
++KPbtd	a[AFTER]bought[END]
 +KPbtdz
-+KPbts
-+KPbtsd
-+KPbtsz
-+KPbtz
-+KPbz
-+KPd
-+KPdz
-+KPg
-+KPgd
-+KPgdz
-+KPgs
-+KPgsd
-+KPgsz
-+KPgt
-+KPgtd
-+KPgts
-+KPgtsd
-+KPgtsz
-+KPgtz
-+KPgz
-+KPl
-+KPld
-+KPldz
-+KPlg
-+KPlgd
-+KPlgdz
-+KPlgs
-+KPlgsd
++KPbts	a[AFTER]just wants[END]
++KPbtsd	a[AFTER]just wanted[END]
++KPbtsz	a[AFTER]just wanted[END]
++KPbtz	a[AFTER]bought[END]
++KPbz	a[AFTER]uses in[END]
++KPd	a[AFTER]was[END]
++KPdz	a[AFTER]used[END]
++KPg	a[AFTER]goes[END]
++KPgd	a[AFTER]went[END]
++KPgdz	a[AFTER]went to[END]
++KPgs	a[AFTER]sees[END]
++KPgsd	a[AFTER]saw[END]
++KPgsz	a[AFTER]saw[END]
++KPgt	a[AFTER]gets[END]
++KPgtd	a[AFTER]got[END]
++KPgts	a[AFTER]sets[END]
++KPgtsd	a[AFTER]set[END]
++KPgtsz	a[AFTER]set[END]
++KPgtz	a[AFTER]got[END]
++KPgz	a[AFTER]goes to[END]
++KPl	a[AFTER]looks[END]
++KPld	a[AFTER]looked[END]
++KPldz	a[AFTER]held[END]
++KPlg	a[AFTER]helps[END]
++KPlgd	a[AFTER]helped[END]
++KPlgdz	a[AFTER]helped to[END]
++KPlgs	a[AFTER]guesses[END]
++KPlgsd	a[AFTER]guessed[END]
 +KPlgsz
-+KPlgt
-+KPlgtd
-+KPlgtz
-+KPlgz
-+KPls
-+KPlsd
-+KPlsz
-+KPlt
-+KPltd
-+KPlts
-+KPltsd
-+KPltsz
-+KPltz
-+KPlz
-+KPs
-+KPsd
-+KPsdz
-+KPsz
-+KPt
-+KPtd
-+KPtdz
-+KPts
-+KPtsd
-+KPtsz
-+KPtz
-+KPz
++KPlgt	a[AFTER]tells[END]
++KPlgtd	a[AFTER]told[END]
++KPlgtz	a[AFTER]told[END]
++KPlgz	a[AFTER]helps to[END]
++KPls	a[AFTER]sends[END]
++KPlsd	a[AFTER]sent[END]
++KPlsz	a[AFTER]also holds[END]
++KPlt	a[AFTER]lives[END]
++KPltd	a[AFTER]lived[END]
++KPlts	a[AFTER]stays[END]
++KPltsd	a[AFTER]stayed[END]
++KPltsz	a[AFTER]stays at[END]
++KPltz	a[AFTER]lives with[END]
++KPlz	a[AFTER]holds[END]
++KPs	a[AFTER]says[END]
++KPsd	a[AFTER]said[END]
++KPsdz	a[AFTER]used to[END]
++KPsz	a[AFTER]uses to[END]
++KPt	a[AFTER]wants[END]
++KPtd	a[AFTER]wanted[END]
++KPtdz	a[AFTER]wanted to[END]
++KPts	a[AFTER]starts[END]
++KPtsd	a[AFTER]started[END]
++KPtsz	a[AFTER]started[END]
++KPtz	a[AFTER]wants to[END]
++KPz	a[AFTER]uses[END]
 +KPAOEUfbts
 +KPHOEb
 +KPHRAUd
@@ -2114,174 +2115,174 @@
 +KPWHRAO*fbts	this won't often
 +KPWOU	this shall have
 +KPWRO*fbts	this shall not often
-+KR
-+KR*Ub
-+KRb
-+KRbd
-+KRbdz
-+KRbg
-+KRbgd
-+KRbgdz
-+KRbgs
-+KRbgsd
-+KRbgsdz
-+KRbgsz
-+KRbgt
-+KRbgtd
++KR	an[AFTER]is[END]
++KR*Ub	an[AFTER]hasn't added[END]
++KRb	an[AFTER]adds[END]
++KRbd	an[AFTER]added[END]
++KRbdz	an[AFTER]used in[END]
++KRbg	an[AFTER]thinks[END]
++KRbgd	an[AFTER]thought[END]
++KRbgdz	an[AFTER]caused[END]
++KRbgs	an[AFTER]keeps[END]
++KRbgsd	an[AFTER]kept[END]
++KRbgsdz	an[AFTER]caused by[END]
++KRbgsz	an[AFTER]causes by[END]
++KRbgt	an[AFTER]takes[END]
++KRbgtd	an[AFTER]took[END]
 +KRbgtdz
-+KRbgts
-+KRbgtsd
-+KRbgtsz
-+KRbgtz
-+KRbgz
-+KRbl
-+KRbld
-+KRblg
-+KRblgd
-+KRblgdz
-+KRblgs
-+KRblgsd
-+KRblgsz
-+KRblgt
-+KRblgtd
-+KRblgtz
-+KRblgz
-+KRbls
-+KRblsd
-+KRblsz
-+KRblt
-+KRbltd
-+KRbltz
-+KRblz
-+KRbs
-+KRbsd
-+KRbsdz
-+KRbsz
-+KRbt
-+KRbtd
-+KRbts
-+KRbtsd
-+KRbtsz
-+KRbtz
-+KRbz
-+KRd
-+KRdz
-+KRg
-+KRgd
-+KRgdz
-+KRgs
-+KRgsd
-+KRgsz
-+KRgt
-+KRgtd
-+KRgts
-+KRgtz
-+KRgz
-+KRl
-+KRld
-+KRldz
-+KRlg
-+KRlgd
-+KRlgdz
-+KRlgs
-+KRlgsd
++KRbgts	an[AFTER]talks[END]
++KRbgtsd	an[AFTER]talked[END]
++KRbgtsz	an[AFTER]talked[END]
++KRbgtz	an[AFTER]took[END]
++KRbgz	an[AFTER]causes[END]
++KRbl	an[AFTER]allows[END]
++KRbld	an[AFTER]allowed[END]
++KRblg	an[AFTER]likes[END]
++KRblgd	an[AFTER]liked[END]
++KRblgdz	an[AFTER]just liked[END]
++KRblgs	an[AFTER]asks[END]
++KRblgsd	an[AFTER]asked[END]
++KRblgsz	an[AFTER]asked[END]
++KRblgt	an[AFTER]thinks it[END]
++KRblgtd	an[AFTER]thought it[END]
++KRblgtz	an[AFTER]thought it[END]
++KRblgz	an[AFTER]just likes[END]
++KRbls	an[AFTER]adds to[END]
++KRblsd	an[AFTER]added to[END]
++KRblsz	an[AFTER]added to[END]
++KRblt	an[AFTER]builds[END]
++KRbltd	an[AFTER]built[END]
++KRbltz	an[AFTER]built[END]
++KRblz	an[AFTER]allows to[END]
++KRbs	an[AFTER]decides[END]
++KRbsd	an[AFTER]decided[END]
++KRbsdz	an[AFTER]decided to[END]
++KRbsz	an[AFTER]decides to[END]
++KRbt	an[AFTER]buys[END]
++KRbtd	an[AFTER]bought[END]
++KRbts	an[AFTER]just wants[END]
++KRbtsd	an[AFTER]just wanted[END]
++KRbtsz	an[AFTER]just wanted[END]
++KRbtz	an[AFTER]bought[END]
++KRbz	an[AFTER]uses in[END]
++KRd	an[AFTER]was[END]
++KRdz	an[AFTER]used[END]
++KRg	an[AFTER]goes[END]
++KRgd	an[AFTER]went[END]
++KRgdz	an[AFTER]went to[END]
++KRgs	an[AFTER]sees[END]
++KRgsd	an[AFTER]saw[END]
++KRgsz	an[AFTER]saw[END]
++KRgt	an[AFTER]gets[END]
++KRgtd	an[AFTER]got[END]
++KRgts	an[AFTER]sets[END]
++KRgtz	an[AFTER]got[END]
++KRgz	an[AFTER]goes to[END]
++KRl	an[AFTER]looks[END]
++KRld	an[AFTER]looked[END]
++KRldz	an[AFTER]held[END]
++KRlg	an[AFTER]helps[END]
++KRlgd	an[AFTER]helped[END]
++KRlgdz	an[AFTER]helped to[END]
++KRlgs	an[AFTER]guesses[END]
++KRlgsd	an[AFTER]guessed[END]
 +KRlgsz
-+KRlgt
-+KRlgz
-+KRls
-+KRlsd
-+KRlsz
-+KRlt
-+KRltd
-+KRlts
-+KRltsd
-+KRltsz
-+KRltz
-+KRlz
-+KRp
-+KRpb
-+KRpbd
-+KRpbdz
-+KRpbg
-+KRpbgd
-+KRpbgdz
-+KRpbgs
-+KRpbgsd
-+KRpbgsz
-+KRpbgt
-+KRpbgtd
-+KRpbgts
-+KRpbgtsd
-+KRpbgtsz
-+KRpbgtz
-+KRpbgz
-+KRpbl
-+KRpbld
-+KRpbldz
-+KRpblg
-+KRpblgd
-+KRpblgdz
-+KRpblgs
-+KRpblgsd
-+KRpblgsz
-+KRpblgt
-+KRpblgtd
-+KRpblgtz
-+KRpblgz
-+KRpbls
-+KRpblsd
-+KRpblsz
-+KRpblt
-+KRpbltd
-+KRpbltz
-+KRpblz
-+KRpbs
-+KRpbsd
-+KRpbsz
-+KRpbt
-+KRpbtd
-+KRpbtz
-+KRpbz
-+KRpd
-+KRpdz
-+KRpg
-+KRpgd
-+KRpgs
-+KRpgsd
-+KRpgsz
-+KRpgz
-+KRpl
-+KRpld
-+KRplg
-+KRplgd
-+KRplgz
-+KRpls
-+KRplsd
-+KRplsz
-+KRplt
-+KRpltd
-+KRplts
-+KRpltsd
-+KRpltsz
-+KRpltz
-+KRplz
-+KRps
-+KRpsd
-+KRpsz
-+KRpt
-+KRptd
-+KRptz
-+KRpz
-+KRs
-+KRsd
-+KRsz
-+KRt
-+KRtd
-+KRts
-+KRtsd
-+KRtsz
-+KRtz
-+KRz
++KRlgt	an[AFTER]tells[END]
++KRlgz	an[AFTER]helps to[END]
++KRls	an[AFTER]sends[END]
++KRlsd	an[AFTER]sent[END]
++KRlsz	an[AFTER]also holds[END]
++KRlt	an[AFTER]lives[END]
++KRltd	an[AFTER]lived[END]
++KRlts	an[AFTER]stays[END]
++KRltsd	an[AFTER]stayed[END]
++KRltsz	an[AFTER]stays at[END]
++KRltz	an[AFTER]lives with[END]
++KRlz	an[AFTER]holds[END]
++KRp	an[AFTER]appears[END]
++KRpb	an[AFTER]needs[END]
++KRpbd	an[AFTER]needed[END]
++KRpbdz	an[AFTER]opened[END]
++KRpbg	an[AFTER]continues[END]
++KRpbgd	an[AFTER]continued[END]
++KRpbgdz	an[AFTER]continued to[END]
++KRpbgs	an[AFTER]begins[END]
++KRpbgsd	an[AFTER]began[END]
++KRpbgsz	an[AFTER]begins of[END]
++KRpbgt	an[AFTER]picks[END]
++KRpbgtd	an[AFTER]picked[END]
++KRpbgts	an[AFTER]expects[END]
++KRpbgtsd	an[AFTER]expected[END]
++KRpbgtsz	an[AFTER]expected[END]
++KRpbgtz	an[AFTER]picks up[END]
++KRpbgz	an[AFTER]continues to[END]
++KRpbl	an[AFTER]means[END]
++KRpbld	an[AFTER]meant[END]
++KRpbldz	an[AFTER]minded[END]
++KRpblg	an[AFTER]comes[END]
++KRpblgd	an[AFTER]came[END]
++KRpblgdz	an[AFTER]came to[END]
++KRpblgs	an[AFTER]explains[END]
++KRpblgsd	an[AFTER]explained[END]
++KRpblgsz	an[AFTER]explained[END]
++KRpblgt	an[AFTER]imagines[END]
++KRpblgtd	an[AFTER]imagined[END]
++KRpblgtz	an[AFTER]imagines that[END]
++KRpblgz	an[AFTER]comes to[END]
++KRpbls	an[AFTER]plans[END]
++KRpblsd	an[AFTER]planned[END]
++KRpblsz	an[AFTER]plans to[END]
++KRpblt	an[AFTER]handles[END]
++KRpbltd	an[AFTER]handled[END]
++KRpbltz	an[AFTER]handles of[END]
++KRpblz	an[AFTER]minds[END]
++KRpbs	an[AFTER]understands[END]
++KRpbsd	an[AFTER]understood[END]
++KRpbsz	an[AFTER]understands that[END]
++KRpbt	an[AFTER]turns[END]
++KRpbtd	an[AFTER]turned[END]
++KRpbtz	an[AFTER]turns out[END]
++KRpbz	an[AFTER]opens[END]
++KRpd	an[AFTER]appeared[END]
++KRpdz	an[AFTER]paid[END]
++KRpg	an[AFTER]happens[END]
++KRpgd	an[AFTER]happened[END]
++KRpgs	an[AFTER]says that[END]
++KRpgsd	an[AFTER]said that[END]
++KRpgsz	an[AFTER]said that[END]
++KRpgz	an[AFTER]happens to[END]
++KRpl	an[AFTER]makes[END]
++KRpld	an[AFTER]made[END]
++KRplg	an[AFTER]plays[END]
++KRplgd	an[AFTER]played[END]
++KRplgz	an[AFTER]pays attention[END]
++KRpls	an[AFTER]seems[END]
++KRplsd	an[AFTER]seemed[END]
++KRplsz	an[AFTER]seemed[END]
++KRplt	an[AFTER]lets[END]
++KRpltd	an[AFTER]let[END]
++KRplts	an[AFTER]seems to[END]
++KRpltsd	an[AFTER]seemed to[END]
++KRpltsz	an[AFTER]seemed to[END]
++KRpltz	an[AFTER]let[END]
++KRplz	an[AFTER]makes it[END]
++KRps	an[AFTER]passes[END]
++KRpsd	an[AFTER]passed[END]
++KRpsz	an[AFTER]passes through[END]
++KRpt	an[AFTER]puts[END]
++KRptd	an[AFTER]put[END]
++KRptz	an[AFTER]puts on[END]
++KRpz	an[AFTER]pays[END]
++KRs	an[AFTER]says[END]
++KRsd	an[AFTER]said[END]
++KRsz	an[AFTER]uses to[END]
++KRt	an[AFTER]wants[END]
++KRtd	an[AFTER]wanted[END]
++KRts	an[AFTER]starts[END]
++KRtsd	an[AFTER]started[END]
++KRtsz	an[AFTER]started[END]
++KRtz	an[AFTER]wants to[END]
++KRz	an[AFTER]uses[END]
 +KRAO*fbts
 +KWAOUbgsz	this will have caused by
 +KWH*Ubgsz	this hasn't caused by
@@ -2301,7 +2302,7 @@
 +PHRAEfbts
 +PHRAO*EUd
 +PO*Ufbts	you shall not often have[AFTER][META=infl]en[END][END]
-+PR*EUb
++PR*EUb	the[AFTER]hasn't been adding[END]
 +PRAO*Efbts
 +PW*bgs	that doesn't keep
 +PW*blsz	that didn't add to
@@ -2419,7 +2420,7 @@
 +SKHO*Eblgz	let's not just like
 +SKHRAOEb
 +SKHREUblgz
-+SKPAUb
++SKPAUb	some[AFTER]can have added[END]
 +SKPHA*bgsz
 +SKPHAOE
 +SKPHEUd
@@ -2434,7 +2435,7 @@
 +SKPWHRAO*Ufbts	these won't often have[AFTER][META=infl]en[END][END]
 +SKPWRAOEfbts	these will often be[AFTER][META=infl]ing[END][END]
 +SKPWREUb	these have been adding
-+SKRAEUb
++SKRAEUb	some[AFTER]can have been adding[END]
 +SKWfbts	these often
 +SKWAO*EUbgsz	these won't have been causing by
 +SKWHA*Ufbts	these can't often have[AFTER][META=infl]en[END][END]
@@ -2543,7 +2544,7 @@
 +SPHO*Ublgz	shall not have been just liked
 +SPHR*blgz
 +SPHRAOUb
-+SPRA*b
++SPRA*b	the[AFTER]can't add[END]
 +SPUb	you've added
 +SPWEfbts	those are often[AFTER][META=infl]ing[END][END]
 +SPWHA*EUfbts	those can't often have been[AFTER][META=infl]ing[END][END]
@@ -3017,12 +3018,12 @@
 @+KHAO*EU	don't do
 @+KHOUbgsz	do cause by
 @+KHRAUb
-@+KP*EUblgz
-@+KPblg
-@+KPbsz
-@+KPlgdz
-@+KPz
-@+KPAO*Eb
+@+KP*EUblgz	a[AFTER]hasn't been just liking[END]
+@+KPblg	a[AFTER]does like[END]
+@+KPbsz	a[AFTER]does decide to[END]
+@+KPlgdz	a[AFTER]did help to[END]
+@+KPz	a[AFTER]does use[END]
+@+KPAO*Eb	a[AFTER]won't be adding[END]
 @+KPHAU
 @+KPHOEUblgz
 @+KPHRA*fbts
@@ -3037,13 +3038,13 @@
 @+KPWO*d	this shouldn't do
 @+KPWRblgz	this does just like
 @+KPWRO*Ub	this shall not have added
-@+KRblgtd
-@+KRgt
-@+KRpbgd
-@+KRpbltd
-@+KRpltsd
-@+KRAblgz
-@+KRAO*Ub
+@+KRblgtd	an[AFTER]did think it[END]
+@+KRgt	an[AFTER]does get[END]
+@+KRpbgd	an[AFTER]did continue[END]
+@+KRpbltd	an[AFTER]did handle[END]
+@+KRpltsd	an[AFTER]did seem to[END]
+@+KRAblgz	an[AFTER]can just like[END]
+@+KRAO*Ub	an[AFTER]won't have added[END]
 @+KWHAO*Ubgsz	this won't have caused by
 @+KWHO*Ed	this shouldn't be doing
 @+KWHRAEUbgsz	this can have been causing by
@@ -3060,9 +3061,9 @@
 @+PHAUd	could've been done
 @+PHOEUbgsz	shall have been being caused by
 @+PHRAEUb
-@+PR
-@+PRAEblgz
-@+PRAO*EUb
+@+PR	the[AFTER]does[END]
+@+PRAEblgz	the[AFTER]can be just liking[END]
+@+PRAO*EUb	the[AFTER]won't have been adding[END]
 @+PUblgz	you've just liked
 @+PWblgts	that does accept
 @+PWfbd	that did become
@@ -3139,8 +3140,8 @@
 @+SKHR*Ebgsz
 @+SKHRAOEUblgz
 @+SKHROU
-@+SKPA*blgz
-@+SKPEU
+@+SKPA*blgz	some[AFTER]can't just like[END]
+@+SKPEU	some[AFTER]have been doing[END]
 @+SKPH*Efbts
 @+SKPHAOEUd
 @+SKPHROEfbts
@@ -3155,8 +3156,8 @@
 @+SKPWHRE	these are doing
 @+SKPWR*Eblgz	these aren't just liking
 @+SKPWRAOEUb	these will have been adding
-@+SKR*
-@+SKRA*Eblgz
+@+SKR*	some[AFTER]don't do[END]
+@+SKRA*Eblgz	some[AFTER]can't be just liking[END]
 @+SKWAOfbts	these will often
 @+SKWHOb	these shall add
 @+SKWHR*EUd	these hadn't been doing
@@ -3219,8 +3220,8 @@
 @+SPHR*Ubgsz
 @+SPHRAO*blgz
 @+SPHROEU
-@+SPR*E
-@+SPRA*Ublgz
+@+SPR*E	the[AFTER]aren't doing[END]
+@+SPRA*Ublgz	the[AFTER]can't have just liked[END]
 @+SPWAOEfbts	those will often be[AFTER][META=infl]ing[END][END]
 @+SPWEUb	those have been adding
 @+SPWHOEb	those shall be adding
@@ -3471,7 +3472,7 @@
 @^+KHR*Ed
 @^+KHRA*Ubgsz
 @^+KHRAOEU
-@^+KPAOd
+@^+KPAOd	a[AFTER]would do[END]
 @^+KPHA*Ufbts
 @^+KPHR*EU
 @^+KPHROblgz
@@ -3487,7 +3488,7 @@
 @^+KPWRAOUbgsz	this will have caused by
 @^+KPWROEd	this should be doing
 @^+KPWUblgz	this has just liked
-@^+KRAOEd
+@^+KRAOEd	an[AFTER]would be doing[END]
 @^+KREUfbts
 @^+KWA*U	this can not have done
 @^+KWEbgsz	this is causing by
@@ -3504,7 +3505,7 @@
 @^+PHRAO*
 @^+POEUd	you should have been doing
 @^+PR*fbts
-@^+PRAOUd
+@^+PRAOUd	the[AFTER]would have done[END]
 @^+PWA*EU	that can not have been doing
 @^+PWAOblgz	that will just like
 @^+PWH*blgz	that does not just like
@@ -3524,7 +3525,7 @@
 @^+SKHRb
 @^+SKHRO*Ufbts
 @^+SKP*EUfbts
-@^+SKPAO*Ed
+@^+SKPAO*Ed	some[AFTER]would not be doing[END]
 @^+SKPH
 @^+SKPHAEblgz
 @^+SKPHAO*EUb
@@ -3540,7 +3541,7 @@
 @^+SKPWRAO*EUbgsz	these will not have been causing by
 @^+SKPWRO*Ud	these should not have done
 @^+SKRAfbts
-@^+SKRAO*Ud
+@^+SKRAO*Ud	some[AFTER]would not have done[END]
 @^+SKW*Ubgsz	these have not caused by
 @^+SKWAO*blgz	these will not just like
 @^+SKWHAEUd	these could have been doing
@@ -3556,7 +3557,7 @@
 @^+SPHRO*EUfbts
 @^+SPO*Ed	you should not be doing
 @^+SPRAEfbts
-@^+SPRAO*EUd
+@^+SPRAO*EUd	the[AFTER]would not have been doing[END]
 @^+SPW*EUbgsz	those have not been causing by
 @^+SPWAO*Eblgz	those will not be just liking
 @^+SPWHA*d	those could not do
@@ -3774,17 +3775,17 @@
 ^+KHAEUfbts	often
 ^+KHRA*blgz
 ^+KHREU
-^+KPbgtz
-^+KPbltz
-^+KPd
-^+KPl
-^+KPtdz
-^+KPAEbgsz
-^+KPAO*EUblgz
+^+KPbgtz	a[AFTER]took[END]
+^+KPbltz	a[AFTER]built[END]
+^+KPd	a[AFTER]was[END]
+^+KPl	a[AFTER]looks[END]
+^+KPtdz	a[AFTER]wanted to[END]
+^+KPAEbgsz	a[AFTER]can be causing by[END]
+^+KPAO*EUblgz	a[AFTER]will not have been just liking[END]
 ^+KPHA*d
 ^+KPHO*Ebgsz
 ^+KPHRA*Ub
-^+KPO*U
+^+KPO*U	a[AFTER]shall not have[END]
 ^+KPRAEUblgz
 ^+KPRU
 ^+KPWb	this adds
@@ -3797,14 +3798,14 @@
 ^+KPWRA*EU	this can not have been
 ^+KPWRAOblgz	this will just like
 ^+KPWRUbgsz	this has caused by
-^+KRblgdz
-^+KRgd
-^+KRp
-^+KRpblgz
-^+KRplsd
-^+KRAUbgsz
-^+KREd
-^+KRO*EU
+^+KRblgdz	an[AFTER]just liked[END]
+^+KRgd	an[AFTER]went[END]
+^+KRp	an[AFTER]appears[END]
+^+KRpblgz	an[AFTER]comes to[END]
+^+KRplsd	an[AFTER]seemed[END]
+^+KRAUbgsz	an[AFTER]can have caused by[END]
+^+KREd	an[AFTER]was[END]
+^+KRO*EU	an[AFTER]shall not have been[END]
 ^+KWHEb	this is adding
 ^+KWHO*EUfbts	this shall not often have been[AFTER][META=infl]ing[END][END]
 ^+KWHR*fbts	this does not often
@@ -3822,9 +3823,9 @@
 ^+PHR*
 ^+PHRA*Eblgz
 ^+POE	you shall be
-^+PRAEUbgsz
-^+PRAO
-^+PRUd
+^+PRAEUbgsz	the[AFTER]can have been causing by[END]
+^+PRAO	the[AFTER]will[END]
+^+PRUd	the[AFTER]had[END]
 ^+PWblgs	that asks
 ^+PWblgz	that just likes
 ^+PWbtz	that bought
@@ -3878,9 +3879,9 @@
 ^+SKHOfbts	let's often
 ^+SKHRAO*Ebgsz
 ^+SKHRO*d
-^+SKP*Ed
-^+SKPA*Ubgsz
-^+SKPAOEU
+^+SKP*Ed	some[AFTER]were not[END]
+^+SKPA*Ubgsz	some[AFTER]can not have caused by[END]
+^+SKPAOEU	some[AFTER]will have been[END]
 ^+SKPH*EUb
 ^+SKPHAO*Efbts
 ^+SKPHROEUb
@@ -3896,9 +3897,9 @@
 ^+SKPWR*EUbgsz	these have not been causing by
 ^+SKPWRAO*Eblgz	these will not be just liking
 ^+SKPWRO*	these shall not
-^+SKR*Ud
-^+SKRA*EUbgsz
-^+SKRAO*
+^+SKR*Ud	some[AFTER]had not[END]
+^+SKRA*EUbgsz	some[AFTER]can not have been causing by[END]
+^+SKRAO*	some[AFTER]will not[END]
 ^+SKW*blgz	these do not just like
 ^+SKWAOUb	these will have added
 ^+SKWHAE	these can be
@@ -3937,9 +3938,9 @@
 ^+SPHRAO*Ubgsz
 ^+SPHRO*Ed
 ^+SPOEU	you shall have been
-^+SPR*EUd
-^+SPRAO*E
-^+SPRObgsz
+^+SPR*EUd	the[AFTER]had not been[END]
+^+SPRAO*E	the[AFTER]will not be[END]
+^+SPRObgsz	the[AFTER]shall cause by[END]
 ^+SPW*Eblgz	those are not just liking
 ^+SPWAOEUb	those will have been adding
 ^+SPWHAU	those can have
@@ -4177,3 +4178,30 @@
 +Trlgtd	it really[AFTER][META=infl]ed[END][END]
 +SKWRfpgtd	these never[AFTER][META=infl]ed[END][END]
 ^+Hfbtsd	he often[AFTER][META=infl]ed[END][END]
+
+! ---- the determiner subjects (§4.1f), whose noun is the word written next.
+! Both exclusions are here as no-entry rows: an adverb ender and a `-RG` verb
+! are holes of their own, and one record waits for one unit.
++PR	the[AFTER]is[END]
+#+PR	is the
+#+SPR	are the
++SKP	some[AFTER]are[END]
++SKR	some[AFTER]are[END]
++SPR	the[AFTER]are[END]
++PRb	the[AFTER]adds[END]
++SPRb	the[AFTER]add[END]
++SKPb	some[AFTER]add[END]
++PR*b	the[AFTER]doesn't add[END]
+#+PRb	does the[AFTER]add[END]
+#+PR*b	doesn't the[AFTER]add[END]
+^+PRb	the[AFTER]adds[END]
++PRd	the[AFTER]was[END]
++PREb	the[AFTER]is adding[END]
++PRUb	the[AFTER]has added[END]
++PRAOb	the[AFTER]will add[END]
++PRAO*Ub	the[AFTER]won't have added[END]
++PRrg
++KPrg
++SPRrg
++PRfbts
++KPfbtsd

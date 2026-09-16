@@ -88,8 +88,18 @@ impl Dict {
 
 pub enum Source<'a> {
     Xfst(&'a [PathBuf]),
-    Json(&'a Path),
-    Plain(&'a Path),
+    Json(&'a PathBuf),
+    Plain(&'a PathBuf),
+}
+
+impl<'a> Source<'a> {
+    /// Every file this dictionary is compiled from, in the order it reads them.
+    pub fn files(&self) -> &'a [PathBuf] {
+        match self {
+            Source::Xfst(files) => files,
+            Source::Json(file) | Source::Plain(file) => std::slice::from_ref(file),
+        }
+    }
 }
 
 impl Recipe {

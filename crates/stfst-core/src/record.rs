@@ -330,6 +330,44 @@ impl Record {
         }
     }
 
+    /// How this record shows while it is still waiting: the close of a frame,
+    /// before the word that goes inside it.
+    ///
+    /// A tail joined orthographically wants a word nobody has written, so it
+    /// shows as a hyphen and a suffix instead of joining the body: `by` and
+    /// `[META=infl]ing[END]` shows as "by -ing", and the hyphen is where the word
+    /// goes. A tail that only follows text shows as itself, so `from[AFTER]to`
+    /// shows as "from to" and the word lands between them.
+    ///
+    /// A keystroke and a command are not text, so a preview does neither.
+    pub fn preview(&self) -> Record {
+        let suffix = self.flags.ortho_l
+            || self.body.iter().any(|i| matches!(i, Item::Meta { .. }));
+        let body = self.body.iter().filter_map(|item| match item {
+            Item::Meta { arg, .. } => Some(Item::Text(arg.clone())),
+            Item::Text(_) | Item::Copy(_) => Some(item.clone()),
+            Item::Key { .. } | Item::Cmd { .. } | Item::Glyph(_) | Item::Drop => None,
+        });
+        match suffix {
+            false => Record {
+                flags: self.flags.clone(),
+                body: body.collect(),
+                after: None,
+            },
+            true => Record {
+                flags: Flags {
+                    attach_l: false,
+                    ortho_l: false,
+                    ..self.flags.clone()
+                },
+                body: std::iter::once(Item::Text("-".to_string()))
+                    .chain(body)
+                    .collect(),
+                after: None,
+            },
+        }
+    }
+
     /// Parse a tape symbol sequence. Each element is either a tag (`[KEY]`) or
     /// a single character of text.
     pub fn parse_symbols(symbols: &[&str]) -> Result<Record, RecordError> {

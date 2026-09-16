@@ -72,18 +72,14 @@ def cases(strokes_path, expected_path):
 
 
 def engine_for(translator):
-    """As much engine as the extension asks for.
+    """As much engine as the extension asks for, spelled as Plover spells it.
 
-    The hook it connects to is a translator listener here. Which order the
-    formatter and this run in is Plover's business and a set's, which is why
-    nothing in `hold` depends on it.
+    One attribute, because the extension listens to the translator itself:
+    Plover's `translated` hook is a formatter listener and is passed actions,
+    and a hold is read off a translation. Which order the formatter and this
+    run in is a set's business, which is why nothing in `host` depends on it.
     """
-    return type("Engine", (), {
-        "translator": translator,
-        "hook_connect": lambda s, name, fn: translator.add_listener(
-            lambda undo, do, prev: fn(undo, do)),
-        "hook_disconnect": lambda s, name, fn: None,
-    })()
+    return type("Engine", (), {"_translator": translator})()
 
 
 def main(paths):
@@ -101,7 +97,8 @@ def main(paths):
     registry.update()
     # What the entry points do, done by hand, so nothing has to be installed.
     registry.register_plugin("dictionary", "stfst", StfstDictionary)
-    for meta in ("stfst_copy", "stfst_retro", "stfst_hold", "stfst_frame"):
+    for meta in ("stfst_copy", "stfst_retro", "stfst_hold", "stfst_frame",
+                 "stfst_drop"):
         registry.register_plugin("meta", meta, getattr(host, meta))
     system.setup("Stenotype Extended")
 

@@ -10,7 +10,8 @@ fourth waits for text nobody has written yet.
 | a bound word, `[COPY1]` | `stfst_copy` | at once: the word is behind the cursor |
 | a window of written text, `words = 16` | `stfst_retro` | at once, over the words it rewrote |
 | a window of the text after it, `next = 2` | `stfst_hold` then `stfst_frame` | when a unit writes a word |
-| a tail, `[AFTER]` | `stfst_hold` then the tail itself | when a unit writes a word |
+| a tail, `[AFTER]` | `stfst_hold` then the tail itself | the close at once, the rest when a unit writes anything |
+| a preview off the screen | `stfst_drop` | with the word the tail waited for |
 
 A window record is not text: its class glyphs stand for the characters of the
 span, so `window.py` encodes the span and `Record.rewrite` substitutes them back.
@@ -21,16 +22,21 @@ Plover's own retro metas rewrite what is already written.
 
 A tail and a frame belong to the unit *after* their keys, and the answer depends
 on what the next stroke means, which another dictionary owns. So the dictionary
-answers with `{:stfst_hold:…}`, which writes nothing and carries what the wait
-needs, and the extension writes the answer when a translation puts a word on
-screen.
+answers with `{:stfst_hold:…}`, which carries what the wait needs, and the
+extension writes the answer when a translation writes. A record's own body is not
+held: it is an ordinary translation beside the marker, so a frame's head is on
+screen with its keys.
 
-    ^*G      ->  {:stfst_hold:tail:\{:infl:ing\}}   nothing, "ing" waiting
-    RUPB     ->  run                                a word, so the tail lands
+The marker writes the tail's *preview*, which is its close before the word that
+goes inside it, and `{:stfst_drop:}` takes that back when the word arrives. So a
+writer sees the frame closed from the keys, and the word lands in it.
+
+    ^*G      ->  {:stfst_hold:tail:\{:infl:ing\}}   "-ing" waiting
+    RUPB     ->  {:stfst_drop:} run {:infl:ing}     a unit writes, so it lands
                  running
 
-    STPR*T   ->  {:stfst_hold:frame:0:STPR*T}       nothing, a frame waiting
-    HAOER    ->  here                               a word, so the frame reads it
+    STPR*T   ->  from{:stfst_hold:tail:to}          "from to", and "to" waiting
+    HAOER    ->  {:stfst_drop:} here to             a unit writes, so it lands
                  from here to
 
 ## What a live candidate costs
@@ -60,12 +66,24 @@ as it does in `stfst-board`.
 from plover.formatting import ATOM_RE
 from plover.translation import Translation
 
+from .record import Record, Unsupported
+
 HOLD = "{:stfst_hold:"
 
-# The windowed dictionaries, in load order, so a marker can name one: a window
-# has to be harvested against the artifact after the text arrives, and a meta's
-# argument is text.
-windows = []
+# The windowed dictionaries by slot, so a marker can name one: a window has to be
+# harvested against the artifact after the text arrives, and a meta's argument is
+# text. A slot belongs to the artifact and not to the load, so a dictionary that
+# is loaded again takes the slot back and a marker written before that still
+# names it.
+windows = {}
+_slots = {}
+
+
+def register(dictionary, path):
+    """Give this artifact's dictionary its slot, and return it."""
+    slot = _slots.setdefault(path, len(_slots))
+    windows[slot] = dictionary
+    return slot
 
 # Every directive that writes nothing, by the shape of its first character. A
 # word is what a hold waits for, so this only has to be right about whether
@@ -116,7 +134,7 @@ def writes_text(english):
     """Whether a translation puts anything on screen.
 
     Not "is it non-empty": a command, a case directive and a held marker all
-    write nothing, and a hold waits for a word rather than for a stroke.
+    write nothing, and a hold waits for text rather than for a stroke.
     """
     for atom in ATOM_RE.findall(english):
         atom = atom.strip()
@@ -153,7 +171,7 @@ def cap_pending(translator):
 
 
 class _Waiting:
-    """What this engine is holding: the text to append to the next word.
+    """What this engine is holding: the text to write after the next unit.
 
     One hold, not a queue. A second before the first has landed replaces it, as
     it does in `stfst-board`.
@@ -176,13 +194,64 @@ class _Waiting:
 waiting = _Waiting()
 
 
+def _preview(tail, attached):
+    """What a waiting tail puts on screen, with the gap that goes before it.
+
+    The gap is this action's own, because the action is built here rather than
+    spelled as a translation: a preview is text Plover is going to be told to
+    take back, and `stfst_drop` takes back exactly what was written.
+    """
+    try:
+        shown = Record.from_translation(tail).preview()
+    except Unsupported:
+        return ""
+    text = "".join(i[1] for i in shown.body if i[0] == "text")
+    if not text:
+        return ""
+    return text if attached or shown.attach_l or shown.ortho_l else " " + text
+
+
 def stfst_hold(ctx, arg):
-    """The marker a dictionary answers with: write nothing.
+    """The marker a dictionary answers with: show what the tail is waiting with.
 
     `Ahead` reads the argument off the translation, not from here, because a meta
-    runs inside the formatter and the hook may have run already.
+    runs inside the formatter and the hook may have run already. What is written
+    here is only the preview, which is the close of a frame before the word that
+    goes inside it: `stfst_drop` takes it back when the word arrives. A frame
+    reads the text it waits for, so its answer is not known yet and it shows
+    nothing.
     """
-    return ctx.copy_last_action()
+    kind, _, rest = arg.partition(":")
+    action = ctx.copy_last_action()
+    if kind != "tail":
+        return action
+    # The gap goes inside the text, and the action attaches: then what is on
+    # screen is exactly this action's text, which is what `stfst_drop` takes back.
+    action.prev_attach = True
+    action.text = _preview(_unescape(rest), action.next_attach)
+    action.stfst_preview = bool(action.text)
+    return action
+
+
+def stfst_drop(ctx, arg):
+    """Take a waiting tail's preview back, now that the word it waited for is here.
+
+    The preview is found rather than named: `stfst_hold` marks the action it
+    wrote, so what comes back is exactly what went on screen, and a unit that
+    wrote nothing in between cannot be mistaken for it. Text that no preview
+    wrote ends the search, so a preview that has already landed cannot be taken
+    back twice.
+    """
+    action = ctx.copy_last_action()
+    action.text = ""
+    for previous in ctx.iter_last_actions():
+        if getattr(previous, "stfst_preview", False):
+            action.prev_replace = previous.text
+            action.prev_attach = True
+            break
+        if previous.text:
+            break
+    return action
 
 
 def stfst_copy(ctx, arg):
@@ -267,16 +336,19 @@ class Ahead:
     """The extension: write what a held stroke was waiting for."""
 
     def __init__(self, engine):
-        self._engine = engine
+        # A translator listener and not the engine's `translated` hook: the hook
+        # is a formatter listener, so what it is passed is actions, and a hold is
+        # read off a translation's `english`.
+        self._translator = engine._translator
 
     def start(self):
-        self._engine.hook_connect("translated", self._translated)
+        self._translator.add_listener(self._translated)
 
     def stop(self):
-        self._engine.hook_disconnect("translated", self._translated)
+        self._translator.remove_listener(self._translated)
         waiting.clear()
 
-    def _translated(self, undo, do):
+    def _translated(self, undo, do, prev):
         for translation in undo:
             _, held = split_hold(translation.english or "")
             if held is not None:
@@ -306,7 +378,26 @@ class Ahead:
             return rest
         index, outline = rest.split(":", 1)
         return "{:stfst_frame:%s:%s:%s}" % (
-            index, cap_pending(self._engine.translator), outline)
+            index, cap_pending(self._translator), outline)
+
+    @staticmethod
+    def _joined(english, text):
+        """A word's translation with what waited for it written after it.
+
+        A space between the atoms and not inside any: Plover splits `english`
+        into atoms on whitespace and each atom carries its own spacing, so the
+        separator is a separator and an attached tail still attaches. The drop
+        leads, so the preview goes before the word is written and the word takes
+        the gap the body left.
+
+        A marker of this translation's own stays last, because what waits lands
+        on the word before a new wait begins: the tail belongs to the word, and
+        the preview the marker writes belongs to the word after it.
+        """
+        at = english.find(HOLD)
+        body, marker = (english, "") if at < 0 else (english[:at], english[at:])
+        atoms = ["{:stfst_drop:}"] + ([body] if body else []) + [text]
+        return " ".join(atoms) + marker
 
     def _land(self, translation):
         """Write it with the word, as one translation.
@@ -325,12 +416,13 @@ class Ahead:
         # again and there is nothing left to wait for.
         waiting.clear()
         if not translation.formatting:
-            translation.english += text
+            translation.english = self._joined(translation.english, text)
             waiting.landed = (translation, text)
             return
-        translator = self._engine.translator
+        translator = self._translator
         translator.untranslate_translation(translation)
-        landed = Translation(translation.strokes, translation.english + text)
+        landed = Translation(translation.strokes,
+                             self._joined(translation.english, text))
         waiting.landed = (landed, text)
         translator.translate_translation(landed)
         # This hook runs inside the flush that told it, so what it wrote needs a

@@ -279,7 +279,8 @@ refusal at load until the metas in `plover_stfst/host.py` answered it instead.
 | a bound word, `[COPY1]` | `stfst_copy` | at once: the word is behind the cursor |
 | a window of written text, `words = 16` | `stfst_retro` | at once, over the words it rewrote |
 | a window of the text after it, `next = 2` | `stfst_hold` then `stfst_frame` | when a unit writes a word |
-| a tail, `[AFTER]` | `stfst_hold` then the tail itself | when a unit writes a word |
+| a tail, `[AFTER]` | `stfst_hold` then the tail itself | the close at once, the rest when a unit writes anything |
+| a preview off the screen | `stfst_drop` | with the word the tail waited for |
 
 Both windowed kinds take the words back with `prev_replace`, which is how
 Plover's own retro metas rewrite what is already written, and the class glyphs of
@@ -298,7 +299,7 @@ nothing above it wanted.
 
 `scripts/check-hold.py` is what holds this half to the Rust one. It drives a real
 translator over the same fixtures `stfst translate` answers, and compares the
-text at the end of every case: 1,363 of them, no difference, including the 1,316
+text at the end of every case: 1,372 of them, no difference, including the 1,316
 retro-words operations over fourteen buffers. `reach.strokes` is the one fixture
 it cannot ask, because that one asserts which strokes have *no* entry and Plover
 writes the raw steno where `stfst-board` writes nothing.

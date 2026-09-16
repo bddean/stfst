@@ -48,3 +48,12 @@ RUPB
 RUPB
 !undo
 TKPW
+
+! ---- what a tail shows while it waits
+! A suffix has no word to join yet, so it shows as a suffix reads: "by -ing",
+! and the hyphen is where the word goes.
+!buffer
+^PW*EU
+!buffer
+^PW*EU
+KHR-BG

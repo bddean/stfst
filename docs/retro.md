@@ -163,50 +163,81 @@ word", and a retro entry does not write a word.
 
 ## The other direction: text that is not written yet
 
-`retro-words` reads text the host has written. Two mechanisms read or reach the
-text it writes *next*, and both make the host hold a stroke: the answer belongs
-to a unit that does not exist when the keys arrive.
+`retro-words` reads text the host has written. Two mechanisms belong to the text
+it writes *next*, and both make the host hold something: the answer belongs to a
+unit that does not exist when the keys arrive.
 
-|  | reads the text | writes after it |
+|  | reads the text | what waits |
 |---|---|---|
-| **a frame** | yes, as a window | replaces it: `STPR*T` then "here" is "from here to" |
-| **a tail** | no | follows it: `^PW*EU` then "run" is "by running" |
-
-### A frame: a window read forwards
-
-```
-STPR*T   held: the keys are read, and nothing is written
-HAOER    here
-         from here to
-```
-
-The grammar is the same shape as a retro rule. Keys, then a window, then a
-record that copies the window and writes around it:
-
-```
-[ Kill(K) Kill(WinOpen) Say([ {from} " " ]) Span Say([ " " {to} ]) Kill(WinEnd) ]
-```
-
-Nothing in the grammar says which direction it is. `next = 2` in the recipe says
-it, where a retro dictionary says `words = 16`, and a tape carries one window so
-the two exclude each other.
+| **a tail** | no | the record that follows the text: `STPR*T` then "here" is "from here to" |
+| **a window read forwards** | yes, as a window | the whole answer, because a lookup over text nobody has written has none |
 
 ### A tail: a record that only follows
 
-A frame cannot inflect, because the window hides the letters: a rule that is
-shown `[LETTER][LETTER][LETTER]` cannot double the `n` in "run". So the other
-mechanism reads nothing and lets the host join:
-
 ```
-^PW*EU   by
-RUPB     run
-         by running
+STPR*T   from to
+HAOER    here
+         from here to
 ```
 
 `[AFTER]` delimits the tail, and the tail is a record of its own with its own
 flags, because the join is the whole point: `by[AFTER][META=infl]ing[END][END]`
 writes "by" now and asks the host for the gerund of whatever comes next. One
 record waits for one unit, so a tail holds no tail.
+
+The body writes with the keys, which is the reason both `frames` and `ahead` are
+tails: a writer sees "from" as they stroke it, and only its close waits. Nothing
+else could write it that early. A record that read the word would be a function
+of text nobody has written, so its whole answer would have to wait, and the head
+would arrive with the word rather than with the keys.
+
+### What a tail shows while it waits
+
+The close, before the word that goes inside it. `Record::preview` is that form
+of a tail and `Text::preview` writes it, so a writer sees the frame closed from
+the keys and the word lands in it.
+
+| the tail | shows | with the word |
+|---|---|---|
+| `from[AFTER]to[END]` | from to | from here to |
+| `"[ATTACH_R][CARRY_CAP][AFTER]"[ATTACH_L][END]` | "" | "Here" |
+| `and[AFTER]s[ORTHO_L][END]` | and -s | and cats |
+| `by[AFTER][META=infl]ing[END][END]` | by -ing | by running |
+
+A join wants a word nobody has written, so an orthographic tail and an
+inflection each show as a hyphen and a suffix rather than joining the body:
+"ands" would be a lie about what is there. Everything else shows as itself, and
+its own flags place it, which is what closes `""` around nothing.
+
+The preview is written nowhere. It is a function of the text and the record
+waiting, so `Board::text` recomputes it and the buffer a window reads never
+holds it: a frame is shown the words a unit wrote, and a preview is not one of
+them. A pending capital belongs to the word that lands rather than to the close,
+so the preview does not spend it.
+
+A frame previews nothing. It reads the text it waits for, so until that text
+exists it has no answer, and a guess would be the one thing this whole mechanism
+is avoiding.
+
+### A window read forwards
+
+The other mechanism reads the words the next unit writes, as `retro-words` reads
+the words already there. The grammar is the same shape: keys, then a window, then
+a record that copies the window and writes around it.
+
+```
+[ Kill(K) Kill(WinOpen) Say([ {Dear} " " ]) Cap Say({,}) Kill(WinEnd) ]
+```
+
+Nothing in the grammar says which direction it is. `next = 2` in the recipe says
+it, where a retro dictionary says `words = 16`, and a tape carries one window so
+the two exclude each other.
+
+What this can do and a tail cannot is *read* the word: the rule above capitalises
+whatever it is shown. What it cannot do is inflect, because the window hides the
+letters: a rule shown `[LETTER][LETTER][LETTER]` cannot double the `n` in "run".
+Nor can it write anything before the word arrives. No dictionary in `recipe.toml`
+asks for one, so `tests/dicts/held.xfst` is where it is exercised.
 
 ### Why the host has to hold the stroke
 
@@ -237,14 +268,19 @@ frame declared is text the frame cannot be shown, so the frame does not fire:
 showing the last few would frame the tail of a phrase.
 
 A unit that wrote no word of its own leaves the frame waiting. A record that
-joined into the word before it wrote no word, and a command wrote nothing at
-all, so a frame waits through both. The tail waits by the same rule.
+joined into the word before it wrote no word, and a command wrote nothing at all,
+so a frame waits through both.
+
+A tail waits for *text* and not for a word, because it follows the text rather
+than reading it: `(` joined to the word after it wrote no word of its own, and
+the `)` still belongs after that word. A command still leaves it waiting.
 
 A held candidate answers only where nothing else does, and before a fold.
 Whether it matches at all is unknown until the text arrives, so it cannot take
 part in the longest-match comparison; but its keys *did* match as they were
-written, and a fold is a last resort, so the fold comes after it. That ordering
-is what makes `SAO*EURT` "either _ or" rather than "either" plus a `-T` fold.
+written, and a fold is a last resort, so the fold comes after it. A tail needs
+none of that ordering: its stroke matched as written, which is what makes
+`SAO*EURT` "either _ or" rather than "either" plus a `-T` fold.
 
 Where a later stroke turns the held stroke into part of a longer match, the hold
 never happened: the host puts back what that stroke found, which is what makes
@@ -254,7 +290,7 @@ undo a pop here too.
 
 | | |
 |---|---|
-| `frames` | 13 templates on `S-` plus a brief plus `*`. `STPR*T` is "from _ to", because `TPR` writes "from" and `-T` writes "to". Ten of the fifteen briefs collide with no prefix and three under `S-`; two of those three are gone for it and the third survives because what it collided with was a fold. |
+| `frames` | 13 templates on `S-` plus a brief plus `*`. `STPR*T` is "from _ to", because `TPR` writes "from" and `-T` writes "to"; the head writes with the keys and the tail waits. Ten of the fifteen briefs collide with no prefix and three under `S-`; two of those three are gone for it and the third survives because what it collided with was a fold. |
 | `ahead` | 19 words that govern a gerund: `^PW*EU` is "by _ing". An alternative to folding, and the point is that it never surprises: `RUPBG` is "rung", so "run" plus a folded `-G` never happens and the writer has to know which words those are. |
 | `phrasing`'s hole | `-RG` says the verb of the clause is the word written next, and every adverb ender says it too: an adverb inflects for nothing, so a clause ending on one has no verb for its tense to inflect either. See `docs/phrasing.md`. |
 
@@ -262,10 +298,17 @@ undo a pop here too.
 
 Plover asks a dictionary one question and passes one argument: the outline. So
 neither a tail nor a frame can be answered by a lookup, and `plover_stfst/host.py`
-answers with a meta instead. `{:stfst_hold:…}` writes nothing and carries what
-the wait needs; `{:stfst_frame:…}` writes a frame once the word is there, taking
-the words back with `prev_replace` the way Plover's own retro metas do; and the
-extension moves the one to the other when a translation puts a word on screen.
+answers with a meta instead. `{:stfst_hold:…}` carries what the wait needs and
+writes the preview; `{:stfst_drop:}` takes that preview back off the screen;
+`{:stfst_frame:…}` writes a frame once the word is there, taking the words back
+with `prev_replace` the way Plover's own retro metas do; and the extension moves
+the one to the other when a translation writes.
+
+The preview is one action, built in the meta rather than spelled as a
+translation, so its own text is exactly what went on screen and the drop is the
+same string back. `stfst_hold` marks the action it wrote and `stfst_drop` finds
+it, which is why a unit that wrote nothing in between cannot be mistaken for
+it.
 
 Two more metas came out of the same corner and retired the two Python plugins
 this family was ported from. `{:stfst_retro:…}` is a window of text already
@@ -286,23 +329,26 @@ which: the hook reads the translation's own text for the marker rather than
 letting the meta arm the wait, and it reads the text again to decide whether a
 word was written rather than asking `Translation.formatting`, which may not exist
 yet. And what lands has to become part of the word's own translation, either by
-growing its `english` before it is formatted or by taking the word back and
-writing it again after, so that one `*` undoes both as it does here.
+joining it onto that translation's `english` before it is formatted or by taking
+the word back and writing it again after, so that one `*` undoes both as it does
+here.
 
 ### What is checked
 
 `tests/frames` is a stroke stream over four dictionaries, because the word a
 frame goes around comes from another one, and that is the whole reason the host
-holds anything. `tests/held` is the mechanism itself over three fixture
+holds anything. Every case there writes the head with the keys and shows the
+close beside it, and two cases end on the keys, where the preview is the whole
+answer. `tests/held` is the mechanism itself over three fixture
 dictionaries: both kinds of hold, a two-word unit through a one-word frame, a
 hold that waits through a join and a command, a longer match over the held
 stroke, and an undo that leaves it waiting again.
 
-`tests/ahead` and `tests/hole` are the two tails, and both are skipped where
-`build/morph` is absent, because what they prove is an inflection.
+`tests/ahead` and `tests/hole` are the inflected tails, and both are skipped
+where `build/morph` is absent, because what they prove is an inflection.
 `scripts/check-hold.py` replays five fixtures through a real Plover engine and
-compares: 1,363 cases, no difference, which is the two hosts agreeing on
-everything a lookup cannot be told. `tests/repeat-word` and
+compares: 1,372 cases, no difference, which is the two hosts agreeing on
+everything a lookup cannot be told, the preview included. `tests/repeat-word` and
 `tests/retro-words/ops.strokes` are two of the five, so the 1,316 retro
 operations over fourteen buffers are answered the same way by both. Those fixtures list their artifacts in priority order,
 highest first, because that is the order Plover reads a collection in and the

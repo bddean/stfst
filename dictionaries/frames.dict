@@ -1,0 +1,46 @@
+! Frames: a template around the word you write next.
+!
+! `TPR` writes "from" and `-T` writes "to", so `STPR*T` writes "from _ to": the
+! brief for each end of the template, `*` for the hole, and `S-` for the family.
+!
+! Three of the fifteen briefs collide under `S-` and two of them are gone for it:
+! `SA*S` is "ass" and `SO*RPB` is a word of its own, so "as _ as" and "_ or not"
+! are not here. `SAO*EURT` survives because what it collided with was a `-T`
+! fold, and a fold is a last resort.
+!
+! ---- what waits
+!
+! The head writes at once and the tail waits: `from[AFTER]to[END]` puts "from" on
+! screen with the keys and writes "to" after the unit that follows. So the writer
+! sees the frame open as they stroke it, and only its close is held.
+!
+! Nothing here reads the word, and that is what lets the head write early: a
+! record that read it would be a function of text nobody has written, so its
+! whole answer would have to wait for the word.
+!
+! The head is an ordinary word, so after a full stop it takes the pending capital
+! itself: `TP-PL STPR*T HAOER` is ". From here to". A pair writes punctuation,
+! which has no letter to spend the capital on, so it passes the capital on with
+! `[CARRY_CAP]` and the word keeps it: ". \"Here\"".
+!
+! What the tail waits for is the next unit that writes, as `ahead`'s does: a
+! command wrote nothing at all, so the tail waits through one, and a record that
+! joined into the word before it did write, so the tail lands after that.
+
+! ---- templates
+STPR*T	from[AFTER]to[END]
+STPR*L	from[AFTER]until[END]
+STWAO*EPBD	between[AFTER]and[END]
+STPHO*BT	not[AFTER]but[END]
+STP*PB	if[AFTER]then[END]
+SPHO*RPB	more[AFTER]than[END]
+SHR*EPBS	less[AFTER]than[END]
+SAO*EURT	either[AFTER]or[END]
+STPHAO*EURT	neither[AFTER]nor[END]
+SPWO*TD	both[AFTER]and[END]
+SA*	as[AFTER]as[END]
+
+! ---- pairs, which write punctuation only
+SKWO*ET	"[ATTACH_R][CARRY_CAP][AFTER]"[ATTACH_L][END]
+SPR*EPB	([ATTACH_R][CARRY_CAP][AFTER])[ATTACH_L][END]
+SPWA*BGT	\[[ATTACH_R][CARRY_CAP][AFTER]\][ATTACH_L][END]

@@ -487,10 +487,8 @@ pub fn write_artifact(
         .iter()
         .map(|k| format!("{:?}", k.name))
         .collect();
-    std::fs::write(
-        dir.join("manifest.toml"),
-        format!(
-            "[dict]\n\
+    let manifest = format!(
+        "[dict]\n\
              name = {name:?}\n\
              version = {version:?}\n\
              system = {:?}\n\
@@ -511,34 +509,39 @@ pub fn write_artifact(
              order = {:?}\n\
              separator = {:?}\n\
              {}",
-            system.name,
-            keys.join(", "),
-            declared.host(),
-            declared
-                .context
-                .iter()
-                .map(|c| format!("{c:?}"))
-                .collect::<Vec<_>>()
-                .join(", "),
-            declared.state,
-            declared.registers,
-            declared.after,
-            match declared.shown {
-                Some(Shown::Written(n)) => format!("words = {n}\n"),
-                Some(Shown::Next(n)) => format!("next = {n}\n"),
-                None => String::new(),
-            },
-            declared.significant.iter().collect::<String>(),
-            quoted(&declared.commands),
-            quoted(&declared.metas),
-            system.order(),
-            system.separator.to_string(),
-            match declared.strokes {
-                Some(n) => format!("strokes = {n}\n"),
-                None => String::new(),
-            },
-        ),
-    )?;
+        system.name,
+        keys.join(", "),
+        declared.host(),
+        declared
+            .context
+            .iter()
+            .map(|c| format!("{c:?}"))
+            .collect::<Vec<_>>()
+            .join(", "),
+        declared.state,
+        declared.registers,
+        declared.after,
+        match declared.shown {
+            Some(Shown::Written(n)) => format!("words = {n}\n"),
+            Some(Shown::Next(n)) => format!("next = {n}\n"),
+            None => String::new(),
+        },
+        declared.significant.iter().collect::<String>(),
+        quoted(&declared.commands),
+        quoted(&declared.metas),
+        system.order(),
+        system.separator.to_string(),
+        match declared.strokes {
+            Some(n) => format!("strokes = {n}\n"),
+            None => String::new(),
+        },
+    );
+    // The manifest goes in through a rename, which is what moves the directory's
+    // mtime: overwriting a file in place does not. So the artifact's mtime is
+    // when it was built, which is what a host reloads by and what `fresh` reads.
+    let staged = dir.join("manifest.toml.new");
+    std::fs::write(&staged, manifest)?;
+    std::fs::rename(&staged, dir.join("manifest.toml"))?;
     Ok(())
 }
 

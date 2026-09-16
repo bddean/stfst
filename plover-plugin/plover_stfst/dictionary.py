@@ -83,6 +83,7 @@ class StfstDictionary(StenoDictionary):
         self._words = 0          # words of written text it reads, if any
         self._context = ()       # the context slots it reads, in table order
         self._significant = ""   # the characters it named, so they reach it raw
+        self._slot = None        # its slot in `host.windows`, if it has one
 
     def _load(self, filename):
         manifest = _manifest(filename)
@@ -120,7 +121,7 @@ class StfstDictionary(StenoDictionary):
         self._context = tuple(s for s in SLOTS if s in needs["context"])
         self._significant = needs.get("significant", "")
         if self._next or self._words:
-            host.windows.append(self)
+            self._slot = host.register(self, filename)
         # A stroke asks about one outline per length and again on a retry, so a
         # generation wide enough for a stroke's worth of questions is one that
         # never drops what the next stroke wants. Two of them are kept.
@@ -246,10 +247,8 @@ class StfstDictionary(StenoDictionary):
         if not any(self._window_cursor(key, cap) for cap in ("off", "on")):
             return None
         if self._next:
-            return "%sframe:%d:%s}" % (host.HOLD, host.windows.index(self),
-                                       "/".join(key))
-        return "{:stfst_retro:%d:%s}" % (host.windows.index(self),
-                                         "/".join(key))
+            return "%sframe:%d:%s}" % (host.HOLD, self._slot, "/".join(key))
+        return "{:stfst_retro:%d:%s}" % (self._slot, "/".join(key))
 
     def _window_cursor(self, key, cap):
         """A cursor over the context slots and then the keys, or None if dead.

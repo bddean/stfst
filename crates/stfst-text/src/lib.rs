@@ -65,6 +65,13 @@ pub struct Tail {
     /// The previous record said its word was finished, so a suffix must not fold
     /// into it: `{$}`.
     pub word_end: bool,
+    /// Whether the previous record put any text on screen, joined or not.
+    ///
+    /// What a held tail waits for: it follows the next unit's text rather than
+    /// reading it, so text joined into the word before still counts and a command
+    /// that wrote nothing does not. `start` cannot answer, because it is `None`
+    /// for a join as well.
+    pub wrote: bool,
     /// How many words back the previous unit's own text starts, counted from the
     /// end of the buffer.
     ///
@@ -187,6 +194,39 @@ impl Text {
             out.push_str(&cell.space);
         }
         out
+    }
+
+    /// The text as it shows while a tail waits, which is the tail's close before
+    /// the word that goes inside it. See `Record::preview`.
+    ///
+    /// Written nowhere: the preview is a function of the text and the record
+    /// waiting, so it is recomputed rather than kept, and the buffer a window
+    /// reads never holds it. A record the formatter refuses shows nothing, and
+    /// the text as it stands comes back instead.
+    pub fn preview(&self, tail: &stfst_core::Record) -> String {
+        let mut scratch = self.scratch();
+        let registers = self.registers(stfst_core::record::MAX_COUNT);
+        match scratch.apply(&tail.preview(), &registers) {
+            Ok(_) => scratch.to_string(),
+            Err(_) => self.to_string(),
+        }
+    }
+
+    /// The same text with no history, for writing something that is not going to
+    /// be kept.
+    fn scratch(&self) -> Text {
+        Text {
+            cells: self.cells.clone(),
+            // A pending capital belongs to the word that lands, not to the close
+            // that is waiting for it.
+            tail: Tail {
+                case: None,
+                ..self.tail.clone()
+            },
+            mode: self.mode.clone(),
+            morph: self.morph.clone(),
+            ..Text::default()
+        }
     }
 
     /// The last `n` words, newest first, which is the order the registers are

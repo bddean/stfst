@@ -150,6 +150,30 @@ class Record:
                 raise Unsupported("%s in a window record" % kind)
         return "".join(out)
 
+    def preview(self):
+        """How this tail shows while it waits: the close, before the word inside.
+
+        `Record::preview` in `stfst-core`, and the same rule: a tail joined
+        orthographically wants a word nobody has written, so it shows as a hyphen
+        and a suffix rather than joining the body, and a tail that only follows
+        text shows as itself. A keystroke and a command are not text, so a
+        preview does neither.
+        """
+        suffix = self.ortho_l or any(i[0] == "meta" for i in self.body)
+        body = [("text", i[2]) if i[0] == "meta" else i
+                for i in self.body if i[0] in ("text", "meta", "copy")]
+        if not suffix:
+            return Record(body, **self._flags())
+        flags = self._flags()
+        flags["attach_l"] = flags["ortho_l"] = False
+        return Record([("text", "-")] + body, **flags)
+
+    def _flags(self):
+        """Every flag of this record, as the constructor takes them."""
+        return {name: getattr(self, name) for name in
+                ("attach_l", "ortho_l", "attach_r", "glue", "carry_cap",
+                 "word_end", "case", "space", "repeat", "replace", "state")}
+
     def translation(self):
         """This record as a Plover translation.
 

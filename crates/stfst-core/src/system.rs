@@ -29,8 +29,6 @@ pub enum SystemError {
     SeparatorIsSymbol(char),
     #[error("[numbers] maps digit {0:?} to {1:?}, which is not a key symbol")]
     UnknownNumberSymbol(char, char),
-    #[error("key {0:?} has no single-character letter, so outlines cannot be parsed")]
-    UnparseableKeyName(String),
     #[error("[implicit_hyphen] lists {0:?}, which is not a key symbol")]
     UnknownImplicitHyphen(char),
 }
@@ -56,7 +54,8 @@ pub struct Key {
     pub symbol: char,
     /// The host's name for this key, e.g. `S-` or `-S`.
     pub name: String,
-    /// `name` with hyphens stripped, which is how outlines spell it.
+    /// `name` with hyphens stripped, which is how outlines spell it. A name that
+    /// does not strip to one character falls back to `symbol`.
     pub letter: char,
     pub side: Side,
 }
@@ -121,7 +120,7 @@ impl System {
                 .ok_or(SystemError::UnnamedSymbol(symbol))?
                 .clone();
 
-            let letter = key_letter(&name)?;
+            let letter = key_letter(&name, symbol);
             let side = match (name.starts_with('-'), name.ends_with('-')) {
                 (true, _) => Side::Right,
                 (_, true) => Side::Left,
@@ -219,12 +218,12 @@ impl System {
     }
 }
 
-fn key_letter(name: &str) -> Result<char, SystemError> {
+fn key_letter(name: &str, symbol: char) -> char {
     let stripped = name.trim_matches('-');
     let mut chars = stripped.chars();
     match (chars.next(), chars.next()) {
-        (Some(c), None) => Ok(c),
-        _ => Err(SystemError::UnparseableKeyName(name.to_string())),
+        (Some(c), None) => c,
+        _ => symbol,
     }
 }
 
@@ -483,6 +482,25 @@ mod tests {
             let tape = s.to_tape(&parsed);
             assert_eq!(s.from_tape(&tape).unwrap(), parsed);
         }
+    }
+
+    #[test]
+    fn word_named_keys_spell_outlines_with_their_symbols() {
+        let words = r#"
+name = "words"
+order = "PRA"
+separator = "/"
+[keys]
+P = "Pee"
+R = "circle-r"
+A = "Ay"
+"#;
+        let s = System::parse(words).expect("word-named keys must load");
+        assert_eq!(s.keys().iter().map(|k| k.letter).collect::<String>(), "PRA");
+        let parsed = s.parse_outline("PRA").unwrap();
+        assert_eq!(s.to_tape(&parsed), "PRA");
+        assert_eq!(s.format_outline(&parsed), "PRA");
+        assert_eq!(s.from_tape("PRA").unwrap(), parsed);
     }
 
     #[test]

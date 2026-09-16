@@ -89,3 +89,28 @@ RUPB
 +T-RGT
 !buffer
 +T-RPGT
+
+! ---- the other hole: a determiner subject holds the noun
+! The clause after the determiner is the tail, so the noun lands in the middle
+! of it. `S` pluralizes and the agreement follows the determiner, not the noun.
+!buffer
++PR-B
+KAT
+!buffer
++SPR-B
+KATS
+!buffer
++KP-B
+KAT
+
+! Question inversion needs nothing of its own: the subject is still followed by
+! the space the finite word left.
+!buffer
+#+PR-B
+KAT
+
+! A hole with nothing after it holds nothing, because there is no tail to wait
+! with, so the noun follows as ordinary text.
+!buffer
+#+PR
+KAT

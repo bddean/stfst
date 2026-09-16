@@ -31,6 +31,24 @@ dictionaries = [..., {"enabled": true, "path": "~/src/stfst/build/dicts/typey-ty
 Order is priority, as it is for every other Plover dictionary, so the list in
 `plover.cfg` and the priorities in `recipe.toml` say the same thing.
 
+## Reloading a rebuilt dictionary
+
+Plover reloads a dictionary whose file is newer than the copy it holds, and it
+asks that question when the configuration changes. An artifact is a directory,
+and its mtime is when `stfst compile` built it: the manifest is renamed into
+place last, and a rename is what moves a directory's mtime.
+
+Nothing in Plover asks that question on its own, so the `stfst_reload` extension
+does. Enable it like any other, and a rebuilt artifact is live within a second:
+
+```sh
+stfst compile recipe.toml --dict frames
+```
+
+Without it, a restart. Compiling is not this plugin's business: the loop is a
+watcher over the sources running `stfst compile`, and the plugin only notices
+that the artifact moved.
+
 ## What loads
 
 Every dictionary in `recipe.toml`. What is left to refuse is a carried state and
@@ -56,7 +74,8 @@ with instead. `plover_stfst/host.py` is all four and the extension they need:
 | a bound word, `[COPY1]` | `stfst_copy` | at once: the word is behind the cursor |
 | a window of written text, `words = 16` | `stfst_retro` | at once, over the words it rewrote |
 | a window of the text after it, `next = 2` | `stfst_hold` then `stfst_frame` | when a unit writes a word |
-| a tail, `[AFTER]` | `stfst_hold` then the tail itself | when a unit writes a word |
+| a tail, `[AFTER]` | `stfst_hold` then the tail itself | the close at once, the rest when a unit writes anything |
+| a preview off the screen | `stfst_drop` | with the word the tail waited for |
 
 A window record is not text: its class glyphs stand for the characters of the
 span, so `window.py` encodes the span the way the tape carries it and
@@ -69,14 +88,20 @@ belong to the unit *after* their keys, and the answer depends on what the next
 stroke means, which another dictionary owns:
 
 ```
-^*G      ->  {:stfst_hold:tail:\{:infl:ing\}}   nothing, "ing" waiting
-RUPB     ->  run                                a word, so the tail lands
+^*G      ->  {:stfst_hold:tail:\{:infl:ing\}}   "-ing" waiting
+RUPB     ->  {:stfst_drop:} run {:infl:ing}     a unit writes, so the tail lands
              running
 
-STPR*T   ->  {:stfst_hold:frame:0:STPR*T}       nothing, a frame waiting
-HAOER    ->  here                               a word, so the frame reads it
+STPR*T   ->  from{:stfst_hold:tail:to}          "from to", and "to" waiting
+HAOER    ->  {:stfst_drop:} here to             a unit writes, so the tail lands
              from here to
 ```
+
+The marker writes the tail's preview, which is its close before the word that
+goes inside it: `stfst_hold` builds that action itself, so what is on screen is
+exactly the action's text, and `stfst_drop` takes back that text when the word
+arrives. A frame previews nothing, because a frame reads the text it waits for
+and has no answer until it has it.
 
 **The extension has to be enabled in Plover's configuration**, like any other,
 and `pip install -e` again after a change to the entry points.
@@ -134,6 +159,7 @@ start. `docs/latency.md` has the measurements.
 | `plover_stfst/dictionary.py` | The `plover.dictionary` entry point. |
 | `plover_stfst/host.py` | The `plover.meta` and `plover.extension` entry points: what a lookup cannot be told. |
 | `plover_stfst/window.py` | Text as the tape carries it, for a frame: a class per character, and the characters beside them. |
+| `plover_stfst/reload.py` | The second `plover.extension` entry point: reload an artifact that has been rebuilt. |
 
 ## Checks
 

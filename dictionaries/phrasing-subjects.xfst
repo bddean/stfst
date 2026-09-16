@@ -9,6 +9,8 @@
 ! `[AND]` is the clausal conjunction (§4.1a): it precedes the whole clause rather
 ! than the subject, so an inverted question is "and am I", not "am and I".
 ! `[INF]` is the nonfinite "to" clause (§4.1b), which has no subject word.
+! `[HOLD]` marks the hole a determiner subject leaves: the noun is the word
+! written next, so everything after the determiner waits for it (§4.1f).
 ! `[PASS]` is the passive (§4.1d) and `[IMP]`/`[LETS]` the imperative (§4.1e).
 ! None of the three names a subject, and each takes a left-key set the coordinate
 ! subjects left free.
@@ -16,12 +18,13 @@
 ! The rules that read this map are in `phrasing.xfst`; the mined verb lexicon is
 ! in `phrasing-lexicon.xfst`.
 
-! Left keys to a subject and its agreement: 84 of the 128 sets have an entry.
-! 2 more head a clause only when a verb follows, in `NoSubject` below. The
-! remaining 38 name nothing, and a stroke that reaches one has no translation.
-! They held the coordinate subjects, "you and I" through "and you and he and she
-! and I", which nobody wrote. Left free rather than refilled: an empty chord is
-! visible and a wrong one is not.
+! Left keys to a subject and its agreement: 88 of the 128 sets have an entry
+! here. 6 more are the determiner subjects in `Determiners` below, and 2 head a
+! clause only when a verb follows, in `NoSubject`. The remaining 32 name nothing,
+! and a stroke that reaches one has no translation. They held the coordinate
+! subjects, "you and I" through "and you and he and she and I", which nobody
+! wrote. Left free rather than refilled: an empty chord is visible and a wrong
+! one is not.
 define Subjects [
     [ [ "T" ] .x. [ "[SUBJ]" {it} "[/SUBJ]" "[C]" "[3sg]" ] ] |
     [ [ "K" ] .x. [ "[SUBJ]" {I} "[/SUBJ]" "[C]" "[1sg]" ] ] |
@@ -116,3 +119,20 @@ define NoSubject [
     [ [ 0 ] .x. [ "[pl]" ] ] |
     [ [ "S" ] .x. [ "[pl]" ] ] ] ;
 
+! A determiner subject: the noun is the word you write next.
+!
+! `+PR` writes "the" and holds the rest of the clause, so `+PR-B` then "dog" is
+! "the dog is adding". `[HOLD]` is where the noun goes, and `phrasing.xfst` turns
+! it into the record's `[AFTER]`.
+!
+! `a` and `an` are separate chords rather than one entry, because the body writes
+! before the noun arrives and so cannot see which one the noun wants. `S`
+! pluralizes, and the plural indefinite is "some" either way: the a/an split is
+! spelling, and "some" has none.
+define Determiners [
+    [ [ "K" "P" ] .x. [ "[SUBJ]" {a} "[HOLD]" "[/SUBJ]" "[3sg]" ] ] |
+    [ [ "K" "R" ] .x. [ "[SUBJ]" {an} "[HOLD]" "[/SUBJ]" "[3sg]" ] ] |
+    [ [ "P" "R" ] .x. [ "[SUBJ]" {the} "[HOLD]" "[/SUBJ]" "[3sg]" ] ] |
+    [ [ "S" "K" "P" ] .x. [ "[SUBJ]" {some} "[HOLD]" "[/SUBJ]" "[pl]" ] ] |
+    [ [ "S" "K" "R" ] .x. [ "[SUBJ]" {some} "[HOLD]" "[/SUBJ]" "[pl]" ] ] |
+    [ [ "S" "P" "R" ] .x. [ "[SUBJ]" {the} "[HOLD]" "[/SUBJ]" "[pl]" ] ] ] ;
