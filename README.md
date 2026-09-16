@@ -45,7 +45,7 @@ shadow a working entry.
 | typey-type | JSON, imported |
 | and-fold | JSON, imported |
 | phrasing | xfst, a clause grammar over 21.9M chords |
-| frames | xfst over a window of text not written yet |
+| frames | flat source in the record language |
 | ahead | flat source in the record language |
 | retro-words | xfst over a window of written text |
 | repeat-idioms | JSON, imported |
@@ -56,19 +56,29 @@ this table does not: both directions of the whole set are about 15 MB and it
 compiles in about a minute, against 93.6 MB resident for the Plover-style
 dictionary and its reverse index in `docs/M0.md`.
 
-`retro-words` and `frames` have no reverse automaton, and that is not an
-omission: they rewrite text rather than writing a word, so the question a
-suggestion window asks has no answer for them. `shrimple` has none for the other
-reason, which is that its language has no longest outline. See `docs/retro.md`.
+A dictionary whose artifact is newer than everything it is compiled from is left
+alone, so that minute is only ever paid for what changed. The compiler counts as
+a source, because a rule it changed is in none of the files. `--dict NAME` builds
+one by name, and `--force` builds what is already built.
 
-`frames`, `ahead` and phrasing's hole ender read text that is not written yet:
-the host holds the stroke and answers when the next unit writes a word. A
-template goes around it (`STPR*T` then "here" is "from here to"), an inflection
-follows it (`^PW*EU` then "run" is "by running"), and phrasing's `-RG` says the
-verb of a whole clause is the word coming next, so `+TERG` then "run" is "it's
-running" with every other key of the clause still meaning what it meant. Every
-adverb ender says the same thing, so `+T-FBTS` then "run" is "it often runs" and
-`-D` there is the past that an adverb launchpad never had.
+`retro-words` has no reverse automaton, and that is not an omission: it rewrites
+text rather than writing a word, so the question a suggestion window asks has no
+answer for it. `shrimple` has none for the other reason, which is that its
+language has no longest outline. See `docs/retro.md`.
+
+`frames`, `ahead` and phrasing's hole ender belong to text that is not written
+yet: each writes its own word at once and the host holds the rest until the next
+unit writes. What waits is shown while it waits, so the frame is closed from the
+keys and the word lands inside it: `STPR*T` writes "from to", and "here" makes it
+"from here to". An inflection has no word to join yet, so it shows as a suffix
+reads: `^PW*EU` writes "by -ing", and "run" makes it "by running".
+
+Phrasing's `-RG` says the verb of a whole clause is the word coming next, so
+`+TERG` then "run" is "it's running" with every other key of the clause still
+meaning what it meant. Every adverb ender says the same thing, so `+T-FBTS` then
+"run" is "it often runs" and `-D` there is the past that an adverb launchpad
+never had. A determiner subject holds the noun the same way: `+PR-B` writes "the
+is adding", and "dog" makes it "the dog is adding".
 
 `semantic-retro.json` is absent: its entries are clause rewrites over a part-of-speech
 tagger, which is the one thing this format deliberately cannot hold. See
@@ -98,6 +108,26 @@ building it changed here.
 
 The host loop both it and `stfst translate` drive is `stfst-board`.
 
+## pitman-board
+
+`~/src/pitman-board` is a second consumer: an Android keyboard for Pitman's
+Shorthand, where an outline is the chord and a sign is the key. It brings its own
+`systems/pitman.toml` and dictionaries and changes nothing here, which is the
+answer to whether the general half wants factoring out. `System` was already the
+general thing under a steno name, and `Side`, `first_right`, `implicit_hyphen`
+and `numbers` never leave `system.rs`. The compiler's generated prelude turned
+out to describe a Pitman segment exactly.
+
+One change was needed, and it is in the working tree: `key_letter` refused any
+name that did not strip to a single character, so a sign could not be called
+`circle-s`. It now falls back to the tape symbol. `letter` spells a written
+outline, so it belongs to the outline parser rather than to the key.
+
+That keyboard does not link `stfst-ol` yet. It answers the same question from
+tables and holds itself to what `stfst lookup` says, so the native path is still
+to be wired. The one change that would want both consumers in one place is
+weights in the artefact, which is inside `stfst-ol`.
+
 ## The Plover plugin
 
 `plover-plugin/` is a Plover dictionary class over these artifacts, so the format
@@ -115,7 +145,7 @@ and these are separate abilities.
 
 `scripts/check-hold.py` is what holds that half honest. It drives a whole Plover
 engine over five stroke fixtures and compares the text at the end of every case
-against what `stfst translate` wrote for the same strokes: 1,363 cases, no
+against what `stfst translate` wrote for the same strokes: 1,372 cases, no
 difference, including the 1,316 `retro-words` operations over fourteen buffers.
 
 Nothing is shared with the Rust: the plugin has its own `hfstol` reader and its
