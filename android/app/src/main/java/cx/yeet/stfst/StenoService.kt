@@ -38,7 +38,7 @@ class StenoService : InputMethodService() {
     /** Why the runtime did not start, for the bar to show instead of dying. */
     private var trouble = ""
     private lateinit var config: Config
-    private var view: CombView? = null
+    private var view: RingView? = null
     private var status: TextView? = null
     /** The field's own action key, renamed for whatever field is in front of us. */
     private var actionKey: Button? = null
@@ -127,7 +127,7 @@ class StenoService : InputMethodService() {
         actionKey = button("⏎") { act() }
         bar.addView(actionKey)
 
-        val keys = CombView(this, config, order, ::stroke, ::chord)
+        val keys = RingView(this, config, order, ::stroke, ::chord)
         view = keys
         // One line, whatever room there is. The briefs are what a line is worth,
         // and anything taller is the app's room rather than this keyboard's.
@@ -186,7 +186,7 @@ class StenoService : InputMethodService() {
      *
      * The keys are both. The band the preview draws above them is neither: it
      * is over the app on purpose, so the app keeps its room and its touches up
-     * there and the copy of the comb floats on top.
+     * there and the copy of the keys floats on top.
      */
     override fun onComputeInsets(outInsets: Insets) {
         super.onComputeInsets(outInsets)

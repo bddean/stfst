@@ -12,14 +12,14 @@ import android.content.SharedPreferences
 object Prefs {
 
     /**
-     * Bumped whenever the shipped layout changes: the grids, or which keys a
-     * lift can arm.
+     * Bumped whenever the shipped layout changes: the rings, the radii, or
+     * which keys a lift can arm.
      *
      * A saved value is the user's own choice and outlives an upgrade, but one
-     * saved before floats and hole rings existed is the old default rather than
-     * a choice, and keeping it would hide the new one behind a settings screen.
+     * saved before the rings existed is the old default rather than a choice,
+     * and keeping it would hide the new one behind a settings screen.
      */
-    private const val LAYOUT = 4
+    private const val LAYOUT = 5
 
     private class Slot<T>(
         val key: String,
@@ -60,18 +60,16 @@ object Prefs {
         Slot(key, get, set, SharedPreferences.Editor::putInt, SharedPreferences::getInt)
 
     private val slots: List<Slot<*>> = listOf(
-        text("combLeft", { it.combLeft }, { c, v -> c.combLeft = v }, shipped = true),
-        text("combRight", { it.combRight }, { c, v -> c.combRight = v }, shipped = true),
+        text("ringLeft", { it.ringLeft }, { c, v -> c.ringLeft = v }, shipped = true),
+        text("ringRight", { it.ringRight }, { c, v -> c.ringRight = v }, shipped = true),
+        text("radiiLeft", { it.radiiLeft }, { c, v -> c.radiiLeft = v }, shipped = true),
+        text("radiiRight", { it.radiiRight }, { c, v -> c.radiiRight = v }, shipped = true),
         size("tilt", { it.tilt }, { c, v -> c.tilt = v }),
-        size("combFill", { it.combFill }, { c, v -> c.combFill = v }),
-        size("combAt", { it.combAt }, { c, v -> c.combAt = v }),
-        flag("combHole", { it.combHole }, { c, v -> c.combHole = v }),
         text("stickyLeft", { it.stickyLeft }, { c, v -> c.stickyLeft = v }, shipped = true),
         text("stickyRight", { it.stickyRight }, { c, v -> c.stickyRight = v }, shipped = true),
         letter("doubleTapLeft", { it.doubleTapLeft }, { c, v -> c.doubleTapLeft = v }),
         letter("doubleTapRight", { it.doubleTapRight }, { c, v -> c.doubleTapRight = v }),
         span("doubleTapMs", { it.doubleTapMs }, { c, v -> c.doubleTapMs = v }),
-        span("stallMs", { it.stallMs }, { c, v -> c.stallMs = v }),
         flag("commitOnFirstLift", { it.commitOnFirstLift }, { c, v -> c.commitOnFirstLift = v }),
         flag("haptics", { it.haptics }, { c, v -> c.haptics = v }),
         flag("hapticTicks", { it.hapticTicks }, { c, v -> c.hapticTicks = v }),
@@ -80,8 +78,6 @@ object Prefs {
         span("hapticGapMs", { it.hapticGapMs }, { c, v -> c.hapticGapMs = v }),
         flag("showDeadCells", { it.showDeadCells }, { c, v -> c.showDeadCells = v }),
         flag("showLabels", { it.showLabels }, { c, v -> c.showLabels = v }),
-        flag("showChain", { it.showChain }, { c, v -> c.showChain = v }),
-        flag("showPortals", { it.showPortals }, { c, v -> c.showPortals = v }),
         flag("cloud", { it.cloud }, { c, v -> c.cloud = v }),
         count("cloudSamples", { it.cloudSamples }, { c, v -> c.cloudSamples = v }),
         size("cloudAlpha", { it.cloudAlpha }, { c, v -> c.cloudAlpha = v }),
@@ -92,7 +88,6 @@ object Prefs {
         size("splitLandscape", { it.splitLandscape }, { c, v -> c.splitLandscape = v }),
         size("landscapeHeight", { it.landscapeHeight }, { c, v -> c.landscapeHeight = v }),
         size("previewHeight", { it.previewHeight }, { c, v -> c.previewHeight = v }),
-        size("focusGain", { it.focusGain }, { c, v -> c.focusGain = v }),
         size("markRadius", { it.markRadius }, { c, v -> c.markRadius = v }),
         size("labelSp", { it.labelSp }, { c, v -> c.labelSp = v }),
         size("keyboardHeight", { it.keyboardHeight }, { c, v -> c.keyboardHeight = v }),

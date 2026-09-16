@@ -25,7 +25,7 @@ class SettingsActivity : Activity() {
     private lateinit var config: Config
 
     /** The keyboard itself, pinned under the knobs, redrawn on every change. */
-    private var preview: CombView? = null
+    private var preview: RingView? = null
     private var previewToggle: CheckBox? = null
 
     private fun refresh() {
@@ -74,73 +74,43 @@ class SettingsActivity : Activity() {
     private class Section(label: String, note: String = "") : Knob(label, note)
 
     private val knobs: List<Knob> = listOf(
-        Section("The comb",
-            "A fixed honeycomb per thumb, walked downward in steno order and " +
-                "read by where the focus is. A layout is one character per " +
-                "cell: a dot is open ground, o is a hole, a space is off the " +
-                "board, and anything else is the key of that name. Rows are " +
-                "separated by a slash. Alternate columns hang half a cell " +
-                "lower, so a column runs down the glass and the chain of the " +
-                "order zigzags between two of them: a key touches the next in " +
-                "the order and the one after it. Repeat a value in touching " +
-                "cells and they meld into one button, which is all a big key " +
-                "is. Entering a cell takes what it yields, in steno order, " +
-                "and a spent cell is ground. A key that does not touch the " +
-                "next key of the walk is a float, and steno order says nothing " +
-                "about a float: that is what the modifiers are."),
-        Text("Left comb", { it.combLeft }, { c, v -> c.combLeft = v },
-            "rows separated by a slash"),
-        Text("Right comb", { it.combRight }, { c, v -> c.combRight = v }),
-        Section("The portals",
-            "Two of a cell's six sides face the keys the walk can still reach. " +
-                "The other four are portals, and each carries a stride, " +
-                "${Comb.STRIDES.joinToString(" ") { "+$it" }}, ordered by how far it turns from " +
-                "the way the walk is heading. A stride rests on the ground " +
-                "beside the key it aims at and takes nothing, leaving several " +
-                "keys one hop away; where no ground is worth the hop it lands " +
-                "on the key itself. A key the thumb can already step onto is " +
-                "not worth anything, so a landing never repeats the ground it " +
-                "left. The four are chosen together, for the most keys they " +
-                "put within two hops between them.\n\n" +
-                "A stride is not spent by one jump. Keep sliding the way the " +
-                "jump went and it goes again, so a side is a run of landings " +
-                "and not one. A key on the way out is taken rather than " +
-                "ridden past.\n\n" +
-                "These four numbers are not a setting. Of every set of four " +
-                "they reach the furthest: 153 of the 155 keys a stroke can " +
-                "want, which is everything the shipped grids allow."),
+        Section("The rings",
+            "Nested bands per thumb, read by where the thumb is. Entering a " +
+                "live cell takes it, and everything else is ground: a cell the " +
+                "order has passed, a cell holding nothing, and the hub once " +
+                "you have left it. So sliding out to the next ring erases the " +
+                "ring behind, turning through a ring adds keys, and two cells " +
+                "far apart on one ring are joined by a straight line through " +
+                "the middle.\n\n" +
+                "A layout is the hub first, then the rings outward, separated " +
+                "by spaces. A slot is one character, or several keys between " +
+                "slashes, and a dot is ground. The outermost ring is the rim, " +
+                "and its keys are the floats: steno order never kills one, " +
+                "which is why they repeat round it. A key in two slots is " +
+                "nothing special, because a key is a set of cells."),
+        Text("Left rings", { it.ringLeft }, { c, v -> c.ringLeft = v },
+            "hub, then the rings outward"),
+        Text("Right rings", { it.ringRight }, { c, v -> c.ringRight = v }),
+        Text("Left radii", { it.radiiLeft }, { c, v -> c.radiiLeft = v },
+            "where the bands meet, outward, as fractions of the bank's reach. " +
+                "One more number than there are bands"),
+        Text("Right radii", { it.radiiRight }, { c, v -> c.radiiRight = v }),
         Range("Tilt", -45f, 45f, { it.tilt }, { c, v -> c.tilt = v },
-            "how far the comb is turned. Zero runs the columns straight down " +
-                "the glass; a thumb sweeps along an arc, so a few degrees can " +
-                "put the walk under it. The right bank turns the other way, " +
-                "because the two thumbs sweep mirrored arcs", unit = "\u00b0"),
-        Flag("One thumb walks both combs", { it.oneThumb }, { c, v -> c.oneThumb = v },
-            "a touch that arrives in the other comb's field is handed over to " +
-                "it, and the comb it leaves keeps what it took, so one hand can " +
+            "how far the rings are turned. A thumb sweeps an arc and the rings " +
+                "are already arcs, so this may buy nothing. The right bank " +
+                "turns the other way, because the two thumbs sweep mirrored " +
+                "arcs", unit = "\u00b0"),
+        Flag("One thumb walks both banks", { it.oneThumb }, { c, v -> c.oneThumb = v },
+            "a touch that arrives in the other bank's field is handed over to " +
+                "it, and the bank it leaves keeps what it took, so one hand can " +
                 "write a whole stroke. Only while the other thumb is up, so two " +
                 "hands never meet it"),
         Range("Preview over the app", 0f, 0.5f, { it.previewHeight },
             { c, v -> c.previewHeight = v },
-            "a copy of the combs above the keys, drawn over the app and taking " +
+            "a copy of the banks above the keys, drawn over the app and taking " +
                 "no touches. Shrink the keys and a thumb crosses cells in less " +
                 "travel; this buys back the legibility that costs. Zero for none",
             unit = "× screen"),
-        Range("Focus reach", 1f, 3f, { it.focusGain }, { c, v -> c.focusGain = v },
-            "how much further than the thumb the focus travels. One is the " +
-                "thumb itself; above one the whole comb sits inside a shorter " +
-                "sweep, and the mark shows where the focus went", unit = "\u00d7"),
-        Range("Comb fill", 0.4f, 1f, { it.combFill }, { c, v -> c.combFill = v },
-            "one fills the field. Less packs the comb within reach; a thumb " +
-                "that overshoots the drawn edge still means the cell it " +
-                "overshot", unit = "\u00d7"),
-        Range("Comb position", 0.2f, 0.8f, { it.combAt }, { c, v -> c.combAt = v },
-            "where the middle of the comb sits", unit = "down the field"),
-        Flag("Teleport through a hole", { it.combHole }, { c, v -> c.combHole = v },
-            "a focus that walks into a hole is thrown straight across the " +
-                "comb's middle, and the offset holds until the lift. Off by " +
-                "default: the shipped layouts close a ring around their hole, " +
-                "so nothing walks into one and a portal is the only way in. A " +
-                "portal can land on a hole either way"),
 
         Section("Strokes"),
         Flag("Write on the first lift", { it.commitOnFirstLift },
@@ -161,10 +131,6 @@ class SettingsActivity : Activity() {
             { c, v -> c.doubleTapMs = v.toLong() },
             "two taps this close together are a double tap, so a quick tap's " +
                 "stroke waits this long. Zero turns double taps off", unit = "ms"),
-        Range("Stall (ms)", 200f, 3000f, { it.stallMs.toFloat() },
-            { c, v -> c.stallMs = v.toLong() },
-            "hold still this long and a focus a portal threw away comes back " +
-                "to the thumb, writing nothing", unit = "ms"),
 
         Section("Buzzes"),
         Flag("Haptics", { it.haptics }, { c, v -> c.haptics = v }),
@@ -184,42 +150,34 @@ class SettingsActivity : Activity() {
 
         Section("Looks and sizes"),
         Flag("Show labels", { it.showLabels }, { c, v -> c.showLabels = v }),
-        Flag("Show the steno order", { it.showChain }, { c, v -> c.showChain = v },
-            "a faint chain through the keys, which is the walk"),
-        Flag("Show where the portals go", { it.showPortals },
-            { c, v -> c.showPortals = v },
-            "from the cell under the focus, a line out of each portal side to " +
-                "the cell it lands on, with an arrow there pointing back at " +
-                "the side to leave by. A ring means arriving takes that key; a " +
-                "dashed ring means it comes to rest beside it"),
         Flag("Show cells already passed", { it.showDeadCells },
             { c, v -> c.showDeadCells = v },
-            "faded. They are portals now, and they stop looking like keys"),
+            "faded. They are ground now, and they stop looking like keys"),
         Range("Label size (sp)", 8f, 28f, { it.labelSp }, { c, v -> c.labelSp = v },
             unit = "sp"),
         Range("Keyboard height", 0.2f, 0.8f, { it.keyboardHeight },
             { c, v -> c.keyboardHeight = v },
-            "in portrait. A comb runs down, so it wants the room", unit = "of the screen"),
+            "in portrait. The radial budget is the tightest thing here, so the " +
+                "bands want the room", unit = "of the screen"),
         Range("Field split", 0.2f, 0.8f, { it.fieldSplit }, { c, v -> c.fieldSplit = v },
             "where the left field ends, in portrait", unit = "of the width"),
-        Flag("Combs on the edges in landscape", { it.landscapeSides },
+        Flag("Banks on the edges in landscape", { it.landscapeSides },
             { c, v -> c.landscapeSides = v },
-            "each comb hugs its own edge with the bar in the gap between them. " +
+            "each bank hugs its own edge with the bar in the gap between them. " +
                 "Off puts the two side by side in the middle"),
         Range("Landscape keyboard height", 0.3f, 0.95f, { it.landscapeHeight },
             { c, v -> c.landscapeHeight = v },
             "the app keeps everything above the band. Android describes the " +
                 "app's room with a top edge alone, so there is no way to make " +
-                "the app narrower and leave the combs full height beside it",
+                "the app narrower and leave the banks full height beside it",
             unit = "of the screen"),
         Range("Landscape field width", 0.15f, 0.5f, { it.splitLandscape },
             { c, v -> c.splitLandscape = v },
             "each field's share of the width, anchored to its own side",
             unit = "of the width"),
         Range("Thumb mark size", 0.008f, 0.06f, { it.markRadius },
-            { c, v -> c.markRadius = v },
-            "the dot at the focus, and the fainter one at the thumb once a " +
-                "portal has parted them", unit = "\u00d7 field"),
+            { c, v -> c.markRadius = v }, "the dot that shows where the thumb is",
+            unit = "\u00d7 field"),
 
         Section("The touch panel"),
         Flag("Draw the touched area", { it.cloud }, { c, v -> c.cloud = v },
@@ -268,7 +226,7 @@ class SettingsActivity : Activity() {
         }
         // The engine's steno order, spelled out: the preview draws glyphs and
         // geometry only, so it does not need the engine.
-        val view = CombView(this, config, "#@^+STKPWHRAO*EUfrpblgtsdz", {}, embedded = true)
+        val view = RingView(this, config, "#@^+STKPWHRAO*EUfrpblgtsdz", {}, embedded = true)
         preview = view
         val toggle = CheckBox(this).apply {
             text = "Show the preview"

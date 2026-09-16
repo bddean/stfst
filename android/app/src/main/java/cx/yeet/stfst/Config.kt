@@ -9,49 +9,34 @@ package cx.yeet.stfst
  */
 data class Config(
     /**
-     * Each bank's layout: one character per cell, rows separated by a slash or
-     * a newline. A dot is open ground, `o` is a hole, a space is off the board,
-     * and anything else is the key of that name.
+     * Each bank's layout: the hub first, then the rings outward, separated by
+     * spaces. A slot is one character, or several keys between slashes, and a
+     * dot is ground.
      *
-     * The comb runs down. Alternate columns hang half a cell lower, so a column
-     * is a run down the glass and the chain of the steno order zigzags between
-     * two of them: a key touches the next in the order diagonally and the one
-     * after it directly below. Repeating a value in touching cells melds them
-     * into one button, which is all a big key is.
-     *
-     * A key that does not touch the next key of the walk is a float, and steno
-     * order says nothing about one: `#` and `+` here, `@` and `*` on the right.
-     * The last two keys and the two floats close a ring around a hole, so a
-     * portal into the hole puts the whole end of the order one hop away and
-     * nothing ever has to pass through it.
+     * Everything else is recovered from the text. The walk is steno order over
+     * the keys it names; the rim is the outermost ring, and its keys are the
+     * floats, which is why they repeat round it; a key in two slots is nothing
+     * special, because a key is a set of cells.
      */
-    var combLeft: String = " ..../ .^S./ .TK./ .PW./ .HR./  AO./  o+./  #..",
-    var combRight: String = "..../.UE./.rf./.bp./.gl./.st./.zd/.*o/..@",
+    var ringLeft: String = "./S/ST/T .PHRWK AOAOAO ^#+^#+",
+    var ringRight: String = "./E/EU/U frbglp tststs dzdzdz *@*@*@",
     /**
-     * How much the comb is turned, in degrees.
+     * The radii between the bands, outward, as fractions of the bank's reach.
      *
-     * Zero runs the columns straight down the glass. A thumb sweeps along an
-     * arc rather than a line, so a few degrees of tilt can put the walk under
-     * it; which few is a fact about hands and not about layouts. The right bank
-     * turns the other way, because the two thumbs sweep mirrored arcs.
+     * One more number than there are bands. The radial budget in portrait is
+     * the tightest thing about this layout, which is why the numbers are here
+     * rather than in the geometry.
+     */
+    var radiiLeft: String = "0 .31 .56 .78 1",
+    var radiiRight: String = "0 .27 .47 .65 .83 1",
+    /**
+     * How far the rings are turned, in degrees.
+     *
+     * A thumb sweeps an arc and the rings are already arcs, so this may be
+     * unnecessary; it is one rotation either way. The right bank turns the
+     * other way, because the two thumbs sweep mirrored arcs.
      */
     var tilt: Float = 0f,
-    /** How much of the field the comb fills. Less packs it within reach. */
-    var combFill: Float = 1f,
-    /** Where the middle of the comb sits, as a fraction down the field. */
-    var combAt: Float = 0.5f,
-    /**
-     * A hole takes nothing and a portal can land on one, which is what puts it
-     * at the heart of an end cluster: one jump reaches the hole and every key
-     * of the cluster round it is then one hop away.
-     *
-     * This switch adds the second thing a hole can do: a focus that *walks*
-     * into one is thrown straight across the comb's middle, so the far end of
-     * the order is a dip rather than a walk. Off by default, because the
-     * shipped layouts ring their hole with the last keys of the order and a
-     * throw from there reaches only cells the order has passed.
-     */
-    var combHole: Boolean = false,
     /**
      * The keys a lift can arm instead of writing, per bank.
      *
@@ -67,7 +52,7 @@ data class Config(
     /**
      * The key a double tap adds, per bank, on top of the key under it.
      *
-     * Two quick taps stand in for a trip to the far end of the comb. The second
+     * Two quick taps stand in for a trip to the far end of the bank. The second
      * tap still strokes as itself, so tap tap on `-T` releases as `-*T`.
      */
     var doubleTapLeft: Char = '+',
@@ -80,13 +65,6 @@ data class Config(
     var doubleTapMs: Long = 250L,
 
     /**
-     * Hold still this long and the focus comes back to the thumb, writing
-     * nothing. What a thumb does when a portal has left the two far apart and
-     * it wants its bearings back.
-     */
-    var stallMs: Long = 900L,
-
-    /**
      * Lifting one thumb writes the stroke, and the thumb still down keeps its
      * keys. That is what spares the right hand from repeating itself while the
      * left spells. False waits for both.
@@ -95,9 +73,9 @@ data class Config(
 
     var haptics: Boolean = true,
     /**
-     * Buzz when the cell under the focus changes, not only when a key is taken.
+     * Buzz when the cell under the thumb changes, not only when a key is taken.
      *
-     * Where the focus is becomes a thing you can feel instead of read, which is
+     * Where the thumb is becomes a thing you can feel instead of read, which is
      * what a keyboard used without looking needs.
      */
     var hapticTicks: Boolean = true,
@@ -119,19 +97,6 @@ data class Config(
     /** Draw the cells steno order has passed, faded. */
     var showDeadCells: Boolean = true,
     var showLabels: Boolean = true,
-    /** Draw the chain of the steno order through the keys, faint. */
-    var showChain: Boolean = true,
-    /**
-     * Draw where each portal out of the cell under the focus goes.
-     *
-     * A stride is four numbers rather than fifty-two destinations, and this is
-     * how the four stop being numbers: leave by that side and the focus goes
-     * there. The arrow in the landing points at the side to leave by. A ring
-     * means arriving takes that key, and a dashed ring means it only comes to
-     * rest beside it. Resting on a landing, the one arrow left is the same
-     * stride again, for a thumb that keeps sliding.
-     */
-    var showPortals: Boolean = true,
 
     /**
      * Draw every touch sample, so the shape and size of the contact is visible.
@@ -146,9 +111,9 @@ data class Config(
     var touchReadout: Boolean = false,
 
     /**
-     * A touch that arrives in the other comb's field is handed over to it.
+     * A touch that arrives in the other bank's field is handed over to it.
      *
-     * The comb it leaves keeps what it took, so one hand can write a whole
+     * The bank it leaves keeps what it took, so one hand can write a whole
      * stroke, slowly. It happens only while the other thumb is up, so two hands
      * never meet it.
      */
@@ -156,15 +121,14 @@ data class Config(
     /** Where the left field ends and the right begins, in portrait. */
     var fieldSplit: Float = 0.5f,
     /**
-     * Put the two combs on the left and right edges in landscape, with the bar
+     * Put the two banks on the left and right edges in landscape, with the bar
      * in the gap between them.
      *
-     * The comb runs down, so a landscape half wants height. What it cannot
-     * have is the app's width: `onComputeInsets` describes the app's room with
-     * a top edge alone, so there is no way to ask the app to lay out narrower.
-     * The keyboard therefore takes a tall band off the bottom, as any keyboard
-     * does, and the app keeps everything above it. Off puts the two combs side
-     * by side in the middle instead of on the edges.
+     * The keyboard takes a band off the bottom, as any keyboard does:
+     * `onComputeInsets` describes the app's room with a top edge alone, so
+     * there is no way to ask the app to lay out narrower and keep the banks
+     * full height beside it. Off puts the two side by side in the middle
+     * instead of on the edges.
      */
     var landscapeSides: Boolean = true,
     /**
@@ -180,26 +144,16 @@ data class Config(
      */
     var landscapeHeight: Float = 0.72f,
     /**
-     * A copy of the combs, drawn over the app above the keys.
+     * A copy of the banks, drawn over the app above the keys.
      *
      * Its share of the screen, zero for none. What it buys is a small
      * keyboard: shrink the keys and a thumb crosses cells in less travel, and
-     * the copy over the app keeps the walk legible while it does. It is drawn
+     * the copy over the app keeps the rings legible while it does. It is drawn
      * only while a thumb is down, and it takes no touches, so the app under it
      * still works.
      */
     var previewHeight: Float = 0f,
-    /**
-     * How much further than the thumb the focus travels.
-     *
-     * One is the thumb itself. Above one the whole comb sits inside a shorter
-     * sweep, so the travel per cell falls and the walk is quicker; what it
-     * costs is that the focus is no longer under the thumb, which is what the
-     * mark and the line to it are for. The reach starts again at every touch
-     * and at every stall.
-     */
-    var focusGain: Float = 1f,
-    /** The thumb marks: where the focus is, and where the thumb is now. */
+    /** The mark that shows where the thumb is. */
     var markRadius: Float = 0.022f,
     var labelSp: Float = 15f,
     /** The keys' share of the screen in portrait. */
@@ -210,5 +164,7 @@ data class Config(
     fun doubleTap(bank: Bank): Char =
         if (bank == Bank.LEFT) doubleTapLeft else doubleTapRight
 
-    fun comb(bank: Bank): String = if (bank == Bank.LEFT) combLeft else combRight
+    fun ring(bank: Bank): String = if (bank == Bank.LEFT) ringLeft else ringRight
+
+    fun radii(bank: Bank): String = if (bank == Bank.LEFT) radiiLeft else radiiRight
 }

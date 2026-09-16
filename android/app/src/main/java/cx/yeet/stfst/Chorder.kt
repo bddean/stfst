@@ -1,6 +1,6 @@
 package cx.yeet.stfst
 
-/** One thumb's progress down its own comb. */
+/** One thumb's progress round its own rings. */
 class Thumb(val bank: Bank) {
     var pointer: Int = NONE
 
@@ -11,82 +11,25 @@ class Thumb(val bank: Bank) {
     var atX: Float = 0f
     var atY: Float = 0f
 
-    /** Where this touch began, which the gain reaches out from. */
-    var fromX: Float = 0f
-    var fromY: Float = 0f
-
-    /**
-     * How much further than the thumb the focus travels.
-     *
-     * One is the thumb itself. Above one the comb can be smaller than the
-     * thumb's reach, which is what makes the travel per cell short.
-     */
-    var gain: Float = 1f
-
-    /** Where the gain has carried the touch to, before any jump. */
-    val reachX: Float get() = fromX + gain * (atX - fromX)
-    val reachY: Float get() = fromY + gain * (atY - fromY)
-
-    /**
-     * How far the focus that reads the cells sits from the reach. Zero until a
-     * portal or a hole parts them, and until the thumb lifts after one.
-     */
-    var offX: Float = 0f
-    var offY: Float = 0f
-
-    val focusX: Float get() = reachX + offX
-    val focusY: Float get() = reachY + offY
-
-    /** Bring the focus to the thumb, and start the reach again from here. */
-    fun settle(x: Float, y: Float) {
-        atX = x
-        atY = y
-        fromX = x
-        fromY = y
-        offX = 0f
-        offY = 0f
-    }
-
-    /** Put the focus on this point, wherever the thumb is. */
-    fun aim(to: Point) {
-        offX = to.x - reachX
-        offY = to.y - reachY
-    }
-
-    /** Whether the thumb has been placed, so the focus means anything yet. */
+    /** Whether the thumb has been placed, so where it is means anything yet. */
     var live: Boolean = false
 
     val keys: MutableList<Int> = mutableListOf()
 
     /**
-     * The cell the focus is in, or null before the first touch.
+     * The cell the thumb is in, or null before the first touch.
      *
-     * What makes entering an event: a cell answers when the focus comes in, not
+     * What makes entering an event: a cell answers when the thumb comes in, not
      * on every sample it stays.
      */
-    var spot: Spot? = null
-
-    /** Whether the focus is inside a hole, so crossing in fires once. */
-    var inHole: Boolean = false
-
-    /**
-     * The jump the focus is resting on, while it can still be ridden.
-     *
-     * A stride is not spent by one jump: sliding on the way the jump went sends
-     * it again. Null once the focus leaves the landing any other way.
-     */
-    var riding: Ride? = null
+    var cell: Cell? = null
 
     val down: Boolean get() = pointer != NONE
 
     fun release() {
         pointer = NONE
         live = false
-        offX = 0f
-        offY = 0f
-        spot = null
-        inHole = false
-        riding = null
+        cell = null
     }
 
     companion object {
@@ -95,7 +38,7 @@ class Thumb(val bank: Bank) {
 }
 
 /**
- * Two thumbs, each walking its own comb, and the rule that turns them into
+ * Two thumbs, each walking its own rings, and the rule that turns them into
  * strokes.
  *
  * Lifting a thumb writes the stroke. The thumb still down keeps its keys, so
@@ -103,7 +46,7 @@ class Thumb(val bank: Bank) {
  * motion, not one per word.
  */
 class Chorder(
-    private val comb: Comb,
+    private val ring: Ring,
     private val config: Config,
     private val write: (Long) -> Unit,
 ) {
@@ -126,8 +69,6 @@ class Chorder(
      * second one a lift can mean.
      */
     private var pending = false
-
-    private val tilt: Float get() = config.tilt
 
     fun thumb(bank: Bank) = if (bank == Bank.LEFT) left else right
 
@@ -155,90 +96,50 @@ class Chorder(
         return land(thumb, pointer, x, y)
     }
 
-    /** A fresh touch starts this thumb's walk, and takes the key it landed on. */
+    /**
+     * A fresh touch starts this thumb's walk, and takes the keys it landed on.
+     *
+     * The hub is a pie of complete answers, so landing on one takes the whole
+     * slice. It is the only way into the hub that takes anything: crossing it
+     * later takes nothing, which is what makes the middle a shortcut.
+     */
     private fun land(thumb: Thumb, pointer: Int, x: Float, y: Float): Boolean {
         thumb.pointer = pointer
         thumb.live = true
-        thumb.gain = config.focusGain
-        thumb.settle(x, y)
-        thumb.spot = comb.hit(thumb.bank, thumb.field, tilt, x, y)
-        val key = thumb.spot?.let { comb.resolve(it, thumb.keys) } ?: return false
-        take(thumb, key)
-        return true
+        thumb.atX = x
+        thumb.atY = y
+        val cell = ring.hit(thumb.bank, thumb.field, x, y)
+        thumb.cell = cell
+        return take(thumb, ring.taking(thumb.bank, cell, thumb.keys))
     }
 
     /**
      * A thumb slides. True when it took at least one more key.
      *
-     * The whole rule: entering a cell takes what it yields. No gate waits on
-     * time, distance or turning, because a cell is a place and not a direction.
-     * Asked once per entry, so standing in a cell does not take through it
-     * twice, and a spent cell is ground.
+     * The whole rule: entering a live cell takes it. No gate waits on time,
+     * distance or turning, because a cell is a place and not a direction. Asked
+     * once per entry, so standing in a cell does not take through it twice, and
+     * a spent cell is ground.
      *
-     * Read at the focus and not the thumb. The two part at a hole, which throws
-     * the focus across the comb's middle, and at a portal, which throws it
-     * ahead in the steno order. Either offset holds until the lift.
+     * The hub is ground once the thumb has left it, so a chord through the
+     * middle joins two cells too far apart on one ring to reach any other way.
      */
     fun move(pointer: Int, x: Float, y: Float): Boolean {
         val thumb = forPointer(pointer) ?: return false
         thumb.atX = x
         thumb.atY = y
-        var took = false
-        val was = thumb.spot
-        var now = comb.hit(thumb.bank, thumb.field, tilt, thumb.focusX, thumb.focusY) ?: return false
-
-        if (config.combHole && now.v == Comb.HOLE) {
-            if (!thumb.inHole) {
-                val middle = comb.middle(thumb.field)
-                thumb.offX = 2f * middle.x - thumb.focusX - thumb.reachX
-                thumb.offY = 2f * middle.y - thumb.focusY - thumb.reachY
-                now = comb.hit(thumb.bank, thumb.field, tilt, thumb.focusX, thumb.focusY) ?: return false
-            }
-            thumb.inHole = true
-        } else {
-            thumb.inHole = false
-        }
-
-        // A jump fires on the way out of a cell, and [Comb.jump] says which one:
-        // the same stride again for a thumb still sliding the way it went, or
-        // else the portals of the cell the last key was taken in. Leaving a
-        // landing any other way puts the thumb back on foot, and a key on the
-        // way out is taken rather than ridden past.
-        val riding = thumb.riding
-        if (was != null && now != was) {
-            val side = Side.values().firstOrNull {
-                Comb.step(was, it) == (now.col to now.row)
-            }
-            val land = side?.let { comb.jump(thumb.bank, was, it, riding, thumb.keys) }
-            if (side != null && land != null) {
-                val at = comb.place(thumb.bank, thumb.field, tilt)
-                thumb.aim(comb.into(now, land.spot, at, Point(thumb.focusX, thumb.focusY)))
-                now = land.spot
-                // A jump that aims at a hole means to leave the focus in it,
-                // beside the cluster it rings. Falling through as well would
-                // undo the jump on the next sample.
-                thumb.inHole = now.v == Comb.HOLE
-                thumb.riding = if (land.onKey) null else Ride(land, side)
-            } else if (riding != null && was == riding.land.spot) {
-                thumb.riding = null
-            }
-        }
-
-        if (now == thumb.spot) return took
-        thumb.spot = now
-        val key = comb.resolve(now, thumb.keys)
-        if (key != null) {
-            take(thumb, key)
-            took = true
-        }
-        return took
+        val now = ring.hit(thumb.bank, thumb.field, x, y)
+        if (now == thumb.cell) return false
+        thumb.cell = now
+        if (ring.isHub(now)) return false
+        return take(thumb, ring.taking(thumb.bank, now, thumb.keys))
     }
 
     /**
-     * One thumb walks the other comb too.
+     * One thumb walks the other bank too.
      *
      * A touch that leaves its own field and arrives in the other one is handed
-     * over: the comb it leaves keeps what it took, and the comb it arrives in
+     * over: the bank it leaves keeps what it took, and the bank it arrives in
      * takes the touch. Two hands never need this, so it happens only while the
      * other thumb is up, and one hand can then write a whole stroke.
      */
@@ -263,7 +164,7 @@ class Chorder(
         thumb.release()
         val other = if (thumb === left) right else left
         val armable = config.sticky(thumb.bank).mapNotNull { c ->
-            comb.order.indexOf(c).takeIf { it >= 0 }
+            ring.order.indexOf(c).takeIf { it >= 0 }
         }
         if (thumb.keys.isNotEmpty() && other.keys.isEmpty() && thumb.keys.all { it in armable }) {
             val again = thumb.keys.all { it in sticky }
@@ -328,24 +229,10 @@ class Chorder(
         return bits
     }
 
-    /**
-     * Bring the focus back to the thumb, writing nothing.
-     *
-     * What a thumb does when a portal has left the two far apart and it wants
-     * its bearings back. The cell under the thumb is not entered by this, or
-     * the twitch that ends the stall would spend it on a key nobody asked for.
-     */
-    fun stall(bank: Bank) {
-        val thumb = thumb(bank)
-        if (!thumb.down) return
-        thumb.settle(thumb.atX, thumb.atY)
-        thumb.inHole = false
-        thumb.riding = null
-        thumb.spot = comb.hit(bank, thumb.field, tilt, thumb.atX, thumb.atY)
-    }
-
-    private fun take(thumb: Thumb, key: Int) {
-        thumb.keys.add(key)
+    private fun take(thumb: Thumb, keys: List<Int>): Boolean {
+        if (keys.isEmpty()) return false
+        thumb.keys.addAll(keys)
         pending = true
+        return true
     }
 }

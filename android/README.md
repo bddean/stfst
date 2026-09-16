@@ -1,231 +1,145 @@
-# The comb keyboard
+# The ring keyboard
 
 An Android input method over the compiled dictionaries. Two thumbs, each
-walking down its own honeycomb through its half of the steno order.
+walking its own set of nested rings through its half of the steno order.
 
-## What the gesture is
+## The rule
 
-A chord is a rising run through the steno order, so one thumb tracing one bank
-is a walk that only ever goes forward. The comb lays that walk out as fixed
-cells and reads the thumb by **where it is**, never by where it went.
+**Entering a live cell takes it.** Everything else on the board is ground.
 
-Touch down on the key you want. Then step, one cell at a time, down the chain.
-Entering a cell takes what it yields; a cell steno order has passed is ground.
-Lifting either thumb writes the stroke.
+A cell is live while steno order still allows its key. It is ground once you
+have taken it, once the order has passed it, when it holds no key, and when it
+is the hub and you have left it.
 
-Nothing waits on time, distance or turning. A cell is a place, so a tap on one
-is finished and there is no gate to tune.
+Touch down on the key you want, slide through the cells you want, and lift.
+Lifting either thumb writes the stroke. Nothing waits on time, distance or
+turning, so there is no threshold to tune, and the rules that look like extra
+rules are consequences of the one:
+
+- sliding out to the next ring "erases" the ring behind, because steno order
+  killed those keys and dead cells are ground;
+- turning through a ring adds keys, because you cross them;
+- the shortcut is the middle. Two cells far apart on one ring are joined by a
+  straight line through the hub, and the hub is ground.
+
+A flat board needs portals to reach a key many cells ahead in one motion. A
+ring has a middle, so the portals, the strides, the holes and the detached
+focus all went with the comb.
 
 ## Why the keys stand still
 
-The old keyboard read a slide by its direction, from a ring that reshaped
-itself around the last key taken. That has a ceiling nothing can lift: twelve
-keys follow the first of a bank, so those twelve directions share 360 degrees
-and **30 degrees is the widest any of them can be**. Sharing the ring out
-between the live keys reaches that ceiling exactly and cannot beat it.
+The oldest keyboard here read a slide by its direction, from a ring that
+reshaped itself around the last key taken. That has a ceiling nothing can lift:
+twelve keys follow the first of a bank, so those twelve directions share 360
+degrees and **30 degrees is the widest any of them can be**.
 
 A fixed cell pays in area instead of angle, and area the glass has plenty of.
 What position reading needs in exchange is a rule with no gate in it, and
 take-on-entry is that rule.
 
-## The comb runs down
-
-Flat-top hexes, with alternate columns hanging half a cell lower. So a column
-is a run down the glass, and the chain of the steno order zigzags between two
-of them: a key touches the next in the order diagonally, and the one after
-that directly below.
-
-Down, not across, for two reasons. A thumb sweeping toward its palm is the
-short strong motion. And a comb that runs down can be full height, which is
-what landscape wants.
-
-## A layout is one value per cell
-
-One character per cell, rows separated by a slash or a newline. A dot is open
-ground, `o` is a hole, a space is off the board, and anything else is the key
-of that name. The left bank ships as:
+## The layout
 
 ```
- ....
- .^S.
- .TK.
- .PW.
- .HR.
-  AO.
-  o+.
-  #..
+LEFT                                RIGHT
+hub    · | S | ST | T               hub    · | E | EU | U     (tap only)
+ring 1 · P H R W K                  ring 1 F R B G L P
+ring 2 A O A O A O                  ring 2 T S T S T S
+rim    ^ # + ^ # +                  ring 3 D Z D Z D Z
+                                    rim    * @ * @ * @
 ```
 
-Every character touches the one above, below, left and right of it, plus one
-diagonal, so the text is a picture of the keyboard. Edit it in the settings.
+Six slots to a ring on both banks, with a gap of 13° between every pair. The
+gaps line up between rings, so a straight run from the hub to the rim takes
+nothing. That corridor is load-bearing: 12.4% of strokes cross the right ring 1
+taking nothing (`-ES`, `-ET`), 2.7% cross the left ring 1 taking nothing
+(`SA-`).
 
-Everything else is recovered from that rectangle. There is no span, no size,
-no order field, no portal table and no float flag, because the grid already
-fixes each of them:
+Four facts about the shape, each measured against 340k strokes of
+`typey-type-full.json`:
 
 | | |
 |---|---|
-| a melded button | a run of touching cells holding one value. That is all a big key is |
-| two buttons, one key | cells holding one value that do not touch |
-| the walk | the two sides facing keys steno order still allows |
-| the portals | the other sides, the ones holding passed keys included |
-| a float | a key that does not touch the next key of the walk |
-| a slide | the run of landings one motion of the thumb reaches: the jump, then the ride, until a crossing cannot be made |
-| a cell's ground | the field clipped by the bisector against every rival, and by its own six lattice neighbours |
-| where a side points | the step it names, read off the lattice. A hexagon's corners sit 30 degrees off its sides, and a corner is not a side |
+| the ring order is the steno board folded | the two rows joined at both ends. `T P H R W K` beats every other cyclic order of the left consonants, and `F R B G L P` does the same on the right |
+| the hub is a pie of complete answers | landing takes the whole choice, so the hub is ground from then on and you can leave at any angle. `S T` in the left hub is worth 3.6 points over `S` alone, and the ring drops to five cells at 72° |
+| a key may hold several cells | floats and vowels repeat round their ring, because a float is never killed by steno order and a thumb that travels round the rim to find one takes every float on the way |
+| the pinky folds radially | `-D` is straight out through `-T`, `-Z` straight out through `-S`. `-TS` is 2351 strokes and `-DZ` is 1466, while `-TZ` is 26 and `-SD` is 3, so two keys repeated everywhere beats four keys in four of six slots |
 
-## The floats are the modifiers
+## A layout is one value per cell
 
-`#` and `+` on the left, `@` and `*` on the right. Nothing joins them to the
-walk, so the walk cannot pass them: a modifier is takeable however far down
-the comb the thumb has already gone.
+The hub first, then the rings outward, separated by spaces. A slot is one
+character, or several keys between slashes, and a dot is ground. The left bank
+ships as:
 
-That is the old keyboard's floating arc, and it costs no mechanism. Read the
-order backwards and the walk builds itself: the last key of a bank is on it,
-and a key joins when it touches the next key already on. What cannot join is a
-float. Reading the successor rather than every neighbour is what lets a float
-sit against the end cluster and still be a float.
+```
+./S/ST/T .PHRWK AOAOAO ^#+^#+
+```
 
-## The end cluster closes a ring
+Edit it in the settings. Everything else is recovered from that text:
 
-The last two keys of each bank and both of its floats close a ring around a
-hole. A hole takes nothing and a portal can land in one, which makes it the
-best landing site on the comb: one jump reaches the end of the order and every
-key of the cluster is then a single hop away, so you still choose which vowel,
-and both modifiers are there too.
+| | |
+|---|---|
+| the walk | steno order over the keys the text names |
+| the rim | the outermost ring. Its keys are the floats, which is why they repeat round it |
+| a float | a key steno order cannot kill: takeable however far the thumb has gone, and crossing back inward leaves the rings as they were |
+| a duplicate | the same key in two slots. Nothing special: a key is a set of cells |
+| a spoke | where the gaps of every ring line up |
+| the hub is tap-only | it is level 0. Landing on a slice takes the slice; entering it from a ring takes nothing |
 
-Closed, with no way in but a portal. Every key of the order has a portal that
-lands in the hole, so nothing ever needs to walk through it, and a ring of
-keys is worth more than a gap.
+The hub and the rim are turned half a slot: the rim so its cells sit on the
+spokes, which makes a float a run straight out, and the hub so its cuts fall on
+the bank's own axes.
 
-`Teleport through a hole` is the hole's other trick, off by default. It throws
-a focus that *walks* into a hole across the comb's middle, which the shipped
-layouts give nothing to walk in with.
+## The geometry
 
-`Comb` answers all of it, and the drawing asks `Comb` rather than working the
+One formula for the drawing and for the hit test. A bank is a rect; in its
+normalised frame the rings are superellipses.
+
+```kotlin
+// u = (x - cx) / a, v = (y - cy) / b
+r  = (|u|^p + |v|^p)^(1/p)                       // which ring, p = 3.5
+θ  = atan2(v, u)                                 // where on it
+// and back, for drawing and for a cell's centre:
+k  = r / (|cos θ|^p + |sin θ|^p)^(1/p)
+x  = cx + a*k*cos θ ;  y = cy + b*k*sin θ
+```
+
+`p` interpolates circle to rounded rectangle. At 3.5 the rings fill a
+rectangular bank instead of wasting the corners, which is what portrait needs.
+
+Radii are fractions of `r = 1`, outward: left `0 .31 .56 .78 1`, right
+`0 .27 .47 .65 .83 1`, and both are settings, because the radial budget in
+portrait is the tightest thing here. Model degrees run from straight up in the
+bank's own direction: the right bank's angles run the other way, so both thumbs
+sweep mirrored arcs and "against the walk" is the same motion for each hand.
+
+`Ring` answers all of it, and the drawing asks `Ring` rather than working the
 shapes out a second way, so the picture cannot disagree with the decision.
-`CombTest.a_tap_lands_inside_the_cell_it_is_answered_by` is that claim, over
-three tilts.
+`RingTest.a_tap_lands_inside_the_cell_it_is_answered_by` is that claim.
 
-## Four numbers, not fifty-two destinations
+## What a chord costs
 
-Steno order is enforced, so four of a cell's six sides can never be taken as
-keys. All four are portals. If each carried a destination of its own there
-would be about fifty-two of them to learn.
+A chord is **one motion** when every step is an arc along a ring or a run
+straight out. It needs a **hub crossing** when two keys sit too far apart on
+one ring to reach without taking a key you do not want, and a crossing is a
+second motion, not a failure.
 
-So a portal carries a **stride** instead, and the four strides are the same
-for every key on the board: **+3 +4 +7 +10**. The `out` portal always means
-"jump three keys ahead". Where that lands is derived:
+| | |
+|---|---|
+| left, `· P H R W K`, `S T` in the hub | 93.3% |
+| left, steno order round the ring | 70.7% |
+| right ring 1, `F R B G L P` | 97.2% |
+| right pinky combinations | 100% |
 
-- **Open ground beside key `i+k`**, adding two or more keys the thumb does not
-  already have. The focus rests there and takes nothing, and every one of those
-  keys is then one hop away. Two hops, and a choice at the end of the first.
-- **No ground worth the hop.** The jump lands on the key itself and takes it.
-  One hop.
+`RingTest.the_order_is_the_one_measured` recomputes those shares from the
+checked-in corpus and fails if any other arrangement of the same keys round the
+same ring writes more of it in one motion. The residual is `PR KR KH KHR TKR
+TPR` on the left and `FL RG RL` on the right.
 
-Worth is what the jump **buys**. A key the thumb can already step onto counts
-for nothing, so a landing that shares its neighbours with the cell being left is
-a side of the comb spent on ground the thumb already has.
-
-The sides take the strides in order of how far each turns from the way the walk
-is heading, so a side means the same jump wherever the thumb is. A side with no
-cell beyond it is never crossed, so it carries nothing, and neither does a
-stride that aims where an earlier stride already aims.
-
-### The four are one allocation
-
-Two portals that come to rest on the same cell, or on touching cells, spend two
-sides of the comb on one place. Answering each stride on its own let that
-happen: the greedy pick for stride 3 took the only ground stride 5 had.
-
-So the four are chosen together, and what they are worth together is **the keys
-they put within reach, counted once**. Adding up what each is worth on its own
-is a different number and the wrong one, because it pays twice for a key two
-landings share. Every arrangement is tried and the best is kept, with no two
-resting places closer than one cell apart. A handful of strides over a handful
-of cells each is a few hundred arrangements, so the exact answer costs less than
-a rule for guessing well. A landing that takes a key is exempt, because a key
-names itself.
-
-### The stride is not spent
-
-Keep sliding the way the jump went and it goes again. A side is therefore a
-**run** of landings, not one: `+4` ridden twice is eight of the order ahead,
-inside a single motion of the thumb. That is the whole point of it. A long
-stride has to be one longer slide, or it costs as much as two short ones.
-
-So the ride fires on **the side the thumb came in by, or either side next to
-it**. A thumb sweeps an arc rather than a line, and holding it to one exact
-side of six would be holding it to something hands do not do. A key on the way
-out is taken rather than ridden past, and a side with no cell beyond it is
-never crossed.
-
-Turning right round out of a landing puts the focus back on foot. That keeps
-every motion the board had before the ride existed.
-
-A jump keeps **where in the cell** the focus is, so it arrives at the edge it
-crossed by rather than in the middle of the landing. The middle is half a cell
-the thumb has not travelled yet: the next crossing came half a slide early, one
-motion went two landings, and the picture that said two slides was right while
-the thumb that made one was not. `ChorderTest.a_jump_keeps_the_place_in_the_cell`
-is the claim.
-
-### Two hops, and why the numbers are fixed
-
-The target is that any key a thumb still wants is **two hops away**: one into a
-resting place, one onto the key. Whether that is possible is a fact about the
-grid, so it is worth measuring rather than asserting.
-
-Across both banks a stroke can want 155 keys in all. The most any four resting
-places could ever reach in two hops is 153: `-E` cannot see `-T` and `U` cannot
-see `-S`, because the grid has no landing site that sees enough. **+3 +4 +7 +10
-reaches all 153.** The strides this keyboard shipped with before, +3 +5 +7 +9,
-reach 138.
-
-Riding closes the last two. `-E` rides `+4` twice to reach rank eight, which is
-`-T`, and `U` rides `+4` twice to reach `-S`. Held to one exact side the ride
-reaches 153; allowed the arc, it reaches all 155. So **every key a thumb still wants
-is one slide away**, and `CombTest.a_ridden_portal_reaches_every_key_ahead` is
-that claim.
-
-So the four numbers are not a setting. They are the answer to a search, and
-`CombTest.the_portals_reach_as_far_as_the_grid_allows` holds them to it: the
-test works the ceiling out from the grid and fails if the portals fall short of
-it. Change a grid and the test recomputes what that grid allows.
-
-`CombTest.every_key_ahead_is_still_reachable` is the weaker claim underneath:
-every key ahead is reachable at *some* distance. A grid can satisfy steno order
-and still strand a key behind a wall of keys the chord does not want.
-
-### Watching one land
-
-Four numbers stay numbers until you watch one land, so the keyboard draws them.
-While a thumb is down, every portal side of the cell under the focus gets a
-line to the cell it arrives at, and an **arrow** in that cell pointing back at
-the side to leave by. A ring means arriving takes that key; a dashed ring means
-it comes to rest beside it. Once the focus is resting on a landing the picture
-is the same, with one arrow: the stride again. `Show where the portals go`
-turns this off. The band over the app draws the same picture.
-
-The line goes on to where the slide ends. Each stop it passes through keeps one
-arrowhead, and the last one carries **one head per slide it takes to arrive**.
-So the heads are where you are going, not where you go through.
-
-The key a side aims at is also written **inside the cell that side is crossed
-through**, next to the edge. A ring at the far end says where a side goes and
-the eye has to travel the line to read it; the name is at the thumb, on the
-cell it is about to enter, so a side reads as a key.
-
-`Comb.jump` is the whole picture and the whole touch: the jump one crossing
-makes, asked by the drawing and by the thumb and answered once. It had to be
-one answer. The drawing worked the ride out its own way, which let it draw a
-ride out of `S` that ran into `-H`: a thumb crossing that side takes the key
-rather than riding past it. The gate on which cell carries portals was the
-touch's alone, so the picture offered jumps out of a cell the walk had already
-left. `ChorderTest.every_drawn_slide_is_a_slide_a_thumb_can_make` walks every
-drawn stop on the board as thumb motion and fails where the focus does not
-arrive as drawn, and `CombTest.a_cell_the_walk_has_left_offers_nothing` is the
-other half: a stale cell draws nothing, because it can do nothing.
+`Ring.path` is where the claim lives: the stops a thumb makes to write a chord,
+found by searching the spokes for a route that crosses nothing live the chord
+does not want. `RingTest.every_chord_is_a_path_a_thumb_can_make` walks every
+one of them through `Chorder` as thumb motion, sampling finely enough that no
+cell is stepped over, and fails where the keys that come out are not the chord.
 
 ## Three kinds of key
 
@@ -234,7 +148,7 @@ The vowels and the modifiers stand on their own ground: a green tint for
 read off the glyph, so a key that spells nothing is a modifier and a layout
 that moves one does not have to say so twice.
 
-Across that, every key is in one of three states, because they are three
+Across that, every cell is in one of three states, because they are three
 different answers: **in the chord** (the tint at full strength, a hot rim and a
 hot letter), **still takeable**, and **spent by steno order**. A spent key
 gives up its hue as well as most of its strength, so the state reads the same
@@ -243,7 +157,7 @@ whatever kind of key it is: kind is a question about live keys.
 
 ## What the stroke would write
 
-The keys in hand are printed above the comb, and under them **what they would
+The keys in hand are printed above each bank, and under them **what they would
 write if a thumb lifted now**.
 
 The runtime is one mutable board, so the only way to ask is to make the stroke
@@ -256,81 +170,52 @@ It runs off the drawing's thread, on the same one the reverse lookups use, and
 the answer is kept with the chord it is about. So the last chord's text is
 never left sitting over this one.
 
-## One thumb, both combs
+## One thumb, both banks
 
-A touch that arrives in the other comb's field is handed over to it, and the
-comb it leaves keeps what it took. So one hand can write a whole stroke,
-slowly, by walking one comb and then the other. It happens only while the other
-thumb is up, so two hands never meet it. `One thumb walks both combs` turns it
+A touch that arrives in the other bank's field is handed over to it, and the
+bank it leaves keeps what it took. So one hand can write a whole stroke,
+slowly, by walking one bank and then the other. It happens only while the other
+thumb is up, so two hands never meet it. `One thumb walks both banks` turns it
 off.
 
 ## The preview over the app
 
 Shrink the keys and a thumb crosses cells in less travel, which is faster. What
 it costs is legibility, and `Preview over the app` buys that back: a copy of
-both combs, drawn above the keys, over the app.
+both banks, drawn above the keys, over the app.
 
 `onComputeInsets` is what makes that work. The keys are what the app lays out
 around and what the window takes touches for; the band above them is neither.
 So the app keeps its room and its touches up there, and the copy floats on top.
 
-The band has no ground of its own. Only what the thumb needs is opaque there:
-the keys the chord can still take, and the landings the portals go to. The rest
-is the app. It fades in as a thumb goes down and out as it lifts, because a
-band that arrives at full strength reads as a flash over whatever the app was
-showing.
-
-The thumb and the focus are drawn in the band as well. They are places on the
-comb rather than places on the glass, so `Comb.carry` reads them in the keys'
-placement and writes them in the band's. The settings preview gets a band too,
-which is where to look at one without an app under it.
-
-## The focus is not the thumb
-
-A portal throws the point that reads the cells ahead of the thumb, and the
-offset holds until the lift: the thumb goes on from where it is, the focus goes
-on from where the jump put it.
-
-Both are drawn. The focus is the filled cell; once the two have parted the
-thumb is drawn too, faint, tied to the focus by a line. Holding still for
-`Stall` brings the focus back, writing nothing.
+It fades in as a thumb goes down and out as it lifts, because a band that
+arrives at full strength reads as a flash over whatever the app was showing.
+The thumb is drawn in the band as well: it is a place on the rings rather than
+a place on the glass, so the band reads it in its own field. The settings
+preview gets a band too, which is where to look at one without an app under it.
 
 ## Landscape, and what Android will not give you
 
-A deep band, with a comb hugging each edge. The gap between them holds the bar
+A deep band, with a bank hugging each edge. The gap between them holds the bar
 and the record. The app keeps everything above the band and nothing covers it.
 
-Full-height halves with the app between them is what the comb wants, and
+Full-height halves with the app between them is what the keyboard wants, and
 Android will not give it. `onComputeInsets` describes the app's room with a
 **top edge alone**: there is no left or right inset, so no keyboard can ask an
 app to lay out narrower. Halves that reach the foot of the glass can only be
 drawn over the app's own margins, and covering the app is the thing worth
 avoiding. So the keyboard takes its room off the bottom, as any keyboard does,
-and spends its width on putting the two combs where the thumbs are.
+and spends its width on putting the two banks where the thumbs are.
 `Landscape keyboard height` sets how deep the band goes, and
-`Combs on the edges in landscape` puts the two side by side in the middle
+`Banks on the edges in landscape` puts the two side by side in the middle
 instead.
 
 ## Tilt
 
-A thumb sweeps along an arc, not a line, so the comb can be turned. `Tilt` is
-degrees, and zero runs the columns straight down the glass. The right bank
-turns the other way: two thumbs sweep mirrored arcs, so one angle describes
-both and the sign belongs to the bank.
-
-It turns the lattice, which is one placement the drawing and the hit test
-share; nothing else about the layout moves.
-
-## Focus reach
-
-`Focus reach` is how much further than the thumb the focus travels. One is the
-thumb itself. Above one the whole comb sits inside a shorter sweep, so the
-travel per cell falls and the walk is quicker.
-
-What it costs is that the focus is no longer under the thumb, which is what the
-mark and the line to it are for. The reach starts again at every touch and at
-every stall, so it is a multiplier on this slide rather than a drift that
-builds up.
+`Tilt` turns the rings, in degrees, and the right bank turns the other way
+because the two thumbs sweep mirrored arcs. A thumb sweeps an arc and the rings
+are already arcs, so this may buy nothing; it is one rotation of θ, and it
+costs nothing to keep while that is undecided.
 
 ## Writing a stroke
 
@@ -356,9 +241,8 @@ carries `*` and `+`.
 ## The buzzes
 
 A buzz when a key is taken says a key was taken, which is a thing you can
-already see. The buzz that matters is on the **change of cell under the
-focus**, because that is what turns a walk into something to feel instead of
-something to read.
+already see. The buzz that matters is on the **change of cell**, because that
+is what turns a slide into something to feel instead of something to read.
 
 The two thumbs get buzzes that feel different, and this is where the hardware
 sets the limit. A phone has one vibration motor, so there is no left channel
@@ -453,23 +337,25 @@ which is why cargo runs inside `nix develop`.
 
 | | |
 |---|---|
-| `Comb` | the layout, the lattice, and where a portal lands. No Android, no dictionary |
+| `Ring` | the layout, the geometry, and the path a chord takes. No Android, no dictionary |
 | `Chorder` | two thumbs, and the rule that turns them into strokes. No Android |
 | `Notes` | the record of what was written, and how much of it fits. No Android |
 | `Motor` | what a thumb motion costs, for judging layouts. No Android, no layout; see `docs/motor.md` |
-| `CombView` | drawing and touch. Decides nothing |
+| `RingView` | drawing and touch. Decides nothing |
 | `StenoService` | the editor, the insets, and the native handle |
 | `stfst-jni` | opens the stack, hands strokes to `stfst-board`, returns the buffer |
 
-`Comb`, `Chorder` and `Notes` are plain Kotlin so they can be tested without a
+`Ring`, `Chorder` and `Notes` are plain Kotlin so they can be tested without a
 device, and the tests in `app/src/test` are the ones worth reading first.
+`docs/rings.html` is the working demo the layout was measured in.
 
 ## Not carried over
 
-The long-press modifier ring went with the radial layout: it read a direction
-from a mark, and there is no mark any more. A modifier picker that fits a comb
-is its own piece of work.
+The comb went whole: the hexagonal lattice, the portals and their strides, the
+ride, the holes, and the focus that a jump threw off the thumb. The middle of a
+ring does what all of them were for.
 
-The floating specials did come back, as floats. The old board's island and
-tombstone did not: the comb's hole does the island's job, and the walk down the
-order does the rest.
+The five-way drag ring for modifiers is out too. `out` / `out-far` /
+`out-back` is three thresholds, and those are the knobs this design deletes.
+The rim is cells instead, reached along a corridor: a sector is a place you can
+see, a depth is a gate you have to feel.

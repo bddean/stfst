@@ -1,0 +1,661 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rings</title>
+<style>
+  :root{
+    --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e;
+    --muted:#898781; --border:rgba(11,11,11,.12); --chip:#f0efec;
+    --accent:#2a78d6; --accent-ink:#1c5cab;
+    --ground:#eceae4; --live:#dfe7f2; --dead:#f3f2ee; --hot:#2a78d6;
+    --vowel:#cfe6d2; --float:#e3d8ef; --trail:#c94f7f;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --page:#0d0d0d; --surface:#1a1a19; --ink:#fff; --ink2:#c3c2b7;
+      --muted:#898781; --border:rgba(255,255,255,.14); --chip:#242423;
+      --accent:#3987e5; --accent-ink:#86b6ef;
+      --ground:#242423; --live:#1e2b3a; --dead:#161615; --hot:#3987e5;
+      --vowel:#1d3a24; --float:#2c2340; --trail:#d55181;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--page);color:var(--ink);
+    font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+  main{max-width:62rem;margin:0 auto;padding:2rem 1.25rem 6rem}
+  h1{font-size:1.7rem;margin:0 0 .25rem}
+  h2{font-size:1.15rem;margin:2.5rem 0 .5rem;border-top:1px solid var(--border);padding-top:1.25rem}
+  p{margin:.6rem 0;max-width:46rem}
+  .lede{color:var(--ink2)}
+  code,kbd{background:var(--chip);border-radius:4px;padding:.1em .35em;font-size:.9em;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  pre{background:var(--chip);padding:.8rem 1rem;border-radius:6px;overflow-x:auto;font-size:.85rem;line-height:1.4}
+  table{border-collapse:collapse;font-size:.9rem;margin:.6rem 0}
+  th,td{text-align:left;padding:.25rem .8rem .25rem 0;border-bottom:1px solid var(--border)}
+  th{font-weight:600;color:var(--ink2)}
+  td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+  .board{display:flex;gap:1rem;align-items:flex-start;flex-wrap:wrap}
+  canvas{touch-action:none;background:var(--surface);border:1px solid var(--border);border-radius:10px}
+  .side{flex:1;min-width:16rem}
+  .readout{font-family:ui-monospace,Menlo,monospace;font-size:1.05rem;min-height:1.6em}
+  .readout b{color:var(--accent-ink)}
+  .controls{display:flex;flex-wrap:wrap;gap:.5rem 1.25rem;align-items:center;margin:.75rem 0;font-size:.9rem}
+  label{display:inline-flex;gap:.35rem;align-items:center}
+  select,button{font:inherit;font-size:.9rem;padding:.15rem .4rem;background:var(--surface);
+    color:var(--ink);border:1px solid var(--border);border-radius:5px}
+  button{cursor:pointer}
+  .chips{display:flex;flex-wrap:wrap;gap:.3rem;margin:.5rem 0}
+  .chip{font-family:ui-monospace,Menlo,monospace;font-size:.82rem;padding:.12rem .45rem;border-radius:4px;
+    background:var(--chip);border:1px solid transparent;cursor:pointer}
+  .chip:hover{border-color:var(--accent)}
+  .chip.bad{background:#f7dede;color:#8a1c1c}
+  @media (prefers-color-scheme: dark){.chip.bad{background:#3a1c1c;color:#f0b4b4}}
+  .score{display:flex;gap:1.5rem;flex-wrap:wrap;margin:.5rem 0}
+  .score div{font-variant-numeric:tabular-nums}
+  .score b{font-size:1.3rem;color:var(--accent-ink)}
+  .muted{color:var(--muted);font-size:.85rem}
+</style>
+
+<main>
+<h1>Rings</h1>
+<p class="lede">A steno keyboard for two thumbs, made of nested rings.
+One rule decides everything: <b>entering a live cell takes it.</b>
+Everything else on the board is ground you can travel through.</p>
+
+<h2>The rule</h2>
+<p>A cell is <em>live</em> if steno order still allows its key. A cell is
+<em>ground</em> if you already took it, if steno order has passed it, or if it
+holds no key at all. The hub is ground once you have left it.</p>
+<p>That is the whole mechanism. Nothing waits on time, distance or turning, so
+there is no threshold to tune and nothing fires early or late.</p>
+<p>The rules that look like extra rules are consequences of it. Sliding out to
+the next ring "erases" the ring behind, because steno order killed those keys
+and dead cells are ground. Turning through a ring adds keys, because you cross
+them. And the shortcut is the middle: two cells far apart on one ring are
+joined by a straight chord through the hub, and the hub is ground.
+<b>A comb needs portals because it is flat. A ring has a middle.</b></p>
+
+<h2>The board</h2>
+<p>Drag on either bank. Lift writes the stroke.</p>
+<div class="board">
+  <canvas id="cv" width="560" height="480"></canvas>
+  <div class="side">
+    <div class="readout" id="out">&nbsp;</div>
+    <div class="readout muted" id="out2">&nbsp;</div>
+    <div class="controls">
+      <label>Shortcut face
+        <select id="face">
+          <option value="none">none</option>
+          <option value="pair">pair chord (a)</option>
+          <option value="opposite">opposite cell (b)</option>
+        </select></label>
+      <label><input type="checkbox" id="ord" checked> steno order</label>
+      <label><input type="checkbox" id="lbl" checked> labels</label>
+      <button id="clear">clear</button>
+    </div>
+    <p class="muted">Blue = taken. Pale = live. Faint = ground. The pink line is
+    your thumb. A key drawn small under another is that cell's backward face:
+    it is what you get by entering the cell against the walk.</p>
+  </div>
+</div>
+
+<h2>The layout</h2>
+<pre>
+LEFT                                RIGHT
+hub    · | S | ST | T               hub    · | E | EU | U     (tap only)
+ring 1 · P H R W K                  ring 1 F R B G L P
+ring 2 A O A O A O                  ring 2 T S T S T S
+floats ^ # + ^ # +                  ring 3 D Z D Z D Z
+                                    floats * @ * @ * @
+</pre>
+<p>Both hubs are pies of <em>complete answers</em>: landing takes the whole
+choice, so the hub is ground from then on and you can leave at any angle. The
+left hub holds <code>S</code> and <code>T</code> because they are the two keys
+before the walk proper, and taking <code>T</code> out of the ring is worth 3.6
+points on its own — every <code>T</code>-to-a-far-key chord
+(<code>TR TH TW TPR STR</code>) becomes a straight run out. What is left is five
+cells at 72°, and <code>T</code>'s old seat is a corridor.</p>
+<p>Each ring is six slots wide with a gap between every pair, and the gaps line
+up, so a straight run from hub to rim takes nothing. That corridor is
+load-bearing: 12.4% of strokes cross the right ring 1 taking nothing
+(<code>-ES</code>, <code>-ET</code>), and 2.7% cross the left ring 1 taking
+nothing (<code>SA-</code>).</p>
+<p>A key can hold more than one cell, and the keys that need it are the floats.
+Steno order never kills a float, so the float ring is live all stroke, and a
+thumb that has to travel round it to find the one it wants takes every float on
+the way. So each float is repeated: twice round the left rim, three times round
+the right. Run out any spoke and you arrive in a gap between two floats, a flick
+either way from both. The third left float is one spoke over, reached under the
+rim through ring 2, which by then is dead.</p>
+<p>The vowels repeat for the same reason, which is why <code>A O</code> goes
+round three times rather than sitting in one place: whichever consonant you
+leave from, a vowel is straight out and the other one is next door.</p>
+
+<h2>The pinky end</h2>
+<p><code>-T -D</code> and <code>-S -Z</code> are one finger's four keys, and the
+corpus says what it does with them: one key at a time, nearly always. Across
+340k strokes, <code>-TS</code> is 2351 and <code>-DZ</code> is 1466, while
+<code>-TZ</code> is 26 and <code>-SD</code> is 3.</p>
+<p>So do not spend four cells on four keys. Spend two, repeated round the ring
+like the vowels, and put the voiced key <b>beyond</b> its plain one:
+<code>-D</code> is straight out through <code>-T</code>, <code>-Z</code> is
+straight out through <code>-S</code>. That is the pinky reaching down, drawn.</p>
+<p>It reads like a mode and it costs no mode. Nothing rewrites anything, radial
+still means later in steno order, and every combination is still a set of cells:
+<code>-TS</code> and <code>-DZ</code> are one step round, <code>-TD</code> and
+<code>-SZ</code> are one step out, and the two rare crosses are a diagonal. The
+ring that had four keys in four of six slots now has two keys everywhere, which
+is what the 12.4% of strokes that cross ring 1 taking nothing needed: they
+arrive on a spoke, and from a spoke both are next door.</p>
+<p>A bank of sticky keys — tap now, add to the next stroke — would buy what a
+mode leaves out. Nothing here needs one: every key of both banks is reachable in
+one stroke, and the worst case is a chord that costs two motions instead of one.
+Worth keeping in the drawer.</p>
+<p>The right hub is a pie of four complete answers, so landing on one makes the
+<em>whole</em> hub ground and you can leave at any angle. <code>EU</code> gets a
+slice of its own because it is as common as <code>E</code> alone.</p>
+<p>The rings are superellipses, not circles: <code>(|x/a|^p + |y/b|^p)^(1/p)</code>
+with p≈3.5. One formula for the drawing and the hit test, and it fills a
+rectangular bank instead of wasting the corners.</p>
+
+<h2>The ring order is the steno board, folded</h2>
+<p>Scoring every cyclic order of the left consonants against 340k strokes, the
+best is <code>T P H R W K</code>, and it is not arbitrary: it is the keyboard's
+two rows joined at both ends. Moving <code>T</code> to the hub leaves the same
+loop with a gap where <code>T</code> sat.</p>
+<pre>
+   T P H          T ─ P ─ H          S spans both rows on a steno board,
+   K W R    →    ╱         ╲         and T is the only key between S and
+   (S spans)     K ─ W ─ R           the walk, so both are the hub.
+</pre>
+<p>The right bank folds the same way: <code>F R B G L P</code> for the first
+three columns, and the last two columns fold radially instead — see the pinky
+end below.</p>
+<table id="orders"><thead><tr><th>ring</th><th>hub</th><th class="n">one motion</th></tr></thead><tbody></tbody></table>
+
+<h2>What it costs</h2>
+<p>A chord is <em>one motion</em> when every step is an arc along a ring or a
+straight radial move; it needs a <em>hub crossing</em> when two keys sit too far
+apart on the same ring to reach without taking a key you do not want.</p>
+<div class="score">
+  <div>left, one motion<br><b id="sL">–</b></div>
+  <div>right ring 1<br><b id="sR">–</b></div>
+  <div>right ring 2<br><b id="sR2">–</b></div>
+</div>
+<p class="muted">Weighted by outline count in <code>typey-type-full.json</code>,
+340k strokes. Changing the shortcut face above changes these numbers.</p>
+<p>Click a chord to watch it. Red ones need a hub crossing.</p>
+<div class="chips" id="chips"></div>
+
+<h2>What the shortcut face buys</h2>
+<p>Entering a cell against the walk can yield a different key, which is a second
+label on a cell rather than a new mechanism. Two candidates:</p>
+<ul>
+  <li><b>pair chord.</b> The backward face of a top-row cell is its column:
+  <code>T→TK</code>, <code>P→PW</code>, <code>H→HR</code>.</li>
+  <li><b>opposite cell.</b> The backward face is the cell across the ring:
+  in <code>TPHRWK</code> that is <code>T↔R</code>, <code>P↔W</code>,
+  <code>H↔K</code>.</li>
+</ul>
+<p>The residual without either is entirely <em>reaching H or R from the far side
+of the ring</em>: <code>PR TR KR KH TH KHR TKR TPR STR</code>. Switch the
+selector and watch which of those go green — and watch what goes red.</p>
+<p><b>Both lose.</b> A face is not free, because the backward side of a cell is
+already doing a job: it is how you cross the dead zone. Give a cell a second
+label and crossing it backwards takes that label instead of nothing.</p>
+<ul>
+  <li><b>pair chord</b> changes nothing on the left and costs 16 points on the
+  right. Under steno order the backward face of an early key is unreachable:
+  if you are entering <code>T</code> backwards you already hold a later key, so
+  <code>T</code> is dead and <code>TK</code> is dead with it.</li>
+  <li><b>opposite cell</b> does buy <code>PR</code> and <code>KH</code>, and it
+  costs <code>PW</code>, <code>TK</code> and <code>KWR</code>: 89.7% down to
+  72.3%. Across the corpus, backward travel over a dead cell carries 9.3% of all
+  steps, and a face on a dead cell would fix 3.1%.</li>
+</ul>
+<p>So the ring has no spare surface. The middle is the shortcut, and it costs
+one straight line.</p>
+
+<h2>Not carried over</h2>
+<p>The modifier drag ring, with <code>out</code> / <code>out-far</code> /
+<code>out-back</code>, is three thresholds: a distance, a reversal, and where
+the second distance ends. Those are the knobs the comb deleted, and each is a
+thing that can fire early or late. The float ring is cells instead, reached
+along a corridor. A sector is a place you can see; a depth is a gate you have to
+feel.</p>
+<p>What survives from that idea costs nothing: a float advances no steno order,
+so crossing back inward leaves the rings as they were and the stroke goes on.</p>
+<p>The portals go with the comb. Their whole job was to reach a key many cells
+ahead in one motion, and the middle of a ring does that for free.</p>
+
+<h2>Undecided</h2>
+<ul>
+  <li><b>The radial budget in portrait.</b> Four bands across a 35 mm bank is
+  the tightest thing here, and it is the one number a paper prototype settles.
+  Landscape has room to spare.</li>
+  <li><b>What the float ring holds</b>, and whether the editor's own actions
+  (⌫, undo, the field's action) belong there rather than in a bar.</li>
+  <li><b>Whether the left hub should be a pie too</b>, the way the right one is.
+  Nothing needs it yet: S is the only key before the left consonants.</li>
+  <li><b>The real cost.</b> These counts say how many motions a chord takes,
+  not what a motion costs. <code>Motor.kt</code> (see
+  <code>docs/motor.md</code>) prices corners, tolerance and drift, and it is
+  what should pick the ring orders in the end.</li>
+</ul>
+</main>
+
+<script>
+// ---------------------------------------------------------------- corpus
+const FREQ = {"left":{"S":19518,"T":19517,"HR":17754,"R":17198,"PH":16108,"K":15979,"KWR":12769,"TK":12261,"TPH":12041,"P":11741,"TP":9585,"PW":8730,"H":7136,"SR":6462,"SKWR":6461,"W":5154,"PR":4980,"TR":4649,"TKPW":3979,"ST":3461,"KR":3101,"KH":2622,"SH":2610,"KHR":2541,"TH":2230,"TKPWR":2072,"PHR":1997,"KW":1836,"SP":1705,"PWR":1571,"TPHR":1562,"PWHR":1552,"SK":1363,"TKR":1319,"TPR":1289,"STR":1244,"SHR":1050,"KP":908,"TKPWHR":886,"STPH":640,"SKR":589,"SPH":573,"WH":540,"THR":520,"SW":520,"SPW":462,"WR":424,"KPH":400,"SKW":290,"TW":290,"TKHR":257,"STK":219,"TKW":213,"STP":209,"SPR":203,"SKP":198,"SPHR":146,"KPW":141,"KPR":136,"TKP":120,"PWH":117,"STH":105,"SKWRH":104,"SKHR":97,"SKPW":88,"TPW":84,"KWH":72,"TKPR":64,"STKR":62,"SKPH":52,"STKPW":47,"SPWR":40,"TKH":32,"STW":32,"SKH":8,"STPR":26,"SPWH":26,"KWHR":26,"TWH":14,"STHR":11,"STKPWHR":10,"TWR":9,"SKPHR":8,"STKPH":8,"STKW":8,"KPWR":7,"SPWHR":6,"STKPWR":6,"TPWR":6,"SKWH":5,"TPWH":5,"STKH":4,"SKPWR":4,"KPWH":3,"STKHR":3,"SKPWH":2,"STPH R":1},"right1":{"PB":42034,"R":34425,"L":23108,"BG":19770,"PL":13962,"G":13428,"F":11369,"P":8068,"B":4508,"PBG":3953,"RB":3480,"BL":2757,"PBLG":2490,"RPB":2269,"RBG":2139,"LG":1853,"FR":1707,"FP":1525,"RPL":1464,"RL":1417,"FPL":1275,"RG":1191,"FPB":1114,"FL":988,"PBL":900,"RPBG":772,"FRP":676,"RP":668,"FRPB":602,"FB":508,"FBG":447,"RPBLG":417,"FPBG":399,"FRB":386,"FG":337,"RPBL":321,"FRL":277,"FRPL":259,"FPBL":243,"BLG":231,"FRG":170,"FRPBG":151,"FRBG":134,"FBL":121,"FPG":115,"FLG":113,"RBL":108,"FPBLG":104,"FRPBL":96,"RPG":84,"FRPG":66,"RBLG":57,"FBLG":44,"FRBL":41,"PG":40,"RPBLG ":1,"FRPBLG":33,"RLG":27,"PBG ":1,"FRPBLG ":1,"PLG":21,"FRBLG":12,"BG ":1},"right2":{"S":49874,"T":37877,"D":21339,"Z":5849,"TS":2351,"DZ":1466,"TD":760,"SZ":594,"TSZ":81,"TZ":26,"TDZ":14,"TSDZ":3,"SDZ":3,"TSD":1}};
+
+// ---------------------------------------------------------------- layout
+const N = 6;                       // slots per ring, both banks
+const GAP = 13;                    // degrees of ground between slots
+const P = 3.5;                     // superellipse exponent
+// A float rim is turned half a slot, so its cells sit on the spokes: a float is
+// a straight run out, and overshooting the ring below lands in ground.
+
+const BANKS = {
+  left: {
+    order: "STKPWHRAO",            // steno order within the bank
+    floats: "^#+",
+    hubSlices: [{key:null, span:90},{key:"S", span:90},{key:"ST", span:90},{key:"T", span:90}],
+    radii: [0, .31, .56, .78, 1],
+    rings: [
+      {slots:[null,"P","H","R","W","K"], rot:0},     // slot 0 is T's old seat
+      {slots:["A","O","A","O","A","O"], rot:0},
+      {slots:["^","#","+","^","#","+"], rot:30},
+    ],
+    pairs: {P:"PW", H:"HR"},                         // backward face (a)
+  },
+  right: {
+    order: "EUFRPBLGTSDZ",
+    floats: "*@",
+    hubSlices: [{key:null, span:90},{key:"E", span:90},{key:"EU", span:90},{key:"U", span:90}],
+    radii: [0, .27, .47, .65, .83, 1],
+    rings: [
+      {slots:["F","R","B","G","L","P"], rot:0},
+      {slots:["T","S","T","S","T","S"], rot:0},
+      {slots:["D","Z","D","Z","D","Z"], rot:0},      // D beyond T, Z beyond S
+      {slots:["*","@","*","@","*","@"], rot:30},
+    ],
+    pairs: {F:"FR", P:"PB", L:"LG"},
+  },
+};
+// mirror: the right bank's angles run the other way, so both thumbs sweep
+// mirrored arcs and "against the walk" is the same motion for each hand.
+BANKS.left.dir = 1; BANKS.right.dir = -1;
+
+for (const b of Object.values(BANKS)) {
+  b.rank = {}; [...b.order].forEach((k,i) => b.rank[k] = i);
+  b.opposite = {};
+  b.rings.forEach(r => r.slots.forEach((k,i) => {
+    const o = r.slots[(i + N/2) % N];
+    if (k && o && k !== o) b.opposite[k] = o;
+  }));
+}
+
+const rankOf = (b, key) => [...key].reduce((m,c) => Math.max(m, b.rank[c] ?? -1), -1);
+const isFloat = (b, key) => [...key].every(c => b.floats.includes(c));
+
+// ---------------------------------------------------------------- geometry
+// A bank is a rect; the rings are superellipses in its normalised frame.
+function mk(x, y, w, h, bank) { return {x, y, w, h, cx:x+w/2, cy:y+h/2, a:w/2, b:h/2, bank}; }
+function toNorm(g, px, py) {
+  const u = (px-g.cx)/g.a, v = (py-g.cy)/g.b;
+  const r = Math.pow(Math.pow(Math.abs(u),P) + Math.pow(Math.abs(v),P), 1/P);
+  return {r, th: Math.atan2(v, u)};
+}
+function toPx(g, r, th) {
+  const c = Math.cos(th), s = Math.sin(th);
+  const k = r / Math.pow(Math.pow(Math.abs(c),P) + Math.pow(Math.abs(s),P), 1/P);
+  return [g.cx + g.a*k*c, g.cy + g.b*k*s];
+}
+const deg = th => (th * 180/Math.PI + 360) % 360;
+
+// Slot i of a ring spans [i*60 - 30 + GAP/2, i*60 + 30 - GAP/2] in model degrees;
+// model degrees run the bank's own direction, from straight up.
+function modelDeg(g, th) {
+  const d = BANKS[g.bank].dir;
+  return ((deg(th) + 90) * d + 720) % 360;
+}
+function cellAt(g, px, py) {
+  const B = BANKS[g.bank];
+  const {r, th} = toNorm(g, px, py);
+  if (r > 1) return null;
+  const md = modelDeg(g, th);
+  let level = 0; while (level < B.rings.length && r > B.radii[level+1]) level++;
+  if (level === 0) {
+    const sl = B.hubSlices;
+    let acc = 0;
+    for (let i = 0; i < sl.length; i++) {
+      acc += sl[i].span;
+      if (md < acc) return {level:0, slot:i, key:sl[i].key};
+    }
+    return {level:0, slot:sl.length-1, key:sl[sl.length-1].key};
+  }
+  const rot = B.rings[level-1].rot;
+  const slot = (Math.round((md - rot) / 60) % N + N) % N;
+  const off = Math.abs(((md - rot - slot*60 + 540) % 360) - 180);
+  if (off > 30 - GAP/2) return {level, slot:-1, key:null};   // in a gap
+  return {level, slot, key: B.rings[level-1].slots[slot]};
+}
+
+// ---------------------------------------------------------------- state
+let faceMode = "none", useOrder = true, showLabels = true;
+const state = {};                                   // per bank
+function reset(b) { state[b] = {taken: [], max: -1, cell: null, trail: [], down: false}; }
+reset("left"); reset("right");
+
+function faceOf(b, key, ring) {                     // what the backward side yields
+  const B = BANKS[b];
+  if (ring !== 1) return null;                      // the question is about the consonant ring
+  if (faceMode === "pair") return B.pairs[key] || null;
+  if (faceMode === "opposite") return B.opposite[key] || null;
+  return null;
+}
+function liveFor(st, B, key) {
+  if (!key) return false;
+  if ([...key].every(c => st.taken.includes(c))) return false;
+  if (isFloat(B, key)) return true;
+  return !useOrder || rankOf(B, key) > st.max;
+}
+function take(st, B, key) {
+  for (const c of key) if (!st.taken.includes(c)) st.taken.push(c);
+  if (!isFloat(B, key)) st.max = Math.max(st.max, rankOf(B, key));
+}
+
+function enter(bank, cell, prev) {
+  const st = state[bank], B = BANKS[bank];
+  if (!cell || !cell.key) return;
+  if (cell.level === 0) { if (!prev) take(st, B, cell.key || ""); return; }  // hub: tap only
+  let key = cell.key;
+  if (prev && prev.level === cell.level && prev.slot >= 0) {                 // angular entry
+    const back = (cell.slot - prev.slot + N) % N === N - 1;
+    if (back) key = faceOf(bank, cell.key, cell.level) || cell.key;
+  }
+  if (liveFor(st, B, key)) take(st, B, key);
+}
+
+// ---------------------------------------------------------------- drawing
+const cv = document.getElementById("cv"), ctx = cv.getContext("2d");
+function css(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+let G = {};
+function fit() {
+  const w = cv.width, h = cv.height, pad = 12, bw = (w - pad*3)/2;
+  G.left  = mk(pad, pad, bw, h - pad*2, "left");
+  G.right = mk(pad*2 + bw, pad, bw, h - pad*2, "right");
+}
+fit();
+
+const RPAD = .012;                                   // ground between bands
+function arcPath(g, r0, r1, d0, d1) {
+  const d = BANKS[g.bank].dir, p = [];
+  const toTh = md => ((md*d - 90 + 720) % 360) * Math.PI/180;
+  for (let m = d0; m <= d1 + .001; m += 2) p.push(toPx(g, r1, toTh(m)));
+  for (let m = d1; m >= d0 - .001; m -= 2) p.push(toPx(g, r0, toTh(m)));
+  ctx.beginPath(); p.forEach(([x,y],i) => i ? ctx.lineTo(x,y) : ctx.moveTo(x,y)); ctx.closePath();
+}
+function cellCentre(g, level, slot) {
+  const B = BANKS[g.bank], d = B.dir;
+  const r = (B.radii[level] + B.radii[level+1])/2;
+  const md = level === 0 ? slot*90 + 45 : slot*60 + B.rings[level-1].rot;
+  return toPx(g, r, ((md*d - 90 + 720)%360) * Math.PI/180);
+}
+
+function drawBank(bank) {
+  const g = G[bank], B = BANKS[bank], st = state[bank];
+  ctx.save();
+  // rim
+  arcPath(g, 0, 1, 0, 360);
+  ctx.fillStyle = css("--ground"); ctx.fill();
+  // hub
+  let acc = 0;
+  B.hubSlices.forEach(sl => {
+    const d0 = acc, d1 = acc + sl.span; acc = d1;
+    arcPath(g, 0, B.radii[1] - RPAD, d0 + (B.hubSlices.length>1?2:0), d1 - (B.hubSlices.length>1?2:0));
+    const done = sl.key && [...sl.key].every(c => st.taken.includes(c));
+    const tint = "AEOU".includes((sl.key||" ")[0]) ? "--vowel" : "--live";
+    ctx.fillStyle = !sl.key ? css("--ground") : done ? css("--hot")
+      : (st.cell || st.taken.length) ? css("--dead") : css(tint);
+    ctx.fill();
+    if (sl.key && showLabels) {
+      const [x,y] = cellCentre(g, 0, B.hubSlices.length>1 ? (d0/90) : 0);
+      ctx.fillStyle = done ? "#fff" : css("--ink");
+      ctx.font = "600 15px ui-monospace,Menlo,monospace";
+      ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.fillText(sl.key, B.hubSlices.length>1 ? x : g.cx, B.hubSlices.length>1 ? y : g.cy);
+    }
+  });
+  // rings
+  B.rings.forEach((ring, ri) => {
+    const level = ri + 1;
+    ring.slots.forEach((key, i) => {
+      if (!key) return;
+      const rot = ring.rot;
+      arcPath(g, B.radii[level] + RPAD, B.radii[level+1] - RPAD,
+              rot + i*60 - 30 + GAP/2, rot + i*60 + 30 - GAP/2);
+      const done = [...key].every(c => st.taken.includes(c));
+      const live = liveFor(st, B, key);
+      ctx.fillStyle = done ? css("--hot") : !live ? css("--dead")
+        : isFloat(B, key) ? css("--float")
+        : "AOEU".includes(key[0]) && key.length === 1 ? css("--vowel") : css("--live");
+      ctx.fill();
+      ctx.strokeStyle = css("--border"); ctx.lineWidth = 1; ctx.stroke();
+      if (!showLabels) return;
+      const [x,y] = cellCentre(g, level, i);
+      ctx.fillStyle = done ? "#fff" : live ? css("--ink") : css("--muted");
+      ctx.font = "600 15px ui-monospace,Menlo,monospace";
+      ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.fillText(key, x, y);
+      const f = faceOf(bank, key, level);
+      if (f && f !== key) {
+        ctx.font = "10px ui-monospace,Menlo,monospace";
+        ctx.fillStyle = css("--muted");
+        ctx.fillText(f, x, y + 13);
+      }
+    });
+  });
+  // trail
+  if (st.trail.length > 1) {
+    ctx.beginPath(); st.trail.forEach(([x,y],i) => i ? ctx.lineTo(x,y) : ctx.moveTo(x,y));
+    ctx.strokeStyle = css("--trail"); ctx.lineWidth = 2.5; ctx.lineJoin = "round"; ctx.stroke();
+    const [x,y] = st.trail[st.trail.length-1];
+    ctx.beginPath(); ctx.arc(x, y, 6, 0, 7); ctx.fillStyle = css("--trail"); ctx.fill();
+  }
+  ctx.restore();
+}
+function draw() {
+  ctx.clearRect(0,0,cv.width,cv.height);
+  drawBank("left"); drawBank("right");
+  const L = state.left.taken, R = state.right.taken;
+  const order = (b, ks) => [...BANKS[b].order + BANKS[b].floats].filter(c => ks.includes(c)).join("");
+  document.getElementById("out").innerHTML =
+    "<b>" + (order("left", L) || "·") + "</b> &nbsp; <b>" + (order("right", R) || "·") + "</b>";
+}
+
+// ---------------------------------------------------------------- pointer
+function bankAt(px, py) {
+  for (const b of ["left","right"]) {
+    const g = G[b];
+    if (px >= g.x && px <= g.x + g.w && py >= g.y && py <= g.y + g.h) return b;
+  }
+  return null;
+}
+function pt(e) {
+  const r = cv.getBoundingClientRect();
+  return [(e.clientX - r.left) * cv.width / r.width, (e.clientY - r.top) * cv.height / r.height];
+}
+cv.addEventListener("pointerdown", e => {
+  const [x,y] = pt(e), b = bankAt(x,y); if (!b) return;
+  cv.setPointerCapture(e.pointerId);
+  reset(b); const st = state[b];
+  st.down = true; st.trail = [[x,y]];
+  const c = cellAt(G[b], x, y);
+  st.cell = c; enter(b, c, null); draw();
+});
+cv.addEventListener("pointermove", e => {
+  const [x,y] = pt(e), b = bankAt(x,y); if (!b || !state[b].down) return;
+  const st = state[b];
+  st.trail.push([x,y]); if (st.trail.length > 400) st.trail.shift();
+  const c = cellAt(G[b], x, y);
+  const same = c && st.cell && c.level === st.cell.level && c.slot === st.cell.slot;
+  if (!same) { enter(b, c, st.cell); st.cell = c || st.cell; }
+  draw();
+});
+addEventListener("pointerup", () => {
+  for (const b of ["left","right"]) {
+    const st = state[b];
+    if (!st.down) continue;
+    st.down = false;
+    const order = [...BANKS[b].order + BANKS[b].floats].filter(c => st.taken.includes(c)).join("");
+    if (order) document.getElementById("out2").textContent = "wrote " + order;
+  }
+  draw();
+});
+
+// ---------------------------------------------------------------- scoring
+// Cost of a chord = hub crossings. A step between two keys on one ring is free
+// when scanning from a in some direction reaches b over ground alone.
+function ringOf(B, key) {
+  for (let i = 0; i < B.rings.length; i++) if (B.rings[i].slots.includes(key)) return i + 1;
+  return 0;
+}
+function stepFree(B, bank, ring, a, b, taken, max) {
+  const slots = B.rings[ring-1].slots;
+  const ia = slots.indexOf(a);
+  for (const d of [1, -1]) {
+    let i = ia;
+    for (let n = 0; n < N; n++) {
+      i = (i + d + N) % N;
+      const k = slots[i];
+      if (!k) continue;                                     // gap: ground
+      // what crossing this cell yields: its own key, or its backward face
+      const got = d === -1 ? (faceOf(bank, k, ring) || k) : k;
+      const live = [...got].some(c => !taken.includes(c) && (!useOrder || B.rank[c] > max));
+      if (!live) continue;                                  // ground: travel through it
+      if (got.includes(b) && [...got].every(c => c === b || taken.includes(c))) return true;
+      break;                                                // a live cell in the way
+    }
+  }
+  return false;
+}
+function cost(bank, chord) {
+  const B = BANKS[bank];
+  const keys = [...chord].filter(c => B.rank[c] !== undefined)
+                         .sort((x,y) => B.rank[x] - B.rank[y]);
+  let n = 0, taken = [], max = -1, prev = null;
+  for (const k of keys) {
+    if (prev && ringOf(B, prev) === ringOf(B, k) && ringOf(B, k) > 0) {
+      if (!stepFree(B, bank, ringOf(B, k), prev, k, taken, max)) n++;
+    }
+    taken.push(k); max = Math.max(max, B.rank[k]); prev = k;
+  }
+  return n;
+}
+function score(bank, table, filter) {
+  let tot = 0, ok = 0;
+  for (const [ch, c] of Object.entries(table)) {
+    const keys = [...ch].filter(k => !filter || filter.includes(k)).join("");
+    if (!keys) continue;
+    tot += c; if (cost(bank, keys) === 0) ok += c;
+  }
+  return ok / tot;
+}
+const pct = x => (x*100).toFixed(1) + "%";
+
+function chips() {
+  const el = document.getElementById("chips"); el.innerHTML = "";
+  const rows = [...Object.entries(FREQ.left).filter(([k]) => /^[STKPWHR]+$/.test(k))
+                  .slice(0, 40).map(e => ["left", ...e]),
+                ...Object.entries(FREQ.right1).slice(0, 24).map(e => ["right", ...e])];
+  for (const [bank, ch, c] of rows) {
+    const d = document.createElement("span");
+    d.className = "chip" + (cost(bank, ch) ? " bad" : "");
+    d.textContent = (bank === "right" ? "-" : "") + ch; d.title = c + " strokes";
+    d.onclick = () => play(bank, ch);
+    el.appendChild(d);
+  }
+}
+function refresh() {
+  document.getElementById("sL").textContent  = pct(score("left", FREQ.left));
+  document.getElementById("sR").textContent  = pct(score("right", FREQ.right1));
+  document.getElementById("sR2").textContent = pct(score("right", FREQ.right2));
+  chips(); draw();
+}
+
+// the table of ring orders, scored with the current settings
+function orderTable() {
+  const B = BANKS.left, keepR = B.rings[0], keepH = B.hubSlices;
+  const pie = keepH, solo = [{key:"S", span:360}];
+  const tries = [
+    ["· P H R W K", "S T in the hub",       pie,  [null,"P","H","R","W","K"]],
+    ["· P W R H K", "S T in the hub",       pie,  [null,"P","W","R","H","K"]],
+    ["T P H R W K", "S alone in the hub",   solo, ["T","P","H","R","W","K"]],
+    ["T K P W H R", "steno order",          solo, ["T","K","P","W","H","R"]],
+  ];
+  const tb = document.querySelector("#orders tbody"); tb.innerHTML = "";
+  for (const [name, note, hub, slots] of tries) {
+    B.hubSlices = hub; B.rings[0] = {slots, rot:0};
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td><code>${name}</code></td><td class="muted">${note}</td>` +
+                   `<td class="n">${pct(score("left", FREQ.left))}</td>`;
+    tb.appendChild(tr);
+  }
+  B.rings[0] = keepR; B.hubSlices = keepH;
+}
+
+// ---------------------------------------------------------------- playback
+function play(bank, chord) {
+  const B = BANKS[bank], g = G[bank];
+  const keys = [...chord].sort((x,y) => B.rank[x] - B.rank[y]);
+  const stops = [];
+  const inHub = keys.filter(k => ringOf(B, k) === 0).join("");
+  if (inHub) {                                               // land on the hub slice
+    const i = B.hubSlices.findIndex(s => s.key === inHub);
+    stops.push(["hub", ...cellCentre(g, 0, i < 0 ? 0 : i)]);
+  }
+  const ringKeys = keys.filter(k => ringOf(B, k) > 0);
+  ringKeys.forEach((k, i) => {
+    const ring = ringOf(B, k);
+    const slot = B.rings[ring-1].slots.indexOf(k);
+    const prev = ringKeys[i-1];
+    if (prev && ringOf(B, prev) === ring && !stepFree(B, bank, ring, prev, k,
+        ringKeys.slice(0, i), Math.max(...ringKeys.slice(0, i).map(c => B.rank[c])))) {
+      stops.push(["hub", g.cx, g.cy]);                       // cut through the middle
+    }
+    stops.push(["cell", ...cellCentre(g, ring, slot)]);
+  });
+  reset(bank); const st = state[bank];
+  let i = 0;
+  const step = () => {
+    if (i >= stops.length) { document.getElementById("out2").textContent =
+        chord + (cost(bank, chord) ? " — " + cost(bank, chord) + " hub crossing" : " — one motion"); return; }
+    const [, x, y] = stops[i];
+    const from = st.trail.length ? st.trail[st.trail.length-1] : [x, y];
+    let t = 0;
+    const tick = () => {
+      t += .12;
+      const px = from[0] + (x-from[0])*Math.min(1,t), py = from[1] + (y-from[1])*Math.min(1,t);
+      st.trail.push([px, py]);
+      const c = cellAt(g, px, py);
+      const same = c && st.cell && c.level === st.cell.level && c.slot === st.cell.slot;
+      if (!same) { enter(bank, c, st.cell); st.cell = c || st.cell; }
+      draw();
+      if (t < 1) requestAnimationFrame(tick); else { i++; step(); }
+    };
+    tick();
+  };
+  step();
+}
+
+// ---------------------------------------------------------------- wiring
+document.getElementById("face").onchange = e => { faceMode = e.target.value; refresh(); orderTable(); };
+document.getElementById("ord").onchange  = e => { useOrder = e.target.checked; refresh(); orderTable(); };
+document.getElementById("lbl").onchange  = e => { showLabels = e.target.checked; draw(); };
+document.getElementById("clear").onclick = () => { reset("left"); reset("right");
+  document.getElementById("out2").textContent = " "; draw(); };
+refresh(); orderTable();
+</script>
+</html>
