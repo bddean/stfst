@@ -925,3 +925,15 @@
 ^/#TAp	Tap
 ^/TAp/#KAt	tapKat
 ^/SKWRAOEU/TPHAOf/PWA	jienoofba
+! The 🦐 fold: the same syllables, marked per stroke, with no entry stroke
+! to spend and no exit to declare.
+🦐TAp	tap
+🦐#TAp	Tap
+🦐TAp/🦐KAt	tapkat
+🦐TPH/🦐AO/🦐bg	nook
+! The word is the run of strokes carrying the mark, so a half-marked pair is not one.
+🦐TAp/KAt
+! An exit stroke is the entry form's problem alone. `SKWHf` ends the mode there
+! and is an ordinary syllable here.
+^/SKWHf
+🦐SKWHf	syf

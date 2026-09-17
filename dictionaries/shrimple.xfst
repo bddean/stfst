@@ -133,17 +133,23 @@ define Mid        [ (A) (O) ("*") (E) (U) ] ;
 define Exit       [ ExitStroke | [ {SKWH} Mid Right ] ] ;
 
 ! Every part of a syllable is optional, so the syllable relation accepts the
-! empty tape. A stroke with no keys is not a stroke, so require one, and no
-! stroke of a Shrimple word may be an exit stroke.
-define Filled     [ [ ?+ - Exit ] .o. [ Syllable .o. MoveE ] ] ;
-define Cell       [ [ [ "#" .x. 0 ] [ Filled .o. UpFirst ] ] | Filled ] ;
+! empty tape. A stroke with no keys is not a stroke, so require one.
+define Body       [ Syllable .o. MoveE ] ;
+
+! The exit strokes belong to the entry-stroke form alone. There the mode runs
+! until something ends it, so no stroke of the word may be a stroke that means
+! something else. A marked stroke says it of itself, and a stroke without the
+! mark has already left.
+define Filled     [ [ ?+ - Exit ] .o. Body ] ;
+define Free       [ ?+ .o. Body ] ;
+define Cell(F)    [ [ [ "#" .x. 0 ] [ F .o. UpFirst ] ] | F ] ;
 
 
 ! A bare symbol is the identity pair, so the entry stroke and the separators
 ! reach the record unless they are deleted. The record language cannot catch it:
 ! `^` and `/` are legal text.
 define Join       [ Sep .x. 0 ] ;
-define Word       [ Cell [ Join Cell ]* ] ;
+define Word       [ Cell(Filled) [ Join Cell(Filled) ]* ] ;
 
 ! The entry stroke alone announces the mode and writes nothing. `{Shrimple}` is
 ! what the Python answers, and Plover knows no meta of that name, so it writes
@@ -151,7 +157,17 @@ define Word       [ Cell [ Join Cell ]* ] ;
 ! the stroke fall through the stack.
 define Enter      [ "^" .x. 0 ] ;
 
-define Grammar    Canon([ [ Enter | [ [ "^" .x. 0 ] Join Word ] ] .o. Ortho ]) ;
+! The fold. `🦐` on a stroke says that stroke is a syllable, so a word is the
+! run of strokes carrying it: no entry stroke to spend, and no exit to declare.
+! The key leads the tape, so the mark is a prefix of the cell rather than a
+! thing to thread through the syllable.
+define Mark       [ "🦐" .x. 0 ] ;
+define Marked     [ Mark Cell(Free) ] ;
+define MarkedWord [ Marked [ Join Marked ]* ] ;
+
+define Grammar    Canon([ [ Enter
+                          | [ [ "^" .x. 0 ] Join Word ]
+                          | MarkedWord ] .o. Ortho ]) ;
 
 ! One simplification worth naming: Shrimple's `^` starter is `{^^}`, Plover
 ! in-band syntax that a record cannot hold in the middle of its body. So a `^`

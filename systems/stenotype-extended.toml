@@ -6,7 +6,7 @@
 # `T- P- -L` with no hyphen convention and no chord-level indirection.
 
 name      = "stenotype-extended"
-order     = "#@^+STKPWHRAO*EUfrpblgtsdz"
+order     = "🦐#@^+STKPWHRAO*EUfrpblgtsdz"
 separator = "/"
 
 # Keys that split the banks on their own, so a written outline needs no hyphen.
@@ -20,6 +20,10 @@ implicit_hyphen = "AO*EU"
 suffix_keys = "zdsgt"
 
 [keys]
+# The fold that says "this stroke is Shrimple"; see dictionaries/shrimple.xfst.
+# It leads the order because it says what language the rest of the stroke is in.
+# No board has a key for it: a long press on plover-hid-timing is what sends it.
+"🦐" = "🦐-"
 "#" = "#"
 "@" = "@-"
 "^" = "^-"

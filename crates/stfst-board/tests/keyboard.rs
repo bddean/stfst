@@ -114,11 +114,11 @@ fn hints_offer_a_briefer_outline_for_the_trailing_phrase() {
 fn the_key_order_is_one_character_per_key() {
     let system = system();
     let order: String = system.keys().iter().map(|k| k.symbol).collect();
-    assert_eq!("#@^+STKPWHRAO*EUfrpblgtsdz", order);
+    assert_eq!("🦐#@^+STKPWHRAO*EUfrpblgtsdz", order);
     assert_eq!(order.chars().count(), system.key_count());
-    // The banks split at the star, and each thumb gets the same count. That is
-    // what makes sixteen slots enough for either.
-    let split = order.find('*').expect("a star key");
-    assert_eq!(13, split);
-    assert_eq!(13, order.len() - split);
+    // The banks split at the star, and neither outgrows the sixteen slots a
+    // thumb has. The left carries one more since the shrimp joined it.
+    let split = order.chars().position(|c| c == '*').expect("a star key");
+    assert_eq!(14, split);
+    assert_eq!(13, order.chars().count() - split);
 }

@@ -421,8 +421,8 @@ mod tests {
     #[test]
     fn order_round_trips() {
         let s = sys();
-        assert_eq!(s.order(), "#@^+STKPWHRAO*EUfrpblgtsdz");
-        assert_eq!(s.key_count(), 26);
+        assert_eq!(s.order(), "🦐#@^+STKPWHRAO*EUfrpblgtsdz");
+        assert_eq!(s.key_count(), 27);
     }
 
     #[test]
