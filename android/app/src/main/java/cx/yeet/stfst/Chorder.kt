@@ -72,8 +72,8 @@ class Chorder(
     fun lift(key: Int): Int = if (upgrade) lifted[key] ?: key else key
 
     private val lifted: Map<Int, Int> = config.upgrades().mapNotNull { (from, to) ->
-        val a = ring.order.indexOf(from)
-        val b = ring.order.indexOf(to)
+        val a = ring.keys.indexOf(from)
+        val b = ring.keys.indexOf(to)
         if (a >= 0 && b >= 0) a to b else null
     }.toMap()
 
@@ -186,7 +186,7 @@ class Chorder(
         thumb.release()
         val other = if (thumb === left) right else left
         val armable = config.sticky(thumb.bank).mapNotNull { c ->
-            ring.order.indexOf(c).takeIf { it >= 0 }
+            ring.keys.indexOf(c).takeIf { it >= 0 }
         }
         if (thumb.keys.isNotEmpty() && other.keys.isEmpty() && thumb.keys.all { it in armable }) {
             val again = thumb.keys.all { it in sticky }

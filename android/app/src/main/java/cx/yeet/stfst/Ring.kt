@@ -47,6 +47,9 @@ data class Polar(val r: Float, val deg: Float)
  */
 class Ring(val order: String, val config: Config) {
 
+    /** The order as keys, which is what every index here counts. */
+    val keys: Keys = Keys.of(order)
+
     /**
      * One band of a bank: its slots, and whether it is turned half a slot.
      */
@@ -166,7 +169,7 @@ class Ring(val order: String, val config: Config) {
             .filter { it.keys.isNotEmpty() || it.upgrade }
 
     private fun keysOf(text: String): List<Int> =
-        text.mapNotNull { order.indexOf(it).takeIf { i -> i >= 0 } }
+        Keys.split(text).mapNotNull { keys.indexOf(it).takeIf { i -> i >= 0 } }
 
     /** The radii between the bands, outward, as fractions of the bank's reach. */
     private fun radii(text: String, bands: Int): List<Float> {

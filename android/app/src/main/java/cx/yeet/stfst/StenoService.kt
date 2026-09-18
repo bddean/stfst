@@ -35,6 +35,8 @@ class StenoService : InputMethodService() {
     private var handle = 0L
     private var sent = ""
     private var order = ""
+    /** The same order as keys, because a key is a code point and `🦐` is two chars. */
+    private var keys = Keys.of("")
     /** Why the runtime did not start, for the bar to show instead of dying. */
     private var trouble = ""
     private lateinit var config: Config
@@ -81,7 +83,10 @@ class StenoService : InputMethodService() {
                 File(root, "morph").absolutePath,
             )
             if (handle == 0L) trouble = Native.lastError()
-            else order = Native.order(handle)
+            else {
+                order = Native.order(handle)
+                keys = Keys.of(order)
+            }
         } catch (e: Throwable) {
             trouble = "${e.javaClass.simpleName}: ${e.message}"
         }
@@ -354,13 +359,13 @@ class StenoService : InputMethodService() {
      * where it started. A stroke that means undo is answered by name instead,
      * because asking what an undo writes would perform one.
      */
-    private fun peek(keys: Long): String {
-        if (handle == 0L || keys == 0L) return ""
-        val star = order.indexOf('*')
-        if (star >= 0 && keys == 1L shl star) return "↶"
+    private fun peek(bits: Long): String {
+        if (handle == 0L || bits == 0L) return ""
+        val star = keys.indexOf('*')
+        if (star >= 0 && bits == 1L shl star) return "↶"
         return synchronized(runtime) {
             val was = Native.text(handle)
-            val now = Native.push(handle, keys)
+            val now = Native.push(handle, bits)
             Native.undo(handle)
             val common = shared(now, was)
             // A longer match takes back what the strokes it covers wrote, so
@@ -382,27 +387,27 @@ class StenoService : InputMethodService() {
      * Off the drawing's thread: making the stroke to find out is a dictionary
      * lookup, and a frame should not wait on one.
      */
-    private fun chord(keys: Long) {
+    private fun chord(bits: Long) {
         if (hinter.isShutdown) return
         hinter.execute {
-            val text = peek(keys)
-            view?.post { view?.writes(keys, text) }
+            val text = peek(bits)
+            view?.post { view?.writes(bits, text) }
         }
     }
 
-    private fun stroke(keys: Long) {
+    private fun stroke(bits: Long) {
         if (handle == 0L) return
         // A bare star is the undo stroke, as on any steno machine.
-        val star = order.indexOf('*')
-        val back = star >= 0 && keys == 1L shl star
+        val star = keys.indexOf('*')
+        val back = star >= 0 && bits == 1L shl star
         if (definer?.open == true) {
-            defining(keys, back)
+            defining(bits, back)
             return
         }
         val text = synchronized(runtime) {
-            if (back) Native.undo(handle) else Native.push(handle, keys)
+            if (back) Native.undo(handle) else Native.push(handle, bits)
         }
-        notes.stroke(outline(keys), show(text))
+        notes.stroke(outline(bits), show(text))
         render()
         suggest()
         asked()
@@ -496,18 +501,18 @@ class StenoService : InputMethodService() {
     }
 
     /** A stroke made while the panel is open goes into whichever field is lit. */
-    private fun defining(keys: Long, back: Boolean) {
+    private fun defining(bits: Long, back: Boolean) {
         val define = definer ?: return
         when (define.field) {
             DefinePanel.Field.OUTLINE -> {
                 entry = if (back) entry.substringBeforeLast('/', "")
-                else if (entry.isEmpty()) outline(keys)
-                else entry + "/" + outline(keys)
+                else if (entry.isEmpty()) outline(bits)
+                else entry + "/" + outline(bits)
                 recall()
             }
 
             DefinePanel.Field.TRANSLATION -> synchronized(runtime) {
-                if (back) Native.undo(handle) else Native.push(handle, keys)
+                if (back) Native.undo(handle) else Native.push(handle, bits)
             }
         }
         paint()
@@ -558,8 +563,7 @@ class StenoService : InputMethodService() {
     }
 
     /** A stroke's keys as the outline it is written as, in steno order. */
-    private fun outline(keys: Long): String =
-        order.filterIndexed { i, _ -> (keys shr i) and 1L == 1L }
+    private fun outline(bits: Long): String = keys.spell(bits)
 
     /**
      * Ask the runtime for briefer outlines for what was just written, and fold

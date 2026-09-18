@@ -69,6 +69,10 @@ the Add Translation dialog has somewhere to put an entry, and the phone reads it
 the same way rather than as `user.stfst`. Beside it sits `stfst-user.json`, which
 is what the Android keyboard defines into.
 
+On the phone `stfst-user.json` outranks `user.json`, because an outline
+redefined there has to beat what it used to write. In `plover.cfg` it sits the
+other way up, so `user.json` stays the dictionary Plover writes to.
+
 `stfst_dict::Editable` is that dictionary: a map from outline to record, built
 from a Plover JSON file and written back to it, with its own priority in the
 stack like any other. It has no window, no carried state and no context slot, and

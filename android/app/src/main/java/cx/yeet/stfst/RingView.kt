@@ -295,7 +295,7 @@ class RingView(
         val tap = lastTaps.remove(bank) ?: return false
         if (now - tap.time > config.doubleTapMs) return false
         if (hypot(x - tap.x, y - tap.y) > height * 0.05f) return false
-        val key = order.indexOf(config.doubleTap(bank))
+        val key = ring.keys.indexOf(config.doubleTap(bank))
         if (key < 0) return false
         chorder.cancelHeld()
         chorder.stick(key)
@@ -314,7 +314,7 @@ class RingView(
      */
     private fun armLongPress(bank: Bank, pointer: Int) {
         if (config.longPressMs <= 0) return
-        val key = order.indexOf(config.longPress(bank))
+        val key = ring.keys.indexOf(config.longPress(bank))
         if (key < 0) return
         val task = Runnable {
             presses.remove(pointer)
@@ -382,8 +382,8 @@ class RingView(
 
     private fun kindOf(key: Int): Kind = when {
         key < 0 -> Kind.PLAIN
-        order[key].uppercaseChar() in "AOEU" -> Kind.VOWEL
-        !order[key].isLetter() -> Kind.MOD
+        ring.keys[key].uppercase() in VOWELS -> Kind.VOWEL
+        !ring.keys[key].all { it.isLetter() } -> Kind.MOD
         else -> Kind.PLAIN
     }
 
@@ -727,7 +727,7 @@ class RingView(
         else -> Mark.NONE
     }
 
-    private fun spell(keys: List<Int>): String = keys.joinToString("") { order[it].toString() }
+    private fun spell(keys: List<Int>): String = ring.keys.spell(keys)
 
     /**
      * What a cell says now. The upgrade names what it writes rather than the
@@ -856,6 +856,8 @@ class RingView(
     companion object {
         /** What the upgrade's own key says: the keys it writes, not one it is. */
         private const val UPGRADE = "DZ"
+
+        private val VOWELS = setOf("A", "O", "E", "U")
 
         /** How long the band takes to come and go. */
         private const val FADE_MS = 130f

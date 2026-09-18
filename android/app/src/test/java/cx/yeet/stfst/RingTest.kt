@@ -7,7 +7,10 @@ import kotlin.math.abs
 import kotlin.math.ceil
 import kotlin.math.max
 
-private const val ORDER = "#@^+STKPWHRAO*EUfrpblgtsdz"
+// The order the app ships, `🦐` and all: a key outside the basic plane is
+// what tells a key number from a string index.
+private const val ORDER = "🦐#@^+STKPWHRAO*EUfrpblgtsdz"
+private val KEYS = Keys.of(ORDER)
 
 /**
  * What the layout text fixes: where the cells are, what a thumb can write in
@@ -25,10 +28,10 @@ class RingTest {
         if (bank == Bank.LEFT) Field(0f, 0f, 350f, 620f)
         else Field(350f, 0f, 700f, 620f)
 
-    private fun keys(chord: String): List<Int> = chord.map { ORDER.indexOf(it) }
+    private fun keys(chord: String): List<Int> = chord.map { KEYS.indexOf(it) }
 
     private fun spell(keys: Collection<Int>): String =
-        keys.sorted().joinToString("") { ORDER[it].toString() }
+        keys.sorted().joinToString("") { KEYS[it] }
 
     /**
      * Every cell centre hits its own cell, which is what a tap is answered by.
@@ -79,7 +82,7 @@ class RingTest {
                 for (to in keys.filter { ring.live(it, listOf(from)) }) {
                     val chord = setOf(from, to)
                     assertEquals(
-                        "$bank: ${ORDER[from]} then ${ORDER[to]}",
+                        "$bank: ${KEYS[from]} then ${KEYS[to]}",
                         spell(chord), write(bank, chord.toList()),
                     )
                 }

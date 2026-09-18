@@ -4,6 +4,10 @@
 # A JSON dictionary says nothing about where it sits in a stack, so the list is
 # here. `stfst-user` is what this keyboard defines into and what `make install`
 # syncs back; `user.json` is the desktop's, pushed in and never written here.
+#
+# `stfst-user` wins over `user` here, because an outline redefined on the phone
+# has to beat what it used to write. In `plover.cfg` it sits the other way up, so
+# `user.json` stays the first writable dictionary and the Add Translation target.
 
 [[dict]]
 name = "stfst-user"

@@ -4,7 +4,10 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-private const val ORDER = "#@^+STKPWHRAO*EUfrpblgtsdz"
+// The order the app ships, `🦐` and all: a key outside the basic plane is
+// what tells a key number from a string index.
+private const val ORDER = "🦐#@^+STKPWHRAO*EUfrpblgtsdz"
+private val KEYS = Keys.of(ORDER)
 
 /** Two thumbs walking their rings, and the rule that turns them into strokes. */
 class ChorderTest {
@@ -24,13 +27,13 @@ class ChorderTest {
 
     private fun field(bank: Bank) = if (bank == Bank.LEFT) left else right
 
-    private fun key(symbol: Char) = ORDER.indexOf(symbol)
+    private fun key(symbol: Char) = KEYS.indexOf(symbol)
 
     private fun mask(symbols: String) =
         symbols.fold(0L) { bits, c -> bits or (1L shl key(c)) }
 
     private fun keys(bank: Bank) =
-        chorder.thumb(bank).keys.joinToString("") { ORDER[it].toString() }
+        chorder.thumb(bank).keys.joinToString("") { KEYS[it] }
 
     /** Where a key is drawn, which is the point a thumb aims at. */
     private fun at(bank: Bank, symbol: Char): Point {

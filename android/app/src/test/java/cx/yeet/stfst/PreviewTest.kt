@@ -23,7 +23,8 @@ class PreviewTest {
     /** A phone-shaped bank: the keys take what the screen allows. */
     private val shot = Config(keyboardHeight = 0.95f)
 
-    private val order = "#@^+STKPWHRAO*EUfrpblgtsdz"
+    private val order = "🦐#@^+STKPWHRAO*EUfrpblgtsdz"
+    private val keys = Keys.of(order)
     private val tall = Shape(1080, 900, false)
     private val wide = Shape(1800, 800, true)
 
@@ -67,7 +68,7 @@ class PreviewTest {
     private fun at(view: RingView, shape: Shape, key: Char, level: Int): Point {
         val ring = ring()
         val cell = ring.cells(Bank.LEFT).first {
-            it.level == level && ring.keys(Bank.LEFT, it).contains(order.indexOf(key))
+            it.level == level && ring.keys(Bank.LEFT, it).contains(keys.indexOf(key))
         }
         return ring.middle(Bank.LEFT, bank(view, shape, Bank.LEFT), cell)
     }
