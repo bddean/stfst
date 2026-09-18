@@ -33,21 +33,46 @@ object Assets {
     /**
      * Where the editable dictionaries live, seeded from what the APK carried.
      *
-     * Not beside the compiled ones. This directory is on external storage so that
-     * `make install` can reach it over adb: the desktop's `user.json` is pushed in
-     * and what this keyboard defined is pulled out. So the APK's copies overwrite
-     * what is there, except the file this keyboard writes, which nothing else owns.
+     * Not beside the compiled ones. The keyboard writes here, and external
+     * storage is what `make install` can reach over adb: the desktop's
+     * `user.json` is pushed in and what this keyboard defined is pulled out. So
+     * the APK's copies overwrite what is there, except the file this keyboard
+     * writes, which nothing else owns.
+     *
+     * A directory something else created first belongs to that something else,
+     * and then this app cannot write in it at all. That is a keyboard that does
+     * not start, so it falls back to its own private directory, where adb cannot
+     * reach it and everything else still works.
      */
     fun editable(context: Context, runtime: File): File {
-        val dir = File(context.getExternalFilesDir(null) ?: context.filesDir, "dicts")
-        dir.mkdirs()
-        val from = File(runtime, "editable")
-        for (file in from.listFiles().orEmpty()) {
+        val shared = File(context.getExternalFilesDir(null) ?: context.filesDir, "dicts")
+        val dir = if (writable(shared)) shared else File(context.filesDir, "dicts").also {
+            it.mkdirs()
+            Log.w(StenoService.TAG, "cannot write in $shared; using $it, which adb cannot reach")
+        }
+        for (file in File(runtime, "editable").listFiles().orEmpty()) {
             val to = File(dir, file.name)
-            if (to.isFile && to.readBytes().contentEquals(file.readBytes())) continue
-            file.copyTo(to, overwrite = true)
+            try {
+                if (to.isFile && to.readBytes().contentEquals(file.readBytes())) continue
+                file.copyTo(to, overwrite = true)
+            } catch (e: Exception) {
+                // One dictionary that did not land is a dictionary that does not
+                // answer, and the rest of the stack still does.
+                Log.e(StenoService.TAG, "seeding ${file.name}: $e")
+            }
         }
         return dir
+    }
+
+    /** Whether this app can put a file there, which is not what the mode bits say. */
+    private fun writable(dir: File): Boolean = try {
+        dir.mkdirs()
+        val probe = File(dir, ".probe")
+        probe.writeText("")
+        probe.delete()
+        true
+    } catch (e: Exception) {
+        false
     }
 
     private fun copy(context: Context, from: String, to: File) {

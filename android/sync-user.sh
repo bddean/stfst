@@ -12,8 +12,18 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 ADB=${ADB:-$(command -v adb || echo "$HOME/Library/Android/sdk/platform-tools/adb")}
-REMOTE=/sdcard/Android/data/cx.yeet.stfst/files/dicts/stfst-user.json
+REMOTE_DIR=/sdcard/Android/data/cx.yeet.stfst/files/dicts
+REMOTE=$REMOTE_DIR/stfst-user.json
 LOCAL=${STFST_USER:-$HOME/.config/plover/stfst-user.json}
+
+# The keyboard makes this directory, and nothing here may make it first: a
+# directory adb created belongs to the shell user, and then the app cannot write
+# in it at all.
+if ! "$ADB" shell "test -d $REMOTE_DIR" 2>/dev/null; then
+    echo "the keyboard has not made $REMOTE_DIR yet."
+    echo "open it once on the phone, then: make sync-user"
+    exit 0
+fi
 
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT
