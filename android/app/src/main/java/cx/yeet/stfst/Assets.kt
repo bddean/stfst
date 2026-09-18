@@ -30,6 +30,26 @@ object Assets {
         return root
     }
 
+    /**
+     * Where the editable dictionaries live, seeded from what the APK carried.
+     *
+     * Not beside the compiled ones. This directory is on external storage so that
+     * `make install` can reach it over adb: the desktop's `user.json` is pushed in
+     * and what this keyboard defined is pulled out. So the APK's copies overwrite
+     * what is there, except the file this keyboard writes, which nothing else owns.
+     */
+    fun editable(context: Context, runtime: File): File {
+        val dir = File(context.getExternalFilesDir(null) ?: context.filesDir, "dicts")
+        dir.mkdirs()
+        val from = File(runtime, "editable")
+        for (file in from.listFiles().orEmpty()) {
+            val to = File(dir, file.name)
+            if (to.isFile && to.readBytes().contentEquals(file.readBytes())) continue
+            file.copyTo(to, overwrite = true)
+        }
+        return dir
+    }
+
     private fun copy(context: Context, from: String, to: File) {
         val names = context.assets.list(from) ?: return
         if (names.isEmpty()) {

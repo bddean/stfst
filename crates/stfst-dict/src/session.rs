@@ -16,10 +16,10 @@
 //! state as they were at `p`, and replay has to reproduce them. So undo is a pop
 //! and redo is a replay, which is what host contract items 5 and 6 ask for.
 
-use stfst_core::{Context, Emission, Prefix, Shown, State, Stroke, Window};
+use stfst_core::{Context, Emission, Prefix, Record, Shown, State, Stroke, Window};
 use stfst_ol::Cursor;
 
-use crate::{DictError, Stack};
+use crate::{Dict, DictError, Stack};
 
 /// A match ending at the most recent stroke.
 #[derive(Debug)]
@@ -202,7 +202,7 @@ impl<'a> Session<'a> {
     /// candidate opens at this stroke in every dictionary.
     pub fn push(&mut self, stroke: Stroke) {
         for live in &mut self.live {
-            self.stack.dict(live.dict).feed(&mut live.cursor, stroke, true);
+            compiled(self.stack, live.dict).feed(&mut live.cursor, stroke, true);
         }
         self.live.retain(|l| l.cursor.live() > 0);
         self.history.push(stroke);
@@ -261,7 +261,7 @@ impl<'a> Session<'a> {
             if !self.enabled(now, live.dict) {
                 continue;
             }
-            let dict = self.stack.dict(live.dict);
+            let dict = compiled(self.stack, live.dict);
             let (outputs, window) = match dict.shown() {
                 None => (live.cursor.outputs(), None),
                 // The text a frame reads is not written yet, so nothing can be
@@ -276,13 +276,26 @@ impl<'a> Session<'a> {
                 best = Some((live, outputs, window));
             }
         }
+        let beat = best.as_ref().map(|(live, _, _)| (live.start, live.dict));
+        // An editable dictionary is a map, so it has no candidate to advance and
+        // no cursor to ask: what it might have matched is however many strokes
+        // back its longest entry reaches, tried longest first.
+        if let Some((dict, at, record)) = self.editable_match(beat) {
+            return Ok(Some(Match {
+                dict,
+                strokes: self.history.len() - at,
+                emissions: vec![Emission { record, state: None }],
+                window: None,
+                suffix: None,
+            }));
+        }
         let Some((live, outputs, window)) = best else {
             return Ok(None);
         };
         Ok(Some(Match {
             dict: live.dict,
             strokes: self.history.len() - live.start,
-            emissions: self.stack.dict(live.dict).interpret(&outputs)?,
+            emissions: compiled(self.stack, live.dict).interpret(&outputs)?,
             window,
             suffix: None,
         }))
@@ -322,7 +335,7 @@ impl<'a> Session<'a> {
     /// `None` where the keys began an entry and finished none, which is the
     /// answer a held stroke cannot give any earlier.
     pub fn resolve(&self, held: &Held<'_>, span: &str) -> Result<Option<Match>, DictError> {
-        let dict = self.stack.dict(held.dict);
+        let dict = compiled(self.stack, held.dict);
         let window = dict.window(span);
         let outputs = dict.harvest(&held.cursor, &window);
         if outputs.is_empty() {
@@ -360,7 +373,9 @@ impl<'a> Session<'a> {
         let Some(newest) = self.history.len().checked_sub(1) else {
             return Ok(None);
         };
-        let mut best: Option<(usize, usize, Vec<Vec<stfst_ol::Sym>>, Option<Window>)> = None;
+        // Interpreted where it is found rather than at the end, so a fold from a
+        // map and a fold from an automaton are the same value from here on.
+        let mut best: Option<(usize, usize, Vec<Emission>, Option<Window>)> = None;
         for &key in self.stack.system_suffix_keys() {
             if !self.history[newest].contains(key) {
                 continue;
@@ -371,13 +386,25 @@ impl<'a> Session<'a> {
             }
             let oldest = self.oldest.get(newest).copied().unwrap_or(newest);
             for start in oldest..=newest {
-                for (dict, entry) in self.stack.dicts().iter().enumerate() {
+                for (dict, slot) in self.stack.dicts().iter().enumerate() {
                     if !self.enabled(newest, dict) || best.as_ref().is_some_and(|b| start >= b.1) {
                         continue;
                     }
-                    let mut cursor = entry.cursor(&self.prefix(start, dict));
                     // The history up to the last stroke as written, then the last
                     // stroke with the key taken off it.
+                    let entry = match slot {
+                        crate::Slot::Editable(editable) => {
+                            let mut strokes = self.history[start..newest].to_vec();
+                            strokes.push(bare);
+                            if let Some(record) = editable.lookup(&strokes) {
+                                let emission = Emission { record, state: None };
+                                best = Some((dict, start, vec![emission], None));
+                            }
+                            continue;
+                        }
+                        crate::Slot::Compiled(dict) => dict,
+                    };
+                    let mut cursor = entry.cursor(&self.prefix(start, dict));
                     for (n, &stroke) in self.history[start..newest].iter().enumerate() {
                         if cursor.live() == 0 {
                             break;
@@ -399,11 +426,11 @@ impl<'a> Session<'a> {
                         }
                     };
                     if !outputs.is_empty() {
-                        best = Some((dict, start, outputs, window));
+                        best = Some((dict, start, entry.interpret(&outputs)?, window));
                     }
                 }
             }
-            if let Some((dict, start, outputs, window)) = best {
+            if let Some((dict, start, emissions, window)) = best {
                 // What the bare key means is a lookup like any other, in the whole
                 // stack, so the suffix and the base need not be in the same
                 // dictionary or know about each other.
@@ -414,7 +441,7 @@ impl<'a> Session<'a> {
                 return Ok(Some(Match {
                     dict,
                     strokes: self.history.len() - start,
-                    emissions: self.stack.dict(dict).interpret(&outputs)?,
+                    emissions,
                     window,
                     suffix: Some(suffix),
                 }));
@@ -426,7 +453,10 @@ impl<'a> Session<'a> {
     /// Open a candidate per dictionary at `start` and read the history from
     /// there. Keeps the ones still live.
     fn open_at(&mut self, start: usize) {
-        for (dict, entry) in self.stack.dicts().iter().enumerate() {
+        for (dict, slot) in self.stack.dicts().iter().enumerate() {
+            let Some(entry) = slot.compiled() else {
+                continue;
+            };
             if !self.enabled(start, dict) {
                 continue;
             }
@@ -447,6 +477,40 @@ impl<'a> Session<'a> {
         }
     }
 
+    /// The best an editable dictionary can do, given where the compiled stack
+    /// matched. `None` there means nothing matched at all.
+    ///
+    /// Longest wins, and among equals the higher priority, which is the rule the
+    /// cursors already follow; the stack is in priority order, so that is the
+    /// first slot that reaches furthest back.
+    fn editable_match(&self, beat: Option<(usize, usize)>) -> Option<(usize, usize, Record)> {
+        let now = self.history.len();
+        let mut best: Option<(usize, usize)> = beat;
+        let mut found: Option<(usize, usize, Record)> = None;
+        for (dict, slot) in self.stack.dicts().iter().enumerate() {
+            let Some(editable) = slot.editable() else {
+                continue;
+            };
+            if !self.enabled(now - 1, dict) {
+                continue;
+            }
+            let most = editable.longest().min(now);
+            for length in (1..=most).rev() {
+                let start = now - length;
+                // Shorter matches from here on, so once one cannot win none can.
+                if !wins(start, dict, best) {
+                    break;
+                }
+                if let Some(record) = editable.lookup(&self.history[start..]) {
+                    best = Some((start, dict));
+                    found = Some((dict, start, record));
+                    break;
+                }
+            }
+        }
+        found
+    }
+
     /// What dictionary `dict` reads before the keys of a candidate starting at
     /// `start`.
     fn prefix(&self, start: usize, dict: usize) -> Prefix {
@@ -463,4 +527,19 @@ impl<'a> Session<'a> {
             context: frame.context.select(entry.context()),
         }
     }
+}
+
+/// Whether a match beats the one already found: longer first, and among equals
+/// the dictionary higher in the stack.
+fn wins(start: usize, dict: usize, best: Option<(usize, usize)>) -> bool {
+    match best {
+        None => true,
+        Some((at, from)) => start < at || (start == at && dict < from),
+    }
+}
+
+/// The dictionary behind a live candidate. Candidates open only in compiled
+/// dictionaries, so this is the invariant `open_at` keeps rather than a case.
+fn compiled(stack: &Stack, at: usize) -> &Dict {
+    stack.dict(at).compiled().expect("a candidate in a compiled dictionary")
 }

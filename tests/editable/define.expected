@@ -1,0 +1,24 @@
+! 0 emily-symbols priority 100
+! 1 shrimple priority 90
+! 2 stfst-user priority 85
+! 3 user priority 80
+! 4 phrases priority 70
+! 5 commands priority 60
+! 6 emily-modifiers priority 50
+! 7 semantic-suffixes priority 40
+! 8 leading-vowel priority 35
+! 9 typey-type priority 30
+! 10 and-fold priority 20
+! 11 phrasing priority 10
+! 12 retro-words priority 9
+! 13 repeat-idioms priority 8
+! 14 repeat-word priority 7
+! 15 frames priority 6
+! 16 ahead priority 5
+HRAOEUBG	1	typey-type	like	"like"
+TAEUP	1	typey-type	tape	"like tape"
+!define	TAEUP	"like sticky tape"
+TAEUP	1	stfst-user	sticky tape	"like sticky tape sticky tape"
+!define	TAEUP	"like sticky tape tape"
+TAEUP	1	typey-type	tape	"like sticky tape tape tape"
+! 4 strokes, 1 candidates at the widest

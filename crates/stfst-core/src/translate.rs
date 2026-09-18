@@ -7,7 +7,7 @@
 //! Anything unrecognised is reported rather than guessed at. The import is only
 //! worth trusting if it says what it could not convert.
 
-use stfst_core::record::{Case, Flags, Item, Mods, Record, SpaceOp};
+use crate::record::{Case, Flags, Item, Mods, Record, SpaceOp};
 
 #[derive(Debug, thiserror::Error, PartialEq, Eq)]
 pub enum TranslateError {
@@ -415,7 +415,7 @@ fn core_items(
     if let Some(rest) = strip_prefix_ci(core, "mode:") {
         let (name, arg) = rest.split_once(':').unwrap_or((rest, ""));
         let name = format!("mode.{}", name.to_ascii_lowercase());
-        if !stfst_core::host::COMMANDS.contains(&name.as_str()) {
+        if !crate::host::COMMANDS.contains(&name.as_str()) {
             return Err(TranslateError::Unsupported(d.to_string()));
         }
         return Ok(vec![Item::Cmd {
@@ -454,7 +454,7 @@ fn core_items(
     if let Some(rest) = strip_prefix_ci(core, "PLOVER:") {
         let (name, arg) = rest.split_once(':').unwrap_or((rest, ""));
         let name = plugin_command(&name.to_ascii_lowercase());
-        if !stfst_core::host::COMMANDS.contains(&name.as_str()) {
+        if !crate::host::COMMANDS.contains(&name.as_str()) {
             return Err(TranslateError::Unsupported(d.to_string()));
         }
         return Ok(vec![Item::Cmd {

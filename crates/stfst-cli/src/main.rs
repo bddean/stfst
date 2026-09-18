@@ -120,6 +120,11 @@ enum Command {
         /// One stroke per line on stdin; `!undo` takes one back.
         #[arg(long)]
         strokes: Option<PathBuf>,
+        /// A directory of editable JSON dictionaries, as `editable.toml` there
+        /// lists them. This is what a keyboard writes to; `!define` is how a
+        /// stroke stream reaches it.
+        #[arg(long)]
+        editable: Option<PathBuf>,
         /// Print only the summary. What a per-stroke measurement needs, because
         /// printing the whole buffer each stroke costs more than translating it.
         #[arg(long)]
@@ -388,6 +393,7 @@ fn main() -> Result<()> {
             artifacts,
             system,
             strokes,
+            editable,
             quiet,
             morph,
         } => {
@@ -399,7 +405,7 @@ fn main() -> Result<()> {
                     .collect(),
                 None => or_stdin(Vec::new())?,
             };
-            translate::run(&artifacts, &system, lines, quiet, &morph)?;
+            translate::run(&artifacts, &system, editable.as_deref(), lines, quiet, &morph)?;
         }
         Command::Ortho { pairs, morph } => {
             let text = std::fs::read_to_string(&pairs)

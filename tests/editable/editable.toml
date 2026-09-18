@@ -1,0 +1,5 @@
+# What the Android keyboard writes to, at the priority `make install` gives it.
+[[dict]]
+name = "stfst-user"
+file = "stfst-user.json"
+priority = 85

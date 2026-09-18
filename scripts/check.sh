@@ -168,3 +168,11 @@ fi
 # stream through the whole stack, where the answer depends on the history.
 echo "== translate"
 fixtures tests/translate build/dicts/*.stfst
+
+# The editable dictionary, which the fixture writes to: a fresh copy each run, or
+# the second run starts from what the first one defined.
+echo "== editable"
+rm -rf build/editable
+mkdir -p build/editable
+cp tests/editable/editable.toml build/editable/
+fixtures tests/editable build/dicts/*.stfst --editable build/editable

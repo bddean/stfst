@@ -11,6 +11,14 @@ rm -rf "$out"
 mkdir -p "$out"
 cp -R build/dicts "$out/dicts"
 cp systems/stenotype-extended.toml "$out/"
+
+# `user.json` goes as itself, not as the artifact compiled from it: the keyboard
+# reads it as an editable dictionary, so an entry added on the desktop needs a
+# push and not a recompile. `stfst-user.json` is the phone's own and is not here.
+rm -rf "$out/dicts/user.stfst"
+mkdir -p "$out/editable"
+cp android/editable.toml "$out/editable/"
+cp ~/.config/plover/user.json "$out/editable/"
 if [ -d build/morph ]; then
     mkdir -p "$out/morph"
     cp build/morph/*.hfstol "$out/morph/" 2>/dev/null || true

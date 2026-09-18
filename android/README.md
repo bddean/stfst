@@ -340,6 +340,37 @@ have just made is not news, and a shorter way to make it is. Anything taller
 than a line is the app's room rather than this keyboard's, so the panel never
 grows into it. A quiet minute clears the line.
 
+## Defining an outline
+
+An outline that wrote the wrong thing is defined where it was made. `TKUPT` is
+`{PLOVER:ADD_OUTLINE}`, and it opens a panel over the keys with the outline of
+what was just written in one field and nothing in the other;
+`{PLOVER:ADD_TRANSLATION}` opens the same panel with both fields empty.
+
+**Steno fills both fields.** The lit one is where the next stroke goes: the
+outline field takes the chord as it is written, and the translation field takes
+what the chord *writes*, which is the runtime's answer and not a second way of
+spelling one. So the keyboard writes into a second buffer while the panel is
+open, and what it had written is waiting when the panel closes. `⌫` and `↶` in
+the bar reach the lit field.
+
+`−` and `+` take the outline from one stroke further back, up to four. Save
+defines it and makes those strokes again, so what they wrote becomes what they
+now mean. **An empty translation field deletes the entry**, and the button says
+Delete when it is empty.
+
+The entry goes in `stfst-user.json`, in the app's external files directory, next
+to the desktop's `user.json`. Both are read as files rather than as artifacts,
+because the phone has no HFST and a compiled dictionary cannot be added to. What
+the directory holds and where each file sits in the stack is `editable.toml`,
+which rides in the APK.
+
+`make install` syncs them: it pushes `user.json` in the APK's assets and pulls
+`stfst-user.json` off the phone, unions it with `~/.config/plover/stfst-user.json`
+and pushes the result back, so a definition made on the phone reaches Plover and
+the other way round. `android/sync-user.sh` is that step on its own, and a
+network sync can replace it without anything else changing.
+
 ## What the touch panel reports
 
 `Draw the touched area` draws every sample of the contact at the size and shape
@@ -350,8 +381,9 @@ guessed at. Both are off by default.
 
 ## Building
 
-`make install` from the repo root does all of this and pushes the APK to the
-phone over adb. It leaves the dictionaries alone; `make dicts` rebuilds those.
+`make install` from the repo root does all of this, pushes the APK to the phone
+over adb, and syncs `stfst-user.json` both ways. It leaves the dictionaries
+alone; `make dicts` rebuilds those.
 
 ```sh
 stfst compile recipe.toml     # the dictionaries
@@ -387,6 +419,7 @@ which is why cargo runs inside `nix develop`.
 | `Chorder` | two thumbs, and the rule that turns them into strokes. No Android |
 | `Notes` | the record of what was written, and how much of it fits. No Android |
 | `Motor` | what a thumb motion costs, for judging layouts. No Android, no layout; see `docs/motor.md` |
+| `DefinePanel` | the two fields of an entry being defined. Decides nothing |
 | `RingView` | drawing and touch. Decides nothing |
 | `StenoService` | the editor, the insets, and the native handle |
 | `stfst-jni` | opens the stack, hands strokes to `stfst-board`, returns the buffer |

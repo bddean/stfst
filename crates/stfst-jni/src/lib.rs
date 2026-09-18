@@ -28,6 +28,10 @@ struct Host {
     stack: &'static Stack,
     morph: Option<Arc<Morph>>,
     board: Board<'static>,
+    /// The board the keyboard was writing with, while it writes somewhere else.
+    /// Steno is how a translation is typed, so defining one needs a second buffer
+    /// and not a second stack.
+    saved: Option<Board<'static>>,
     order: String,
 }
 
@@ -36,6 +40,18 @@ impl Host {
     /// been given a different text field to write into.
     fn reset(&mut self) {
         self.board = Board::new(self.system, self.stack, self.morph.clone());
+    }
+
+    fn scratch(&mut self, on: bool) {
+        match (on, self.saved.take()) {
+            (true, None) => {
+                let fresh = Board::new(self.system, self.stack, self.morph.clone());
+                self.saved = Some(std::mem::replace(&mut self.board, fresh));
+            }
+            (true, Some(saved)) => self.saved = Some(saved),
+            (false, Some(saved)) => self.board = saved,
+            (false, None) => {}
+        }
     }
 }
 
@@ -76,14 +92,16 @@ fn artifacts(dir: &Path) -> Vec<PathBuf> {
     found
 }
 
-fn open_host(dicts: &str, system: &str, morph: &str) -> Result<Host, String> {
+fn open_host(dicts: &str, editable: &str, system: &str, morph: &str) -> Result<Host, String> {
     let system = System::load(Path::new(system)).map_err(|e| format!("system: {e}"))?;
     let system: &'static System = Box::leak(Box::new(system));
     let found = artifacts(Path::new(dicts));
     if found.is_empty() {
         return Err(format!("no .stfst directories under {dicts}"));
     }
-    let stack = Stack::open(&found, system, &Capabilities::all()).map_err(|e| format!("{e}"))?;
+    let editable = stfst_dict::listed(Path::new(editable)).map_err(|e| format!("{e}"))?;
+    let stack = Stack::open_with(&found, &editable, system, &Capabilities::all())
+        .map_err(|e| format!("{e}"))?;
     let stack: &'static Stack = Box::leak(Box::new(stack));
     // Absent artifacts are not an error: without them a suffix join is a plain
     // join, which is the honest answer rather than a refusal to start.
@@ -93,6 +111,7 @@ fn open_host(dicts: &str, system: &str, morph: &str) -> Result<Host, String> {
         system,
         stack,
         board: Board::new(system, stack, morph.clone()),
+        saved: None,
         morph,
         order,
     })
@@ -110,18 +129,20 @@ pub extern "system" fn Java_cx_yeet_stfst_Native_open(
     mut env: JNIEnv,
     _class: JClass,
     dicts: JString,
+    editable: JString,
     system: JString,
     morph: JString,
 ) -> jlong {
-    let (Some(dicts), Some(system), Some(morph)) = (
+    let (Some(dicts), Some(editable), Some(system), Some(morph)) = (
         read(&mut env, &dicts),
+        read(&mut env, &editable),
         read(&mut env, &system),
         read(&mut env, &morph),
     ) else {
         fail("a path was not readable as a string".into());
         return 0;
     };
-    match open_host(&dicts, &system, &morph) {
+    match open_host(&dicts, &editable, &system, &morph) {
         Ok(host) => Box::into_raw(Box::new(host)) as jlong,
         Err(message) => {
             fail(message);
@@ -250,4 +271,146 @@ pub extern "system" fn Java_cx_yeet_stfst_Native_close(
     if handle != 0 {
         drop(unsafe { Box::from_raw(handle as *mut Host) });
     }
+}
+
+/// The outline of the last `strokes` strokes, as the system spells it.
+#[no_mangle]
+pub extern "system" fn Java_cx_yeet_stfst_Native_tail(
+    mut env: JNIEnv,
+    _class: JClass,
+    handle: jlong,
+    strokes: jlong,
+) -> jstring {
+    let Some(host) = (unsafe { host(handle) }) else {
+        return give(&mut env, "");
+    };
+    let outline = host.board.tail(strokes.max(0) as usize);
+    let text = host.system.format_outline(&outline);
+    give(&mut env, &text)
+}
+
+/// How many strokes the last match consumed: what "the thing I just wrote" is,
+/// before anyone asks for more or less of it.
+#[no_mangle]
+pub extern "system" fn Java_cx_yeet_stfst_Native_unit(
+    _env: JNIEnv,
+    _class: JClass,
+    handle: jlong,
+) -> jlong {
+    match unsafe { host(handle) } {
+        Some(host) => host.board.unit() as jlong,
+        None => 0,
+    }
+}
+
+/// A command the dictionary asked the keyboard for, as `name\targument`, taken
+/// once. Empty when there is none.
+#[no_mangle]
+pub extern "system" fn Java_cx_yeet_stfst_Native_command(
+    mut env: JNIEnv,
+    _class: JClass,
+    handle: jlong,
+) -> jstring {
+    let Some(host) = (unsafe { host(handle) }) else {
+        return give(&mut env, "");
+    };
+    match host.board.take_command() {
+        Some((name, arg)) => give(&mut env, &format!("{name}\t{arg}")),
+        None => give(&mut env, ""),
+    }
+}
+
+/// Write into a second buffer, and back again.
+///
+/// A translation is typed in steno like anything else, and the board is the only
+/// thing that knows what a stroke writes. So defining one swaps the buffer rather
+/// than reading strokes some other way, and what the keyboard had written is
+/// waiting when it swaps back.
+#[no_mangle]
+pub extern "system" fn Java_cx_yeet_stfst_Native_scratch(
+    mut env: JNIEnv,
+    _class: JClass,
+    handle: jlong,
+    on: jlong,
+) -> jstring {
+    let Some(host) = (unsafe { host(handle) }) else {
+        return give(&mut env, "");
+    };
+    host.scratch(on != 0);
+    give(&mut env, &host.board.text())
+}
+
+/// What an editable dictionary says the outline writes, or empty.
+#[no_mangle]
+pub extern "system" fn Java_cx_yeet_stfst_Native_defined(
+    mut env: JNIEnv,
+    _class: JClass,
+    handle: jlong,
+    dict: JString,
+    outline: JString,
+) -> jstring {
+    let (Some(host), Some(dict), Some(outline)) = (
+        unsafe { host(handle) },
+        read(&mut env, &dict),
+        read(&mut env, &outline),
+    ) else {
+        return give(&mut env, "");
+    };
+    let found = host
+        .stack
+        .editable(&dict)
+        .and_then(|e| e.translation(&outline))
+        .unwrap_or_default();
+    give(&mut env, &found)
+}
+
+/// Define an outline, and make the last `back` strokes again so the text they
+/// already wrote is the text they now mean. An empty translation deletes the
+/// entry, and `back` of zero defines one without touching what is written.
+///
+/// Returns the reason it did not happen, or empty.
+#[no_mangle]
+pub extern "system" fn Java_cx_yeet_stfst_Native_define(
+    mut env: JNIEnv,
+    _class: JClass,
+    handle: jlong,
+    dict: JString,
+    outline: JString,
+    translation: JString,
+    back: jlong,
+) -> jstring {
+    let (Some(host), Some(dict), Some(outline), Some(translation)) = (
+        unsafe { host(handle) },
+        read(&mut env, &dict),
+        read(&mut env, &outline),
+        read(&mut env, &translation),
+    ) else {
+        return give(&mut env, "a string was not readable");
+    };
+    let Some(editable) = host.stack.editable(&dict) else {
+        return give(&mut env, &format!("no editable dictionary called {dict}"));
+    };
+    if let Err(e) = editable.set(&outline, &translation) {
+        return give(&mut env, &format!("{e}"));
+    }
+    if let Err(e) = host.board.restroke(back.max(0) as usize) {
+        return give(&mut env, &format!("{e}"));
+    }
+    give(&mut env, "")
+}
+
+/// Start the buffer again from text already written, without stroking it. What
+/// fills a field with an entry's current translation, so it can be edited.
+#[no_mangle]
+pub extern "system" fn Java_cx_yeet_stfst_Native_seed(
+    mut env: JNIEnv,
+    _class: JClass,
+    handle: jlong,
+    text: JString,
+) -> jstring {
+    let (Some(host), Some(text)) = (unsafe { host(handle) }, read(&mut env, &text)) else {
+        return give(&mut env, "");
+    };
+    host.board.seed(&text);
+    give(&mut env, &host.board.text())
 }

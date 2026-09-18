@@ -1,0 +1,16 @@
+# The dictionaries the keyboard reads as files rather than as artifacts, and the
+# priorities `recipe.toml` gives them.
+#
+# A JSON dictionary says nothing about where it sits in a stack, so the list is
+# here. `stfst-user` is what this keyboard defines into and what `make install`
+# syncs back; `user.json` is the desktop's, pushed in and never written here.
+
+[[dict]]
+name = "stfst-user"
+file = "stfst-user.json"
+priority = 85
+
+[[dict]]
+name = "user"
+file = "user.json"
+priority = 80

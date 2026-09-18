@@ -15,11 +15,17 @@ DICTS := build/dicts/.compiled
 RUST_SRC := $(shell find crates -name '*.rs') Cargo.toml Cargo.lock
 APP_SRC := $(shell find android/app/src -type f -not -path '*/assets/*')
 
-.PHONY: install apk native assets dicts test clean-apk
+.PHONY: install apk native assets dicts test sync-user clean-apk
 
 install: $(APK)
 	$(ADB) install -r $(APK)
+	@$(MAKE) sync-user
 	@echo "installed; enable it under Settings > Keyboards if this is a first install"
+
+# What the keyboard defined, into the desktop's copy and back again. Separate
+# from the install because it is the only step that reads the phone.
+sync-user:
+	android/sync-user.sh
 
 apk: $(APK)
 native: $(LIB)
@@ -31,8 +37,9 @@ $(APK): $(LIB) $(ASSETS) $(APP_SRC) android/app/build.gradle.kts android/build.g
 $(LIB): $(RUST_SRC)
 	android/build-native.sh
 
-# The compiled dictionaries and the key system, as the app reads them.
-$(ASSETS): $(DICTS) systems/stenotype-extended.toml
+# The compiled dictionaries, the key system, and the dictionaries the app reads
+# as files rather than as artifacts.
+$(ASSETS): $(DICTS) systems/stenotype-extended.toml android/editable.toml $(HOME)/.config/plover/user.json
 	android/sync-assets.sh
 
 # A directory's mtime says nothing about what is under it, so the compile

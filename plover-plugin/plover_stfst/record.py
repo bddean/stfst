@@ -52,7 +52,7 @@ COMMANDS = [
     "mode.reset_case", "mode.set_space", "mode.reset_space", "mode.reset",
     "engine.undo", "engine.repeat_stroke", "engine.toggle_star",
     "plover.suspend", "plover.resume", "plover.toggle", "plover.add_translation",
-    "plover.lookup", "plover.suggestions", "plover.configure", "plover.focus",
+    "plover.add_outline", "plover.lookup", "plover.suggestions", "plover.configure", "plover.focus",
     "plover.quit", "plover.set_config", "plover.steno_chords",
     "stack.toggle", "stack.solo", "stack.end_solo", "stack.priority",
 ]

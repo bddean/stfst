@@ -49,7 +49,7 @@ TA*bt	[KEY]Tab[ALT][END][KEY]Tab[ALT][END]
 TK*El	[KEY]Delete[END]
 TKO*ts	[CMD=mode.lower][END][CMD=mode.set_space].[END]
 TKPR*Es	express
-TKUpt	[CMD=plover.add_translation][END]
+TKUpt	[CMD=plover.add_outline][END]
 TPEfbg	[KEY]Escape[END]
 TPH*EUt	nite
 TPWg	[KEY]Right[ALT][END]

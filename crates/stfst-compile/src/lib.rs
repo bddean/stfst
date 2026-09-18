@@ -4,7 +4,10 @@ pub mod pipeline;
 pub mod plain;
 pub mod prelude;
 pub mod recipe;
-pub mod translate;
+
+/// Plover translations to records. It lives in `stfst-core` because it is the
+/// record language's front door and a runtime host needs it too.
+pub use stfst_core::translate;
 
 use std::path::{Path, PathBuf};
 use std::time::SystemTime;

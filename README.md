@@ -36,7 +36,7 @@ shadow a working entry.
 |---|---|
 | emily-symbols | xfst over a shared glyph table |
 | shrimple | xfst over a generated table |
-| user | JSON, imported |
+| user | JSON, read as itself where a host can write |
 | phrases | JSON, imported |
 | commands | JSON, imported |
 | emily-modifiers | xfst over generated tables |
@@ -60,6 +60,27 @@ A dictionary whose artifact is newer than everything it is compiled from is left
 alone, so that minute is only ever paid for what changed. The compiler counts as
 a source, because a rule it changed is in none of the files. `--dict NAME` builds
 one by name, and `--force` builds what is already built.
+
+## A dictionary a host can write to
+
+Every artifact in that table is built once and read. `user.json` is the exception
+the table's second column names: on the desktop Plover reads the file itself, so
+the Add Translation dialog has somewhere to put an entry, and the phone reads it
+the same way rather than as `user.stfst`. Beside it sits `stfst-user.json`, which
+is what the Android keyboard defines into.
+
+`stfst_dict::Editable` is that dictionary: a map from outline to record, built
+from a Plover JSON file and written back to it, with its own priority in the
+stack like any other. It has no window, no carried state and no context slot, and
+that is the deal. A compiled dictionary is a relation over tapes and can say
+things a map cannot; a map can be edited on a phone with no HFST.
+
+A directory of them carries an `editable.toml` saying what each file is called
+and where it sits, because a JSON dictionary says nothing about priority and a
+host that guessed would be a second place that decides it. `android/editable.toml`
+is the one the keyboard ships; `--editable DIR` gives `stfst translate` the same
+thing, and `!define OUTLINE translation` in a stroke stream is what the keyboard's
+panel does, which is how `tests/editable` checks it.
 
 `retro-words` has no reverse automaton, and that is not an omission: it rewrites
 text rather than writing a word, so the question a suggestion window asks has no
@@ -107,6 +128,10 @@ Kotlin. See `android/README.md` for the gesture and `docs/radial.md` for what
 building it changed here.
 
 The host loop both it and `stfst translate` drive is `stfst-board`.
+
+Defining an outline is a keyboard operation there too: `{PLOVER:ADD_OUTLINE}` and
+`{PLOVER:ADD_TRANSLATION}` open a panel over the keys, and steno fills both of its
+fields. `make install` syncs `stfst-user.json` with the desktop's copy over adb.
 
 ## pitman-board
 

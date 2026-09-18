@@ -40,6 +40,9 @@ pub const COMMANDS: &[&str] = &[
     "plover.resume",
     "plover.toggle",
     "plover.add_translation",
+    // `plover-add-outline`: the same dialog aimed at the strokes just made, with
+    // the argument saying how many translations back it reaches.
+    "plover.add_outline",
     "plover.lookup",
     "plover.suggestions",
     "plover.configure",

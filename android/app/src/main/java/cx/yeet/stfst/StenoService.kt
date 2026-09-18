@@ -45,6 +45,14 @@ class StenoService : InputMethodService() {
     /** The running repeat of a held button, if any. */
     private var repeat: Runnable? = null
 
+    /** Defining an outline: the panel, and the entry being made. */
+    private var definer: DefinePanel? = null
+    private var entry = ""
+    /** How many strokes back the entry reaches, and zero for a fresh one. */
+    private var reach = 0
+    /** The trailing outlines, one per reach, read before the buffer was put aside. */
+    private var tails: List<String> = emptyList()
+
     /** What the keyboard has just done: the strokes, and briefer ways to make them. */
     private var notesBar: TextView? = null
     private val notes = Notes()
@@ -68,6 +76,7 @@ class StenoService : InputMethodService() {
             val root = Assets.unpack(this)
             handle = Native.open(
                 File(root, "dicts").absolutePath,
+                Assets.editable(this, root).absolutePath,
                 File(root, "stenotype-extended.toml").absolutePath,
                 File(root, "morph").absolutePath,
             )
@@ -116,12 +125,15 @@ class StenoService : InputMethodService() {
         // Undoing a stroke and deleting a character are different things, and the
         // one button used to be labelled as the other.
         bar.addView(button("↶") {
-            if (handle != 0L) {
-                show(synchronized(runtime) { Native.undo(handle) })
-                notes.stroke("↶", "")
-                render()
-                suggest()
+            if (handle == 0L) return@button
+            if (definer?.open == true) {
+                defining(0L, back = true)
+                return@button
             }
+            show(synchronized(runtime) { Native.undo(handle) })
+            notes.stroke("↶", "")
+            render()
+            suggest()
         })
         bar.addView(repeating(button("⌫", null)) { erase() })
         actionKey = button("⏎") { act() }
@@ -144,9 +156,18 @@ class StenoService : InputMethodService() {
         }
         notesBar = panel
 
+        val define = DefinePanel(this).apply {
+            onSave = { save() }
+            onCancel = { stopDefining() }
+            onReach = { by -> reach(reach + by) }
+            onFocus = { field -> focus(field) }
+        }
+        definer = define
+
         val strip = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setBackgroundColor(Color.TRANSPARENT)
+            addView(define)
             addView(panel)
             addView(bar)
         }
@@ -298,7 +319,19 @@ class StenoService : InputMethodService() {
      * nothing about what a delete did either, so asking twice is not an option
      * and the one every field understands is the one to send.
      */
-    private fun erase() = key(KeyEvent.KEYCODE_DEL, 0)
+    private fun erase() {
+        val define = definer
+        if (define?.open == true) {
+            when (define.field) {
+                DefinePanel.Field.OUTLINE -> entry = entry.substringBeforeLast('/', "")
+                DefinePanel.Field.TRANSLATION ->
+                    seed(synchronized(runtime) { Native.text(handle) }.dropLast(1))
+            }
+            paint()
+            return
+        }
+        key(KeyEvent.KEYCODE_DEL, 0)
+    }
 
     /**
      * Give up the tracked buffer.
@@ -362,12 +395,166 @@ class StenoService : InputMethodService() {
         // A bare star is the undo stroke, as on any steno machine.
         val star = order.indexOf('*')
         val back = star >= 0 && keys == 1L shl star
+        if (definer?.open == true) {
+            defining(keys, back)
+            return
+        }
         val text = synchronized(runtime) {
             if (back) Native.undo(handle) else Native.push(handle, keys)
         }
         notes.stroke(outline(keys), show(text))
         render()
         suggest()
+        asked()
+    }
+
+    /**
+     * What the stroke asked the keyboard for, if anything.
+     *
+     * A command the runtime cannot carry out itself waits there until it is
+     * taken. Its own stroke wrote nothing, so it comes off the history here: what
+     * the panel reaches back over is what was written, and the stroke that asked
+     * for the panel is not part of it.
+     */
+    private fun asked() {
+        val asked = synchronized(runtime) { Native.command(handle) }
+        if (asked.isEmpty()) return
+        val (name, argument) = asked.split("\t", limit = 2).let { it[0] to it.getOrElse(1) { "" } }
+        when (name) {
+            // The one aims at the strokes just made; the other is an entry made
+            // from nothing, and its outline is stroked into the panel too.
+            "plover.add_outline" -> {
+                synchronized(runtime) { Native.undo(handle) }
+                startDefining(argument.toIntOrNull() ?: defaultReach())
+            }
+
+            "plover.add_translation" -> {
+                synchronized(runtime) { Native.undo(handle) }
+                startDefining(0)
+            }
+
+            else -> Log.i(TAG, "no answer here for $name")
+        }
+    }
+
+    /**
+     * Open the panel over an outline this keyboard has just made, or over none.
+     *
+     * `count` of zero is an entry written from nothing: the outline is stroked
+     * into the panel like the translation, and nothing already written changes.
+     */
+    private fun startDefining(count: Int) {
+        val define = definer ?: return
+        reach = count.coerceIn(0, REACH_MOST)
+        entry = ""
+        // Read now, because the panel is about to write into a second buffer and
+        // the history it reaches over belongs to the first one.
+        tails = synchronized(runtime) {
+            (1..REACH_MOST).map { Native.tail(handle, it.toLong()) }
+        }
+        val field = if (reach > 0) DefinePanel.Field.TRANSLATION else DefinePanel.Field.OUTLINE
+        synchronized(runtime) { Native.scratch(handle, 1) }
+        define.open(field, reach)
+        if (reach > 0) reach(reach) else paint()
+    }
+
+    /** The default reach: whatever the last match consumed. */
+    private fun defaultReach(): Int =
+        synchronized(runtime) { Native.unit(handle) }.toInt().coerceAtLeast(1)
+
+    /**
+     * Take the outline from further back, or nearer. The entry is always the
+     * trailing strokes, so changing how many changes the outline.
+     */
+    private fun reach(want: Int) {
+        if (reach == 0) return
+        reach = want.coerceIn(1, REACH_MOST)
+        entry = tails.getOrElse(reach - 1) { "" }
+        recall()
+        paint()
+    }
+
+    /**
+     * The outline changed, so show what the dictionary already says it writes.
+     *
+     * It says nothing about most outlines, and then whatever has been typed
+     * stands: an entry made for one outline is often meant for a neighbouring
+     * one, and clearing the field would be the wrong way round.
+     */
+    private fun recall() {
+        val known =
+            if (entry.isEmpty()) "" else
+                synchronized(runtime) { Native.defined(handle, USER_DICT, entry) }
+        if (known.isNotEmpty() || synchronized(runtime) { Native.text(handle) }.isEmpty()) {
+            seed(known)
+        }
+    }
+
+    private fun focus(field: DefinePanel.Field) {
+        definer?.focus(field)
+        paint()
+    }
+
+    /** A stroke made while the panel is open goes into whichever field is lit. */
+    private fun defining(keys: Long, back: Boolean) {
+        val define = definer ?: return
+        when (define.field) {
+            DefinePanel.Field.OUTLINE -> {
+                entry = if (back) entry.substringBeforeLast('/', "")
+                else if (entry.isEmpty()) outline(keys)
+                else entry + "/" + outline(keys)
+                recall()
+            }
+
+            DefinePanel.Field.TRANSLATION -> synchronized(runtime) {
+                if (back) Native.undo(handle) else Native.push(handle, keys)
+            }
+        }
+        paint()
+    }
+
+    /** Put text in the translation field, which is the scratch buffer's text. */
+    private fun seed(text: String) {
+        synchronized(runtime) { Native.seed(handle, text) }
+    }
+
+    private fun paint() {
+        val define = definer ?: return
+        val writes = synchronized(runtime) { Native.text(handle) }
+        val note = when {
+            reach > 0 -> "correcting the last $reach"
+            else -> "stroke the outline, then the words"
+        }
+        define.show(entry, writes, note)
+    }
+
+    private fun save() {
+        val translation = synchronized(runtime) { Native.text(handle) }
+        val outline = entry
+        // How many strokes to make again: the ones the outline holds, and none at
+        // all for an entry that was not taken from the history.
+        val back = if (reach == 0) 0 else outline.split("/").size
+        stopDefining()
+        if (outline.isEmpty()) return
+        val trouble = synchronized(runtime) {
+            Native.define(handle, USER_DICT, outline, translation, back.toLong())
+        }
+        if (trouble.isNotEmpty()) {
+            status?.text = trouble
+            Log.e(TAG, "define $outline: $trouble")
+            return
+        }
+        show(synchronized(runtime) { Native.text(handle) })
+        notes.stroke(outline, translation.ifEmpty { "(deleted)" })
+        render()
+    }
+
+    /** Put the keyboard's own buffer back and close the panel. */
+    private fun stopDefining() {
+        synchronized(runtime) { Native.scratch(handle, 0) }
+        definer?.close()
+        reach = 0
+        entry = ""
     }
 
     /** A stroke's keys as the outline it is written as, in steno order. */
@@ -449,6 +636,10 @@ class StenoService : InputMethodService() {
         const val PREFS = "radial"
         /** How many briefs one line holds, and how long a quiet spell keeps them. */
         const val BRIEFS = 8
+        /** The dictionary this keyboard defines into, as `editable.toml` names it. */
+        const val USER_DICT = "stfst-user"
+        /** The most strokes one entry made from the history can reach back over. */
+        const val REACH_MOST = 4
         const val NOTES_IDLE_MS = 60_000L
     }
 }

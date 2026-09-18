@@ -19,6 +19,9 @@ const UNDO: &str = "!undo";
 /// A line that seeds the text, so a case can start from something already
 /// written without stroking it.
 const BUFFER: &str = "!buffer";
+/// A line that defines an outline in an editable dictionary and makes its
+/// strokes again, which is what a keyboard's add-outline dialog does.
+const DEFINE: &str = "!define";
 
 /// The text a `!buffer` line seeds, which is nothing at all for a line that
 /// names none: a fixture that starts from an empty document says so.
@@ -33,6 +36,7 @@ fn buffer(line: &str) -> Option<&str> {
 pub fn run(
     artifacts: &[PathBuf],
     system: &Path,
+    editable: Option<&Path>,
     strokes: Vec<String>,
     quiet: bool,
     morph: &Path,
@@ -44,7 +48,11 @@ pub fn run(
     // This harness implements every command and meta in the tables. A host that
     // implemented fewer would be refused the dictionaries that need them, which is
     // the point of declaring.
-    let stack = Stack::open(artifacts, &system, &Capabilities::all())?;
+    let listed = match editable {
+        Some(dir) => stfst_dict::listed(dir)?,
+        None => Vec::new(),
+    };
+    let stack = Stack::open_with(artifacts, &listed, &system, &Capabilities::all())?;
     // One macro rather than a branch at every call: the harness prints six
     // different lines and each one is only for a reader.
     macro_rules! say {
@@ -65,6 +73,21 @@ pub fn run(
         if let Some(seed) = buffer(line) {
             board.seed(seed);
             say!("{line}\t{:?}", board.text());
+            continue;
+        }
+        if let Some(rest) = line.strip_prefix(DEFINE) {
+            let (outline, translation) = rest.trim().split_once(char::is_whitespace)
+                .unwrap_or((rest.trim(), ""));
+            let dict = stack
+                .dicts()
+                .iter()
+                .find_map(|d| d.editable())
+                .context("no editable dictionary; pass --editable")?;
+            dict.set(outline.trim(), translation.trim())?;
+            let back = system.parse_outline(outline.trim())?.0.len();
+            for step in board.restroke(back)? {
+                say!("{DEFINE}\t{outline}\t{:?}", step.text);
+            }
             continue;
         }
         // `!` marks a comment, as in a golden file, and `#` cannot: it is a key.

@@ -5,14 +5,17 @@
 //! decodes an artifact on open, so this is what an embedded host imports.
 
 mod dict;
+mod editable;
 mod session;
 
 pub use dict::{Dict, Input, Manifest, Meta, Outlines, Requires, HOST_VERSION};
+pub use editable::{listed, Editable};
 pub use session::{Held, Match, Session};
 
 use std::path::PathBuf;
 
-use stfst_core::{Capabilities, RecordError, System};
+use stfst_core::{Capabilities, OutlineError, RecordError, Shown, System};
+use stfst_core::translate::TranslateError;
 
 #[derive(Debug, thiserror::Error)]
 pub enum DictError {
@@ -54,11 +57,94 @@ pub enum DictError {
     NoReverse { name: String },
     #[error("{name} produced a record that does not parse: {source}")]
     Record { name: String, source: RecordError },
+    #[error("{path}: {source}")]
+    Json {
+        path: String,
+        source: serde_json::Error,
+    },
+    #[error("{outline}: {source}")]
+    Outline {
+        outline: String,
+        source: OutlineError,
+    },
+    #[error("{translation}: {source}")]
+    Translation {
+        translation: String,
+        source: TranslateError,
+    },
+    #[error("{0} is not a dictionary this host can write to")]
+    NotEditable(String),
+}
+
+/// One dictionary of a stack. Compiled is the ordinary case: a relation over
+/// tapes, built once and read. An editable one is the exception a keyboard needs,
+/// and it has none of what makes a compiled dictionary powerful: no window, no
+/// carried state, no context slot.
+pub enum Slot {
+    Compiled(Dict),
+    Editable(Editable),
+}
+
+impl Slot {
+    pub fn name(&self) -> &str {
+        match self {
+            Slot::Compiled(d) => d.name(),
+            Slot::Editable(e) => e.name(),
+        }
+    }
+
+    pub fn priority(&self) -> i64 {
+        match self {
+            Slot::Compiled(d) => d.priority(),
+            Slot::Editable(e) => e.priority(),
+        }
+    }
+
+    pub fn compiled(&self) -> Option<&Dict> {
+        match self {
+            Slot::Compiled(d) => Some(d),
+            Slot::Editable(_) => None,
+        }
+    }
+
+    pub fn editable(&self) -> Option<&Editable> {
+        match self {
+            Slot::Compiled(_) => None,
+            Slot::Editable(e) => Some(e),
+        }
+    }
+
+    pub fn shown(&self) -> Option<Shown> {
+        self.compiled().and_then(Dict::shown)
+    }
+
+    pub fn registers(&self) -> u8 {
+        self.compiled().map_or(0, Dict::registers)
+    }
+
+    pub fn context(&self) -> &[String] {
+        self.compiled().map_or(&[], Dict::context)
+    }
+
+    pub fn stateful(&self) -> bool {
+        self.compiled().is_some_and(Dict::stateful)
+    }
+
+    /// Outlines that write this record, cheapest first.
+    pub fn outlines(&self, record: &stfst_core::Record, limit: usize) -> Result<Outlines, DictError> {
+        match self {
+            Slot::Compiled(d) => d.outlines(record, limit),
+            Slot::Editable(e) => Ok(Outlines {
+                tapes: e.outlines(record, limit),
+                truncated: false,
+            }),
+        }
+    }
 }
 
 /// The dictionaries a host has loaded, in priority order.
 pub struct Stack {
-    dicts: Vec<Dict>,
+    dicts: Vec<Slot>,
     /// Kept because folding needs it: which keys may be stripped, and what a bare
     /// key means, are both stack-wide questions.
     system: System,
@@ -72,7 +158,18 @@ impl Stack {
         system: &System,
         host: &Capabilities,
     ) -> Result<Stack, DictError> {
-        let mut dicts = Vec::with_capacity(dirs.len());
+        Stack::open_with(dirs, &[], system, host)
+    }
+
+    /// The same, with editable dictionaries mixed in by priority: `(path, name,
+    /// priority)` each, read as Plover JSON and written back there.
+    pub fn open_with(
+        dirs: &[PathBuf],
+        editable: &[(PathBuf, String, i64)],
+        system: &System,
+        host: &Capabilities,
+    ) -> Result<Stack, DictError> {
+        let mut dicts = Vec::with_capacity(dirs.len() + editable.len());
         for dir in dirs {
             let dict = Dict::open(dir, system, host)?;
             if dict.manifest.dict.system != system.name {
@@ -82,7 +179,10 @@ impl Stack {
                     have: system.name.clone(),
                 });
             }
-            dicts.push(dict);
+            dicts.push(Slot::Compiled(dict));
+        }
+        for (path, name, priority) in editable {
+            dicts.push(Slot::Editable(Editable::open(path, name, *priority, system)?));
         }
         dicts.sort_by_key(|d| -d.priority());
         Ok(Stack {
@@ -91,12 +191,20 @@ impl Stack {
         })
     }
 
-    pub fn dicts(&self) -> &[Dict] {
+    pub fn dicts(&self) -> &[Slot] {
         &self.dicts
     }
 
-    pub fn dict(&self, index: usize) -> &Dict {
+    pub fn dict(&self, index: usize) -> &Slot {
         &self.dicts[index]
+    }
+
+    /// The editable dictionary called `name`, for a host that has an entry to add.
+    pub fn editable(&self, name: &str) -> Option<&Editable> {
+        self.dicts
+            .iter()
+            .filter_map(Slot::editable)
+            .find(|e| e.name() == name)
     }
 
     pub fn session(&self) -> Session<'_> {
@@ -119,10 +227,19 @@ impl Stack {
         enabled: &[bool],
     ) -> Result<Option<stfst_core::Emission>, DictError> {
         let stroke = stfst_core::Stroke::EMPTY.with(key);
-        for (at, dict) in self.dicts.iter().enumerate() {
+        for (at, slot) in self.dicts.iter().enumerate() {
             if !enabled[at] {
                 continue;
             }
+            let dict = match slot {
+                Slot::Editable(editable) => {
+                    if let Some(record) = editable.lookup(&[stroke]) {
+                        return Ok(Some(stfst_core::Emission { record, state: None }));
+                    }
+                    continue;
+                }
+                Slot::Compiled(dict) => dict,
+            };
             let prefix = stfst_core::Prefix {
                 state: None,
                 context: context.select(dict.context()),

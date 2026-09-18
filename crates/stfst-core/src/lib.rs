@@ -9,6 +9,7 @@ pub mod golden;
 pub mod host;
 pub mod record;
 pub mod system;
+pub mod translate;
 pub mod window;
 
 pub use context::{Context, Prefix, State};

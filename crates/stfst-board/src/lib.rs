@@ -126,6 +126,9 @@ const SNAPS: usize = 64;
 struct Mark<'a> {
     units: usize,
     held: Option<Waiting<'a>>,
+    /// What [`Board::unit`] answered before this stroke, so taking the stroke
+    /// back takes the answer back with it.
+    unit: usize,
 }
 
 pub struct Board<'a> {
@@ -146,6 +149,13 @@ pub struct Board<'a> {
     /// later match supersedes its stroke, and the prefix check there skips it.
     snaps: VecDeque<String>,
     widest: usize,
+    /// A command the dictionary asked the *host* for, waiting to be taken.
+    /// Everything this board can do itself it has already done; what is left is
+    /// a request to the keyboard around it, like opening a dialog.
+    pending: Option<(String, String)>,
+    /// How many strokes the last match consumed, which is what "the last thing I
+    /// wrote" means to anything reaching back over it.
+    unit: usize,
 }
 
 impl<'a> Board<'a> {
@@ -160,6 +170,8 @@ impl<'a> Board<'a> {
             held: None,
             snaps: VecDeque::new(),
             widest: 0,
+            pending: None,
+            unit: 0,
         }
     }
 
@@ -181,6 +193,41 @@ impl<'a> Board<'a> {
     /// How many strokes have been read, and how wide the candidate set ever got.
     pub fn strokes(&self) -> usize {
         self.session.history().len()
+    }
+
+    /// How many strokes the last match consumed, capped by what there is.
+    pub fn unit(&self) -> usize {
+        self.unit.clamp(1, self.strokes().max(1)).min(self.strokes())
+    }
+
+    /// The last `strokes` strokes, as an outline.
+    pub fn tail(&self, strokes: usize) -> Outline {
+        let history = self.session.history();
+        let from = history.len().saturating_sub(strokes);
+        Outline(history[from..].to_vec())
+    }
+
+    /// A command this board did not carry out, for the host to answer. Taken
+    /// once: it is an event, not a state.
+    pub fn take_command(&mut self) -> Option<(String, String)> {
+        self.pending.take()
+    }
+
+    /// Take the last `strokes` back and make them again.
+    ///
+    /// What a definition made after the fact needs: the dictionaries have changed
+    /// under the history, so the strokes are read a second time and write what
+    /// they now mean, where they wrote what they used to.
+    pub fn restroke(&mut self, strokes: usize) -> Result<Vec<Step>, BoardError> {
+        let again: Vec<Stroke> = self.tail(strokes).0;
+        for _ in 0..again.len() {
+            self.undo();
+        }
+        let mut steps = Vec::new();
+        for stroke in again {
+            steps.extend(self.push(stroke)?);
+        }
+        Ok(steps)
     }
 
     pub fn widest(&self) -> usize {
@@ -250,6 +297,7 @@ impl<'a> Board<'a> {
         self.marks.push(Mark {
             units: self.text.units(),
             held: self.held.clone(),
+            unit: self.unit,
         });
         self.snaps.push_back(String::new());
         if self.snaps.len() > SNAPS {
@@ -325,6 +373,11 @@ impl<'a> Board<'a> {
                 "engine.undo" | "engine.repeat_stroke" | "engine.toggle_star"
             );
             if !engine {
+                // Not one this board can carry out, so it waits for the host. The
+                // stroke stays where it is: what a host does about its own command
+                // stroke is the host's business, and taking one back here moved a
+                // held frame that had nothing to do with it.
+                self.pending = Some((name.clone(), arg.clone()));
                 continue;
             }
             // Each one first takes its own stroke back: the command wrote nothing,
@@ -360,6 +413,7 @@ impl<'a> Board<'a> {
         let last_word = self.text.last_word_case();
         self.session.context_mut().set("W1", last_word);
 
+        self.unit = m.strokes;
         let outcome = Outcome::Match {
             strokes: m.strokes,
             dict: dict.name().to_string(),
@@ -415,6 +469,7 @@ impl<'a> Board<'a> {
             return;
         };
         self.held = mark.held;
+        self.unit = mark.unit;
         self.snaps.pop_back();
         while self.text.units() > mark.units {
             self.text.undo();

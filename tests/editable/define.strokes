@@ -1,0 +1,10 @@
+! Defining an outline after it has already written something.
+! `!define` is what the keyboard's add-outline panel does: put the entry in the
+! editable dictionary and make the strokes again, so the text it wrote becomes
+! the text it now means. An empty translation deletes the entry.
+HRAOEUBG
+TAEUP
+!define TAEUP sticky tape
+TAEUP
+!define TAEUP
+TAEUP
