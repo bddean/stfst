@@ -7,9 +7,10 @@ walking its own set of nested rings through its half of the steno order.
 
 **Entering a live cell takes it.** Everything else on the board is ground.
 
-A cell is live while steno order still allows its key. It is ground once you
-have taken it, once the order has passed it, when it holds no key, and when it
-is the hub and you have left it.
+A cell is live while steno order still allows its key. It is ground once the
+order has passed it, when it holds no key, and when it is the hub and you have
+left it. A cell holding a key already in hand is the one exception, and it flips
+its ring's modifier.
 
 Touch down on the key you want, slide through the cells you want, and lift.
 Lifting either thumb writes the stroke. Nothing waits on time, distance or
@@ -21,6 +22,11 @@ rules are consequences of the one:
 - turning through a ring adds keys, because you cross them;
 - the shortcut is the middle. Two cells far apart on one ring are joined by a
   straight line through the hub, and the hub is ground.
+
+A tap is aimed before the thumb lands, so one that falls short takes the key it
+was aimed at rather than nothing. Only the corners outside the rings are bare,
+which is what leaves a double tap and a long press somewhere to be made with no
+key under them.
 
 A flat board needs portals to reach a key many cells ahead in one motion. A
 ring has a middle, so the portals, the strides, the holes and the detached
@@ -78,36 +84,37 @@ right. A tap arms one for the next stroke; holding it puts it in the stroke in
 hand, the way any cell does. `+` is the exception: it is a float, so it can sit
 on ring 2 among keys it can never spend.
 
-## The two moves no chord makes
+## A cell already taken flips its ring
 
-Ring 2 is the last of the walk and its keys repeat round it, so a chord neither
-turns backwards out there nor comes back in. Those two moves are free to mean
-something else, and each takes a modifier:
+Entering a cell whose key is **already in hand** takes nothing, because a key
+comes once. That entry is therefore free to mean something else, and what it
+means is a modifier: each ring names one key, and entering a spent cell of that
+ring flips it in or out of the stroke in hand.
 
-| | |
-|---|---|
-| **turn back** past a whole cell of ring 2 | `^` on the left, `*` on the right |
-| **pull in** off ring 2 | `#` on the left, `@` on the right |
+```
+ring 1  # on the left, @ on the right
+ring 2  ^ on the left, * on the right
+```
 
-**Taking a key is what says a move is the chord**, so neither fires on one. A
-thumb that overshoots ring 1 and pulls back onto the key it wanted takes the
-key; a thumb that turns back onto a key takes the key. What is left is the
-ground, and the ground inside the ring runs all the way round, so either move
-can be made with no key held at all — which is what puts a modifier one flick
-away rather than one trip.
+So a thumb out on ring 2 that turns back onto the vowel it just took flips `^`,
+and one that pulls in onto the ring 1 key it started from flips `#`. Those are
+the turn back and the pull in, and they are no longer gestures: nothing measures
+how far the turn went or which way it came, because entering a cell is entering
+a cell. A second entry flips it back, which is what the upgrade's stud already
+did.
 
-A turn back is a whole cell rather than a step, because one step back is how the
-stud behind a key is reached.
+A cell **steno order merely passed** stays ground. A chord turns back over those
+all the time to reach a key the ring keeps on the far side, and that route is
+most of what the ring order buys. The cell a thumb has been through is the one
+it can mean something by entering again.
 
-While a thumb is out on ring 2 the board draws both moves from where it is to
-where each would fire, and draws one only when the way is clear: the hint asks
-the same function the move does, so it cannot promise a move the thumb cannot
-make. The row carries the same two marks under the keys they take.
+The board says so: a spent cell is labelled with the key it flips rather than
+with its own key struck out, and it is drawn held once that key is in hand.
 
 Two older shortcuts remain. **Two quick taps** add the side's double-tap key, so
-tap tap on `-T` releases as `-*T`. **Standing still** on a cell adds the side's
-long-press key, which is off by default now that the two moves reach the same
-modifiers without waiting.
+tap tap on `-T` releases as `-*T`. **Standing still** adds the side's long-press
+key, which is off by default now that a spent cell reaches the same modifiers
+without waiting.
 
 ## The upgrade
 
@@ -153,6 +160,7 @@ from that text:
 | a duplicate | the same key in two slots. Nothing special: a key is a set of cells |
 | a spoke | every angle a ring marks out, each slot's middle and each boundary's |
 | the hub is tap-only | it is level 0. Landing on a slice takes the slice; entering it from a ring takes nothing |
+| a spent cell | one holding a key already in hand. Entering it flips its ring's own key, which `The spent cells` names |
 | a stud | a slot no walk can spend: a float, or the upgrade, which `>` names. Drawn as a circle a hair outside its band, so a thumb turning along the ring passes under it |
 | the turn | a ring holding a whole number of groups per key of ring 1 takes ring 1's angles; one that does not divide is staggered half a slot instead |
 
@@ -213,15 +221,20 @@ second motion, not a failure.
 
 | | |
 |---|---|
-| left, `P H R W K`, `S T` in the hub | 93.3% |
-| left, steno order round the ring | 70.7% |
-| right ring 1, `F R B G L P` | 97.2% |
+| left, `P H R W K`, `S T` in the hub | 89.7% |
+| right ring 1, `F R B G L P` | 91.9% |
 | right pinky combinations | 100%: the upgrade costs no motion at all |
+
+Both shares are what the modifier on ring 1 costs. A cell holding a key in hand
+flips rather than being ground, so a route may not go back over one, and that is
+worth 3.6 points on the left and 5.3 on the right against a ring 1 that flips
+nothing. Ring 2 is free, being the end of the walk. Set `The spent cells` to
+`. . ^` to have the motions back and reach `#` through the row.
 
 `RingTest.the_order_is_the_one_measured` recomputes those shares from the
 checked-in corpus and fails if any other arrangement of the same keys round the
-same ring writes more of it in one motion. The residual is `PR KR KH KHR TKR
-TPR` on the left and `FL RG RL` on the right.
+same ring writes more of it in one motion. The heaviest of the residual is `PR
+TKPW KR KH KHR` on the left and `PBLG RPB RL RG FPB` on the right.
 
 `Ring.path` is where the claim lives: the stops a thumb makes to write a chord,
 found by searching the spokes for a route that crosses nothing live the chord
@@ -276,11 +289,20 @@ never left sitting over this one.
 
 ## One thumb, both banks
 
-A touch that arrives in the other bank's field is handed over to it, and the
-bank it leaves keeps what it took. So one hand can write a whole stroke,
-slowly, by walking one bank and then the other. It happens only while the other
-thumb is up, so two hands never meet it. `One thumb walks both banks` turns it
-off.
+One hand writes a whole stroke, and `Crossing the middle` is how.
+
+**Swap** turns the board round rather than making the thumb travel. A touch that
+crosses the middle ends there: it writes nothing, the keys it took stay in hand,
+and the two halves of the glass change places, so the next touch — in the same
+half, where the thumb already is — walks the other bank. Writing the stroke puts
+the halves back. What a stroke costs one hand is therefore two touches and a
+flick past the middle, not a reach across the glass.
+
+**Carry** hands the touch itself over, so the thumb crosses into the other
+field and keeps sliding, and the bank it leaves keeps what it took.
+
+Either way it happens only while the other thumb is up, so two hands never meet
+it.
 
 ## The preview over the app
 
@@ -341,7 +363,13 @@ a key is not undoing anything, so a tap on `*` has to write it.
 Two quick taps add the side's double-tap key on top of the key under them, so
 tap tap on `-T` releases as `-*T`, and a touch that stands still adds the
 side's long-press key. Both are shortcuts past the row, and both still carry
-`*` and `+`.
+`*` and `+`. A key armed while its own thumb is still down is held rather than
+armed, so it stays over a run of taps by the other hand.
+
+`The wait starts` says which clock a long press keeps. From the touch going
+down, a press is a tap held and moving off the spot gives it up. From the last
+movement it is a stall: the thumb may walk as far as it likes and then stand
+still, wherever it has arrived.
 
 ## The buzzes
 

@@ -38,22 +38,19 @@ data class Config(
      */
     var floats: String = "\uD83E\uDD90#@^+*",
     /**
-     * The key a backwards turn round the outer ring takes, per bank.
+     * The key a spent cell of each ring flips, outward from the hub, a dot for
+     * none.
      *
-     * The outer ring is the last of the walk, and its keys repeat round it, so
-     * a chord never has to turn backwards there. A turn that takes nothing is
-     * therefore free to mean something else.
-     */
-    var turnBackLeft: Char = '^',
-    var turnBackRight: Char = '*',
-    /**
-     * The key a pull inwards off the outer ring takes, per bank.
+     * A cell holding a key already in hand is one the thumb has been through,
+     * so entering it again is a place no chord goes and is free to mean
+     * something else: it flips its ring's key in or out of the stroke in hand,
+     * the way the upgrade's stud turns over rather than being spent.
      *
-     * Nothing inside the outer ring is still live once the thumb is out there,
-     * so a pull back in is the second motion no chord needs.
+     * A cell steno order merely passed stays ground, because turning back over
+     * those is how a chord reaches a key the ring keeps on the far side.
      */
-    var pullInLeft: Char = '#',
-    var pullInRight: Char = '@',
+    var deadLeft: String = ". # ^",
+    var deadRight: String = ". @ *",
     /**
      * The upgrade: what each key becomes while it is on, in pairs.
      *
@@ -165,6 +162,22 @@ data class Config(
     var longPressRight: Char = '*',
     /** How long a touch must stand still on its cell to count as a long press. */
     var longPressMs: Long = 400L,
+    /**
+     * What the long press waits from: [TOUCHDOWN] or [STILLNESS].
+     *
+     * From the touch going down, a press is a tap held, and moving off the spot
+     * gives it up. From the last movement, it is a stall: the thumb may walk as
+     * far as it likes and then stand still, wherever it has arrived.
+     */
+    var longPressFrom: String = TOUCHDOWN,
+    /**
+     * A tap that lands on ground takes the nearest key instead of nothing.
+     *
+     * A tap is aimed before the thumb lands, so ground between the keys buys it
+     * nothing. Only the corners outside the rings are left bare, which is what
+     * reserves a double tap and a long press with no key under them.
+     */
+    var tapSnap: Boolean = true,
 
     /**
      * Lifting one thumb writes the stroke, and the thumb still down keeps its
@@ -224,11 +237,6 @@ data class Config(
     var dither: Boolean = true,
     var grainFine: Float = 0.019f,
     var grainCoarse: Float = 0.026f,
-    /**
-     * Draw the two moves off the outer ring, from where the thumb is to where
-     * each would fire, and mark the row keys they take.
-     */
-    var showMoves: Boolean = true,
     /** The row of modifiers under the rings. Off gives its depth to the rings. */
     var showRow: Boolean = true,
     /**
@@ -254,13 +262,15 @@ data class Config(
     var touchReadout: Boolean = false,
 
     /**
-     * A touch that arrives in the other bank's field is handed over to it.
+     * What one thumb crossing the middle of the board does: [SWAP] or [CARRY].
      *
-     * The bank it leaves keeps what it took, so one hand can write a whole
-     * stroke, slowly. It happens only while the other thumb is up, so two hands
-     * never meet it.
+     * Either way one hand writes a whole stroke and the keys already taken stay
+     * in hand. [SWAP] turns the board round instead of making the thumb travel:
+     * the crossing ends the touch without writing, and the next touch, in the
+     * same half of the glass, walks the other bank. [CARRY] hands the touch
+     * itself over, so the thumb reaches across and keeps sliding.
      */
-    var oneThumb: Boolean = true,
+    var crossMiddle: String = SWAP,
     /** Where the left field ends and the right begins, in portrait. */
     var fieldSplit: Float = 0.5f,
     /** The ground kept round each bank, as a share of its field's width. */
@@ -358,15 +368,26 @@ data class Config(
 
     fun ring(bank: Bank): String = if (bank == Bank.LEFT) ringLeft else ringRight
 
-    fun turnBack(bank: Bank): Char = if (bank == Bank.LEFT) turnBackLeft else turnBackRight
-
-    fun pullIn(bank: Bank): Char = if (bank == Bank.LEFT) pullInLeft else pullInRight
+    /** The key a spent cell of each ring flips, outward from the hub. */
+    fun dead(bank: Bank): String = if (bank == Bank.LEFT) deadLeft else deadRight
 
     fun radii(bank: Bank): String = if (bank == Bank.LEFT) radiiLeft else radiiRight
 
     companion object {
         /** No key: what a shortcut is set to when it is off. */
         const val NONE: Char = ' '
+
+        /** Crossing the middle swaps the two halves for the next stroke. */
+        const val SWAP = "swap"
+
+        /** Crossing the middle hands the touch to the bank it arrives in. */
+        const val CARRY = "carry"
+
+        /** The long press waits from the touch going down. */
+        const val TOUCHDOWN = "touchdown"
+
+        /** The long press waits from the last movement, so it is a stall. */
+        const val STILLNESS = "stillness"
     }
 }
 

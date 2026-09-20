@@ -142,12 +142,16 @@ class RingTest {
      * arrangement of the same keys writes more of it in one motion.
      *
      * Recomputed rather than asserted, so a layout change answers for itself.
+     * What the shares themselves are is what the modifier on ring 1 costs: a
+     * cell holding a key in hand flips rather than being ground, so a route may
+     * not go back over one, and that is worth 3.6 points on the left and 5.3 on
+     * the right. Ring 2 costs nothing, being the end of the walk.
      */
     @Test
     fun the_order_is_the_one_measured() {
         val left = corpus("L")
         val shippedLeft = share(ring, Bank.LEFT, left)
-        assertTrue("the left bank writes ${pct(shippedLeft)} in one motion", shippedLeft > 0.9)
+        assertTrue("the left bank writes ${pct(shippedLeft)} in one motion", shippedLeft > 0.89)
         for (order in arrangements("PHRWK")) {
             val config = config.copy(ringLeft = "S/ST/T $order AOAOAO")
             val other = share(Ring(ORDER, config), Bank.LEFT, left)
@@ -159,7 +163,7 @@ class RingTest {
 
         val right = corpus("R1")
         val shippedRight = share(ring, Bank.RIGHT, right)
-        assertTrue("the right ring writes ${pct(shippedRight)} in one motion", shippedRight > 0.95)
+        assertTrue("the right ring writes ${pct(shippedRight)} in one motion", shippedRight > 0.91)
         for (order in arrangements("frbglp")) {
             val config = config.copy(ringRight = "E/EU/U $order tststs")
             val other = share(Ring(ORDER, config), Bank.RIGHT, right)

@@ -114,14 +114,14 @@ class PreviewTest {
             val at = ring.middle(Bank.RIGHT, field, stud)
             send(view, MotionEvent.ACTION_DOWN, at.x, at.y)
         }
-        // The gestures are drawn where the thumb would make them, so the shot
-        // that shows them is one with a thumb out on the rim.
-        shoot("gestures", tall, shot) { view ->
-            val ring = ring()
-            val field = bank(view, tall, Bank.LEFT)
-            val (inner, rim) = ring.edges(Bank.LEFT, ring.outer(Bank.LEFT))
-            val at = ring.point(Bank.LEFT, field, Polar(inner + (rim - inner) * 0.2f, 150f))
-            send(view, MotionEvent.ACTION_DOWN, at.x, at.y)
+        // A thumb back on the key it took: the cell says what entering it would
+        // flip, and it is filled because entering it would do something.
+        shoot("flip", tall, shot) { view ->
+            val h = at(view, tall, 'H', 1)
+            val a = at(view, tall, 'A', 2)
+            send(view, MotionEvent.ACTION_DOWN, h.x, h.y)
+            send(view, MotionEvent.ACTION_MOVE, a.x, a.y)
+            send(view, MotionEvent.ACTION_MOVE, h.x, h.y)
         }
         shoot("armed", tall, shot) { view ->
             val p = at(view, tall, '#', Cell.ROW)

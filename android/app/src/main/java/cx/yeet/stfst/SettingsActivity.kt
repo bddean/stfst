@@ -249,11 +249,11 @@ class SettingsActivity : Activity() {
             "Lifting either thumb writes the stroke. A lift writes only when a key " +
                 "has been taken since the last one, because keeping keys and asking " +
                 "for a stroke are different things.\n\n" +
-                "Ring 2 is the last of the walk and its keys repeat round it, so a " +
-                "chord neither turns backwards out there nor comes back in. Those " +
-                "two moves are free to mean something else, and each takes a key. " +
-                "Taking a key is what says a move is the chord, so neither fires on " +
-                "one.",
+                "A cell the walk has spent is a place a chord never enters again, so " +
+                "entering one is free to mean something else: it flips its ring's " +
+                "key in or out of the stroke in hand. The board says so by labelling " +
+                "a spent cell with what it flips rather than striking its own key " +
+                "out, and a second entry flips it back.",
             knobs = listOf(
                 Flag(
                     "Write on the first lift", { it.commitOnFirstLift },
@@ -263,12 +263,18 @@ class SettingsActivity : Activity() {
                         "costs one right-hand motion, not one per word. Off waits " +
                         "for both thumbs.",
                 ),
-                Flag(
-                    "One thumb walks both banks", { it.oneThumb }, { c, v -> c.oneThumb = v },
-                    "a touch that arrives in the other field is handed over to it",
-                    "The bank it leaves keeps what it took, so one hand can write a " +
-                        "whole stroke, slowly. It happens only while the other " +
-                        "thumb is up, so two hands never meet it.",
+                Pick(
+                    "Crossing the middle",
+                    Side({ it.crossMiddle }, { c, v -> c.crossMiddle = v }),
+                    options = { listOf(Config.SWAP, Config.CARRY) },
+                    note = "how one thumb writes both halves of a stroke",
+                    prose = "Swap turns the board round rather than making the thumb " +
+                        "travel: crossing the middle ends the touch without " +
+                        "writing, the keys stay in hand, and the next touch, in " +
+                        "the same half of the glass, walks the other bank. Carry " +
+                        "hands the touch itself over, so the thumb reaches across " +
+                        "and keeps sliding. Either way it happens only while the " +
+                        "other thumb is up.",
                 ),
                 Text(
                     "Armed keys",
@@ -279,34 +285,26 @@ class SettingsActivity : Activity() {
                         "among them: a bare * is the undo stroke, and arming a key " +
                         "is not undoing anything, so a tap on it has to write it.",
                 ),
-                Pick(
-                    "Turn back",
-                    Side({ it.turnBackLeft.toString() },
-                        { c, v -> c.turnBackLeft = v.firstOrNull() ?: Config.NONE }),
-                    Side({ it.turnBackRight.toString() },
-                        { c, v -> c.turnBackRight = v.firstOrNull() ?: Config.NONE }),
-                    options = { candidates() },
-                    note = "the key a turn back past a whole cell of the outer ring takes",
-                    prose = "A turn back is a whole cell rather than a step, because " +
-                        "one step back is how the stud behind a key is reached. The " +
-                        "ground inside the ring runs all the way round, so the move " +
-                        "can be made with no key held at all.",
-                ),
-                Pick(
-                    "Pull in",
-                    Side({ it.pullInLeft.toString() },
-                        { c, v -> c.pullInLeft = v.firstOrNull() ?: Config.NONE }),
-                    Side({ it.pullInRight.toString() },
-                        { c, v -> c.pullInRight = v.firstOrNull() ?: Config.NONE }),
-                    options = { candidates() },
-                    note = "the key a pull back in off the outer ring takes",
+                Text(
+                    "The spent cells",
+                    Side({ it.deadLeft }, { c, v -> c.deadLeft = v }),
+                    Side({ it.deadRight }, { c, v -> c.deadRight = v }),
+                    note = "the key each ring's spent cells flip, outward, a dot for none",
+                    prose = "One word per ring, the hub first. Turning back over a key " +
+                        "the walk has passed, or back onto one already in hand, " +
+                        "flips that ring's key; so does pulling in off a ring, " +
+                        "because everything inside it is spent by then. Nothing " +
+                        "waits on how far the turn went, which is what the two " +
+                        "gestures this replaces had to measure.",
                 ),
                 Flag(
-                    "Draw the two moves", { it.showMoves }, { c, v -> c.showMoves = v },
-                    "from where the thumb is to where each would fire",
-                    "The hint asks the same function the move does, so it cannot " +
-                        "promise a move the thumb cannot make. The row carries the " +
-                        "same two marks under the keys they take.",
+                    "Snap a tap to the nearest key", { it.tapSnap },
+                    { c, v -> c.tapSnap = v },
+                    "a tap that lands on ground takes the key it was aimed at",
+                    "A tap is aimed before the thumb lands, so the ground between the " +
+                        "keys buys it nothing. Only the corners outside the rings " +
+                        "stay bare, which is what leaves a double tap and a long " +
+                        "press somewhere to be made with no key under them.",
                 ),
                 Switch(
                     "Double taps", { it.doubleTaps }, { c, v -> c.doubleTaps = v },
@@ -333,8 +331,8 @@ class SettingsActivity : Activity() {
                     "Long presses", { it.longPresses }, { c, v -> c.longPresses = v },
                     "a touch standing still on its cell adds a key",
                     "The other way to a modifier without a trip to the row. Off by " +
-                        "default, now that the two moves off the outer ring reach " +
-                        "the same modifiers without waiting.",
+                        "default, now that a spent cell reaches the same modifiers " +
+                        "without waiting.",
                     knobs = listOf(
                         Pick(
                             "The key",
@@ -347,6 +345,17 @@ class SettingsActivity : Activity() {
                         Range(
                             "The wait", 120f, 900f, { it.longPressMs.toFloat() },
                             { c, v -> c.longPressMs = v.toLong() }, unit = "ms",
+                        ),
+                        Pick(
+                            "The wait starts",
+                            Side({ it.longPressFrom }, { c, v -> c.longPressFrom = v }),
+                            options = { listOf(Config.TOUCHDOWN, Config.STILLNESS) },
+                            note = "from the touch going down, or from its last movement",
+                            prose = "From the touch going down, a press is a tap held, " +
+                                "and moving off the spot gives it up. From the last " +
+                                "movement it is a stall: the thumb may walk as far " +
+                                "as it likes and then stand still, wherever it has " +
+                                "arrived.",
                         ),
                     ),
                 ),

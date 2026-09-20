@@ -32,24 +32,6 @@ class Thumb(val bank: Bank) {
      */
     var cell: Cell? = null
 
-    /**
-     * The region the thumb is in: the same band and slot, whether or not it is
-     * on the key.
-     *
-     * A cell is what the thumb takes; a region is what it crosses, and the
-     * gestures are read from the crossings a chord never needs.
-     */
-    var region: Cell? = null
-
-    /**
-     * How many slots the thumb has turned backwards round the outer ring since
-     * it last took anything.
-     *
-     * One slot back is how the outer ring's studs are reached, so the gesture
-     * is a turn back past a whole cell rather than a single step.
-     */
-    var back: Int = 0
-
     val down: Boolean get() = pointer != NONE
 
     /** Give up the keys in hand, and what the upgrade was doing to them. */
@@ -62,17 +44,12 @@ class Thumb(val bank: Bank) {
         pointer = NONE
         live = false
         cell = null
-        region = null
-        back = 0
     }
 
     companion object {
         const val NONE = -1
     }
 }
-
-/** How far back a turn goes before it means a modifier: past a whole cell. */
-private const val WHOLE = 2
 
 /**
  * Two thumbs, each walking its own rings, and the rule that turns them into
@@ -145,7 +122,25 @@ class Chorder(
      */
     private var pending = false
 
+    /**
+     * Whether the two halves of the glass are the other way round.
+     *
+     * One hand writes a whole stroke by turning the board rather than by
+     * reaching across it: crossing the middle swaps the halves, and the next
+     * touch walks the other bank where the thumb already is. It lasts one
+     * stroke, because that is what it was for.
+     */
+    var swapped = false
+        private set
+
+    /** Each half of the glass, kept so the swap can reseat both thumbs. */
+    private val fields = mutableMapOf<Bank, Field>()
+
     fun thumb(bank: Bank) = if (bank == Bank.LEFT) left else right
+
+    /** The bank a half of the glass walks now, which the swap turns round. */
+    fun bankFor(side: Bank): Bank =
+        if (swapped) (if (side == Bank.LEFT) Bank.RIGHT else Bank.LEFT) else side
 
     fun forPointer(pointer: Int): Thumb? = when (pointer) {
         left.pointer -> left
@@ -153,9 +148,36 @@ class Chorder(
         else -> null
     }
 
-    /** Give a thumb its half of the keyboard. */
-    fun place(bank: Bank, field: Field) {
-        thumb(bank).field = field
+    /** Give a half of the keyboard to the thumb that walks it. */
+    fun place(side: Bank, field: Field) {
+        fields[side] = field
+        thumb(bankFor(side)).field = field
+    }
+
+    /**
+     * Turn the two halves round, keeping in hand what has been taken.
+     *
+     * This is a touch crossing the middle. The touch itself is over: it wrote
+     * nothing, because a stroke half taken is not a stroke, and the keys wait
+     * for the next touch, which walks the other bank.
+     */
+    fun swap(pointer: Int): Boolean {
+        val thumb = forPointer(pointer) ?: return false
+        thumb.release()
+        swapped = !swapped
+        seat()
+        return true
+    }
+
+    /** Put the halves back, which is what writing the stroke does. */
+    private fun unswap() {
+        if (!swapped) return
+        swapped = false
+        seat()
+    }
+
+    private fun seat() {
+        for ((side, field) in fields) thumb(bankFor(side)).field = field
     }
 
     /**
@@ -168,7 +190,7 @@ class Chorder(
         val thumb = thumb(bank)
         if (thumb.down) return false
         thumb.release()
-        return land(thumb, pointer, x, y)
+        return land(thumb, pointer, x, y, snap = true)
     }
 
     /**
@@ -178,14 +200,15 @@ class Chorder(
      * slice. It is the only way into the hub that takes anything: crossing it
      * later takes nothing, which is what makes the middle a shortcut.
      */
-    private fun land(thumb: Thumb, pointer: Int, x: Float, y: Float): Boolean {
+    private fun land(
+        thumb: Thumb, pointer: Int, x: Float, y: Float, snap: Boolean,
+    ): Boolean {
         thumb.pointer = pointer
         thumb.live = true
         thumb.atX = x
         thumb.atY = y
-        val cell = ring.hit(thumb.bank, thumb.field, x, y)
+        val cell = if (snap) aim(thumb, x, y) else ring.hit(thumb.bank, thumb.field, x, y)
         thumb.cell = cell
-        thumb.region = ring.region(thumb.bank, thumb.field, x, y)
         if (ring.isUpgrade(thumb.bank, cell)) return turn()
         return take(thumb, ring.taking(thumb.bank, cell, thumb.keys))
     }
@@ -196,7 +219,7 @@ class Chorder(
      * The whole rule: entering a live cell takes it. No gate waits on time,
      * distance or turning, because a cell is a place and not a direction. Asked
      * once per entry, so standing in a cell does not take through it twice, and
-     * a spent cell is ground.
+     * a cell the walk has spent flips its ring's key instead.
      *
      * The hub is ground once the thumb has left it, so a chord through the
      * middle joins two cells too far apart on one ring to reach any other way.
@@ -205,53 +228,51 @@ class Chorder(
         val thumb = forPointer(pointer) ?: return false
         thumb.atX = x
         thumb.atY = y
-        val was = thumb.region
-        val region = ring.region(thumb.bank, thumb.field, x, y)
-        thumb.region = region
         val now = ring.hit(thumb.bank, thumb.field, x, y)
         val entered = now != thumb.cell
         thumb.cell = now
-        val took = when {
+        return when {
             !entered || ring.isHub(now) -> false
             ring.isUpgrade(thumb.bank, now) -> turn()
-            else -> take(thumb, ring.taking(thumb.bank, now, thumb.keys))
+            else -> take(thumb, ring.taking(thumb.bank, now, thumb.keys)) || flip(thumb, now)
         }
-        // A move that takes nothing is where a gesture can live, because a
-        // chord never spends one.
-        return if (took) true else gesture(thumb, was, region)
     }
 
     /**
-     * The two moves round the outer ring no chord ever needs, each taking the
-     * key its bank names.
+     * The cell a touch coming down means, which is the nearest one when it
+     * lands on ground.
      *
-     * The outer ring is the last of the walk and its keys repeat round it, so a
-     * chord neither turns backwards out there nor comes back in. A move that
-     * takes a key is the chord being written, so neither is read off one.
+     * A tap is aimed before the thumb arrives, so a tap short of its key is the
+     * aim and not an answer. A slide is read where it goes, so this is for a
+     * touch going down alone.
      */
-    private fun gesture(thumb: Thumb, was: Cell?, now: Cell): Boolean {
-        val outer = ring.outer(thumb.bank)
-        if (was == null || was.level != outer || was.slot < 0 || now == was) return false
-        val turned = if (now.level == outer && now.slot >= 0) {
-            backwards(thumb.bank, was.slot, now.slot)
-        } else 0
-        thumb.back = if (turned > 0) thumb.back + turned else 0
-        val key = when {
-            thumb.back >= WHOLE -> config.turnBack(thumb.bank)
-            now.level in 0 until outer -> config.pullIn(thumb.bank)
-            else -> return false
-        }
-        val index = ring.keys.indexOf(key)
-        if (index < 0 || !ring.live(index, thumb.keys)) return false
-        return take(thumb, listOf(index))
+    private fun aim(thumb: Thumb, x: Float, y: Float): Cell {
+        val cell = ring.hit(thumb.bank, thumb.field, x, y)
+        if (!config.tapSnap) return cell
+        if (ring.keys(thumb.bank, cell).isNotEmpty() || ring.isUpgrade(thumb.bank, cell)) return cell
+        return ring.nearest(thumb.bank, thumb.field, x, y) ?: cell
     }
 
-    /** How many slots backwards the shorter way round runs, zero for forwards. */
-    private fun backwards(bank: Bank, from: Int, to: Int): Int {
-        val slots = ring.slots(bank, ring.outer(bank))
-        if (slots == 0 || from == to) return 0
-        val step = ((to - from) % slots + slots) % slots
-        return if (step > slots / 2) slots - step else 0
+    /**
+     * A cell the walk can no longer spend flips its ring's key, in or out of
+     * the stroke in hand.
+     *
+     * Entering it is a place a chord never goes, so it is free to mean
+     * something else, and a flip rather than a take is what lets a thumb that
+     * turned back too far turn back again.
+     */
+    private fun flip(thumb: Thumb, cell: Cell): Boolean {
+        val key = ring.flip(thumb.bank, cell, thumb.keys)
+        if (key < 0) return false
+        if (thumb.keys.contains(key)) {
+            thumb.keys.removeAll { it == key }
+            thumb.raised.remove(key)
+        } else {
+            thumb.keys.add(key)
+            if (upgrade) thumb.raised.add(key)
+        }
+        pending = true
+        return true
     }
 
     /**
@@ -267,7 +288,7 @@ class Chorder(
         val to = thumb(into)
         if (from === to || to.down) return false
         from.release()
-        return land(to, pointer, x, y)
+        return land(to, pointer, x, y, snap = false)
     }
 
     /**
@@ -337,13 +358,21 @@ class Chorder(
     }
 
     private fun emit(stroke: Long) {
+        // An armed key whose thumb is still down is held rather than armed, so
+        // it outlives the stroke the way the keys that thumb took do.
+        for (key in sticky) {
+            val thumb = ring.bankOf(key)?.let { thumb(it) } ?: continue
+            if (thumb.down && key !in thumb.keys) thumb.keys.add(key)
+        }
         sticky.clear()
         upgrade = false
+        unswap()
         write(stroke)
     }
 
     /** Give up everything, for a keyboard that is going away. */
     fun reset() {
+        unswap()
         pending = false
         held = 0L
         upgrade = false
@@ -366,7 +395,6 @@ class Chorder(
 
     private fun take(thumb: Thumb, keys: List<Int>): Boolean {
         if (keys.isEmpty()) return false
-        thumb.back = 0
         thumb.keys.addAll(keys)
         if (upgrade) thumb.raised.addAll(keys)
         pending = true

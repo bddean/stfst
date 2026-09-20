@@ -99,6 +99,8 @@ class Ring(val order: String, val config: Config) {
         free: Set<Int>,
         /** The modifiers under the rings, one to a slot, left to right. */
         val row: List<Slot>,
+        /** The key a spent cell of each band flips, or -1 for a band with none. */
+        val mods: List<Int>,
         val radii: List<Float>,
         val dir: Float,
     ) {
@@ -136,6 +138,7 @@ class Ring(val order: String, val config: Config) {
             bands,
             allFloats,
             row(if (config.showRow) config.mods(bank) else ""),
+            mods(config.dead(bank), bands.size),
             radii(config.radii(bank), bands.size),
             if (bank == Bank.LEFT) 1f else -1f,
         )
@@ -176,6 +179,17 @@ class Ring(val order: String, val config: Config) {
 
     private fun keysOf(text: String): List<Int> =
         Keys.split(text).mapNotNull { keys.indexOf(it).takeIf { i -> i >= 0 } }
+
+    /**
+     * The key a spent cell of each band flips, outward from the hub.
+     *
+     * One word per band, a dot for a band whose spent cells are ground. A band
+     * the text runs out before gets none.
+     */
+    private fun mods(text: String, bands: Int): List<Int> {
+        val given = text.trim().split(WORDS).map { keysOf(it).firstOrNull() ?: -1 }
+        return List(bands) { given.getOrElse(it) { -1 } }
+    }
 
     /** The radii between the bands, outward, as fractions of the bank's reach. */
     private fun radii(text: String, bands: Int): List<Float> {
@@ -246,6 +260,27 @@ class Ring(val order: String, val config: Config) {
     /** The keys entering this cell takes now, which is what is live in it. */
     fun taking(bank: Bank, cell: Cell, taken: List<Int>): List<Int> =
         keys(bank, cell).filter { live(it, taken) }
+
+    /**
+     * The key entering this cell flips, or -1 where entering it is nothing.
+     *
+     * A cell holding a key already in hand is one the walk has been through,
+     * so entering it again is a place no chord goes and it carries its ring's
+     * modifier instead. A cell the order merely passed stays ground: a chord
+     * turns back over those to reach a key the ring keeps on the far side, and
+     * that route is most of what the ring order buys.
+     *
+     * The upgrade's stud is the same idea with its own key, and the row and the
+     * hub are neither.
+     */
+    fun flip(bank: Bank, cell: Cell, taken: List<Int>): Int {
+        if (cell.isRow || cell.level < 1 || cell.slot < 0) return -1
+        val lay = banks.getValue(bank)
+        val slot = slotOf(bank, cell) ?: return -1
+        if (slot.upgrade || slot.keys.isEmpty()) return -1
+        if (!slot.keys.all { it in taken }) return -1
+        return lay.mods.getOrElse(cell.level) { -1 }
+    }
 
     // ---- the bank in its field ---------------------------------------------
 
@@ -484,11 +519,10 @@ class Ring(val order: String, val config: Config) {
      * The slot a place falls in whether or not it is on the key: the band, and
      * the nearest slot round it.
      *
-     * [cellAt] answers a place off a key body with a slot of -1, because a cell
-     * is what a thumb takes. This is what it crosses, which is what a gesture
-     * over the ground is read from.
+     * [cellAt] narrows this to the key body, because a cell is what a thumb
+     * takes; the slot is what holds it.
      */
-    fun regionAt(bank: Bank, at: Polar): Cell {
+    private fun regionAt(bank: Bank, at: Polar): Cell {
         val lay = banks.getValue(bank)
         if (at.r > 1f) return Cell(lay.bands.size, -1)
         if (at.r <= lay.radii[1]) return Cell(0, slotAt(lay.bands[0], at.deg))
@@ -498,12 +532,20 @@ class Ring(val order: String, val config: Config) {
         return Cell(level, slotAt(lay.bands[level], at.deg))
     }
 
-    /** The same, read off the glass: the row is one region of its own. */
-    fun region(bank: Bank, field: Field, x: Float, y: Float): Cell {
-        if (banks.getValue(bank).row.isNotEmpty() && y >= rings(bank, field).bottom) {
-            return hit(bank, field, x, y)
+    /**
+     * The cell nearest this touch, or null where the rings do not reach.
+     *
+     * A tap is aimed before the thumb lands, so the ground between the keys is
+     * the aim falling short rather than an answer of its own. Outside the rings
+     * there is nothing to fall short of, which is what leaves the corners of
+     * the bank bare for a tap that wants no key under it.
+     */
+    fun nearest(bank: Bank, field: Field, x: Float, y: Float): Cell? {
+        if (polar(bank, field, x, y).r > 1f) return null
+        return cells(bank).filter { !it.isRow }.minByOrNull {
+            val at = middle(bank, field, it)
+            hypot(at.x - x, at.y - y)
         }
-        return regionAt(bank, polar(bank, field, x, y))
     }
 
     /** A band's inner and outer edge, as fractions of the bank's reach. */
@@ -514,10 +556,6 @@ class Ring(val order: String, val config: Config) {
 
     /** The outermost ring: the last band of the walk. */
     fun outer(bank: Bank): Int = banks.getValue(bank).bands.size - 1
-
-    /** How many slots a band is cut into, which is what a turn counts. */
-    fun slots(bank: Bank, level: Int): Int =
-        banks.getValue(bank).bands.getOrNull(level)?.slots?.size ?: 0
 
     private fun slotAt(band: Band, deg: Float): Int =
         (wrap(deg - band.rot) / band.span).roundToInt() % band.slots.size
@@ -749,6 +787,7 @@ class Ring(val order: String, val config: Config) {
         // Where the route already stands, which carries how far round it has
         // come: a stop says which way round the ring it was reached by.
         val from = route.stops.last()
+        val here = cellAt(bank, placeOf(bank, node))
         val out = mutableListOf<Pair<Node, Route>>()
         fun go(next: Node, stops: List<Polar>, crossings: Int, travel: Float) {
             // Entering a live cell takes it, so a route may only cross what is
@@ -756,6 +795,11 @@ class Ring(val order: String, val config: Config) {
             // hub is exempt: a thumb that crosses it takes nothing.
             val cell = cellAt(bank, placeOf(bank, next))
             if (next.level > 0 && keys(bank, cell).any { live(it, taken) && it != key }) return
+            // A cell the walk has spent flips its ring's modifier, so a route
+            // may no more enter one than a live cell it does not want. Two
+            // stops in one cell are not an entry, which is how a route leaves
+            // the key it has just taken.
+            if (next.level > 0 && cell != here && flip(bank, cell, taken) >= 0) return
             out.add(
                 next to Route(
                     route.stops + stops,
@@ -775,10 +819,7 @@ class Ring(val order: String, val config: Config) {
             val next = Node(node.level, (node.spoke + way + spokes) % spokes)
             val to = placeOf(bank, next)
             val deg = round(from.deg, to.deg, way)
-            // A turn back past a whole cell of the outer ring is a modifier, so
-            // a route takes one only where the ring leaves it no way forward.
-            val back = if (way < 0 && node.level == rings) BACK else 0f
-            go(next, listOf(Polar(to.r, deg)), 0, abs(deg - from.deg) * RADIAN * to.r + back)
+            go(next, listOf(Polar(to.r, deg)), 0, abs(deg - from.deg) * RADIAN * to.r)
         }
         for (way in listOf(1, -1)) {
             val level = node.level + way
@@ -797,9 +838,6 @@ class Ring(val order: String, val config: Config) {
     }
 
     companion object {
-        /** What a step backwards round the outer ring costs a route. */
-        private const val BACK = 10f
-
         /** How many times [polar] repeats itself to land on its own exponent. */
         private const val SOLVE = 6
 

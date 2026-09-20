@@ -19,7 +19,7 @@ object Prefs {
      * saved before the rings existed is the old default rather than a choice,
      * and keeping it would hide the new one behind a settings screen.
      */
-    private const val LAYOUT = 7
+    private const val LAYOUT = 8
 
     private class Slot<T>(
         val key: String,
@@ -68,13 +68,13 @@ object Prefs {
         text("modsRight", { it.modsRight }, { c, v -> c.modsRight = v }, shipped = true),
         text("floats", { it.floats }, { c, v -> c.floats = v }, shipped = true),
         text("upgrade", { it.upgrade }, { c, v -> c.upgrade = v }, shipped = true),
-        letter("turnBackLeft", { it.turnBackLeft }, { c, v -> c.turnBackLeft = v }),
-        letter("turnBackRight", { it.turnBackRight }, { c, v -> c.turnBackRight = v }),
-        letter("pullInLeft", { it.pullInLeft }, { c, v -> c.pullInLeft = v }),
-        letter("pullInRight", { it.pullInRight }, { c, v -> c.pullInRight = v }),
+        text("deadLeft", { it.deadLeft }, { c, v -> c.deadLeft = v }, shipped = true),
+        text("deadRight", { it.deadRight }, { c, v -> c.deadRight = v }, shipped = true),
         letter("longPressLeft", { it.longPressLeft }, { c, v -> c.longPressLeft = v }),
         letter("longPressRight", { it.longPressRight }, { c, v -> c.longPressRight = v }),
         span("longPressMs", { it.longPressMs }, { c, v -> c.longPressMs = v }),
+        text("longPressFrom", { it.longPressFrom }, { c, v -> c.longPressFrom = v }),
+        flag("tapSnap", { it.tapSnap }, { c, v -> c.tapSnap = v }),
         size("studWidth", { it.studWidth }, { c, v -> c.studWidth = v }),
         size("studOut", { it.studOut }, { c, v -> c.studOut = v }),
         flag("squareBanks", { it.squareBanks }, { c, v -> c.squareBanks = v }),
@@ -110,7 +110,6 @@ object Prefs {
         flag("dither", { it.dither }, { c, v -> c.dither = v }),
         size("grainFine", { it.grainFine }, { c, v -> c.grainFine = v }),
         size("grainCoarse", { it.grainCoarse }, { c, v -> c.grainCoarse = v }),
-        flag("showMoves", { it.showMoves }, { c, v -> c.showMoves = v }),
         flag("showRow", { it.showRow }, { c, v -> c.showRow = v }),
         flag("briefs", { it.briefs }, { c, v -> c.briefs = v }),
         count("briefsMost", { it.briefsMost }, { c, v -> c.briefsMost = v }),
@@ -119,7 +118,7 @@ object Prefs {
         count("cloudSamples", { it.cloudSamples }, { c, v -> c.cloudSamples = v }),
         size("cloudAlpha", { it.cloudAlpha }, { c, v -> c.cloudAlpha = v }),
         flag("touchReadout", { it.touchReadout }, { c, v -> c.touchReadout = v }),
-        flag("oneThumb", { it.oneThumb }, { c, v -> c.oneThumb = v }),
+        text("crossMiddle", { it.crossMiddle }, { c, v -> c.crossMiddle = v }),
         size("fieldSplit", { it.fieldSplit }, { c, v -> c.fieldSplit = v }),
         size("bankPad", { it.bankPad }, { c, v -> c.bankPad = v }),
         size("bankPull", { it.bankPull }, { c, v -> c.bankPull = v }),

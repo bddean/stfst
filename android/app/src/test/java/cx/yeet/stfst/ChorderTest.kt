@@ -104,13 +104,15 @@ class ChorderTest {
         assertEquals("PA", keys(Bank.LEFT))
     }
 
-    /** A cell steno order has passed is ground: crossing it back takes nothing. */
+    /**
+     * A cell steno order has passed is ground, which is the turn back a chord
+     * makes to reach a key the ring keeps on the far side.
+     */
     @Test
-    fun a_cell_already_passed_is_ground() {
-        touch(Bank.LEFT, 0, 'K')
-        walk(Bank.LEFT, 'P')
+    fun a_cell_the_order_passed_is_ground() {
+        touch(Bank.LEFT, 0, 'W')
         walk(Bank.LEFT, 'K')
-        assertEquals("K cannot come again", "KP", keys(Bank.LEFT))
+        assertEquals("K cannot come again", "W", keys(Bank.LEFT))
     }
 
     @Test
@@ -169,6 +171,28 @@ class ChorderTest {
         chorder.up(1)
         assertEquals(listOf(mask("#P")), written)
         assertTrue("a written stroke clears what was armed", chorder.sticky.isEmpty())
+    }
+
+    /**
+     * A key armed under a thumb that is still down is held, not armed: `*`
+     * stays over a run of left-hand taps, and goes when the right thumb lifts.
+     */
+    @Test
+    fun a_key_armed_under_a_thumb_still_down_outlives_the_stroke() {
+        val corner = spot(Bank.RIGHT, 1.2f, 45f)
+        chorder.down(Bank.RIGHT, 1, corner.x, corner.y)
+        chorder.stick(key('*'))
+
+        touch(Bank.LEFT, 0, 'P')
+        chorder.up(0)
+        touch(Bank.LEFT, 2, 'H')
+        chorder.up(2)
+        assertEquals(listOf(mask("*P"), mask("*H")), written)
+
+        chorder.up(1)
+        assertEquals(2, written.size)
+        assertEquals("", keys(Bank.RIGHT))
+        assertTrue("the lift takes the key with it", chorder.sticky.isEmpty())
     }
 
     /**
@@ -248,45 +272,79 @@ class ChorderTest {
         ring.point(bank, field(bank), Polar(r, deg))
 
     /**
-     * A turn back past a whole cell of the outer ring takes the bank's
-     * modifier, and takes no key to get there.
-     *
-     * The ground inside the ring is where the turn is made: the keys stand in
-     * the middle of the band, so a thumb short of them crosses their slots
-     * without entering them.
+     * A cell holding a key already in hand flips its ring's key rather than
+     * taking anything: the thumb has been through it, so a chord never enters
+     * it again.
      */
     @Test
-    fun a_turn_back_round_the_outer_ring_takes_the_modifier() {
-        val bank = Bank.LEFT
-        val span = 360f / ring.slots(bank, ring.outer(bank))
-        // Short of the keys, where the ring is ground all the way round.
-        val inner = 0.70f
-        val from = 3f * span
-        chorder.down(bank, 0, spot(bank, inner, from).x, spot(bank, inner, from).y)
-        assertEquals("", keys(bank))
-        step(bank, spot(bank, inner, from - span))
-        assertEquals("one slot back is how a stud is reached", "", keys(bank))
-        step(bank, spot(bank, inner, from - 2f * span))
-        assertEquals("^", keys(bank))
+    fun entering_a_key_in_hand_flips_its_ring() {
+        touch(Bank.LEFT, 0, 'K')
+        walk(Bank.LEFT, 'P')
+        walk(Bank.LEFT, 'K')
+        assertEquals("ring 1 flips the bank's #", "KP#", keys(Bank.LEFT))
+        walk(Bank.LEFT, 'P')
+        assertEquals("a second entry flips it back", "KP", keys(Bank.LEFT))
     }
 
-    /** A pull back in off the outer ring takes the other one. */
+    /** Ring 2 flips its own key, which is the turn back that used to be a gesture. */
     @Test
-    fun a_pull_in_off_the_outer_ring_takes_the_modifier() {
-        val p = spot(Bank.LEFT, 0.70f, 36f)
-        chorder.down(Bank.LEFT, 0, p.x, p.y)
-        assertEquals("", keys(Bank.LEFT))
-        step(Bank.LEFT, spot(Bank.LEFT, 0.50f, 36f))
-        assertEquals("#", keys(Bank.LEFT))
+    fun turning_back_onto_a_vowel_in_hand_flips_ring_two() {
+        touch(Bank.LEFT, 0, 'P')
+        walk(Bank.LEFT, 'A')
+        walk(Bank.LEFT, 'O')
+        walk(Bank.LEFT, 'A')
+        assertEquals("PAO^", keys(Bank.LEFT))
     }
 
-    /** Going out and taking a vowel is not a gesture, whatever it crosses. */
+    /** Going out and taking a vowel is not a flip, whatever it crosses. */
     @Test
     fun a_walk_out_to_the_vowels_takes_no_modifier() {
         touch(Bank.LEFT, 0, 'P')
         walk(Bank.LEFT, 'A')
         walk(Bank.LEFT, 'O')
         assertEquals("PAO", keys(Bank.LEFT))
+    }
+
+    /** A tap that lands on ground takes the key it was aimed at. */
+    @Test
+    fun a_tap_short_of_its_key_takes_it_anyway() {
+        val at = ring.centre(Bank.LEFT, ring.cellsOf(Bank.LEFT, key('P')).first())
+        // Short of the key, in the ground between ring 1 and the hub.
+        val p = spot(Bank.LEFT, at.r - 0.13f, at.deg)
+        chorder.down(Bank.LEFT, 0, p.x, p.y)
+        assertEquals("P", keys(Bank.LEFT))
+    }
+
+    /** Outside the rings there is nothing to have been aimed at. */
+    @Test
+    fun a_tap_outside_the_rings_takes_nothing() {
+        val p = spot(Bank.LEFT, 1.2f, 45f)
+        chorder.down(Bank.LEFT, 0, p.x, p.y)
+        assertEquals("", keys(Bank.LEFT))
+    }
+
+    /**
+     * One hand writes a whole stroke by turning the board round: the crossing
+     * writes nothing, the keys stay in hand, and the next touch in the same
+     * half of the glass walks the other bank.
+     */
+    @Test
+    fun crossing_the_middle_swaps_the_two_halves() {
+        touch(Bank.RIGHT, 0, 'p')
+        val over = at(Bank.LEFT, 'K')
+        chorder.move(0, over.x, over.y)
+        chorder.swap(0)
+        assertTrue("a crossing is not a stroke", written.isEmpty())
+        assertEquals("p", keys(Bank.RIGHT))
+
+        // The right half of the glass is the left bank now.
+        val there = ring.middle(Bank.LEFT, chorder.thumb(Bank.LEFT).field, 
+            ring.cellsOf(Bank.LEFT, key('K')).first())
+        chorder.down(Bank.LEFT, 1, there.x, there.y)
+        assertTrue("the half a thumb starts in is the right one", there.x > 400f)
+        chorder.up(1)
+        assertEquals(listOf(mask("Kp")), written)
+        assertTrue("the swap lasts one stroke", !chorder.swapped)
     }
 
     /** A stroke goes out once, however many thumbs were holding keys. */
