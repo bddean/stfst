@@ -17,6 +17,14 @@ class Thumb(val bank: Bank) {
     val keys: MutableList<Int> = mutableListOf()
 
     /**
+     * The keys taken while the upgrade was on, which are the ones it writes.
+     *
+     * The mode can turn over during a stroke, so what a key writes is the mode
+     * it was taken under: the toggle, `-T`, the toggle, `-S` is `-DS`.
+     */
+    val raised: MutableSet<Int> = mutableSetOf()
+
+    /**
      * The cell the thumb is in, or null before the first touch.
      *
      * What makes entering an event: a cell answers when the thumb comes in, not
@@ -24,18 +32,47 @@ class Thumb(val bank: Bank) {
      */
     var cell: Cell? = null
 
+    /**
+     * The region the thumb is in: the same band and slot, whether or not it is
+     * on the key.
+     *
+     * A cell is what the thumb takes; a region is what it crosses, and the
+     * gestures are read from the crossings a chord never needs.
+     */
+    var region: Cell? = null
+
+    /**
+     * How many slots the thumb has turned backwards round the outer ring since
+     * it last took anything.
+     *
+     * One slot back is how the outer ring's studs are reached, so the gesture
+     * is a turn back past a whole cell rather than a single step.
+     */
+    var back: Int = 0
+
     val down: Boolean get() = pointer != NONE
+
+    /** Give up the keys in hand, and what the upgrade was doing to them. */
+    fun clear() {
+        keys.clear()
+        raised.clear()
+    }
 
     fun release() {
         pointer = NONE
         live = false
         cell = null
+        region = null
+        back = 0
     }
 
     companion object {
         const val NONE = -1
     }
 }
+
+/** How far back a turn goes before it means a modifier: past a whole cell. */
+private const val WHOLE = 2
 
 /**
  * Two thumbs, each walking its own rings, and the rule that turns them into
@@ -68,8 +105,26 @@ class Chorder(
     var upgrade = false
         private set
 
+    /**
+     * What the upgrade writes on its own: the keys it lifts to.
+     *
+     * A touch that turns the mode on and takes nothing else has nothing to
+     * upgrade, so what it means is those keys themselves. `-DZ` is a stroke
+     * worth a cell of its own, and this is how the toggle's own cell carries
+     * it.
+     */
+    private fun upgraded(): Long {
+        var bits = 0L
+        for (key in lifted.values) bits = bits or (1L shl key)
+        return bits
+    }
+
     /** What a key writes now: itself, or what the upgrade lifts it to. */
     fun lift(key: Int): Int = if (upgrade) lifted[key] ?: key else key
+
+    /** What a key already taken writes: the mode it was taken under. */
+    private fun written(thumb: Thumb, key: Int): Int =
+        if (key in thumb.raised) lifted[key] ?: key else key
 
     private val lifted: Map<Int, Int> = config.upgrades().mapNotNull { (from, to) ->
         val a = ring.keys.indexOf(from)
@@ -130,6 +185,7 @@ class Chorder(
         thumb.atY = y
         val cell = ring.hit(thumb.bank, thumb.field, x, y)
         thumb.cell = cell
+        thumb.region = ring.region(thumb.bank, thumb.field, x, y)
         if (ring.isUpgrade(thumb.bank, cell)) return turn()
         return take(thumb, ring.taking(thumb.bank, cell, thumb.keys))
     }
@@ -149,12 +205,53 @@ class Chorder(
         val thumb = forPointer(pointer) ?: return false
         thumb.atX = x
         thumb.atY = y
+        val was = thumb.region
+        val region = ring.region(thumb.bank, thumb.field, x, y)
+        thumb.region = region
         val now = ring.hit(thumb.bank, thumb.field, x, y)
-        if (now == thumb.cell) return false
+        val entered = now != thumb.cell
         thumb.cell = now
-        if (ring.isHub(now)) return false
-        if (ring.isUpgrade(thumb.bank, now)) return turn()
-        return take(thumb, ring.taking(thumb.bank, now, thumb.keys))
+        val took = when {
+            !entered || ring.isHub(now) -> false
+            ring.isUpgrade(thumb.bank, now) -> turn()
+            else -> take(thumb, ring.taking(thumb.bank, now, thumb.keys))
+        }
+        // A move that takes nothing is where a gesture can live, because a
+        // chord never spends one.
+        return if (took) true else gesture(thumb, was, region)
+    }
+
+    /**
+     * The two moves round the outer ring no chord ever needs, each taking the
+     * key its bank names.
+     *
+     * The outer ring is the last of the walk and its keys repeat round it, so a
+     * chord neither turns backwards out there nor comes back in. A move that
+     * takes a key is the chord being written, so neither is read off one.
+     */
+    private fun gesture(thumb: Thumb, was: Cell?, now: Cell): Boolean {
+        val outer = ring.outer(thumb.bank)
+        if (was == null || was.level != outer || was.slot < 0 || now == was) return false
+        val turned = if (now.level == outer && now.slot >= 0) {
+            backwards(thumb.bank, was.slot, now.slot)
+        } else 0
+        thumb.back = if (turned > 0) thumb.back + turned else 0
+        val key = when {
+            thumb.back >= WHOLE -> config.turnBack(thumb.bank)
+            now.level in 0 until outer -> config.pullIn(thumb.bank)
+            else -> return false
+        }
+        val index = ring.keys.indexOf(key)
+        if (index < 0 || !ring.live(index, thumb.keys)) return false
+        return take(thumb, listOf(index))
+    }
+
+    /** How many slots backwards the shorter way round runs, zero for forwards. */
+    private fun backwards(bank: Bank, from: Int, to: Int): Int {
+        val slots = ring.slots(bank, ring.outer(bank))
+        if (slots == 0 || from == to) return 0
+        val step = ((to - from) % slots + slots) % slots
+        return if (step > slots / 2) slots - step else 0
     }
 
     /**
@@ -191,14 +288,18 @@ class Chorder(
         if (thumb.keys.isNotEmpty() && other.keys.isEmpty() && thumb.keys.all { it in armable }) {
             val again = thumb.keys.all { it in sticky }
             sticky.addAll(thumb.keys)
-            thumb.keys.clear()
+            thumb.clear()
             if (!again) return 0L
         }
         if (!config.commitOnFirstLift && other.down) return 0L
-        val stroke = if (pending) mask() else 0L
+        val stroke = when {
+            !pending -> 0L
+            mask() == 0L && upgrade -> upgraded()
+            else -> mask()
+        }
         pending = false
-        thumb.keys.clear()
-        if (!other.down) other.keys.clear()
+        thumb.clear()
+        if (!other.down) other.clear()
         if (stroke != 0L) {
             if (tap) {
                 flush()
@@ -248,7 +349,7 @@ class Chorder(
         upgrade = false
         sticky.clear()
         for (thumb in listOf(left, right)) {
-            thumb.keys.clear()
+            thumb.clear()
             thumb.release()
         }
     }
@@ -256,13 +357,18 @@ class Chorder(
     /** Both banks as one bit per key, plus the armed keys: what a stroke is. */
     fun mask(): Long {
         var bits = 0L
-        for (key in left.keys + right.keys + sticky) bits = bits or (1L shl lift(key))
+        for (thumb in listOf(left, right)) {
+            for (key in thumb.keys) bits = bits or (1L shl written(thumb, key))
+        }
+        for (key in sticky) bits = bits or (1L shl lift(key))
         return bits
     }
 
     private fun take(thumb: Thumb, keys: List<Int>): Boolean {
         if (keys.isEmpty()) return false
+        thumb.back = 0
         thumb.keys.addAll(keys)
+        if (upgrade) thumb.raised.addAll(keys)
         pending = true
         return true
     }

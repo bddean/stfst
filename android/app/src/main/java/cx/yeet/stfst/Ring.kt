@@ -4,6 +4,7 @@ import kotlin.math.abs
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.hypot
+import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.roundToInt
@@ -53,9 +54,8 @@ class Ring(val order: String, val config: Config) {
     /**
      * One band of a bank: its slots, and whether it is turned half a slot.
      */
-    private class Band(val slots: List<List<Int>>, turned: Boolean) {
+    private class Band(val slots: List<Slot>, val rot: Float) {
         val span: Float = 360f / slots.size
-        val rot: Float = if (turned) span / 2f else 0f
 
         /** Half a slot, which is the room one key has to itself. */
         val half: Float = span / 2f
@@ -88,27 +88,28 @@ class Ring(val order: String, val config: Config) {
      * arcs and "against the walk" is the same motion for each hand.
      */
     /**
-     * One key of the row: the keys it holds, or the upgrade, which is not a key
-     * but a bit over the whole stroke.
+     * One slot of a band or of the row: the keys it holds, or the upgrade,
+     * which is not a key but a bit over the whole stroke.
      */
-    class Mod(val keys: List<Int>, val upgrade: Boolean)
+    class Slot(val keys: List<Int>, val upgrade: Boolean)
 
     private class Layout(
         val bands: List<Band>,
+        /** The keys steno order cannot kill, whichever bank they sit in. */
+        free: Set<Int>,
         /** The modifiers under the rings, one to a slot, left to right. */
-        val row: List<Mod>,
+        val row: List<Slot>,
         val radii: List<Float>,
         val dir: Float,
     ) {
-        val keys: Set<Int> = bands.flatMap { band -> band.slots.flatten() }.toSet() +
+        val keys: Set<Int> = bands.flatMap { band -> band.slots.flatMap { it.keys } }.toSet() +
             row.flatMap { it.keys }.toSet()
 
         /**
-         * The row holds the floats: steno order never kills one, so they sit
-         * off the rings, where no walk can spend them and no walk has to reach
-         * them.
+         * The keys no walk can spend: the ones the order cannot kill, and the
+         * ones the row holds, which no walk reaches in the first place.
          */
-        val floats: Set<Int> = row.flatMap { it.keys }.toSet()
+        val floats: Set<Int> = row.flatMap { it.keys }.toSet() + free.intersect(keys)
 
         /**
          * The spokes: every angle the rings mark out, each slot's middle and
@@ -126,11 +127,15 @@ class Ring(val order: String, val config: Config) {
             .sorted()
     }
 
+    /** The keys steno order cannot kill, whichever bank they sit in. */
+    private val allFloats: Set<Int> = keysOf(config.floats).toSet()
+
     private val banks: Map<Bank, Layout> = Bank.values().associateWith { bank ->
         val bands = parse(config.ring(bank))
         Layout(
             bands,
-            row(config.mods(bank)),
+            allFloats,
+            row(if (config.showRow) config.mods(bank) else ""),
             radii(config.radii(bank), bands.size),
             if (bank == Bank.LEFT) 1f else -1f,
         )
@@ -142,31 +147,32 @@ class Ring(val order: String, val config: Config) {
      * more than one key, and otherwise a slot is one character. A dot is
      * ground.
      *
-     * A band whose keys repeat round it is turned half a slot, so it is
-     * staggered against the band inside it and a run straight out from the hub
-     * lands on one of its cells rather than in a gap. The hub is turned too, so
-     * its cuts fall on the bank's own axes.
+     * The first ring sets the angles and the rings outside it line up with it:
+     * a band holding a whole number of groups per key of that ring takes its
+     * angles, so every key sees the ring beyond at the same angles. A band that
+     * does not divide is staggered half a slot instead, which is the best a
+     * band out of step can do. The hub is staggered too, so its cuts fall on
+     * the bank's own axes.
      */
     private fun parse(text: String): List<Band> {
         val levels = text.trim().split(WORDS)
-        return levels.mapIndexed { level, line ->
-            val slots = (if ('/' in line) line.split('/') else line.map { it.toString() })
-                .map { slot -> keysOf(slot) }
-            Band(
-                slots = slots,
-                turned = level == 0 || slots.distinct().size < slots.size,
-            )
+            .map { line -> if ('/' in line) line.split('/') else Keys.split(line) }
+        val first = levels.getOrNull(1)?.size ?: 1
+        return levels.mapIndexed { level, words ->
+            val span = 360f / words.size
+            val aligned = level == 1 || (first > 0 && words.size % first == 0)
+            Band(words.map { slot(it) }, if (aligned) 0f else span / 2f)
         }
     }
 
-    /**
-     * The row: one slot per word, left to right. A word of [UPGRADE] is the
-     * upgrade rather than a key of its own.
-     */
-    private fun row(text: String): List<Mod> =
+    /** The row: one slot per word, left to right. */
+    private fun row(text: String): List<Slot> =
         text.trim().split(WORDS).filter { it.isNotEmpty() }
-            .map { Mod(keysOf(it), it == UPGRADE) }
+            .map { slot(it) }
             .filter { it.keys.isNotEmpty() || it.upgrade }
+
+    /** One slot's text: the keys it names, or [UPGRADE] for the upgrade. */
+    private fun slot(text: String): Slot = Slot(keysOf(text), text == UPGRADE)
 
     private fun keysOf(text: String): List<Int> =
         Keys.split(text).mapNotNull { keys.indexOf(it).takeIf { i -> i >= 0 } }
@@ -181,27 +187,43 @@ class Ring(val order: String, val config: Config) {
     fun bankOf(key: Int): Bank? = Bank.values().firstOrNull { key in banks.getValue(it).keys }
 
     /** Whether this cell is the upgrade: the bit that lifts -T to -D and -S to -Z. */
-    fun isUpgrade(bank: Bank, cell: Cell): Boolean =
-        cell.isRow && banks.getValue(bank).row.getOrNull(cell.slot)?.upgrade == true
+    fun isUpgrade(bank: Bank, cell: Cell): Boolean = slotOf(bank, cell)?.upgrade == true
+
+    private fun slotOf(bank: Bank, cell: Cell): Slot? {
+        val lay = banks.getValue(bank)
+        if (cell.slot < 0) return null
+        if (cell.isRow) return lay.row.getOrNull(cell.slot)
+        return lay.bands.getOrNull(cell.level)?.slots?.getOrNull(cell.slot)
+    }
 
     fun floats(bank: Bank): Set<Int> = banks.getValue(bank).floats
+
+    /**
+     * Whether this cell is a stud: a cell of a ring that no walk can spend,
+     * which is the upgrade or a float.
+     *
+     * A stud is drawn as a circle a hair outside its band, so a thumb turning
+     * along the ring passes under it and reaches it only by aiming at it.
+     */
+    fun isStud(bank: Bank, cell: Cell): Boolean {
+        if (cell.isRow || cell.level == 0) return false
+        val slot = slotOf(bank, cell) ?: return false
+        return slot.upgrade ||
+            (slot.keys.isNotEmpty() && slot.keys.all { it in floats(bank) })
+    }
 
     /** Every cell of a bank that holds a key, the row included. */
     fun cells(bank: Bank): List<Cell> {
         val lay = banks.getValue(bank)
         return lay.bands.flatMapIndexed { level, band ->
-            band.slots.indices.filter { band.slots[it].isNotEmpty() }.map { Cell(level, it) }
+            band.slots.indices
+                .filter { band.slots[it].keys.isNotEmpty() || band.slots[it].upgrade }
+                .map { Cell(level, it) }
         } + lay.row.indices.map { Cell(Cell.ROW, it) }
     }
 
     /** The keys a cell holds, empty for ground and for anywhere off the board. */
-    fun keys(bank: Bank, cell: Cell): List<Int> {
-        val lay = banks.getValue(bank)
-        if (cell.slot < 0) return emptyList()
-        if (cell.isRow) return lay.row.getOrNull(cell.slot)?.keys ?: emptyList()
-        if (cell.level !in lay.bands.indices) return emptyList()
-        return lay.bands[cell.level].slots.getOrElse(cell.slot) { emptyList() }
-    }
+    fun keys(bank: Bank, cell: Cell): List<Int> = slotOf(bank, cell)?.keys ?: emptyList()
 
     /** Every cell a key is drawn in. A key is a set of cells, not a place. */
     fun cellsOf(bank: Bank, key: Int): List<Cell> =
@@ -215,6 +237,7 @@ class Ring(val order: String, val config: Config) {
      */
     fun live(key: Int, taken: List<Int>): Boolean {
         if (key in taken) return false
+        if (key in allFloats) return true
         val floats = floats(bankOf(key) ?: return false)
         if (key in floats) return true
         return key > (taken.filter { it !in floats }.maxOrNull() ?: -1)
@@ -224,12 +247,96 @@ class Ring(val order: String, val config: Config) {
     fun taking(bank: Bank, cell: Cell, taken: List<Int>): List<Int> =
         keys(bank, cell).filter { live(it, taken) }
 
-    // ---- the row -----------------------------------------------------------
+    // ---- the bank in its field ---------------------------------------------
+
+    /** The row's share of the bank's depth, zero for a bank with no row. */
+    private fun rowShare(bank: Bank): Float =
+        if (banks.getValue(bank).row.isEmpty()) 0f else config.rowHeight.coerceIn(0f, 0.4f)
+
+    /**
+     * The bank itself inside the field it was given: the field less the ground
+     * kept round it, held against the thumb's own edge and against the floor.
+     *
+     * A field wider than a square bank is what an uneven split leaves, and the
+     * slack belongs to the far side of the glass rather than to the middle,
+     * because the thumb reaches the edge it starts from.
+     */
+    fun box(bank: Bank, field: Field): Field {
+        val pad = config.bankPad.coerceIn(0f, 0.4f) * field.width
+        val over = Field(
+            field.left + pad, field.top + pad, field.right - pad, field.bottom - pad
+        )
+        if (!config.squareBanks) return over
+        val share = 1f - rowShare(bank)
+        val side = min(over.width, over.height * share)
+        val slack = (over.width - side) * config.bankPull.coerceIn(0f, 1f)
+        val left = if (bank == Bank.LEFT) over.left + slack else over.right - side - slack
+        return Field(left, over.bottom - side / share, left + side, over.bottom)
+    }
+
+    /**
+     * The horizontal run each thumb's field covers on a board this wide.
+     *
+     * Split, the two fields tile the width; on the edges each hugs its own
+     * side and the ground between them belongs to neither.
+     */
+    fun spans(
+        width: Float, sides: Boolean,
+    ): Pair<ClosedFloatingPointRange<Float>, ClosedFloatingPointRange<Float>> {
+        if (sides) {
+            val wide = width * config.splitLandscape.coerceIn(0.15f, 0.5f)
+            return (0f..wide) to ((width - wide)..width)
+        }
+        val edge = width * config.fieldSplit.coerceIn(0.1f, 0.9f)
+        return (0f..edge) to (edge..width)
+    }
+
+    /**
+     * How deep the keys are, and the band over the app above them, on a board
+     * this wide with this much screen behind it.
+     *
+     * Square rings want a square bank, so the keys take the depth asked for or
+     * the depth the wider bank can use, whichever is less. `room` is the window
+     * there actually is, where there is one: measuring past it would put the
+     * top of the keys off the glass, so the keys and the band give it up
+     * together.
+     */
+    fun deep(
+        width: Float, screen: Float, landscape: Boolean, room: Float? = null,
+    ): Pair<Float, Float> {
+        val share = if (landscape) config.landscapeHeight else config.keyboardHeight
+        var keys = screen * share.coerceIn(0.15f, 0.95f)
+        if (config.squareBanks) {
+            val (left, right) = spans(width, landscape && config.landscapeSides)
+            keys = min(
+                keys,
+                max(
+                    depth(Bank.LEFT, left.endInclusive - left.start),
+                    depth(Bank.RIGHT, right.endInclusive - right.start),
+                ),
+            )
+        }
+        var band = screen * config.bandShare().coerceIn(0f, 0.6f)
+        if (room != null && keys + band > room) {
+            keys *= room / (keys + band)
+            band = room - keys
+        }
+        return keys to band
+    }
+
+    /**
+     * How deep a field this wide lets the bank be.
+     *
+     * Square rings want a square bank, so depth past this is room the app gives
+     * up for nothing.
+     */
+    fun depth(bank: Bank, width: Float): Float {
+        val pad = config.bankPad.coerceIn(0f, 0.4f) * width
+        return (width - 2f * pad) / (1f - rowShare(bank)) + 2f * pad
+    }
 
     /** How deep the row of modifiers is, zero for a bank with none. */
-    fun rowDeep(bank: Bank, field: Field): Float =
-        if (banks.getValue(bank).row.isEmpty()) 0f
-        else field.height * config.rowHeight.coerceIn(0f, 0.4f)
+    fun rowDeep(bank: Bank, field: Field): Float = box(bank, field).height * rowShare(bank)
 
     /**
      * The rings' own field: the bank less the strip the row stands on, and
@@ -237,24 +344,20 @@ class Ring(val order: String, val config: Config) {
      * same sweep with different keys at different angles.
      */
     fun rings(bank: Bank, field: Field): Field {
-        val over = Field(field.left, field.top, field.right, field.bottom - rowDeep(bank, field))
-        if (!config.squareBanks) return over
-        val side = min(over.width, over.height)
-        return Field(
-            over.centerX - side * 0.5f, over.centerY - side * 0.5f,
-            over.centerX + side * 0.5f, over.centerY + side * 0.5f,
-        )
+        val on = box(bank, field)
+        return Field(on.left, on.top, on.right, on.bottom - rowDeep(bank, field))
     }
 
     /** One row key's rectangle, the row being an even split of the bank's width. */
     fun rowCell(bank: Bank, field: Field, slot: Int): Field {
+        val on = box(bank, field)
         val slots = banks.getValue(bank).row.size.coerceAtLeast(1)
-        val wide = field.width / slots
+        val wide = on.width / slots
         return Field(
-            field.left + slot * wide,
-            field.bottom - rowDeep(bank, field),
-            field.left + (slot + 1) * wide,
-            field.bottom,
+            on.left + slot * wide,
+            on.bottom - rowDeep(bank, field),
+            on.left + (slot + 1) * wide,
+            on.bottom,
         )
     }
 
@@ -332,6 +435,10 @@ class Ring(val order: String, val config: Config) {
     private fun key(bank: Bank, cell: Cell): Key {
         val lay = banks.getValue(bank)
         val mid = centre(bank, cell)
+        if (isStud(bank, cell)) {
+            val wide = config.keyWidth * config.studWidth.coerceIn(0.2f, 1f) * 0.5f
+            return Key(mid, 0f, wide / stretch(bank, mid), 1f)
+        }
         val wide = config.keyWidth.coerceIn(0.02f, 1f) * 0.5f / stretch(bank, mid)
         val ends = config.keyEnds.coerceIn(0f, 1f)
         // The slot's half, as the arc it covers at this key's radius.
@@ -347,8 +454,13 @@ class Ring(val order: String, val config: Config) {
     fun centre(bank: Bank, cell: Cell): Polar {
         val lay = banks.getValue(bank)
         val band = lay.bands[cell.level]
+        val inner = lay.radii[cell.level]
+        val outer = lay.radii[cell.level + 1]
+        // A stud stands a hair outside the middle of its band, which is what
+        // leaves the ring's own radius clear under it.
+        val out = if (isStud(bank, cell)) config.studOut.coerceIn(0f, 0.8f) else 0f
         return Polar(
-            (lay.radii[cell.level] + lay.radii[cell.level + 1]) * 0.5f,
+            (inner + outer) * 0.5f + (outer - inner) * 0.5f * out,
             band.rot + cell.slot * band.span,
         )
     }
@@ -361,17 +473,51 @@ class Ring(val order: String, val config: Config) {
      * somewhere even when it is on no key.
      */
     fun cellAt(bank: Bank, at: Polar): Cell {
-        val lay = banks.getValue(bank)
-        if (at.r > 1f) return Cell(lay.bands.size, -1)
+        val region = regionAt(bank, at)
         // The hub is a pie and fills its circle, so a place inside it is always
         // on one of its slices.
+        if (region.level == 0 || region.slot < 0) return region
+        return if (key(bank, region).holds(at)) region else Cell(region.level, -1)
+    }
+
+    /**
+     * The slot a place falls in whether or not it is on the key: the band, and
+     * the nearest slot round it.
+     *
+     * [cellAt] answers a place off a key body with a slot of -1, because a cell
+     * is what a thumb takes. This is what it crosses, which is what a gesture
+     * over the ground is read from.
+     */
+    fun regionAt(bank: Bank, at: Polar): Cell {
+        val lay = banks.getValue(bank)
+        if (at.r > 1f) return Cell(lay.bands.size, -1)
         if (at.r <= lay.radii[1]) return Cell(0, slotAt(lay.bands[0], at.deg))
         val level = (1 until lay.bands.size).minByOrNull {
             abs(at.r - (lay.radii[it] + lay.radii[it + 1]) * 0.5f)
         } ?: return Cell(lay.bands.size, -1)
-        val cell = Cell(level, slotAt(lay.bands[level], at.deg))
-        return if (key(bank, cell).holds(at)) cell else Cell(level, -1)
+        return Cell(level, slotAt(lay.bands[level], at.deg))
     }
+
+    /** The same, read off the glass: the row is one region of its own. */
+    fun region(bank: Bank, field: Field, x: Float, y: Float): Cell {
+        if (banks.getValue(bank).row.isNotEmpty() && y >= rings(bank, field).bottom) {
+            return hit(bank, field, x, y)
+        }
+        return regionAt(bank, polar(bank, field, x, y))
+    }
+
+    /** A band's inner and outer edge, as fractions of the bank's reach. */
+    fun edges(bank: Bank, level: Int): Pair<Float, Float> {
+        val radii = banks.getValue(bank).radii
+        return radii[level] to radii[level + 1]
+    }
+
+    /** The outermost ring: the last band of the walk. */
+    fun outer(bank: Bank): Int = banks.getValue(bank).bands.size - 1
+
+    /** How many slots a band is cut into, which is what a turn counts. */
+    fun slots(bank: Bank, level: Int): Int =
+        banks.getValue(bank).bands.getOrNull(level)?.slots?.size ?: 0
 
     private fun slotAt(band: Band, deg: Float): Int =
         (wrap(deg - band.rot) / band.span).roundToInt() % band.slots.size
@@ -383,7 +529,8 @@ class Ring(val order: String, val config: Config) {
     fun hit(bank: Bank, field: Field, x: Float, y: Float): Cell {
         val row = banks.getValue(bank).row
         if (row.isNotEmpty() && y >= rings(bank, field).bottom) {
-            val slot = ((x - field.left) / (field.width / row.size)).toInt()
+            val on = box(bank, field)
+            val slot = ((x - on.left) / (on.width / row.size)).toInt()
             return Cell(Cell.ROW, slot.coerceIn(0, row.size - 1))
         }
         return cellAt(bank, polar(bank, field, x, y))
@@ -407,10 +554,12 @@ class Ring(val order: String, val config: Config) {
     fun mirror(bank: Bank, from: Field, to: Field, x: Float, y: Float): Point {
         val strip = rings(bank, from).bottom
         if (rowDeep(bank, from) > 0f && y >= strip) {
-            val across = (x - from.left) / from.width
+            val here = box(bank, from)
+            val there = box(bank, to)
+            val across = (x - here.left) / here.width
             val down = (y - strip) / rowDeep(bank, from)
             return Point(
-                to.left + across * to.width,
+                there.left + across * there.width,
                 rings(bank, to).bottom + down * rowDeep(bank, to),
             )
         }
@@ -519,8 +668,8 @@ class Ring(val order: String, val config: Config) {
      */
     fun path(bank: Bank, keys: List<Int>): Path {
         val lay = banks.getValue(bank)
-        // The floats are in the row, which no slide reaches and none has to:
-        // a walk is over the ring keys, in steno order.
+        // A float is off the walk: steno order cannot kill one, so a chord
+        // never has to reach it in any particular place or at any point.
         val walk = keys.filter { it in lay.keys && it !in lay.floats }.distinct().sorted()
         if (walk.isEmpty()) return Path(emptyList(), 0)
         val hub = walk.filter { key -> cellsOf(bank, key).all { isHub(it) } }
@@ -530,7 +679,7 @@ class Ring(val order: String, val config: Config) {
         if (hub.isNotEmpty()) {
             // The hub is a pie of complete answers, so a tap on the slice that
             // holds them takes the lot.
-            val slices = lay.bands[0].slots
+            val slices = lay.bands[0].slots.map { it.keys }
             val slot = slices.indexOfFirst { it.toSet() == hub.toSet() }.takeIf { it >= 0 }
                 ?: slices.indices.maxByOrNull { slices[it].count { key -> key in hub } } ?: 0
             here = mapOf(Node(0, 0) to Route(listOf(centre(bank, Cell(0, slot))), 0, 0f))
@@ -626,7 +775,10 @@ class Ring(val order: String, val config: Config) {
             val next = Node(node.level, (node.spoke + way + spokes) % spokes)
             val to = placeOf(bank, next)
             val deg = round(from.deg, to.deg, way)
-            go(next, listOf(Polar(to.r, deg)), 0, abs(deg - from.deg) * RADIAN * to.r)
+            // A turn back past a whole cell of the outer ring is a modifier, so
+            // a route takes one only where the ring leaves it no way forward.
+            val back = if (way < 0 && node.level == rings) BACK else 0f
+            go(next, listOf(Polar(to.r, deg)), 0, abs(deg - from.deg) * RADIAN * to.r + back)
         }
         for (way in listOf(1, -1)) {
             val level = node.level + way
@@ -645,6 +797,9 @@ class Ring(val order: String, val config: Config) {
     }
 
     companion object {
+        /** What a step backwards round the outer ring costs a route. */
+        private const val BACK = 10f
+
         /** How many times [polar] repeats itself to land on its own exponent. */
         private const val SOLVE = 6
 

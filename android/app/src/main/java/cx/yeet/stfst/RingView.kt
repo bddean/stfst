@@ -76,7 +76,7 @@ class RingView(
     val sides: Boolean get() = !embedded && landscape && config.landscapeSides
 
     /** How wide each edge field is, which whatever sits in the gap must clear. */
-    fun sideWidth(width: Float): Float = width * config.splitLandscape.coerceIn(0.15f, 0.5f)
+    fun sideWidth(width: Float): Float = ring.spans(width, sides = true).first.endInclusive
 
     fun apply(fresh: Config) {
         config = fresh
@@ -100,28 +100,14 @@ class RingView(
 
     override fun onMeasure(widthSpec: Int, heightSpec: Int) {
         val width = MeasureSpec.getSize(widthSpec)
-        val screen = resources.displayMetrics.heightPixels
-        val share = if (landscape && !embedded) config.landscapeHeight else config.keyboardHeight
-        var keys = (screen * share.coerceIn(0.15f, 0.95f)).toInt()
-        // Square rings want a square bank, and depth past that is room the app
-        // gives up for nothing.
-        if (config.squareBanks) {
-            val (left, _) = spans(width.toFloat())
-            val square = (left.endInclusive - left.start) / (1f - config.rowHeight)
-            keys = min(keys, square.toInt())
-        }
-        var band = (screen * config.previewHeight.coerceIn(0f, 0.6f)).toInt()
-        // The window is what it is. Measuring past it would put the top of the
-        // keys off the glass, so the keys and the band give up room together.
-        if (MeasureSpec.getMode(heightSpec) != MeasureSpec.UNSPECIFIED) {
-            val room = MeasureSpec.getSize(heightSpec)
-            if (keys + band > room) {
-                keys = (keys * (room.toFloat() / (keys + band))).toInt()
-                band = room - keys
-            }
-        }
-        keysDeep = keys
-        setMeasuredDimension(width, keys + band)
+        val room = if (MeasureSpec.getMode(heightSpec) == MeasureSpec.UNSPECIFIED) null
+        else MeasureSpec.getSize(heightSpec).toFloat()
+        val (keys, band) = ring.deep(
+            width.toFloat(), resources.displayMetrics.heightPixels.toFloat(),
+            landscape && !embedded, room,
+        )
+        keysDeep = keys.toInt()
+        setMeasuredDimension(width, keysDeep + band.toInt())
     }
 
     /**
@@ -131,14 +117,8 @@ class RingView(
      */
     private fun spans(
         width: Float,
-    ): Pair<ClosedFloatingPointRange<Float>, ClosedFloatingPointRange<Float>> {
-        if (landscape && config.landscapeSides) {
-            val wide = sideWidth(width)
-            return (0f..wide) to ((width - wide)..width)
-        }
-        val edge = width * config.fieldSplit
-        return (0f..edge) to (edge..width)
-    }
+    ): Pair<ClosedFloatingPointRange<Float>, ClosedFloatingPointRange<Float>> =
+        ring.spans(width, landscape && config.landscapeSides)
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) = layoutFields()
 
@@ -235,8 +215,8 @@ class RingView(
                 val down = downs.remove(pointer)
                 dropLongPress(pointer)
                 val thumb = chorder.forPointer(pointer)
-                val tap = config.doubleTapMs > 0 && down != null &&
-                    event.eventTime - down.time <= config.doubleTapMs
+                val tap = config.doubleTapWindow() > 0 && down != null &&
+                    event.eventTime - down.time <= config.doubleTapWindow()
                 val stroke = chorder.up(pointer, tap)
                 if (stroke != 0L) haptics.stroke(thumb?.bank ?: Bank.LEFT)
                 if (tap && thumb != null) {
@@ -291,9 +271,9 @@ class RingView(
      * itself, so tap tap on `-T` releases as `-*T`.
      */
     private fun doubleTap(bank: Bank, x: Float, y: Float, now: Long): Boolean {
-        if (config.doubleTapMs <= 0) return false
+        if (config.doubleTapWindow() <= 0) return false
         val tap = lastTaps.remove(bank) ?: return false
-        if (now - tap.time > config.doubleTapMs) return false
+        if (now - tap.time > config.doubleTapWindow()) return false
         if (hypot(x - tap.x, y - tap.y) > height * 0.05f) return false
         val key = ring.keys.indexOf(config.doubleTap(bank))
         if (key < 0) return false
@@ -313,7 +293,7 @@ class RingView(
      * already on the key it wants, and staying put costs it no travel.
      */
     private fun armLongPress(bank: Bank, pointer: Int) {
-        if (config.longPressMs <= 0) return
+        if (config.longPressWait() <= 0) return
         val key = ring.keys.indexOf(config.longPress(bank))
         if (key < 0) return
         val task = Runnable {
@@ -324,7 +304,7 @@ class RingView(
             invalidate()
         }
         presses[pointer] = task
-        postDelayed(task, config.longPressMs)
+        postDelayed(task, config.longPressWait())
     }
 
     private fun dropLongPress(pointer: Int) {
@@ -338,7 +318,7 @@ class RingView(
             invalidate()
         }
         flusher = task
-        postDelayed(task, config.doubleTapMs)
+        postDelayed(task, config.doubleTapWindow())
     }
 
     /**
@@ -397,10 +377,16 @@ class RingView(
      */
     private class Grain(val spacing: Float, val radius: Float)
 
-    private fun grainOf(kind: Kind): Grain? = when (kind) {
-        Kind.PLAIN -> null
-        Kind.VOWEL -> Grain(0.019f, 0.0030f)
-        Kind.MOD -> Grain(0.026f, 0.0045f)
+    private fun grainOf(kind: Kind): Grain? {
+        if (!config.dither) return null
+        val spacing = when (kind) {
+            Kind.PLAIN -> return null
+            Kind.VOWEL -> config.grainFine
+            Kind.MOD -> config.grainCoarse
+        }
+        // The dot follows the spacing: a grain is one number, and a dither
+        // whose dots outgrow their gaps is a fill.
+        return Grain(spacing, spacing * DOT)
     }
 
     /**
@@ -426,8 +412,25 @@ class RingView(
         TypedValue.COMPLEX_UNIT_SP, config.labelSp, resources.displayMetrics
     )
 
+    /**
+     * The board's two colours. Everything else on it is one of them, faded.
+     *
+     * `system` asks the phone, which is the only one of the three that can
+     * change under the keyboard, so it is read at every draw rather than kept.
+     */
+    private fun palette(): Palette {
+        val dark = when (config.theme) {
+            "dark" -> true
+            "light" -> false
+            else -> resources.configuration.uiMode and
+                Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+        }
+        return if (dark) Palette(ground = Color.rgb(20, 20, 20), ink = Color.rgb(232, 232, 232))
+        else Palette(ground = Color.WHITE, ink = Color.rgb(24, 24, 24))
+    }
+
     override fun onDraw(canvas: Canvas) {
-        val paint = Palette(ground = Color.WHITE, ink = Color.rgb(24, 24, 24))
+        val paint = palette()
         // Only the fields get a ground, and only where the keys are. Above them
         // and between them the app shows through, which is what the band is for.
         ink.style = Paint.Style.FILL
@@ -460,6 +463,7 @@ class RingView(
     private fun drawBank(canvas: Canvas, bank: Bank, paint: Palette, sketch: Sketch, where: Field) {
         val thumb = chorder.thumb(bank)
         drawCells(canvas, thumb, paint, sketch)
+        drawGestures(canvas, thumb, paint, sketch)
         drawHere(canvas, thumb, paint, sketch)
         drawMark(canvas, thumb, paint, where)
         drawTaken(canvas, thumb, paint, where)
@@ -472,6 +476,8 @@ class RingView(
         val path: Path,
         val grain: Path?,
         val middle: Point,
+        /** How far the cell reaches from its middle, for what is drawn inside it. */
+        val half: Float,
     )
 
     /**
@@ -504,11 +510,18 @@ class RingView(
                 val middle = ring.middle(bank, field, cell)
                 // The row says what it is by being the row, so the dither is
                 // for the rings, where the kinds are mixed.
-                val kind = if (cell.isRow) null else keys.firstOrNull()?.let { kindOf(it) }
+                val kind = when {
+                    cell.isRow -> null
+                    ring.isUpgrade(bank, cell) -> Kind.MOD
+                    else -> keys.firstOrNull()?.let { kindOf(it) }
+                }
                 val name = if (ring.isUpgrade(bank, cell)) UPGRADE else spell(keys)
                 val grain = kind?.let { grainOf(it) }
                     ?.let { stipple(outline, middle, name, unit, it) }
-                Cut(cell, keys, path, grain, middle)
+                Cut(
+                    cell, keys, path, grain, middle,
+                    outline.maxOf { hypot(it.x - middle.x, it.y - middle.y) },
+                )
             },
             field = field,
             unit = unit,
@@ -658,6 +671,15 @@ class RingView(
                 ink.color = fade(paint.ink, if (state == State.LIVE) 0.55f else 0.15f)
                 canvas.drawPath(cut.path, ink)
             }
+            // The toggle is a switch rather than a key, and the ring round it
+            // says so: it is the one cell an entry turns over instead of
+            // spending.
+            if (ring.isUpgrade(thumb.bank, cut.cell)) {
+                ink.style = Paint.Style.STROKE
+                ink.strokeWidth = sketch.unit * 0.006f
+                ink.color = if (state == State.HELD) paint.ground else fade(paint.ink, 0.5f)
+                canvas.drawCircle(cut.middle.x, cut.middle.y, cut.half * 0.72f, ink)
+            }
             if (!config.showLabels) continue
             ink.style = Paint.Style.FILL
             ink.color = when (state) {
@@ -666,6 +688,134 @@ class RingView(
                 State.DEAD -> fade(paint.ink, 0.25f)
             }
             label(canvas, text(thumb.bank, cut), cut.middle, markOf(thumb.bank, cut, state))
+            if (cut.cell.isRow) drawRowHint(canvas, thumb.bank, cut, sketch)
+        }
+    }
+
+    /**
+     * The two moves off the outer ring that take a modifier, drawn from where
+     * the thumb is to where each one would fire.
+     *
+     * Neither is a cell, so neither can be labelled like one. What the picture
+     * can say is which way to go and how far, and it says it only while the
+     * thumb is out on the ring, because that is the only place either one can
+     * be made from.
+     */
+    private fun drawGestures(canvas: Canvas, thumb: Thumb, paint: Palette, sketch: Sketch) {
+        if (!config.showMoves || !thumb.live) return
+        val bank = thumb.bank
+        val outer = ring.outer(bank)
+        val here = thumb.region ?: return
+        if (here.level != outer || here.slot < 0) return
+        val at = ring.polar(bank, thumb.field, thumb.atX, thumb.atY)
+        val span = 360f / ring.slots(bank, outer).coerceAtLeast(1)
+        // Where each one fires: two slot boundaries back round the ring, and
+        // the edge of the band on the way in.
+        val ends = listOf(
+            config.turnBack(bank) to
+                (0..ARC).map { Polar(at.r, at.deg + (turned(bank, here, at, span) - at.deg) * it / ARC) },
+            config.pullIn(bank) to
+                (0..ARC).map { Polar(at.r + (ring.edges(bank, outer).first - at.r) * it / ARC, at.deg) },
+        )
+        for ((glyph, run) in ends) {
+            val key = ring.keys.indexOf(glyph)
+            if (key < 0) continue
+            // Probed rather than worked out: the hint is drawn where the thumb
+            // can make the move, which is where the move takes nothing.
+            if (!clear(bank, thumb, run)) continue
+            val held = key in thumb.keys || key in chorder.sticky
+            ink.color = fade(paint.ink, if (held) 0.9f else 0.45f)
+            ink.style = Paint.Style.STROKE
+            ink.strokeWidth = sketch.unit * (if (held) 0.012f else 0.007f)
+            val line = run.map { ring.point(bank, sketch.field, it) }
+            for (i in 0 until line.size - 1) {
+                canvas.drawLine(line[i].x, line[i].y, line[i + 1].x, line[i + 1].y, ink)
+            }
+            head(canvas, line[line.size - 2], line.last(), sketch.unit)
+            if (!config.showLabels) continue
+            ink.style = Paint.Style.FILL
+            val tip = line.last()
+            val away = line[line.size - 2]
+            canvas.drawText(
+                ring.keys[key],
+                tip.x + (tip.x - away.x) * TIP,
+                tip.y + (tip.y - away.y) * TIP + ink.textSize * 0.35f,
+                ink,
+            )
+        }
+    }
+
+    /**
+     * Whether this run over the rings takes nothing, which is what a gesture
+     * needs and what its hint promises.
+     */
+    private fun clear(bank: Bank, thumb: Thumb, run: List<Polar>): Boolean = run.none {
+        val cell = ring.cellAt(bank, it)
+        // The cell the thumb is in is already answered for: it took whatever it
+        // holds on the way in.
+        cell != thumb.cell &&
+            (ring.isUpgrade(bank, cell) || ring.taking(bank, cell, thumb.keys).isNotEmpty())
+    }
+
+    /** The angle a turn back fires at: two slot boundaries behind the thumb. */
+    private fun turned(bank: Bank, here: Cell, at: Polar, span: Float): Float {
+        val mid = ring.centre(bank, here).deg
+        return at.deg + (((mid - at.deg + 540f) % 360f) - 180f) - 1.5f * span
+    }
+
+    /**
+     * The motion that takes a row key without the trip to the row, drawn in the
+     * key it also takes.
+     *
+     * The gesture itself is drawn on the rings, but only while the thumb is out
+     * there. This is what says the shortcut exists before the thumb has found
+     * it: a turn back round the ring, or a pull in off it.
+     */
+    private fun drawRowHint(canvas: Canvas, bank: Bank, cut: Cut, sketch: Sketch) {
+        if (!config.showMoves) return
+        val key = cut.keys.singleOrNull() ?: return
+        val turn = key == ring.keys.indexOf(config.turnBack(bank))
+        if (!turn && key != ring.keys.indexOf(config.pullIn(bank))) return
+        // Under the label, and inside the cell: a bank narrower than its
+        // neighbour has a shallower row, and the mark is the thing that has to
+        // give way rather than the label.
+        val rect = ring.rowCell(bank, sketch.field, cut.cell.slot)
+        val size = min(ink.textSize * 0.5f, rect.height * 0.2f)
+        val x = cut.middle.x
+        val y = min(cut.middle.y + ink.textSize * 1.1f, rect.bottom - size * 1.4f)
+        ink.style = Paint.Style.STROKE
+        ink.strokeWidth = size * 0.16f
+        if (turn) {
+            // Backwards round the ring, which is the other way about for each
+            // thumb, because the two banks sweep mirrored arcs.
+            val way = if (bank == Bank.LEFT) 1f else -1f
+            val box = android.graphics.RectF(x - size, y - size, x + size, y + size)
+            canvas.drawArc(box, if (way > 0) 40f else 140f, way * 260f, false, ink)
+            val tip = Point(x + size * way * 0.77f, y - size * 0.64f)
+            head(canvas, Point(x + size * way * 0.5f, y - size * 0.87f), tip, size * 24f)
+        } else {
+            canvas.drawLine(x, y + size, x, y - size, ink)
+            head(canvas, Point(x, y + size), Point(x, y - size), size * 24f)
+        }
+        ink.style = Paint.Style.FILL
+    }
+
+    /** An arrow head at the end of a run of points, pointing the way it runs. */
+    private fun head(canvas: Canvas, from: Point, to: Point, unit: Float) {
+        val dx = to.x - from.x
+        val dy = to.y - from.y
+        val len = hypot(dx, dy)
+        if (len <= 0f) return
+        val size = unit * 0.035f
+        val ux = dx / len
+        val uy = dy / len
+        for (side in listOf(1f, -1f)) {
+            canvas.drawLine(
+                to.x, to.y,
+                to.x - (ux * 0.8f + side * uy * 0.5f) * size,
+                to.y - (uy * 0.8f - side * ux * 0.5f) * size,
+                ink,
+            )
         }
     }
 
@@ -804,7 +954,7 @@ class RingView(
         ink.color = paint.ink
         // In steno order, not take order, so what is shown is the outline.
         canvas.drawText(
-            keys.sorted().joinToString("") { order[it].toString() },
+            spell(keys.sorted().map { chorder.lift(it) }),
             where.centerX, where.top + ink.textSize, ink
         )
     }
@@ -854,10 +1004,17 @@ class RingView(
     }
 
     companion object {
-        /** What the upgrade's own key says: the keys it writes, not one it is. */
-        private const val UPGRADE = "DZ"
+        /** What the upgrade's own cell says: the keys it writes, not one it is. */
+        private const val UPGRADE = "dz"
 
         private val VOWELS = setOf("A", "O", "E", "U")
+
+        /** A dither dot's radius, as a share of the spacing between dots. */
+        private const val DOT = 0.165f
+
+        /** How finely an arrow is drawn, and how far past its tip the key sits. */
+        private const val ARC = 32
+        private const val TIP = 2.2f
 
         /** How long the band takes to come and go. */
         private const val FADE_MS = 130f

@@ -75,9 +75,11 @@ class RingTest {
     @Test
     fun every_key_is_reachable() {
         for (bank in Bank.values()) {
-            // The row is not walked to, so reachability is about the rings.
+            // A float is off the walk, wherever it is drawn, so reachability is
+            // about the keys steno order carries.
             val keys = ring.cells(bank).filterNot { it.isRow }
                 .flatMap { ring.keys(bank, it) }.distinct()
+                .filterNot { it in ring.floats(bank) }
             for (from in keys) {
                 for (to in keys.filter { ring.live(it, listOf(from)) }) {
                     val chord = setOf(from, to)
@@ -91,28 +93,41 @@ class RingTest {
     }
 
     /**
-     * Every cell of the rim is a run straight out from the hub, taking nothing
+     * Every key of the rim is a run straight out from the hub, taking nothing
      * on the way.
      *
      * Not at any one angle: the ground between the keys of a ring is what the
      * run passes through, so the property is that some line out from the middle
-     * lands on the cell and crosses nothing else.
+     * lands on one of the key's cells and crosses nothing else.
      */
     @Test
     fun the_rim_is_a_run_straight_out() {
         for (bank in Bank.values()) {
-            val rim = ring.cells(bank).filter { it.level == 2 }
+            val rim = ring.cells(bank).filter { it.level == ring.outer(bank) }
             assertTrue("$bank should have a rim", rim.isNotEmpty())
-            for (cell in rim) assertTrue(
-                "no run out from the middle reaches $cell in $bank alone",
-                (-30..30).any { step -> runsOut(bank, cell, ring.centre(bank, cell).deg + step) },
+            // Per key, not per cell: the ring inside can stand in front of one
+            // cell, and what the repeats are for is that another is clear.
+            val (studs, keys) = rim.partition { ring.isStud(bank, it) }
+            for (cells in keys.groupBy { ring.keys(bank, it) }.values) assertTrue(
+                "no run out from the middle reaches any of $cells in $bank alone",
+                cells.any { straightOut(bank, it) },
+            )
+            // A stud stands on a key of the ring inside, so the run that
+            // reaches it is the one that carries on out from that key.
+            for (stud in studs) assertTrue(
+                "no run on out from the ring inside reaches $stud in $bank",
+                runsOut(bank, stud, ring.centre(bank, stud).deg, from = 0.7f),
             )
         }
     }
 
-    /** Whether a line out from the middle at this angle lands on [cell] and nothing else. */
-    private fun runsOut(bank: Bank, cell: Cell, deg: Float): Boolean {
-        var r = 0.02f
+    /** Whether some run out from the middle lands on this cell and nothing else. */
+    private fun straightOut(bank: Bank, cell: Cell): Boolean =
+        (-30..30).any { step -> runsOut(bank, cell, ring.centre(bank, cell).deg + step) }
+
+    /** Whether a line out from here at this angle lands on [cell] and nothing else. */
+    private fun runsOut(bank: Bank, cell: Cell, deg: Float, from: Float = 0.02f): Boolean {
+        var r = from
         while (r <= 1f) {
             val at = ring.cellAt(bank, Polar(r, deg))
             if (at == cell) return true

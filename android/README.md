@@ -43,9 +43,14 @@ take-on-entry is that rule.
 LEFT                                RIGHT
 hub    S | ST | T                   hub    E | EU | U        (tap only)
 ring 1 P H R W K                    ring 1 F R B G L P
-ring 2 A O A O A O                  ring 2 T S T S T S
-row    ^ # +                        row    * @ DZ -D -Z
+ring 2 + A O, five times            ring 2 dz T S, six times
+row    ^ #                          row    * @ -D -Z
 ```
+
+Ring 2 holds one group per key of ring 1, so **every key of ring 1 sees the same
+three angles**: its stud straight out from it, then the group's two keys a third
+and two thirds of a slot on round the ring. Wherever the thumb is on ring 1, the
+motion to `-T` is the same, and `-S` is the same again.
 
 The hub is a pie and fills its circle. A ring key is a body rather than a slice
 of its ring: one width for every ring, drawn along the middle of its slot with
@@ -53,7 +58,7 @@ rounded ends, and everything around it is ground. That ground is what a slide
 passes through on its way to a further key, and it is the width, the length and
 the taper of the key that set how much of it there is. All three are settings.
 
-Four facts about the shape, each measured against 340k strokes of
+Five facts about the shape, the first four measured against 340k strokes of
 `typey-type-full.json`:
 
 | | |
@@ -62,27 +67,71 @@ Four facts about the shape, each measured against 340k strokes of
 | the hub is a pie of complete answers | landing takes the whole choice, so the hub is ground from then on and you can leave at any angle. `S T` in the left hub is worth 3.6 points over `S` alone, and the ring drops to five cells at 72° |
 | a key may hold several cells | the vowels repeat round their ring, so one is always within reach of wherever the thumb left ring 1 |
 | the pinky is a mode, not a ring | `-D` is `-T` upgraded and `-Z` is `-S` upgraded, and the pinky presses them one at a time. `-TS` is 2351 strokes and `-DZ` is 1466, while `-TZ` is 26 and `-SD` is 3, so one bit over the stroke buys nearly all of it, and the row carries a plain `-D` and `-Z` for the rest |
+| a key no walk can spend is a stud | a circle rather than a body along the ring, standing a hair further out, one between each group of repeats. So `-T` and `-S` stay next to each other and the thumb never has to pass through the stud to get from one to the other |
 
 ## The modifiers stand in a row
 
 Steno order cannot kill a modifier, so a modifier is a key no walk can spend —
-and a key no walk can spend is a key no walk should have to reach. They are off
-the rings, in a row under them: `^ # +` on the left, `* @ DZ -D -Z` on the
+and a key no walk can spend is a key no walk should have to reach. Most of them
+are off the rings, in a row under them: `^ #` on the left, `* @ -D -Z` on the
 right. A tap arms one for the next stroke; holding it puts it in the stroke in
-hand, the way any cell does.
+hand, the way any cell does. `+` is the exception: it is a float, so it can sit
+on ring 2 among keys it can never spend.
 
-Two shortcuts reach a modifier without the trip. **Two quick taps** add the
-side's double-tap key, so tap tap on `-T` releases as `-*T`. **Standing still**
-on a cell adds the side's long-press key, which is the modifier a thumb already
-on the key it wants can take without moving.
+## The two moves no chord makes
+
+Ring 2 is the last of the walk and its keys repeat round it, so a chord neither
+turns backwards out there nor comes back in. Those two moves are free to mean
+something else, and each takes a modifier:
+
+| | |
+|---|---|
+| **turn back** past a whole cell of ring 2 | `^` on the left, `*` on the right |
+| **pull in** off ring 2 | `#` on the left, `@` on the right |
+
+**Taking a key is what says a move is the chord**, so neither fires on one. A
+thumb that overshoots ring 1 and pulls back onto the key it wanted takes the
+key; a thumb that turns back onto a key takes the key. What is left is the
+ground, and the ground inside the ring runs all the way round, so either move
+can be made with no key held at all — which is what puts a modifier one flick
+away rather than one trip.
+
+A turn back is a whole cell rather than a step, because one step back is how the
+stud behind a key is reached.
+
+While a thumb is out on ring 2 the board draws both moves from where it is to
+where each would fire, and draws one only when the way is clear: the hint asks
+the same function the move does, so it cannot promise a move the thumb cannot
+make. The row carries the same two marks under the keys they take.
+
+Two older shortcuts remain. **Two quick taps** add the side's double-tap key, so
+tap tap on `-T` releases as `-*T`. **Standing still** on a cell adds the side's
+long-press key, which is off by default now that the two moves reach the same
+modifiers without waiting.
 
 ## The upgrade
 
-`DZ` is not a key. It is one bit over the whole stroke: while it is on, every
-`-T` in the stroke writes `-D` and every `-S` writes `-Z`, and the board says
-so by relabelling those cells. The pinky writes those keys one at a time, so a
-mode expresses it more cheaply than a ring of its own; a stroke that wants `-T`
-and `-D` at once takes the row's plain `-D` instead.
+`dz` is not a key. It is a switch, and it stands in the studs of ring 2, one
+between each `-T` and the `-S` before it. While it is on, a `-T` the thumb takes
+writes `-D` and a `-S` writes `-Z`, and the board says so by relabelling those
+cells. The pinky writes those keys one at a time, so a mode expresses it more
+cheaply than a ring of its own.
+
+Entering a stud turns it over, so what a key writes is the mode it was taken
+under, and a stroke can hold one lifted key and one plain one:
+
+| | |
+|---|---|
+| `dz`, `-T` | `-D` |
+| `dz`, `-T`, `-S` | `-DZ` |
+| `dz`, `-T`, `dz`, `-S` | `-DS` |
+
+A tap on a stud alone has nothing to lift, so it writes both keys: `-DZ` is a
+stroke worth a cell of its own. The row keeps a plain `-D` and `-Z` for the
+strokes that want a key and its upgrade at once.
+
+The switch is drawn as a ring inside the stud, because it is the one cell an
+entry turns over rather than spends.
 
 ## A layout is one value per cell
 
@@ -91,7 +140,7 @@ character, or several keys between slashes, and a dot is ground. The left bank
 ships as:
 
 ```
-S/ST/T PHRWK AOAOAO
+S/ST/T PHRWK +AO+AO+AO+AO+AO
 ```
 
 Edit it in the settings, and the row beside it. Everything else is recovered
@@ -100,11 +149,12 @@ from that text:
 | | |
 |---|---|
 | the walk | steno order over the keys the text names |
-| a float | a key of the row: steno order cannot kill one, so no walk can spend it |
+| a float | a key steno order cannot kill, so no walk can spend it: the row's keys, and the ones `The floats` names |
 | a duplicate | the same key in two slots. Nothing special: a key is a set of cells |
-| the turn | a band whose keys repeat is turned half a slot, so it is staggered against the band inside it |
 | a spoke | every angle a ring marks out, each slot's middle and each boundary's |
 | the hub is tap-only | it is level 0. Landing on a slice takes the slice; entering it from a ring takes nothing |
+| a stud | a slot no walk can spend: a float, or the upgrade, which `>` names. Drawn as a circle a hair outside its band, so a thumb turning along the ring passes under it |
+| the turn | a ring holding a whole number of groups per key of ring 1 takes ring 1's angles; one that does not divide is staggered half a slot instead |
 
 ## The geometry
 
@@ -129,7 +179,15 @@ touch back repeats the question until it lands on its own exponent.
 
 The bank is square because a thumb sweeps an arc: a ring stretched to a tall
 bank would answer the same sweep with different keys at different angles. The
-keyboard therefore takes only the depth a square bank and its row need.
+keyboard therefore takes only the depth a square bank and its row need, which
+is the depth the wider of the two banks can use.
+
+A thumb's field is its share of the width, and the bank is a square inside it,
+held against the thumb's own edge and against the floor. So an uneven split
+leaves its slack between the two banks rather than round the wider one: each
+thumb reaches the edge it starts from. `Ground round a bank` keeps ground
+outside the square as well, and `Bank pulled off its edge` moves the bank in
+towards the middle.
 
 A key is the set of places within half its width of the arc through the middle
 of its slot, which is a capsule, and a circle when the arc has no length. The
@@ -179,7 +237,11 @@ texture of its face: a fine blue-noise dither for the vowels, a coarse one for
 a modifier, a plain face for the consonants, which are the many. Which is which
 is read off the glyph, so a key that spells nothing is a modifier and a layout
 that moves one does not have to say so twice. The row has no dither, because
-being the row already says what its keys are.
+being the row already says what its keys are. The two spacings are settings,
+and the dot follows the spacing, because a dither whose dots outgrow their gaps
+is a fill.
+
+`Theme` is the two colours: light, dark, or whatever the phone is set to.
 
 The dither thins out at the cell's rim and around its label, because a texture
 running under a letter is what makes the letter hard to read. What the fade
@@ -287,18 +349,30 @@ A buzz when a key is taken says a key was taken, which is a thing you can
 already see. The buzz that matters is on the **change of cell**, because that
 is what turns a slide into something to feel instead of something to read.
 
-The two thumbs get buzzes that feel different, and this is where the hardware
-sets the limit. A phone has one vibration motor, so there is no left channel
-and no right channel. What there is, in the order the code asks for it:
+Three occasions have something to say: the change of cell, a key taken, and a
+stroke written. Each one carries a **voice per thumb** and how hard to say it.
 
-1. more than one motor, on the few devices that have them, addressed separately
-2. composition primitives, where `PRIMITIVE_LOW_TICK` against `PRIMITIVE_TICK`
-   feels like two pitches from the same motor
-3. amplitude control, so weak against strong
-4. none of those, so one pulse against two, because rhythm always survives
+A voice is a name for one short thing a motor can do. Where the phone has
+composition primitives it is one of those; where it has none the same name
+comes out as a pulse of that length, that strength and that count, because
+rhythm and amplitude are what survive when pitch does not. So a `low tick` is
+`PRIMITIVE_LOW_TICK` on a phone that has it and a softer pulse on a phone that
+does not, and a layout of voices means something either way.
 
-The settings screen prints which one this device got, under the switch that
-asks for it.
+| | |
+|---|---|
+| `pulse`, `soft pulse`, `two pulses` | no primitive at all, so they are the same on every phone |
+| `low tick`, `tick`, `click` | 20ms each, and what a tick can be given |
+| `two ticks` | a take can afford 60ms; a tick cannot |
+| `rise`, `fall`, `spin` | 100 to 150ms. A stroke is made a few times a second at most |
+
+The settings offer only the voices this phone can make, and only the ones short
+enough for the occasion. Every chip plays itself when it is tapped.
+
+A phone has one vibration motor, so a voice per thumb is not a left channel and
+a right channel: it is two buzzes from the same motor, which is why the two
+have to differ in something the motor has. More than one motor is the one case
+where a buzz can be put on a side, and the few devices with two get one each.
 
 ## The bar
 
@@ -338,7 +412,8 @@ a bar of its own.
 What reaches the screen is **one line, and the briefs alone**. A stroke you
 have just made is not news, and a shorter way to make it is. Anything taller
 than a line is the app's room rather than this keyboard's, so the panel never
-grows into it. A quiet minute clears the line.
+grows into it. A quiet spell clears the line, and how many briefs fit and how
+long the spell is are settings.
 
 ## Defining an outline
 
@@ -378,6 +453,36 @@ the driver gives it, and `Print the touch numbers` prints pressure, size and
 the two contact axes. Whether a hard press can be told from a light one is a
 question about the hardware, so it goes on the screen rather than being
 guessed at. Both are off by default.
+
+## The settings
+
+Six tabs, a live keyboard under them, and the rest follows from wanting to see
+the answer rather than read about it.
+
+A change lands in the keyboard at the foot of the screen as it is made,
+mid-drag. What a bank cannot show is drawn instead: the two screens at a
+glance, with the room the keys take off the app and where the split leaves the
+banks. A buzz setting plays itself, left voice then right.
+
+**A number on the screen that is not the number in force is worse than no
+number at all.** Square banks cap the keyboard's depth, and the split moves
+that cap, so the height prints what it came out as beside what was asked for,
+`0.46 → 0.26`, and shades the run of its slider that cannot be reached. Every
+knob of the open tab is recomputed whenever any of them moves.
+
+**A flag owns the knobs under it.** Double taps, long presses, the dither, the
+labels, the briefs, the modifier row, the band over the app and each of the
+three buzzes are a switch with its own numbers indented beneath it, and turning
+one off greys what it governs rather than taking it off the screen: where a
+number stood is part of how the screen is read, and what it said is what
+turning the flag back on restores.
+
+The key a gesture or a tap takes is chosen from the keys no walk can spend,
+because those are the whole of the answer. A voice is chosen the same way, from
+what the motor can do.
+
+The prose is behind a `?`: a paragraph is worth reading once and is in the way
+every time after.
 
 ## Building
 

@@ -593,7 +593,7 @@ class StenoService : InputMethodService() {
      */
     private fun render() {
         val bar = notesBar ?: return
-        bar.text = notes.briefs(BRIEFS)
+        bar.text = if (config.briefs) notes.briefs(config.briefsMost) else ""
         bar.visibility = if (bar.text.isEmpty()) View.GONE else View.VISIBLE
         // The record clears after a quiet spell: it is about what was just
         // written, and an hour-old line no longer is.
@@ -604,7 +604,7 @@ class StenoService : InputMethodService() {
             bar.visibility = View.GONE
         }
         notesClear = clear
-        bar.postDelayed(clear, NOTES_IDLE_MS)
+        bar.postDelayed(clear, config.briefsIdleMs)
     }
 
     /**
@@ -638,12 +638,9 @@ class StenoService : InputMethodService() {
     companion object {
         const val TAG = "stfst"
         const val PREFS = "radial"
-        /** How many briefs one line holds, and how long a quiet spell keeps them. */
-        const val BRIEFS = 8
         /** The dictionary this keyboard defines into, as `editable.toml` names it. */
         const val USER_DICT = "stfst-user"
         /** The most strokes one entry made from the history can reach back over. */
         const val REACH_MOST = 4
-        const val NOTES_IDLE_MS = 60_000L
     }
 }

@@ -10,16 +10,17 @@ package cx.yeet.stfst
 data class Config(
     /**
      * Each bank's layout: the hub first, then the rings outward, separated by
-     * spaces. A slot is one character, or several keys between slashes, and a
-     * dot is ground.
+     * spaces. A slot is one character, or several keys between slashes, a dot
+     * is ground, and [Ring.UPGRADE] is the upgrade rather than a key.
      *
      * Everything else is recovered from the text. The walk is steno order over
-     * the keys it names; the rim is the outermost ring, and its keys are the
-     * floats, which is why they repeat round it; a key in two slots is nothing
-     * special, because a key is a set of cells.
+     * the keys it names; a key in two slots is nothing special, because a key
+     * is a set of cells; and a slot no walk can spend is drawn as a stud
+     * between its neighbours, which is why the outer rings carry one between
+     * each group of repeats.
      */
-    var ringLeft: String = "S/ST/T PHRWK AOAOAO",
-    var ringRight: String = "E/EU/U frbglp tststs",
+    var ringLeft: String = "S/ST/T PHRWK +AO+AO+AO+AO+AO",
+    var ringRight: String = "E/EU/U frbglp >ts>ts>ts>ts>ts>ts",
     /**
      * The modifiers, one key to a slot, left to right under the rings.
      *
@@ -27,8 +28,32 @@ data class Config(
      * can spend is a key no walk should have to reach. A tap on one arms it for
      * the next stroke, and holding it puts it in the stroke in hand.
      */
-    var modsLeft: String = "^ # +",
-    var modsRight: String = "* @ > d z",
+    var modsLeft: String = "^ #",
+    var modsRight: String = "* @ d z",
+    /**
+     * The keys steno order cannot kill, whatever a walk has taken.
+     *
+     * A walk may take one at any point, so a float is safe anywhere: in the
+     * row, or on a ring between the keys it sits among.
+     */
+    var floats: String = "\uD83E\uDD90#@^+*",
+    /**
+     * The key a backwards turn round the outer ring takes, per bank.
+     *
+     * The outer ring is the last of the walk, and its keys repeat round it, so
+     * a chord never has to turn backwards there. A turn that takes nothing is
+     * therefore free to mean something else.
+     */
+    var turnBackLeft: Char = '^',
+    var turnBackRight: Char = '*',
+    /**
+     * The key a pull inwards off the outer ring takes, per bank.
+     *
+     * Nothing inside the outer ring is still live once the thumb is out there,
+     * so a pull back in is the second motion no chord needs.
+     */
+    var pullInLeft: Char = '#',
+    var pullInRight: Char = '@',
     /**
      * The upgrade: what each key becomes while it is on, in pairs.
      *
@@ -38,6 +63,16 @@ data class Config(
      * or `-Z` of the row instead.
      */
     var upgrade: String = "td sz",
+    /**
+     * A stud's width, as a share of [keyWidth], and how far out of its band's
+     * middle it stands, as a share of the band's half depth.
+     *
+     * A cell no walk can spend is drawn as a stud: a circle between the keys
+     * of its ring and a hair further out, so a thumb turning along the ring
+     * passes under it rather than through it.
+     */
+    var studWidth: Float = 0.7f,
+    var studOut: Float = 0.42f,
     /** The row's share of a bank's height. */
     var rowHeight: Float = 0.13f,
     /**
@@ -73,7 +108,7 @@ data class Config(
      * as the rings themselves do. The ground is what a slide passes through on
      * its way to a further key, which is what a narrow key buys.
      */
-    var keyWidth: Float = 0.22f,
+    var keyWidth: Float = 0.26f,
     /**
      * How much of its slot a ring key's body runs along: 0 is a circle, 1 fills
      * the slot and leaves its neighbours no ground between them.
@@ -113,10 +148,10 @@ data class Config(
      */
     var doubleTapLeft: Char = '+',
     var doubleTapRight: Char = '*',
+    var doubleTaps: Boolean = true,
     /**
      * Two taps this close together are a double tap. A quick tap's stroke waits
-     * this long before it goes out, which is what a second tap can cancel. Zero
-     * turns double taps off, and quick taps stop waiting.
+     * this long before it goes out, which is what a second tap can cancel.
      */
     var doubleTapMs: Long = 250L,
     /**
@@ -125,8 +160,9 @@ data class Config(
      * The other way to a modifier without a trip to the row, and the one a
      * thumb already on its key can take.
      */
-    var longPressLeft: Char = '#',
-    var longPressRight: Char = '@',
+    var longPresses: Boolean = false,
+    var longPressLeft: Char = '^',
+    var longPressRight: Char = '*',
     /** How long a touch must stand still on its cell to count as a long press. */
     var longPressMs: Long = 400L,
 
@@ -139,30 +175,71 @@ data class Config(
 
     var haptics: Boolean = true,
     /**
-     * Buzz when the cell under the thumb changes, not only when a key is taken.
+     * What the motor says on each of the three occasions, per thumb, and how
+     * hard.
      *
-     * Where the thumb is becomes a thing you can feel instead of read, which is
-     * what a keyboard used without looking needs.
-     */
-    var hapticTicks: Boolean = true,
-    /**
-     * Give the two thumbs buzzes that feel different.
+     * A phone has one vibrator, so a voice per thumb is not a left channel and
+     * a right channel. It is two buzzes from the same motor, and the difference
+     * carries whichever way the hardware allows: a low tick against a sharp
+     * one, a weak pulse against a strong one, one pulse against two. [Haptics]
+     * holds what each name comes to, and the settings screen offers only the
+     * ones this device can make.
      *
-     * A phone has one vibrator, so this is not a left channel and a right
-     * channel. It is two voices from the same motor, and which two depends on
-     * what the hardware offers: two motors if the device has them, else a low
-     * tick against a sharp one, else a weak buzz against a strong one, else one
-     * pulse against two. The settings screen prints what this device did.
+     * The buzz that matters is the one on the change of cell, because that is
+     * what turns a slide into something to feel instead of something to read.
      */
-    var hapticSplit: Boolean = true,
-    /** How hard, where the motor allows a choice. */
-    var hapticStrength: Float = 0.55f,
+    var tickOn: Boolean = true,
+    var tickPower: Float = 0.55f,
+    var tickLeft: String = "low tick",
+    var tickRight: String = "tick",
+    var takeOn: Boolean = true,
+    var takePower: Float = 1f,
+    var takeLeft: String = "low tick",
+    var takeRight: String = "click",
+    var strokeOn: Boolean = true,
+    var strokePower: Float = 1f,
+    var strokeLeft: String = "click",
+    var strokeRight: String = "click",
     /** No two ticks closer together than this, or a walk is one long buzz. */
     var hapticGapMs: Long = 28L,
 
     /** Draw the cells steno order has passed, sunk towards the ground and struck through. */
     var showDeadCells: Boolean = true,
     var showLabels: Boolean = true,
+    /**
+     * The board's two colours: `light`, `dark`, or `system` for whichever the
+     * phone is set to.
+     *
+     * The board has no hue, so a theme is the ground and the ink and nothing
+     * else. Every other colour on it is one of the two, faded.
+     */
+    var theme: String = "system",
+    /**
+     * The dither on a cell's face, and how far apart its dots are: the fine one
+     * is a vowel and the coarse one a modifier.
+     *
+     * What a key is shows in the texture of its face rather than in a hue, and
+     * a dot's size follows its spacing, so one number is the whole of a grain.
+     */
+    var dither: Boolean = true,
+    var grainFine: Float = 0.019f,
+    var grainCoarse: Float = 0.026f,
+    /**
+     * Draw the two moves off the outer ring, from where the thumb is to where
+     * each would fire, and mark the row keys they take.
+     */
+    var showMoves: Boolean = true,
+    /** The row of modifiers under the rings. Off gives its depth to the rings. */
+    var showRow: Boolean = true,
+    /**
+     * The briefs under the keys: a shorter way to write what was just written.
+     *
+     * One line, and the briefs alone, because a stroke you have just made is
+     * not news. How many fit on the line, and how long a quiet spell clears it.
+     */
+    var briefs: Boolean = true,
+    var briefsMost: Int = 8,
+    var briefsIdleMs: Long = 60_000L,
 
     /**
      * Draw every touch sample, so the shape and size of the contact is visible.
@@ -186,6 +263,16 @@ data class Config(
     var oneThumb: Boolean = true,
     /** Where the left field ends and the right begins, in portrait. */
     var fieldSplit: Float = 0.5f,
+    /** The ground kept round each bank, as a share of its field's width. */
+    var bankPad: Float = 0f,
+    /**
+     * Where a bank sits in a field too wide for it: 0 against the thumb's own
+     * edge, 1 against the middle.
+     *
+     * An uneven split leaves one field wider than a square bank can use, and
+     * the slack is on the side the thumb does not start from.
+     */
+    var bankPull: Float = 0f,
     /**
      * Put the two banks on the left and right edges in landscape, with the bar
      * in the gap between them.
@@ -218,7 +305,8 @@ data class Config(
      * only while a thumb is down, and it takes no touches, so the app under it
      * still works.
      */
-    var previewHeight: Float = 0f,
+    var band: Boolean = false,
+    var previewHeight: Float = 0.25f,
     /** The mark that shows where the thumb is. */
     var markRadius: Float = 0.022f,
     var labelSp: Float = 15f,
@@ -226,6 +314,35 @@ data class Config(
     var keyboardHeight: Float = 0.46f,
 ) {
     fun sticky(bank: Bank): String = if (bank == Bank.LEFT) stickyLeft else stickyRight
+
+    /** Whether this occasion buzzes at all, which the master switch also answers. */
+    fun buzzes(on: Buzz): Boolean = haptics && when (on) {
+        Buzz.TICK -> tickOn
+        Buzz.TAKE -> takeOn
+        Buzz.STROKE -> strokeOn
+    }
+
+    fun power(on: Buzz): Float = when (on) {
+        Buzz.TICK -> tickPower
+        Buzz.TAKE -> takePower
+        Buzz.STROKE -> strokePower
+    }
+
+    /** What the motor says on this occasion, in this thumb's voice. */
+    fun voice(on: Buzz, bank: Bank): String = when (on) {
+        Buzz.TICK -> if (bank == Bank.LEFT) tickLeft else tickRight
+        Buzz.TAKE -> if (bank == Bank.LEFT) takeLeft else takeRight
+        Buzz.STROKE -> if (bank == Bank.LEFT) strokeLeft else strokeRight
+    }
+
+    /** The double tap window, or nothing while double taps are off. */
+    fun doubleTapWindow(): Long = if (doubleTaps) doubleTapMs else 0L
+
+    /** How long a long press waits, or nothing while long presses are off. */
+    fun longPressWait(): Long = if (longPresses) longPressMs else 0L
+
+    /** The band over the app's share of the screen, zero while it is off. */
+    fun bandShare(): Float = if (band) previewHeight else 0f
 
     fun mods(bank: Bank): String = if (bank == Bank.LEFT) modsLeft else modsRight
 
@@ -241,5 +358,17 @@ data class Config(
 
     fun ring(bank: Bank): String = if (bank == Bank.LEFT) ringLeft else ringRight
 
+    fun turnBack(bank: Bank): Char = if (bank == Bank.LEFT) turnBackLeft else turnBackRight
+
+    fun pullIn(bank: Bank): Char = if (bank == Bank.LEFT) pullInLeft else pullInRight
+
     fun radii(bank: Bank): String = if (bank == Bank.LEFT) radiiLeft else radiiRight
+
+    companion object {
+        /** No key: what a shortcut is set to when it is off. */
+        const val NONE: Char = ' '
+    }
 }
+
+/** The three occasions the motor has something to say about. */
+enum class Buzz { TICK, TAKE, STROKE }
