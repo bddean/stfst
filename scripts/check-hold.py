@@ -92,7 +92,7 @@ def main(paths):
     from plover.translation import Translation, Translator
     from plover_stfst.dictionary import StfstDictionary
     from plover_stfst import host
-    from plover_stfst.host import Ahead, waiting
+    from plover_stfst.host import Ahead
 
     registry.update()
     # What the entry points do, done by hand, so nothing has to be installed.
@@ -126,7 +126,6 @@ def main(paths):
             translator = Translator()
             translator.set_dictionary(StenoDictionaryCollection(list(dicts)))
             translator.add_listener(formatter.format)
-            waiting.clear()
             Ahead(engine_for(translator)).start()
             if seed:
                 # Text the fixture starts from. A translation of its own, so a

@@ -171,7 +171,7 @@ def cap_pending(translator):
 
 
 class _Waiting:
-    """What this engine is holding: the text to write after the next unit.
+    """What a translator state is holding: the text to write after the next unit.
 
     One hold, not a queue. A second before the first has landed replaces it, as
     it does in `stfst-board`.
@@ -191,7 +191,18 @@ class _Waiting:
         self.text = None
 
 
-waiting = _Waiting()
+def waiting(translator):
+    """What the translator's current state is holding.
+
+    Per state, because Plover swaps the state: the Add Translation dialog gives
+    each of its fields a state of its own, and a hold in the text must not land on
+    a word stroked into the dialog.
+    """
+    state = translator.get_state()
+    held = getattr(state, "stfst_waiting", None)
+    if held is None:
+        held = state.stfst_waiting = _Waiting()
+    return held
 
 
 def _preview(tail, attached):
@@ -346,26 +357,27 @@ class Ahead:
 
     def stop(self):
         self._translator.remove_listener(self._translated)
-        waiting.clear()
+        waiting(self._translator).clear()
 
     def _translated(self, undo, do, prev):
+        wait = waiting(self._translator)
         for translation in undo:
             _, held = split_hold(translation.english or "")
             if held is not None:
                 # The stroke that held it is gone, so nothing is waiting.
-                waiting.clear()
-            elif waiting.landed and translation is waiting.landed[0]:
+                wait.clear()
+            elif wait.landed and translation is wait.landed[0]:
                 # The word a hold landed on is gone, so it waits again.
-                waiting.arm(waiting.landed[1])
-                waiting.landed = None
+                wait.arm(wait.landed[1])
+                wait.landed = None
         for translation in do:
             body, held = split_hold(translation.english or "")
             # In this order, so a stroke that both lands a hold and starts one
             # does the two in the order it wrote them.
-            if waiting.text is not None and writes_text(body):
-                self._land(translation)
+            if wait.text is not None and writes_text(body):
+                self._land(translation, wait)
             if held is not None:
-                waiting.arm(self._append_for(*held))
+                wait.arm(self._append_for(*held))
 
     def _append_for(self, kind, rest):
         """What the next word's translation gets, for each kind of hold.
@@ -399,7 +411,7 @@ class Ahead:
         atoms = ["{:stfst_drop:}"] + ([body] if body else []) + [text]
         return " ".join(atoms) + marker
 
-    def _land(self, translation):
+    def _land(self, translation, wait):
         """Write it with the word, as one translation.
 
         One translation and not a second after it, so that one `*` takes back
@@ -411,19 +423,19 @@ class Ahead:
         screen already and has to be taken back and written again, which costs a
         flicker and cannot be helped.
         """
-        text = waiting.text
+        text = wait.text
         # Cleared before anything is written, because writing it tells this hook
         # again and there is nothing left to wait for.
-        waiting.clear()
+        wait.clear()
         if not translation.formatting:
             translation.english = self._joined(translation.english, text)
-            waiting.landed = (translation, text)
+            wait.landed = (translation, text)
             return
         translator = self._translator
         translator.untranslate_translation(translation)
         landed = Translation(translation.strokes,
                              self._joined(translation.english, text))
-        waiting.landed = (landed, text)
+        wait.landed = (landed, text)
         translator.translate_translation(landed)
         # This hook runs inside the flush that told it, so what it wrote needs a
         # flush of its own or it waits in the queue until the next stroke.
