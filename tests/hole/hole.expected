@@ -1,5 +1,6 @@
 ! 0 typey-type priority 30
-! 1 phrasing priority 10
+! 1 phrasing-tag priority 11
+! 2 phrasing priority 10
 !buffer	""
 +T-RG	1	phrasing	it[AFTER][META=infl]s[END][END]	"it -s"
 RUPB	1	typey-type	run	"it runs"
@@ -93,4 +94,18 @@ KAT	1	typey-type	cat	"does the cat add"
 !buffer	""
 #+PR	1	phrasing	is the	"is the"
 KAT	1	typey-type	cat	"is the cat"
-! 49 strokes, 1 candidates at the widest
+!buffer	""
+#^+T	1	phrasing-tag	it's[AFTER], isn't it[ATTACH_L][END]	"it's, isn't it"
+TPHAOEUS	1	typey-type	nice	"it's nice, isn't it"
+#^+T	1	phrasing-tag	, isn't it[ATTACH_L]	"it's nice, isn't it"
+!buffer	""
+#^+K	1	phrasing-tag	I'm[AFTER], aren't I[ATTACH_L][END]	"I'm, aren't I"
+HRAEUT	1	typey-type	late	"I'm late, aren't I"
+#^+K	1	phrasing-tag	, aren't I[ATTACH_L]	"I'm late, aren't I"
+!buffer	""
+#^+K-GZ	1	phrasing-tag	I go to[AFTER], don't I[ATTACH_L][END]	"I go to, don't I"
+SKAOL	1	typey-type	school	"I go to school, don't I"
+#^+K-GZ	1	phrasing-tag	, don't I[ATTACH_L]	"I go to school, don't I"
+!buffer	""
+#^+T-B	1	phrasing-tag	it adds, doesn't it	"it adds, doesn't it"
+! 56 strokes, 2 candidates at the widest

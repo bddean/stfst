@@ -1,0 +1,577 @@
+! phrasing-tag: `#^`, the question tag. A stride through subjects, modals, aspects,
+! negation and enders, then the cases the design names. The expectations are
+! this grammar's own answers: a line that changes is a change to what a tagged
+! clause writes, so read it, then update it.
+!
+! A line with no tab claims the stroke has no entry here, and `phrasing`
+! answers it with the full question: a wh-subject, an infinitive, a determiner
+! or a held gap under a waiting tag, the `-RG` hole, and a clause with no subject.
+#^+fpts
+#^+*gd
+#^+Abd
+#^+A*
+#^+A*rg
+#^+Ogz
+#^+O*g
+#^+AOb
+#^+AOd
+#^+AO*fpts
+#^+Egd
+#^+*Ebd
+#^+U
+#^+Urg
+#^+*Ugz
+#^+EUg
+#^+*EUb
+#^+*EUd
+#^+AUfpts
+#^+A*Ugd
+#^+Sbd
+#^+S*
+#^+S*rg
+#^+SAgz
+#^+SA*g
+#^+SOb
+#^+SOd
+#^+SO*fpts
+#^+SAOgd
+#^+SAO*bd
+#^+SE
+#^+SErg
+#^+S*Egz
+#^+SUg
+#^+S*Ub
+#^+S*Ud
+#^+SEUfpts
+#^+S*EUgd
+#^+SAUbd
+#^+SA*U
+#^+SA*Urg
+#^+Tgz	it goes to[AFTER], doesn't it[ATTACH_L][END]
+#^+T*g	it doesn't go, does it
+#^+TAb	it can add, can't it
+#^+TAd	it could[AFTER], couldn't it[ATTACH_L][END]
+#^+TA*fpts	it can't be a[AFTER], can it[ATTACH_L][END]
+#^+TOgd	it should go, shouldn't it
+#^+TO*bd	it shouldn't add, should it
+#^+TAO	it'll[AFTER], won't it[ATTACH_L][END]
+#^+TAOrg
+#^+TAO*gz	it won't go to[AFTER], will it[ATTACH_L][END]
+#^+TEg	it's going, isn't it
+#^+T*Eb	it isn't adding, is it
+#^+T*Ed	it wasn't[AFTER], was it[ATTACH_L][END]
+#^+TUfpts	it's been a[AFTER], hasn't it[ATTACH_L][END]
+#^+T*Ugd	it hadn't gone, had it
+#^+TEUbd	it'd been adding, hadn't it
+#^+T*EU	it hasn't been[AFTER], has it[ATTACH_L][END]
+#^+T*EUrg
+#^+TAUgz	it can have gone to[AFTER], can't it[ATTACH_L][END]
+#^+TA*Ug	it can't have gone, can it
+#^+Kb	I add, don't I
+#^+Kd	I was[AFTER], wasn't I[ATTACH_L][END]
+#^+K*fpts	I'm not a[AFTER], am I[ATTACH_L][END]
+#^+KAgd	I could go, couldn't I
+#^+KA*bd	I couldn't add, could I
+#^+KO	I shall[AFTER], shall I not[ATTACH_L][END]
+#^+KOrg
+#^+KO*gz	I shall not go to[AFTER], shall I[ATTACH_L][END]
+#^+KAOg	I'll go, won't I
+#^+KAO*b	I won't add, will I
+#^+KAO*d	I wouldn't[AFTER], would I[ATTACH_L][END]
+#^+KEfpts	I'm being a[AFTER], aren't I[ATTACH_L][END]
+#^+K*Egd	I wasn't going, was I
+#^+KUbd	I'd added, hadn't I
+#^+K*U	I haven't[AFTER], have I[ATTACH_L][END]
+#^+K*Urg
+#^+KEUgz	I've been going to[AFTER], haven't I[ATTACH_L][END]
+#^+K*EUg	I haven't been going, have I
+#^+KAUb	I can have added, can't I
+#^+KAUd	I could've[AFTER], couldn't I[ATTACH_L][END]
+#^+KA*Ufpts	I can't have been a[AFTER], can I[ATTACH_L][END]
+#^+Pgd	you went, didn't you
+#^+P*bd	you didn't add, did you
+#^+PA	you can[AFTER], can't you[ATTACH_L][END]
+#^+PArg
+#^+PA*gz	you can't go to[AFTER], can you[ATTACH_L][END]
+#^+POg	you shall go, shall you not
+#^+PO*b	you shall not add, shall you
+#^+PO*d	you shouldn't[AFTER], should you[ATTACH_L][END]
+#^+PAOfpts	you'll be a[AFTER], won't you[ATTACH_L][END]
+#^+PAO*gd	you wouldn't go, would you
+#^+PEbd	you were adding, weren't you
+#^+P*E	you aren't[AFTER], are you[ATTACH_L][END]
+#^+P*Erg
+#^+PUgz	you've gone to[AFTER], haven't you[ATTACH_L][END]
+#^+P*Ug	you haven't gone, have you
+#^+PEUb	you've been adding, haven't you
+#^+PEUd	you'd been[AFTER], hadn't you[ATTACH_L][END]
+#^+P*EUfpts	you haven't been being a[AFTER], have you[ATTACH_L][END]
+#^+PAUgd	you could've gone, couldn't you
+#^+PA*Ubd	you couldn't have added, could you
+#^+H	he's[AFTER], isn't he[ATTACH_L][END]
+#^+Hrg
+#^+H*gz	he doesn't go to[AFTER], does he[ATTACH_L][END]
+#^+HAg	he can go, can't he
+#^+HA*b	he can't add, can he
+#^+HA*d	he couldn't[AFTER], could he[ATTACH_L][END]
+#^+HOfpts	he shall be a[AFTER], shall he not[ATTACH_L][END]
+#^+HO*gd	he shouldn't go, should he
+#^+HAObd	he'd add, wouldn't he
+#^+HAO*	he won't[AFTER], will he[ATTACH_L][END]
+#^+HAO*rg
+#^+HEgz	he's going to[AFTER], isn't he[ATTACH_L][END]
+#^+H*Eg	he isn't going, is he
+#^+HUb	he's added, hasn't he
+#^+HUd	he'd[AFTER], hadn't he[ATTACH_L][END]
+#^+H*Ufpts	he hasn't been a[AFTER], has he[ATTACH_L][END]
+#^+HEUgd	he'd been going, hadn't he
+#^+H*EUbd	he hadn't been adding, had he
+#^+HAU	he can have[AFTER], can't he[ATTACH_L][END]
+#^+HAUrg
+#^+HA*Ugz	he can't have gone to[AFTER], can he[ATTACH_L][END]
+#^+Rg	she goes, doesn't she
+#^+R*b	she doesn't add, does she
+#^+R*d	she wasn't[AFTER], was she[ATTACH_L][END]
+#^+RAfpts	she can be a[AFTER], can't she[ATTACH_L][END]
+#^+RA*gd	she couldn't go, could she
+#^+RObd	she should add, shouldn't she
+#^+RO*	she shall not[AFTER], shall she[ATTACH_L][END]
+#^+RO*rg
+#^+RAOgz	she'll go to[AFTER], won't she[ATTACH_L][END]
+#^+RAO*g	she won't go, will she
+#^+REb	she's adding, isn't she
+#^+REd	she was[AFTER], wasn't she[ATTACH_L][END]
+#^+R*Efpts	she isn't being a[AFTER], is she[ATTACH_L][END]
+#^+RUgd	she'd gone, hadn't she
+#^+R*Ubd	she hadn't added, had she
+#^+REU	she's been[AFTER], hasn't she[ATTACH_L][END]
+#^+REUrg
+#^+R*EUgz	she hasn't been going to[AFTER], has she[ATTACH_L][END]
+#^+RAUg	she can have gone, can't she
+#^+RA*Ub	she can't have added, can she
+#^+RA*Ud	she couldn't have[AFTER], could she[ATTACH_L][END]
+#^+Wfpts	there's a[AFTER], isn't there[ATTACH_L][END]
+#^+W*gd	there didn't go, did there
+#^+WAbd	there could add, couldn't there
+#^+WA*	there can't[AFTER], can there[ATTACH_L][END]
+#^+WA*rg
+#^+WOgz	there shall go to[AFTER], shall there not[ATTACH_L][END]
+#^+WO*g	there shall not go, shall there
+#^+WAOb	there'll add, won't there
+#^+WAOd	there'd[AFTER], wouldn't there[ATTACH_L][END]
+#^+WAO*fpts	there won't be a[AFTER], will there[ATTACH_L][END]
+#^+WEgd	there was going, wasn't there
+#^+W*Ebd	there wasn't adding, was there
+#^+WU	there's[AFTER], hasn't there[ATTACH_L][END]
+#^+WUrg
+#^+W*Ugz	there hasn't gone to[AFTER], has there[ATTACH_L][END]
+#^+WEUg	there's been going, hasn't there
+#^+W*EUb	there hasn't been adding, has there
+#^+W*EUd	there hadn't been[AFTER], had there[ATTACH_L][END]
+#^+WAUfpts	there can have been a[AFTER], can't there[ATTACH_L][END]
+#^+WA*Ugd	there couldn't have gone, could there
+#^+SKbd	we added, didn't we
+#^+SK*	we aren't[AFTER], are we[ATTACH_L][END]
+#^+SK*rg
+#^+SKAgz	we can go to[AFTER], can't we[ATTACH_L][END]
+#^+SKA*g	we can't go, can we
+#^+SKOb	we shall add, shall we not
+#^+SKOd	we should[AFTER], shouldn't we[ATTACH_L][END]
+#^+SKO*fpts	we shall not be a[AFTER], shall we[ATTACH_L][END]
+#^+SKAOgd	we'd go, wouldn't we
+#^+SKAO*bd	we wouldn't add, would we
+#^+SKE	we're[AFTER], aren't we[ATTACH_L][END]
+#^+SKErg
+#^+SK*Egz	we aren't going to[AFTER], are we[ATTACH_L][END]
+#^+SKUg	we've gone, haven't we
+#^+SK*Ub	we haven't added, have we
+#^+SK*Ud	we hadn't[AFTER], had we[ATTACH_L][END]
+#^+SKEUfpts	we've been being a[AFTER], haven't we[ATTACH_L][END]
+#^+SK*EUgd	we hadn't been going, had we
+#^+SKAUbd	we could've added, couldn't we
+#^+SKA*U	we can't have[AFTER], can we[ATTACH_L][END]
+#^+SKA*Urg
+#^+SHgz	they go to[AFTER], don't they[ATTACH_L][END]
+#^+SH*g	they don't go, do they
+#^+SHAb	they can add, can't they
+#^+SHAd	they could[AFTER], couldn't they[ATTACH_L][END]
+#^+SHA*fpts	they can't be a[AFTER], can they[ATTACH_L][END]
+#^+SHOgd	they should go, shouldn't they
+#^+SHO*bd	they shouldn't add, should they
+#^+SHAO	they'll[AFTER], won't they[ATTACH_L][END]
+#^+SHAOrg
+#^+SHAO*gz	they won't go to[AFTER], will they[ATTACH_L][END]
+#^+SHEg	they're going, aren't they
+#^+SH*Eb	they aren't adding, are they
+#^+SH*Ed	they weren't[AFTER], were they[ATTACH_L][END]
+#^+SHUfpts	they've been a[AFTER], haven't they[ATTACH_L][END]
+#^+SH*Ugd	they hadn't gone, had they
+#^+SHEUbd	they'd been adding, hadn't they
+#^+SH*EU	they haven't been[AFTER], have they[ATTACH_L][END]
+#^+SH*EUrg
+#^+SHAUgz	they can have gone to[AFTER], can't they[ATTACH_L][END]
+#^+SHA*Ug	they can't have gone, can they
+#^+SWb	there add, don't there
+#^+SWd	there were[AFTER], weren't there[ATTACH_L][END]
+#^+SW*fpts	there aren't a[AFTER], are there[ATTACH_L][END]
+#^+SWAgd	there could go, couldn't there
+#^+SWA*bd	there couldn't add, could there
+#^+SWO	there shall[AFTER], shall there not[ATTACH_L][END]
+#^+SWOrg
+#^+SWO*gz	there shall not go to[AFTER], shall there[ATTACH_L][END]
+#^+SWAOg	there'll go, won't there
+#^+SWAO*b	there won't add, will there
+#^+SWAO*d	there wouldn't[AFTER], would there[ATTACH_L][END]
+#^+SWEfpts	there are being a[AFTER], aren't there[ATTACH_L][END]
+#^+SW*Egd	there weren't going, were there
+#^+SWUbd	there'd added, hadn't there
+#^+SW*U	there haven't[AFTER], have there[ATTACH_L][END]
+#^+SW*Urg
+#^+SWEUgz	there've been going to[AFTER], haven't there[ATTACH_L][END]
+#^+SW*EUg	there haven't been going, have there
+#^+SWAUb	there can have added, can't there
+#^+SWAUd	there could've[AFTER], couldn't there[ATTACH_L][END]
+#^+SWA*Ufpts	there can't have been a[AFTER], can there[ATTACH_L][END]
+#^+KWgd	this went, didn't it
+#^+KW*bd	this didn't add, did it
+#^+KWA	this can[AFTER], can't it[ATTACH_L][END]
+#^+KWArg
+#^+KWA*gz	this can't go to[AFTER], can it[ATTACH_L][END]
+#^+KWOg	this shall go, shall it not
+#^+KWO*b	this shall not add, shall it
+#^+KWO*d	this shouldn't[AFTER], should it[ATTACH_L][END]
+#^+KWAOfpts	this will be a[AFTER], won't it[ATTACH_L][END]
+#^+KWAO*gd	this wouldn't go, would it
+#^+KWEbd	this was adding, wasn't it
+#^+KW*E	this isn't[AFTER], is it[ATTACH_L][END]
+#^+KW*Erg
+#^+KWUgz	this has gone to[AFTER], hasn't it[ATTACH_L][END]
+#^+KW*Ug	this hasn't gone, has it
+#^+KWEUb	this has been adding, hasn't it
+#^+KWEUd	this had been[AFTER], hadn't it[ATTACH_L][END]
+#^+KW*EUfpts	this hasn't been being a[AFTER], has it[ATTACH_L][END]
+#^+KWAUgd	this could've gone, couldn't it
+#^+KWA*Ubd	this couldn't have added, could it
+#^+SKW	these are[AFTER], aren't they[ATTACH_L][END]
+#^+SKWrg
+#^+SKW*gz	these don't go to[AFTER], do they[ATTACH_L][END]
+#^+SKWAg	these can go, can't they
+#^+SKWA*b	these can't add, can they
+#^+SKWA*d	these couldn't[AFTER], could they[ATTACH_L][END]
+#^+SKWOfpts	these shall be a[AFTER], shall they not[ATTACH_L][END]
+#^+SKWO*gd	these shouldn't go, should they
+#^+SKWAObd	these would add, wouldn't they
+#^+SKWAO*	these won't[AFTER], will they[ATTACH_L][END]
+#^+SKWAO*rg
+#^+SKWEgz	these are going to[AFTER], aren't they[ATTACH_L][END]
+#^+SKW*Eg	these aren't going, are they
+#^+SKWUb	these have added, haven't they
+#^+SKWUd	these had[AFTER], hadn't they[ATTACH_L][END]
+#^+SKW*Ufpts	these haven't been a[AFTER], have they[ATTACH_L][END]
+#^+SKWEUgd	these had been going, hadn't they
+#^+SKW*EUbd	these hadn't been adding, had they
+#^+SKWAU	these can have[AFTER], can't they[ATTACH_L][END]
+#^+SKWAUrg
+#^+SKWA*Ugz	these can't have gone to[AFTER], can they[ATTACH_L][END]
+#^+PWg	that goes, doesn't it
+#^+PW*b	that doesn't add, does it
+#^+PW*d	that wasn't[AFTER], was it[ATTACH_L][END]
+#^+PWAfpts	that can be a[AFTER], can't it[ATTACH_L][END]
+#^+PWA*gd	that couldn't go, could it
+#^+PWObd	that should add, shouldn't it
+#^+PWO*	that shall not[AFTER], shall it[ATTACH_L][END]
+#^+PWO*rg
+#^+PWAOgz	that'll go to[AFTER], won't it[ATTACH_L][END]
+#^+PWAO*g	that won't go, will it
+#^+PWEb	that's adding, isn't it
+#^+PWEd	that was[AFTER], wasn't it[ATTACH_L][END]
+#^+PW*Efpts	that isn't being a[AFTER], is it[ATTACH_L][END]
+#^+PWUgd	that'd gone, hadn't it
+#^+PW*Ubd	that hadn't added, had it
+#^+PWEU	that's been[AFTER], hasn't it[ATTACH_L][END]
+#^+PWEUrg
+#^+PW*EUgz	that hasn't been going to[AFTER], has it[ATTACH_L][END]
+#^+PWAUg	that can have gone, can't it
+#^+PWA*Ub	that can't have added, can it
+#^+PWA*Ud	that couldn't have[AFTER], could it[ATTACH_L][END]
+#^+TWfpts
+#^+TW*gd
+#^+TWAbd
+#^+TWA*
+#^+TWA*rg
+#^+TWOgz
+#^+TWO*g
+#^+TWAOb
+#^+TWAOd
+#^+TWAO*fpts
+#^+TWEgd
+#^+TW*Ebd
+#^+TWU
+#^+TWUrg
+#^+TW*Ugz
+#^+TWEUg
+#^+TW*EUb
+#^+TW*EUd
+#^+TWAUfpts
+#^+TWA*Ugd
+#^+HRbd
+#^+HR*
+#^+HR*rg
+#^+HRAgz
+#^+HRA*g
+#^+HROb
+#^+HROd
+#^+HRO*fpts
+#^+HRAOgd
+#^+HRAO*bd
+#^+HRE
+#^+HRErg
+#^+HR*Egz
+#^+HRUg
+#^+HR*Ub
+#^+HR*Ud
+#^+HREUfpts
+#^+HR*EUgd
+#^+HRAUbd
+#^+HRA*U
+#^+HRA*Urg
+#^+PHgz	is gone to[AFTER], isn't it[ATTACH_L][END]
+#^+PH*g	isn't gone, is it
+#^+PHAb	can be added, can't it
+#^+PHAd
+#^+PHA*fpts
+#^+PHOgd	should be gone, shouldn't it
+#^+PHO*bd	shouldn't be added, should it
+#^+PHAO
+#^+PHAOrg
+#^+PHAO*gz	won't be gone to[AFTER], will it[ATTACH_L][END]
+#^+PHEg	is being gone, isn't it
+#^+PH*Eb	isn't being added, is it
+#^+PH*Ed
+#^+PHUfpts
+#^+PH*Ugd	hadn't been gone, had it
+#^+PHEUbd	had been being added, hadn't it
+#^+PH*EU
+#^+PH*EUrg
+#^+PHAUgz	can have been gone to[AFTER], can't it[ATTACH_L][END]
+#^+PHA*Ug	can't have been gone, can it
+#^+SPHb	are added, aren't they
+#^+SPHd
+#^+SPH*fpts
+#^+SPHAgd	could be gone, couldn't they
+#^+SPHA*bd	couldn't be added, could they
+#^+SPHO
+#^+SPHOrg
+#^+SPHO*gz	shall not be gone to[AFTER], shall they[ATTACH_L][END]
+#^+SPHAOg	will be gone, won't they
+#^+SPHAO*b	won't be added, will they
+#^+SPHAO*d
+#^+SPHEfpts
+#^+SPH*Egd	weren't being gone, were they
+#^+SPHUbd	had been added, hadn't they
+#^+SPH*U
+#^+SPH*Urg
+#^+SPHEUgz	have been being gone to[AFTER], haven't they[ATTACH_L][END]
+#^+SPH*EUg	haven't been being gone, have they
+#^+SPHAUb	can have been added, can't they
+#^+SPHAUd
+#^+SPHA*Ufpts
+#^+KHgd	go, will you
+#^+KH*bd	don't add, will you
+#^+KHA	be[AFTER], will you[ATTACH_L][END]
+#^+KHArg
+#^+KHA*gz	don't go to[AFTER], will you[ATTACH_L][END]
+#^+KHOg	go, will you
+#^+KHO*b	don't add, will you
+#^+KHO*d	don't be[AFTER], will you[ATTACH_L][END]
+#^+KHAOfpts	be a[AFTER], will you[ATTACH_L][END]
+#^+KHAO*gd	don't go, will you
+#^+KHEbd	add, will you
+#^+KH*E	don't be[AFTER], will you[ATTACH_L][END]
+#^+KH*Erg
+#^+KHUgz	go to[AFTER], will you[ATTACH_L][END]
+#^+KH*Ug	don't go, will you
+#^+KHEUb	add, will you
+#^+KHEUd	be[AFTER], will you[ATTACH_L][END]
+#^+KH*EUfpts	don't be a[AFTER], will you[ATTACH_L][END]
+#^+KHAUgd	go, will you
+#^+KHA*Ubd	don't add, will you
+#^+SKH	let's be[AFTER], shall we[ATTACH_L][END]
+#^+SKHrg
+#^+SKH*gz	let's not go to[AFTER], shall we[ATTACH_L][END]
+#^+SKHAg	let's go, shall we
+#^+SKHA*b	let's not add, shall we
+#^+SKHA*d	let's not be[AFTER], shall we[ATTACH_L][END]
+#^+SKHOfpts	let's be a[AFTER], shall we[ATTACH_L][END]
+#^+SKHO*gd	let's not go, shall we
+#^+SKHAObd	let's add, shall we
+#^+SKHAO*	let's not be[AFTER], shall we[ATTACH_L][END]
+#^+SKHAO*rg
+#^+SKHEgz	let's go to[AFTER], shall we[ATTACH_L][END]
+#^+SKH*Eg	let's not go, shall we
+#^+SKHUb	let's add, shall we
+#^+SKHUd	let's be[AFTER], shall we[ATTACH_L][END]
+#^+SKH*Ufpts	let's not be a[AFTER], shall we[ATTACH_L][END]
+#^+SKHEUgd	let's go, shall we
+#^+SKH*EUbd	let's not add, shall we
+#^+SKHAU	let's be[AFTER], shall we[ATTACH_L][END]
+#^+SKHAUrg
+#^+SKHA*Ugz	let's not go to[AFTER], shall we[ATTACH_L][END]
+#^+PRg	the[AFTER]goes, doesn't it[END]
+#^+PR*b	the[AFTER]doesn't add, does it[END]
+#^+PR*d
+#^+PRAfpts
+#^+PRA*gd	the[AFTER]couldn't go, could it[END]
+#^+PRObd	the[AFTER]should add, shouldn't it[END]
+#^+PRO*
+#^+PRO*rg
+#^+PRAOgz
+#^+PRAO*g	the[AFTER]won't go, will it[END]
+#^+PREb	the[AFTER]is adding, isn't it[END]
+#^+PREd
+#^+PR*Efpts
+#^+PRUgd	the[AFTER]had gone, hadn't it[END]
+#^+PR*Ubd	the[AFTER]hadn't added, had it[END]
+#^+PREU
+#^+PREUrg
+#^+PR*EUgz
+#^+PRAUg	the[AFTER]can have gone, can't it[END]
+#^+PRA*Ub	the[AFTER]can't have added, can it[END]
+#^+PRA*Ud
+#^+SPRfpts
+#^+SPR*gd	the[AFTER]didn't go, did they[END]
+#^+SPRAbd	the[AFTER]could add, couldn't they[END]
+#^+SPRA*
+#^+SPRA*rg
+#^+SPROgz
+#^+SPRO*g	the[AFTER]shall not go, shall they[END]
+#^+SPRAOb	the[AFTER]will add, won't they[END]
+#^+SPRAOd
+#^+SPRAO*fpts
+#^+SPREgd	the[AFTER]were going, weren't they[END]
+#^+SPR*Ebd	the[AFTER]weren't adding, were they[END]
+#^+SPRU
+#^+SPRUrg
+#^+SPR*Ugz
+#^+SPREUg	the[AFTER]have been going, haven't they[END]
+#^+SPR*EUb	the[AFTER]haven't been adding, have they[END]
+#^+SPR*EUd
+#^+SPRAUfpts
+#^+SPRA*Ugd	the[AFTER]couldn't have gone, could they[END]
+#^+KPbd	a[AFTER]added, didn't it[END]
+#^+KP*
+#^+KP*rg
+#^+KPAgz
+#^+KPA*g	a[AFTER]can't go, can it[END]
+#^+KPOb	a[AFTER]shall add, shall it not[END]
+#^+KPOd
+#^+KPO*fpts
+#^+KPAOgd	a[AFTER]would go, wouldn't it[END]
+#^+KPAO*bd	a[AFTER]wouldn't add, would it[END]
+#^+KPE
+#^+KPErg
+#^+KP*Egz
+#^+KPUg	a[AFTER]has gone, hasn't it[END]
+#^+KP*Ub	a[AFTER]hasn't added, has it[END]
+#^+KP*Ud
+#^+KPEUfpts
+#^+KP*EUgd	a[AFTER]hadn't been going, had it[END]
+#^+KPAUbd	a[AFTER]could've added, couldn't it[END]
+#^+KPA*U
+#^+KPA*Urg
+#^+TKgz	and I go to[AFTER], don't I[ATTACH_L][END]
+#^+TK*g	and I don't go, do I
+#^+TKAb	and I can add, can't I
+#^+TKAd	and I could[AFTER], couldn't I[ATTACH_L][END]
+#^+TKA*fpts	and I can't be a[AFTER], can I[ATTACH_L][END]
+#^+TKOgd	and I should go, shouldn't I
+#^+TKO*bd	and I shouldn't add, should I
+#^+TKAO	and I'll[AFTER], won't I[ATTACH_L][END]
+#^+TKAOrg
+#^+TKAO*gz	and I won't go to[AFTER], will I[ATTACH_L][END]
+#^+TKEg	and I'm going, aren't I
+#^+TK*Eb	and I'm not adding, am I
+#^+TK*Ed	and I wasn't[AFTER], was I[ATTACH_L][END]
+#^+TKUfpts	and I've been a[AFTER], haven't I[ATTACH_L][END]
+#^+TK*Ugd	and I hadn't gone, had I
+#^+TKEUbd	and I'd been adding, hadn't I
+#^+TK*EU	and I haven't been[AFTER], have I[ATTACH_L][END]
+#^+TK*EUrg
+#^+TKAUgz	and I can have gone to[AFTER], can't I[ATTACH_L][END]
+#^+TKA*Ug	and I can't have gone, can I
+#^+STKb	and we add, don't we
+#^+STKd	and we were[AFTER], weren't we[ATTACH_L][END]
+#^+STK*fpts	and we aren't a[AFTER], are we[ATTACH_L][END]
+#^+STKAgd	and we could go, couldn't we
+#^+STKA*bd	and we couldn't add, could we
+#^+STKO	and we shall[AFTER], shall we not[ATTACH_L][END]
+#^+STKOrg
+#^+STKO*gz	and we shall not go to[AFTER], shall we[ATTACH_L][END]
+#^+STKAOg	and we'll go, won't we
+#^+STKAO*b	and we won't add, will we
+#^+STKAO*d	and we wouldn't[AFTER], would we[ATTACH_L][END]
+#^+STKEfpts	and we're being a[AFTER], aren't we[ATTACH_L][END]
+#^+STK*Egd	and we weren't going, were we
+#^+STKUbd	and we'd added, hadn't we
+#^+STK*U	and we haven't[AFTER], have we[ATTACH_L][END]
+#^+STK*Urg
+#^+STKEUgz	and we've been going to[AFTER], haven't we[ATTACH_L][END]
+#^+STK*EUg	and we haven't been going, have we
+#^+STKAUb	and we can have added, can't we
+#^+STKAUd	and we could've[AFTER], couldn't we[ATTACH_L][END]
+#^+STKA*Ufpts	and we can't have been a[AFTER], can we[ATTACH_L][END]
+#^+STHgd	and they went, didn't they
+#^+STH*bd	and they didn't add, did they
+#^+STHA	and they can[AFTER], can't they[ATTACH_L][END]
+#^+STHArg
+#^+STHA*gz	and they can't go to[AFTER], can they[ATTACH_L][END]
+#^+STHOg	and they shall go, shall they not
+#^+STHO*b	and they shall not add, shall they
+#^+STHO*d	and they shouldn't[AFTER], should they[ATTACH_L][END]
+#^+STHAOfpts	and they'll be a[AFTER], won't they[ATTACH_L][END]
+#^+STHAO*gd	and they wouldn't go, would they
+#^+STHEbd	and they were adding, weren't they
+#^+STH*E	and they aren't[AFTER], are they[ATTACH_L][END]
+#^+STH*Erg
+#^+STHUgz	and they've gone to[AFTER], haven't they[ATTACH_L][END]
+#^+STH*Ug	and they haven't gone, have they
+#^+STHEUb	and they've been adding, haven't they
+#^+STHEUd	and they'd been[AFTER], hadn't they[ATTACH_L][END]
+#^+STH*EUfpts	and they haven't been being a[AFTER], have they[ATTACH_L][END]
+#^+STHAUgd	and they could've gone, couldn't they
+#^+STHA*Ubd	and they couldn't have added, could they
+#^+ST	and it's[AFTER], isn't it[ATTACH_L][END]
+#^+STrg
+#^+ST*gz	and it doesn't go to[AFTER], does it[ATTACH_L][END]
+#^+STAg	and it can go, can't it
+#^+STA*b	and it can't add, can it
+#^+STA*d	and it couldn't[AFTER], could it[ATTACH_L][END]
+#^+STOfpts	and it shall be a[AFTER], shall it not[ATTACH_L][END]
+#^+STO*gd	and it shouldn't go, should it
+#^+STAObd	and it'd add, wouldn't it
+#^+STAO*	and it won't[AFTER], will it[ATTACH_L][END]
+#^+STAO*rg
+#^+STEgz	and it's going to[AFTER], isn't it[ATTACH_L][END]
+#^+ST*Eg	and it isn't going, is it
+#^+STUb	and it's added, hasn't it
+#^+STUd	and it'd[AFTER], hadn't it[ATTACH_L][END]
+#^+ST*Ufpts	and it hasn't been a[AFTER], has it[ATTACH_L][END]
+#^+STEUgd	and it'd been going, hadn't it
+#^+ST*EUbd	and it hadn't been adding, had it
+#^+STAU	and it can have[AFTER], can't it[ATTACH_L][END]
+#^+STAUrg
+#^+STA*Ugz	and it can't have gone to[AFTER], can it[ATTACH_L][END]
+#^+Tb	it adds, doesn't it
+#^+T*b	it doesn't add, does it
+#^+K	I'm[AFTER], aren't I[ATTACH_L][END]
+#^+K*	I'm not[AFTER], am I[ATTACH_L][END]
+#^+KEg	I'm going, aren't I
+#^+PRb	the[AFTER]adds, doesn't it[END]
+#^+KHg	go, will you
+#^+SKHg	let's go, shall we
+#^+W	there's[AFTER], isn't there[ATTACH_L][END]
+#^+SW	there are[AFTER], aren't there[ATTACH_L][END]
+#^+TWb
+🦐#^+Kr	I[AFTER]work, don't I[END]
+🦐#^+K
+#^+Trg

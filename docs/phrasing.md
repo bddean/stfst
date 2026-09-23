@@ -244,6 +244,49 @@ full form, so a clause outside its domain reads the same in both modes, and
 after any "and". Only a clause with a subject takes it, because "if" before a
 question or an infinitive is not English: `#^+T-B` is still "does it add".
 
+## `#^` is a question tag
+
+`#^` is a full-form question, and an affirmative question has no contraction for
+`^` to undo, so `#^` asks for a tag instead:
+
+```
+#^+T-B    ->   it adds, doesn't it
+#^+T*B    ->   it doesn't add, does it
+#^+KE-G   ->   I'm going, aren't I
+#^+SKH-G  ->   let's go, shall we
+#^+T      TPHAOEUS  ->   it's nice, isn't it
+#^+K-GZ   SKAOL     ->   I go to school, don't I
+```
+
+The tag is the clause's finite word with the polarity flipped and the subject as
+a pronoun: this and that are "it", a determiner subject or a passive is "it" or
+"they" by number, and "I" borrows "aren't". `*` still says the clause's own
+polarity, which gives up the full negative question "does it not add"; it was
+rare. A clause with no verb, or one ending on a satellite, is waiting for a
+word, so its tag is the tail of the record and lands after the next stroke.
+A wh-subject, an infinitive, a clause that already holds something, and a
+clause with no subject take no tag, and `#^` there is still the full question.
+
+`dictionaries/phrasing-tag.xfst` builds the tag as a second clause on the chain
+tape, appended after `[TAG]`, and hands it to `Arrange` as a reduced question.
+It is its own dictionary, above `phrasing`, because of what it costs. The tag
+is written last and depends on the subject, so the transducer carries the
+pronoun, the polarity and the finite word across the whole right bank. Carried
+through the main grammar, that made the artifact 36 MB. As its own dictionary
+only a `#^` stroke pays, and the main artifact stays at 1.1 MB. The tag
+dictionary is 16 MB forward and 15 MB reverse, which is two thirds of the stack.
+Tagging only bare verbs would cost about 40% of that and only present-tense bare
+verbs about 18%.
+
+Two details of the construction are about the determinizer rather than the
+grammar. The pronoun is found by a replace rule that puts a one-symbol marker
+beside the subject, and `PushPron` moves the marker to the end, because matching
+the subject word from the end makes the determinizer track every subject at
+once. And each stage runs over `Bundle.l` rather than over every string, so no
+stage expands `?*` across the whole alphabet. A waiting tag's `[ATTACH_L]`
+belongs to its tail, so this grammar skips `Canon`, which would hoist the flag
+to the end of the record.
+
 ## The copula with an article
 
 The empty verb slot is the copula, and three chords are that slot with an

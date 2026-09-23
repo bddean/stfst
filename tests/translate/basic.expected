@@ -8,12 +8,13 @@
 ! 7 leading-vowel priority 35
 ! 8 typey-type priority 30
 ! 9 and-fold priority 20
-! 10 phrasing priority 10
-! 11 retro-words priority 9
-! 12 repeat-idioms priority 8
-! 13 repeat-word priority 7
-! 14 frames priority 6
-! 15 ahead priority 5
+! 10 phrasing-tag priority 11
+! 11 phrasing priority 10
+! 12 retro-words priority 9
+! 13 repeat-idioms priority 8
+! 14 repeat-word priority 7
+! 15 frames priority 6
+! 16 ahead priority 5
 TP-PL	1	typey-type	.[ATTACH_L][CAP_NEXT]	"."
 TAP	1	typey-type	tap	". Tap"
 TR-TZ	1	emily-symbols	[KEY]Tab[END][ATTACH_L][ATTACH_R]	". Tap"

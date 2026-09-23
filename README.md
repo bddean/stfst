@@ -44,6 +44,7 @@ shadow a working entry.
 | leading-vowel | JSON, imported |
 | typey-type | JSON, imported |
 | and-fold | JSON, imported |
+| phrasing-tag | xfst, `#^`: the clause with a question tag |
 | phrasing | xfst, a clause grammar over 21.9M chords |
 | frames | flat source in the record language |
 | ahead | flat source in the record language |
@@ -52,8 +53,8 @@ shadow a working entry.
 | repeat-word | flat source in the record language |
 
 `stfst compile recipe.toml` prints what each artifact weighs and what it took, so
-this table does not: both directions of the whole set are about 15 MB and it
-compiles in about a minute, against 93.6 MB resident for the Plover-style
+this table does not: both directions of the whole set are about 46 MB, 31 of
+them `phrasing-tag`, and it compiles in about three minutes, against 93.6 MB resident for the Plover-style
 dictionary and its reverse index in `docs/M0.md`.
 
 A dictionary whose artifact is newer than everything it is compiled from is left

@@ -44,7 +44,12 @@ define Fid   [ "[F:be]" | "[F:have]" | "[F:do]"
              | "[F:can]" | "[F:shall]" | "[F:will]" ] ;
 define Mid   [ "[M:have]" | "[M:be]" | "[M:been]" | "[M:being]" ] ;
 
-define Feature  [ "[GAP]" | "[Q]" | "[EMPH]" | Mode | "[SUBJ]" | "[/SUBJ]" | "[C]"
+! The question tag's subject pronoun, one symbol each (`phrasing-tag.xfst`).
+define PronSym  [ "[P:I]" | "[P:you]" | "[P:he]" | "[P:she]" | "[P:it]" | "[P:we]"
+                | "[P:they]" | "[P:one]" | "[P:there]" ] ;
+
+define Feature  [ "[GAP]" | "[TAG]" | "[TW]" | PronSym | "[Q]" | "[EMPH]" | Mode
+                | "[SUBJ]" | "[/SUBJ]" | "[C]"
                 | "[AND]" | "[IF]" | "[INF]" | "[PASS]" | "[IMP]" | "[LETS]"
                 | "[NOAUX]" | Agr | Modl | Pol | Asp | Tns | "[V0]"
                 | Lemma | SatPost | Art | Fid | Mid ] ;
@@ -441,5 +446,5 @@ define CloseHole [
 define Render  [ Chain .o. GapOnce .o. [ [ Kill("[GAP]") | 0 ] IfMark ] .o. Arrange ] ;
 
 ! A held clause's gap is the same kind of hole: the rest of the clause is the tail.
-define Grammar  Canon([ Bundle .o. Render
-                        .o. [ "[GAPAT]" -> "[HOLD]" ] .o. CloseHole ]) ;
+define Close  [ [ "[GAPAT]" -> "[HOLD]" ] .o. CloseHole ] ;
+define Grammar  Canon([ Bundle .o. Render .o. Close ]) ;

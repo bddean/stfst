@@ -1,0 +1,107 @@
+! The question tag: `#^` on a clause (`PHRASING-DESIGN.md` §4.2).
+!
+! Its own dictionary, above `phrasing`, because the tag is a function of the
+! subject and the finite word and it is written last: a grammar that wrote it
+! would carry those through every clause it renders. Here only a `#^` clause
+! pays, and one this cannot tag falls through to `phrasing`'s full question.
+!
+! `#^` is a question in full, and an affirmative question has no contraction for
+! `^` to undo. So `#^` asks for a tag: `#^+T-B` is "it adds, doesn't it". The
+! tag is the clause's own finite word with the polarity flipped and the subject
+! as a pronoun, which is a clause of its own on the chain tape. `Tagged` appends
+! that clause after `[TAG]`, a field at a time, and `Arrange` reads it as a
+! reduced question.
+!
+! A clause with no verb is waiting for its complement, and one that ends on a
+! satellite for its object, so its tag waits for the next stroke: `#^+T` then
+! "nice" is "it's nice, isn't it". `[TW]` says so, and
+! the tag is then the record's tail, which is why a clause that already holds
+! something takes no waiting tag.
+
+define NotTag  \"[TAG]" ;
+define Main(X)  [ [ NotTag* & X ] "[TAG]" ?* ] ;
+define Add(X, Y)  [ Main([ ?* X ?* ]) Say(Y) ] ;
+define Has(X)  [ ?* X ?* ] ;
+
+define TagSplit  [ ("[GAP]") Kill("[Q]") ("[EMPH]") [ "[FULL]" .x. "[RED]" ]
+                   NotTag* Say("[TAG]") ] ;
+define Open  Has([ "[V0]" | SatPost ]) ;
+define TagWait   [ [ Main(Open) Say("[TW]") ] | Main(~Open) ] ;
+
+! The tag's subject is a pronoun, and which one is a local fact about the subject,
+! so a marker goes in beside it and `PushPron` carries it to the end. Matching the
+! word from the end instead makes the determinizer track every subject at once.
+define Mark(P, L)  [ [..] -> P || L _ ] ;
+define Sb(W)  [ "[SUBJ]" W "[/SUBJ]" ] ;
+define DetW  [ Word & Has("[HOLD]") ] ;
+define PronMark  [ Mark("[P:I]", Sb({I})) .o. Mark("[P:you]", Sb({you}))
+                 .o. Mark("[P:he]", Sb({he})) .o. Mark("[P:she]", Sb({she}))
+                 .o. Mark("[P:it]", Sb([ {it} | {this} | {that} ]))
+                 .o. Mark("[P:we]", Sb({we}))
+                 .o. Mark("[P:they]", Sb([ {they} | {these} | {those} ]))
+                 .o. Mark("[P:one]", Sb({one})) .o. Mark("[P:there]", Sb({there}))
+                 .o. Mark("[P:it]", [ [ Sb(DetW) | "[PASS]" ] "[3sg]" ])
+                 .o. Mark("[P:they]", [ [ Sb(DetW) | "[PASS]" ] "[pl]" ])
+                 .o. Mark("[P:you]", "[IMP]") .o. Mark("[P:we]", "[LETS]") ] ;
+define PushPron  [ [ \PronSym* [ [ "[P:I]" .x. 0 ] ?* [ 0 .x. "[P:I]" ] ] ]
+                 | [ \PronSym* [ [ "[P:you]" .x. 0 ] ?* [ 0 .x. "[P:you]" ] ] ]
+                 | [ \PronSym* [ [ "[P:he]" .x. 0 ] ?* [ 0 .x. "[P:he]" ] ] ]
+                 | [ \PronSym* [ [ "[P:she]" .x. 0 ] ?* [ 0 .x. "[P:she]" ] ] ]
+                 | [ \PronSym* [ [ "[P:it]" .x. 0 ] ?* [ 0 .x. "[P:it]" ] ] ]
+                 | [ \PronSym* [ [ "[P:we]" .x. 0 ] ?* [ 0 .x. "[P:we]" ] ] ]
+                 | [ \PronSym* [ [ "[P:they]" .x. 0 ] ?* [ 0 .x. "[P:they]" ] ] ]
+                 | [ \PronSym* [ [ "[P:one]" .x. 0 ] ?* [ 0 .x. "[P:one]" ] ] ]
+                 | [ \PronSym* [ [ "[P:there]" .x. 0 ] ?* [ 0 .x. "[P:there]" ] ] ] ] ;
+define TagPron  [ PronMark .o. PushPron ] ;
+! And back to words, for `Arrange`.
+define PronW  [ [ "[P:I]" .x. Sb({I}) ] | [ "[P:you]" .x. Sb({you}) ]
+              | [ "[P:he]" .x. Sb({he}) ] | [ "[P:she]" .x. Sb({she}) ]
+              | [ "[P:it]" .x. Sb({it}) ] | [ "[P:we]" .x. Sb({we}) ]
+              | [ "[P:they]" .x. Sb({they}) ] | [ "[P:one]" .x. Sb({one}) ]
+              | [ "[P:there]" .x. Sb({there}) ] ] ;
+
+! An imperative's tag is fixed: "go, will you", "let's go, shall we".
+define Order   Has([ "[IMP]" | "[LETS]" ]) ;
+define Clause  ~Order ;
+define TagAgr  [ Add("[1sg]", "[1sg]") | Add("[3sg]", "[3sg]") | Add("[pl]", "[pl]") ] ;
+define TagPol  [ Main(Order) Say("[AFF]") ]
+             | [ Main([ Clause & Has("[AFF]") ]) Say("[NEG]") ]
+             | [ Main([ Clause & Has("[NEG]") ]) Say("[AFF]") ] ;
+define TagTns  [ Main(Order) Say("[PRES]") ]
+             | [ Main([ Clause & Has("[PRES]") ]) Say("[PRES]") ]
+             | [ Main([ Clause & Has("[PAST]") ]) Say("[PAST]") ] ;
+define NoMo(A)  [ Clause & Has([ "[NOMOD]" ?* A ]) ] ;
+define TagFid  [ Main(Has("[IMP]")) Say("[F:will]") ]
+             | [ Main(Has("[LETS]")) Say("[F:shall]") ]
+             | [ Main([ Clause & Has("[CAN]") ]) Say("[F:can]") ]
+             | [ Main([ Clause & Has("[SHALL]") ]) Say("[F:shall]") ]
+             | [ Main([ Clause & Has("[WILL]") ]) Say("[F:will]") ]
+             | [ Main(NoMo([ "[PERF]" | "[PERFPROG]" ])) Say("[F:have]") ]
+             | [ Main(NoMo("[PROG]")) Say("[F:be]") ]
+             | [ Main(NoMo([ "[SIMPLE]" ?* "[V0]" ])) Say("[F:be]") ]
+             | [ Main([ NoMo("[SIMPLE]") & Has("[PASS]") ]) Say("[F:be]") ]
+             | [ Main([ NoMo([ "[SIMPLE]" ?* Lemma ]) & ~Has("[PASS]") ])
+                 Say("[F:do]") ] ;
+! "I'm late, aren't I": "am" has no negative, so the tag borrows "are".
+define AreI  [ [ ?* "[P:I]" [ "[1sg]" .x. "[pl]" ] "[NEG]" "[PRES]" "[F:be]" ]
+             | ~[ ?* "[P:I]" "[1sg]" "[NEG]" "[PRES]" "[F:be]" ] ] ;
+! One hole per record: no `-RG` verb, and a waiting tag takes no other hold.
+define OneTail  ~[ Has(Hole) | [ Has([ "[GAP]" | "[HOLD]" ]) & Has("[TW]") ] ] ;
+
+! Only a bundle that can be one, so no stage runs over strings that never occur.
+define TagIn  [ Bundle.l & [ ("[GAP]") "[Q]" ("[EMPH]") "[FULL]" ?* ] ] ;
+define Tagged  [ [ TagIn .o. TagSplit .o. TagWait .o. Add(0, [ "[Q]" "[RED]" ]) .o. TagPron
+                   .o. TagAgr .o. TagPol .o. TagTns .o. TagFid .o. AreI ]
+                 .o. OneTail ] ;
+
+! The tag after the clause: at once, or as the tail of a hole. A tag is a small
+! language, so `Arrange` is cut down to it before it is joined to anything.
+define TagChain  [ "[Q]" "[RED]" PronSym Agr Pol Tns Fid ] ;
+define TagW  [ TagChain .o. [ "[Q]" "[RED]" PronW ?* ] .o. Arrange ] ;
+define TagText  [ [ Say([ "," " " ]) TagW ]
+                | [ Kill("[TW]") Say([ "[AFTER]" "," " " ]) TagW
+                    Say([ "[ATTACH_L]" "[END]" ]) ] ] ;
+
+! Not `Canon`: it hoists a flag to the end of the record, and the waiting tag's
+! `[ATTACH_L]` belongs to its tail. Phrasing writes no flag in a body.
+define Grammar  [ Bundle .o. Tagged .o. [ Render Kill("[TAG]") TagText ] .o. Close ] ;

@@ -57,6 +57,18 @@ priority = 20
 json = "~/.config/plover/and-fold.json"
 
 [[dict]]
+name = "phrasing-tag"
+priority = 11
+# `#^`, the question tag. Its own artifact so that only a tagged clause carries
+# the tag's features: see the file's header.
+xfst = [
+    "dictionaries/phrasing-subjects.xfst",
+    "dictionaries/phrasing-lexicon.xfst",
+    "dictionaries/phrasing.xfst",
+    "dictionaries/phrasing-tag.xfst",
+]
+
+[[dict]]
 name = "phrasing"
 priority = 10
 xfst = [
