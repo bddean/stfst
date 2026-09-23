@@ -292,7 +292,7 @@ undo a pop here too.
 |---|---|
 | `frames` | 13 templates on `S-` plus a brief plus `*`. `STPR*T` is "from _ to", because `TPR` writes "from" and `-T` writes "to"; the head writes with the keys and the tail waits. Ten of the fifteen briefs collide with no prefix and three under `S-`; two of those three are gone for it and the third survives because what it collided with was a fold. |
 | `ahead` | 19 words that govern a gerund: `^PW*EU` is "by _ing". An alternative to folding, and the point is that it never surprises: `RUPBG` is "rung", so "run" plus a folded `-G` never happens and the writer has to know which words those are. |
-| `phrasing`'s hole | `-RG` says the verb of the clause is the word written next, and every adverb ender says it too: an adverb inflects for nothing, so a clause ending on one has no verb for its tense to inflect either. See `docs/phrasing.md`. |
+| `phrasing`'s hole | `-RG` says the verb of the clause is the word written next, and `🦐` holds the clause open before its verb for the next stroke. See `docs/phrasing.md`. |
 
 ### Plover
 

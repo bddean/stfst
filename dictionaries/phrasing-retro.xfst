@@ -97,8 +97,8 @@ define Net [ [ A1 .o. A2 .o. A3 .o. A4 .o. A5 .o. A6 .o. A7 .o. A8 .o. A9 ]
              .o. [ Kill(Run) Delta ] ] ;
 
 ! ---- applying the delta to the clause, once, whatever the run length
-define SlotV  [ Adv | [ (SatPre) Lemma (SatPost) ] ] ;
-define Slot   [ "[V0]" | SlotV ] ;
+define SlotV  [ Lemma (SatPost) ] ;
+define Slot   [ [ "[V0]" (Art) ] | SlotV ] ;
 define Nom    [ [ "[SUBJ]" Word "[/SUBJ]" ("[C]") ]
               | "[INF]" | "[PASS]" | "[IMP]" | "[LETS]" | 0 ] ;
 define Bun    [ ("[Q]") ("[EMPH]") Mode ("[AND]") Nom Agr Modl Pol Asp Tns Slot ] ;
@@ -156,4 +156,4 @@ define Apply [ ApFl .o. ApQ .o. ApEm .o. ApGr .o. ApMo .o. ApPo .o. ApPa .o. ApP
 ! remembering, and a transducer made to write the clause back out instead would pay
 ! the whole bundle space in states.
 define Grammar  Canon([ [ Run Kill(Sep) Bundle ] .o. [ Net ?* ] .o. Apply
-                        .o. [ Chain .o. Arrange ] ]) ;
+                        .o. Render ]) ;

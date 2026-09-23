@@ -29,18 +29,6 @@ define Lemma [
 define Hole "[V:_]" ;
 
 
-! The pre-verb satellite words, a menu slot on the
-! chord (§4.5).
-define SatPre [
-    "[PRE:also]" | "[PRE:just]" | "[PRE:never]" | "[PRE:really]" ] ;
-
-define SatPreW [
-    [ [ "[PRE:also]" ] .x. [ [ " " {also} ] ] ] |
-    [ [ "[PRE:just]" ] .x. [ [ " " {just} ] ] ] |
-    [ [ "[PRE:never]" ] .x. [ [ " " {never} ] ] ] |
-    [ [ "[PRE:really]" ] .x. [ [ " " {really} ] ] ] ] ;
-
-
 ! The post-verb satellite words, a menu slot on the
 ! chord (§4.5).
 define SatPost [
@@ -75,7 +63,7 @@ define SatPostW [
     [ [ "[POST:with]" ] .x. [ [ " " {with} ] ] ] ] ;
 
 
-! The 261 pres-tense verb chords.
+! The 244 pres-tense verb chords.
 define RhsPres [
     [ [ "b" ] .x. [ "[V:add]" ] ] |
     [ [ "b" "g" ] .x. [ "[V:think]" ] ] |
@@ -89,7 +77,6 @@ define RhsPres [
     [ [ "b" "l" "g" "s" ] .x. [ "[V:ask]" ] ] |
     [ [ "b" "l" "g" "t" ] .x. [ "[V:think]" "[POST:it]" ] ] |
     [ [ "b" "l" "g" "t" "s" ] .x. [ "[V:accept]" ] ] |
-    [ [ "b" "l" "g" "z" ] .x. [ "[PRE:just]" "[V:like]" ] ] |
     [ [ "b" "l" "s" ] .x. [ "[V:add]" "[POST:to]" ] ] |
     [ [ "b" "l" "t" ] .x. [ "[V:build]" ] ] |
     [ [ "b" "l" "t" "s" ] .x. [ "[V:allow]" "[POST:for]" ] ] |
@@ -97,7 +84,6 @@ define RhsPres [
     [ [ "b" "s" ] .x. [ "[V:decide]" ] ] |
     [ [ "b" "s" "z" ] .x. [ "[V:decide]" "[POST:to]" ] ] |
     [ [ "b" "t" ] .x. [ "[V:buy]" ] ] |
-    [ [ "b" "t" "s" ] .x. [ "[PRE:just]" "[V:want]" ] ] |
     [ [ "b" "z" ] .x. [ "[V:use]" "[POST:in]" ] ] |
     [ [ "f" ] .x. [ "[V:find]" ] ] |
     [ [ "f" "b" ] .x. [ "[V:become]" ] ] |
@@ -115,7 +101,6 @@ define RhsPres [
     [ [ "f" "b" "t" ] .x. [ "[V:become]" "[POST:more]" ] ] |
     [ [ "f" "g" ] .x. [ "[V:give]" ] ] |
     [ [ "f" "g" "s" ] .x. [ "[V:give]" "[POST:up]" ] ] |
-    [ [ "f" "g" "t" ] .x. [ "[PRE:also]" "[V:give]" ] ] |
     [ [ "f" "l" ] .x. [ "[V:feel]" ] ] |
     [ [ "f" "l" "g" ] .x. [ "[V:leave]" ] ] |
     [ [ "f" "l" "g" "s" ] .x. [ "[V:guess]" "[POST:that]" ] ] |
@@ -134,7 +119,6 @@ define RhsPres [
     [ [ "f" "p" "b" "l" "g" ] .x. [ "[V:include]" ] ] |
     [ [ "f" "p" "b" "l" "g" "s" ] .x. [ "[V:explain]" "[POST:how]" ] ] |
     [ [ "f" "p" "b" "l" "g" "t" ] .x. [ "[V:come]" "[POST:from]" ] ] |
-    [ [ "f" "p" "b" "l" "g" "t" "s" ] .x. [ "[PRE:just]" "[V:imagine]" ] ] |
     [ [ "f" "p" "b" "l" "s" ] .x. [ "[V:move]" "[POST:to]" ] ] |
     [ [ "f" "p" "b" "l" "t" ] .x. [ "[V:mean]" "[POST:that]" ] ] |
     [ [ "f" "p" "b" "l" "t" "s" ] .x. [ "[V:plan]" "[POST:for]" ] ] |
@@ -142,7 +126,6 @@ define RhsPres [
     [ [ "f" "p" "b" "s" ] .x. [ "[V:know]" "[POST:that]" ] ] |
     [ [ "f" "p" "b" "t" ] .x. [ "[V:need]" "[POST:for]" ] ] |
     [ [ "f" "p" "b" "t" "s" ] .x. [ "[V:turn]" "[POST:to]" ] ] |
-    [ [ "f" "p" "b" "z" ] .x. [ "[PRE:also]" "[V:know]" ] ] |
     [ [ "f" "p" "g" ] .x. [ "[V:go]" "[POST:on]" ] ] |
     [ [ "f" "p" "g" "s" ] .x. [ "[V:pass]" "[POST:on]" ] ] |
     [ [ "f" "p" "g" "z" ] .x. [ "[V:pay]" "[POST:for]" ] ] |
@@ -153,7 +136,6 @@ define RhsPres [
     [ [ "f" "p" "l" "t" ] .x. [ "[V:meet]" ] ] |
     [ [ "f" "p" "l" "t" "s" ] .x. [ "[V:meet]" "[POST:with]" ] ] |
     [ [ "f" "p" "l" "z" ] .x. [ "[V:apply]" "[POST:to]" ] ] |
-    [ [ "f" "p" "s" ] .x. [ "[PRE:also]" "[V:appear]" ] ] |
     [ [ "f" "p" "s" "z" ] .x. [ "[V:choose]" "[POST:from]" ] ] |
     [ [ "f" "p" "t" ] .x. [ "[V:find]" "[POST:that]" ] ] |
     [ [ "f" "p" "z" ] .x. [ "[V:choose]" ] ] |
@@ -167,9 +149,7 @@ define RhsPres [
     [ [ "f" "r" "b" "l" ] .x. [ "[V:feel]" "[POST:that]" ] ] |
     [ [ "f" "r" "b" "l" "g" ] .x. [ "[V:recall]" ] ] |
     [ [ "f" "r" "b" "l" "g" "s" ] .x. [ "[V:recall]" "[POST:that]" ] ] |
-    [ [ "f" "r" "b" "l" "g" "z" ] .x. [ "[PRE:really]" "[V:care]" ] ] |
     [ [ "f" "r" "b" "s" ] .x. [ "[V:show]" "[POST:that]" ] ] |
-    [ [ "f" "r" "b" "t" ] .x. [ "[PRE:also]" "[V:show]" ] ] |
     [ [ "f" "r" "g" ] .x. [ "[V:offer]" ] ] |
     [ [ "f" "r" "g" "s" ] .x. [ "[V:serve]" "[POST:as]" ] ] |
     [ [ "f" "r" "g" "t" ] .x. [ "[V:forget]" ] ] |
@@ -177,22 +157,16 @@ define RhsPres [
     [ [ "f" "r" "g" "z" ] .x. [ "[V:offer]" "[POST:to]" ] ] |
     [ [ "f" "r" "l" ] .x. [ "[V:follow]" ] ] |
     [ [ "f" "r" "l" "g" ] .x. [ "[V:follow]" "[POST:by]" ] ] |
-    [ [ "f" "r" "l" "g" "t" ] .x. [ "[PRE:never]" "[V:forget]" ] ] |
-    [ [ "f" "r" "l" "s" ] .x. [ "[PRE:also]" "[V:serve]" ] ] |
     [ [ "f" "r" "p" ] .x. [ "[V:provide]" ] ] |
     [ [ "f" "r" "p" "b" ] .x. [ "[V:need]" "[POST:to]" ] ] |
-    [ [ "f" "r" "p" "b" "g" ] .x. [ "[PRE:also]" "[V:call]" ] ] |
     [ [ "f" "r" "p" "b" "g" "s" ] .x. [ "[V:bring]" "[POST:in]" ] ] |
     [ [ "f" "r" "p" "b" "l" ] .x. [ "[V:form]" ] ] |
-    [ [ "f" "r" "p" "b" "l" "g" ] .x. [ "[PRE:also]" "[V:include]" ] ] |
     [ [ "f" "r" "p" "b" "l" "s" ] .x. [ "[V:form]" "[POST:by]" ] ] |
     [ [ "f" "r" "p" "b" "l" "t" ] .x. [ "[V:form]" "[POST:in]" ] ] |
     [ [ "f" "r" "p" "g" ] .x. [ "[V:provide]" "[POST:by]" ] ] |
-    [ [ "f" "r" "p" "g" "s" ] .x. [ "[PRE:also]" "[V:offer]" ] ] |
     [ [ "f" "r" "p" "l" ] .x. [ "[V:remove]" ] ] |
     [ [ "f" "r" "p" "l" "g" ] .x. [ "[V:remove]" "[POST:from]" ] ] |
     [ [ "f" "r" "p" "l" "s" ] .x. [ "[V:replace]" "[POST:by]" ] ] |
-    [ [ "f" "r" "p" "t" ] .x. [ "[PRE:also]" "[V:provide]" ] ] |
     [ [ "f" "r" "p" "z" ] .x. [ "[V:choose]" "[POST:to]" ] ] |
     [ [ "f" "r" "s" ] .x. [ "[V:serve]" ] ] |
     [ [ "f" "r" "t" ] .x. [ "[V:write]" "[POST:about]" ] ] |
@@ -212,7 +186,6 @@ define RhsPres [
     [ [ "l" "g" "t" "s" ] .x. [ "[V:set]" "[POST:up]" ] ] |
     [ [ "l" "g" "z" ] .x. [ "[V:help]" "[POST:to]" ] ] |
     [ [ "l" "s" ] .x. [ "[V:send]" ] ] |
-    [ [ "l" "s" "z" ] .x. [ "[PRE:also]" "[V:hold]" ] ] |
     [ [ "l" "t" ] .x. [ "[V:live]" ] ] |
     [ [ "l" "t" "s" ] .x. [ "[V:stay]" ] ] |
     [ [ "l" "t" "s" "z" ] .x. [ "[V:stay]" "[POST:at]" ] ] |
@@ -290,7 +263,6 @@ define RhsPres [
     [ [ "r" "g" ] .x. [ "[V:_]" ] ] |
     [ [ "r" "g" "s" ] .x. [ "[V:work]" "[POST:on]" ] ] |
     [ [ "r" "g" "t" ] .x. [ "[V:hear]" ] ] |
-    [ [ "r" "g" "z" ] .x. [ "[PRE:never]" "[V:hear]" ] ] |
     [ [ "r" "l" ] .x. [ "[V:lead]" ] ] |
     [ [ "r" "l" "g" ] .x. [ "[V:look]" "[POST:at]" ] ] |
     [ [ "r" "l" "g" "s" ] .x. [ "[V:guess]" "[POST:it]" ] ] |
@@ -310,7 +282,6 @@ define RhsPres [
     [ [ "r" "p" "b" "l" "g" ] .x. [ "[V:remember]" ] ] |
     [ [ "r" "p" "b" "l" "g" "s" ] .x. [ "[V:explain]" "[POST:that]" ] ] |
     [ [ "r" "p" "b" "l" "g" "t" ] .x. [ "[V:remember]" "[POST:that]" ] ] |
-    [ [ "r" "p" "b" "l" "g" "z" ] .x. [ "[PRE:never]" "[V:mind]" ] ] |
     [ [ "r" "p" "b" "l" "s" ] .x. [ "[V:learn]" "[POST:to]" ] ] |
     [ [ "r" "p" "b" "l" "t" ] .x. [ "[V:return]" "[POST:from]" ] ] |
     [ [ "r" "p" "b" "l" "z" ] .x. [ "[V:learn]" "[POST:about]" ] ] |
@@ -340,7 +311,7 @@ define RhsPres [
     [ [ "z" ] .x. [ "[V:use]" ] ] ] ;
 
 
-! The 399 past-tense verb chords.
+! The 379 past-tense verb chords.
 define RhsPast [
     [ [ "b" "d" ] .x. [ "[V:add]" ] ] |
     [ [ "b" "d" "z" ] .x. [ "[V:use]" "[POST:in]" ] ] |
@@ -355,13 +326,13 @@ define RhsPast [
     [ [ "b" "l" "d" ] .x. [ "[V:allow]" ] ] |
     [ [ "b" "l" "d" "z" ] .x. [ "[V:allow]" "[POST:to]" ] ] |
     [ [ "b" "l" "g" "d" ] .x. [ "[V:like]" ] ] |
-    [ [ "b" "l" "g" "d" "z" ] .x. [ "[PRE:just]" "[V:like]" ] ] |
     [ [ "b" "l" "g" "s" "d" ] .x. [ "[V:ask]" ] ] |
     [ [ "b" "l" "g" "s" "z" ] .x. [ "[V:ask]" ] ] |
     [ [ "b" "l" "g" "t" "d" ] .x. [ "[V:think]" "[POST:it]" ] ] |
     [ [ "b" "l" "g" "t" "s" "d" ] .x. [ "[V:accept]" ] ] |
     [ [ "b" "l" "g" "t" "s" "z" ] .x. [ "[V:accept]" ] ] |
     [ [ "b" "l" "g" "t" "z" ] .x. [ "[V:think]" "[POST:it]" ] ] |
+    [ [ "b" "l" "g" "z" ] .x. [ "[V:like]" ] ] |
     [ [ "b" "l" "s" "d" ] .x. [ "[V:add]" "[POST:to]" ] ] |
     [ [ "b" "l" "s" "z" ] .x. [ "[V:add]" "[POST:to]" ] ] |
     [ [ "b" "l" "t" "d" ] .x. [ "[V:build]" ] ] |
@@ -371,8 +342,6 @@ define RhsPast [
     [ [ "b" "s" "d" ] .x. [ "[V:decide]" ] ] |
     [ [ "b" "s" "d" "z" ] .x. [ "[V:decide]" "[POST:to]" ] ] |
     [ [ "b" "t" "d" ] .x. [ "[V:buy]" ] ] |
-    [ [ "b" "t" "s" "d" ] .x. [ "[PRE:just]" "[V:want]" ] ] |
-    [ [ "b" "t" "s" "z" ] .x. [ "[PRE:just]" "[V:want]" ] ] |
     [ [ "b" "t" "z" ] .x. [ "[V:buy]" ] ] |
     [ [ "d" "z" ] .x. [ "[V:use]" ] ] |
     [ [ "f" "b" "d" ] .x. [ "[V:become]" ] ] |
@@ -404,8 +373,6 @@ define RhsPast [
     [ [ "f" "g" "d" ] .x. [ "[V:give]" ] ] |
     [ [ "f" "g" "s" "d" ] .x. [ "[V:give]" "[POST:up]" ] ] |
     [ [ "f" "g" "s" "z" ] .x. [ "[V:give]" "[POST:up]" ] ] |
-    [ [ "f" "g" "t" "d" ] .x. [ "[PRE:also]" "[V:give]" ] ] |
-    [ [ "f" "g" "t" "z" ] .x. [ "[PRE:also]" "[V:give]" ] ] |
     [ [ "f" "g" "z" ] .x. [ "[V:give]" ] ] |
     [ [ "f" "l" "d" ] .x. [ "[V:feel]" ] ] |
     [ [ "f" "l" "d" "z" ] .x. [ "[V:feel]" "[POST:like]" ] ] |
@@ -422,7 +389,6 @@ define RhsPast [
     [ [ "f" "l" "t" "s" "z" ] .x. [ "[V:love]" "[POST:it]" ] ] |
     [ [ "f" "l" "t" "z" ] .x. [ "[V:love]" ] ] |
     [ [ "f" "p" "b" "d" ] .x. [ "[V:know]" ] ] |
-    [ [ "f" "p" "b" "d" "z" ] .x. [ "[PRE:also]" "[V:know]" ] ] |
     [ [ "f" "p" "b" "g" "d" ] .x. [ "[V:check]" ] ] |
     [ [ "f" "p" "b" "g" "d" "z" ] .x. [ "[V:check]" "[POST:in]" ] ] |
     [ [ "f" "p" "b" "g" "s" "d" ] .x. [ "[V:begin]" "[POST:to]" ] ] |
@@ -435,8 +401,6 @@ define RhsPast [
     [ [ "f" "p" "b" "l" "g" "s" "d" ] .x. [ "[V:explain]" "[POST:how]" ] ] |
     [ [ "f" "p" "b" "l" "g" "s" "z" ] .x. [ "[V:explain]" "[POST:how]" ] ] |
     [ [ "f" "p" "b" "l" "g" "t" "d" ] .x. [ "[V:come]" "[POST:from]" ] ] |
-    [ [ "f" "p" "b" "l" "g" "t" "s" "d" ] .x. [ "[PRE:just]" "[V:imagine]" ] ] |
-    [ [ "f" "p" "b" "l" "g" "t" "s" "z" ] .x. [ "[PRE:just]" "[V:imagine]" ] ] |
     [ [ "f" "p" "b" "l" "g" "t" "z" ] .x. [ "[V:come]" "[POST:from]" ] ] |
     [ [ "f" "p" "b" "l" "g" "z" ] .x. [ "[V:include]" ] ] |
     [ [ "f" "p" "b" "l" "s" "d" ] .x. [ "[V:move]" "[POST:to]" ] ] |
@@ -451,6 +415,7 @@ define RhsPast [
     [ [ "f" "p" "b" "t" "s" "d" ] .x. [ "[V:turn]" "[POST:to]" ] ] |
     [ [ "f" "p" "b" "t" "s" "z" ] .x. [ "[V:turn]" "[POST:to]" ] ] |
     [ [ "f" "p" "b" "t" "z" ] .x. [ "[V:need]" "[POST:for]" ] ] |
+    [ [ "f" "p" "b" "z" ] .x. [ "[V:know]" ] ] |
     [ [ "f" "p" "d" ] .x. [ "[V:change]" ] ] |
     [ [ "f" "p" "d" "z" ] .x. [ "[V:choose]" ] ] |
     [ [ "f" "p" "g" "d" ] .x. [ "[V:go]" "[POST:on]" ] ] |
@@ -469,7 +434,6 @@ define RhsPast [
     [ [ "f" "p" "l" "t" "s" "d" ] .x. [ "[V:meet]" "[POST:with]" ] ] |
     [ [ "f" "p" "l" "t" "s" "z" ] .x. [ "[V:meet]" "[POST:with]" ] ] |
     [ [ "f" "p" "l" "t" "z" ] .x. [ "[V:meet]" ] ] |
-    [ [ "f" "p" "s" "d" ] .x. [ "[PRE:also]" "[V:appear]" ] ] |
     [ [ "f" "p" "s" "d" "z" ] .x. [ "[V:choose]" "[POST:from]" ] ] |
     [ [ "f" "p" "t" "d" ] .x. [ "[V:find]" "[POST:that]" ] ] |
     [ [ "f" "p" "t" "z" ] .x. [ "[V:find]" "[POST:that]" ] ] |
@@ -484,14 +448,12 @@ define RhsPast [
     [ [ "f" "r" "b" "g" "t" "z" ] .x. [ "[V:require]" "[POST:to]" ] ] |
     [ [ "f" "r" "b" "l" "d" ] .x. [ "[V:feel]" "[POST:that]" ] ] |
     [ [ "f" "r" "b" "l" "g" "d" ] .x. [ "[V:recall]" ] ] |
-    [ [ "f" "r" "b" "l" "g" "d" "z" ] .x. [ "[PRE:really]" "[V:care]" ] ] |
     [ [ "f" "r" "b" "l" "g" "s" "d" ] .x. [ "[V:recall]" "[POST:that]" ] ] |
     [ [ "f" "r" "b" "l" "g" "s" "z" ] .x. [ "[V:recall]" "[POST:that]" ] ] |
+    [ [ "f" "r" "b" "l" "g" "z" ] .x. [ "[V:recall]" ] ] |
     [ [ "f" "r" "b" "l" "z" ] .x. [ "[V:feel]" "[POST:that]" ] ] |
     [ [ "f" "r" "b" "s" "d" ] .x. [ "[V:show]" "[POST:that]" ] ] |
     [ [ "f" "r" "b" "s" "z" ] .x. [ "[V:show]" "[POST:that]" ] ] |
-    [ [ "f" "r" "b" "t" "d" ] .x. [ "[PRE:also]" "[V:show]" ] ] |
-    [ [ "f" "r" "b" "t" "z" ] .x. [ "[PRE:also]" "[V:show]" ] ] |
     [ [ "f" "r" "b" "z" ] .x. [ "[V:show]" ] ] |
     [ [ "f" "r" "d" ] .x. [ "[V:write]" ] ] |
     [ [ "f" "r" "g" "d" ] .x. [ "[V:offer]" ] ] |
@@ -504,20 +466,12 @@ define RhsPast [
     [ [ "f" "r" "g" "t" "z" ] .x. [ "[V:forget]" ] ] |
     [ [ "f" "r" "l" "d" ] .x. [ "[V:follow]" ] ] |
     [ [ "f" "r" "l" "g" "d" ] .x. [ "[V:follow]" "[POST:by]" ] ] |
-    [ [ "f" "r" "l" "g" "t" "d" ] .x. [ "[PRE:never]" "[V:forget]" ] ] |
-    [ [ "f" "r" "l" "g" "t" "z" ] .x. [ "[PRE:never]" "[V:forget]" ] ] |
     [ [ "f" "r" "l" "g" "z" ] .x. [ "[V:follow]" "[POST:by]" ] ] |
-    [ [ "f" "r" "l" "s" "d" ] .x. [ "[PRE:also]" "[V:serve]" ] ] |
-    [ [ "f" "r" "l" "s" "z" ] .x. [ "[PRE:also]" "[V:serve]" ] ] |
     [ [ "f" "r" "l" "z" ] .x. [ "[V:follow]" ] ] |
     [ [ "f" "r" "p" "b" "d" ] .x. [ "[V:need]" "[POST:to]" ] ] |
-    [ [ "f" "r" "p" "b" "g" "d" ] .x. [ "[PRE:also]" "[V:call]" ] ] |
     [ [ "f" "r" "p" "b" "g" "s" "d" ] .x. [ "[V:bring]" "[POST:in]" ] ] |
     [ [ "f" "r" "p" "b" "g" "s" "z" ] .x. [ "[V:bring]" "[POST:in]" ] ] |
-    [ [ "f" "r" "p" "b" "g" "z" ] .x. [ "[PRE:also]" "[V:call]" ] ] |
     [ [ "f" "r" "p" "b" "l" "d" ] .x. [ "[V:form]" ] ] |
-    [ [ "f" "r" "p" "b" "l" "g" "d" ] .x. [ "[PRE:also]" "[V:include]" ] ] |
-    [ [ "f" "r" "p" "b" "l" "g" "z" ] .x. [ "[PRE:also]" "[V:include]" ] ] |
     [ [ "f" "r" "p" "b" "l" "s" "d" ] .x. [ "[V:form]" "[POST:by]" ] ] |
     [ [ "f" "r" "p" "b" "l" "s" "z" ] .x. [ "[V:form]" "[POST:by]" ] ] |
     [ [ "f" "r" "p" "b" "l" "t" "d" ] .x. [ "[V:form]" "[POST:in]" ] ] |
@@ -527,8 +481,6 @@ define RhsPast [
     [ [ "f" "r" "p" "d" ] .x. [ "[V:provide]" ] ] |
     [ [ "f" "r" "p" "d" "z" ] .x. [ "[V:choose]" "[POST:to]" ] ] |
     [ [ "f" "r" "p" "g" "d" ] .x. [ "[V:provide]" "[POST:by]" ] ] |
-    [ [ "f" "r" "p" "g" "s" "d" ] .x. [ "[PRE:also]" "[V:offer]" ] ] |
-    [ [ "f" "r" "p" "g" "s" "z" ] .x. [ "[PRE:also]" "[V:offer]" ] ] |
     [ [ "f" "r" "p" "g" "z" ] .x. [ "[V:provide]" "[POST:by]" ] ] |
     [ [ "f" "r" "p" "l" "d" ] .x. [ "[V:remove]" ] ] |
     [ [ "f" "r" "p" "l" "g" "d" ] .x. [ "[V:remove]" "[POST:from]" ] ] |
@@ -536,8 +488,6 @@ define RhsPast [
     [ [ "f" "r" "p" "l" "s" "d" ] .x. [ "[V:replace]" "[POST:by]" ] ] |
     [ [ "f" "r" "p" "l" "s" "z" ] .x. [ "[V:replace]" "[POST:by]" ] ] |
     [ [ "f" "r" "p" "l" "z" ] .x. [ "[V:remove]" ] ] |
-    [ [ "f" "r" "p" "t" "d" ] .x. [ "[PRE:also]" "[V:provide]" ] ] |
-    [ [ "f" "r" "p" "t" "z" ] .x. [ "[PRE:also]" "[V:provide]" ] ] |
     [ [ "f" "r" "s" "d" ] .x. [ "[V:serve]" ] ] |
     [ [ "f" "r" "s" "z" ] .x. [ "[V:serve]" ] ] |
     [ [ "f" "r" "t" "d" ] .x. [ "[V:write]" "[POST:about]" ] ] |
@@ -562,12 +512,13 @@ define RhsPast [
     [ [ "l" "g" "d" ] .x. [ "[V:help]" ] ] |
     [ [ "l" "g" "d" "z" ] .x. [ "[V:help]" "[POST:to]" ] ] |
     [ [ "l" "g" "s" "d" ] .x. [ "[V:guess]" ] ] |
+    [ [ "l" "g" "s" "z" ] .x. [ "[V:guess]" ] ] |
     [ [ "l" "g" "t" "d" ] .x. [ "[V:tell]" ] ] |
     [ [ "l" "g" "t" "s" "d" ] .x. [ "[V:set]" "[POST:up]" ] ] |
     [ [ "l" "g" "t" "s" "z" ] .x. [ "[V:set]" "[POST:up]" ] ] |
     [ [ "l" "g" "t" "z" ] .x. [ "[V:tell]" ] ] |
     [ [ "l" "s" "d" ] .x. [ "[V:send]" ] ] |
-    [ [ "l" "s" "d" "z" ] .x. [ "[PRE:also]" "[V:hold]" ] ] |
+    [ [ "l" "s" "z" ] .x. [ "[V:send]" ] ] |
     [ [ "l" "t" "d" ] .x. [ "[V:live]" ] ] |
     [ [ "l" "t" "d" "z" ] .x. [ "[V:live]" "[POST:with]" ] ] |
     [ [ "l" "t" "s" "d" ] .x. [ "[V:stay]" ] ] |
@@ -665,10 +616,10 @@ define RhsPast [
     [ [ "r" "d" ] .x. [ "[V:work]" ] ] |
     [ [ "r" "d" "z" ] .x. [ "[V:work]" "[POST:with]" ] ] |
     [ [ "r" "g" "d" ] .x. [ "[V:_]" ] ] |
-    [ [ "r" "g" "d" "z" ] .x. [ "[PRE:never]" "[V:hear]" ] ] |
     [ [ "r" "g" "s" "d" ] .x. [ "[V:work]" "[POST:on]" ] ] |
     [ [ "r" "g" "s" "z" ] .x. [ "[V:work]" "[POST:on]" ] ] |
     [ [ "r" "g" "t" "d" ] .x. [ "[V:hear]" ] ] |
+    [ [ "r" "g" "t" "z" ] .x. [ "[V:hear]" ] ] |
     [ [ "r" "l" "d" ] .x. [ "[V:lead]" ] ] |
     [ [ "r" "l" "d" "z" ] .x. [ "[V:realize]" ] ] |
     [ [ "r" "l" "g" "d" ] .x. [ "[V:look]" "[POST:at]" ] ] |
@@ -694,11 +645,11 @@ define RhsPast [
     [ [ "r" "p" "b" "l" "d" ] .x. [ "[V:learn]" ] ] |
     [ [ "r" "p" "b" "l" "d" "z" ] .x. [ "[V:learn]" "[POST:about]" ] ] |
     [ [ "r" "p" "b" "l" "g" "d" ] .x. [ "[V:remember]" ] ] |
-    [ [ "r" "p" "b" "l" "g" "d" "z" ] .x. [ "[PRE:never]" "[V:mind]" ] ] |
     [ [ "r" "p" "b" "l" "g" "s" "d" ] .x. [ "[V:explain]" "[POST:that]" ] ] |
     [ [ "r" "p" "b" "l" "g" "s" "z" ] .x. [ "[V:explain]" "[POST:that]" ] ] |
     [ [ "r" "p" "b" "l" "g" "t" "d" ] .x. [ "[V:remember]" "[POST:that]" ] ] |
     [ [ "r" "p" "b" "l" "g" "t" "z" ] .x. [ "[V:remember]" "[POST:that]" ] ] |
+    [ [ "r" "p" "b" "l" "g" "z" ] .x. [ "[V:remember]" ] ] |
     [ [ "r" "p" "b" "l" "s" "d" ] .x. [ "[V:learn]" "[POST:to]" ] ] |
     [ [ "r" "p" "b" "l" "s" "z" ] .x. [ "[V:learn]" "[POST:to]" ] ] |
     [ [ "r" "p" "b" "l" "t" "d" ] .x. [ "[V:return]" "[POST:from]" ] ] |
@@ -743,43 +694,25 @@ define RhsPast [
     [ [ "t" "s" "z" ] .x. [ "[V:start]" ] ] ] ;
 
 
-! Adverb enders (§4.6). Each one carries the hole: an
-! adverb inflects for nothing, so a clause that ends on one
-! has no verb to inflect either, and the word written next
-! is that verb. `-d` is the tense it always was.
-define Adv [
-    "[ADV:often]" | "[ADV:never]" | "[ADV:just]" | "[ADV:also]" | "[ADV:actually]" | "[ADV:always]" |
-    "[ADV:still]" | "[ADV:really]" ] ;
+! The copula chords: the empty verb slot, and an article
+! after it. `-d` is the past, as it is on the slot alone.
+define Art [
+    "[ART:a]" | "[ART:an]" | "[ART:the]" ] ;
 
-define AdvPres [
-    [ [ "f" "b" "t" "s" ] .x. [ "[ADV:often]" "[V:_]" ] ] |
-    [ [ "f" "p" "g" "t" ] .x. [ "[ADV:never]" "[V:_]" ] ] |
-    [ [ "f" "p" "t" "s" ] .x. [ "[ADV:just]" "[V:_]" ] ] |
-    [ [ "f" "r" "l" "t" ] .x. [ "[ADV:also]" "[V:_]" ] ] |
-    [ [ "f" "r" "p" "s" ] .x. [ "[ADV:actually]" "[V:_]" ] ] |
-    [ [ "l" "g" "s" "z" ] .x. [ "[ADV:always]" "[V:_]" ] ] |
-    [ [ "r" "g" "t" "s" ] .x. [ "[ADV:still]" "[V:_]" ] ] |
-    [ [ "r" "l" "g" "t" ] .x. [ "[ADV:really]" "[V:_]" ] ] ] ;
+define CopPres [
+    [ [ "f" "p" "t" "s" ] .x. [ "[ART:a]" ] ] |
+    [ [ "f" "g" "t" "s" ] .x. [ "[ART:an]" ] ] |
+    [ [ "f" "b" "t" "s" ] .x. [ "[ART:the]" ] ] ] ;
 
-define AdvPast [
-    [ [ "f" "b" "t" "s" "d" ] .x. [ "[ADV:often]" "[V:_]" ] ] |
-    [ [ "f" "p" "g" "t" "d" ] .x. [ "[ADV:never]" "[V:_]" ] ] |
-    [ [ "f" "p" "t" "s" "d" ] .x. [ "[ADV:just]" "[V:_]" ] ] |
-    [ [ "f" "r" "l" "t" "d" ] .x. [ "[ADV:also]" "[V:_]" ] ] |
-    [ [ "f" "r" "p" "s" "d" ] .x. [ "[ADV:actually]" "[V:_]" ] ] |
-    [ [ "l" "g" "s" "d" "z" ] .x. [ "[ADV:always]" "[V:_]" ] ] |
-    [ [ "r" "g" "t" "s" "d" ] .x. [ "[ADV:still]" "[V:_]" ] ] |
-    [ [ "r" "l" "g" "t" "d" ] .x. [ "[ADV:really]" "[V:_]" ] ] ] ;
+define CopPast [
+    [ [ "f" "p" "t" "s" "d" ] .x. [ "[ART:a]" ] ] |
+    [ [ "f" "g" "t" "s" "d" ] .x. [ "[ART:an]" ] ] |
+    [ [ "f" "b" "t" "s" "d" ] .x. [ "[ART:the]" ] ] ] ;
 
-define AdvW [
-    [ [ "[ADV:often]" ] .x. [ [ " " {often} ] ] ] |
-    [ [ "[ADV:never]" ] .x. [ [ " " {never} ] ] ] |
-    [ [ "[ADV:just]" ] .x. [ [ " " {just} ] ] ] |
-    [ [ "[ADV:also]" ] .x. [ [ " " {also} ] ] ] |
-    [ [ "[ADV:actually]" ] .x. [ [ " " {actually} ] ] ] |
-    [ [ "[ADV:always]" ] .x. [ [ " " {always} ] ] ] |
-    [ [ "[ADV:still]" ] .x. [ [ " " {still} ] ] ] |
-    [ [ "[ADV:really]" ] .x. [ [ " " {really} ] ] ] ] ;
+define ArtW [
+    [ [ "[ART:a]" ] .x. [ [ " " {a} ] ] ] |
+    [ [ "[ART:an]" ] .x. [ [ " " {an} ] ] ] |
+    [ [ "[ART:the]" ] .x. [ [ " " {the} ] ] ] ] ;
 
 
 ! The base form of each verb.

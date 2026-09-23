@@ -8,6 +8,9 @@
 ! `[C]` marks a subject the reduced surface may cliticize onto ("it's", "I'm").
 ! `[AND]` is the clausal conjunction (§4.1a): it precedes the whole clause rather
 ! than the subject, so an inverted question is "and am I", not "am and I".
+! `T` before another referent is that `[AND]`, and `S` with it still does what `S`
+! does alone: `+TK` is "and I", `+SK` "we", so `+STK` is "and we". `+ST` is "and
+! it", because `T` cannot say both.
 ! `[INF]` is the nonfinite "to" clause (§4.1b), which has no subject word.
 ! `[HOLD]` marks the hole a determiner subject leaves: the noun is the word
 ! written next, so everything after the determiner waits for it (§4.1f).
@@ -32,7 +35,7 @@ define Subjects [
     [ [ "W" ] .x. [ "[SUBJ]" {there} "[/SUBJ]" "[C]" "[3sg]" ] ] |
     [ [ "H" ] .x. [ "[SUBJ]" {he} "[/SUBJ]" "[C]" "[3sg]" ] ] |
     [ [ "R" ] .x. [ "[SUBJ]" {she} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "S" "T" ] .x. [ "[SUBJ]" [ {and} " " {it} ] "[/SUBJ]" "[pl]" ] ] |
+    [ [ "S" "T" ] .x. [ "[AND]" "[SUBJ]" {it} "[/SUBJ]" "[C]" "[3sg]" ] ] |
     [ [ "S" "K" ] .x. [ "[SUBJ]" {we} "[/SUBJ]" "[C]" "[pl]" ] ] |
     [ [ "S" "P" ] .x. [ "[SUBJ]" {you} "[/SUBJ]" "[C]" "[pl]" ] ] |
     [ [ "S" "W" ] .x. [ "[SUBJ]" {there} "[/SUBJ]" "[C]" "[pl]" ] ] |
@@ -50,11 +53,11 @@ define Subjects [
     [ [ "W" "H" ] .x. [ "[SUBJ]" {who} "[/SUBJ]" "[C]" "[3sg]" ] ] |
     [ [ "W" "R" ] .x. [ "[SUBJ]" {which} "[/SUBJ]" "[3sg]" ] ] |
     [ [ "H" "R" ] .x. [ "[INF]" "[3sg]" ] ] |
-    [ [ "S" "T" "K" ] .x. [ "[SUBJ]" [ {and} " " {I} ] "[/SUBJ]" "[pl]" ] ] |
-    [ [ "S" "T" "P" ] .x. [ "[SUBJ]" [ {and} " " {you} ] "[/SUBJ]" "[pl]" ] ] |
+    [ [ "S" "T" "K" ] .x. [ "[AND]" "[SUBJ]" {we} "[/SUBJ]" "[C]" "[pl]" ] ] |
+    [ [ "S" "T" "P" ] .x. [ "[AND]" "[SUBJ]" {you} "[/SUBJ]" "[C]" "[pl]" ] ] |
     [ [ "S" "T" "W" ] .x. [ "[SUBJ]" {whatever} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "S" "T" "H" ] .x. [ "[SUBJ]" [ {and} " " {he} ] "[/SUBJ]" "[pl]" ] ] |
-    [ [ "S" "T" "R" ] .x. [ "[SUBJ]" [ {and} " " {she} ] "[/SUBJ]" "[pl]" ] ] |
+    [ [ "S" "T" "H" ] .x. [ "[AND]" "[SUBJ]" {they} "[/SUBJ]" "[C]" "[pl]" ] ] |
+    [ [ "S" "T" "R" ] .x. [ "[AND]" "[SUBJ]" {one} "[/SUBJ]" "[3sg]" ] ] |
     [ [ "S" "K" "W" ] .x. [ "[SUBJ]" {these} "[/SUBJ]" "[pl]" ] ] |
     [ [ "S" "K" "H" ] .x. [ "[LETS]" "[pl]" ] ] |
     [ [ "S" "P" "W" ] .x. [ "[SUBJ]" {those} "[/SUBJ]" "[pl]" ] ] |

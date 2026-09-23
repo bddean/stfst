@@ -100,10 +100,10 @@ reads: `^PW*EU` writes "by -ing", and "run" makes it "by running".
 
 Phrasing's `-RG` says the verb of a whole clause is the word coming next, so
 `+TERG` then "run" is "it's running" with every other key of the clause still
-meaning what it meant. Every adverb ender says the same thing, so `+T-FBTS` then
-"run" is "it often runs" and `-D` there is the past that an adverb launchpad
-never had. A determiner subject holds the noun the same way: `+PR-B` writes "the
-is adding", and "dog" makes it "the dog is adding".
+meaning what it meant. A held clause waits the same way before its verb:
+`🦐+K-R` writes "I work", and "often" makes it "I often work". A determiner
+subject holds the noun: `+PR-B` writes "the is adding", and "dog" makes it "the
+dog is adding".
 
 `semantic-retro.json` is absent: its entries are clause rewrites over a part-of-speech
 tagger, which is the one thing this format deliberately cannot hold. See

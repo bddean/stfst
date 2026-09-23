@@ -49,46 +49,43 @@ TKPW
 +TURG
 TKPW
 
-! ---- the adverb ender, which carries the hole always
-! An adverb inflects for nothing, so a clause ending on one has no verb for its
-! tense or aspect to inflect either: the word written next is that verb, and no
-! key says so. `-D` is the tense it is everywhere else, which is a past the
-! launchpad never had.
+! ---- a held clause, `🦐`: it waits before its verb for the next stroke
+! The gap sits after the finite word, so the stroke lands where an adverb goes,
+! and whatever it writes lands there: a stroke, not a word.
 !buffer
-+T-FBTS
-RUPB
+🦐+K-R
+OFPB
 !buffer
-+T-FBTSD
-RUPB
+🦐+KUR
+TPHEFR
 !buffer
-+TEFBTS
-RUPB
+🦐+K*R
+AULS
 !buffer
-+TEFBTSD
-RUPB
+🦐#+T-R
+OFPB
 !buffer
-+T*FBTS
-RUPB
+🦐+HR-R
+HRAOERL
 !buffer
-+T-RGTS
-KAER
+🦐+PH-B
+OFPB
+!buffer
+🦐+K-FPTS
+HRAOERL
 
-! The passive of an adverb ender was no clause at all, and now it is one.
+! With nothing after the gap there is no tail, so the stroke just follows.
 !buffer
-+PH-FBTS
-WREU
-
-! An infinitive keeps the adverb and takes the verb, where it used to drop the
-! adverb and write "be".
-!buffer
-+HR-FBTS
-RUPB
+🦐+K
+OFPB
 
 ! ---- what the hole displaced
 !buffer
 +T-RGT
 !buffer
 +T-RPGT
+!buffer
++T-RGTZ
 
 ! ---- the other hole: a determiner subject holds the noun
 ! The clause after the determiner is the tail, so the noun lands in the middle
