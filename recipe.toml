@@ -53,6 +53,13 @@ priority = 30
 json = "~/.config/plover/typey-type-full.json"
 
 [[dict]]
+name = "vowel-briefs"
+priority = 25
+# Written by scripts/gen-typey-vowels.py beside typey-type: only strokes no
+# other entry writes, so its place below typey-type shadows nothing.
+json = "~/.config/plover/vowel-briefs.json"
+
+[[dict]]
 name = "and-fold"
 priority = 20
 json = "~/.config/plover/and-fold.json"

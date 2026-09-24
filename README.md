@@ -223,6 +223,10 @@ vowels by the rules in `dictionaries/typey-vowels.toml`, reading
 `English Stenotype` system reads the same file and cannot load an artifact.
 `~/.config/plover/VOWELS-DESIGN.md` is the design.
 
+The same run writes `vowel-briefs.json`, imported as `vowel-briefs` below
+typey-type: the shorter upstream strokes of the frequent words the theory
+lengthened, kept only where no entry in the stack writes them.
+
 The generator needs cmudict and wordfreq, which the phrasing venv has. It prints
 what moved, what collided and what was displaced, and writes `tests/vowels.tsv`:
 each rule's examples at the stroke the theory gave them. `check.sh` tests that

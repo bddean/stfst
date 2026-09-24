@@ -26,6 +26,10 @@ writes it and the more frequent one has somewhere else to go. The theory takes a
 stroke from any other entry unless that entry is an affix or a hundred times as
 frequent, and the report names every word left with no outline in the stack.
 
+A word of zipf > 5 whose shortest outline the theory lengthened keeps its shorter
+upstream strokes in `~/.config/plover/vowel-briefs.json`, where no entry in the
+stack writes them: `PWEU` stays "by".
+
 Usage (needs cmudict and wordfreq, which the phrasing venv has):
 
     PY=~/.config/plover/phrasing/.venv/bin/python
@@ -48,6 +52,7 @@ from wordfreq import zipf_frequency
 PLOVER = os.path.expanduser("~/.config/plover")
 UPSTREAM = os.path.join(PLOVER, "typey-type-upstream.json")
 OUTPUT = os.path.join(PLOVER, "typey-type-full.json")
+BRIEFS = os.path.join(PLOVER, "vowel-briefs.json")
 HERE = os.path.dirname(os.path.abspath(__file__))
 TABLE = os.path.join(HERE, "..", "dictionaries", "typey-vowels.toml")
 GOLDEN = os.path.join(HERE, "..", "tests", "vowels.tsv")
@@ -55,6 +60,9 @@ STFST = os.path.join(HERE, "..", "target", "release", "stfst")
 SYSTEM = os.path.join(HERE, "..", "systems", "stenotype-extended.toml")
 RECIPE = os.path.join(HERE, "..", "recipe.toml")
 
+# A word this frequent whose shortest outline the theory lengthened gets its
+# shorter upstream strokes back in vowel-briefs.json, where no entry writes them.
+BRIEF = 5.0
 # A collision between two words this frequent is a common one.
 COMMON = 3.0
 # The theory takes a stroke from another entry unless that entry is a hundred
@@ -731,6 +739,24 @@ def expectations(table, pairs, result):
     return "\n".join(lines) + "\n"
 
 
+def outlines_of(d):
+    """{translation: [outline]} for a dictionary."""
+    by = collections.defaultdict(list)
+    for o, t in d.items():
+        by[t].append(o)
+    return by
+
+
+def vowel_briefs(typey, out, result):
+    """{stroke: word}: the upstream strokes shorter than a frequent word's
+    shortest outline now, that no entry in `out` or the stack writes."""
+    before, after = outlines_of(typey.upstream), outlines_of(out)
+    wanted = {o: w for w in result.rules if typey.words[w].z > BRIEF and after[w]
+              for o in before[w] if o not in out and keys(o) < min(map(keys, after[w]))}
+    held = Stack(out, skip="vowel-briefs").ask(wanted)
+    return {o: w for o, w in sorted(wanted.items()) if not held[o]}
+
+
 def write_json(d, path):
     """In Plover's own layout, so a rewrite diffs by entry."""
     with open(path, "w") as f:
@@ -754,18 +780,24 @@ def main():
     moves, counts = resolve_long(typey, result, table, dict(out))
     out = {moves.get(o, o): t for o, t in out.items()}
     golden = expectations(table, pairs, result)
+    briefs = vowel_briefs(typey, out, result)
     if args.check:
         with open(OUTPUT) as f:
             stale = json.load(f) != out
+        with open(BRIEFS) as f:
+            stale |= json.load(f) != briefs
         with open(GOLDEN) as f:
             stale |= f.read() != golden
         if stale:
-            sys.exit(f"{OUTPUT} or {GOLDEN} is stale: run {sys.argv[0]}")
+            sys.exit(f"{OUTPUT}, {BRIEFS} or {GOLDEN} is stale: run {sys.argv[0]}")
         return
     write_json(out, OUTPUT)
+    write_json(briefs, BRIEFS)
     with open(GOLDEN, "w") as f:
         f.write(golden)
     report(typey, out, result, displaced, counts)
+    print(f"== vowel-briefs.json\n{len(briefs)} upstream strokes kept for frequent words:")
+    print("  " + " ".join(f"{o}={w}" for o, w in briefs.items()))
 
 
 # --- The stack -------------------------------------------------------------
@@ -775,7 +807,7 @@ class Stack:
     artifact imported from JSON is read as that JSON, typey-type as the
     dictionary being built, and the rest through `stfst lookup`."""
 
-    def __init__(self, typey):
+    def __init__(self, typey, skip=None):
         import configparser
         cfg = configparser.RawConfigParser()
         cfg.read(os.path.join(PLOVER, "plover.cfg"))
@@ -789,6 +821,8 @@ class Stack:
             path = os.path.join(PLOVER, os.path.expanduser(e["path"]))
             name = os.path.basename(path).rsplit(".", 1)[0]
             path = sources.get(name, path)
+            if name == skip:
+                continue
             if name == "typey-type":
                 self.layers.append((name, typey))
             elif path.endswith(".json"):
@@ -866,12 +900,7 @@ def report(typey, out, result, displaced, long_counts):
     print(f"{len(orphans)} words no outline in the stack writes any more:")
     print(wrap(orphans))
 
-    before = collections.defaultdict(list)
-    for o, t in typey.upstream.items():
-        before[t].append(o)
-    after = collections.defaultdict(list)
-    for o, t in out.items():
-        after[t].append(o)
+    before, after = outlines_of(typey.upstream), outlines_of(out)
     longer = sorted((w for w in result.rules if words[w].z > 5 and after[w]
                      and min(map(keys, after[w])) > min(map(keys, before[w]))),
                     key=lambda w: -words[w].z)
