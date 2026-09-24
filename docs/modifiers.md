@@ -79,6 +79,10 @@ table is emily-symbols'. The Python shares it by importing `emily-symbols.py`; h
 recipe's multiple-source form is for. The `-tables` suffix marks transcribed data
 with an upstream owner, and the grammars over it stay separate.
 
+The sharing runs the other way for numbers. `emily-symbols` lists
+`emily-modifiers-tables.xfst` for `LitNum`, so `SRUTZ` there is literal mode's
+`@SR*U`: 9, glued. `O` appends a zero, which literal mode ignores.
+
 ## Where the Python stopped being the answer
 
 `tests/golden/emily-modifiers.tsv` covers every table exhaustively: 39 keysym rows

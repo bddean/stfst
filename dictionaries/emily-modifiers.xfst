@@ -82,9 +82,10 @@ define SymLit   [ [ Hash Kill("@") Some Variant Lit([ Kill(E) LitFlag ]) ]
                   .o. [ GlyphPair Flag* ] .o. OneCase ] ;
 
 ! A literal number: the payload read as binary, `^` the 128 bit and `#` the 256.
-! Modifiers have nothing to modify here, and the Python ignores them.
+! Modifiers have nothing to modify here, and the Python ignores them. Glued, as
+! Plover glues a translation that is all digits.
 define NumLit   [ [ ("#") Kill("@") ("^") Pat (Kill(A)) (Kill(O))
-                    Lit([ Kill(U) NoMod ]) ] .o. LitNum ] ;
+                    Lit([ Kill(U) NoMod ]) ] .o. [ LitNum Say("[GLUE]") ] ] ;
 
 ! Fingerspelling, which is what a chord means when no mode key claims it. The
 ! literal keys are inert, so the table carries the `*` and this drops the `-Z`.

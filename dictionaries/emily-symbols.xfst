@@ -70,5 +70,15 @@ define DoRep    [ [ "[R2=0]" -> 0        || "[R1=0]" ?* _ ,,
 define DoSpace  [ [ "[ATTACH_L]" | "[ATTACH_R]" ] -> 0
                   || [ "[CANCEL_SPACE]" | "[RETRO_SPACE]" ] ?* _ ] ;
 
-define Grammar Canon([ Parse .o. Glyph .o. DoAttach .o. DoSpace
-                       .o. DoRep .o. DoCap ]) ;
+! ---- numbers
+!
+! `U` with the identifier writes a number, the left bank read as binary exactly as
+! `emily-modifiers` reads it in literal mode: `R W K S` are 1 2 4 8, `H P T ^` are
+! 16 32 64 128 and `#` is 256. `O` appends a zero, so `SROUTZ` is 90 and `OUTZ`,
+! with no bits, is 0. Glued, as Plover glues a translation that is all digits.
+define Bits     [ ?+ .o. LitNum ] ;
+define Number   [ [ Bits ([ {O} .x. {0} ]) | [ {O} .x. {0} ] ]
+                  [ {Utz} .x. "[GLUE]" ] ] ;
+
+define Grammar Canon([ [ Parse .o. Glyph .o. DoAttach .o. DoSpace
+                         .o. DoRep .o. DoCap ] | Number ]) ;

@@ -6,7 +6,8 @@ system = "systems/stenotype-extended.toml"
 [[dict]]
 name = "emily-symbols"
 priority = 100
-xfst = ["dictionaries/emily-symbols-tables.xfst", "dictionaries/emily-symbols.xfst"]
+# The modifiers tables for `LitNum`, the binary number both dictionaries read.
+xfst = ["dictionaries/emily-symbols-tables.xfst", "dictionaries/emily-modifiers-tables.xfst", "dictionaries/emily-symbols.xfst"]
 
 [[dict]]
 name = "shrimple"
