@@ -96,7 +96,7 @@ for artifact in build/dicts/*.stfst; do
 done
 
 # The vowel theory: what its table writes, read back from typey-type, and whether
-# `typey-type-full.json` is still what the table makes of Typey Type. The second
+# `typey-type-full.json` and `leading-vowel.json` are still what it makes. That
 # needs cmudict and wordfreq, which the phrasing venv has, so it is skipped where
 # that is absent.
 echo "== vowels"
@@ -104,6 +104,7 @@ $B test build/dicts/typey-type.stfst tests/vowels.tsv | tail -1
 VOWELS_PYTHON=${VOWELS_PYTHON:-$HOME/.config/plover/phrasing/.venv/bin/python}
 if [ -x "$VOWELS_PYTHON" ]; then
     "$VOWELS_PYTHON" scripts/gen-typey-vowels.py --check && echo "typey-type-full.json is current"
+    "$VOWELS_PYTHON" scripts/gen-leading-vowel.py --check && echo "leading-vowel.json is current"
 else
     echo "skipped: no $VOWELS_PYTHON"
 fi

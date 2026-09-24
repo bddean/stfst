@@ -232,6 +232,12 @@ what moved, what collided and what was displaced, and writes `tests/vowels.tsv`:
 each rule's examples at the stroke the theory gave them. `check.sh` tests that
 file against the typey-type artifact and fails if the JSON is stale.
 
+`scripts/gen-leading-vowel.py` writes `leading-vowel.json` the same way, from the
+same tagger and table: a word of two syllables stressed on the second, as one
+stroke marked with `^` (report is `^PROERT`). It reads the compiled stack to leave
+a stroke another dictionary writes to it, so run it after a compile. `check.sh`
+fails if its JSON is stale.
+
 ## Measurements and decisions
 
 | | |

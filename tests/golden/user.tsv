@@ -1,4 +1,4 @@
-! 525 cases from /Users/ben/.config/plover/user.json. A regression file for the import pipeline,
+! 515 cases from /Users/ben/.config/plover/user.json. A regression file for the import pipeline,
 ! not an oracle: the expectations come from our own translation
 ! grammar, which is unit tested separately.
 *Ep	E[GLUE]
@@ -450,26 +450,20 @@ WUft	one of the
 ^PHAEz	amaze
 ^PHAfp	rematch
 ^PHAOEUl	a mile
-^PHEUt	emit
 ^PHOEgs/HREU	emotionally
 ^PHOEUpb	a million
-^PHRAEUs	replace
-^PHRAOEU	apply
 ^PHREfpblt	unpleasantly
 ^PHREfpbt	unpleasant
 ^PHREUft	implicit
 ^POpbd	respond
 ^PROfplt	improvement
 ^PWHAf	on behalf
-^PWHRAOEUpblg	oblige
 ^PWUfrpb	a bunch
 ^RAEUs	erase
 ^RAEUz	arrays
-^RAOEUf	arrive
 ^RAUd	abroad
 ^ROE	arrow
 ^ROr	error
-^SAOUpl	assume
 ^SEbl	assemble
 ^SEpbl	resentful
 ^SHRAEUt	isolate
@@ -498,13 +492,10 @@ WUft	one of the
 ^THEr	they are
 ^THRs	there is
 ^TKPWO	ago
-^TKPWRAOE	agree
-^TKPWREt	regret
 ^TKWErb	adverb
 ^TPfrpbt	unfortunate
 ^TPAOU	a few
 ^TPArbgt	refactor
-^TPEbgt	effect
 ^TPEUg	configure
 ^TPHEUt	init
 ^TPHOEr	another
@@ -523,6 +514,5 @@ WUft	one of the
 ^Wr	nowhere
 ^WA*EU	a way
 ^WAEpbt	was not
-^WAEUbg	awake
 ^WEU	in which
 ^WRAOEUt	rewrite
