@@ -8,14 +8,15 @@
 ! 7 semantic-suffixes priority 40
 ! 8 leading-vowel priority 35
 ! 9 typey-type priority 30
-! 10 and-fold priority 20
-! 11 phrasing-tag priority 11
-! 12 phrasing priority 10
-! 13 retro-words priority 9
-! 14 repeat-idioms priority 8
-! 15 repeat-word priority 7
-! 16 frames priority 6
-! 17 ahead priority 5
+! 10 vowel-briefs priority 25
+! 11 and-fold priority 20
+! 12 phrasing-tag priority 11
+! 13 phrasing priority 10
+! 14 retro-words priority 9
+! 15 repeat-idioms priority 8
+! 16 repeat-word priority 7
+! 17 frames priority 6
+! 18 ahead priority 5
 HRAOEUBG	1	typey-type	like	"like"
 TAEUP	1	typey-type	tape	"like tape"
 !define	TAEUP	"like sticky tape"

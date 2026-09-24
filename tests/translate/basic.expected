@@ -7,14 +7,15 @@
 ! 6 semantic-suffixes priority 40
 ! 7 leading-vowel priority 35
 ! 8 typey-type priority 30
-! 9 and-fold priority 20
-! 10 phrasing-tag priority 11
-! 11 phrasing priority 10
-! 12 retro-words priority 9
-! 13 repeat-idioms priority 8
-! 14 repeat-word priority 7
-! 15 frames priority 6
-! 16 ahead priority 5
+! 9 vowel-briefs priority 25
+! 10 and-fold priority 20
+! 11 phrasing-tag priority 11
+! 12 phrasing priority 10
+! 13 retro-words priority 9
+! 14 repeat-idioms priority 8
+! 15 repeat-word priority 7
+! 16 frames priority 6
+! 17 ahead priority 5
 TP-PL	1	typey-type	.[ATTACH_L][CAP_NEXT]	"."
 TAP	1	typey-type	tap	". Tap"
 TR-TZ	1	emily-symbols	[KEY]Tab[END][ATTACH_L][ATTACH_R]	". Tap"
