@@ -1,4 +1,4 @@
-! 2843 cases from /Users/ben/.config/plover/typey-type-full.json. A regression file for the import pipeline,
+! 2837 cases from /Users/ben/.config/plover/typey-type-full.json. A regression file for the import pipeline,
 ! not an oracle: the expectations come from our own translation
 ! grammar, which is unit tested separately.
 #z	00
@@ -69,7 +69,7 @@
 *U	u[GLUE]
 *Up	U[GLUE]
 *Upl	um[ORTHO_L]
-*Upl/AO*E/A*U	umpie
+*Upl/TAO*Epbt	umpteenth
 #f	6[GLUE]
 #p	7[GLUE]
 #l	8[GLUE]
@@ -134,7 +134,7 @@ z	s[ORTHO_L]
 #HA*bg	:45[ORTHO_L]
 #HA*U	: 45[ATTACH_L]
 #HAbg	:45[ORTHO_L]
-#HAEU	54
+#HEUf	64
 #A	5[GLUE]
 #A*bgd	:55[ORTHO_L]
 #AO*bg	:50[ORTHO_L]
@@ -167,11 +167,11 @@ A*l	al[ORTHO_L]
 A*l/EUfpl	alism[ORTHO_L]
 A*l/EUs	alis[ORTHO_L]
 A*lg/*l	alkyl[ATTACH_R]
+A*lg/*l/TKPWRAOUp	alkyl group
 A*p	A[GLUE]
 A*p/K*p	AK[GLUE]
 A*p/KR*p	AC[GLUE]
 A*pb	an[ORTHO_L]
-A*pb/KRApblg	Anchorage
 A*pb/SKWREU	ani[ORTHO_L]
 A*pbl	allian[ORTHO_L]
 A*pbt/RA	anthra[ATTACH_R]
@@ -192,14 +192,14 @@ A*td	ated[ORTHO_L]
 A*Uf	off-[ATTACH_R]
 A*Ut/SKWRO	auto[ATTACH_R]
 A/HOl/EUbg	aholic[ORTHO_L]
-A/HROt/*plt	allotment
+A/HRErpblg/TOEUbg	allergic to
 A/KWAO*EUrd	-acquired[ORTHO_L]
 A/PAOEfrp	appear.[CAP_NEXT]
 A/PHAOEb	ameb[ATTACH_R]
 A/PHAOEl/KWRAfplt	Amelia.[CAP_NEXT]
 A/PHEUg/TKA/HRO	amygdalo[ATTACH_R]
 A/PHO*EUpb	amino[ATTACH_R]
-A/PHOrt/AOEUz	amortize
+A/PHObg	amok
 A/PHRAOEU/ps	applies.[CAP_NEXT]
 A/PO	apo[ATTACH_R]
 A/PRO*fd	-approved[ORTHO_L]
@@ -207,8 +207,8 @@ A/SAO*Et/*l	acetyl[ATTACH_R]
 A/SAOE/TO	aceto[ATTACH_R]
 A/SAOEs/*l	acetyl[ATTACH_R]
 A/SAOEt/*l	acetyl[ATTACH_R]
+A/SAOEt/A*l	acetal
 A/SAOEt/KWRO	aceto[ATTACH_R]
-A/SAOUg	assuming
 A/STPHROUpbd	around?[CAP_NEXT]
 A/TA	ata[ORTHO_L]
 A/THAOEr/SKWRO	athero[ATTACH_R]
@@ -216,7 +216,7 @@ A/TKAOE/TPHO	adeno[ATTACH_R]
 A/TKAOE/TPHOE	adeno[ATTACH_R]
 A/TKAOEpb/KWRO	adeno[ATTACH_R]
 A/TKAOEpb/SKWRO	adeno[ATTACH_R]
-A/TKEpb/SEUl/HO/PHO	adenosylhomo
+A/TKAOEpb/SRAOEUrs	adenovirus
 A/TKRAOE/TPHO	adreno[ATTACH_R]
 A/TKRAOE/TPHROE	adreno[ATTACH_R]
 A/TKRAOEpb	adreno[ATTACH_R]
@@ -226,23 +226,23 @@ A/TOr/KWRUpl	atorium[ORTHO_L]
 A/TPHA	ana[ATTACH_R]
 A/TPHAfl	anaphylo[ATTACH_R]
 A/TPHOpl/TPHREUpl	anomaly.[CAP_NEXT]
-A/TREUp/AOUt	attribute
+A/TRAbgs	attraction
 A/WAEUfplt	away.[CAP_NEXT]
 Ab	ab[ATTACH_R]
-Abg/P*Upbg/KHUr/*EUs	acupuncturist
+Abg/KWEUs/EUgs	acquisition
 Abg/RO	acro[ATTACH_R]
 Abg/RO/PHEU/KWRO	acromio[ATTACH_R]
 Abgs/KWRO	axio[ATTACH_R]
 Abgs/SKWRO	axo[ATTACH_R]
 Ad/EUpb/TPEUpb/AOEUt/SKWRUfplt	ad infinitum.[CAP_NEXT]
-Ad/KWRAOU/HRAEUt	adulate
+Ad/HRAEUd	Adelaide
 Ad/PHEUr/STPHbl	admirable?[CAP_NEXT]
 Ad/PO	adipo[ATTACH_R]
 AE	'[ORTHO_L]
+AEp/d	appealed
 AEpbg	<[ATTACH_L][ATTACH_R]
 AEpbgt	<[ATTACH_L][ATTACH_R]
 AEpbt	ante[ATTACH_R]
-AEpbt/PAr/TUpl	antepartum
 AEpl	ambi[ATTACH_R]
 AEr	ary[ORTHO_L]
 AEs	's[ORTHO_L]
@@ -256,9 +256,9 @@ AEU/PH*Ult	a multi-[ATTACH_R]
 AEUfplgt	agent.[CAP_NEXT]
 AEUgs	ation[ORTHO_L]
 AEUpb/SKWREU	ani-[ATTACH_R]
+AEUr/AEUgs	aeration
 AEUr/KWRAfplt	area.[CAP_NEXT]
 AEUr/KWRE	arye[ATTACH_R]
-AEUr/O*pb	Aaron
 AEUr/SKWRO	aero[ATTACH_R]
 AEUrbgs	, a[ATTACH_L]
 AEUrbs	aceous[ORTHO_L]
@@ -273,9 +273,9 @@ AEUz	ase[ORTHO_L]
 Afr	after[ATTACH_R]
 Afr/ROE	Afro-[ATTACH_R]
 Afrplt	art.[CAP_NEXT]
-Ag/TKPWHROpl/RAEUgs	agglomeration
+Ag/RA/TKOl/KHAEU	agrodolce
 Al/HRO	allo[ATTACH_R]
-Al/TKPWOEUr	allegory
+Al/TKEpb/TE	al dente
 Ald/STEr/STPHOEpb	aldosterone?[CAP_NEXT]
 Alg/KWRA	algia[ORTHO_L]
 Alt	ality[ORTHO_L]
@@ -295,16 +295,16 @@ AO*Ul/A*t/d	ulated[ORTHO_L]
 AO*Upb	uni[ATTACH_R]
 AO*Ur/KWRA	uria[ORTHO_L]
 AOE	e[ATTACH_R]
+AOE/HREbg/TEUfs	electives
 AOE/HREbg/TRO	electro[ATTACH_R]
-AOE/HREbg/TROpb	electron
 AOE/HREUpt/KWRO	elipto[ATTACH_R]
 AOE/KOE	eco-[ATTACH_R]
 AOE/PHEt/SKWRO	emeto[ATTACH_R]
-AOE/SKWRAbg/KWRU/HRAEUt	ejaculate
+AOE/SAO*Ebg/KWREl	Ezekiel
 AOE/TOE	ito[ORTHO_L]
 AOEbg/SKWRO	eco[ATTACH_R]
 AOEbg/WEU/HRAt/RAl	equilateral-[ATTACH_R]
-AOElg	essential
+AOEg/ld	eagled
 AOEpl/EUbg	emic[ORTHO_L]
 AOEpl/KWRA	emia[ORTHO_L]
 AOEs/EUs	esis[ORTHO_L]
@@ -318,7 +318,7 @@ AOEUbl	izable[ORTHO_L]
 AOEUbl/A*U	isable[ORTHO_L]
 AOEUd/SKWRO	iodo[ATTACH_R]
 AOEUpb	ine[ORTHO_L]
-AOEUr/ROpb/EUbg	ironic
+AOEUrd/EUs	iridis
 AOEUs/KWRO	iso[ATTACH_R]
 AOEUs/SKWRO	iso[ATTACH_R]
 AOEUt	ite[ORTHO_L]
@@ -337,14 +337,13 @@ AOUl/A*t	ulate[ORTHO_L]
 AOUls	ules[ORTHO_L]
 AOUpb	uni[ATTACH_R]
 AOUpb/SKWREU	uni[ATTACH_R]
-AOUpb/TPOrpl/s	uniforms
 AOUpblg	uge[ORTHO_L]
+AOUpbtd/KEUpbg/TKOpl	United Kingdom
 AOUr	ure[ORTHO_L]
 AOUr/EUpb	ure in[ORTHO_L]
 AOUt	out[ATTACH_R]
 AOUt/RO	utero[ATTACH_R]
 Ap/KWRO	apo[ATTACH_R]
-Ap/RAEU/TUs	apparatus
 Ap/TAOEUz/STPH*Er	appetizer?[CAP_NEXT]
 Ap/TAOEUz/STPH*Er/A*U	appetiser?[CAP_NEXT]
 Apb/Af/HRO	anaphylo[ATTACH_R]
@@ -352,9 +351,9 @@ Apb/Al/SKWRAOEs/KWRAfplt	analgesia.[CAP_NEXT]
 Apb/Apbt/RO	an antero[ATTACH_R]
 Apb/SKWRA	ana[ATTACH_R]
 Apb/TAg/STPHEUfpl	antagonism?[CAP_NEXT]
-Apb/TAg/TPHEUs/TEUbg/HREU	antagonistically
 Apb/TE	ante[ATTACH_R]
 Apb/TEr/KWRO	antero[ATTACH_R]
+Apb/TEU/PWOt/EUbgs	antibiotics
 Apb/THRA	anthra[ATTACH_R]
 Apb/THRO/PO	anthropo[ATTACH_R]
 Apb/TRAEUpb	an intra[ATTACH_R]
@@ -363,16 +362,16 @@ Apbg/KWROE	angio[ATTACH_R]
 Apbg/SKWRO	angio[ATTACH_R]
 Apbgs/KWRO	anxio[ATTACH_R]
 Apblg	age[ORTHO_L]
-Apblts/PAEUt	anticipate
 Apbs	ance[ORTHO_L]
 Apbt	ant[ORTHO_L]
+Apbt/Epl	anthem
 Apbt/RO	antero[ATTACH_R]
 Apbt/SKWR*E	ante[ATTACH_R]
 Apbt/SKWRE	ante[ATTACH_R]
 Apl/HRO	amelo[ATTACH_R]
 Ar/HREU	arily[ORTHO_L]
 Ar/KWREU	ary[ATTACH_R]
-Ar/PHA/TAOUr	armature
+Ar/R*EUt/PHEU/KWRA	arrhythmia
 Ar/TAOEr/KWRO	arterio[ATTACH_R]
 Ar/TAOEr/KWROE	arterio[ATTACH_R]
 Ar/TAOEr/SKWRO	arterio[ATTACH_R]
@@ -381,7 +380,7 @@ Arbgz	-A[ORTHO_L]
 Arg/fplt/STPH	argument?[CAP_NEXT]
 Arg/STPHplt	argument.[CAP_NEXT]
 Arpbd/SKWRO	andro[ATTACH_R]
-Arpl/TKEUl/HROE	armadillo
+Art/KAl	article
 Art/RO	arterio[ATTACH_R]
 Art/TPREUpl	artery.[CAP_NEXT]
 As/HROU	s allow[ORTHO_L]
@@ -393,46 +392,46 @@ As/TPHAOE/TOE	acineto[ATTACH_R]
 At/AOEUz/d	atized[ORTHO_L]
 At/EUbg	atic[ORTHO_L]
 At/KHREU	atically[ORTHO_L]
-At/PHOs/TPAOEr	atmosphere
 At/THAfplt	at that.[CAP_NEXT]
+At/TREUb/KWRAOUt/bl	attributable
 Ats/STPAOEfrplt	atmosphere.[CAP_NEXT]
 AUf	off[ATTACH_R]
 AUfr	over[ATTACH_R]
 AUfr/t	over-the-[ATTACH_R]
-AUfrl	overall
 AUft/RO	Austro[ATTACH_R]
+AUg/Us/TA	Augusta
 AUp	up[ATTACH_R]
 AUpb	on[ATTACH_R]
 AUr	or[ATTACH_R]
 AUr/EUbg/HRO	auriculo[ATTACH_R]
 AUrbg/HRO	auriculo[ATTACH_R]
 Az/PApl	orazepam[ORTHO_L]
-Az/TEbg/SKWREU	as technology
+Ebg/HRlg	ecological
 Ebg/KWRO	echo[ATTACH_R]
 Ebgs/AOEUt/SKWRO	excito[ATTACH_R]
 Ebgs/AOEUt/SKWRO*	excito[ATTACH_R]
-Ebgs/KA/THAOE/TKRA	ex cathedra
+Ebgs/KHRAOUd/g	excluding
 Ebgs/OE	exo[ATTACH_R]
-Ebgs/PREpl/TEU/s	extremities
+Ebgs/SAOEd/TKPWHREU	exceedingly
 Ebgs/SKWRO	exo[ATTACH_R]
 Ebgt/PHEU	ectomy[ORTHO_L]
 Ebgt/SKWRO	ecto[ATTACH_R]
-Ef/KAEUrbs	efficacious
 Ef/RAOEpb	ephrine[ORTHO_L]
 Ef/REUpb	ephrine[ORTHO_L]
+Ef/TPHEs	evanesce
 Eft	est[ORTHO_L]
 El/HRA	ella[ORTHO_L]
 Ep	epi[ATTACH_R]
 Ep/SKWREU	epi[ATTACH_R]
-Ep/TKErpl/TKEUs	epidermidis
 Epb	en[ATTACH_R]
+Epb/Epb/SRAOEUplt/A*l	environmental
 Epb/SEf/HRO	encephalo[ATTACH_R]
 Epb/SEfl	encephalo[ATTACH_R]
 Epb/SEfl/HRO	encephalo[ATTACH_R]
 Epb/TEr/SKWRO	entero[ATTACH_R]
 Epb/TKA*rb	–[ATTACH_L][ATTACH_R]
-Epb/TKAEUpbg/Erplt	endangerment
 Epb/TKO	endo[ATTACH_R]
+Epb/TKOfr/*EUpb	endorphin
 Epbd/SKWRO	endo[ATTACH_R]
 Epbl	ential[ORTHO_L]
 Epbs	ence[ORTHO_L]
@@ -443,7 +442,7 @@ Epbt/RO	entero[ATTACH_R]
 Epbt/SKWRO	ento[ATTACH_R]
 Epbz/PAOEUpb	enzepine[ORTHO_L]
 Epl	em[ATTACH_R]
-Epl/PWAr/As	embarrass
+Epl/PWO*Ed	embody
 Epl/TKA*rb	—[ATTACH_L][ATTACH_R]
 Er	er[ATTACH_R]
 Erbgs	extra[ATTACH_R]
@@ -453,7 +452,7 @@ Es	es[ORTHO_L]
 Es/AE	es'[ORTHO_L]
 Es/Epbt	escent[ORTHO_L]
 Es/KEU	eski[ORTHO_L]
-Es/SOf/TKPWUs	esophagus
+Es/TRAEUpb/SKWRg	estranging
 Et	et[ORTHO_L]
 EUbg	ic[ORTHO_L]
 EUbg/HRAt	iculate[ORTHO_L]
@@ -476,34 +475,34 @@ EUgs	ition[ORTHO_L]
 EUl/KWRO	ilio[ATTACH_R]
 EUl/KWRO*E	ileo[ATTACH_R]
 EUl/KWROE	ilio[ATTACH_R]
-EUl/KWROE/KObgs/SKWRAOUs	iliococcygeus
 EUlt	ility[ORTHO_L]
+EUp/SOE/SKWRAOU/RAOE	ipso jure
 EUpb	in[ATTACH_R]
 EUpb/*EU	ini[ORTHO_L]
-EUpb/KRAOEs/TKPWHREU	increasingly
+EUpb/KWEU/S*EUgs	inquisition
 EUpb/KWRApb	inian[ORTHO_L]
 EUpb/PHAOUpb/SKWRO	immuno[ATTACH_R]
 EUpb/PHAOUpb/TPHOE	immuno[ATTACH_R]
 EUpb/SKWREU	ini[ORTHO_L]
-EUpb/SRAEUts	innovates
-EUpb/TKAOrs	indoors
-EUpb/TPHUpb/TKAEUt	inundate
+EUpb/SRErgs	inversion
+EUpb/TKEpl/TPHEU/TPEU	indemnify
 EUpb/TPRA	infra[ATTACH_R]
 EUpb/TRA	intra[ATTACH_R]
+EUpb/TRA/KOs/TAl	intracostal
 EUpbd/SKWRO	Indo-[ATTACH_R]
 EUpbg/*Er	inger[ORTHO_L]
 EUpbs/HRO	insulo[ATTACH_R]
 EUpbt	inter[ATTACH_R]
-EUpbt/PHRAOEd/*Er	interpleader
+EUpbt/SKWREbgs	interjection
 EUpl	im[ATTACH_R]
 EUpl/PHAOUpb/KWRO	immuno[ATTACH_R]
 EUpl/PHAOUpb/SKWRO	immuno[ATTACH_R]
 EUpl/PHAOUpb/TPHO	immuno[ATTACH_R]
-EUpl/PHErgs	immersion
+EUpl/PHREplt/AEUgs	implementation
 EUpl/TREU	imetry[ORTHO_L]
 EUr	ir[ATTACH_R]
-EUr/SRErs/PWHREU	irreversibly
 EUrb	ish[ORTHO_L]
+EUrb/SHAOUbl	issuable
 EUrbgz	-I[ORTHO_L]
 EUrbs	itious[ORTHO_L]
 EUrd/SKWRO	irido[ATTACH_R]
@@ -533,7 +532,7 @@ HA*Epb	-[ATTACH_L][ATTACH_R]
 HA*Epbd	hand-[ATTACH_R]
 HA*Epl	hemi[ATTACH_R]
 HA*Ept	hepato[ATTACH_R]
-HA*Ert	hearth
+HA*l	Hall
 HA*pbd	hand[ORTHO_L]
 HA*pl	ham[ORTHO_L]
 HA/PA/TO/TObgs/EUs/TEUfp	hepatotoxicity.[CAP_NEXT]
@@ -542,7 +541,7 @@ HAEplt/SKWRO/A*U	haemato[ATTACH_R]
 HAEplt/TO/A*U	haemato[ATTACH_R]
 HAEpt/SKWRO	hepato[ATTACH_R]
 HAErb	#[ATTACH_L][ATTACH_R]
-HAfp/Et	hatchet
+HAfrb/Ard/KHREpblg	Harvard College
 HAfrpb/STPHErpb	African-Americans?[CAP_NEXT]
 HAO*d	hood[ORTHO_L]
 HAO*Epb	-[ATTACH_R]
@@ -567,7 +566,7 @@ HAOEplt/TO	hemato[ATTACH_R]
 HAOEpt	http://[ATTACH_R]
 HAOEpt/s	https://[ATTACH_R]
 HAOEpts	https://[ATTACH_R]
-HAOEU/KWRAEUt/TUs	hiatus
+HAOEU/PEr/KEU/TPHEt/EUbg	hyperkinetic
 HAOEU/POE	hypo[ATTACH_R]
 HAOEU/PWErpb/TPHOE	Hiberno-[ATTACH_R]
 HAOEU/SKWRO	hyo[ATTACH_R]
@@ -590,13 +589,13 @@ HAOEUrd/Obgs/SKWREU	hydroxy[ATTACH_R]
 HAOEUrd/RA	hydra[ATTACH_R]
 HAOEUrd/SKWRO	hydro[ATTACH_R]
 HAOEUrp	hyper[ATTACH_R]
-HAOEUrp/Epl/SEUs	hyperemesis
+HAOEUrp/THErpl/KWRA	hyperthermia
 HApt/SKWRO	hapto[ATTACH_R]
-HAr/*pbs	harness
+HAr/PAOpb	harpoon
 HE/PA/TO	hepato[ATTACH_R]
-HEdz	heads
 HEfpd	head.[CAP_NEXT]
 HEl/KWREU	heli[ATTACH_R]
+HEl/PH*EUpbt	helminth
 HEp/A*t/SKWRO	hepato[ATTACH_R]
 HEpl/KWREU	hemi[ATTACH_R]
 HEpl/SKWREU	hemi[ATTACH_R]
@@ -606,9 +605,9 @@ HEpt/SKWRO	hepato[ATTACH_R]
 HErt	hetero[ATTACH_R]
 HEt/RO	hetero[ATTACH_R]
 HEt/ROE	hetero[ATTACH_R]
-HEUfp/HAOEUbg/Er	hitchhiker
 HEUft/RO	hystero[ATTACH_R]
 HEUft/SKWRO	histo[ATTACH_R]
+HEUl/HRObg	hillock
 HEUp/TPHO	hypno[ATTACH_R]
 HO*Eld	hold[ORTHO_L]
 HO*Erld	holder[ORTHO_L]
@@ -616,10 +615,10 @@ HO*EUp	hypo[ATTACH_R]
 HO*EUpl	hemi[ATTACH_R]
 HO*EUpt	hepato[ATTACH_R]
 HO*ld	hold[ORTHO_L]
-HO*U/TO	how-to
 HO*Ur	-hour[ORTHO_L]
 HO/HRO	holo[ATTACH_R]
 HO/PHO	homo[ATTACH_R]
+HOb/PWEU	hobby
 HOE/PHOE	homo[ATTACH_R]
 HOEpl/KWROE	homeo[ATTACH_R]
 HOEpl/STPHls	homeless?[CAP_NEXT]
@@ -627,14 +626,14 @@ HOEUp	hypo[ATTACH_R]
 HOEUrd	hydro[ATTACH_R]
 HOfbg	okay?[CAP_NEXT]
 HOl/TKAEUfplt	holiday.[CAP_NEXT]
-HOl/TKEr	holder
+HOpb/RAEUr	honorary
 HOU/R/STPHU	how are you?[CAP_NEXT]
 HR*	l[GLUE]
 HR*/HR*	ll[GLUE]
 HR*/PW*	lb[GLUE]
-HR*dz/A*U	left side
 HR*Epbt	ulent[ORTHO_L]
 HR*Et	let[ORTHO_L]
+HR*EUf/blt	livability
 HR*EUfpl/SKWRO	lympho[ATTACH_R]
 HR*EUp	lipo[ATTACH_R]
 HR*EUpbs	liness[ORTHO_L]
@@ -651,8 +650,8 @@ HRA*Epb	-lane[ORTHO_L]
 HRA*EUrt	ularity[ORTHO_L]
 HRA*pbd	land[ORTHO_L]
 HRA/PHEl/HRO	lamello[ATTACH_R]
-HRA/PWRAEU/KWRA	La Brea
 HRA/TOEr	ulatory[ORTHO_L]
+HRAbg/PHA*pb	Lachmann
 HRAbgt/SKWRO	lacto[ATTACH_R]
 HRAEr	ulary[ORTHO_L]
 HRAEUgs	ulation[ORTHO_L]
@@ -662,7 +661,6 @@ HRAEUrpbg/SKWRO	laryngo[ATTACH_R]
 HRAEUt/d	lated[ORTHO_L]
 HRAEUt/g	ulating[ORTHO_L]
 HRAfpblt	lab.[CAP_NEXT]
-HRAg/KWREU	laggy
 HRAO*bg	-look[ORTHO_L]
 HRAO*EUbg	, like,[ATTACH_L]
 HRAO*EUbg/TKrb	, like --[ATTACH_L]
@@ -670,8 +668,8 @@ HRAO*EUf	life[ORTHO_L]
 HRAO*EUrgt	all right?[CAP_NEXT]
 HRAO*EUrlt	all right?[CAP_NEXT]
 HRAOEgs/El/HRAfp	legionella.[CAP_NEXT]
-HRAOEUbg/pb/g	likening
 HRAOEUfpblt	line.[CAP_NEXT]
+HRAOEUp/TPAOUs/*EUpb	lipofuscin
 HRAOEUt/EUbg	lytic[ORTHO_L]
 HRAOEUz	alize[ORTHO_L]
 HRAOEUz/d	alized[ORTHO_L]
@@ -679,42 +677,42 @@ HRAOEUz/d/A*U	alised[ORTHO_L]
 HRAOEUz/A*U	alise[ORTHO_L]
 HRAOEUz/A*U/d	alised[ORTHO_L]
 HRAOUbg/SKWRO	leuko[ATTACH_R]
-HRAOUs/EUd/TEU	lucidity
+HRApbg/STO*pb/HAOU/s	Langston Hughes
 HRApbt	lant[ORTHO_L]
 HRAr	ular[ORTHO_L]
 HRArl	ularly[ORTHO_L]
-HRE/THEr/REU/*pbs	leatheriness
 HREbg/SKWRO	electro[ATTACH_R]
 HREbg/TRO	electro[ATTACH_R]
+HREbgs/SUs	LEXUS
 HREpt/KWRO	lepto[ATTACH_R]
 HREpt/SKWRO	lepto[ATTACH_R]
 HREr	ler[ORTHO_L]
 HRErbgt	electro[ATTACH_R]
 HRErbgt/SKWRO	electro[ATTACH_R]
 HREs/Epb	lessen[ATTACH_R]
-HREs/HRAOE	Leslie
 HREs/STPHO*pb	lesson?[CAP_NEXT]
 HREU	ly[ORTHO_L]
+HREUbg/AOUr	liqueur
 HREUp/SKWRO	lipo[ATTACH_R]
 HREUpbg	ling[ORTHO_L]
 HREUpbg/WO	linguo[ATTACH_R]
-HREUpl/REUbg	limerick
 HREUrbs	licious[ORTHO_L]
 HREUs	Lys-[ATTACH_R]
+HREUt/Erd	littered
 HREUt/EUbg	lytic[ORTHO_L]
 HRO*bgs	hydroxy[ATTACH_R]
 HRO*EUfpl	lympho[ATTACH_R]
 HRO*EUp	lipo[ATTACH_R]
 HRO*pb	ulon[ORTHO_L]
 HRO*pbg	-long[ORTHO_L]
-HROEbg/KAEl	locale
+HROEUt/REr	loiterer
 HROp/THEU	ulopathy[ORTHO_L]
 HROp/THEUs	ulopathies[ORTHO_L]
 HROpblg/STPHEUbg	logic?[CAP_NEXT]
-HRUfrpblg/KHEpb	luncheon
 HRUpl/PWO	lumbo[ATTACH_R]
 HRUpl/PWRO	lumbo[ATTACH_R]
 HRUs	ulus[ORTHO_L]
+HRUz/*Er	loser
 HUfrt	hurst[ORTHO_L]
 HUpb/HUpb	00[ORTHO_L]
 HUpbz	00[ORTHO_L]
@@ -729,10 +727,10 @@ K*pl	km[ORTHO_L]
 K*rpbs	[META=retro.currency]$c[END]
 K*Up	-cup[ORTHO_L]
 K*Upl	-cum-[ATTACH_L][ATTACH_R]
-K*Urs	Cordially yours,
 Kl	cal[ORTHO_L]
 Kls	icals[ORTHO_L]
 Krbgz	-K[ORTHO_L]
+Krt	considerate
 KA	ka[ATTACH_R]
 KA*EUr	care[ORTHO_L]
 KA*EUrt	-carat[ORTHO_L]
@@ -742,15 +740,16 @@ KA*lg/TPHO*EU	calcaneo[ATTACH_R]
 KA*r/TKPWRApblg	-car garage[ORTHO_L]
 KA*rt	^[ATTACH_L][ATTACH_R]
 KA*t/TPREUpbl	Catherine.[CAP_NEXT]
-KA/KHEbgs/EUs	cachexis
 KA/PAEUd	capade[ORTHO_L]
 KA/PAEUd/A*U	capades[ORTHO_L]
+KA/SHAEU	cachet
 KAE	key[ORTHO_L]
 KAEUgs	ication[ORTHO_L]
 KAEUr/KWRO	karyo[ATTACH_R]
 KAEUr/KWROE	karyo[ATTACH_R]
 KAEUt	cate[ORTHO_L]
 KAf/TAOEr/KWRAfplt	cafeteria.[CAP_NEXT]
+KAfp/AEUz	caspase
 KAl/KApb/KWRO	calcaneo[ATTACH_R]
 KAl/KApb/KWROE	calcaneo[ATTACH_R]
 KAl/SEU	calci[ATTACH_R]
@@ -758,48 +757,48 @@ KAO*bgd	-cooked[ORTHO_L]
 KAO*E/p	keep[ORTHO_L]
 KAO*Ep/*Er	keeper[ORTHO_L]
 KAO*Ep/g	keeping[ORTHO_L]
-KAOE/STEr	keister
 KAOEpl	chemo[ATTACH_R]
 KAOEUl/SKWRO	chylo[ATTACH_R]
 KAOEUpb	kine[ORTHO_L]
+KAOEUpb/EUpb/SKWREpb	kininogen
 KAOUpb/KWRO	cuneo[ATTACH_R]
-KAOUrl/KAOU	curlicue
+KApb/HREUbg/HREU	canaliculi
 KAps/HRO	capsulo[ATTACH_R]
-KAr/Et	caret
+KAr/TOg/RAf/Ers	cartographers
 KArb/A/PHO*EUpb	carbamino[ATTACH_R]
 KArd/KWRO	cardio[ATTACH_R]
-KAs/KWREU	Cassie
+KAt/TKPWOr/AOEUz	categorize
 KAU	co[ATTACH_R]
 KAUpb	con[ATTACH_R]
-KAUpb/SPAOEr/TOr	conspirator
 KAUpb/STKPWHREgs	congestion?[CAP_NEXT]
+KAUpb/TEUpb/SKWREpbt	contingent
 KAUrpbt	contra[ATTACH_R]
-KE/HROEUdz	keloids
 KEr/TO	kerato[ATTACH_R]
+KEr/TO/KOEpbs	keratoconus
 KErt/KWRO	kerato[ATTACH_R]
 KErt/SKWRO	kerato[ATTACH_R]
 KEt/KWRO	keto[ATTACH_R]
 KEUfpltd	kid.[CAP_NEXT]
-KEUpbg/SKWRAEUpls/TPWAOEUbl	King James Bible
 KH*	ch[GLUE]
 KHfg	`[ATTACH_L][ATTACH_R]
 KHpl	:00[ORTHO_L]
+KHt	which the
 KHAO*Epl	chemo[ATTACH_R]
 KHAOEpl	chemo[ATTACH_R]
 KHAOEpl/KWRO	chemo[ATTACH_R]
 KHAOEpl/SKWRO	chemo[ATTACH_R]
 KHAOEU/HRO	chylo[ATTACH_R]
-KHAOEUfs	chives
 KHAOEUl/KWRO	chylo[ATTACH_R]
 KHAOEUl/SKWRO	chylo[ATTACH_R]
 KHAOEUpl/KWRO	chymo[ATTACH_R]
 KHAOEUpl/SKWRO	chymo[ATTACH_R]
 KHAOEUr/SKWRO	chiro[ATTACH_R]
 KHAOEz/KWRA	chezia[ORTHO_L]
+KHApl/PWA	Chamba
 KHEpl/SKWRO	chemo[ATTACH_R]
 KHEU/TPHEU	cini[ORTHO_L]
-KHEUf/O*pb	chiffon
 KHO*EUpl	chemo[ATTACH_R]
+KHOEl/TPHErpblg/EUbg	cholinergic
 KHOl/KREUft	cholecyst[ATTACH_R]
 KHOpbd/RO	chondro[ATTACH_R]
 KHOr/KWROE	choreo[ATTACH_R]
@@ -813,13 +812,12 @@ KHRbg	[KEY]c[CTRL][END]
 KHRpb	:[ATTACH_L][ATTACH_R]
 KHRpl	:00[ORTHO_L]
 KHRAEUd/KWRO	cleido[ATTACH_R]
-KHRAfbg/A*l	classical
 KHRAfplts	class.[CAP_NEXT]
 KHRAft	clast[ORTHO_L]
 KHRAOEd/KWRO	cleido[ATTACH_R]
 KHRAOEfrb	clear for everybody?[CAP_NEXT]
+KHRAOEUts	colitis
 KHREft/RO	cholestero[ATTACH_R]
-KHRErpblg/WOpl	clergywoman
 KHREU	ically[ORTHO_L]
 KHREUrbgs	ically,[ORTHO_L]
 KHREUrt	: 30[ATTACH_L]
@@ -828,44 +826,44 @@ KHRO*plt/A*U	-kilometre[ORTHO_L]
 KHRO*r	-color[ORTHO_L]
 KHRO*r/SKWRO	chloro[ATTACH_R]
 KHRO*Ur/A*U	-colour[ORTHO_L]
+KHRO/PEUd/TKPWREl	clopidogrel
 KHROfrplt	color.[CAP_NEXT]
 KHROr/AOEpl/EUbg	chloremic[ORTHO_L]
 KHROr/SKWRO	chloro[ATTACH_R]
 KHROUfrplt/A*U	colour.[CAP_NEXT]
-KHROUrd/A*U	coloured
 KO*bgs	cox[ORTHO_L]
-KO/KEt/EUrb	coquettish
+KO*Ebg/*Er	Coker
 KObg/A*l	coccal[ORTHO_L]
 KObg/KWRUs	coccus[ORTHO_L]
 KObg/SKWRO	cocco[ATTACH_R]
 KObg/Us	coccus[ORTHO_L]
+KOd/TPAOEUd	codified
 KOE	co-[ATTACH_R]
 KOEl/KWROE	choleo[ATTACH_R]
 KOEl/SKWRO	colo[ATTACH_R]
-KOEpb	cone
 KOEpl/A	comba[ATTACH_R]
 KOEUrd	cardio[ATTACH_R]
-KOl/SAOE/KWRUpl	coliseum
+KOfpl/HApb	COSMHANNE
 KOl/SKWRO	colo[ATTACH_R]
+KOpb/SAOUpl	consume
 KOpb/SKWRO	cono[ATTACH_R]
-KOpb/SUpl/PHAEUgs	consummation
 KOpb/TKRO	chondro[ATTACH_R]
+KOpb/TPEU/TKEpb/SHAl/TEU	confidentiality
 KOpbd/RO	chondro[ATTACH_R]
-KOpl/Ers	comers
-KOr/TEU	Corti
+KOpl/PHRAOEUpbs	compliance
 KOrpb/KWRAfplt	cornea.[CAP_NEXT]
 KOrpb/KWRO	corneo[ATTACH_R]
 KOrpb/SKWRE	coryne[ATTACH_R]
 KOrpbt	contra[ATTACH_R]
 KOrt/KO	cortico[ATTACH_R]
 KOrt/KOE	cortico[ATTACH_R]
-KOUrpbl/A*U	counsellor
 KOUrpbt	counter[ATTACH_R]
 KP*	x[GLUE]
 KP*p	X[GLUE]
 KPrbgz	-X[ORTHO_L]
 KPA	[CAP_NEXT]
 KPA*	[ATTACH_L][ATTACH_R][CAP_NEXT]
+KPAEUr/bl	comparable
 KPAfplt	exam.[CAP_NEXT]
 KPAOE/TPHO	xeno[ATTACH_R]
 KPAOE/TPHOE	xeno[ATTACH_R]
@@ -873,21 +871,20 @@ KPAOEpb/SKWRO	xeno[ATTACH_R]
 KPAOEUl/SKWRO	xylo[ATTACH_R]
 KPAOEUt/KWRO	excito[ATTACH_R]
 KPAOEUt/SKWRO	excito[ATTACH_R]
-KPE/TEUf	competitive
+KPEUplt	occipital
 KPH*bg	[KEY]k[SUPER][END]
 KPH*f	[KEY]v[SUPER][END]
 KPH*t	[KEY]w[SUPER][END]
 KPHbg	[KEY]c[SUPER][END]
 KPHEfpblgt	economic.[CAP_NEXT]
 KPHEUfpgs	commission.[CAP_NEXT]
-KPHEUrb/Er	commissioner
 KPHRf	‽[ATTACH_L][CAP_NEXT]
 KPHRAOEfplt	complete.[CAP_NEXT]
+KPOEpbt/TPHEpbt	component
 KPWHROEs	meso[ATTACH_R]
 KPWRAbgs	</>[KEY]Left[END][ATTACH_L][ATTACH_R]
 KR*	c[GLUE]
 KR*/O*	co[GLUE]
-KR*d/#T	CD2
 KR*Ef	cef[ATTACH_R]
 KR*p	C[GLUE]
 KR*p/A*p	CA[GLUE]
@@ -896,6 +893,7 @@ KRgs/KRgs	”[ORTHO_L][CARRY_CAP]
 KRrbgz	-C[ORTHO_L]
 KRrt	^[ATTACH_L][ATTACH_R]
 KRA*EU	.ca[ORTHO_L]
+KRA*pbg	crank
 KRA*t	crat[ORTHO_L]
 KRAEs	cracy[ORTHO_L]
 KRAEUpb/KWRO	cranio[ATTACH_R]
@@ -906,7 +904,6 @@ KRAO*EUt/KWRO	cyto[ATTACH_R]
 KRAO*EUt/OEs	cytose[ORTHO_L]
 KRAO*EUt/SKWRO	cyto[ATTACH_R]
 KRAOE/KWRAfplt	Korea.[CAP_NEXT]
-KRAOE/PHAEUgs	cremation
 KRAOEU/KWROE	cryo[ATTACH_R]
 KRAOEU/SKWRO	cryo[ATTACH_R]
 KRAOEUt/s	cytes[ORTHO_L]
@@ -917,14 +914,15 @@ KRAOEUt/Ot/EUbg	cytotic[ORTHO_L]
 KRAOEUt/PAOEpb/KWRA	cytopenia[ORTHO_L]
 KRAOEUt/PAOEpb/KWRArbgs	cytopenia[ORTHO_L]
 KRAOEUt/SKWRO	cyto[ATTACH_R]
+KRAOU/El/HRA/TKE/SREUl	Cruella DeVille
 KRApb	cran[ATTACH_R]
 KRAt	ocrat[ORTHO_L]
 KREbgt/T/fplt/d	corrected it.[CAP_NEXT]
 KREf	cef[ATTACH_R]
-KREl/HRAOEUts	cellulitis
 KREpbt/TPREUpl	century.[CAP_NEXT]
 KREUbg/KWRO	crico[ATTACH_R]
 KREUbg/SKWRO	crico[ATTACH_R]
+KREUft/AOEU/SEUs	cystiasis
 KREUft/KWRO	cysto[ATTACH_R]
 KREUft/SKWRO	cysto[ATTACH_R]
 KREUpt/SKWRO	crypto[ATTACH_R]
@@ -933,8 +931,9 @@ KRO*pl	.com[ORTHO_L]
 KRO/PHO	chromo[ATTACH_R]
 KROEUt	cyto[ATTACH_R]
 KROfplt	Co.[ATTACH_R]
+KROpb/HROpblg/KAl	chronological
 KROpl	.com[ORTHO_L]
-KUft/OEd/KWRApb	custodian
+KUr/KAOU/PHEUpb	curcumin
 KW*	q[GLUE]
 KW*Ez	Questions?[CAP_NEXT]
 KW*gs	, “[ATTACH_L][ATTACH_R][CAP_NEXT]
@@ -950,21 +949,21 @@ KWgs/HREU	, I will[ATTACH_L]
 KWgs/KWgs	“[ATTACH_R][CARRY_CAP]
 KWl	=[ATTACH_L][ATTACH_R]
 KWls	==[ATTACH_L][ATTACH_R]
-KWrbgts/KWrbgts	,”
 KWrbgz	-Q[ORTHO_L]
 KWA*Ert	-quart[ORTHO_L]
 KWA*ls	=[ATTACH_L][ATTACH_R]
 KWA*lt	-quality[ORTHO_L]
 KWAd/REU	quadri[ATTACH_R]
 KWAg	, a[ATTACH_L]
+KWAl/TPA*EUbgs	qualification
 KWAOEUpb	quine[ORTHO_L]
 KWArd	quadri[ATTACH_R]
 KWAs/KWREU	quasi-[ATTACH_R]
 KWAs/SKWREU	quasi-[ATTACH_R]
 KWAt/SKWREU	quasi-[ATTACH_R]
-KWAU/TKRAt/EUbg	quadratic
 KWEfp	question.[CAP_NEXT]
 KWEfplt	question.[CAP_NEXT]
+KWEUbgt/bl	convictable
 KWR*	y[GLUE]
 KWR*/*E	ye[GLUE]
 KWR*/O*/TPH*	yon[GLUE]
@@ -973,7 +972,6 @@ KWR*EU	i[ATTACH_R][CAP_NEXT]
 KWR*EUpb	in-[ATTACH_R]
 KWR*p	Y[GLUE]
 KWR*Us	eus[ORTHO_L]
-KWRd/A*l	ideal
 KWRfplt	why.[CAP_NEXT]
 KWRgs	"[ATTACH_L][ATTACH_R]
 KWRrbgz	-Y[ORTHO_L]
@@ -998,7 +996,7 @@ KWRAOE	ey[ORTHO_L]
 KWRAOErld	-year-old[ORTHO_L]
 KWRAOEUl	ile[ORTHO_L]
 KWRAOrld	-year-old[ORTHO_L]
-KWRAOUs/TPHAt/KWRAOU/RAOE	jus naturae
+KWRAOU/PWEUbg/WEU/TEU	ubiquity
 KWRApb	ian[ORTHO_L]
 KWRArbg	iarch[ORTHO_L]
 KWRArbgs	ia,[ORTHO_L]
@@ -1029,6 +1027,7 @@ KWRO*pbd	ioned[ORTHO_L]
 KWRO*r/A*U	iour[ORTHO_L]
 KWRO*Us	eous[ORTHO_L]
 KWRO*Ut	out-[ATTACH_R]
+KWROE	yo
 KWROE/PHA	ioma[ORTHO_L]
 KWROEl	iole[ORTHO_L]
 KWROEpb/KWREU	ioni[ORTHO_L]
@@ -1049,12 +1048,10 @@ O*d	-odd[ORTHO_L]
 O*E	O'[ATTACH_R]
 O*E/AE	o'[ATTACH_R]
 O*E/O*E	O'[ATTACH_R]
-O*Ef/REU	ovary
 O*Efr	over[ORTHO_L]
 O*Efrs	overs[ORTHO_L]
 O*Eld	-old[ORTHO_L]
 O*Epb	one[ORTHO_L]
-O*Epbd	-owned[ORTHO_L]
 O*Epl	onomy[ORTHO_L]
 O*Ept	opathy[ORTHO_L]
 O*Es	ose[ORTHO_L]
@@ -1076,6 +1073,7 @@ O*pbg/HRO	onycho[ATTACH_R]
 O*pbg/SKWRO	onco[ATTACH_R]
 O*pbs	ons[ORTHO_L]
 O*r	or[ORTHO_L]
+O*r/TK*Efrbs	hors d'oeuvres
 O*rs	ors[ORTHO_L]
 O*rt	ortho[ATTACH_R]
 O*rt/SKWRO	ortho[ATTACH_R]
@@ -1084,7 +1082,7 @@ O*Uls	ously[ORTHO_L]
 O*Upbs	-ounce[ORTHO_L]
 O*Ur/A*U	our[ORTHO_L]
 O*Ut	-out[ORTHO_L]
-O/SRA	ova
+Ob/STEt/Kl	obstetrical
 Obg/A*l	occal[ORTHO_L]
 Obg/HRO	oculo[ATTACH_R]
 Obg/SKWRU	Ocu[ATTACH_R]
@@ -1093,7 +1091,6 @@ Obgs/HRO	oxalo[ATTACH_R]
 Obgs/KWRA	oxia[ORTHO_L]
 Obgs/KWREU	oxy[ATTACH_R]
 Obgs/KWREU/TKO	oxido[ATTACH_R]
-Obgs/TPOrd/Epbg/HREUrb/TKEUbgs/TPHAEr	Oxford English Dictionary
 OE/AE	o'[ATTACH_R]
 OE/HREU/TKPWO	oligo[ATTACH_R]
 OE/OE	O'[ATTACH_R]
@@ -1101,12 +1098,12 @@ OE/PHA	oma[ORTHO_L]
 OE/PHAOEt/*Er	-o-meter[ORTHO_L]
 OE/PHAOEt/*Er/A*U	-o-metre[ORTHO_L]
 OE/PHAt/EUbg	-o-matic[ORTHO_L]
+OE/PWEU/WApb/KE/TPHOE/PWEU	Obi-Wan Kenobi
 OE/RA/PHA	orama[ORTHO_L]
 OE/SA	osa[ORTHO_L]
 OE/SREUgs	-o-vision[ORTHO_L]
 OE/TKOpbt/SKWRO	odonto[ATTACH_R]
 OEfplt	open.[CAP_NEXT]
-OEl/AOUr/KWRA	oliguria
 OEl/SA*EUgs	olization[ORTHO_L]
 OEl/SRO	olivo[ATTACH_R]
 OEl/TKPWO	oligo[ATTACH_R]
@@ -1129,6 +1126,7 @@ OEt/KWRO	oto[ATTACH_R]
 OEU	/[ATTACH_L][ATTACH_R]
 OEUbg	oic[ORTHO_L]
 OEUd	oid[ORTHO_L]
+OEUl/g	oiling
 OEUpbg/SKWRO	onycho[ATTACH_R]
 OEUr	uro[ATTACH_R]
 Ofbg/PEU	oscopy[ORTHO_L]
@@ -1145,7 +1143,6 @@ Ol/SEUs	olysis[ORTHO_L]
 Olg	ology[ORTHO_L]
 Olg/EUft	ologist[ORTHO_L]
 Op/HREUs	opolis[ORTHO_L]
-Op/POE/TPHEpbs	opponens
 Op/THAl/PHO	ophthalmo[ATTACH_R]
 Op/THEU	opathy[ORTHO_L]
 Opb/*EUbg	onycho[ATTACH_R]
@@ -1160,11 +1157,11 @@ Opl/TPHEU	omni[ATTACH_R]
 Opl/TREU	ometry[ORTHO_L]
 Oplt/*Er	ometer[ORTHO_L]
 Ops/EUs	opsis[ORTHO_L]
+Opt/EUbgs	optics
 Or/KWROUs	orious[ORTHO_L]
 Or/SKWRO	oro[ATTACH_R]
 Or/THAO*Es/A	or these a[ATTACH_R]
 Orbgz	-O[ORTHO_L]
-Org	organize
 Orpl	orium[ORTHO_L]
 Ors	s or[ORTHO_L]
 Ort/SKWRO	ortho[ATTACH_R]
@@ -1175,6 +1172,7 @@ Os/SKWRUs	osus[ORTHO_L]
 Os/TAOE/KWROE	osteo[ATTACH_R]
 Ot/EUbg	otic[ORTHO_L]
 Ot/KWRO	oto[ATTACH_R]
+Ot/KWRO/TObgs/EUbg	ototoxic
 Ot/PHEU	otomy[ORTHO_L]
 Ot/SKWRO	oto[ATTACH_R]
 OUfplt	out.[CAP_NEXT]
@@ -1209,17 +1207,18 @@ PA*Et/s	pathies[ORTHO_L]
 PA*EUpblg	-page[ORTHO_L]
 PA*pb	Pan-[ATTACH_R]
 PA*r	para[ATTACH_R]
+PA*r/HRAOEUfd	paralyzed
 PA*rt	-part[ORTHO_L]
 PA*rt/STPHOpb	Parthenon?[CAP_NEXT]
 PA*s	pass[ORTHO_L]
 PA*t/SKWRO	patho[ATTACH_R]
-PA/SEUf/EUbg/TPHO*rt/W*Es	Pacific Northwest
 PAbg/KWREU	pachy[ATTACH_R]
 PAbg/SKWREU	pachy[ATTACH_R]
+PAErt/d	partied
 PAEUfrpblt	patient.[CAP_NEXT]
 PAEUl/KWRO	paleo[ATTACH_R]
 PAEUl/KWROE	paleo[ATTACH_R]
-PAEUrbt	patient
+PAl/KWRAEUt	palliate
 PAl/TO	palato[ATTACH_R]
 PAO*Es	-piece[ORTHO_L]
 PAO*EUp	|[ATTACH_L][ATTACH_R]
@@ -1230,35 +1229,35 @@ PAOEpb/EUbg	penic[ORTHO_L]
 PAOEpb/KWRA	penia[ORTHO_L]
 PAOEpb/KWRAfplt	penia.[ORTHO_L][CAP_NEXT]
 PAOEpb/KWRArbgs	penia,[ORTHO_L]
-PAOEpb/Olg	penology
 PAOEU/HRO	pyelo[ATTACH_R]
 PAOEU/KWRO	pyo[ATTACH_R]
 PAOEUl/KWRO	pyelo[ATTACH_R]
 PAOEUl/SKPWRO	pyelo[ATTACH_R]
 PAOEUl/SKWRO	pyelo[ATTACH_R]
+PAOEUp/HRAOEUpb/s	pipelines
 PAOEUr/KWRO	pyro[ATTACH_R]
 PAOEUr/SKWRO	pyro[ATTACH_R]
 PAOUb/KWRO	pubo[ATTACH_R]
 PAOUb/SKWRO	pubo[ATTACH_R]
-PAOUrt/SAOEUpb	putrescine
-PArbg/KA	parka
-PE/REU/OEd/TKOpbt/TAl	periodontal
+PApl/TPHREt/AO*Er	pamphleteer
+PAs/TP*EUs	pacifist
 PE/TKEUbg/HRO	pediculi[ATTACH_R]
 PEbg/TAOr/KWROE	bacterio[ATTACH_R]
+PEg/HRAEUt	PEGylate
 PEpb/Epl	penem[ORTHO_L]
-PEpbt/KOft	Pentecost
 PEpbt/TPHOEUbg	pentaenoic[ORTHO_L]
 PEpt/SKWRO	pepto[ATTACH_R]
 PEr/KWRO	perio[ATTACH_R]
 PEr/Obgs	perox[ATTACH_R]
+PEr/SAOEf/d	perceived
 PEr/SKWREU	peri[ATTACH_R]
-PErbg/HRAEUt	percolate
+PEs/TEr	pester
 PEt/RO	petro[ATTACH_R]
 PEUbg/SKWRO	pico[ATTACH_R]
 PEUbgt/SKWRO	picto[ATTACH_R]
-PEUfp/d	pitched
 PEUl/KWRO	pilo[ATTACH_R]
 PEUl/SKWRO	pilo[ATTACH_R]
+PEUs/TOpbs	pistons
 PH*	m[GLUE]
 PH*/*EU	mi[GLUE]
 PH*/*EU/TK*E	mide[ORTHO_L]
@@ -1269,7 +1268,6 @@ PH*Elt/SKWRO	metallo[ATTACH_R]
 PH*Epb	men[ORTHO_L]
 PH*Ert	metro[ATTACH_R]
 PH*Et/*l	methyl[ATTACH_R]
-PH*EUd/AOEfl	Medieval
 PH*EUl	milli[ATTACH_R]
 PH*EUpb	mini-[ATTACH_R]
 PH*EUpbt	-minute[ORTHO_L]
@@ -1281,6 +1279,7 @@ PH*Ufl/HRO	musculo[ATTACH_R]
 PH*Ufp	much-[ATTACH_R]
 PH*z	Ms.[CAP_NEXT]
 PHbg	Mc[ATTACH_R][CAP_NEXT]
+PHbg/TPAd/*Epb	McFadden
 PHbgs	Mx.[CAP_NEXT]
 PHrb	—[ATTACH_L][ATTACH_R]
 PHrbgz	-M[ORTHO_L]
@@ -1294,17 +1293,17 @@ PHA*EUg	making[ORTHO_L]
 PHA*EUrbg	maker[ORTHO_L]
 PHA*fplt	abnormality.[CAP_NEXT]
 PHA*pb	man[ORTHO_L]
-PHA*pl	mam
+PHA/RAUd	maraude
 PHAb	mab[ORTHO_L]
 PHAbg/HRO	maculo[ATTACH_R]
-PHAbg/TKAd/KWREU	Mack Daddy
 PHAbgs/HRO	maxillo[ATTACH_R]
 PHAEfrplt	matter.[CAP_NEXT]
 PHAErbg	macro[ATTACH_R]
+PHAEUbg/*Er/s	makers
 PHAEUgs	mation[ORTHO_L]
 PHAEUt/REUfpblgts	matrix.[CAP_NEXT]
-PHAfg/SUpl	magnesium
 PHAl	mal[ATTACH_R]
+PHAl/RO/TAEUgs	malrotation
 PHAO*Epb	amine[ORTHO_L]
 PHAO*Ert	meter[ORTHO_L]
 PHAO*Ert/A*U	metre[ORTHO_L]
@@ -1315,7 +1314,6 @@ PHAO*EUrbg	micro-[ATTACH_R]
 PHAO*Upb	immuno[ATTACH_R]
 PHAOEd/KWRAfp	media.[CAP_NEXT]
 PHAOEd/KWRAfplt	media.[CAP_NEXT]
-PHAOEd/KWRApb	median
 PHAOEd/KWRO	medio[ATTACH_R]
 PHAOEfpb	mean?[CAP_NEXT]
 PHAOEs/KWRO	mesio[ATTACH_R]
@@ -1324,6 +1322,7 @@ PHAOEt/TPlgs	meetings.[CAP_NEXT]
 PHAOEU/HRO	myelo[ATTACH_R]
 PHAOEU/KROE	micro[ATTACH_R]
 PHAOEU/KWRO	myo[ATTACH_R]
+PHAOEU/KWROp/EUbg	myopic
 PHAOEU/SKWRO	myo[ATTACH_R]
 PHAOEU/TKPWRAEUfpgs	migration.[CAP_NEXT]
 PHAOEUbg/KWRO	myco[ATTACH_R]
@@ -1334,22 +1333,21 @@ PHAOEUfg/A*U	imising[ORTHO_L]
 PHAOEUfpb	mycin[ORTHO_L]
 PHAOEUl/KWRO	myelo[ATTACH_R]
 PHAOEUl/SKWRO	myelo[ATTACH_R]
-PHAOEUr/HREpl/O*pb	Meyer lemon
 PHAOEUrbg	micro[ATTACH_R]
 PHAOEUs/*EUpb	mycin[ORTHO_L]
 PHAOU/KOE	muco[ATTACH_R]
 PHAOUbg	muco[ATTACH_R]
 PHAOUbg/KO	muco[ATTACH_R]
 PHAOUbg/SKWRO	muco[ATTACH_R]
-PHApb/RAEU	Man Ray
+PHAOUpb/EUs/PAlts	municipalities
 PHApb/SHp	manship[ORTHO_L]
 PHApl/HRO	mammillo[ATTACH_R]
+PHAplt	management
 PHAr/STPHs	Mars?[CAP_NEXT]
-PHArbgd/HREU	markedly
 PHAt/EUbg	matic[ORTHO_L]
+PHAt/REUbgs	matrix
 PHE/TAl/HRO	metallo[ATTACH_R]
 PHE/TPHEUpbg	meningo[ATTACH_R]
-PHEbg/TPHEUfpl/s	mechanisms
 PHEbg/TPHO	mechano[ATTACH_R]
 PHEg/HREU	megaly[ORTHO_L]
 PHEg/HRO	megalo[ATTACH_R]
@@ -1357,28 +1355,28 @@ PHEg/KWRA	mega[ATTACH_R]
 PHEg/TKPWA	mega[ATTACH_R]
 PHEl/TPHO	melano[ATTACH_R]
 PHEpb/EUpb/SKWRO	meningo[ATTACH_R]
+PHEpb/EUpbg/KObg/A*l	meningococcal
 PHEpb/EUs/KO	menisco[ATTACH_R]
 PHEpbg/SKWRO	meningo[ATTACH_R]
 PHEr/s	mers[ORTHO_L]
-PHEr/E/TREU/SHUs	meretricious
 PHErpblg/STPEUpl	emergency.[CAP_NEXT]
 PHErs	%[ORTHO_L]
+PHEs/KHRUpb	mesclun
 PHEs/KWRO	meso[ATTACH_R]
 PHEs/SKWRO	meso[ATTACH_R]
 PHEt/HRO	metallo[ATTACH_R]
 PHEt/KWRA	meta[ATTACH_R]
 PHEt/REU	metry[ORTHO_L]
-PHEt/TPl	metaphysical
 PHEUd	mid[ATTACH_R]
 PHEUd/A*E	mid-'[ATTACH_R]
 PHEUd/Hpb	mid-[ATTACH_R]
-PHEUpb/PHAOEUfg	minimizing
+PHEUl/Apb/O*	Milano
 PHEUpb/SKWRO	mino[ATTACH_R]
 PHEUrbgt	am I correct?[CAP_NEXT]
 PHEUrgt	am I right?[CAP_NEXT]
 PHEUrpbg	myringo[ATTACH_R]
+PHEUs/KArbg/AOEUz/g/A*U	mischaracterising
 PHEUz	mis[ATTACH_R]
-PHEz/KWRA/HRAOUpb/TPHA	mezzaluna
 PHO*Eft	most[ORTHO_L]
 PHO*Epbt	-month[ORTHO_L]
 PHO*EU	myo[ATTACH_R]
@@ -1388,16 +1386,17 @@ PHO*fr/KWRO	morpho[ATTACH_R]
 PHO*pb	mono[ATTACH_R]
 PHO*pbd	mond[ORTHO_L]
 PHO*Upbt/d	-mounted[ORTHO_L]
+PHO/HREbg/KWRAOU/HRAr	molecular
 PHO/TO	moto[ATTACH_R]
-PHOE/HREbg/KWRAOU/HRAr	molecular
 PHOEpbl	monal[ORTHO_L]
+PHOEr/O*pb	moron
 PHOl/Kpl	molecule.[CAP_NEXT]
 PHOpb/OE	mono[ATTACH_R]
 PHOpb/SKWRO	mono[ATTACH_R]
 PHOpbg/*Er	monger[ORTHO_L]
+PHOpblg/HRAEUgs	modulation
 PHOpbt	mont[ORTHO_L]
 PHOpbt/AEs	mont's[ORTHO_L]
-PHOrg/Apblg/bl	mortgageable
 PHR*bgs	Mrs.[CAP_NEXT]
 PHR*EUrb/TPpld	published.[CAP_NEXT]
 PHR*fplt	Mr.[CAP_NEXT]
@@ -1407,6 +1406,7 @@ PHR*Us	+[ATTACH_L][ATTACH_R]
 PHRfpl	Mr.[CAP_NEXT]
 PHRfplt	Mr.[CAP_NEXT]
 PHRs	Mrs.[CAP_NEXT]
+PHRA*s/Ers	plasters
 PHRAEft	plasty[ORTHO_L]
 PHRAEU/KWRO	pleo[ATTACH_R]
 PHRAEU/PHRA*EU/SHA	plasia[ORTHO_L]
@@ -1417,17 +1417,16 @@ PHRAEUs/KWRA	plasia[ORTHO_L]
 PHRAft	plast[ORTHO_L]
 PHRAft/KWREU	plasty[ORTHO_L]
 PHRAO*EU	-ply[ORTHO_L]
-PHRAO*EUbg	peptidoglycan
 PHRAOE/KWRO	pleio[ATTACH_R]
 PHRAOEfps	please.[CAP_NEXT]
 PHRAOEpblg/EUbg	plegic[ORTHO_L]
 PHRAOEpblg/KWRA	plegia[ORTHO_L]
 PHRAs	plas[ATTACH_R]
 PHRAt/KWREU	platy[ATTACH_R]
+PHRAts	plats
 PHRE/KWRO	pleo[ATTACH_R]
 PHRE/SKWRO	pleo[ATTACH_R]
 PHREUfpblgt	public.[CAP_NEXT]
-PHREz/SA*pbt	pleasant
 PHROEUft	oplasty[ORTHO_L]
 PHROf	[CMD=plover.suspend][END]
 PHROlg	[CMD=plover.toggle][END]
@@ -1436,72 +1435,72 @@ PHRUfplts	minus.[CAP_NEXT]
 PHRUr/SKWREU	pluri[ATTACH_R]
 PHUfbg/HRO	musculo[ATTACH_R]
 PHUfpblt	money.[CAP_NEXT]
+PHUfrpblg/KHEU	munchy
 PHUlt	multi-[ATTACH_R]
-PHUpb/fps	munches
 PO*Eft	post-[ATTACH_R]
 PO*Eft/RO	postero[ATTACH_R]
 PO*EUbg	pico[ATTACH_R]
 PO*EUp	.[ATTACH_R]
 PO*EUt	patho[ATTACH_R]
 PO*l	poly[ATTACH_R]
+PO*rpb/TKPWRAfbg	pornographic
 PO*rt	port[ORTHO_L]
 PO*Upbd	-pound[ORTHO_L]
-POE/HREpl/KAl	polemical
 POEft/RO	postero[ATTACH_R]
+POEU/SOpb/d	poisoned
 POEUs/EUs	poiesis[ORTHO_L]
 POfpblt	possible.[CAP_NEXT]
 POft/RO	postero[ATTACH_R]
-POl/HREU/TPHAEUt	pollinate
 POl/KWREU	poly[ATTACH_R]
 POp/HRAEUfplgts	population.[CAP_NEXT]
 POpbt/SKWRO	ponto[ATTACH_R]
+POr/Os/TEU	porosity
 POrs/TKEbgs	Posurdex[U+]99[END]
-POs/SEgs	possession
 PR*E	pre-[ATTACH_R]
 PR*Epb	)[ATTACH_L][ATTACH_R]
 PR*Epbs	()[KEY]Left[END][ATTACH_L][ATTACH_R][CARRY_CAP]
 PRpbs	()[ATTACH_L][ATTACH_R][CARRY_CAP]
+PRA/SRA/STAt/*EUpb	Pravastatin
 PRAbgs/KWRA	praxia[ORTHO_L]
-PRAO*Es/HAOd	priesthood
 PRAO*EUs	-price[ORTHO_L]
 PRAO*f	-proof[ORTHO_L]
 PRAOE	pre[ATTACH_R]
 PRAOEft/STPHEs	priestess?[CAP_NEXT]
+PRAOEU/g	prying
 PRAOEUfps	price.[CAP_NEXT]
 PRAOEUt/SKWRO	parieto[ATTACH_R]
-PRAOUpbt/HREU	prudently
 PRAOUpl/PHREUfplt	presumably.[CAP_NEXT]
 PRE	pre[ATTACH_R]
-PRE/TPOrpltd	preformatted
+PRE/SEUp/TAEU/TOr	precipitator
 PREfrb/TEUfp	preservative.[CAP_NEXT]
 PREg/SPEUl	pregnancy.[CAP_NEXT]
 PREg/STPEUpl	pregnancy.[CAP_NEXT]
 PREpb	([ATTACH_L][ATTACH_R]
 PREpb/s	()[CARRY_CAP]
-PREUpb/SEs/TKAOEUpb/TPHA	Princess Diana
+PRErb/TRAOEt/d	pressure-treated
 PRO	pro[ATTACH_R]
 PRO*EUpb	protein[ORTHO_L]
 PRO*fpblt	problem.[CAP_NEXT]
-PRO/SEs/O*r/s	processors
+PRO/KRAEUt	procreate
 PRO/TO	proto-[ATTACH_R]
+PRObgs/SKWREU/KWR*EU	proxy
 PRObgt/SKWRO	procto[ATTACH_R]
-PROE/SAOEd/g	proceeding
 PROE/TOE	proto-[ATTACH_R]
 PROEp/RO	proprio[ATTACH_R]
+PROEpt/HREU	appropriately
 PROErp/RO	proprio[ATTACH_R]
 PROEs/EUs	porosis[ORTHO_L]
 PROEt/KWRO	proteo[ATTACH_R]
 PROEt/KWROE	proteo[ATTACH_R]
-PROft/PWHREU	profitably
 PROg/TEUfplt	prerogative.[CAP_NEXT]
 PROs/STPHEs	process?[CAP_NEXT]
+PROs/TAOUt	prostitute
 PROs/TPEpls	process.[CAP_NEXT]
-PUd/ls	puddles
+PUr/TA/TPHEU	Puritani
 PW*	b[GLUE]
 PW*/R*	br[GLUE]
 PW*Ed	-bed[ORTHO_L]
 PW*EU	bi[ATTACH_R]
-PW*EU/Epb/KWRUpl	biennium
 PW*EUlt	-built[ORTHO_L]
 PW*EUt	-bit[ORTHO_L]
 PW*fp	[KEY]BackSpace[END]
@@ -1514,65 +1513,65 @@ PW*Urpbg	-burning[ORTHO_L]
 PWfplt	about.[CAP_NEXT]
 PWrbgz	-B[ORTHO_L]
 PWs	s about[ORTHO_L]
+PW/A/PHApb/TKA	about Amanda
 PWA*bg	back[ORTHO_L]
 PWA*Ebg	back[ATTACH_R]
 PWA*EUfd	-based[ORTHO_L]
 PWA*EUs	-base[ORTHO_L]
 PWA*pbd	band[ORTHO_L]
 PWA*rbgs	back,[ORTHO_L]
-PWA/HROEpb/KWREU	baloney
 PWAbg/TAOEr/KWRAfp	bacteria.[CAP_NEXT]
 PWAbg/TAOEr/KWRAfplt	bacteria.[CAP_NEXT]
 PWAbg/TAOEr/KWRO	bacterio[ATTACH_R]
 PWAEbg	back[ATTACH_R]
+PWAEU/*Er	Bayer
 PWAEU/TKPWA	bayga[ATTACH_R]
 PWAEUr/SKWRO	baro[ATTACH_R]
-PWAEUs	base
 PWAEUs/SKWRO	baso[ATTACH_R]
 PWAfpblgt	back.[CAP_NEXT]
 PWAfpltd	bad.[CAP_NEXT]
 PWAO*bg	book[ORTHO_L]
 PWAO*E	bio[ATTACH_R]
 PWAO*rd	board[ORTHO_L]
+PWAObg/PHRAEt	bookplate
 PWAOEbgt/RO	bacterio[ATTACH_R]
 PWAOErbgt/KWRO	bacterio[ATTACH_R]
 PWAOErbgt/SKWRO	bacterio[ATTACH_R]
-PWAOEt/*l	beetle
 PWAOEU/KWROE	bio[ATTACH_R]
 PWAOEUt/EUbg	biotic[ORTHO_L]
 PWAOUbg/KWRO	bucco[ATTACH_R]
+PWAOUpb/SKWROrpb/SKWRO	buon giorno
 PWAOUt/RO	butyro[ATTACH_R]
-PWApbd/z	bands
 PWAr/SKWRO	baro[ATTACH_R]
+PWAs/PHAt/TEU	basmati
 PWAUrbgs	, because[ATTACH_L]
 PWE	be[ATTACH_R]
-PWE/HAEUfr/A*U	behaviour
+PWEl/PHEpb	bellmen
 PWEpb/SO*	benzo[ATTACH_R]
-PWEr/PHAOU/TKA/TREU/Apbg/l	Bermuda Triangle
 PWErg	berg[ORTHO_L]
 PWEUfplt	bit.[CAP_NEXT]
 PWEUgs	ibition[ORTHO_L]
 PWEUl/*EUpb	bilin[ORTHO_L]
-PWH*p	benign prostatic hyperplasia
+PWEUpbg/KROs/PWEU	Bing Crosby
 PWHRt	-[ATTACH_L][CAP_NEXT]
 PWHRA*fpblgt	blank.[CAP_NEXT]
 PWHRAft/SKWRO	blasto[ATTACH_R]
+PWHRAOdz	bloods
 PWHRAOEfplt	belief.[CAP_NEXT]
 PWHRAOUpl	blume[ORTHO_L]
 PWHREf/RO	blepharo[ATTACH_R]
-PWHREfr	believer
 PWHREfr/SKWRO	blepharo[ATTACH_R]
 PWHREr	bler[ORTHO_L]
 PWHREU	ably[ORTHO_L]
 PWHRUfplt	blue.[CAP_NEXT]
 PWO*E	bio[ATTACH_R]
 PWO*EU	bio[ATTACH_R]
+PWO*EU/WUfl	Beowulf
 PWO*lg	bolic[ORTHO_L]
 PWO*Upbd	bound[ORTHO_L]
 PWO/RO	boro[ORTHO_L]
-PWOd/HREU	bodily
 PWOfpblgts	box.[CAP_NEXT]
-PWOs/TPOpb	Boston
+PWOpbgd	bonding
 PWR*bgt	][ATTACH_L][ATTACH_R]
 PWR*bgts	[][ATTACH_L][ATTACH_R]
 PWR*pl	-bathroom[ORTHO_L]
@@ -1588,14 +1587,14 @@ PWRAbg/KWREU	brachy[ATTACH_R]
 PWRAbgs	<>[KEY]Left[END][ATTACH_L][ATTACH_R]
 PWRAd/KWREU	brady[ATTACH_R]
 PWRAEUbg/KWRO	brachio[ATTACH_R]
-PWRAOEUdz/PHAEUdz	bridesmaids
+PWRAg	brag
 PWRApbg/KWRO	branchio[ATTACH_R]
 PWRO*	boro[ORTHO_L]
 PWRO*pbg	broncho[ATTACH_R]
 PWRO*pbg/KWRO	bronchio[ATTACH_R]
 PWRO*pbg/SKWRO	broncho[ATTACH_R]
+PWRO/KHAOUrs	brochures
 PWROEfrplt	brother.[CAP_NEXT]
-PWROEUg/*l	Bruegel
 PWROpb/KO	broncho[ATTACH_R]
 PWROpbg/KWRO	broncho[ATTACH_R]
 PWROpbg/SKWRO	broncho[ATTACH_R]
@@ -1605,7 +1604,7 @@ PWUbg/KWRO	bucco[ATTACH_R]
 PWUbg/SKWRO	bucco[ATTACH_R]
 PWUbl/KWRO	bulbo[ATTACH_R]
 PWUbl/SKWRO	bulbo[ATTACH_R]
-PWUr/PHA	Burma
+PWUpb/*bg	bunk
 PWUrg	burg[ORTHO_L]
 PWUt/Obg/SKWRU	but Ocu[ATTACH_R]
 PWUt/STPHO*pb	button?[CAP_NEXT]
@@ -1617,26 +1616,26 @@ R*Ert	erythro[ATTACH_R]
 R*EUbg	ric[ORTHO_L]
 R*EUfpbt	-resistant[ORTHO_L]
 R*EUpbt	-resistant[ORTHO_L]
+R*EUts/KArl/TOpb	Ritz-Carlton
 R*p	R[GLUE]
 R*r	[KEY]Return[END][ATTACH_L][ATTACH_R]
 R*Upb	_[ATTACH_L][ATTACH_R]
 R*Upbd	_[ATTACH_L][ATTACH_R]
 Rpb/s/KWRfplt	reasons why.[CAP_NEXT]
-Rpbtd	right-hand turn
 Rr	[KEY]Return[END][ATTACH_L][ATTACH_R][CAP_NEXT]
 Rrbgz	-R[ORTHO_L]
 RA*Elt/d	-related[ORTHO_L]
 RA*Eltd	-related[ORTHO_L]
 RA*EUgs	ration[ORTHO_L]
 RAEbl	rably[ORTHO_L]
-RAEU/PHUs	ramus
+RAEd/z	reads
+RAg/PHUf/pb	ragamuffin
 RAl	ural[ORTHO_L]
 RAO*EUfd	arized[ORTHO_L]
-RAO*EUpb/KOrt	Rhinocort
 RAO*pl	room[ORTHO_L]
 RAOE	re[ATTACH_R]
-RAOE/PWAEUts	rebates
-RAOEbgt/SRAEUgs	reactivation
+RAOE/PHAOEUpbd	remind
+RAOE/TPAOUt/d	refuted
 RAOEpb	reen[ATTACH_R]
 RAOEU/PWO	ribo[ATTACH_R]
 RAOEUb/SKWRO	ribo[ATTACH_R]
@@ -1644,7 +1643,7 @@ RAOEUb/TPHAOU/KHRAEU/SKWRO	ribonucleo[ATTACH_R]
 RAOEUfpt	right.[CAP_NEXT]
 RAOEUpb/SKWRO	rhino[ATTACH_R]
 RAOEUt/STPH*	right?[CAP_NEXT]
-RAOU/bl	ruble
+RAOEUt/WEUpbg	right-wing
 RAOUb/RO	rubro[ATTACH_R]
 RAOUb/SEUpb	rubicin[ORTHO_L]
 RAOUfplt	rule.[CAP_NEXT]
@@ -1652,34 +1651,34 @@ RAOUpl/TO	rheumato[ATTACH_R]
 RAOUplt	rheumato[ATTACH_R]
 RAOUplt/SKWRO	rheumato[ATTACH_R]
 RApbs	erance[ORTHO_L]
+RAt/*ls	rattles
 RAt/EUf	arative[ORTHO_L]
 RE	re[ATTACH_R]
-RE/bgs/REU	reactionary
-RE/OEp/s	reopens
-RE/SAOEd/s	recedes
-RE/SUs/TAEUt/s	resuscitates
+RE/KRg	reconsidering
+RE/PWUt/KWRA*l	rebuttal
+RE/SROlt	revolt
 RE/TEUbg/HRO	reticulo[ATTACH_R]
-RE/WOrbg	rework
+RE/TRAbgt/O*r	retractor
 REbgt/KWRO	recto[ATTACH_R]
 REbgt/SKWRO	recto[ATTACH_R]
-REg/TPHEUbgs	recognition
+REg/HRAErl	regularly
 REl/STPHRApbt	relevant?[CAP_NEXT]
 REpblgd	®[ATTACH_L]
 RErt	retro[ATTACH_R]
 REs	ress[ORTHO_L]
-REs/TPHAEUt/TOr	resonator
+REs/PROs/TEU	reciprocity
 REt/TPHO	retino[ATTACH_R]
 REU	ry[ORTHO_L]
 REUb/SKWRO	ribo[ATTACH_R]
 REUpb/SKWRO	rhino[ATTACH_R]
 REUs	aries[ORTHO_L]
+REz/TKEpbs	residence
 RO*Eft/d	-roasted[ORTHO_L]
-RO*EUd/Abgt/EUf	radioactive
 RO/PHAOEUd	romide[ORTHO_L]
 RO/PWO	robo[ATTACH_R]
 ROEpbt	entero[ATTACH_R]
 ROEs/Es	roses[ORTHO_L]
-ROls/ROEUs	Rolls-Royce
+ROEUpl/A*pb	Roman
 ROUs	rous[ORTHO_L]
 RUpb/Er	run er[ATTACH_R]
 RUpbd	_[ATTACH_L][ATTACH_R]
@@ -1688,7 +1687,7 @@ S*/*E/STKPW*	sez[GLUE]
 S*/TKPW*	sg[GLUE]
 S*E	es[ORTHO_L]
 S*Ebgd	-second[ORTHO_L]
-S*Efrb/SREUs/PHEpb	servicemen
+S*Ef/Er/d	severed
 S*Epl	semi-[ATTACH_R]
 S*Ept	sept[ORTHO_L]
 S*Er	zer[ORTHO_L]
@@ -1707,11 +1706,11 @@ S*ps	 [ATTACH_L][ATTACH_R]
 Sfp	is.[CAP_NEXT]
 Sfplt	. Is[ATTACH_L]
 Sp	 [ATTACH_L][ATTACH_R]
+Spl	system
 Sps	 [ATTACH_L][ATTACH_R]
 Srbgz	-S[ORTHO_L]
 Ss	s is[ORTHO_L]
 S/AUl/PWfplt	is all about.[CAP_NEXT]
-SA*/RA	Sara
 SA*Eft	icist[ORTHO_L]
 SA*EUf	-safe[ORTHO_L]
 SA*EUgs	ization[ORTHO_L]
@@ -1720,11 +1719,11 @@ SA*f	-sav[ORTHO_L]
 SA*fg	-saving[ORTHO_L]
 SAbg/RAOEUd	saccharide[ORTHO_L]
 SAbg/RO	sacro[ATTACH_R]
-SAE/TKPWA*Et	Seagate
+SAbgs/O*pb	Saxon
 SAEfl/ROUpbd	self around[ORTHO_L]
 SAEUgs	sation[ORTHO_L]
 SAl/PEUpb/TKPWO	salpingo[ATTACH_R]
-SAlt/PAOEt/Er	saltpeter
+SAl/PHO/TPHEl/HRA	salmonella
 SAO*EU/TKPWO	zygo[ATTACH_R]
 SAO*EUd	icide[ORTHO_L]
 SAO*EUd/d	-sided[ORTHO_L]
@@ -1736,7 +1735,7 @@ SAO*EUz	-size[ORTHO_L]
 SAO*Ud	pseudo[ATTACH_R]
 SAO*Urp	super-[ATTACH_R]
 SAOEpl/KWRA	cemia[ORTHO_L]
-SAOEs/EUl	Cecil
+SAOEr/OUs	serous
 SAOEUb/*Er	cyber[ATTACH_R]
 SAOEUbg/HRAO*EUpb	cyline[ORTHO_L]
 SAOEUbg/HRO	cyclo[ATTACH_R]
@@ -1751,17 +1750,17 @@ SAOEUpb/KWRO	cyano[ATTACH_R]
 SAOEUpb/SKWRO	cyano[ATTACH_R]
 SAOEUpl/STPHO*pb	Simon?[CAP_NEXT]
 SAOEUrb	cyber[ATTACH_R]
+SAOEUs/PHOg/TPEU	seismography
 SAOEUs/SKWRO	iso[ATTACH_R]
 SAOEUt/O*	cyto[ATTACH_R]
 SAOEUt/SKWRO	cyto[ATTACH_R]
-SAOEUz/z	sizes
 SAOUd/KWRO	pseudo[ATTACH_R]
 SAOUd/SKWRO	pseudo[ATTACH_R]
 SAOUd/TKOE	pseudo[ATTACH_R]
 SAOUp	super[ATTACH_R]
 SAOUp/RA	supra[ATTACH_R]
 SAOUp/RO	supero[ATTACH_R]
-SApbd/A*l	sandal
+SApb/TOr/SKWRO	Santoro
 SAr/KO	sarco[ATTACH_R]
 SAr/TKOpb/KHREU/fplt	sardonically.[CAP_NEXT]
 SArbg	sarco[ATTACH_R]
@@ -1769,34 +1768,34 @@ SArbg/SKWRO	sarco[ATTACH_R]
 SAUb	sub[ATTACH_R]
 SAUb/STRAEUfpt	substrate.[CAP_NEXT]
 SAUbs/Afpblgt	substance act.[CAP_NEXT]
-SAUl/SA	salsa
+SAUbs/TKEU	subsidy
 SAUpb	sun[ATTACH_R]
 SE/RAOE/PWROE	cerebro[ATTACH_R]
 SEf	self-[ATTACH_R]
 SEf/HRO	cephalo[ATTACH_R]
-SEf/TKE/STRUbgt/EUf	self-destructive
+SEf/SAbg/TPAOEUs	self-sacrifice
 SEfl	self[ORTHO_L]
 SEfl/SKWRO	cephalo[ATTACH_R]
 SEfls	selves[ORTHO_L]
 SEfrbg/SKWRO	cervico[ATTACH_R]
 SEpb/TRO	centro[ATTACH_R]
-SEpbs/TAO*EUfd	sensitized
+SEpbs/REU/TPHAOUrl	sensorineural
 SEplt/SKWRO	cemento[ATTACH_R]
 SEpt/O*r	ceptor[ORTHO_L]
 SEr/HRO	cerulo[ATTACH_R]
 SEr/PWEl/HRO	cerebello[ATTACH_R]
 SEr/PWEl/SKWRO	cerebello[ATTACH_R]
 SEr/SKWRO	sero[ATTACH_R]
-SEt/HROr	settlor
+SEt/g	setting
 SEU	cy[ORTHO_L]
 SEU/TO*	cito[ORTHO_L]
 SEUl/*EUpb	cillin[ORTHO_L]
-SEUpb/Erpblg/KWREU/s	synergies
+SEUpb/Er	sinner
 SEUpb/KROE	synchro[ATTACH_R]
 SEUpl/PA*t/SKWRO	sympatho[ATTACH_R]
 SEUpl/PA/THO	sympatho[ATTACH_R]
 SEUpl/PO*EUt	sympatho[ATTACH_R]
-SEUr/KEUt/TREU	circuitry
+SEUr/KA	circa
 SEUrbg/Upl	circum[ATTACH_R]
 SEUt/EUbg	cytic[ORTHO_L]
 SEUt/RO	citro[ATTACH_R]
@@ -1807,20 +1806,20 @@ SHps	ships[ORTHO_L]
 SHA*EUp	-shape[ORTHO_L]
 SHA*EUpd	-shaped[ORTHO_L]
 SHA*U	shaw[ORTHO_L]
-SHAbg/ls	shackles
+SHAb/KWREU	shabby
 SHAO*EUpb	shine[ORTHO_L]
-SHEp	Shep
+SHElt/Er	shelter
 SHEUr	shire[ORTHO_L]
 SHO*E	show[ATTACH_R]
-SHOUld/Er/g	shouldering
-SHREpblg/HAOErpl	sledgehammer
+SHOUpbdz	should understand
+SHREpl/TEUs	solemnities
 SHREUrpl/Ppl	similar.[CAP_NEXT]
 SHUpl	tium[ORTHO_L]
 SK*EU	ski[ORTHO_L]
-SKAEr/KWREr	scarier
+SKAEUl/AOEpb/SKWRUs	scalenus
 SKAEUp	scape[ORTHO_L]
 SKAOEUfplt	sky.[CAP_NEXT]
-SKEts	success
+SKEUft/SOEpl/AOEUs/EUs	schistosomiasis
 SKHRpb	;[ATTACH_L][ATTACH_R]
 SKHRApl	![ATTACH_L][CAP_NEXT]
 SKHREr/SKWRO	sclero[ATTACH_R]
@@ -1837,11 +1836,11 @@ SKPpl	. And[ATTACH_L]
 SKPrbgs	, and[ATTACH_L]
 SKPts	s and the[ORTHO_L]
 SKPEft	est and[ORTHO_L]
-SKPEpbd	end and
+SKPHEbg/pbt	and she can't
 SKPWbg	, and[ATTACH_L]
 SKRAOEb/RO	cerebro[ATTACH_R]
 SKRAOEUpb/TEUfplt	a scientist.[CAP_NEXT]
-SKUf/d	scuffed
+SKUl/ptd	sculpted
 SKW*bgs	''[KEY]Left[END][ATTACH_L][ATTACH_R]
 SKW*t	'[ORTHO_L]
 SKW*ts	'[ORTHO_L]
@@ -1866,11 +1865,11 @@ SKWR*rbgs	…[ATTACH_L][CAP_NEXT]
 SKWR*Up	-up[ORTHO_L]
 SKWR*Up/*Er	-upper[ORTHO_L]
 SKWR*Ups	-ups[ORTHO_L]
-SKWRr/g	injuring
 SKWRrbgs	...[ORTHO_L][CAP_NEXT]
 SKWRrbgz	-J[ORTHO_L]
 SKWRA	a[ORTHO_L]
 SKWRA*	a[ATTACH_L][ATTACH_R]
+SKWRA*EUl	jail
 SKWRA*s	-ass[ORTHO_L]
 SKWRA/AEs	a's[ORTHO_L]
 SKWRAEUrbgs	[KEY]Return[END][KEY]Return[END][ATTACH_L][ATTACH_R][CAP_NEXT]
@@ -1885,8 +1884,8 @@ SKWRAOEU	ae[ORTHO_L]
 SKWRAOEUbg	-like[ORTHO_L]
 SKWRAOEUl	ile[ORTHO_L]
 SKWRAOg	-looking[ORTHO_L]
-SKWRAOU/EUfrb	Jewish
 SKWRAOU/TKAEU/KWROE	Judeo[ATTACH_R]
+SKWRAOU/TKEUrb/SHREU	judiciously
 SKWRAOUp/*Er	juper[ATTACH_R]
 SKWRAUl	-all[ORTHO_L]
 SKWRAUrbgs	[KEY]Return[END][KEY]Return[END][ATTACH_L][ATTACH_R][CAP_NEXT]
@@ -1896,7 +1895,7 @@ SKWREfr	ever[ORTHO_L]
 SKWREpb/*EUft	genicity[ORTHO_L]
 SKWREpb/EUbg	genic[ORTHO_L]
 SKWREpb/SEUs/TEU	genicity[ORTHO_L]
-SKWREpb/SKWRAOEf	Genevieve
+SKWREpbgs	Jennings
 SKWREpbt/KWRO	genito[ATTACH_R]
 SKWREpbt/SKWRO	genito[ATTACH_R]
 SKWREU	i[ORTHO_L]
@@ -1916,7 +1915,7 @@ SKWRO/KRAOEUt	ocyte[ORTHO_L]
 SKWRO/RA/PHA	orama[ORTHO_L]
 SKWRO/SA	osa[ORTHO_L]
 SKWRO/TKPWOg	ogogue[ORTHO_L]
-SKWRObg/HRAr/TEU	jocularity
+SKWROEbg/*Er	joker
 SKWROEfpblgt	joke.[CAP_NEXT]
 SKWROEpbd	endo[ATTACH_R]
 SKWROf	off[ORTHO_L]
@@ -1932,7 +1931,7 @@ SKWRUp	up[ORTHO_L]
 SKWRUpbd	under[ORTHO_L]
 SKWRUpl	um[ORTHO_L]
 SKWRUs	us[ORTHO_L]
-SKWRUs/TEU/TPEU/PWHREU	justifiably
+SO*Ep	soap
 SO*Epl	some[ORTHO_L]
 SO*Erbt/d	-associated[ORTHO_L]
 SO*Erbtd	-associated[ORTHO_L]
@@ -1944,40 +1943,40 @@ SO*pl	some[ORTHO_L]
 SO*pl/O*d	-some-odd[ORTHO_L]
 SO/PHA/TO	somato[ATTACH_R]
 SOE/PHAt/SKWRO	somato[ATTACH_R]
-SOEpd	soaped
 SOEpl/TO	somato[ATTACH_R]
 SOEplt	somato[ATTACH_R]
 SOEplt/KWRO	somato[ATTACH_R]
 SOEplt/SKWRO	somato[ATTACH_R]
 SOEplts/SKWRO	somato[ATTACH_R]
 SOErb/KWROE	socio[ATTACH_R]
+SOErb/PA*t	sociopath
 SOEs/KWROE	socio[ATTACH_R]
 SOrbgs	, so[ATTACH_L]
 SOs	s so[ORTHO_L]
-SOUpbd/g/PWAOrd	soundingboard
 SP*Efbg	-specific[ORTHO_L]
+SP*Epl	septum
 SP*pbd	&[ATTACH_L][ATTACH_R]
 SP*s	 [ATTACH_L][ATTACH_R]
 SPAO*Ed	-speed[ORTHO_L]
 SPAO*Erpbs/d	-experienced[ORTHO_L]
 SPAOEUpb/KWRO	spino[ATTACH_R]
 SPAOEUpb/SKWRO	spino[ATTACH_R]
-SPAr	spar
 SPAs/PHO	spasmo[ATTACH_R]
+SPAz/PHOd/EUbg/HREU	spasmodically
 SPErbgt	spectro[ATTACH_R]
 SPErs	% is[ORTHO_L]
 SPEUpb/SKWRO	spino[ATTACH_R]
-SPHA*Epb	as many
+SPHAOEr/g	smearing
 SPHEfrplt	semester.[CAP_NEXT]
 SPHEU	semi[ATTACH_R]
-SPHROr	explore
+SPO*Epb	spoken
 SPOpbd/HRO	spondylo[ATTACH_R]
 SPOpbg/KWROE	spongio[ATTACH_R]
 SPOr/*EUpb	sporin[ORTHO_L]
 SPOr/SKWRO	sporo[ATTACH_R]
 SPR*Epbs	 ()[KEY]Left[END][ATTACH_L][ATTACH_R][CARRY_CAP]
 SPREpb	 ([ATTACH_L][ATTACH_R]
-SPRObg/Et	sprocket
+SPWAEUl	entail
 SPWHRAErb	\[ATTACH_L][ATTACH_R]
 SPWO*l/Epb/TKArb	–[ATTACH_L][ATTACH_R]
 SPWO*l/Epl/TKArb	—[ATTACH_L][ATTACH_R]
@@ -1986,15 +1985,15 @@ SPWO*l/REpblgd	®[ATTACH_L]
 SPWO*l/SKWR*rbgs	…[ATTACH_L][CAP_NEXT]
 SPWO*l/TRAEUd/PHArbg	™[ATTACH_L]
 SPWR*bgts	 [][KEY]Left[END][ATTACH_L][ATTACH_R]
-SPWR*Ebgs	intersection
 SPWRA	intra[ATTACH_R]
 SPWRA*bg	 <[ATTACH_L]
 SPWRAbg	 >[ATTACH_L]
+SPWREp/TPHEr	entrepreneur
 SR*	v[GLUE]
 SR*p	V[GLUE]
 SRrbgz	-V[ORTHO_L]
-SRAEUg/As	Vegas
 SRAEUg/SKWRO	vago[ATTACH_R]
+SRAEUr/EUs	varies
 SRAEUs/KWRO	vaso[ATTACH_R]
 SRAEUs/SKWRO	vaso[ATTACH_R]
 SRAEUt/SKWRO	vaso[ATTACH_R]
@@ -2003,23 +2002,23 @@ SRAfl/SKWRO	valvulo[ATTACH_R]
 SRAOEb/ROE	cerebro[ATTACH_R]
 SRAOEpb/KWRO	veno[ATTACH_R]
 SRAOEpb/SKWRO	veno[ATTACH_R]
-SRAOErg	veering
+SRAOEU/PWHREU	viably
 SRAOEUb/RA	vibra[ATTACH_R]
-SRAs/HRAEUt/s	vacillates
 SRAs/SKWRO	vaso[ATTACH_R]
+SRE/TPHAOE/RAOE/PHEpb	veniremen
 SREft/PWHRO	vestibulo[ATTACH_R]
 SREl/SRO	vulvo[ATTACH_R]
 SREpb/KWRO	veno[ATTACH_R]
 SREpb/SKWRO	veno[ATTACH_R]
 SREpb/TRO	ventro[ATTACH_R]
 SREpbt/RO	ventro[ATTACH_R]
-SREr/REU/HREU	verily
+SRErbl/AOEUz/d	verbalized
 SREs/KO	vesico[ATTACH_R]
 SREUfbg/SKWRO	visco[ATTACH_R]
 SREUfp	ovich[ORTHO_L]
 SREUl	ville[ORTHO_L]
-SREUlg/SROEUs	Village Voice
 SREUpbg/KWRO	syringo[ATTACH_R]
+SREUpblg/TEU	individuality
 SREUrt/KWRO	vitreo[ATTACH_R]
 SREUrt/RO	vitreo[ATTACH_R]
 SREUrt/SKWRO	vitreo[ATTACH_R]
@@ -2028,7 +2027,7 @@ SREUs/RO	viscero[ATTACH_R]
 SREUs/SKWRO	visuo[ATTACH_R]
 SRO*Elt	-volt[ORTHO_L]
 SRO*EUs	vaso[ATTACH_R]
-SROElt	volt
+SROEUs/s	voices
 SROr	vore[ORTHO_L]
 ST*Ep	-step[ORTHO_L]
 STbg	istic[ORTHO_L]
@@ -2036,17 +2035,16 @@ STA*EUpblg	-stage[ORTHO_L]
 STA*EUt	-state[ORTHO_L]
 STA*pbd	stand[ORTHO_L]
 STA*r	*[ATTACH_L][ATTACH_R]
-STA/PWEUlt	stability
+STAEblg	establishing
 STAf/HRO	staphylo[ATTACH_R]
 STAO*Epb	stein[ORTHO_L]
-STAO*EUl	-style[ORTHO_L]
 STAO*EUpb	stein[ORTHO_L]
-STAOEpl/ROl/*Er	steamroller
 STAOEt/SKWRO	steato[ATTACH_R]
 STAOEU/HRO	stylo[ATTACH_R]
 STAOEUl/KWRO	stylo[ATTACH_R]
 STAOEUl/SKWRO	stylo[ATTACH_R]
-STE/TPHOg/RA/TPEU	stenography
+STAOEUpd/Epbd	stipend
+STEpb/Ergt	StenEducator
 STEpt	strepto[ATTACH_R]
 STEr	ster[ORTHO_L]
 STEr/KWRO	stereo[ATTACH_R]
@@ -2057,10 +2055,10 @@ STEUg/PHAfplt	stigma.[CAP_NEXT]
 STHrbgt	is this correct?[CAP_NEXT]
 STHrgt	is this right?[CAP_NEXT]
 STHs	s?[ORTHO_L][CAP_NEXT]
-STHAO*Es/KWRA/A*U	anaesthesia
 STHArbgt	is that correct?[CAP_NEXT]
 STHArgt	is that right?[CAP_NEXT]
 STKrbgz	-Z[ORTHO_L]
+STKAO*Esz	diseases
 STKAOEUfrplt	desire.[CAP_NEXT]
 STKHRfrlgs	 ``[KEY]Left[END][ATTACH_L][ATTACH_R]
 STKPHAEUpbg	change?[CAP_NEXT]
@@ -2082,8 +2080,8 @@ STO*Er	-story[ORTHO_L]
 STO*Er/A*U	-storey[ORTHO_L]
 STO*EUl	stylo[ATTACH_R]
 STO*pb	ston[ORTHO_L]
-STOE/KAl	stoical
 STOEpl/TO	stomato[ATTACH_R]
+STOEUpb/SAUrs	Stenosaurus
 STOpb	ston[ORTHO_L]
 STPfplt	:[ATTACH_L]
 STPpls	''[KEY]Left[END][ATTACH_R]
@@ -2117,13 +2115,13 @@ STPHAEUrbz	patients?[CAP_NEXT]
 STPHAO*EUbg	mic?[CAP_NEXT]
 STPHAOEd	need?[CAP_NEXT]
 STPHAOEpb	mean?[CAP_NEXT]
-STPHAOEs/KWRA	anesthesia
 STPHAOEUpbd	mind?[CAP_NEXT]
 STPHAOUs	use?[CAP_NEXT]
 STPHApbg	hang?[CAP_NEXT]
 STPHApt/SKWRO	synapto[ATTACH_R]
 STPHArbgt	market?[CAP_NEXT]
 STPHE	he?[CAP_NEXT]
+STPHE/TOEUrl	senatorial
 STPHEbgt	effect?[CAP_NEXT]
 STPHEfrb	everybody?[CAP_NEXT]
 STPHEfrpb	everyone?[CAP_NEXT]
@@ -2180,23 +2178,23 @@ STPWHO*rt	worth?[CAP_NEXT]
 STPWHOrld	world?[CAP_NEXT]
 STPWHUpb	one?[CAP_NEXT]
 STR*Epbg	-strength[ORTHO_L]
-STRlts	street lights
 STR/EUbg	centric[ORTHO_L]
+STRAEUpbg/*Es	strangest
 STRAOUfrpblgt	structure.[CAP_NEXT]
 STRAt/TPAOEU/STPHd	stratified?[CAP_NEXT]
 STREpt/SKWRO	strepto[ATTACH_R]
 STREpt/SKWRO*	strepto[ATTACH_R]
-STREUl/HRAOEUz/A*U	industrialise
+STRUbg	struck
 STUf/fplt	stuff.[CAP_NEXT]
-SUb/PAOE/TPHA	subpoena
-SUl/*bgs	sulks
+SUb/SKWEpbt	subsequent
+SUp/PHREU/KAEUgs	supplication
 SUp/RA	supra[ATTACH_R]
-SUrl/KWREr	surlier
+SW*EUz/HRA*pbd	Switzerland
 SWbs	...[ORTHO_L]
-SWEUs/KHArd	Swiss chard
 T*	t[GLUE]
 T*/A*	ta[GLUE]
 T*El	tele[ATTACH_R]
+T*El/KOpb/TPREpbs	teleconference
 T*Epl/RO	temporo[ATTACH_R]
 T*Er	er it[ATTACH_L]
 T*Erpl	-term[ORTHO_L]
@@ -2224,7 +2222,7 @@ TA*Epl	-time[ORTHO_L]
 TA*EUft	-taste[ORTHO_L]
 TA*EUrbg	taker[ORTHO_L]
 TA*Ul	-tall[ORTHO_L]
-TA/HREpbt	talent
+TAbg/KWREU/SO*EUt	tachyzoite
 TAbg/SKWREU	tachy[ATTACH_R]
 TAEr/TKPWO	pterygo[ATTACH_R]
 TAEUbg/Er	take er[ATTACH_R]
@@ -2232,16 +2230,14 @@ TAEUgs	tation[ORTHO_L]
 TAEUrpb	itarian[ORTHO_L]
 TAft/EUbg	tastic[ORTHO_L]
 TAl/KApb/KApb/KWRAl	talocancaneal[ATTACH_R]
-TAl/KWRAEU/SEUpb	Taliesin
 TAl/KWRO	talo[ATTACH_R]
 TAl/SKWRO	talo[ATTACH_R]
 TAO*Er	-tier[ORTHO_L]
-TAO*EUp	-type[ORTHO_L]
 TAO*EUpl	time[ORTHO_L]
 TAO*EUpl/*Er	-timer[ORTHO_L]
 TAO*EUz	atize[ORTHO_L]
+TAOE/WA/TPHA	Tijuana
 TAOEUt/EUs	titis[ORTHO_L]
-TAOEUt/TApb	titan
 TAOEUz/AEUgs	tization[ORTHO_L]
 TAOEUz/AEUgs/A*U	tisation[ORTHO_L]
 TAOfplt	too.[CAP_NEXT]
@@ -2250,15 +2246,16 @@ TAOUb/HRO	tubulo[ATTACH_R]
 TAOUb/RO	tubero[ATTACH_R]
 TAOUd	itude[ORTHO_L]
 TAOUfplts	Tuesday.[CAP_NEXT]
+TAOUgs/HREU	constitutionally
 TAOUr	ture[ORTHO_L]
 TAOUz/PHAb	tuzumab[ORTHO_L]
 TApb/KWRAfplt	Tanya.[CAP_NEXT]
 TApblg	itage[ORTHO_L]
 TAs/TEUbg	tastic[ORTHO_L]
-TAt/lg	tattling
 TAUr	tor[ATTACH_R]
+TEbg/TPHAOEbgs	techniques
 TElg/STPHUs	telling us?[CAP_NEXT]
-TEpb/TKEpb/SEUs	tendencies
+TEpl/PO/RAl/TEU	temporality
 TEr/EUpblg/KWRO	pterygo[ATTACH_R]
 TEr/TKPWO	pterygo[ATTACH_R]
 TEr/TO	terato[ATTACH_R]
@@ -2268,13 +2265,13 @@ TErt/SKWRO	terato[ATTACH_R]
 TEt/RA	tetra[ATTACH_R]
 TEt/TRA	tetra[ATTACH_R]
 TEU	ity[ORTHO_L]
-TEU/PWO/HROEpb	Tibolone
 TEU/TPHEU	tini[ORTHO_L]
 TEUb/KWRO	tibio[ATTACH_R]
 TEUf	tive[ORTHO_L]
 TEUfl	itively[ORTHO_L]
 TEUgs	etition[ORTHO_L]
 TEUl/AE	'til[CARRY_CAP]
+TEUpb/TPHAOEUts	tinnitus
 TEUrbs	ticious[ORTHO_L]
 TEUs/TEU	ticity[ORTHO_L]
 TH*/fplt	this.[CAP_NEXT]
@@ -2289,21 +2286,21 @@ THAg	ing that[ORTHO_L]
 THAl/*Er	thaler[ORTHO_L]
 THAl/PHEU/KWRA	ophthalmia[ORTHO_L]
 THAl/PHO	thalamo[ATTACH_R]
-THAOE/PHAt/EUbg	thematic
 THAOEU/RO	thyro[ATTACH_R]
+THAOEUpl/Us	thymus
 THAOEUr/SKWRO	thyro[ATTACH_R]
 THApl	that.[CAP_NEXT]
 THE/Rfplt	they are.[CAP_NEXT]
 THErpl/KWRA	therma[ATTACH_R]
 THErpl/KWRA/TPpl	thermia.[CAP_NEXT]
 THEUfpblgt	thing.[CAP_NEXT]
-THEUpbgs/Alt	things at
 THO*EU	theo[ATTACH_R]
 THO*EUpb	000[ORTHO_L]
 THOEfplts	those.[CAP_NEXT]
 THOEU	thio[ATTACH_R]
 THOEUb	,000[ORTHO_L]
 THOEUrpl	thermo[ATTACH_R]
+THOpbgs	thongs
 THOr/KO	thoraco[ATTACH_R]
 THOUz	000[ORTHO_L]
 THR*Efpbg	-threatening[ORTHO_L]
@@ -2314,11 +2311,11 @@ THRg	ing there[ORTHO_L]
 THRrd	TL;DR:[CAP_NEXT]
 THR/U/TKPWfplt	there you go.[CAP_NEXT]
 THRAOEfp	three.[CAP_NEXT]
-THREUd	thyroid
 THRO*pl/SKWRO	thrombo[ATTACH_R]
 THROpl	thrombo[ATTACH_R]
 THROpl/PWO	thrombo[ATTACH_R]
 THROpl/SKWRO	thrombo[ATTACH_R]
+THUpbd/*Er	thunder
 THUz	000[GLUE]
 TK*	d[GLUE]
 TK*/*E/HR*	del[GLUE]
@@ -2329,7 +2326,6 @@ TK*Epb	den[ORTHO_L]
 TK*Epl	demi[ATTACH_R]
 TK*Erpl/TO	dermato[ATTACH_R]
 TK*p	D[GLUE]
-TK*Ufp	Dutch
 TKd	ded[ORTHO_L]
 TKfp	did.[CAP_NEXT]
 TKfplt	#M.[CAP_NEXT]
@@ -2340,68 +2336,69 @@ TKrbgz	-D[ORTHO_L]
 TKrbs	s --[ORTHO_L]
 TKA*El	dale[ORTHO_L]
 TKA*EU	-day[ORTHO_L]
+TKA*EUpbt/KWREU	dainty
 TKAErbg/KWRO	dacryo[ATTACH_R]
 TKAEUfp	day.[CAP_NEXT]
 TKAEUfpbgs	education.[CAP_NEXT]
 TKAEUfplt	day.[CAP_NEXT]
 TKAEUfplts	days.[CAP_NEXT]
 TKAEUgs	dation[ORTHO_L]
-TKAl/KWRApbs	dalliance
 TKAO*r	-door[ORTHO_L]
-TKAOEt/TEU	deity
+TKAOE/PEpbd	depend
 TKAOEU/KWRA	dia[ATTACH_R]
-TKAOUp/HREUs/TOUs	duplicitous
+TKAOEU/SRErz	divers
+TKApl/Apblg	damage
 TKArbg/KWRO	dacryo[ATTACH_R]
 TKArbg/KWROE	dacryo[ATTACH_R]
 TKArbg/RO	dacryo[ATTACH_R]
 TKE	de[ATTACH_R]
-TKE/KHRAEUr/TOEr	declaratory
-TKE/SEUd/KWRAOU/WOUs	deciduous
-TKEbg/RA/TEUf	decorative
+TKE/PHEUpb/PHUs	de minimis
+TKE/TAOEr/RAEUt	deteriorate
 TKEbgs/TRO	dextro[ATTACH_R]
+TKEfpbsz/A*U	defences
 TKEg/SKWRA	deca[ATTACH_R]
 TKEpb/TKO	dendro[ATTACH_R]
 TKEpb/TKRO	dendro[ATTACH_R]
 TKEpbs/TEUfplt	density.[CAP_NEXT]
-TKEpl/TKPWRAEf	demography
 TKErpl/At/SKWRO	dermato[ATTACH_R]
 TKErpl/SKWRO	dermo[ATTACH_R]
 TKErplt/KWRO	dermato[ATTACH_R]
 TKErplt/SKWRO	dermato[ATTACH_R]
+TKEs/PHAl	decimal
 TKEU/TOE	dito[ORTHO_L]
 TKEU/TPHEU	dini[ORTHO_L]
-TKEUbg/TAEUts	dictates
 TKEUbgs	diction[ATTACH_R]
+TKEUfrpbl/s	differentials
 TKEUft/KWRO	disto[ATTACH_R]
 TKEUft/SKWRO	disto[ATTACH_R]
 TKEUgs	dition[ORTHO_L]
 TKEUs	dis[ATTACH_R]
-TKEUs/AOEUplts	disciples
+TKEUs/KOrd	discord
 TKEUs/POEs/A*fpl	disposal.[CAP_NEXT]
-TKEUs/PROf/g	disproving
+TKEUs/Tpb/WApbs	discontinuance
 TKEUs/TKAOEU/TKO	dysdiado[ATTACH_R]
 TKHRfrlg	`[ATTACH_L][ATTACH_R]
 TKHRfrlgs	``[KEY]Left[END][ATTACH_L][ATTACH_R]
 TKHRA*r	-dollar[ORTHO_L]
 TKHRAOEfrb	clear for everybody?[CAP_NEXT]
-TKHRAOEUt	delight
 TKO*fplgt	doing.[CAP_NEXT]
 TKO*g/THAfplt	doing that.[CAP_NEXT]
+TKO*U/KHEpl/Kl	Dow Chemical
 TKO*Upb	-down[ORTHO_L]
 TKOfp	do.[CAP_NEXT]
 TKOfplt	do.[CAP_NEXT]
-TKOg/AO*E	doggie
 TKOr/SO	dorso[ATTACH_R]
 TKOrg	.org[ORTHO_L]
 TKOrs/KWRO	dorso[ATTACH_R]
 TKOrs/SKWREU	dorsi[ATTACH_R]
+TKOrs/SKWREU/TPHREbg/SHUpb	dorsiflexion
 TKOrs/SKWRO	dorso[ATTACH_R]
 TKPHEpbl	-dimensional[ORTHO_L]
-TKPHOpb/SEpbs	common sense
 TKPROEpl	control.[CAP_NEXT]
 TKPW*	g[GLUE]
 TKPW*/TO	g to[ORTHO_L]
 TKPW*p	G[GLUE]
+TKPW*p/Abgt/*EUpb	G-actin
 TKPW*p/TK*p/P*p	GDP[GLUE]
 TKPWfp	go.[CAP_NEXT]
 TKPWfplt	go.[CAP_NEXT]
@@ -2409,20 +2406,19 @@ TKPWrbgz	-G[ORTHO_L]
 TKPWA*EUpblg	-gauge[ORTHO_L]
 TKPWA/HRAbgt	galacto[ATTACH_R]
 TKPWAEU/TPf	gay?[CAP_NEXT]
-TKPWAEUrb/KWRA	geisha
 TKPWAfpl	gasm[ORTHO_L]
 TKPWAft/RO	gastro[ATTACH_R]
 TKPWAl/REUfplt	gallery.[CAP_NEXT]
+TKPWAOEU/KWRUs	Gaius
 TKPWAOEUfplt	guy.[CAP_NEXT]
 TKPWAOfpd	good.[CAP_NEXT]
 TKPWAOfpdz	goods.[CAP_NEXT]
 TKPWApl/AOEt/SKWRO	gameto[ATTACH_R]
-TKPWAr/Apl/PHA/SA/HRA	garam masala
 TKPWArd/STPH*Epb	garden?[CAP_NEXT]
 TKPWAs/TRO	gastro[ATTACH_R]
+TKPWAUd/KWREr	gaudier
 TKPWEfps	guess.[CAP_NEXT]
 TKPWEUg/KWRA	giga[ATTACH_R]
-TKPWEUrd/*l	girdle
 TKPWHR*/HR*/*U/KR*/O*	gluco[ATTACH_R]
 TKPWHRAbg/TO	galacto[ATTACH_R]
 TKPWHRAbgt	galacto[ATTACH_R]
@@ -2431,6 +2427,7 @@ TKPWHRAEUfpgs	obligation.[CAP_NEXT]
 TKPWHRAfpld	glad.[CAP_NEXT]
 TKPWHRAOEU	gly-[ATTACH_R]
 TKPWHRAOEU/KO	glyco[ATTACH_R]
+TKPWHRAOEU/KOl/SEUs	glycolysis
 TKPWHRAOEUbg	glyco[ATTACH_R]
 TKPWHRAOEUbg/KO	glyco[ATTACH_R]
 TKPWHRAOEUbg/SKWRO	glyco[ATTACH_R]
@@ -2441,46 +2438,45 @@ TKPWHRAOUbg/TPHO	glucono[ATTACH_R]
 TKPWHRO*Epb	globin[ORTHO_L]
 TKPWHRO*pb	-gallon[ORTHO_L]
 TKPWHRO/PHEr/HRO	glomerulo[ATTACH_R]
-TKPWHROb/KWRAOUl	globule
 TKPWHROpl/*Er/HRO	glomerulo[ATTACH_R]
 TKPWHROpl/HRO	glomerulo[ATTACH_R]
 TKPWHROpl/RU	glomerulo[ATTACH_R]
 TKPWHROs/SKWRO	glosso[ATTACH_R]
 TKPWO*EU	geo[ATTACH_R]
+TKPWO*g/*l	goggle
 TKPWOfpltd	god.[CAP_NEXT]
 TKPWOld	gold[ATTACH_R]
 TKPWOpb/RAOE/KWRAfplt	gonorrhea.[CAP_NEXT]
 TKPWOpb/RAOE/KWRAfplt/A*U	gonorrhoea.[CAP_NEXT]
-TKPWOr/TEbgs	Gore-Tex
 TKPWR*EUt	-grit[ORTHO_L]
 TKPWR*pb	>[ATTACH_L][ATTACH_R]
 TKPWRA*Et	great-[ATTACH_R]
+TKPWRAbg	grabbing
 TKPWRAEfp	agree.[CAP_NEXT]
 TKPWRAEfpt	great.[CAP_NEXT]
 TKPWRAf/KWREU	graphy[ORTHO_L]
 TKPWRAO*Up	group[ORTHO_L]
-TKPWRAOEd/TKEU/*pbs	greediness
 TKPWRAOUfplt	group.[CAP_NEXT]
 TKPWRApb/HRO	granulo[ATTACH_R]
+TKPWRApbd/KWRAO*Ur	grandeur
 TKPWREbg/SKWRO	Greco-[ATTACH_R]
 TKPWREUfpltd	grid.[CAP_NEXT]
-TKPWREUpl/*Es	grimmest
 TKPWRO*Upbd	ground[ORTHO_L]
 TKPWROEfplt	grow.[CAP_NEXT]
+TKPWUl/KWREU	gully
 TKR*fplt	Dr.[CAP_NEXT]
 TKRfp	doctor.[CAP_NEXT]
 TKRA*Upb	drawn[ORTHO_L]
 TKRAEfplt	ready.[CAP_NEXT]
-TKRAft/s/PHEpb	draftsmen
 TKRAOEUfplt	drive.[CAP_NEXT]
+TKREbg/TREU	directory
 TKROEpl	drome[ORTHO_L]
-TKROUpbs	drowns
+TKUpl/AO*E/s	dummies
 TKUpt	[CMD=plover.add_translation][END]
 TKW*bgs	""[KEY]Left[END][ATTACH_L][ATTACH_R]
 TKWbg	, it[ATTACH_L]
 TKWObg	, do[ATTACH_L]
 TKWOd/TPHO	duodeno[ATTACH_R]
-TKWOUt	devout
 TO*	-to-[ATTACH_L][ATTACH_R]
 TO*p	top[ORTHO_L]
 TO*p/SKWRO	topo[ATTACH_R]
@@ -2493,14 +2489,15 @@ TO/TPHE	to ne[ATTACH_R]
 TObgs/EUs/TPEUpl	toxicity.[CAP_NEXT]
 TObgs/KO	toxico[ATTACH_R]
 TOd	ed to[ORTHO_L]
+TOE/PAOEbg/KA	Topeka
 TOEp	tope[ORTHO_L]
 TOEr	tory[ORTHO_L]
 TOEs/EUs	tosis[ORTHO_L]
 TOg	ing to[ORTHO_L]
 TOg/TPEU	tography[ORTHO_L]
-TOl/TPRAOE	toll-free
 TOlg	otology[ORTHO_L]
 TOrbgs	, to[ATTACH_L]
+TOrpb/*plt	tournament
 TOs/KO/PEU	toscopy[ORTHO_L]
 TOt/PHEU	totomy[ORTHO_L]
 TOUs	tous[ORTHO_L]
@@ -2509,7 +2506,6 @@ TP*EUl/EUbg	philic[ORTHO_L]
 TP*EUlg	philic[ORTHO_L]
 TP*EUpb	fin[ORTHO_L]
 TP*EUrb/TPpld	finished.[CAP_NEXT]
-TP*EUrbg	finishing
 TP*EUrbt	-efficient[ORTHO_L]
 TP*p	F[GLUE]
 TPl	'[ORTHO_L][CARRY_CAP]
@@ -2527,9 +2523,9 @@ TPrbgs/U/HR	, if you will[ATTACH_L]
 TPrbgz	-F[ORTHO_L]
 TPA*EUpl/OUs	-famous[ORTHO_L]
 TPA*EUs/g	-facing[ORTHO_L]
+TPA*t/Er/TPH/HRAU	father-in-law
 TPAEfrpblt	pharmacist.[CAP_NEXT]
 TPAEfrplt	pharmacy.[CAP_NEXT]
-TPAEr/HRA*pbdz	fatherlands
 TPAEUbgs	ification[ORTHO_L]
 TPAEUg/KWRO	phago[ATTACH_R]
 TPAEUg/SKWRO	phago[ATTACH_R]
@@ -2539,6 +2535,7 @@ TPAEUrb/KWRO	facio[ATTACH_R]
 TPAEUrpbg/KWRO	pharyngo[ATTACH_R]
 TPAEUrpbg/SKWRO	pharyngo[ATTACH_R]
 TPAEUs/KWRO	facio[ATTACH_R]
+TPAEUt/Alt	fatality
 TPAfrp	far.[CAP_NEXT]
 TPAl/SKWRO	phallo[ATTACH_R]
 TPAO*d	food[ORTHO_L]
@@ -2547,7 +2544,6 @@ TPAO*EUl	phile[ORTHO_L]
 TPAO*EUr	ifier[ORTHO_L]
 TPAO*t	-foot[ORTHO_L]
 TPAO*t/HROpbg	-foot-long[ORTHO_L]
-TPAOEbg/HR*EUt	fecalith
 TPAOEl/KWRA	philia[ORTHO_L]
 TPAOEpb/*l	phenyl[ATTACH_R]
 TPAOEpbl	phenyl[ATTACH_R]
@@ -2559,38 +2555,39 @@ TPAOEU/d	ified[ORTHO_L]
 TPAOEU/s	ifies[ORTHO_L]
 TPAOEUb/RO	fibro[ATTACH_R]
 TPAOEUb/ROE	fibro[ATTACH_R]
+TPAOEUb/ROEs/EUs	fibrosis
 TPAOEUd	ified[ORTHO_L]
 TPAOEUdz	ifieds[ORTHO_L]
 TPAOEUg	ifying[ORTHO_L]
 TPAOEUrb/RO	fibro[ATTACH_R]
 TPAOEUt/KWRO	phyto[ATTACH_R]
 TPAOEUt/SKWRO	phyto[ATTACH_R]
-TPAOt/Epblg	footage
 TPAOUs/KWRO	fuso[ATTACH_R]
+TPApl/HRAErt	familiarity
 TPArbg/KO	pharmaco[ATTACH_R]
 TPArpl/KO	pharmaco[ATTACH_R]
 TPArpl/KOE	pharmaco[ATTACH_R]
-TPAs/TPHAEUgt	fascinating
 TPAUr	for[ATTACH_R]
 TPEbgs/fp/PHOEUfp/TPHRrb	infection.[CAP_NEXT]
+TPEbgt/EUf/pbs	effectiveness
 TPEfbg	[KEY]Escape[END]
 TPEfplt	effective.[CAP_NEXT]
 TPEplt/SKWRO	femto[ATTACH_R]
 TPEr/ROE	ferro[ATTACH_R]
 TPEr/SKWRO	fero[ATTACH_R]
-TPEr/TPHApbd/TKOE	Fernando
 TPEUb/HRO	fibulo[ATTACH_R]
 TPEUbg/A*EUgs	fication[ORTHO_L]
 TPEUft/HRAfplt	fistula.[CAP_NEXT]
+TPEUg/z	figs
 TPEUl/EUbg	philic[ORTHO_L]
 TPEUl/EUs/TEU	philicity[ORTHO_L]
 TPEUl/KWRA	philia[ORTHO_L]
 TPEUl/KWRAs	philias[ORTHO_L]
 TPEUls/TEU	philicity[ORTHO_L]
-TPEUpb/EUrbd	finished
 TPEUs/KWRO	physio[ATTACH_R]
 TPEUs/KWROE	physio[ATTACH_R]
 TPEUs/SKWRO	physio[ATTACH_R]
+TPH	in
 TPH*	n[GLUE]
 TPH*/*EU	ni[GLUE]
 TPH*/A*	na[GLUE]
@@ -2605,7 +2602,6 @@ TPHd	ed in[ORTHO_L]
 TPHfpblgt	income.[CAP_NEXT]
 TPHfplgts	in.[CAP_NEXT]
 TPHfplt	in.[CAP_NEXT]
-TPHfrpbs/s	inferences
 TPHg	ing in[ORTHO_L]
 TPHrb	–[ATTACH_L][ATTACH_R]
 TPHrbgs	, in[ATTACH_L]
@@ -2613,10 +2609,10 @@ TPHrbgz	-N[ORTHO_L]
 TPHs	s in[ORTHO_L]
 TPHA*EUt	inate[ORTHO_L]
 TPHA*Upb	non-[ATTACH_R]
+TPHA/PRObgs/*EUpb	naproxen
 TPHAEfplt	anyway.[CAP_NEXT]
 TPHAEl	inally[ORTHO_L]
 TPHAEUgs	ination[ORTHO_L]
-TPHAEUr/RAt/O*r	narrator
 TPHAEUs/SKWRO	naso[ATTACH_R]
 TPHAEUt/O*r	inator[ORTHO_L]
 TPHAl	inal[ORTHO_L]
@@ -2625,8 +2621,8 @@ TPHAO*Ef	-naive[ORTHO_L]
 TPHAO*Es	nese[ORTHO_L]
 TPHAO*EUpb	inine[ORTHO_L]
 TPHAO*Ur	neuro[ATTACH_R]
+TPHAOE/HEU/HREUfpl	nihilism
 TPHAOE/KWROE	neo-[ATTACH_R]
-TPHAOEUfd	knifed
 TPHAOEUfplts	nice.[CAP_NEXT]
 TPHAOEUg/RO	nigro[ATTACH_R]
 TPHAOEUrt/SKWRO	nitro[ATTACH_R]
@@ -2637,6 +2633,7 @@ TPHAOEUz/g/A*U	nising[ORTHO_L]
 TPHAOEUz/A*U	nise[ORTHO_L]
 TPHAOEUz/A*U/g	nising[ORTHO_L]
 TPHAOU/ROE	neuro[ATTACH_R]
+TPHAOUbg/HRAr/THRO*Epb	Nuclear Throne
 TPHAOUbg/HRO	nucleo[ATTACH_R]
 TPHAOUbg/HROE	nucleo[ATTACH_R]
 TPHAOUbg/SKWRO	nucho[ATTACH_R]
@@ -2645,32 +2642,31 @@ TPHAOUpl/PHOE	pneumo[ATTACH_R]
 TPHAOUpl/SKWRO	pneumo[ATTACH_R]
 TPHAOUr/SKWRO	neuro[ATTACH_R]
 TPHAOUrt/SKWRO	neutro[ATTACH_R]
-TPHAOUs/RAOEl	newsreel
 TPHApb/KWRO	nano[ATTACH_R]
 TPHApb/SKWRO	nano[ATTACH_R]
 TPHApl	that.[CAP_NEXT]
 TPHAUpb	non[ATTACH_R]
+TPHAUpb/KHA/HRApbt	nonchalant
 TPHEbg/RO	necro[ATTACH_R]
-TPHEf/REUt/EUbg	nephritic
 TPHEf/RO	nephro[ATTACH_R]
 TPHEpl	them.[CAP_NEXT]
 TPHEr	ener[ORTHO_L]
 TPHErpblg/EUbg	nergic[ORTHO_L]
+TPHEUbg/KOE/HRA	Nicola
 TPHEUfpg	anything.[CAP_NEXT]
 TPHEUft	ist[ORTHO_L]
 TPHEUpbg	ening[ORTHO_L]
 TPHO*	no-[ATTACH_R]
-TPHO*Epb	-known[ORTHO_L]
 TPHO*Epl	no.[CAP_NEXT]
 TPHO*EU	Neo-[ATTACH_R]
-TPHO*EU/PHRA/TOp/EUbg	Neoplatonic
 TPHO*fplt	no.[CAP_NEXT]
 TPHO*Us	inous[ORTHO_L]
 TPHOd/HRO	nodulo[ATTACH_R]
+TPHOE/PWEUblt	nobility
 TPHOEfrplt	another.[CAP_NEXT]
-TPHOEt/TPA*EUbgs	notification
 TPHOfplt	No.[CAP_NEXT]
 TPHOft/PHEU	anostomy[ORTHO_L]
+TPHOrd	in order
 TPHOrpl/SKWRO	normo[ATTACH_R]
 TPHOs/KO/PEU	noscopy[ORTHO_L]
 TPHOUfplt	now.[CAP_NEXT]
@@ -2679,21 +2675,20 @@ TPHR*Ebgs	flection[ORTHO_L]
 TPHRfrpblt	.[ATTACH_L][CAP_NEXT]
 TPHRA*EUfr	-flavor[ORTHO_L]
 TPHRA*EUfr/A*U	-flavour[ORTHO_L]
-TPHRAb/PWEU	flabby
 TPHRAbgs/EUs	phylaxis[ORTHO_L]
 TPHRAEUfpgs	inflammation.[CAP_NEXT]
 TPHRAO*Ur	fluoro[ATTACH_R]
 TPHRAOUbg/HRO	nucleo[ATTACH_R]
 TPHRAOUd/RO	fludro[ATTACH_R]
 TPHRAOUr	fluoro[ATTACH_R]
-TPHREbgs/EUbl	flexible
+TPHRAOUr/Es/SEpbt	fluorescent
 TPHREU	fully[ORTHO_L]
 TPHREUft	philicity[ORTHO_L]
 TPHRObgs/SEUpb	floxacin[ORTHO_L]
 TPHROpbgs/SEUpb	floxacin[ORTHO_L]
 TPHROplt	lot.[CAP_NEXT]
 TPHROr/SKWRO	fluoro[ATTACH_R]
-TPHU/PO*rt	Newport
+TPHROr/TKAEUgs	fluoridation
 TPHUr/SKWRO	neuro[ATTACH_R]
 TPO*Eld	fold[ORTHO_L]
 TPO*EUbgs/d	-focused[ORTHO_L]
@@ -2704,13 +2699,12 @@ TPO/TO	photo[ATTACH_R]
 TPO/TPHO	phono[ATTACH_R]
 TPOEb	phobe[ORTHO_L]
 TPOEb/EUs/TEU	phobicity[ORTHO_L]
-TPOEpb/KWR*Es	phoniest
 TPOEr	fore[ATTACH_R]
 TPOEUrb	fibro[ATTACH_R]
+TPOpbd/HREU	fondly
 TPOpblg	okay.[CAP_NEXT]
 TPOr/AOEs/EUs/TKOs	pheresis[ORTHO_L]
 TPOr/EUbg	phoric[ORTHO_L]
-TPOrpb/REr	important to remember
 TPOrpl/*l	formyl[ATTACH_R]
 TPOrpl/HRAfplt	formula.[CAP_NEXT]
 TPOs/TO	phospho[ATTACH_R]
@@ -2721,24 +2715,24 @@ TPOs/TPOE	phospho[ATTACH_R]
 TPR*bgt	}[ATTACH_L][ATTACH_R]
 TPR*bgts	{}[KEY]Left[END][ATTACH_L][ATTACH_R]
 TPR*Epbd/HREU	-friendly[ORTHO_L]
+TPR*Us/RAEUt	frustrate
 TPRbgt	{[ATTACH_L][ATTACH_R]
 TPRbgts	{}[ATTACH_L][ATTACH_R]
 TPRs	s from[ORTHO_L]
 TPRz	s from[ORTHO_L]
 TPR/TH*	from that.[CAP_NEXT]
 TPRAEUpb	infra[ATTACH_R]
-TPRAEz/KWREr	Frazier
 TPRAO*E	-free[ORTHO_L]
 TPRAO*EUd	-fried[ORTHO_L]
 TPRAOEpb/KWRO	phreno[ATTACH_R]
 TPRAOEs/EUs	pheresis[ORTHO_L]
 TPRAOUbgt	fructo[ATTACH_R]
-TPREUs/KEU/*Es	friskiest
+TPREbgt	frequent
 TPRO*pbt	front[ORTHO_L]
 TPRUbg/TO	fructo[ATTACH_R]
+TPUpbgt/SKWRUpl	punctum
 TPWr	[KEY]Left[ALT][END]
 TPWOUpb	200[ATTACH_R]
-TR	interest
 TR*EU	tri[ATTACH_R]
 TR*EU/AOEU/TKO	triiodo[ATTACH_R]
 TR*EU/SKWREpl/TPHO	trigemino[ATTACH_R]
@@ -2749,21 +2743,22 @@ TR*pl	™[ATTACH_L]
 TR*rl	`[ATTACH_L][ATTACH_R]
 TRfpg	interesting.[CAP_NEXT]
 TRrl	`[ATTACH_L][ATTACH_R]
+TRA*pbs/SEUt	transit
 TRAEUbg/KWRO	tracheo[ATTACH_R]
-TRAEUfp/KWRA	trachea
 TRAO*Etd	-treated[ORTHO_L]
 TRAO*EU	tri[ATTACH_R]
+TRAOEUpl/*Er/EUbg	trimeric
 TRAOUs/EUf	trusive[ORTHO_L]
-TRApbs/bgt	transact
 TRApbs/SRErs/SKWRO	transverso[ATTACH_R]
 TRApbz	trans[ATTACH_R]
-TRErpl	tremor
+TRAU/PHA/TAOEUz/d/A*U	traumatised
 TRErt	tetra[ATTACH_R]
 TRO*Ef	trophy[ORTHO_L]
 TRO*Ep	tropy[ORTHO_L]
 TRO/PO	tropo[ATTACH_R]
 TRO/TO	tropo[ATTACH_R]
 TROEf/EUbg	trophic[ORTHO_L]
+TROEf/KAEl	trophically
 TROEf/SKWRO	tropho[ATTACH_R]
 TROEp/*EUbg	tropic[ORTHO_L]
 TROEp/*EUpb	tropin[ORTHO_L]
@@ -2774,31 +2769,30 @@ TROEpg	otropic[ORTHO_L]
 TROEUpg	otropic[ORTHO_L]
 TROf/EUbg	trophic[ORTHO_L]
 TROf/SKWRO	tropho[ATTACH_R]
-TRUbg/AO*E/A*U	truckie
 TRUpl	trum[ORTHO_L]
 TUr/KWOEUfplts	turquoise.[CAP_NEXT]
+TUrpbs/TAOEUl	turnstile
 TW*EUbgts	'twixt[CARRY_CAP]
 TWAs/PWREUl/EUg	'twas brillig[CARRY_CAP]
-TWErp	twerp
 TWOfplt	two.[CAP_NEXT]
 TWOUpb	200[ATTACH_R]
 U/A*Ufr	you over[ATTACH_R]
 Ufplt	. You[ATTACH_L]
 Ug/TPHREUpl	ugly.[CAP_NEXT]
 Ul/TRA	ultra[ATTACH_R]
+Up/Er/SROl/TA	Upper Volta
 Upb	un[ATTACH_R]
-Upb/EUpl/PROf/d	unimproved
-Upb/TKE/SAOEUr/bl	undesirable
+Upb/SEUfl	uncivil
 Upbd	under[ATTACH_R]
 Upl/PHAOUpb/TPHO	immuno[ATTACH_R]
 Upl/PWEUl/KO	umbilico[ATTACH_R]
+Ur/At	you're at
 Ur/KWRO	uro[ATTACH_R]
 Ur/SKWRO	uro[ATTACH_R]
 Urbgs	, you[ATTACH_L]
 Urbgz	-U[ORTHO_L]
 Urlt	ultra[ATTACH_R]
 W*	w[GLUE]
-W*bg	white blood cell
 W*El	well-[ATTACH_R]
 W*Epbs	-influence[ORTHO_L]
 W*p	W[GLUE]
@@ -2814,23 +2808,23 @@ WA*EUr	ware[ORTHO_L]
 WA*EUt	uate[ORTHO_L]
 WA*rd	ward[ORTHO_L]
 WA*Ur	water[ATTACH_R]
+WAbg/KEU	wacky
 WAEl	ually[ORTHO_L]
 WAEUfp	way.[CAP_NEXT]
 WAEUfplt	way.[CAP_NEXT]
-WAEUfrg	wavering
 WAEUgs	uation[ORTHO_L]
 WAl	ual[ORTHO_L]
 WAO*Ebg	-week[ORTHO_L]
 WAO*EUd	-wide[ORTHO_L]
 WAO*EUs	-wise[ORTHO_L]
-WAOEUrg	wiring
+WAOEpb/KWREU	weenie
 WApbs	uance[ORTHO_L]
-WEbg	webbing
+WAUl/PAEUp/*Er	wallpaper
+WEUpb/AO*E/t/PAO	Winnie the Pooh
 WEUpb/TKOEfplt	window.[CAP_NEXT]
-WEUpls/Kl	whimsical
 WEUrbgs	, which[ATTACH_L]
 WHArbgs	, what[ATTACH_L]
-WHOpl/ps	whomps
+WHEUs/KAE	whiskey
 WHOrbgs	, who[ATTACH_L]
 WHOs/SR	s who have[ORTHO_L]
 WO*pl	woman[ORTHO_L]
@@ -2839,8 +2833,8 @@ WO*rd	word[ORTHO_L]
 WO*rld	world[ORTHO_L]
 WO*rpl	worm[ORTHO_L]
 WOfl/fps	wolves.[CAP_NEXT]
+WOrd/d	worded
 WOs	s would[ORTHO_L]
 WOs/TEU	uosity[ORTHO_L]
 WOUs	uous[ORTHO_L]
-WR*EUpbg/*l	wrinkle
 WUpl	uum[ORTHO_L]

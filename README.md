@@ -214,6 +214,20 @@ first is orthography, so `child` and `s` is `childs`, exactly as Plover says. Th
 second is inflection, so it is `children`. Only the second asks a lexicon, and a
 host with no lexicon refuses `{:infl:…}` rather than answering it with rules.
 
+## The vowel theory, which writes JSON
+
+`typey-type` is imported from `~/.config/plover/typey-type-full.json`, and that
+file is itself generated: `scripts/gen-typey-vowels.py` rewrites Typey Type's
+vowels by the rules in `dictionaries/typey-vowels.toml`, reading
+`typey-type-upstream.json` beside it. The output is JSON because Plover's
+`English Stenotype` system reads the same file and cannot load an artifact.
+`~/.config/plover/VOWELS-DESIGN.md` is the design.
+
+The generator needs cmudict and wordfreq, which the phrasing venv has. It prints
+what moved, what collided and what was displaced, and writes `tests/vowels.tsv`:
+each rule's examples at the stroke the theory gave them. `check.sh` tests that
+file against the typey-type artifact and fails if the JSON is stale.
+
 ## Measurements and decisions
 
 | | |
@@ -235,10 +249,11 @@ host with no lexicon refuses `{:infl:…}` rather than answering it with rules.
 | | |
 |---|---|
 | `systems/` | Steno systems. Which tape symbol each key writes is configuration, not a convention baked into the tools. |
-| `dictionaries/` | Hand-written dictionary source, in xfst. A `-tables.xfst` file is transcribed data with an upstream owner; the grammar over it is authored. |
+| `dictionaries/` | Hand-written dictionary source, in xfst. A `-tables.xfst` file is transcribed data with an upstream owner; the grammar over it is authored. `typey-vowels.toml` is the vowel theory's table, which a script applies to JSON. |
 | `morphology/` | `ortho.xfst`, Plover's 38 orthography rules. Not a dictionary: nothing here is over the key tape. The two lexicons beside it are generated, not committed. |
 | `recipe.toml` | The dictionary stack: what to compile, and at what priority. |
 | `tests/golden/` | Host-independent golden tests: a tape, a tab, the expected records. |
+| `tests/vowels.tsv` | The same, for what the vowel table writes, checked against typey-type. |
 | `tests/translate/` | Stroke streams and what the stack makes of them, where the answer depends on the history. |
 | `tests/retro-words/` | The same, for one dictionary whose answer reads a window of written text, which a golden file has nowhere to put. |
 | `tests/dicts/`, `tests/probe/` | Fixtures for the parts of the host contract no shipped dictionary uses yet: a context slot, and a carried state. Compiled by `tests/recipe.toml`. |

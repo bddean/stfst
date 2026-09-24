@@ -13,7 +13,7 @@ HAOER
 STPHO*BT
 HAOER
 !buffer
-SPHO*RPB
+SPHO*ERPB
 HAOER
 !buffer
 STPHAO*EURT
@@ -45,7 +45,7 @@ STWAO*EPBD
 ! wrote, because it never reads them.
 !buffer
 STPR*T
-PHO*RPB
+PHO*ERPB
 
 ! A pair writes punctuation, which has no letter to take the capital, so it
 ! passes it on and the word keeps it.

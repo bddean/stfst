@@ -95,6 +95,19 @@ for artifact in build/dicts/*.stfst; do
     fi
 done
 
+# The vowel theory: what its table writes, read back from typey-type, and whether
+# `typey-type-full.json` is still what the table makes of Typey Type. The second
+# needs cmudict and wordfreq, which the phrasing venv has, so it is skipped where
+# that is absent.
+echo "== vowels"
+$B test build/dicts/typey-type.stfst tests/vowels.tsv | tail -1
+VOWELS_PYTHON=${VOWELS_PYTHON:-$HOME/.config/plover/phrasing/.venv/bin/python}
+if [ -x "$VOWELS_PYTHON" ]; then
+    "$VOWELS_PYTHON" scripts/gen-typey-vowels.py --check && echo "typey-type-full.json is current"
+else
+    echo "skipped: no $VOWELS_PYTHON"
+fi
+
 # Host contract items 5 and 6 have no consumer in `recipe.toml`, so they are
 # checked against a fixture instead of being taken on trust. Needs
 # `stfst compile tests/recipe.toml --out build/test-dicts --work build/test-work`.

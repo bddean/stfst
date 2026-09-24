@@ -1,0 +1,268 @@
+! What dictionaries/typey-vowels.toml writes, checked against
+! typey-type. Written by scripts/gen-typey-vowels.py.
+! a after w or qu: A
+WApbt	want
+WAfp	watch
+WAr	war
+SKWAd	squad
+! a as aw or ah: AU
+AUl	all
+TAUbg	talk
+KAUl	call
+KAUpl	calm
+! a: A
+At	at
+KApb	can
+PWAbg	back
+KAr	car
+! a_e long: AEU
+PHAEUbg	make
+SAEUpl	same
+PHRAEUs	place
+KAEUr	care
+! a_e short: A
+HRArpblg	large
+KHApbs	chance
+TKApbs	dance
+! ai: AEU*
+SA*EUd	said
+A*EUr	air
+PHA*EUpb	main
+PA*EUd	paid
+! ay: AEU
+WAEU	way
+TKAEU	day
+SAEU	say
+PHRAEU	play
+! au aw augh: AU
+HRAU	law
+KAUs	cause
+KAUz	cause
+SAU	saw
+KAUt	caught
+! ough as aw: AU
+THAUgt	thought
+THAUt	thought
+PWRAUgt	brought
+PWRAUt	brought
+PWAUgt	bought
+PWAUt	bought
+! ough as oh: OE
+THOE	though
+TKOE	dough
+! ough as ow: OU
+TKROUgt	drought
+TKROUt	drought
+! ough as uh or oo: U
+THRU	through
+TUf	tough
+RUf	rough
+! e: E
+HE	he
+WHEpb	when
+TKPWEt	get
+HEr	her
+! e_e long: AOE
+THAOEs	these
+THAOEz	these
+HAOEr	here
+SKAOEpb	scene
+! e_e short: E
+WHEr	where
+Els	else
+SEpbs	sense
+SEfrb	serve
+! ea: AE
+TKPWRAEt	great
+AEfp	each
+TAEpl	team
+HAEd	head
+RAEd	read
+! ee: AOE
+SAOE	see
+TPHAOEd	need
+THRAOE	three
+TPAOEl	feel
+! ei eigh as eye: AOEU
+HAOEUgt	height
+HAOEUt	height
+HAO*EUs	heist
+HAOEUft	heist
+! ei eigh: AE*
+THA*Er	their
+WA*Elt	weight
+WA*Et	weight
+WA*Erd	weird
+SRA*El	veil
+! ey as ee: AOE
+KAOE	key
+! ey: AEU*
+THA*EU	they
+HA*EU	hey
+TKPWRA*EU	grey
+! ew eu: AOU
+TPAOU	few
+TPHAOU	knew
+KRAOU	crew
+TKPWRAOU	grew
+! ie as eye: AOEU*
+TAO*EU	tie
+PAO*EU	pie
+! ie as eh: E
+TPREpbd	friend
+! ie: AOE
+TPAOEld	field
+KHAOEf	chief
+PAOEs	piece
+! i long: AOEU
+TPAOEUpbd	find
+KAOEUpbd	kind
+PHAOEUpbd	mind
+KHAOEUld	child
+! i as ee: AOE
+SKAOE	ski
+KHAO*Ebg	chic
+SHAO*Ebg	chic
+! i: EU
+EUt	it
+HEUs	his
+HEUz	his
+WEUl	will
+TH*EUpbg	think
+! i_e long: AOEU
+HRAOEUbg	like
+TAOEUpl	time
+HRAOEUf	life
+TPAOEUf	five
+! i_e as ee: AOE
+KAOErb	quiche
+KWAOErb	quiche
+KHRAOEbg	clique
+! i_e short: EU
+SEUpbs	since
+TKPWEUf	give
+HR*EUf	live
+HREUf	live
+PWREUpblg	bridge
+! igh: AOEU*
+RAO*EUgt	right
+RAO*EUt	right
+HAO*EU	high
+PHAO*EUt	might
+HRAO*EUt	light
+! y long: AOEU
+PWAOEU	by
+PHAOEU	my
+WHAOEU	why
+TRAOEU	try
+! y: EU
+SKWREUpl	gym
+PH*EUt	myth
+! y_e ye uy: AOEU*
+PWAO*EU	buy
+TAO*EUp	type
+STAO*EUl	style
+TKAO*EU	dye
+! eye: AOEU*
+AO*EU	eye
+KWRAO*EU	eye
+! o: O
+TPHOt	not
+TPROpl	from
+Old	old
+PHO*s	most
+PHOft	most
+TKO	do
+! o_e long: OE
+PHOEr	more
+HOEpl	home
+HOEp	hope
+THOEs	those
+THOEz	those
+! o_e short: O
+SOpl	some
+HRO*f	love
+HROf	love
+KOpl	come
+TKOpb	done
+! oa: OE*
+RO*Ed	road
+TKPWO*El	goal
+KO*Efp	coach
+PWO*Et	boat
+! oe as oo: AOU
+SHAOU	shoe
+! oe: OE*
+TKO*Es	does
+TKO*Ez	does
+TO*E	toe
+TPO*E	foe
+! oi oy: OEU
+POEUpbt	point
+PWOEU	boy
+OEUl	oil
+SROEUs	voice
+! oo: AO
+TKPWAOd	good
+TAO	too
+HRAObg	look
+TPAOd	food
+! ou as oo: AOU
+TKPWRAOUp	group
+KWRAO*Ut	youth
+RAOUt	route
+! ou as uh: U
+KWRUpbg	young
+TUfp	touch
+! ou: OU
+OUt	out
+OUr	our
+HOUs	house
+TPOUpbd	found
+! ow as oh: OE*
+TPHO*E	know
+HRO*E	low
+TKPWRO*E	grow
+THRO*E	throw
+! ow: OU
+HOU	how
+TPHOU	now
+TKOUpb	down
+TOUpb	town
+! u: U
+PWUt	but
+SKWRUft	just
+Up	up
+PHUfp	much
+! u_e long: AOU
+KWRAOUz	use
+SHAOUr	sure
+HAOUpblg	huge
+RAOUl	rule
+! u_e short: U
+SKWRUpblg	judge
+TPHUrs	nurse
+K*Ufrb	curve
+KUfrb	curve
+! ue: AOU*
+TRAO*U	true
+TKAO*U	due
+PWHRAO*U	blue
+! ui as ih: EU
+PWEUld	build
+PWEUlt	built
+! ui: AOU
+SAOUt	suit
+TPRAOUt	fruit
+SKWRAOUs	juice
+! pairs the spelling tells apart
+SAE	sea
+SAEUl	sale
+SA*EUl	sail
+SAOEUt	site
+SAO*EUgt	sight
+SAO*EUt	sight
+ROEd	rode
+TPHO	no
+TKAOU	dew
+WOpbt	wont

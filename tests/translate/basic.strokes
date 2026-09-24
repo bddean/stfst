@@ -9,7 +9,7 @@ TR-TZ
 *T
 !undo
 *T
-PWORD
+PWOERD
 ! a Shrimple word: the entry stroke, then syllables, longest match growing
 ^
 TAP
@@ -22,7 +22,7 @@ KAT
 @KR-F
 ! the retro family, which reads the text rather than the strokes
 ! repeat-word: a connective, then the word again, spliced by the host
-PHOR
+PHOER
 ^SKP
 ! retro-words: capitalise, then close the gap, over words from three dictionaries
 ^AP
@@ -61,6 +61,6 @@ KHAOEULD
 ! The two space operations, which edit the gap already written rather than the
 ! one this record is about to open: `{*!}` takes it away and `{*?}` puts it back.
 ! The second finds nothing to do here, because the first spent the boundary.
-PHOR
+PHOER
 ATZ
 OTZ

@@ -1,0 +1,382 @@
+# The vowel theory for Typey Type: which chord a spelling takes.
+# `scripts/gen-typey-vowels.py` applies it; `~/.config/plover/VOWELS-DESIGN.md`
+# says why each rule is what it is.
+#
+# A rule names the word's vowel letters (`spelling`). `a_e` is a vowel letter
+# with a magic e (make), and a w, y or gh closing the run belongs to it (cow,
+# day, sight). A spelling with several sounds is split by `sound`, CMU's name
+# for the stressed vowel with R appended when an r follows (care is EHR). The
+# first rule that matches wins.
+#
+# The `*` in a chord is the spelling bit: a long vowel written with a second
+# vowel letter, where a magic-e or plain spelling of the same sound exists.
+
+# Words the spelling tells apart, which Typey Type told apart one pair at a time.
+pairs = [["see", "sea"], ["sale", "sail"], ["site", "sight"], ["rode", "road"],
+         ["no", "know"], ["due", "dew"], ["want", "wont"]]
+
+# --- a
+
+[[rule]]
+name = "a after w or qu"
+spelling = ["a"]
+sound = ["AA", "AH", "AAR", "AOR"]
+after = ["w", "qu"]
+chord = "A"
+examples = ["want", "watch", "war", "squad"]
+
+[[rule]]
+name = "a as aw or ah"
+spelling = ["a", "a_e"]
+sound = ["AA", "AO"]
+chord = "AU"
+examples = ["all", "talk", "call", "calm"]
+
+[[rule]]
+name = "a"
+spelling = ["a"]
+chord = "A"
+examples = ["at", "can", "back", "car"]
+
+[[rule]]
+name = "a_e long"
+spelling = ["a_e"]
+sound = ["EY", "EHR"]
+chord = "AEU"
+examples = ["make", "same", "place", "care"]
+
+[[rule]]
+name = "a_e short"
+spelling = ["a_e"]
+chord = "A"
+examples = ["large", "chance", "dance"]
+
+[[rule]]
+name = "ai"
+spelling = ["ai"]
+chord = "AEU*"
+examples = ["said", "air", "main", "paid"]
+
+[[rule]]
+name = "ay"
+spelling = ["ay"]
+chord = "AEU"
+examples = ["way", "day", "say", "play"]
+
+[[rule]]
+name = "au aw augh"
+spelling = ["au", "aw", "augh"]
+chord = "AU"
+examples = ["law", "cause", "saw", "caught"]
+
+[[rule]]
+name = "ough as aw"
+spelling = ["ough"]
+sound = ["AO", "AA"]
+chord = "AU"
+examples = ["thought", "brought", "bought"]
+
+[[rule]]
+name = "ough as oh"
+spelling = ["ough"]
+sound = ["OW"]
+chord = "OE"
+examples = ["though", "dough"]
+
+[[rule]]
+name = "ough as ow"
+spelling = ["ough"]
+sound = ["AW"]
+chord = "OU"
+examples = ["drought"]
+
+[[rule]]
+name = "ough as uh or oo"
+spelling = ["ough"]
+sound = ["AH", "UW"]
+chord = "U"
+examples = ["through", "tough", "rough"]
+
+# --- e
+
+[[rule]]
+name = "e"
+spelling = ["e"]
+chord = "E"
+examples = ["he", "when", "get", "her"]
+
+[[rule]]
+name = "e_e long"
+spelling = ["e_e"]
+sound = ["IY", "IHR", "IYR"]
+chord = "AOE"
+examples = ["these", "here", "scene"]
+
+[[rule]]
+name = "e_e short"
+spelling = ["e_e"]
+chord = "E"
+examples = ["where", "else", "sense", "serve"]
+
+[[rule]]
+name = "ea"
+spelling = ["ea"]
+chord = "AE"
+examples = ["great", "each", "team", "head", "read"]
+
+[[rule]]
+name = "ee"
+spelling = ["ee"]
+chord = "AOE"
+examples = ["see", "need", "three", "feel"]
+
+[[rule]]
+name = "ei eigh as eye"
+spelling = ["ei", "eigh"]
+sound = ["AY"]
+chord = "AOEU"
+examples = ["height", "heist"]
+
+[[rule]]
+name = "ei eigh"
+spelling = ["ei", "eigh"]
+chord = "AE*"
+examples = ["their", "weight", "weird", "veil"]
+
+[[rule]]
+name = "ey as ee"
+spelling = ["ey"]
+sound = ["IY"]
+chord = "AOE"
+examples = ["key"]
+
+[[rule]]
+name = "ey"
+spelling = ["ey"]
+chord = "AEU*"
+examples = ["they", "hey", "grey"]
+
+[[rule]]
+name = "ew eu"
+spelling = ["ew", "eu"]
+chord = "AOU"
+examples = ["few", "knew", "crew", "grew"]
+
+# --- i and y
+
+[[rule]]
+name = "ie as eye"
+spelling = ["ie"]
+sound = ["AY", "AYR"]
+chord = "AOEU*"
+examples = ["tie", "pie"]
+
+[[rule]]
+name = "ie as eh"
+spelling = ["ie"]
+sound = ["EH", "IH"]
+chord = "E"
+examples = ["friend"]
+
+[[rule]]
+name = "ie"
+spelling = ["ie"]
+chord = "AOE"
+examples = ["field", "chief", "piece"]
+
+[[rule]]
+name = "i long"
+spelling = ["i"]
+sound = ["AY", "AYR"]
+chord = "AOEU"
+examples = ["find", "kind", "mind", "child"]
+
+[[rule]]
+name = "i as ee"
+spelling = ["i"]
+sound = ["IY"]
+chord = "AOE"
+examples = ["ski", "chic"]
+
+[[rule]]
+name = "i"
+spelling = ["i"]
+chord = "EU"
+examples = ["it", "his", "will", "think"]
+
+[[rule]]
+name = "i_e long"
+spelling = ["i_e"]
+sound = ["AY", "AYR"]
+chord = "AOEU"
+examples = ["like", "time", "life", "five"]
+
+[[rule]]
+name = "i_e as ee"
+spelling = ["i_e"]
+sound = ["IY"]
+chord = "AOE"
+examples = ["quiche", "clique"]
+
+[[rule]]
+name = "i_e short"
+spelling = ["i_e"]
+chord = "EU"
+examples = ["since", "give", "live", "bridge"]
+
+[[rule]]
+name = "igh"
+spelling = ["igh"]
+chord = "AOEU*"
+examples = ["right", "high", "might", "light"]
+
+[[rule]]
+name = "y long"
+spelling = ["y"]
+sound = ["AY", "AYR"]
+chord = "AOEU"
+examples = ["by", "my", "why", "try"]
+
+[[rule]]
+name = "y"
+spelling = ["y"]
+chord = "EU"
+examples = ["gym", "myth"]
+
+[[rule]]
+name = "y_e ye uy"
+spelling = ["y_e", "ye", "uy"]
+chord = "AOEU*"
+examples = ["buy", "type", "style", "dye"]
+
+[[rule]]
+name = "eye"
+spelling = ["eye"]
+chord = "AOEU*"
+examples = ["eye"]
+
+# --- o
+
+[[rule]]
+name = "o"
+spelling = ["o"]
+chord = "O"
+examples = ["not", "from", "old", "most", "do"]
+
+[[rule]]
+name = "o_e long"
+spelling = ["o_e"]
+sound = ["OW", "AOR"]
+chord = "OE"
+examples = ["more", "home", "hope", "those"]
+
+[[rule]]
+name = "o_e short"
+spelling = ["o_e"]
+chord = "O"
+examples = ["some", "love", "come", "done"]
+
+[[rule]]
+name = "oa"
+spelling = ["oa"]
+chord = "OE*"
+examples = ["road", "goal", "coach", "boat"]
+
+[[rule]]
+name = "oe as oo"
+spelling = ["oe"]
+sound = ["UW"]
+chord = "AOU"
+examples = ["shoe"]
+
+[[rule]]
+name = "oe"
+spelling = ["oe"]
+chord = "OE*"
+examples = ["does", "toe", "foe"]
+
+[[rule]]
+name = "oi oy"
+spelling = ["oi", "oy"]
+chord = "OEU"
+examples = ["point", "boy", "oil", "voice"]
+
+[[rule]]
+name = "oo"
+spelling = ["oo"]
+chord = "AO"
+examples = ["good", "too", "look", "food"]
+
+[[rule]]
+name = "ou as oo"
+spelling = ["ou"]
+sound = ["UW"]
+chord = "AOU"
+examples = ["group", "youth", "route"]
+
+[[rule]]
+name = "ou as uh"
+spelling = ["ou"]
+sound = ["AH"]
+chord = "U"
+examples = ["young", "touch"]
+
+[[rule]]
+name = "ou"
+spelling = ["ou"]
+chord = "OU"
+examples = ["out", "our", "house", "found"]
+
+[[rule]]
+name = "ow as oh"
+spelling = ["ow"]
+sound = ["OW"]
+chord = "OE*"
+examples = ["know", "low", "grow", "throw"]
+
+[[rule]]
+name = "ow"
+spelling = ["ow"]
+chord = "OU"
+examples = ["how", "now", "down", "town"]
+
+# --- u
+
+[[rule]]
+name = "u"
+spelling = ["u"]
+chord = "U"
+examples = ["but", "just", "up", "much"]
+
+[[rule]]
+name = "u_e long"
+spelling = ["u_e"]
+sound = ["UW", "UHR"]
+chord = "AOU"
+examples = ["use", "sure", "huge", "rule"]
+
+[[rule]]
+name = "u_e short"
+spelling = ["u_e"]
+chord = "U"
+examples = ["judge", "nurse", "curve"]
+
+[[rule]]
+name = "ue"
+spelling = ["ue"]
+sound = ["UW"]
+chord = "AOU*"
+examples = ["true", "due", "blue"]
+
+[[rule]]
+name = "ui as ih"
+spelling = ["ui"]
+sound = ["IH"]
+chord = "EU"
+examples = ["build", "built"]
+
+[[rule]]
+name = "ui"
+spelling = ["ui"]
+chord = "AOU"
+examples = ["suit", "fruit", "juice"]
