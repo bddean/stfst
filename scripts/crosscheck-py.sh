@@ -31,7 +31,7 @@ if [ -n "$dict" ]; then
     python3 -c "import json,sys; print('\n'.join(json.load(open(sys.argv[1]))))" "$dict" \
         | "$stfst" tape --system "$system" | cut -f2 | grep -v '^!$' >> "$work/tapes"
 fi
-cat tests/golden/*.tsv | grep -v '^!' | cut -f1 >> "$work/tapes"
+cat tests/golden/*.tsv build/golden/*.tsv 2>/dev/null | grep -v '^!' | cut -f1 >> "$work/tapes"
 
 python3 - "$order" >> "$work/tapes" <<'PY'
 import random, sys

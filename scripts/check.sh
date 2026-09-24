@@ -62,6 +62,28 @@ diff -q /tmp/stfst-tapes-py.tsv /tmp/stfst-tapes-rs.tsv \
 echo "== plugin units"
 python3 -m unittest discover plover-plugin/tests 2>&1 | tail -3
 
+# A dictionary imported as it stands, a JSON file or a plain `.dict`, is its own
+# expectation: its entries are outline to record already. So its golden file is
+# written here from the current source rather than committed, where it was a copy
+# that went stale with every entry. What it checks is the outline parse and the
+# compile; `check-plugin.py` holds the same entries to Plover.
+echo "== source goldens"
+rm -rf build/golden
+mkdir -p build/golden
+python3 - <<'PY' | while IFS=$'\t' read -r kind name source system; do
+import os, tomllib
+recipe = tomllib.load(open("recipe.toml", "rb"))
+for d in recipe["dict"]:
+    for kind in ("json", "plain"):
+        if kind in d:
+            print(kind, d["name"], os.path.expanduser(d[kind]), recipe["system"], sep="\t")
+PY
+    [ "$kind" = json ] && sub=import || sub=plain
+    out=$($B "$sub" --system "$system" "$source" -o /dev/null --golden "build/golden/$name.tsv" 2>&1) \
+        || { echo "$out" >&2; exit 1; }
+done
+ls build/golden | wc -l | xargs echo "written:"
+
 # The Python `hfstol` reader against the Rust one, over the same kind of tape list
 # `crosscheck-ol.sh` uses. One artifact, because the answer does not vary by
 # dictionary and the whole stack would cost a minute.
@@ -76,11 +98,20 @@ scripts/crosscheck-py.sh build/dicts/typey-type.stfst systems/stenotype-extended
 for artifact in build/dicts/*.stfst; do
     dict=$(basename "$artifact" .stfst)
     echo "== $dict"
-    if [ -f "tests/golden/$dict.tsv" ]; then
-        $B test "$artifact" "tests/golden/$dict.tsv" | tail -1
+    golden=tests/golden/$dict.tsv
+    [ -f "$golden" ] || golden=build/golden/$dict.tsv
+    [ -f "$golden" ] || [ -d "tests/$dict" ] || {
+        echo "$dict has no golden file and no tests/$dict" >&2
+        exit 1
+    }
+    if [ -f "$golden" ]; then
+        $B test "$artifact" "$golden" | tail -1
         # The reverse direction has no oracle of its own; forward lookup is the check.
-        scripts/check-reverse.py "$artifact" "tests/golden/$dict.tsv"
-    elif [ -d "tests/$dict" ]; then
+        scripts/check-reverse.py "$artifact" "$golden"
+    fi
+    # `ahead`'s fixture needs the morphology artifacts, so it runs under that
+    # guard below.
+    if [ -d "tests/$dict" ] && [ "$dict" != ahead ]; then
         # A frame is shown text another dictionary wrote, so a fixture may name
         # the artifacts it needs instead of taking its own.
         if [ -f "tests/$dict/artifacts" ]; then
@@ -89,9 +120,6 @@ for artifact in build/dicts/*.stfst; do
         else
             fixtures "tests/$dict" "$artifact"
         fi
-    else
-        echo "$dict has neither tests/golden/$dict.tsv nor tests/$dict" >&2
-        exit 1
     fi
 done
 

@@ -44,6 +44,7 @@ SOURCES = {
     "repeat-idioms": "repeat-idioms.json",
     "leading-vowel": "leading-vowel.json",
     "typey-type": "typey-type-full.json",
+    "vowel-briefs": "vowel-briefs.json",
 }
 
 

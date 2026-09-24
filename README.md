@@ -262,7 +262,7 @@ fails if its JSON is stale.
 | `dictionaries/` | Hand-written dictionary source, in xfst. A `-tables.xfst` file is transcribed data with an upstream owner; the grammar over it is authored. `typey-vowels.toml` is the vowel theory's table, which a script applies to JSON. |
 | `morphology/` | `ortho.xfst`, Plover's 38 orthography rules. Not a dictionary: nothing here is over the key tape. The two lexicons beside it are generated, not committed. |
 | `recipe.toml` | The dictionary stack: what to compile, and at what priority. |
-| `tests/golden/` | Host-independent golden tests: a tape, a tab, the expected records. |
+| `tests/golden/` | Host-independent golden tests for the grammars: a tape, a tab, the expected records. An imported source's is written into `build/golden/` by `check.sh`. |
 | `tests/vowels.tsv` | The same, for what the vowel table writes, checked against typey-type. |
 | `tests/translate/` | Stroke streams and what the stack makes of them, where the answer depends on the history. |
 | `tests/retro-words/` | The same, for one dictionary whose answer reads a window of written text, which a golden file has nowhere to put. |
@@ -351,10 +351,11 @@ canonical order, and tapes through the outline parser, which can only emit steno
 order. The checks exist to catch hand-written rules.
 
 Then give it expectations, because `check.sh` fails a dictionary that has none.
-A `tests/golden/<name>.tsv` of tape, tab, record is the usual form, and
-`stfst import --golden` writes one for a JSON import. For a hand-written grammar
-whose language is too big to hold, take a subset that cycles each dimension and
-record what the artifact answers:
+A JSON or plain `.dict` source needs nothing: it is outline to record already,
+so `check.sh` writes its golden file from the source into `build/golden/` on
+each run. A grammar needs a `tests/golden/<name>.tsv` of tape, tab, record. For
+one whose language is too big to hold, take a subset that cycles each dimension
+and record what the artifact answers:
 
 ```sh
 stfst lookup build/dicts/<name>.stfst --system systems/... < outlines \

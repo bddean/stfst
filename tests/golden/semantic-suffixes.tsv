@@ -1,7 +1,0 @@
-! 4 cases from /Users/ben/.config/plover/semantic-suffixes.json. A regression file for the import pipeline,
-! not an oracle: the expectations come from our own translation
-! grammar, which is unit tested separately.
-d	[META=infl]ed[END]
-g	[META=infl]ing[END]
-s	[META=infl]ofs[END]
-z	[META=infl]ofz[END]
