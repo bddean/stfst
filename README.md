@@ -41,7 +41,7 @@ shadow a working entry.
 | commands | JSON, imported |
 | emily-modifiers | xfst over generated tables |
 | semantic-suffixes | JSON, imported |
-| leading-vowel | JSON, imported |
+| two-syllable | JSON, imported |
 | typey-type | JSON, imported |
 | and-fold | JSON, imported |
 | phrasing-tag | xfst, `#^`: the clause with a question tag |
@@ -232,9 +232,13 @@ what moved, what collided and what was displaced, and writes `tests/vowels.tsv`:
 each rule's examples at the stroke the theory gave them. `check.sh` tests that
 file against the typey-type artifact and fails if the JSON is stale.
 
-`scripts/gen-leading-vowel.py` writes `leading-vowel.json` the same way, from the
-same tagger and table: a word of two syllables stressed on the second, as one
-stroke marked with `^` (report is `^PROERT`). It reads the compiled stack to leave
+`scripts/gen-two-syllable.py` writes `two-syllable.json` the same way, from the
+same tagger and table: a word of two syllables as one stroke marked with `^`,
+the chord the stressed vowel's XOR the other vowel's letter (report is `^PROERT`,
+happy `^HAEUP`), or a prefix chord and no `^` (display is `STKPHRAEU`).
+`gen-typey-vowels.py` then moves the Typey Type outlines of the words it writes
+into `typey-superseded.json`, which Stenotype Extended does not load. Run the two
+in turn until both pass `--check`; one round is usually enough. It reads the compiled stack to leave
 a stroke another dictionary writes to it, so run it after a compile. `check.sh`
 fails if its JSON is stale.
 

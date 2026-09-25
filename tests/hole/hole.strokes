@@ -54,30 +54,30 @@ TKPW
 ! and whatever it writes lands there: a stroke, not a word.
 !buffer
 🦐+K-R
-OFPB
+^OEFPB
 !buffer
 🦐+KUR
-TPHEFR
+^TPH-FR
 !buffer
 🦐+K*R
 AULS
 !buffer
 🦐#+T-R
-OFPB
+^OEFPB
 !buffer
 🦐+HR-R
-HRAOERL
+^RAUL
 !buffer
 🦐+PH-B
-OFPB
+^OEFPB
 !buffer
 🦐+K-FPTS
-HRAOERL
+^RAUL
 
 ! With nothing after the gap there is no tail, so the stroke just follows.
 !buffer
 🦐+K
-OFPB
+^OEFPB
 
 ! ---- what the hole displaced
 !buffer

@@ -42,7 +42,7 @@ SOURCES = {
     "and-fold": "and-fold.json",
     "semantic-suffixes": "semantic-suffixes.json",
     "repeat-idioms": "repeat-idioms.json",
-    "leading-vowel": "leading-vowel.json",
+    "two-syllable": "two-syllable.json",
     "typey-type": "typey-type-full.json",
     "vowel-briefs": "vowel-briefs.json",
 }

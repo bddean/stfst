@@ -53,6 +53,8 @@ PLOVER = os.path.expanduser("~/.config/plover")
 UPSTREAM = os.path.join(PLOVER, "typey-type-upstream.json")
 OUTPUT = os.path.join(PLOVER, "typey-type-full.json")
 BRIEFS = os.path.join(PLOVER, "vowel-briefs.json")
+TWO = os.path.join(PLOVER, "two-syllable.json")
+SUPERSEDED = os.path.join(PLOVER, "typey-superseded.json")
 HERE = os.path.dirname(os.path.abspath(__file__))
 TABLE = os.path.join(HERE, "..", "dictionaries", "typey-vowels.toml")
 GOLDEN = os.path.join(HERE, "..", "tests", "vowels.tsv")
@@ -747,6 +749,37 @@ def outlines_of(d):
     return by
 
 
+def regular_forms(base, kind):
+    """The regular -s or -ed spellings of `base`."""
+    b = base
+    if kind == "s":
+        forms = {b + "es"} if b[-1:] in "sxz" or b[-2:] in ("ch", "sh") else {b + "s"}
+        if b[-1:] == "y" and b[-2:-1] not in "aeiou":
+            forms.add(b[:-1] + "ies")
+        return forms
+    forms = {b + "d" if b.endswith("e") else b + "ed"}
+    if len(b) > 2 and b[-1] not in "aeiouwxy" and b[-2] in "aeiou" and b[-3] not in "aeiou":
+        forms.add(b + b[-1] + "ed")
+    if b[-1:] == "y" and b[-2:-1] not in "aeiou":
+        forms.add(b[:-1] + "ied")
+    return forms
+
+
+def supersede(out):
+    """(out, superseded): the one-stroke outlines of a word `two-syllable.json`
+    writes, by entry or by -s or -ed fold, move to a dictionary of their own, so
+    a stack that has that rule suggests only its strokes. A stack without `^`
+    loads both."""
+    if not os.path.exists(TWO):
+        return out, {}
+    with open(TWO) as f:
+        two = json.load(f)
+    words = set(two.values())
+    words |= {f for w in two.values() for kind in "sd" for f in regular_forms(w, kind)}
+    moved = {o: t for o, t in out.items() if "/" not in o and t in words and o not in two}
+    return {o: t for o, t in out.items() if o not in moved}, moved
+
+
 def vowel_briefs(typey, out, result):
     """{stroke: word}: the upstream strokes shorter than a frequent word's
     shortest outline now, that no entry in `out` or the stack writes."""
@@ -781,21 +814,26 @@ def main():
     out = {moves.get(o, o): t for o, t in out.items()}
     golden = expectations(table, pairs, result)
     briefs = vowel_briefs(typey, out, result)
+    out, superseded = supersede(out)
     if args.check:
         with open(OUTPUT) as f:
             stale = json.load(f) != out
         with open(BRIEFS) as f:
             stale |= json.load(f) != briefs
+        with open(SUPERSEDED) as f:
+            stale |= json.load(f) != superseded
         with open(GOLDEN) as f:
             stale |= f.read() != golden
         if stale:
-            sys.exit(f"{OUTPUT}, {BRIEFS} or {GOLDEN} is stale: run {sys.argv[0]}")
+            sys.exit(f"{OUTPUT}, {BRIEFS}, {SUPERSEDED} or {GOLDEN} is stale: run {sys.argv[0]}")
         return
     write_json(out, OUTPUT)
     write_json(briefs, BRIEFS)
+    write_json(superseded, SUPERSEDED)
     with open(GOLDEN, "w") as f:
         f.write(golden)
     report(typey, out, result, displaced, counts)
+    print(f"== typey-superseded.json\n{len(superseded)} outlines of words two-syllable.json writes")
     print(f"== vowel-briefs.json\n{len(briefs)} upstream strokes kept for frequent words:")
     print("  " + " ".join(f"{o}={w}" for o, w in briefs.items()))
 

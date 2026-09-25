@@ -5,7 +5,7 @@
 ! 4 commands priority 60
 ! 5 emily-modifiers priority 50
 ! 6 semantic-suffixes priority 40
-! 7 leading-vowel priority 35
+! 7 two-syllable priority 35
 ! 8 typey-type priority 30
 ! 9 vowel-briefs priority 25
 ! 10 and-fold priority 20
@@ -59,4 +59,4 @@ KHAOEULD	1	typey-type	child	". Tap15th bored tapkat it's it is notcmore and-Notc
 PHOER	1	typey-type	more	". Tap15th bored tapkat it's it is notcmore and-Notcmore elephant in the room running RUN keep keep the tapping tappings tap ran children more"
 ATZ	1	emily-symbols	[CANCEL_SPACE]	". Tap15th bored tapkat it's it is notcmore and-Notcmore elephant in the room running RUN keep keep the tapping tappings tap ran childrenmore"
 OTZ	1	emily-symbols	[RETRO_SPACE]	". Tap15th bored tapkat it's it is notcmore and-Notcmore elephant in the room running RUN keep keep the tapping tappings tap ran childrenmore"
-! 37 strokes, 8 candidates at the widest
+! 37 strokes, 9 candidates at the widest

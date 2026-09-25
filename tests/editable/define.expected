@@ -6,7 +6,7 @@
 ! 5 commands priority 60
 ! 6 emily-modifiers priority 50
 ! 7 semantic-suffixes priority 40
-! 8 leading-vowel priority 35
+! 8 two-syllable priority 35
 ! 9 typey-type priority 30
 ! 10 vowel-briefs priority 25
 ! 11 and-fold priority 20

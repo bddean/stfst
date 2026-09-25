@@ -86,7 +86,7 @@ fn hints_offer_a_briefer_outline_for_the_trailing_phrase() {
     let mut board = Board::new(&system, &stack, None);
 
     // "little one" in two strokes; the phrases dictionary holds it in one.
-    board.push(stroke(bits(&system, "HREUl"))).expect("a stroke");
+    board.push(stroke(bits(&system, "^HRUlt"))).expect("a stroke");
     board.push(stroke(bits(&system, "WUpb"))).expect("a stroke");
     assert_eq!("little one", board.text().trim());
     let hints = board.hints(4);
