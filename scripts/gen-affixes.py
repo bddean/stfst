@@ -230,7 +230,7 @@ def build(typey, table, result):
     outlines = {w: o for w, (o, _) in found.items()}
     plurals = {w: (pl, o + "Z") for w, (o, (_, _, s)) in found.items() if (pl := plural(w, s))}
 
-    stack = g.Stack(json.load(open(g.OUTPUT)), skip=NAME)
+    stack = g.Stack(g.written(), skip=NAME)
     singles = {s for o in outlines.values() for s in o.split("/")}
     answers = stack.ask(list(outlines.values()) + [o for _, o in plurals.values()] + sorted(singles))
     said = {s: answers[s][0][1] for s in singles if answers.get(s)}

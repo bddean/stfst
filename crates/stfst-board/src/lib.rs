@@ -356,6 +356,7 @@ impl<'a> Board<'a> {
             self.text.apply(&suffix.record, &registers)?;
         }
         self.session.accept(m.dict, first.state.clone());
+        self.session.wrote(m.strokes);
 
         for event in &events {
             let Event::Cmd { name, arg } = event else {

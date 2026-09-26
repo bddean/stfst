@@ -55,9 +55,11 @@ OUTPUT = os.path.join(PLOVER, "typey-type-full.json")
 BRIEFS = os.path.join(PLOVER, "vowel-briefs.json")
 TWO = os.path.join(PLOVER, "two-syllable.json")
 SUPERSEDED = os.path.join(PLOVER, "typey-superseded.json")
+COMPOSED = os.path.join(PLOVER, "typey-composed.json")
 HERE = os.path.dirname(os.path.abspath(__file__))
 TABLE = os.path.join(HERE, "..", "dictionaries", "typey-vowels.toml")
 GOLDEN = os.path.join(HERE, "..", "tests", "vowels.tsv")
+AFFIXES = os.path.join(HERE, "..", "tests", "golden", "affixes.tsv")
 STFST = os.path.join(HERE, "..", "target", "release", "stfst")
 SYSTEM = os.path.join(HERE, "..", "systems", "stenotype-extended.toml")
 RECIPE = os.path.join(HERE, "..", "recipe.toml")
@@ -709,16 +711,18 @@ def build(typey, result):
     return out, displaced
 
 
-def expectations(table, pairs, result):
+def expectations(table, pairs, result, composed):
     """The golden file: each rule's examples and each pair, at the strokes the
-    theory gave them. An example that is not the rule's, or that lost its
+    theory gave them, less those the stack writes by composition, which the
+    artifact does not hold. An example that is not the rule's, or that lost its
     stroke, is an error in the table."""
     sys.path.insert(0, HERE)
     import plover_tape
     system = plover_tape.System.load(SYSTEM)
 
     def cases(word):
-        strokes = sorted(s for s in result.theory.get(word, ()) if result.owner[s] == word)
+        strokes = sorted(s for s in result.theory.get(word, ())
+                         if result.owner[s] == word and s not in composed)
         return [f"{system.tape(s)}\t{word}" for s in strokes]
 
     lines = [f"! What {os.path.relpath(TABLE, os.path.join(HERE, '..'))} writes, checked against",
@@ -765,19 +769,60 @@ def regular_forms(base, kind):
     return forms
 
 
+def ruled():
+    """{outline: word} of the rules that write words Typey Type also writes:
+    `two-syllable.json`, and the affix grammar as its golden file lists it."""
+    rules = {}
+    if os.path.exists(TWO):
+        with open(TWO) as f:
+            rules.update(json.load(f))
+    if os.path.exists(AFFIXES):
+        sys.path.insert(0, HERE)
+        import plover_tape
+        system = plover_tape.System.load(SYSTEM)
+        with open(AFFIXES) as f:
+            rows = [line.rstrip("\n").split("\t") for line in f if not line.startswith("!")]
+        rules.update((system.outline(tape), w) for tape, w in rows)
+    return rules
+
+
 def supersede(out):
-    """(out, superseded): the one-stroke outlines of a word `two-syllable.json`
-    writes, by entry or by -s or -ed fold, move to a dictionary of their own, so
-    a stack that has that rule suggests only its strokes. A stack without `^`
-    loads both."""
-    if not os.path.exists(TWO):
-        return out, {}
-    with open(TWO) as f:
-        two = json.load(f)
-    words = set(two.values())
-    words |= {f for w in two.values() for kind in "sd" for f in regular_forms(w, kind)}
-    moved = {o: t for o, t in out.items() if "/" not in o and t in words and o not in two}
+    """(out, superseded): the outlines of a word a rule writes, by entry or by -s
+    or -ed fold, that are as long as the rule's, move to a dictionary of their
+    own, so a stack that has the rule suggests only its outline. A shorter one is
+    a brief and stays. A stack without the rules loads both."""
+    rules = ruled()
+    strokes = lambda o: o.count("/") + 1
+    length = {}
+    for o, w in rules.items():
+        for f in {w} | {f for kind in "sd" for f in regular_forms(w, kind)}:
+            length[f] = min(length.get(f, strokes(o)), strokes(o))
+    moved = {o: t for o, t in out.items() if length.get(t) == strokes(o) and o not in rules}
     return {o: t for o, t in out.items() if o not in moved}, moved
+
+
+def written():
+    """{outline: translation} of Typey Type as the stack writes it: the JSON,
+    and the composed entries, whose outlines still write what they did."""
+    with open(OUTPUT) as f:
+        out = json.load(f)
+    if os.path.exists(COMPOSED):
+        with open(COMPOSED) as f:
+            out.update(json.load(f))
+    return out
+
+
+def decompose(out):
+    """(out, composed): the entries `typey-composed.json` lists, where they still
+    write what it says, leave `out`. Which ones is `scripts/find-typey-composed.py`'s
+    question, because only Plover can answer it: with the entry gone, the stack
+    writes the same text stroke by stroke."""
+    if not os.path.exists(COMPOSED):
+        return out, {}
+    with open(COMPOSED) as f:
+        listed = json.load(f)
+    composed = {o: t for o, t in out.items() if listed.get(o) == t}
+    return {o: t for o, t in out.items() if o not in composed}, composed
 
 
 def vowel_briefs(typey, out, result):
@@ -812,9 +857,10 @@ def main():
     out, displaced = build(typey, result)
     moves, counts = resolve_long(typey, result, table, dict(out))
     out = {moves.get(o, o): t for o, t in out.items()}
-    golden = expectations(table, pairs, result)
     briefs = vowel_briefs(typey, out, result)
     out, superseded = supersede(out)
+    out, composed = decompose(out)
+    golden = expectations(table, pairs, result, composed)
     if args.check:
         with open(OUTPUT) as f:
             stale = json.load(f) != out
@@ -822,18 +868,22 @@ def main():
             stale |= json.load(f) != briefs
         with open(SUPERSEDED) as f:
             stale |= json.load(f) != superseded
+        with open(COMPOSED) as f:
+            stale |= json.load(f) != composed
         with open(GOLDEN) as f:
             stale |= f.read() != golden
         if stale:
-            sys.exit(f"{OUTPUT}, {BRIEFS}, {SUPERSEDED} or {GOLDEN} is stale: run {sys.argv[0]}")
+            sys.exit(f"{OUTPUT}, {BRIEFS}, {SUPERSEDED}, {COMPOSED} or {GOLDEN} is stale: run {sys.argv[0]}")
         return
     write_json(out, OUTPUT)
     write_json(briefs, BRIEFS)
     write_json(superseded, SUPERSEDED)
+    write_json(composed, COMPOSED)
     with open(GOLDEN, "w") as f:
         f.write(golden)
     report(typey, out, result, displaced, counts)
-    print(f"== typey-superseded.json\n{len(superseded)} outlines of words two-syllable.json writes")
+    print(f"== typey-superseded.json\n{len(superseded)} outlines of words two-syllable.json and the affix grammar write")
+    print(f"== typey-composed.json\n{len(composed)} entries the stack writes stroke by stroke")
     print(f"== vowel-briefs.json\n{len(briefs)} upstream strokes kept for frequent words:")
     print("  " + " ".join(f"{o}={w}" for o, w in briefs.items()))
 

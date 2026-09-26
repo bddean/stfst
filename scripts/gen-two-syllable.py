@@ -289,8 +289,7 @@ def build(typey, table, result):
         z[b] = max(z[b], z[w])
     strokes = {w: s for w, s in sorted(strokes.items())
                if z[w] >= MIN_ZIPF and (w in base or not inflection(w, typey.known))}
-    with open(g.OUTPUT) as f:
-        stack = g.Stack(json.load(f))
+    stack = g.Stack(g.written())
     answers = stack.ask(strokes.values())
     retro = reserved()
     others = {}

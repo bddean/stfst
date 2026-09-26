@@ -11,6 +11,10 @@
 //! `t - 1` cannot be live at `t`, so the oldest live start never moves back, and
 //! replaying from the one recorded per stroke rebuilds the state exactly.
 //!
+//! A match begins where a unit the host wrote begins, as Plover's translator
+//! combines whole translations: a stroke inside a unit is not a start, or `-G`
+//! after `STEUP/HRAEUT` would read `HRAEUT/-G` over a stroke already spent.
+//!
 //! What the host says before the keys rides in a frame per stroke, for the same
 //! reason: a candidate that opened at stroke `p` must read the context and the
 //! state as they were at `p`, and replay has to reproduce them. So undo is a pop
@@ -104,6 +108,11 @@ pub struct Session<'a> {
     /// `frames[i]` is what a candidate opening at stroke `i` reads. The last one
     /// is current, so there is always one more frame than stroke.
     frames: Vec<Frame>,
+    /// Where each unit the host has written begins, oldest first.
+    starts: Vec<usize>,
+    /// Per stroke, the starts a unit ending there took over, for undo to put
+    /// back.
+    replaced: Vec<Vec<usize>>,
 }
 
 impl<'a> Session<'a> {
@@ -119,6 +128,8 @@ impl<'a> Session<'a> {
                 enabled: vec![true; stack.dicts().len()],
                 solo: None,
             }],
+            starts: Vec::new(),
+            replaced: Vec::new(),
         }
     }
 
@@ -143,6 +154,24 @@ impl<'a> Session<'a> {
     /// does not: a dictionary can offer several, and choosing is the host's.
     pub fn accept(&mut self, dict: usize, state: Option<State>) {
         self.frames.last_mut().expect("a current frame").state[dict] = state;
+    }
+
+    /// Say that the host wrote the last `strokes` strokes as one unit, so no later
+    /// match begins inside it. A stroke the host wrote nothing for is a unit of
+    /// its own.
+    pub fn wrote(&mut self, strokes: usize) {
+        let Some(newest) = self.history.len().checked_sub(1) else {
+            return;
+        };
+        let start = (newest + 1).saturating_sub(strokes);
+        let from = self.starts.partition_point(|&s| s < start);
+        self.replaced[newest] = self.starts.split_off(from);
+        self.starts.push(start);
+    }
+
+    /// Whether a match may begin at `start`.
+    fn begins_unit(&self, start: usize) -> bool {
+        self.starts.binary_search(&start).is_ok()
     }
 
     /// Turn dictionaries on and off, which is what `plover-dict-commands` does.
@@ -206,6 +235,8 @@ impl<'a> Session<'a> {
         }
         self.live.retain(|l| l.cursor.live() > 0);
         self.history.push(stroke);
+        self.starts.push(self.history.len() - 1);
+        self.replaced.push(Vec::new());
         self.open_at(self.history.len() - 1);
         let newest = self.history.len() - 1;
         let oldest = self.live.iter().map(|l| l.start).min().unwrap_or(newest);
@@ -222,6 +253,11 @@ impl<'a> Session<'a> {
         let stroke = self.history.pop()?;
         self.oldest.pop();
         self.frames.pop();
+        self.starts.pop();
+        let mut replaced = self.replaced.pop().unwrap_or_default();
+        // The last one taken over is this stroke's own start.
+        replaced.pop();
+        self.starts.extend(replaced);
         self.live.clear();
         let end = self.history.len();
         if end > 0 {
@@ -252,7 +288,7 @@ impl<'a> Session<'a> {
         let mut best: Option<(&Live, Vec<Vec<stfst_ol::Sym>>, Option<Window>)> = None;
         let now = self.history.len().saturating_sub(1);
         for live in &self.live {
-            if best.as_ref().is_some_and(|(b, _, _)| live.start >= b.start) {
+            if best.as_ref().is_some_and(|(b, _, _)| live.start >= b.start) || !self.begins_unit(live.start) {
                 continue;
             }
             // A stroke that turns a dictionary off stops it answering at once,
@@ -313,7 +349,7 @@ impl<'a> Session<'a> {
             let Some(shown) = self.stack.dict(live.dict).shown() else {
                 continue;
             };
-            if !shown.deferred() || !self.enabled(now, live.dict) {
+            if !shown.deferred() || !self.enabled(now, live.dict) || !self.begins_unit(live.start) {
                 continue;
             }
             if best.is_some_and(|(b, _)| live.start >= b.start) {
@@ -388,7 +424,7 @@ impl<'a> Session<'a> {
             // stroke as written: `SEFRB/R-GSZ` folds to `SEFRB/R-GS`, and its
             // cursor died on `R-GSZ`.
             let oldest = newest.checked_sub(1).map_or(newest, |p| self.oldest[p]);
-            for start in oldest..=newest {
+            for start in (oldest..=newest).filter(|&s| self.begins_unit(s)) {
                 for (dict, slot) in self.stack.dicts().iter().enumerate() {
                     if !self.enabled(newest, dict) || best.as_ref().is_some_and(|b| start >= b.1) {
                         continue;
@@ -503,6 +539,9 @@ impl<'a> Session<'a> {
                 // Shorter matches from here on, so once one cannot win none can.
                 if !wins(start, dict, best) {
                     break;
+                }
+                if !self.begins_unit(start) {
+                    continue;
                 }
                 if let Some(record) = editable.lookup(&self.history[start..]) {
                     best = Some((start, dict));

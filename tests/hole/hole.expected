@@ -1,7 +1,8 @@
-! 0 two-syllable priority 35
-! 1 typey-type priority 30
-! 2 phrasing-tag priority 11
-! 3 phrasing priority 10
+! 0 semantic-suffixes priority 40
+! 1 two-syllable priority 35
+! 2 typey-type priority 30
+! 3 phrasing-tag priority 11
+! 4 phrasing priority 10
 !buffer	""
 +T-RG	1	phrasing	it[AFTER][META=infl]s[END][END]	"it -s"
 RUPB	1	typey-type	run	"it runs"
@@ -82,7 +83,7 @@ KAT	1	typey-type	cat	"the cat adds"
 +PR-B	1	phrasing	adds	"the cat adds"
 !buffer	""
 +SPR-B	1	phrasing	the[AFTER]add[END]	"the add"
-KATS	1	typey-type	cats	"the cats add"
+KATS	1	typey-type+[META=infl]ofs[END]	cat	"the cats add"
 +SPR-B	1	phrasing	add	"the cats add"
 !buffer	""
 +KP-B	1	phrasing	a[AFTER]adds[END]	"a adds"

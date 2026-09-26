@@ -234,6 +234,16 @@ The same run writes `vowel-briefs.json`, imported as `vowel-briefs` below
 typey-type: the shorter upstream strokes of the frequent words the theory
 lengthened, kept only where no entry in the stack writes them.
 
+It also leaves out what a rule writes. An outline of a word `two-syllable.json`
+or `affixes` writes, as long as the rule's, moves to `typey-superseded.json`,
+which Stenotype Extended does not load. An entry whose strokes the stack writes
+the same without it, `RAOE/HROEBGTS` relocates being {re^} then locates, moves to
+`typey-composed.json`, which neither system loads. Which entries those are is
+Plover's question, since the stack's meaning of a fold is
+`plover-semantic-suffixes`, so `scripts/find-typey-composed.py` runs under
+Plover's python and asks both systems' real translator, then the vowel generator
+runs again to drop what it found.
+
 The generator needs cmudict and wordfreq, which the phrasing venv has. It prints
 what moved, what collided and what was displaced, and writes `tests/vowels.tsv`:
 each rule's examples at the stroke the theory gave them. `check.sh` tests that
@@ -243,9 +253,9 @@ file against the typey-type artifact and fails if the JSON is stale.
 same tagger and table: a word of two syllables as one stroke marked with `^`,
 the chord the stressed vowel's XOR the other vowel's letter (report is `^PROERT`,
 happy `^HAEUP`), or a prefix chord and no `^` (display is `STKPHRAEU`).
-`gen-typey-vowels.py` then moves the Typey Type outlines of the words it writes
-into `typey-superseded.json`, which Stenotype Extended does not load. Run the two
-in turn until both pass `--check`; one round is usually enough. It reads the compiled stack to leave
+`gen-typey-vowels.py` then supersedes the Typey Type outlines of the words it
+writes. Run the two in turn until both pass `--check`; one round is usually
+enough. It reads the compiled stack to leave
 a stroke another dictionary writes to it, so run it after a compile. `check.sh`
 fails if its JSON is stale.
 

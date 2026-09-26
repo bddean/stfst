@@ -7,7 +7,7 @@ embedded host imports.
 ## Longest match without a longest key
 
 Plover stores `LONGEST_KEY` per dictionary and, on each stroke, looks up every
-suffix of the history from that length down. It has to: a hash table can answer
+run of recent translations from that length down. It has to: a hash table can answer
 "is this an entry" and not "is this the start of one", so there is no way to know
 when to stop reaching back.
 
@@ -27,6 +27,13 @@ Measured over 9,407 strokes of `typey-type` outlines with `emily-symbols` on top
 
 Five candidates, and that covers matches up to seven strokes long. The 12.5 us
 includes parsing the outlines, both dictionaries, and printing.
+
+A candidate may open at every stroke, but a match may only begin where a unit
+the host wrote begins, which is Plover's rule too: its translator combines whole
+translations and never splits one. The host says what it wrote with
+`Session::wrote`. Without that, `-G` after `STEUP/HRAEUT` (stipulate) read
+`HRAEUT/-G` ({^ulating}) over a stroke already spent, and wrote
+"stipulatulating".
 
 Dead being permanent is also what makes undo cheap. A start that died at `t - 1`
 cannot be live at `t`, so the oldest live start never moves backwards. Recording

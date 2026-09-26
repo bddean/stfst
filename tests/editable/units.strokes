@@ -1,0 +1,8 @@
+! A match begins where a unit the host wrote begins, as in Plover. With both
+! outlines defined, the third stroke is not read as `SKWR*/TKPW*`: its first
+! stroke already belongs to `STPHR*/SKWR*`.
+!define STPHR*/SKWR* alpha
+!define SKWR*/TKPW* beta
+STPHR*
+SKWR*
+TKPW*
