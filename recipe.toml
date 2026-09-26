@@ -48,6 +48,11 @@ priority = 35
 json = "~/.config/plover/two-syllable.json"
 
 [[dict]]
+name = "affixes"
+priority = 33
+json = "~/.config/plover/affixes.json"
+
+[[dict]]
 name = "typey-type"
 priority = 30
 json = "~/.config/plover/typey-type-full.json"

@@ -181,47 +181,50 @@ def prefixed(word, pron):
 
 def stroke_for(word, table, coda):
     """The rule's stroke for `word`, or None when the word is not in its scope."""
-    for pron in g.prons(word):
-        if sum(p[-1].isdigit() for p in pron) == 2 and (pre := prefixed(word, pron)):
-            keys, (onset, sound, co), sp = pre
-            rule = g.rule_for(table, sp, sound)
-            right = coda(co, re.sub(r"g?h$", "", sp.coda)) if co else ("", False)
-            if not rule or right is None or any(p not in LEFT for p in onset):
-                continue
-            left = set(keys)
-            for p in onset:
-                left |= set(LEFT[p])
-            return str(g.Stroke("".join(k for k in "STKPWHR" if k in left), rule.keys,
-                                rule.star or right[1], right[0]))
-        if two := second_stressed(pron):
-            rest, hiatus = two
-            parts = split(word, hiatus)
-            st = g.stressed(rest)
-            if not parts or not st:
-                continue
-            other, sp = parts
-            onset, sound, co = st
-            letters = re.sub(r"g?h$", "", sp.coda)
-        elif one := first_stressed(word, pron):
-            onset, sound, co, sp, other = one
-            letters = None
-        else:
-            continue
+    return next((s for pron in g.prons(word) if (s := stroke_of(word, pron, table, coda))), None)
+
+
+def stroke_of(word, pron, table, coda):
+    """The rule's stroke for a spelling with this pronunciation, or None."""
+    if sum(p[-1].isdigit() for p in pron) == 2 and (pre := prefixed(word, pron)):
+        keys, (onset, sound, co), sp = pre
         rule = g.rule_for(table, sp, sound)
-        right = coda(co, letters) if co else ("", False)
+        right = coda(co, re.sub(r"g?h$", "", sp.coda)) if co else ("", False)
         if not rule or right is None or any(p not in LEFT for p in onset):
-            continue
-        left = set()
+            return None
+        left = set(keys)
         for p in onset:
-            left |= set("S" if p == "Z" and "z" not in word else LEFT[p])
-        vowel = set(rule.keys) ^ set(LETTER.get(other[0], ""))
-        keys, star = right
-        stroke = g.Stroke("".join(k for k in "STKPWHR" if k in left),
-                          "".join(k for k in "AOEU" if k in vowel), rule.star or star, keys)
-        if str(stroke) in ("-", "*"):
-            continue
-        return "^" + str(stroke).rstrip("-")
-    return None
+            left |= set(LEFT[p])
+        return str(g.Stroke("".join(k for k in "STKPWHR" if k in left), rule.keys,
+                            rule.star or right[1], right[0]))
+    if two := second_stressed(pron):
+        rest, hiatus = two
+        parts = split(word, hiatus)
+        st = g.stressed(rest)
+        if not parts or not st:
+            return None
+        other, sp = parts
+        onset, sound, co = st
+        letters = re.sub(r"g?h$", "", sp.coda)
+    elif one := first_stressed(word, pron):
+        onset, sound, co, sp, other = one
+        letters = None
+    else:
+        return None
+    rule = g.rule_for(table, sp, sound)
+    right = coda(co, letters) if co else ("", False)
+    if not rule or right is None or any(p not in LEFT for p in onset):
+        return None
+    left = set()
+    for p in onset:
+        left |= set("S" if p == "Z" and "z" not in word else LEFT[p])
+    vowel = set(rule.keys) ^ set(LETTER.get(other[0], ""))
+    keys, star = right
+    stroke = g.Stroke("".join(k for k in "STKPWHR" if k in left),
+                      "".join(k for k in "AOEU" if k in vowel), rule.star or star, keys)
+    if str(stroke) in ("-", "*"):
+        return None
+    return "^" + str(stroke).rstrip("-")
 
 
 # --- Inflections ---------------------------------------------------------------

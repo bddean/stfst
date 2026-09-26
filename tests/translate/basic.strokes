@@ -64,3 +64,7 @@ KHAOEULD
 PHOER
 ATZ
 OTZ
+! A suffix key folds onto the last stroke of a longer outline, as in Plover:
+! department is `PART/TK-PLT`, and the cursor that read `PART` died on `TK-PLTS`.
+PART
+TK-PLTS

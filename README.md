@@ -42,6 +42,7 @@ shadow a working entry.
 | emily-modifiers | xfst over generated tables |
 | semantic-suffixes | JSON, imported |
 | two-syllable | JSON, imported |
+| affixes | JSON, imported |
 | typey-type | JSON, imported |
 | and-fold | JSON, imported |
 | phrasing-tag | xfst, `#^`: the clause with a question tag |
@@ -241,6 +242,13 @@ into `typey-superseded.json`, which Stenotype Extended does not load. Run the tw
 in turn until both pass `--check`; one round is usually enough. It reads the compiled stack to leave
 a stroke another dictionary writes to it, so run it after a compile. `check.sh`
 fails if its JSON is stale.
+
+`scripts/gen-affixes.py` writes `affixes.json` from the same pieces: a word with a
+prefix and a suffix as the stem's stroke, then one vowelless stroke with the
+prefix on the left bank and the suffix on the right (reservation is
+`SEFRB/R-GS`). It counts n-grams in `~/.config/plover/phrasing/corpora` to leave
+out an outline whose two strokes, read apart, are text someone writes. Run it
+after `gen-two-syllable.py` and a compile; `check.sh` fails if its JSON is stale.
 
 ## Measurements and decisions
 

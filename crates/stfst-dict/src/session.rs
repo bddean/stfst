@@ -384,7 +384,10 @@ impl<'a> Session<'a> {
             if bare.is_empty() {
                 continue;
             }
-            let oldest = self.oldest.get(newest).copied().unwrap_or(newest);
+            // A start live before the last stroke, whether or not it survived the
+            // stroke as written: `SEFRB/R-GSZ` folds to `SEFRB/R-GS`, and its
+            // cursor died on `R-GSZ`.
+            let oldest = newest.checked_sub(1).map_or(newest, |p| self.oldest[p]);
             for start in oldest..=newest {
                 for (dict, slot) in self.stack.dicts().iter().enumerate() {
                     if !self.enabled(newest, dict) || best.as_ref().is_some_and(|b| start >= b.1) {
