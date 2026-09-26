@@ -1,0 +1,47 @@
+! Affixes: a word with a prefix and a suffix, written as the stem's stroke and
+! then one stroke holding both affixes, the prefix on the left bank and the
+! suffix on the right. reservation is serve `SEFRB`, then re…ation `R-GS`.
+!
+! affixes-lexicon.xfst is scripts/gen-affixes.py's, and holds what is not a rule:
+! each affix's keys from affixes.toml, and the words, each as its stem's stroke
+! and the word cut into prefix, stem and suffix, `SEfrb|re|serv|ation`. Which
+! words, and which stroke writes a stem, the script decides by CMU and by what
+! the rest of the stack writes. What an entry of the lexicon is written as, and
+! what it writes, is here.
+!
+! The orthography rules come first in the recipe, because a plural is a join.
+
+define Bar      "|" ;
+define Letters  [ a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z ]+ ;
+
+! The outline: the stem's stroke, then the affix keys. The prefix's keys sit
+! before the suffix's in steno order, and neither has a vowel, so writing them
+! in turn is the stroke.
+define Written  [ Stroke [ Bar .x. Sep ] AffixPrefix [ [ Bar Letters Bar ] .x. 0 ] AffixSuffix ] ;
+
+! The word: prefix, stem and suffix in turn.
+define Spelled  [ [ [ Stroke Bar ] .x. 0 ] Letters [ Bar .x. 0 ] Letters [ Bar .x. 0 ] Letters ] ;
+
+define Entry(Lex, Out, Word)  [ [ Lex .o. Out ].i .o. [ Lex .o. Word ] ] ;
+
+! A plural. -S folds onto any affix stroke whose keys lack it and writes the
+! plural there, so only a countable suffix with S in its keys needs one here,
+! and it goes on -Z: conditions is `TKEU/K-GSZ`.
+define WithS    [ AffixSuffix .o. [ ?* s ?* ] ].u ;
+define Plurals  [ AffixWords & [ ?* Bar [ AffixCountable & WithS ] ] ] ;
+
+! The -s joins as `{^s}` would, by Plover's orthography: a rule's candidate,
+! else the plain join.
+define RTag     [ "[R=1]" | "[R=2]" | "[R=3]" | "[R=4]" | "[R=5]" | "[R=6]" | "[R=7]"
+                | "[R=8]" | "[R=9]" | "[R=10]" | "[R=11]" | "[R=12]" | "[R=13]"
+                | "[R=14]" | "[R=15]" | "[R=16]" | "[R=17]" | "[R=18]" | "[R=19]"
+                | "[R=20]" | "[R=21]" | "[R=22]" | "[R=23]" | "[R=24]" | "[R=25]"
+                | "[R=26]" | "[R=27]" | "[R=28]" | "[R=29]" | "[R=30]" | "[R=31]"
+                | "[R=32]" | "[R=33]" | "[R=34]" | "[R=35]" | "[R=36]" | "[R=37]"
+                | "[R=38]" ] ;
+define Join     PU([ Ortho .o. [ [ RTag .x. 0 ] L* ] ], [ L* [ Seam .x. 0 ] L* ]) ;
+define PluralWritten  [ Written [ 0 .x. z ] ] ;
+define PluralSpelled  [ [ Spelled [ 0 .x. [ Seam s ] ] ] .o. Join ] ;
+
+define Grammar [ Entry(AffixWords, Written, Spelled)
+               | Entry(Plurals, PluralWritten, PluralSpelled) ] ;

@@ -26,7 +26,7 @@ define Kill(X)  [ X .x. 0 ] ;
 
 ! ---- the alphabet
 !
-! `.` in a Python regex matches anything, and the tempting translation is `\Sep`,
+! `.` in a Python regex matches anything, and the tempting translation is `\Seam`,
 ! any symbol but the separator. That would put an unknown-symbol arc in the
 ! artifact, and the runtime reader refuses those on purpose, so the alphabet is
 ! enumerated instead: it is closed, and being closed is what a host can check.
@@ -38,7 +38,9 @@ define Letter   [ a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z ] ;
 define Foreign  [ à|á|â|ä|å|ç|è|é|ê|ë|í|î|ï|ñ|ó|ô|ö|ø|ù|ú|û|ü ] ;
 define Digit    [ "0"|1|2|3|4|5|6|7|8|9 ] ;
 define L        [ Letter | Foreign | Digit | "'" | "-" ] ;
-define Sep      "^" ;
+! Not `Sep`: a dictionary grammar includes this file, and there `Sep` is the
+! prelude's stroke separator.
+define Seam     "^" ;
 define V        [ a|e|i|o|u ] ;
 
 ! The consonant sets, each named for the rules that use it rather than for a
@@ -59,19 +61,19 @@ define Double   [ [b .x. {bb}] | [c .x. {cc}] | [d .x. {dd}] | [f .x. {ff}]
 ! "copy". What each rule spells out is only the join.
 
 ! 1. ^(.*[aeiou]c) ^ ly$ -> \1ally
-define R1  [ L* V c ] [ [Sep {ly}] .x. {ally} ] ;
+define R1  [ L* V c ] [ [Seam {ly}] .x. {ally} ] ;
 ! 2. ^(.+[aeioubmnp])le ^ ly$ -> \1ly
-define R2  [ L+ [V|b|m|n|p] ] [ [{le} Sep {ly}] .x. {ly} ] ;
+define R2  [ L+ [V|b|m|n|p] ] [ [{le} Seam {ly}] .x. {ly} ] ;
 ! 3. ^(.*t)e ^ (ry|ary)$ -> \1ory
-define R3  [ L* t ] [ [e Sep [{ry}|{ary}]] .x. {ory} ] ;
+define R3  [ L* t ] [ [e Seam [{ry}|{ary}]] .x. {ory} ] ;
 ! 4. ^(.+)m ^ tor(y|ily)$ -> \1mator\2
-define R4  [ L+ ] [ [m Sep {tor}] .x. {mator} ] [ {y} | {ily} ] ;
+define R4  [ L+ ] [ [m Seam {tor}] .x. {mator} ] [ {y} | {ily} ] ;
 ! 5. ^(.+)se ^ ar(y|ies)$ -> \1sor\2
-define R5  [ L+ ] [ [{se} Sep {ar}] .x. {sor} ] [ {y} | {ies} ] ;
+define R5  [ L+ ] [ [{se} Seam {ar}] .x. {sor} ] [ {y} | {ies} ] ;
 ! 6. ^(.*[naeiou])te? ^ cy$ -> \1cy
-define R6  [ L* [n|V] ] [ [t (e) Sep {cy}] .x. {cy} ] ;
+define R6  [ L* [n|V] ] [ [t (e) Seam {cy}] .x. {cy} ] ;
 ! 7. ^(.*(?:s|sh|x|z|zh)) ^ s$ -> \1es
-define R7  [ L* [s|{sh}|x|z|{zh}] ] [ [Sep s] .x. {es} ] ;
+define R7  [ L* [s|{sh}|x|z|{zh}] ] [ [Seam s] .x. {es} ] ;
 ! 8. ^(.*(?:oa|ea|i|ee|oo|au|ou|l|n|(?<![gin]a)r|t)ch) ^ s$ -> \1es
 !
 ! The lookbehind: a `ch` takes `es` when it is pronounced as one, and an `r`
@@ -80,78 +82,78 @@ define R7  [ L* [s|{sh}|x|z|{zh}] ] [ [Sep s] .x. {es} ] ;
 ! directly, which is the whole reason these rules belong in an automaton.
 define Soft8 [ L* [{oa}|{ea}|i|{ee}|{oo}|{au}|{ou}|l|n|t] ] ;
 define R8r   [ [ L* - [ L* [g|i|n] a ] ] r ] ;
-define R8  [ [Soft8 | R8r] {ch} ] [ [Sep s] .x. {es} ] ;
+define R8  [ [Soft8 | R8r] {ch} ] [ [Seam s] .x. {es} ] ;
 ! 9. ^(.+[bcdfghjklmnpqrstvwxz])y ^ s$ -> \1ies
-define R9  [ L+ C9 ] [ [y Sep s] .x. {ies} ] ;
+define R9  [ L+ C9 ] [ [y Seam s] .x. {ies} ] ;
 ! 10. ^(.+)ie ^ ing$ -> \1ying
-define R10 [ L+ ] [ [{ie} Sep {ing}] .x. {ying} ] ;
+define R10 [ L+ ] [ [{ie} Seam {ing}] .x. {ying} ] ;
 ! 11. ^(.+[cdfghlmnpr])y ^ ist$ -> \1ist
-define R11 [ L+ [c|d|f|g|h|l|m|n|p|r] ] [ [y Sep {ist}] .x. {ist} ] ;
+define R11 [ L+ [c|d|f|g|h|l|m|n|p|r] ] [ [y Seam {ist}] .x. {ist} ] ;
 ! 12. ^(.+[bcdfghjklmnpqrstvwxz])y ^ ([a-hj-xz].*)$ -> \1i\2
-define R12 [ L+ C9 ] [ [y Sep] .x. i ] [ [Letter - [i|y]] L* ] ;
+define R12 [ L+ C9 ] [ [y Seam] .x. i ] [ [Letter - [i|y]] L* ] ;
 ! 13. ^(.+)te ^ en$ -> \1tten
-define R13 [ L+ ] [ [{te} Sep {en}] .x. {tten} ] ;
+define R13 [ L+ ] [ [{te} Seam {en}] .x. {tten} ] ;
 ! 14. ^(.+[ae]) ^ e(n|ns)$ -> \1\2
-define R14 [ L+ [a|e] ] Kill([Sep e]) [ n | {ns} ] ;
+define R14 [ L+ [a|e] ] Kill([Seam e]) [ n | {ns} ] ;
 ! 15. ^(.+)y ^ (ial|ially)$ -> \1\2
-define R15 [ L+ ] Kill([y Sep]) [ {ial} | {ially} ] ;
+define R15 [ L+ ] Kill([y Seam]) [ {ial} | {ially} ] ;
 ! 16. ^(.+i) ^ if(y|ying|ied|ies|ication|ications)$ -> \1f\2
 define IFY [ {y} | {ying} | {ied} | {ies} | {ication} | {ications} ] ;
-define R16 [ L+ i ] [ [Sep i f] .x. f ] IFY ;
+define R16 [ L+ i ] [ [Seam i f] .x. f ] IFY ;
 ! 17. ^(.*[^aeiou])y ^ if(y|...)$ -> \1if\2
-define R17 [ L* [L - V] ] Kill([y Sep]) {if} IFY ;
+define R17 [ L* [L - V] ] Kill([y Seam]) {if} IFY ;
 ! 18. ^(.+)ic ^ (ical|ically)$ -> \1\2
-define R18 [ L+ ] Kill([{ic} Sep]) [ {ical} | {ically} ] ;
+define R18 [ L+ ] Kill([{ic} Seam]) [ {ical} | {ically} ] ;
 ! 19. ^(.+)ology ^ ic(al|ally)$ -> \1ologic\2
-define R19 [ L+ ] {olog} Kill([y Sep]) {ic} [ {al} | {ally} ] ;
+define R19 [ L+ ] {olog} Kill([y Seam]) {ic} [ {al} | {ally} ] ;
 ! 20. ^(.*)ry ^ ica(l|lly|lity)$ -> \1rica\2
-define R20 [ L* ] r Kill([y Sep]) {ica} [ l | {lly} | {lity} ] ;
+define R20 [ L* ] r Kill([y Seam]) {ica} [ l | {lly} | {lity} ] ;
 ! 21. ^(.*[l]) ^ is(t|ts)$ -> \1is\2
-define R21 [ L* l ] Kill(Sep) {is} [ t | {ts} ] ;
+define R21 [ L* l ] Kill(Seam) {is} [ t | {ts} ] ;
 ! 22. ^(.*)ry ^ ity$ -> \1rity
-define R22 [ L* ] r Kill([y Sep]) {ity} ;
+define R22 [ L* ] r Kill([y Seam]) {ity} ;
 ! 23. ^(.*)l ^ ity$ -> \1lity
-define R23 [ L* ] l Kill(Sep) {ity} ;
+define R23 [ L* ] l Kill(Seam) {ity} ;
 ! 24. ^(.+)rm ^ tiv(e|ity|ities)$ -> \1rmativ\2
 define TIV [ e | {ity} | {ities} ] ;
-define R24 [ L+ ] {rm} [ Sep .x. a ] {tiv} TIV ;
+define R24 [ L+ ] {rm} [ Seam .x. a ] {tiv} TIV ;
 ! 25. ^(.+)e ^ tiv(e|ity|ities)$ -> \1ativ\2
-define R25 [ L+ ] [ [e Sep] .x. a ] {tiv} TIV ;
+define R25 [ L+ ] [ [e Seam] .x. a ] {tiv} TIV ;
 ! 26. ^(.+)y ^ iz(e|es|ing|ed|er|ers|ation|ations|able|ability)$ -> \1iz\2
 define IZ1 [ e|{es}|{ing}|{ed}|{er}|{ers}|{ation}|{ations}|{able}|{ability} ] ;
-define R26 [ L+ ] Kill([y Sep]) {iz} IZ1 ;
+define R26 [ L+ ] Kill([y Seam]) {iz} IZ1 ;
 ! 27. the same with `is`
-define R27 [ L+ ] Kill([y Sep]) {is} IZ1 ;
+define R27 [ L+ ] Kill([y Seam]) {is} IZ1 ;
 ! 28. ^(.+)al ^ iz(e|ed|es|ing|er|ers|ation|ations|m|ms|able|ability|abilities)$
 define IZ2 [ e|{ed}|{es}|{ing}|{er}|{ers}|{ation}|{ations}|m|{ms}
            | {able}|{ability}|{abilities} ] ;
-define R28 [ L+ ] {al} Kill(Sep) {iz} IZ2 ;
+define R28 [ L+ ] {al} Kill(Seam) {iz} IZ2 ;
 ! 29. the same with `is`
-define R29 [ L+ ] {al} Kill(Sep) {is} IZ2 ;
+define R29 [ L+ ] {al} Kill(Seam) {is} IZ2 ;
 ! 30. ^(.+)ar ^ iz(e|ed|es|ing|er|ers|ation|ations|m|ms)$ -> \1ariz\2
 define IZ3 [ e|{ed}|{es}|{ing}|{er}|{ers}|{ation}|{ations}|m|{ms} ] ;
-define R30 [ L+ ] {ar} Kill(Sep) {iz} IZ3 ;
+define R30 [ L+ ] {ar} Kill(Seam) {iz} IZ3 ;
 ! 31. the same with `is`
-define R31 [ L+ ] {ar} Kill(Sep) {is} IZ3 ;
+define R31 [ L+ ] {ar} Kill(Seam) {is} IZ3 ;
 ! 32. ^(.*[lmnty]) ^ iz(e|es|ing|ed|er|ers|ation|ations|m|ms|able|ability|abilities)$
 define IZ4 [ e|{es}|{ing}|{ed}|{er}|{ers}|{ation}|{ations}|m|{ms}
            | {able}|{ability}|{abilities} ] ;
-define R32 [ L* [l|m|n|t|y] ] Kill(Sep) {iz} IZ4 ;
+define R32 [ L* [l|m|n|t|y] ] Kill(Seam) {iz} IZ4 ;
 ! 33. the same with `is`
-define R33 [ L* [l|m|n|t|y] ] Kill(Sep) {is} IZ4 ;
+define R33 [ L* [l|m|n|t|y] ] Kill(Seam) {is} IZ4 ;
 ! 34. ^(.+)al ^ olog(y|ist|ists|ical|ically)$ -> \1olog\2
-define R34 [ L+ ] Kill([{al} Sep]) {olog} [ {y}|{ist}|{ists}|{ical}|{ically} ] ;
+define R34 [ L+ ] Kill([{al} Seam]) {olog} [ {y}|{ist}|{ists}|{ical}|{ically} ] ;
 ! 35. ^(.+)(ar|er|or) ^ ish$ -> \1\2ish
-define R35 [ L+ ] [ {ar}|{er}|{or} ] Kill(Sep) {ish} ;
+define R35 [ L+ ] [ {ar}|{er}|{or} ] Kill(Seam) {ish} ;
 ! 36. ^(.+e)e ^ (e.+)$ -> \1\2
-define R36 [ L+ e ] Kill([e Sep]) [ e L+ ] ;
+define R36 [ L+ e ] Kill([e Seam]) [ e L+ ] ;
 ! 37. ^(.+[bcdfghjklmnpqrstuvwxz])e ^ ([aeiouy].*)$ -> \1\2
-define R37 [ L+ C37 ] Kill([e Sep]) [ [V|y] L* ] ;
+define R37 [ L+ C37 ] Kill([e Seam]) [ [V|y] L* ] ;
 ! 38. ^(.*(?:[bcdfghjklmnprstvwxyz]|qu)[aeiou])([bcdfgklmnprtvz]) ^ ([aeiouy].*)$
 !     -> \1\2\2\3
 !
 ! The doubling rule, and the one that makes `run` and `ing` into `running`.
-define R38 [ L* [ Onset | {qu} ] V ] Double Kill(Sep) [ [V|y] L* ] ;
+define R38 [ L* [ Onset | {qu} ] V ] Double Kill(Seam) [ [V|y] L* ] ;
 
 ! ---- every candidate, tagged with the rule that made it
 define Ortho [

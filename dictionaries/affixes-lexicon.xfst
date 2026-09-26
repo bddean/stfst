@@ -1,0 +1,1253 @@
+! Written by scripts/gen-affixes.py from dictionaries/affixes.toml and the words it chose.
+! Do not edit: see dictionaries/affixes.xfst for what these mean.
+
+define AffixPrefix [ [ [ {dis} ] .x. [ {STK} ] ]
+    | [ [ {des} ] .x. [ {STK} ] ]
+    | [ [ {dys} ] .x. [ {STK} ] ]
+    | [ [ {inter} ] .x. [ {SPW} ] ]
+    | [ [ {enter} ] .x. [ {SPW} ] ]
+    | [ [ {int} ] .x. [ {SPW} ] ]
+    | [ [ {ent} ] .x. [ {SPW} ] ]
+    | [ [ {com} ] .x. [ {KPH} ] ]
+    | [ [ {con} ] .x. [ {K} ] ]
+    | [ [ {col} ] .x. [ {KHR} ] ]
+    | [ [ {cor} ] .x. [ {KR} ] ]
+    | [ [ {re} ] .x. [ {R} ] ]
+    | [ [ {de} ] .x. [ {TK} ] ]
+    | [ [ {pro} ] .x. [ {PR} ] ]
+    | [ [ {pre} ] .x. [ {PR} "*" ] ]
+    | [ [ {per} ] .x. [ {PR} "*" ] ]
+    | [ [ {ex} ] .x. [ {KP} ] ]
+    | [ [ {un} ] .x. [ {TPH} "*" ] ]
+    | [ [ {in} ] .x. [ {TPH} ] ]
+    | [ [ {im} ] .x. [ {TPH} ] ]
+    | [ [ {en} ] .x. [ {TPH} ] ]
+    | [ [ {em} ] .x. [ {TPH} ] ]
+    | [ [ {a} ] .x. [ "^" ] ] ] ;
+
+define AffixSuffix [ [ [ {ational} ] .x. [ {lgs} ] ]
+    | [ [ {itional} ] .x. [ {lgs} ] ]
+    | [ [ {tional} ] .x. [ {lgs} ] ]
+    | [ [ {sional} ] .x. [ {lgs} ] ]
+    | [ [ {ation} ] .x. [ {gs} ] ]
+    | [ [ {ition} ] .x. [ {gs} ] ]
+    | [ [ {tion} ] .x. [ {gs} ] ]
+    | [ [ {sion} ] .x. [ {gs} ] ]
+    | [ [ {ssion} ] .x. [ {gs} ] ]
+    | [ [ {cion} ] .x. [ {gs} ] ]
+    | [ [ {ment} ] .x. [ {plt} ] ]
+    | [ [ {ness} ] .x. [ {pbs} ] ]
+    | [ [ {ance} ] .x. [ {pbs} ] ]
+    | [ [ {ence} ] .x. [ {pbs} ] ]
+    | [ [ {ant} ] .x. [ {pbt} ] ]
+    | [ [ {ent} ] .x. [ {pbt} ] ]
+    | [ [ {ality} ] .x. [ {lt} ] ]
+    | [ [ {ity} ] .x. [ {t} ] ]
+    | [ [ {able} ] .x. [ {bl} ] ]
+    | [ [ {ible} ] .x. [ {bl} ] ]
+    | [ [ {ative} ] .x. [ {f} ] ]
+    | [ [ {ive} ] .x. [ {f} ] ]
+    | [ [ {ious} ] .x. [ {s} ] ]
+    | [ [ {ous} ] .x. [ {s} ] ]
+    | [ [ {ize} ] .x. [ {z} ] ]
+    | [ [ {ise} ] .x. [ {z} ] ]
+    | [ [ {ist} ] .x. [ {ft} ] ]
+    | [ [ {ism} ] .x. [ {fpl} ] ]
+    | [ [ {ical} ] .x. [ {blg} ] ]
+    | [ [ {ic} ] .x. [ {bg} ] ]
+    | [ [ {ful} ] .x. [ {fl} ] ]
+    | [ [ {less} ] .x. [ {ls} ] ]
+    | [ [ {ular} ] .x. [ {rl} ] ]
+    | [ [ {ial} ] .x. [ {l} ] ]
+    | [ [ {al} ] .x. [ {l} ] ]
+    | [ [ {ly} ] .x. [ {l} ] ]
+    | [ [ {er} ] .x. [ {r} ] ]
+    | [ [ {or} ] .x. [ {r} ] ]
+    | [ [ {ure} ] .x. [ {r} ] ] ] ;
+
+define AffixCountable [ {ation}
+    | {ition}
+    | {tion}
+    | {sion}
+    | {ssion}
+    | {cion}
+    | {ment}
+    | {ance}
+    | {ence}
+    | {ality}
+    | {ity}
+    | {ist}
+    | {ism} ] ;
+
+! 1171 words: the stem's stroke, then prefix, stem and suffix.
+define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
+    | "^" {PWRUf} "|" {a} "|" {bbrevi} "|" {ation}
+    | {PWEUl} "|" {a} "|" {bil} "|" {ity}
+    | {PWOl} "|" {a} "|" {bol} "|" {ition}
+    | "^" {PWOEUpbl} "|" {a} "|" {bomin} "|" {ation}
+    | {PWOr} "|" {a} "|" {bor} "|" {tion}
+    | {PWRAs} "|" {a} "|" {bras} "|" {ive}
+    | {PWRUpt} "|" {a} "|" {brupt} "|" {ly}
+    | {PWUpbd} "|" {a} "|" {bund} "|" {ance}
+    | {PWUpbd} "|" {a} "|" {bund} "|" {ant}
+    | "^" {PWAUpbtd} "|" {a} "|" {bundant} "|" {ly}
+    | "^" {TKAEpl} "|" {a} "|" {cadem} "|" {ic}
+    | "^" {Kpld} "|" {a} "|" {ccommod} "|" {ation}
+    | {KOrd} "|" {a} "|" {ccord} "|" {ance}
+    | "^" {KOEUrpbgd} "|" {a} "|" {ccording} "|" {ly}
+    | {KOUpb} "|" {a} "|" {ccount} "|" {able}
+    | {KOUpbt} "|" {a} "|" {ccount} "|" {ant}
+    | "^" {KRUtd} "|" {a} "|" {ccredit} "|" {ation}
+    | {KHAOEf} "|" {a} "|" {chieve} "|" {ment}
+    | {SEUd} "|" {a} "|" {cid} "|" {ic}
+    | {SEUd} "|" {a} "|" {cid} "|" {ity}
+    | {KAOUft} "|" {a} "|" {coust} "|" {ic}
+    | {KWA} "*" {EUpbt} "|" {a} "|" {cquaint} "|" {ance}
+    | {KWEUs} "|" {a} "|" {cquis} "|" {ition}
+    | {KWEUt} "|" {a} "|" {cquitt} "|" {al}
+    | {KREUl} "|" {a} "|" {cryl} "|" {ic}
+    | {TKApt} "|" {a} "|" {dapt} "|" {able}
+    | {TKApt} "|" {a} "|" {dapt} "|" {ation}
+    | {TKApt} "|" {a} "|" {dapt} "|" {er}
+    | {TKApt} "|" {a} "|" {dapt} "|" {ive}
+    | {TK} "*" {EUbg} "|" {a} "|" {ddic} "|" {tion}
+    | {TKEUbgt} "|" {a} "|" {ddict} "|" {ive}
+    | {TKEU} "|" {a} "|" {ddi} "|" {tion}
+    | {TKEU} "|" {a} "|" {ddi} "|" {tional}
+    | {SKWRAs} "|" {a} "|" {djac} "|" {ent}
+    | {SKWRUft} "|" {a} "|" {djust} "|" {able}
+    | {SKWRUft} "|" {a} "|" {djust} "|" {ment}
+    | "^" {TKHROEs} "|" {a} "|" {dolesc} "|" {ence}
+    | "^" {TKHROEs} "|" {a} "|" {dolesc} "|" {ent}
+    | {TKOp} "|" {a} "|" {dop} "|" {tion}
+    | {TKOpt} "|" {a} "|" {dopt} "|" {ive}
+    | {TKOr} "|" {a} "|" {dor} "|" {able}
+    | {TKOr} "|" {a} "|" {dor} "|" {ation}
+    | {TP} "*" {Ebg} "|" {a} "|" {ffec} "|" {tion}
+    | {TPEbgt} "|" {a} "|" {ffect} "|" {ive}
+    | "^" {TPl} "|" {a} "|" {ffili} "|" {ation}
+    | {TPEUpb} "|" {a} "|" {ffin} "|" {ity}
+    | {TPEUrpl} "|" {a} "|" {ffirm} "|" {ation}
+    | {TPEUrpl} "|" {a} "|" {ffirm} "|" {ative}
+    | {TPHR} "*" {EUbg} "|" {a} "|" {fflic} "|" {tion}
+    | {TPOrd} "|" {a} "|" {fford} "|" {able}
+    | {TKPWREg} "|" {a} "|" {ggreg} "|" {ation}
+    | {TKPWRE} "|" {a} "|" {ggres} "|" {sion}
+    | {TKPWREs} "|" {a} "|" {ggress} "|" {ive}
+    | "^" {TKPWRUfs} "|" {a} "|" {ggressive} "|" {ly}
+    | {TKPWREs} "|" {a} "|" {ggress} "|" {or}
+    | {SKWREUl} "|" {a} "|" {gil} "|" {ity}
+    | {SKWREUt} "|" {a} "|" {git} "|" {ation}
+    | {TKPWRAOE} "|" {a} "|" {gree} "|" {able}
+    | {TKPWRAOE} "|" {a} "|" {gree} "|" {ment}
+    | {HRAOEUpb} "|" {a} "|" {lign} "|" {ment}
+    | {HREg} "|" {a} "|" {lleg} "|" {ation}
+    | "^" {HRpblgd} "|" {a} "|" {lleged} "|" {ly}
+    | {HRErpblg} "|" {a} "|" {llerg} "|" {ic}
+    | {HRAOEU} "|" {a} "|" {lli} "|" {ance}
+    | {HRO} "*" {bg} "|" {a} "|" {lloc} "|" {ation}
+    | {HROt} "|" {a} "|" {llot} "|" {ment}
+    | {HROU} "|" {a} "|" {llow} "|" {ance}
+    | {PHAEUz} "|" {a} "|" {maze} "|" {ment}
+    | {PHEpbd} "|" {a} "|" {mend} "|" {ment}
+    | "^" {TPHAOlg} "|" {a} "|" {nalog} "|" {ous}
+    | "^" {TPHRAEUt} "|" {a} "|" {nalyt} "|" {ic}
+    | "^" {TPHRAEUt} "|" {a} "|" {nalyt} "|" {ical}
+    | "^" {TPHAOpl} "|" {a} "|" {natom} "|" {ical}
+    | "^" {TKPHOEt} "|" {a} "|" {necdot} "|" {al}
+    | "^" {STPHt} "|" {a} "|" {nesthet} "|" {ic}
+    | {TPHEUpl} "|" {a} "|" {nim} "|" {ation}
+    | "^" {TPHOEUs} "|" {a} "|" {nimos} "|" {ity}
+    | {TPHEbgs} "|" {a} "|" {nnex} "|" {ation}
+    | "^" {TPHAOl} "|" {a} "|" {nnihil} "|" {ation}
+    | {TPHOUpbs} "|" {a} "|" {nnounce} "|" {ment}
+    | {TPHOEU} "|" {a} "|" {nnoy} "|" {ance}
+    | {TPHU} "|" {a} "|" {nnu} "|" {ity}
+    | "^" {TPHAOpl} "|" {a} "|" {noma} "|" {ly}
+    | "^" {TPHOEUpl} "|" {a} "|" {nonym} "|" {ity}
+    | "^" {TPHOEUpbl} "|" {a} "|" {nonym} "|" {ous}
+    | {TPHO} "*" {t} "|" {a} "|" {noth} "|" {er}
+    | {PArt} "|" {a} "|" {part} "|" {ment}
+    | "^" {Plg} "|" {a} "|" {polog} "|" {ize}
+    | "^" {STPl} "|" {a} "|" {postol} "|" {ic}
+    | {PAr} "|" {a} "|" {ppar} "|" {ent}
+    | "^" {PAErpbt} "|" {a} "|" {pparent} "|" {ly}
+    | {PAEr} "|" {a} "|" {ppear} "|" {ance}
+    | {PHRAOEU} "|" {a} "|" {ppli} "|" {ance}
+    | {PHR} "*" {EUbg} "|" {a} "|" {pplic} "|" {ation}
+    | {POEUpbt} "|" {a} "|" {ppoint} "|" {ment}
+    | {PRA} "*" {EUs} "|" {a} "|" {pprais} "|" {al}
+    | "^" {PRUrb} "|" {a} "|" {ppreci} "|" {ation}
+    | "^" {PRUrb} "|" {a} "|" {ppreci} "|" {ative}
+    | "^" {PHRpb} "|" {a} "|" {pprehen} "|" {sion}
+    | "^" {PHRpbs} "|" {a} "|" {pprehens} "|" {ive}
+    | "^" {PROEUrp} "|" {a} "|" {ppropri} "|" {ation}
+    | {PROf} "|" {a} "|" {pprov} "|" {al}
+    | "^" {PROEUpblgs} "|" {a} "|" {pproxim} "|" {ation}
+    | {KWAt} "|" {a} "|" {quat} "|" {ic}
+    | {SEpb} "|" {a} "|" {scen} "|" {sion}
+    | {SPEUr} "|" {a} "|" {spir} "|" {ation}
+    | {SA} "*" {EUl} "|" {a} "|" {ssail} "|" {ant}
+    | "^" {SAEUpbs} "|" {a} "|" {ssassin} "|" {ation}
+    | {SEpbl} "|" {a} "|" {ssemb} "|" {ly}
+    | {SEr} "|" {a} "|" {sser} "|" {tion}
+    | {SErt} "|" {a} "|" {ssert} "|" {ive}
+    | {SEs} "|" {a} "|" {ssess} "|" {ment}
+    | {SAOEUpb} "|" {a} "|" {ssign} "|" {ment}
+    | "^" {Spl} "|" {a} "|" {ssimil} "|" {ation}
+    | {SEUft} "|" {a} "|" {ssist} "|" {ance}
+    | {SEUft} "|" {a} "|" {ssist} "|" {ant}
+    | "^" {SOEUrb} "|" {a} "|" {ssoci} "|" {ation}
+    | {SOrt} "|" {a} "|" {ssort} "|" {ment}
+    | {SUfrp} "|" {a} "|" {ssump} "|" {tion}
+    | {SHUr} "|" {a} "|" {ssur} "|" {ance}
+    | "^" {STRpbl} "|" {a} "|" {stronom} "|" {er}
+    | "^" {STPHRpl} "|" {a} "|" {stronom} "|" {ical}
+    | {TOpl} "|" {a} "|" {tom} "|" {ic}
+    | {TOEpb} "|" {a} "|" {tone} "|" {ment}
+    | {TROs} "|" {a} "|" {troc} "|" {ity}
+    | {TAfp} "|" {a} "|" {ttach} "|" {ment}
+    | {TAbg} "|" {a} "|" {ttack} "|" {er}
+    | {TA} "*" {EUpb} "|" {a} "|" {ttain} "|" {ment}
+    | {TEpbd} "|" {a} "|" {ttend} "|" {ance}
+    | {TEpbd} "|" {a} "|" {ttend} "|" {ant}
+    | {TEpb} "|" {a} "|" {tten} "|" {tion}
+    | {TEpbt} "|" {a} "|" {ttent} "|" {ive}
+    | {TRA} "*" {bg} "|" {a} "|" {ttrac} "|" {tion}
+    | {TRAbgt} "|" {a} "|" {ttract} "|" {ive}
+    | "^" {TRAEUfbgt} "|" {a} "|" {ttractive} "|" {ness}
+    | "^" {TPWRE} "|" {a} "|" {ttribu} "|" {tion}
+    | {TREU} "|" {a} "|" {ttri} "|" {tion}
+    | {SRA} "*" {EUl} "|" {a} "|" {vail} "|" {able}
+    | {SREpbg} "|" {a} "|" {veng} "|" {er}
+    | {SREr} "|" {a} "|" {ver} "|" {sion}
+    | {SROEUd} "|" {a} "|" {void} "|" {ance}
+    | {WAEUr} "|" {a} "|" {ware} "|" {ness}
+    | "^" {HRAOrb} "|" {col} "|" {labor} "|" {ation}
+    | "^" {HRAOrb} "|" {col} "|" {labor} "|" {ative}
+    | "^" {HRAErt} "|" {col} "|" {later} "|" {al}
+    | {HREbgt} "|" {col} "|" {lect} "|" {ible}
+    | {HR} "*" {Ebg} "|" {col} "|" {lec} "|" {tion}
+    | {HREbgt} "|" {col} "|" {lect} "|" {ive}
+    | "^" {HRUfbgt} "|" {col} "|" {lective} "|" {ly}
+    | {HREbgt} "|" {col} "|" {lect} "|" {or}
+    | {HREU} "|" {col} "|" {li} "|" {sion}
+    | {HRU} "|" {col} "|" {lu} "|" {sion}
+    | {Opb} "|" {col} "|" {on} "|" {ial}
+    | "^" {OEUpbz} "|" {col} "|" {oniz} "|" {ation}
+    | {Or} "|" {col} "|" {or} "|" {ation}
+    | "^" {ROEbgt} "|" {col} "|" {orect} "|" {al}
+    | {Or} "|" {col} "|" {or} "|" {ful}
+    | {Os} "|" {col} "|" {oss} "|" {al}
+    | {Upbl} "|" {col} "|" {umn} "|" {ist}
+    | {PWEUpb} "|" {com} "|" {bin} "|" {ation}
+    | {PWUs} "|" {com} "|" {bus} "|" {tion}
+    | {TPOrt} "|" {com} "|" {fort} "|" {able}
+    | "^" {TPAOrbt} "|" {com} "|" {fortab} "|" {ly}
+    | "*" {EUbg} "|" {com} "|" {ic} "|" {al}
+    | {PHApbd} "|" {com} "|" {mand} "|" {er}
+    | "^" {PHOErpl} "|" {com} "|" {memor} "|" {ation}
+    | "^" {PHOErpl} "|" {com} "|" {memor} "|" {ative}
+    | {PHEpbs} "|" {com} "|" {mence} "|" {ment}
+    | {PHEpbd} "|" {com} "|" {mend} "|" {able}
+    | {PHEpbd} "|" {com} "|" {mend} "|" {ation}
+    | "^" {TPHAEt} "|" {com} "|" {mentat} "|" {or}
+    | "^" {PH} "*" {Urb} "|" {com} "|" {mercial} "|" {ly}
+    | {PHEU} "|" {com} "|" {mis} "|" {sion}
+    | "^" {PHrpb} "|" {com} "|" {mission} "|" {er}
+    | {PHEUt} "|" {com} "|" {mit} "|" {ment}
+    | {PHOd} "|" {com} "|" {mod} "|" {ity}
+    | {PHOpb} "|" {com} "|" {mon} "|" {ly}
+    | {PHO} "|" {com} "|" {mo} "|" {tion}
+    | {PAr} "|" {com} "|" {par} "|" {able}
+    | {PAr} "|" {com} "|" {par} "|" {ative}
+    | {PArt} "|" {com} "|" {part} "|" {ment}
+    | {PA} "|" {com} "|" {pas} "|" {sion}
+    | {PAt} "|" {com} "|" {pat} "|" {ible}
+    | {PEpbs} "|" {com} "|" {pens} "|" {ation}
+    | {PEt} "|" {com} "|" {pet} "|" {ition}
+    | "^" {PUt} "|" {com} "|" {petit} "|" {ive}
+    | "^" {PUt} "|" {com} "|" {petit} "|" {or}
+    | {PEUl} "|" {com} "|" {pil} "|" {ation}
+    | {PAOEUl} "|" {com} "|" {pil} "|" {er}
+    | {PHRAs} "|" {com} "|" {plac} "|" {ent}
+    | {PHRA} "*" {EUpb} "|" {com} "|" {plain} "|" {ant}
+    | {PHRE} "|" {com} "|" {ple} "|" {ment}
+    | {PHRAOEt} "|" {com} "|" {plete} "|" {ly}
+    | {PHRAOEt} "|" {com} "|" {plete} "|" {ness}
+    | {PHRE} "|" {com} "|" {ple} "|" {tion}
+    | {PHREbgs} "|" {com} "|" {plex} "|" {ity}
+    | {PHRAOEU} "|" {com} "|" {pli} "|" {ance}
+    | {PHRAOEU} "|" {com} "|" {pli} "|" {ant}
+    | {PHR} "*" {EUbg} "|" {com} "|" {plic} "|" {ation}
+    | {PHREUs} "|" {com} "|" {plic} "|" {ity}
+    | {PHREU} "|" {com} "|" {pli} "|" {ment}
+    | {POpb} "|" {com} "|" {pon} "|" {ent}
+    | {POs} "|" {com} "|" {pos} "|" {er}
+    | {POs} "|" {com} "|" {pos} "|" {ition}
+    | {POpblg} "|" {com} "|" {pos} "|" {ure}
+    | "^" {PHRpb} "|" {com} "|" {prehen} "|" {sion}
+    | "^" {PHRpbs} "|" {com} "|" {prehens} "|" {ive}
+    | {PRE} "|" {com} "|" {pres} "|" {sion}
+    | {PREs} "|" {com} "|" {press} "|" {or}
+    | {PROpl} "|" {com} "|" {prom} "|" {ise}
+    | {TROl} "|" {com} "|" {ptroll} "|" {er}
+    | {PUl} "|" {com} "|" {pul} "|" {sion}
+    | {PUls} "|" {com} "|" {puls} "|" {ive}
+    | {SA} "*" {Ef} "|" {con} "|" {ceiv} "|" {able}
+    | {SErpbt} "|" {con} "|" {centr} "|" {ation}
+    | {SEp} "|" {con} "|" {cep} "|" {tion}
+    | "^" {SEUfp} "|" {con} "|" {ceptu} "|" {al}
+    | {SE} "|" {con} "|" {ces} "|" {sion}
+    | {KHRU} "|" {con} "|" {clu} "|" {sion}
+    | {KHRUs} "|" {con} "|" {clus} "|" {ive}
+    | {KUr} "|" {con} "|" {curr} "|" {ent}
+    | {KU} "|" {con} "|" {cus} "|" {sion}
+    | {TKEpbl} "|" {con} "|" {demn} "|" {ation}
+    | {TKEpbs} "|" {con} "|" {dens} "|" {ation}
+    | {TKEU} "|" {con} "|" {di} "|" {tion}
+    | {TKEU} "|" {con} "|" {di} "|" {tional}
+    | "^" {TKrpb} "|" {con} "|" {dition} "|" {er}
+    | {TKUs} "|" {con} "|" {duc} "|" {ive}
+    | {TKUbgt} "|" {con} "|" {duct} "|" {ive}
+    | "^" {TKEf} "|" {con} "|" {ductiv} "|" {ity}
+    | {TKUbgt} "|" {con} "|" {duct} "|" {or}
+    | "^" {TPrd} "|" {con} "|" {feder} "|" {ation}
+    | {TPEr} "|" {con} "|" {fer} "|" {ence}
+    | {TPE} "|" {con} "|" {fes} "|" {sion}
+    | {TPE} "|" {con} "|" {fes} "|" {sional}
+    | {TPEUd} "|" {con} "|" {fid} "|" {ence}
+    | {TPEUd} "|" {con} "|" {fid} "|" {ent}
+    | "^" {TPUpbtd} "|" {con} "|" {fident} "|" {ly}
+    | {TPAOEUpb} "|" {con} "|" {fine} "|" {ment}
+    | {TPEUrpl} "|" {con} "|" {firm} "|" {ation}
+    | {TPHRU} "|" {con} "|" {flu} "|" {ence}
+    | {TPOrpl} "|" {con} "|" {form} "|" {ity}
+    | {TPROpbt} "|" {con} "|" {front} "|" {ation}
+    | {TPROpbt} "|" {con} "|" {front} "|" {ational}
+    | "^" {SKWRUpbt} "|" {con} "|" {genit} "|" {al}
+    | {SKWREs} "|" {con} "|" {ges} "|" {tion}
+    | {TKPWRE} "|" {con} "|" {gres} "|" {sional}
+    | "*" {EUbg} "|" {con} "|" {ic} "|" {al}
+    | {SKWREfpbg} "|" {con} "|" {ject} "|" {ure}
+    | {SKWR} "*" {Upbg} "|" {con} "|" {junc} "|" {tion}
+    | {TPH} "*" {Ebg} "|" {con} "|" {nec} "|" {tion}
+    | {TPHEbgt} "|" {con} "|" {nect} "|" {ive}
+    | "^" {TKPHUf} "|" {con} "|" {nectiv} "|" {ity}
+    | {TPHEbgt} "|" {con} "|" {nect} "|" {or}
+    | "^" {SEUpbs} "|" {con} "|" {sensu} "|" {al}
+    | "^" {SKWpbt} "|" {con} "|" {sequent} "|" {ly}
+    | {SEfrb} "|" {con} "|" {serv} "|" {ation}
+    | "^" {SAEfrbt} "|" {con} "|" {servat} "|" {ism}
+    | {SEfrb} "|" {con} "|" {serv} "|" {ative}
+    | {SEUd} "|" {con} "|" {sid} "|" {er}
+    | "^" {SUrd} "|" {con} "|" {sider} "|" {able}
+    | "^" {SUrd} "|" {con} "|" {sider} "|" {ation}
+    | {SAOEUpb} "|" {con} "|" {sign} "|" {ment}
+    | {SEUft} "|" {con} "|" {sist} "|" {ent}
+    | "^" {SUfpbt} "|" {con} "|" {sistent} "|" {ly}
+    | {SOl} "|" {con} "|" {sol} "|" {ation}
+    | "^" {SOEUld} "|" {con} "|" {solid} "|" {ation}
+    | {SOpb} "|" {con} "|" {son} "|" {ant}
+    | {STApbt} "|" {con} "|" {stant} "|" {ly}
+    | {STEl} "|" {con} "|" {stell} "|" {ation}
+    | {STEUp} "|" {con} "|" {stip} "|" {ation}
+    | "^" {STEfp} "|" {con} "|" {stitu} "|" {ent}
+    | "^" {STE} "|" {con} "|" {stitu} "|" {tion}
+    | "^" {STE} "|" {con} "|" {stitu} "|" {tional}
+    | {STR} "*" {Ubg} "|" {con} "|" {struc} "|" {tion}
+    | {STRUbgt} "|" {con} "|" {struct} "|" {ive}
+    | {SUlt} "|" {con} "|" {sult} "|" {ant}
+    | {SUlt} "|" {con} "|" {sult} "|" {ation}
+    | {SUpl} "|" {con} "|" {sum} "|" {er}
+    | {SUfrp} "|" {con} "|" {sump} "|" {tion}
+    | {TA} "*" {EUpb} "|" {con} "|" {tain} "|" {er}
+    | {TA} "*" {EUpb} "|" {con} "|" {tain} "|" {ment}
+    | "^" {TAEUpbl} "|" {con} "|" {tamin} "|" {ation}
+    | {TEfrpl} "|" {con} "|" {templ} "|" {ation}
+    | {TEpbd} "|" {con} "|" {tend} "|" {er}
+    | {TEpb} "|" {con} "|" {ten} "|" {tion}
+    | {TEpbt} "|" {con} "|" {tent} "|" {ment}
+    | {TEft} "|" {con} "|" {test} "|" {ant}
+    | "^" {TEUfpbgs} "|" {con} "|" {textu} "|" {al}
+    | {TEUpb} "|" {con} "|" {tin} "|" {ent}
+    | "^" {TPHUpb} "|" {con} "|" {tinent} "|" {al}
+    | {TEUpbg} "|" {con} "|" {ting} "|" {ent}
+    | "^" {TPHE} "|" {con} "|" {tinu} "|" {ity}
+    | "^" {STRAEp} "|" {con} "|" {tracep} "|" {tion}
+    | "^" {STRAEpt} "|" {con} "|" {tracept} "|" {ive}
+    | {TRA} "*" {bg} "|" {con} "|" {trac} "|" {tion}
+    | {TRAbgt} "|" {con} "|" {tract} "|" {or}
+    | "^" {TRAUfpbg} "|" {con} "|" {tractu} "|" {al}
+    | "^" {TKRA} "*" {EUbg} "|" {con} "|" {tradic} "|" {tion}
+    | "^" {TPWRE} "|" {con} "|" {tribu} "|" {tion}
+    | {TROl} "|" {con} "|" {troll} "|" {er}
+    | {SR} "*" {Ebg} "|" {con} "|" {vec} "|" {tion}
+    | {SREpb} "|" {con} "|" {ven} "|" {tion}
+    | {SREpb} "|" {con} "|" {ven} "|" {tional}
+    | {SRErpblg} "|" {con} "|" {verg} "|" {ence}
+    | {SRErs} "|" {con} "|" {vers} "|" {ation}
+    | {SRErs} "|" {con} "|" {vers} "|" {ational}
+    | {SRErs} "|" {con} "|" {verse} "|" {ly}
+    | {SREr} "|" {con} "|" {ver} "|" {sion}
+    | {SRErt} "|" {con} "|" {vert} "|" {ible}
+    | {SR} "*" {EUbg} "|" {con} "|" {vic} "|" {tion}
+    | "^" {SRpbgs} "|" {con} "|" {vincing} "|" {ly}
+    | {Opb} "|" {cor} "|" {on} "|" {er}
+    | {POr} "|" {cor} "|" {por} "|" {al}
+    | {POr} "|" {cor} "|" {por} "|" {ation}
+    | {REl} "|" {cor} "|" {rel} "|" {ation}
+    | "^" {SPROEpbd} "|" {cor} "|" {respond} "|" {ence}
+    | "^" {SPROEpbd} "|" {cor} "|" {respond} "|" {ent}
+    | {REUd} "|" {cor} "|" {rid} "|" {or}
+    | {T} "*" {EUbg} "|" {cor} "|" {tic} "|" {al}
+    | {PWAt} "|" {de} "|" {bat} "|" {able}
+    | {KAd} "|" {de} "|" {cad} "|" {ent}
+    | {SEp} "|" {de} "|" {cep} "|" {tion}
+    | {SEpt} "|" {de} "|" {cept} "|" {ive}
+    | "^" {SAOUd} "|" {de} "|" {cided} "|" {ly}
+    | "^" {SEpblg} "|" {de} "|" {cidu} "|" {ous}
+    | {SEUpl} "|" {de} "|" {cim} "|" {al}
+    | {SAOEUf} "|" {de} "|" {ciph} "|" {er}
+    | {SEU} "|" {de} "|" {ci} "|" {sion}
+    | {SAOEUs} "|" {de} "|" {cis} "|" {ive}
+    | "^" {SAOfs} "|" {de} "|" {cisive} "|" {ly}
+    | {KHRAr} "|" {de} "|" {clar} "|" {ation}
+    | {KOr} "|" {de} "|" {cor} "|" {ation}
+    | {TK} "*" {EUbg} "|" {de} "|" {dic} "|" {ation}
+    | {TKUbgt} "|" {de} "|" {duct} "|" {ible}
+    | {TK} "*" {Ubg} "|" {de} "|" {duc} "|" {tion}
+    | {TPApl} "|" {de} "|" {fam} "|" {ation}
+    | {TPEbgt} "|" {de} "|" {fect} "|" {ive}
+    | {TPEpbd} "|" {de} "|" {fend} "|" {ant}
+    | {TPEpbd} "|" {de} "|" {fend} "|" {er}
+    | {TPEpbs} "|" {de} "|" {fens} "|" {ive}
+    | "^" {TPUfpbs} "|" {de} "|" {fensive} "|" {ly}
+    | {TPAOEU} "|" {de} "|" {fi} "|" {ance}
+    | {TPAOEU} "|" {de} "|" {fi} "|" {ant}
+    | "^" {TPpbt} "|" {de} "|" {finite} "|" {ly}
+    | {TPEUpb} "|" {de} "|" {fin} "|" {ition}
+    | "^" {TPpbt} "|" {de} "|" {finit} "|" {ive}
+    | {TPHR} "*" {Ebg} "|" {de} "|" {flec} "|" {tion}
+    | {TPOrpl} "|" {de} "|" {form} "|" {ation}
+    | "^" {SKWRrpb} "|" {de} "|" {gener} "|" {ation}
+    | "^" {SKWRrpb} "|" {de} "|" {gener} "|" {ative}
+    | {TKPWRAd} "|" {de} "|" {grad} "|" {ation}
+    | {HAOEUrd} "|" {de} "|" {hydr} "|" {ation}
+    | {HREg} "|" {de} "|" {leg} "|" {ation}
+    | {HRE} "|" {de} "|" {le} "|" {tion}
+    | "^" {HRUrb} "|" {de} "|" {liber} "|" {ation}
+    | "^" {HRAEUbgt} "|" {de} "|" {licate} "|" {ly}
+    | {HRAO} "*" {EUt} "|" {de} "|" {light} "|" {ful}
+    | {HREUf} "|" {de} "|" {liv} "|" {er}
+    | "^" {HRUfr} "|" {de} "|" {liver} "|" {ance}
+    | {HRU} "|" {de} "|" {lu} "|" {sion}
+    | {HRU} "|" {de} "|" {lu} "|" {sional}
+    | {PHAEpb} "|" {de} "|" {mean} "|" {or}
+    | "^" {KPHRAOt} "|" {de} "|" {mocrat} "|" {ic}
+    | "^" {TKPWHRAOf} "|" {de} "|" {mograph} "|" {ic}
+    | {PHOl} "|" {de} "|" {mol} "|" {ition}
+    | "^" {STPHRAO} "|" {de} "|" {monstra} "|" {tion}
+    | {TPHAOEU} "|" {de} "|" {ni} "|" {al}
+    | "^" {TPHOEUpbl} "|" {de} "|" {nomin} "|" {ation}
+    | "^" {rd} "|" {de} "|" {odor} "|" {ant}
+    | {PArt} "|" {de} "|" {part} "|" {ment}
+    | "^" {TPHRAEpb} "|" {de} "|" {partment} "|" {al}
+    | {PAfrpb} "|" {de} "|" {part} "|" {ure}
+    | {PEpbd} "|" {de} "|" {pend} "|" {able}
+    | {PEpbd} "|" {de} "|" {pend} "|" {ence}
+    | {PEpbd} "|" {de} "|" {pend} "|" {ent}
+    | {P} "*" {EUbg} "|" {de} "|" {pic} "|" {tion}
+    | {PHRE} "|" {de} "|" {ple} "|" {tion}
+    | {PHROr} "|" {de} "|" {plor} "|" {able}
+    | {PHROEU} "|" {de} "|" {ploy} "|" {ment}
+    | {POrt} "|" {de} "|" {port} "|" {ation}
+    | {POs} "|" {de} "|" {pos} "|" {ition}
+    | "^" {PRUrb} "|" {de} "|" {preci} "|" {ation}
+    | {PRE} "|" {de} "|" {pres} "|" {sion}
+    | {PREs} "|" {de} "|" {press} "|" {ive}
+    | {PREUf} "|" {de} "|" {priv} "|" {ation}
+    | {REUf} "|" {de} "|" {riv} "|" {ation}
+    | {EUf} "|" {de} "|" {riv} "|" {ative}
+    | {Epbd} "|" {des} "|" {cend} "|" {ant}
+    | {KREUp} "|" {des} "|" {crip} "|" {tion}
+    | {KREUpt} "|" {des} "|" {cript} "|" {ive}
+    | {EUpbg} "|" {des} "|" {ign} "|" {ation}
+    | {AOEUpb} "|" {des} "|" {ign} "|" {er}
+    | {AOEUr} "|" {des} "|" {ir} "|" {able}
+    | {Ol} "|" {des} "|" {ol} "|" {ation}
+    | "^" {PAErt} "|" {des} "|" {perate} "|" {ly}
+    | {PEr} "|" {des} "|" {per} "|" {ation}
+    | {P} "*" {EUbg} "|" {des} "|" {pic} "|" {able}
+    | {TEUpb} "|" {des} "|" {tin} "|" {ation}
+    | {TR} "*" {Ubg} "|" {des} "|" {truc} "|" {tion}
+    | {TRUbgt} "|" {des} "|" {truct} "|" {ive}
+    | {TAfp} "|" {de} "|" {tach} "|" {ment}
+    | {TEbgt} "|" {de} "|" {tect} "|" {able}
+    | {T} "*" {Ebg} "|" {de} "|" {tec} "|" {tion}
+    | {TEbgt} "|" {de} "|" {tect} "|" {ive}
+    | {TEbgt} "|" {de} "|" {tect} "|" {or}
+    | {TEpb} "|" {de} "|" {ten} "|" {tion}
+    | {TErpblg} "|" {de} "|" {terg} "|" {ent}
+    | "^" {TUrpbl} "|" {de} "|" {termin} "|" {ation}
+    | {TEr} "|" {de} "|" {terr} "|" {ent}
+    | {TOpb} "|" {de} "|" {ton} "|" {ation}
+    | {TREU} "|" {de} "|" {tri} "|" {ment}
+    | "^" {TPHRUpb} "|" {de} "|" {triment} "|" {al}
+    | {SRAft} "|" {de} "|" {vast} "|" {ation}
+    | "^" {SROEpl} "|" {de} "|" {velop} "|" {er}
+    | "^" {SROEpl} "|" {de} "|" {velop} "|" {ment}
+    | {SRAOE} "|" {de} "|" {vi} "|" {ant}
+    | {SRAOE} "|" {de} "|" {vi} "|" {ation}
+    | {SRAOE} "|" {de} "|" {vi} "|" {ous}
+    | {SRO} "|" {de} "|" {vo} "|" {tion}
+    | {SRO} "|" {de} "|" {vo} "|" {tional}
+    | "^" {PWAEUl} "|" {dis} "|" {abil} "|" {ity}
+    | "^" {TKPWROE} "|" {dis} "|" {agree} "|" {ment}
+    | "^" {PEr} "|" {dis} "|" {appear} "|" {ance}
+    | "^" {PAOEUpbt} "|" {dis} "|" {appoint} "|" {ment}
+    | "^" {PRAOf} "|" {dis} "|" {approv} "|" {al}
+    | "^" {rpl} "|" {dis} "|" {arma} "|" {ment}
+    | {Aft} "|" {dis} "|" {ast} "|" {er}
+    | {Afrt} "|" {dis} "|" {astr} "|" {ous}
+    | {KHRA} "*" {EUpl} "|" {dis} "|" {claim} "|" {er}
+    | {KHROpblg} "|" {dis} "|" {clos} "|" {ure}
+    | {KOf} "|" {dis} "|" {cov} "|" {er}
+    | {KRAOEt} "|" {dis} "|" {creet} "|" {ly}
+    | {KRE} "|" {dis} "|" {cre} "|" {tion}
+    | "^" {KRpbl} "|" {dis} "|" {crimin} "|" {ation}
+    | {KU} "|" {dis} "|" {cus} "|" {sion}
+    | {TKPWRAEUs} "|" {dis} "|" {grace} "|" {ful}
+    | {PHEUs} "|" {dis} "|" {miss} "|" {al}
+    | {Ord} "|" {dis} "|" {ord} "|" {er}
+    | "^" {OErd} "|" {dis} "|" {order} "|" {ly}
+    | {PAr} "|" {dis} "|" {par} "|" {ity}
+    | {PAfp} "|" {dis} "|" {patch} "|" {er}
+    | {PEpbs} "|" {dis} "|" {pens} "|" {er}
+    | {PErs} "|" {dis} "|" {pers} "|" {al}
+    | {PHRAEUs} "|" {dis} "|" {place} "|" {ment}
+    | {PHRAEpblg} "|" {dis} "|" {pleas} "|" {ure}
+    | {POs} "|" {dis} "|" {pos} "|" {able}
+    | {POs} "|" {dis} "|" {pos} "|" {al}
+    | {POs} "|" {dis} "|" {pos} "|" {ition}
+    | "^" {SPRbgt} "|" {dis} "|" {respect} "|" {ful}
+    | {RUp} "|" {dis} "|" {rup} "|" {tion}
+    | {RUpt} "|" {dis} "|" {rupt} "|" {ive}
+    | {S} "*" {Ebg} "|" {dis} "|" {sec} "|" {tion}
+    | "^" {SUpbl} "|" {dis} "|" {semin} "|" {ation}
+    | {SErt} "|" {dis} "|" {sert} "|" {ation}
+    | {SEUd} "|" {dis} "|" {sid} "|" {ent}
+    | "^" {SHROU} "|" {dis} "|" {solu} "|" {tion}
+    | {SOpb} "|" {dis} "|" {son} "|" {ance}
+    | {TEUl} "|" {dis} "|" {till} "|" {ation}
+    | {T} "*" {EUpbg} "|" {dis} "|" {tinc} "|" {tion}
+    | {T} "*" {EUpbgt} "|" {dis} "|" {tinct} "|" {ive}
+    | {T} "*" {EUpbgt} "|" {dis} "|" {tinct} "|" {ly}
+    | {TOr} "|" {dis} "|" {tor} "|" {tion}
+    | {TRA} "*" {bg} "|" {dis} "|" {trac} "|" {tion}
+    | "^" {TPWRE} "|" {dis} "|" {tribu} "|" {tion}
+    | {TUrb} "|" {dis} "|" {turb} "|" {ance}
+    | {TP} "*" {Upbg} "|" {dys} "|" {func} "|" {tion}
+    | "^" {AEUpbs} "|" {em} "|" {ancip} "|" {ation}
+    | {PWA} "*" {pbg} "|" {em} "|" {bank} "|" {ment}
+    | "^" {PWrs} "|" {em} "|" {barrass} "|" {ment}
+    | "^" {PWlz} "|" {em} "|" {bezzle} "|" {ment}
+    | "^" {PWOEUd} "|" {em} "|" {bodi} "|" {ment}
+    | "^" {PWROEUpb} "|" {em} "|" {bryon} "|" {ic}
+    | {Erpblg} "|" {em} "|" {erg} "|" {ence}
+    | {Erpblg} "|" {em} "|" {erg} "|" {ent}
+    | {EUrg} "|" {em} "|" {igr} "|" {ation}
+    | {EUpb} "|" {em} "|" {in} "|" {ence}
+    | {EU} "|" {em} "|" {is} "|" {sion}
+    | {O} "|" {em} "|" {o} "|" {tion}
+    | {O} "|" {em} "|" {o} "|" {tional}
+    | {PEr} "|" {em} "|" {per} "|" {or}
+    | {TPAs} "|" {em} "|" {phas} "|" {ize}
+    | {TPAt} "|" {em} "|" {phat} "|" {ic}
+    | {PEUr} "|" {em} "|" {pir} "|" {ical}
+    | {PHROEU} "|" {em} "|" {ploy} "|" {ment}
+    | "^" {POEr} "|" {em} "|" {power} "|" {ment}
+    | {TAOE} "|" {em} "|" {pti} "|" {ness}
+    | {KWRUl} "|" {em} "|" {ul} "|" {ation}
+    | {Abg} "|" {en} "|" {act} "|" {ment}
+    | {KHROpblg} "|" {en} "|" {clos} "|" {ure}
+    | {KOUpb} "|" {en} "|" {count} "|" {er}
+    | "^" {KAOUrpblg} "|" {en} "|" {courage} "|" {ment}
+    | {KREUp} "|" {en} "|" {cryp} "|" {tion}
+    | {TKApbg} "|" {en} "|" {dang} "|" {er}
+    | {TKAEf} "|" {en} "|" {deav} "|" {or}
+    | {TKEpl} "|" {en} "|" {dem} "|" {ic}
+    | {TKOErs} "|" {en} "|" {dorse} "|" {ment}
+    | "^" {TKHOEl} "|" {en} "|" {dothel} "|" {ial}
+    | {TKOU} "|" {en} "|" {dow} "|" {ment}
+    | {TKUr} "|" {en} "|" {dur} "|" {ance}
+    | "^" {SKWRt} "|" {en} "|" {erget} "|" {ic}
+    | {TPOErs} "|" {en} "|" {force} "|" {able}
+    | {TPOErs} "|" {en} "|" {force} "|" {ment}
+    | {TKPWAEUpblg} "|" {en} "|" {gage} "|" {ment}
+    | {HApbs} "|" {en} "|" {hance} "|" {ment}
+    | "^" {TKPWHAEUt} "|" {en} "|" {igmat} "|" {ic}
+    | {SKWROEU} "|" {en} "|" {joy} "|" {able}
+    | {SKWROEU} "|" {en} "|" {joy} "|" {ment}
+    | {HRArpblg} "|" {en} "|" {large} "|" {ment}
+    | "^" {HRAO} "*" {Upbt} "|" {en} "|" {lighten} "|" {ment}
+    | {Orpl} "|" {en} "|" {orm} "|" {ous}
+    | "^" {rpls} "|" {en} "|" {ormous} "|" {ly}
+    | {REUfp} "|" {en} "|" {rich} "|" {ment}
+    | {ROl} "|" {en} "|" {roll} "|" {ment}
+    | {Erp} "|" {ent} "|" {erpr} "|" {ise}
+    | {TA} "*" {EUpb} "|" {enter} "|" {tain} "|" {er}
+    | {TA} "*" {EUpb} "|" {enter} "|" {tain} "|" {ment}
+    | "^" {AOUr} "|" {ent} "|" {ire} "|" {ly}
+    | "^" {AOUlt} "|" {ent} "|" {itle} "|" {ment}
+    | {SRAOE} "|" {en} "|" {vi} "|" {ous}
+    | "^" {SRAEUrpb} "|" {en} "|" {viron} "|" {ment}
+    | {SREU} "|" {en} "|" {vi} "|" {sion}
+    | {Abgt} "|" {ex} "|" {act} "|" {ly}
+    | "^" {AErpblg} "|" {ex} "|" {agger} "|" {ation}
+    | "^" {AEUpbl} "|" {ex} "|" {amin} "|" {ation}
+    | "^" {AEUpbl} "|" {ex} "|" {amin} "|" {er}
+    | {KAf} "|" {ex} "|" {cav} "|" {ation}
+    | "^" {AOUpbgd} "|" {ex} "|" {ceeding} "|" {ly}
+    | {El} "|" {ex} "|" {cell} "|" {ence}
+    | {El} "|" {ex} "|" {cell} "|" {ent}
+    | {Ep} "|" {ex} "|" {cep} "|" {tion}
+    | {Ep} "|" {ex} "|" {cep} "|" {tional}
+    | {Es} "|" {ex} "|" {cess} "|" {ive}
+    | "^" {Ufs} "|" {ex} "|" {cessive} "|" {ly}
+    | {KHEbg} "|" {ex} "|" {chequ} "|" {er}
+    | {AOEUt} "|" {ex} "|" {cit} "|" {ation}
+    | "^" {AOUtd} "|" {ex} "|" {cited} "|" {ly}
+    | {AOEUt} "|" {ex} "|" {cite} "|" {ment}
+    | {KHRApl} "|" {ex} "|" {clam} "|" {ation}
+    | {KHRU} "|" {ex} "|" {clu} "|" {sion}
+    | {KHRUs} "|" {ex} "|" {clus} "|" {ive}
+    | "^" {KHREfs} "|" {ex} "|" {clusive} "|" {ly}
+    | "^" {SKHREf} "|" {ex} "|" {clusiv} "|" {ity}
+    | {KUr} "|" {ex} "|" {cur} "|" {sion}
+    | "^" {KEU} "|" {ex} "|" {ecu} "|" {tion}
+    | {Efrp} "|" {ex} "|" {emp} "|" {tion}
+    | {Ers} "|" {ex} "|" {erc} "|" {ise}
+    | {AUs} "|" {ex} "|" {haus} "|" {tion}
+    | {AUft} "|" {ex} "|" {haust} "|" {ive}
+    | {EUb} "|" {ex} "|" {hib} "|" {ition}
+    | {EUft} "|" {ex} "|" {ist} "|" {ence}
+    | {EUft} "|" {ex} "|" {ist} "|" {ent}
+    | "^" {OEUrbt} "|" {ex} "|" {orbit} "|" {ant}
+    | {Ot} "|" {ex} "|" {ot} "|" {ic}
+    | {PApb} "|" {ex} "|" {pan} "|" {sion}
+    | {PApbs} "|" {ex} "|" {pans} "|" {ive}
+    | {PEbgt} "|" {ex} "|" {pect} "|" {ation}
+    | {PEd} "|" {ex} "|" {ped} "|" {ition}
+    | "^" {PUfpbd} "|" {ex} "|" {pendit} "|" {ure}
+    | {PEpbs} "|" {ex} "|" {pens} "|" {ive}
+    | "^" {PUr} "|" {ex} "|" {peri} "|" {ence}
+    | "^" {PUr} "|" {ex} "|" {peri} "|" {ment}
+    | {PEUr} "|" {ex} "|" {pir} "|" {ation}
+    | {PHRApb} "|" {ex} "|" {plan} "|" {ation}
+    | "^" {PHRft} "|" {ex} "|" {plicit} "|" {ly}
+    | {PHROEUt} "|" {ex} "|" {ploit} "|" {ation}
+    | {PHROr} "|" {ex} "|" {plor} "|" {ation}
+    | {PHROr} "|" {ex} "|" {plor} "|" {er}
+    | {PHRO} "|" {ex} "|" {plo} "|" {sion}
+    | {PHROs} "|" {ex} "|" {plos} "|" {ive}
+    | {POs} "|" {ex} "|" {pos} "|" {ition}
+    | {POpblg} "|" {ex} "|" {pos} "|" {ure}
+    | {PRE} "|" {ex} "|" {pres} "|" {sion}
+    | {PREs} "|" {ex} "|" {press} "|" {ive}
+    | {PREs} "|" {ex} "|" {press} "|" {ly}
+    | {PUl} "|" {ex} "|" {pul} "|" {sion}
+    | {TEpb} "|" {ex} "|" {ten} "|" {sion}
+    | {TEpbs} "|" {ex} "|" {tens} "|" {ive}
+    | "^" {TUfpbs} "|" {ex} "|" {tensive} "|" {ly}
+    | "^" {TUr} "|" {ex} "|" {teri} "|" {or}
+    | "^" {TUrpbl} "|" {ex} "|" {termin} "|" {ation}
+    | {TErpb} "|" {ex} "|" {tern} "|" {al}
+    | "^" {TAErpb} "|" {ex} "|" {ternal} "|" {ly}
+    | {T} "*" {EUpbg} "|" {ex} "|" {tinc} "|" {tion}
+    | {TOr} "|" {ex} "|" {tor} "|" {tion}
+    | "^" {STRAEl} "|" {ex} "|" {tracell} "|" {ular}
+    | {TRA} "*" {bg} "|" {ex} "|" {trac} "|" {tion}
+    | {TRAd} "|" {ex} "|" {trad} "|" {ition}
+    | "^" {TRfg} "|" {ex} "|" {travag} "|" {ant}
+    | {TRAOEpl} "|" {ex} "|" {treme} "|" {ly}
+    | {TREpl} "|" {ex} "|" {trem} "|" {ist}
+    | {TREpl} "|" {ex} "|" {trem} "|" {ity}
+    | "^" {AEUpblg} "|" {im} "|" {agin} "|" {able}
+    | "^" {AEUpblg} "|" {im} "|" {agin} "|" {ation}
+    | "^" {AEUpblg} "|" {im} "|" {agin} "|" {ative}
+    | {PWAl} "|" {im} "|" {bal} "|" {ance}
+    | {EUt} "|" {im} "|" {it} "|" {ation}
+    | {PHEpbs} "|" {im} "|" {mense} "|" {ly}
+    | {PHEr} "|" {im} "|" {mer} "|" {sion}
+    | {PHEUrg} "|" {im} "|" {migr} "|" {ant}
+    | {PHEUrg} "|" {im} "|" {migr} "|" {ation}
+    | {PHEUpb} "|" {im} "|" {min} "|" {ent}
+    | {PHOr} "|" {im} "|" {mor} "|" {al}
+    | {PHOrt} "|" {im} "|" {mort} "|" {al}
+    | {PHOrt} "|" {im} "|" {mort} "|" {ality}
+    | {PA} "*" {EUr} "|" {im} "|" {pair} "|" {ment}
+    | {PAEfp} "|" {im} "|" {peach} "|" {ment}
+    | {PEbg} "|" {im} "|" {pecc} "|" {able}
+    | {PEd} "|" {im} "|" {ped} "|" {ance}
+    | "^" {PUd} "|" {im} "|" {pedi} "|" {ment}
+    | "^" {Prpbt} "|" {im} "|" {penetr} "|" {able}
+    | {PEr} "|" {im} "|" {per} "|" {ative}
+    | {PEr} "|" {im} "|" {per} "|" {ial}
+    | {PHRApbt} "|" {im} "|" {plant} "|" {ation}
+    | {PHRE} "|" {im} "|" {ple} "|" {ment}
+    | "^" {PHRpblt} "|" {im} "|" {plement} "|" {ation}
+    | {PHR} "*" {EUbg} "|" {im} "|" {plic} "|" {ation}
+    | "^" {PHRft} "|" {im} "|" {plicit} "|" {ly}
+    | {POrt} "|" {im} "|" {port} "|" {ance}
+    | {POrt} "|" {im} "|" {port} "|" {ant}
+    | "^" {PAOrpbt} "|" {im} "|" {portant} "|" {ly}
+    | {POrt} "|" {im} "|" {port} "|" {ation}
+    | {POs} "|" {im} "|" {pos} "|" {ition}
+    | {POs} "|" {im} "|" {poss} "|" {ible}
+    | {POt} "|" {im} "|" {pot} "|" {ent}
+    | {PRAbgt} "|" {im} "|" {pract} "|" {ical}
+    | {PRE} "|" {im} "|" {pres} "|" {sion}
+    | {PREs} "|" {im} "|" {press} "|" {ive}
+    | "^" {PROEUpbz} "|" {im} "|" {prison} "|" {ment}
+    | {PROb} "|" {im} "|" {prob} "|" {able}
+    | {PROp} "|" {im} "|" {prop} "|" {er}
+    | "^" {PROErp} "|" {im} "|" {proper} "|" {ly}
+    | {PROf} "|" {im} "|" {prove} "|" {ment}
+    | "^" {PROEUfz} "|" {im} "|" {provis} "|" {ation}
+    | {PROf} "|" {im} "|" {prov} "|" {ise}
+    | {PUls} "|" {im} "|" {puls} "|" {ive}
+    | "^" {PWAEUl} "|" {in} "|" {abil} "|" {ity}
+    | "^" {SKAEs} "|" {in} "|" {access} "|" {ible}
+    | {A} "*" {bg} "|" {in} "|" {ac} "|" {tion}
+    | {Abgt} "|" {in} "|" {act} "|" {ive}
+    | "^" {TKAEUf} "|" {in} "|" {activ} "|" {ity}
+    | "^" {Arg} "|" {in} "|" {augur} "|" {al}
+    | "^" {TKPHAEs} "|" {in} "|" {candesc} "|" {ent}
+    | {KAp} "|" {in} "|" {cap} "|" {able}
+    | "^" {KAErs} "|" {in} "|" {carcer} "|" {ation}
+    | {KArpb} "|" {in} "|" {carn} "|" {ation}
+    | {SEpb} "|" {in} "|" {cent} "|" {ive}
+    | {SEp} "|" {in} "|" {cep} "|" {tion}
+    | {SEs} "|" {in} "|" {cess} "|" {ant}
+    | {SEUd} "|" {in} "|" {cid} "|" {ence}
+    | {SEUd} "|" {in} "|" {cid} "|" {ent}
+    | "^" {STKUpbt} "|" {in} "|" {cident} "|" {al}
+    | {SEU} "|" {in} "|" {ci} "|" {sion}
+    | {KHREUpb} "|" {in} "|" {clin} "|" {ation}
+    | {KHRU} "|" {in} "|" {clu} "|" {sion}
+    | {KHRUs} "|" {in} "|" {clus} "|" {ive}
+    | "^" {KHOEr} "|" {in} "|" {coher} "|" {ent}
+    | {KPHEt} "|" {in} "|" {compet} "|" {ence}
+    | {KPHEt} "|" {in} "|" {compet} "|" {ent}
+    | "^" {STKPHAO} "*" {Ef} "|" {in} "|" {conceiv} "|" {able}
+    | "^" {TKPHROUs} "|" {in} "|" {conclus} "|" {ive}
+    | "^" {STKPHOEUft} "|" {in} "|" {consist} "|" {ent}
+    | "^" {Krp} "|" {in} "|" {corpor} "|" {ation}
+    | "^" {KROEbgt} "|" {in} "|" {correct} "|" {ly}
+    | "^" {KRAUpbgs} "|" {in} "|" {creasing} "|" {ly}
+    | {KREd} "|" {in} "|" {cred} "|" {ible}
+    | "^" {KRUbd} "|" {in} "|" {credib} "|" {ly}
+    | "^" {KPHRpbt} "|" {in} "|" {crement} "|" {al}
+    | {KUpbl} "|" {in} "|" {cumb} "|" {ent}
+    | {TKEs} "|" {in} "|" {dec} "|" {ent}
+    | "^" {TKPpbd} "|" {in} "|" {depend} "|" {ence}
+    | "^" {TKPpbd} "|" {in} "|" {depend} "|" {ent}
+    | {TK} "*" {EUbg} "|" {in} "|" {dic} "|" {ation}
+    | {TK} "*" {EUbg} "|" {in} "|" {dic} "|" {ative}
+    | "^" {TKAEUt} "|" {in} "|" {dicat} "|" {or}
+    | {TKAOEUt} "|" {in} "|" {dict} "|" {ment}
+    | "^" {TKUfr} "|" {in} "|" {differ} "|" {ence}
+    | "^" {TKUfr} "|" {in} "|" {differ} "|" {ent}
+    | "^" {TKUpblg} "|" {in} "|" {digen} "|" {ous}
+    | {TKEUpbg} "|" {in} "|" {dign} "|" {ation}
+    | "^" {TKRUbgt} "|" {in} "|" {direct} "|" {ly}
+    | {STKPEpbs} "|" {in} "|" {dispens} "|" {able}
+    | {TK} "*" {Ubg} "|" {in} "|" {duc} "|" {tion}
+    | {TKUlg} "|" {in} "|" {dulg} "|" {ence}
+    | {TKUlg} "|" {in} "|" {dulg} "|" {ent}
+    | {TKUfrt} "|" {in} "|" {dustr} "|" {ial}
+    | "^" {TPbgt} "|" {in} "|" {effect} "|" {ive}
+    | "^" {Ulg} "|" {in} "|" {elig} "|" {ible}
+    | "^" {KWAEl} "|" {in} "|" {equal} "|" {ity}
+    | "^" {Uft} "|" {in} "|" {evit} "|" {able}
+    | {KPEpbs} "|" {in} "|" {expens} "|" {ive}
+    | {KPHREUs} "|" {in} "|" {explic} "|" {able}
+    | {TPAl} "|" {in} "|" {fall} "|" {ible}
+    | {TPApl} "|" {in} "|" {fam} "|" {ous}
+    | {TP} "*" {Ebg} "|" {in} "|" {fec} "|" {tion}
+    | {TPEr} "|" {in} "|" {fer} "|" {ence}
+    | "^" {TPUr} "|" {in} "|" {feri} "|" {or}
+    | {TPErpb} "|" {in} "|" {fern} "|" {al}
+    | "^" {TPRUl} "|" {in} "|" {fertil} "|" {ity}
+    | {TPEft} "|" {in} "|" {fest} "|" {ation}
+    | "^" {TKPUl} "|" {in} "|" {fidel} "|" {ity}
+    | {TPEUrlt} "|" {in} "|" {filtr} "|" {ation}
+    | "^" {TPpbt} "|" {in} "|" {finite} "|" {ly}
+    | {TPEUpb} "|" {in} "|" {fin} "|" {ity}
+    | {TPHRApl} "|" {in} "|" {flamm} "|" {ation}
+    | {TPHRAt} "|" {in} "|" {flat} "|" {able}
+    | {TPHRA} "|" {in} "|" {fla} "|" {tion}
+    | {TPHRU} "|" {in} "|" {flu} "|" {ence}
+    | "^" {TKPWRAOf} "|" {in} "|" {fograph} "|" {ic}
+    | {TPOrpl} "|" {in} "|" {form} "|" {al}
+    | "^" {TPAOrpl} "|" {in} "|" {formal} "|" {ly}
+    | {TPOrpl} "|" {in} "|" {form} "|" {ant}
+    | {TPOrpl} "|" {in} "|" {form} "|" {ation}
+    | {TPOrpl} "|" {in} "|" {form} "|" {ational}
+    | {TPOrpl} "|" {in} "|" {form} "|" {ative}
+    | "^" {STPRAUfpbg} "|" {in} "|" {frastruct} "|" {ure}
+    | {TPREUpbg} "|" {in} "|" {fringe} "|" {ment}
+    | "^" {STKPWHREU} "|" {in} "|" {genu} "|" {ity}
+    | "^" {TKPWRUd} "|" {in} "|" {gredi} "|" {ent}
+    | {Al} "|" {in} "|" {hal} "|" {ation}
+    | {HEr} "|" {in} "|" {her} "|" {ent}
+    | "^" {Hrpbt} "|" {in} "|" {herent} "|" {ly}
+    | "^" {HUrt} "|" {in} "|" {herit} "|" {ance}
+    | {EUb} "|" {in} "|" {hib} "|" {ition}
+    | "^" {Hbt} "|" {in} "|" {hibit} "|" {or}
+    | "^" {rb} "|" {in} "|" {itial} "|" {ly}
+    | "^" {rb} "|" {in} "|" {iti} "|" {ation}
+    | "^" {rbt} "|" {in} "|" {itiat} "|" {ive}
+    | {SKWR} "*" {Ebg} "|" {in} "|" {jec} "|" {tion}
+    | {SKWR} "*" {Upbg} "|" {in} "|" {junc} "|" {tion}
+    | {TPHOs} "|" {in} "|" {noc} "|" {ence}
+    | {TPHOs} "|" {in} "|" {noc} "|" {ent}
+    | {TPHOf} "|" {in} "|" {nov} "|" {ation}
+    | {TPHOf} "|" {in} "|" {nov} "|" {ative}
+    | "^" {STPHRAOt} "|" {in} "|" {novat} "|" {or}
+    | "^" {TPHEUrpl} "|" {in} "|" {numer} "|" {able}
+    | "^" {TKPWRAOpb} "|" {in} "|" {organ} "|" {ic}
+    | {KWEUs} "|" {in} "|" {quis} "|" {ition}
+    | {SApb} "|" {in} "|" {san} "|" {ity}
+    | {SKREUp} "|" {in} "|" {scrip} "|" {tion}
+    | "^" {SKEUr} "|" {in} "|" {secur} "|" {ity}
+    | "^" {SUfpbt} "|" {in} "|" {sensit} "|" {ive}
+    | "^" {SAErp} "|" {in} "|" {separ} "|" {able}
+    | {SEr} "|" {in} "|" {ser} "|" {tion}
+    | {SAOEUd} "|" {in} "|" {sid} "|" {er}
+    | {SEUd} "|" {in} "|" {sid} "|" {ious}
+    | {SAO} "*" {EUt} "|" {in} "|" {sight} "|" {ful}
+    | {SEUft} "|" {in} "|" {sist} "|" {ence}
+    | {SEUft} "|" {in} "|" {sist} "|" {ent}
+    | {SP} "*" {Ebg} "|" {in} "|" {spec} "|" {tion}
+    | {SPEbgt} "|" {in} "|" {spect} "|" {or}
+    | {SPEUr} "|" {in} "|" {spir} "|" {ation}
+    | {SPEUr} "|" {in} "|" {spir} "|" {ational}
+    | "^" {STPWAEUl} "|" {in} "|" {stabil} "|" {ity}
+    | {STAl} "|" {in} "|" {stall} "|" {ation}
+    | {STAUl} "|" {in} "|" {stall} "|" {ment}
+    | {STApbt} "|" {in} "|" {stant} "|" {ly}
+    | {ST} "*" {EUpbgt} "|" {in} "|" {stinct} "|" {ive}
+    | "^" {STE} "|" {in} "|" {stitu} "|" {tion}
+    | "^" {STE} "|" {in} "|" {stitu} "|" {tional}
+    | {STR} "*" {Ubg} "|" {in} "|" {struc} "|" {tion}
+    | {STR} "*" {Ubg} "|" {in} "|" {struc} "|" {tional}
+    | {STRUbgt} "|" {in} "|" {struct} "|" {or}
+    | {STRU} "|" {in} "|" {stru} "|" {ment}
+    | "^" {STPHREUpb} "|" {in} "|" {strument} "|" {al}
+    | {SUl} "|" {in} "|" {sul} "|" {ation}
+    | {SHUr} "|" {in} "|" {sur} "|" {ance}
+    | {SHUr} "|" {in} "|" {sur} "|" {er}
+    | {SUrpblg} "|" {in} "|" {surg} "|" {ent}
+    | "^" {SPHROpbt} "|" {in} "|" {surmount} "|" {able}
+    | "^" {SR} "*" {EUbg} "|" {in} "|" {surrec} "|" {tion}
+    | {Apbg} "|" {int} "|" {ang} "|" {ible}
+    | {Epblg} "|" {int} "|" {eg} "|" {er}
+    | {Erg} "|" {int} "|" {egr} "|" {al}
+    | {Erg} "|" {int} "|" {egr} "|" {ation}
+    | {Erg} "|" {int} "|" {egr} "|" {ity}
+    | "^" {Ulg} "|" {int} "|" {ellig} "|" {ence}
+    | "^" {Ulg} "|" {int} "|" {ellig} "|" {ent}
+    | {Epbs} "|" {int} "|" {ense} "|" {ly}
+    | {Epbs} "|" {int} "|" {ens} "|" {ity}
+    | {Epbs} "|" {int} "|" {ens} "|" {ive}
+    | {Epb} "|" {int} "|" {en} "|" {tion}
+    | {Epb} "|" {int} "|" {en} "|" {tional}
+    | {A} "*" {bg} "|" {inter} "|" {ac} "|" {tion}
+    | {Abgt} "|" {inter} "|" {act} "|" {ive}
+    | {SEp} "|" {inter} "|" {cep} "|" {tion}
+    | {KHAEUpbg} "|" {inter} "|" {change} "|" {able}
+    | "^" {Ufpbgt} "|" {inter} "|" {esting} "|" {ly}
+    | {TPEr} "|" {inter} "|" {fer} "|" {ence}
+    | "^" {Ur} "|" {int} "|" {eri} "|" {or}
+    | {PHEU} "|" {inter} "|" {mis} "|" {sion}
+    | {PHEUt} "|" {inter} "|" {mitt} "|" {ent}
+    | "^" {PHUpbt} "|" {inter} "|" {mittent} "|" {ly}
+    | {Erpb} "|" {int} "|" {ern} "|" {al}
+    | {TPHA} "|" {inter} "|" {nal} "|" {ly}
+    | {TPHA} "|" {inter} "|" {na} "|" {tional}
+    | "^" {POErpbs} "|" {inter} "|" {person} "|" {al}
+    | {PREt} "|" {inter} "|" {pret} "|" {ation}
+    | {PREt} "|" {inter} "|" {pret} "|" {er}
+    | {PREt} "|" {inter} "|" {pret} "|" {ive}
+    | "^" {OErg} "|" {int} "|" {errog} "|" {ation}
+    | "^" {REUp} "|" {int} "|" {errup} "|" {tion}
+    | {S} "*" {Ebg} "|" {inter} "|" {sec} "|" {tion}
+    | {Efrb} "|" {int} "|" {erv} "|" {al}
+    | {SREpb} "|" {inter} "|" {ven} "|" {tion}
+    | "^" {Ufpbt} "|" {int} "|" {estin} "|" {al}
+    | "^" {AEUplt} "|" {int} "|" {imate} "|" {ly}
+    | "^" {pld} "|" {int} "|" {imid} "|" {ation}
+    | "^" {OErl} "|" {int} "|" {oler} "|" {able}
+    | "^" {OErl} "|" {int} "|" {oler} "|" {ance}
+    | "^" {OErl} "|" {int} "|" {oler} "|" {ant}
+    | "^" {OEUbgs} "|" {int} "|" {oxic} "|" {ation}
+    | "^" {SRAEl} "|" {int} "|" {racell} "|" {ular}
+    | "^" {SRAEpb} "|" {int} "|" {raven} "|" {ous}
+    | {REUpbs} "|" {int} "|" {rins} "|" {ic}
+    | "^" {TKRO} "*" {Ubg} "|" {int} "|" {roduc} "|" {tion}
+    | {RUd} "|" {int} "|" {rud} "|" {er}
+    | {RU} "|" {int} "|" {ru} "|" {sion}
+    | {RUs} "|" {int} "|" {rus} "|" {ive}
+    | {U} "|" {int} "|" {u} "|" {ition}
+    | {SRA} "|" {in} "|" {va} "|" {sion}
+    | {SRAs} "|" {in} "|" {vas} "|" {ive}
+    | {SREpb} "|" {in} "|" {ven} "|" {tion}
+    | {SREpbt} "|" {in} "|" {vent} "|" {ive}
+    | {SREpbt} "|" {in} "|" {vent} "|" {or}
+    | {SREr} "|" {in} "|" {ver} "|" {sion}
+    | "^" {SRUfgt} "|" {in} "|" {vestig} "|" {ation}
+    | "^" {SRUfgt} "|" {in} "|" {vestig} "|" {ative}
+    | {SREft} "|" {in} "|" {vest} "|" {ment}
+    | {SREft} "|" {in} "|" {vest} "|" {or}
+    | {SREUpbs} "|" {in} "|" {vinc} "|" {ible}
+    | {SREUs} "|" {in} "|" {vis} "|" {ible}
+    | {SREUt} "|" {in} "|" {vit} "|" {ation}
+    | {SROfl} "|" {in} "|" {volve} "|" {ment}
+    | {SEp} "|" {per} "|" {cep} "|" {tion}
+    | {KU} "|" {per} "|" {cus} "|" {sion}
+    | {Epb} "|" {per} "|" {enn} "|" {ial}
+    | {TP} "*" {Ebg} "|" {per} "|" {fec} "|" {tion}
+    | {TPEbg} "|" {per} "|" {fect} "|" {ly}
+    | {TPOrpl} "|" {per} "|" {form} "|" {ance}
+    | {TPOrpl} "|" {per} "|" {form} "|" {er}
+    | "^" {Uplt} "|" {per} "|" {imet} "|" {er}
+    | "^" {Ufr} "|" {per} "|" {ipher} "|" {al}
+    | {PHApb} "|" {per} "|" {man} "|" {ent}
+    | "^" {PHAEpbt} "|" {per} "|" {manent} "|" {ly}
+    | {PHEUs} "|" {per} "|" {miss} "|" {ible}
+    | {PHEU} "|" {per} "|" {mis} "|" {sion}
+    | "^" {TKPH} "*" {Ubg} "|" {per} "|" {pendic} "|" {ular}
+    | "^" {TPRAEt} "|" {per} "|" {petrat} "|" {or}
+    | "^" {PEUfp} "|" {per} "|" {petu} "|" {al}
+    | "^" {SKEU} "|" {per} "|" {secu} "|" {tion}
+    | "^" {SRr} "|" {per} "|" {sever} "|" {ance}
+    | {SEUft} "|" {per} "|" {sist} "|" {ence}
+    | {SEUft} "|" {per} "|" {sist} "|" {ent}
+    | "^" {SUfpbt} "|" {per} "|" {sistent} "|" {ly}
+    | {SOpb} "|" {per} "|" {son} "|" {al}
+    | {SOpb} "|" {per} "|" {son} "|" {ality}
+    | "^" {SAOpb} "|" {per} "|" {sonal} "|" {ly}
+    | {SPEbgt} "|" {per} "|" {spect} "|" {ive}
+    | {As} "|" {per} "|" {vas} "|" {ive}
+    | {Afp} "|" {pre} "|" {ach} "|" {er}
+    | {KAr} "|" {pre} "|" {car} "|" {ious}
+    | {KAU} "|" {pre} "|" {cau} "|" {tion}
+    | {SEd} "|" {pre} "|" {ced} "|" {ence}
+    | {SEd} "|" {pre} "|" {ced} "|" {ent}
+    | {EUrb} "|" {pre} "|" {ci} "|" {ous}
+    | "^" {Spt} "|" {pre} "|" {cipit} "|" {ation}
+    | {SAOEUs} "|" {pre} "|" {cise} "|" {ly}
+    | {SEU} "|" {pre} "|" {ci} "|" {sion}
+    | {KUrs} "|" {pre} "|" {curs} "|" {or}
+    | {TKAt} "|" {pre} "|" {dat} "|" {or}
+    | "^" {STKs} "|" {pre} "|" {decess} "|" {or}
+    | "^" {TKAEUbg} "|" {pre} "|" {dica} "|" {ment}
+    | {TKEUbgt} "|" {pre} "|" {dict} "|" {able}
+    | "^" {TKAEUbgt} "|" {pre} "|" {dictab} "|" {ly}
+    | {TK} "*" {EUbg} "|" {pre} "|" {dic} "|" {tion}
+    | {TKEUbgt} "|" {pre} "|" {dict} "|" {ive}
+    | {TKEUbgt} "|" {pre} "|" {dict} "|" {or}
+    | "^" {TKOEUpbl} "|" {pre} "|" {domin} "|" {ant}
+    | {Efr} "|" {pre} "|" {fer} "|" {able}
+    | "^" {AEfrb} "|" {pre} "|" {ferab} "|" {ly}
+    | {Efr} "|" {pre} "|" {fer} "|" {ence}
+    | "^" {KPHOUr} "|" {pre} "|" {mature} "|" {ly}
+    | {TPHAt} "|" {pre} "|" {nat} "|" {al}
+    | {PAr} "|" {pre} "|" {par} "|" {ation}
+    | "^" {PAErd} "|" {pre} "|" {pared} "|" {ness}
+    | "^" {POEfrt} "|" {pre} "|" {poster} "|" {ous}
+    | {Og} "|" {pre} "|" {rog} "|" {ative}
+    | {SKREUp} "|" {pre} "|" {scrip} "|" {tion}
+    | {SEpbt} "|" {pre} "|" {sent} "|" {ation}
+    | {SEpbt} "|" {pre} "|" {sent} "|" {er}
+    | {SEpbt} "|" {pre} "|" {sent} "|" {ly}
+    | {SEfrb} "|" {pre} "|" {serv} "|" {ation}
+    | {SEUd} "|" {pre} "|" {sid} "|" {ent}
+    | "^" {STpblg} "|" {pre} "|" {stigi} "|" {ous}
+    | "^" {SAUpbl} "|" {pre} "|" {sumab} "|" {ly}
+    | {SUfrp} "|" {pre} "|" {sump} "|" {tion}
+    | "^" {TUrpb} "|" {pre} "|" {tenti} "|" {ous}
+    | {TAOE} "|" {pre} "|" {tti} "|" {er}
+    | {SRAl} "|" {pre} "|" {val} "|" {ence}
+    | {SRAl} "|" {pre} "|" {val} "|" {ent}
+    | {SREpbt} "|" {pre} "|" {vent} "|" {able}
+    | {SREpbt} "|" {pre} "|" {vent} "|" {ative}
+    | {SREpb} "|" {pre} "|" {ven} "|" {tion}
+    | {SREpb} "|" {pre} "|" {vent} "|" {ive}
+    | {SRAOE} "|" {pre} "|" {vi} "|" {ous}
+    | {Abgt} "|" {pro} "|" {act} "|" {ive}
+    | "^" {PWAEUl} "|" {pro} "|" {babil} "|" {ity}
+    | {PWAb} "|" {pro} "|" {bab} "|" {ly}
+    | {PWA} "|" {pro} "|" {ba} "|" {tion}
+    | "^" {PWHRAEt} "|" {pro} "|" {blemat} "|" {ic}
+    | "^" {SEUrpblg} "|" {pro} "|" {cedur} "|" {al}
+    | {SEpblg} "|" {pro} "|" {ced} "|" {ure}
+    | {SE} "|" {pro} "|" {ces} "|" {sion}
+    | {SEs} "|" {pro} "|" {cess} "|" {or}
+    | {KHRApl} "|" {pro} "|" {clam} "|" {ation}
+    | {TKUs} "|" {pro} "|" {duc} "|" {er}
+    | {TK} "*" {Ubg} "|" {pro} "|" {duc} "|" {tion}
+    | {TKUbgt} "|" {pro} "|" {duct} "|" {ive}
+    | "^" {TKEf} "|" {pro} "|" {ductiv} "|" {ity}
+    | {TPApb} "|" {pro} "|" {fan} "|" {ity}
+    | {TPE} "|" {pro} "|" {fes} "|" {sion}
+    | {TPE} "|" {pro} "|" {fes} "|" {sional}
+    | {TPEs} "|" {pro} "|" {fess} "|" {or}
+    | {TPEUt} "|" {pro} "|" {fit} "|" {able}
+    | {TPOUpbd} "|" {pro} "|" {found} "|" {ly}
+    | {TKPWRApl} "|" {pro} "|" {gramm} "|" {able}
+    | {TKPWRApl} "|" {pro} "|" {gramm} "|" {er}
+    | {TKPWRE} "|" {pro} "|" {gres} "|" {sion}
+    | {TKPWREs} "|" {pro} "|" {gress} "|" {ive}
+    | "^" {TKPWRUfs} "|" {pro} "|" {gressive} "|" {ly}
+    | {EUb} "|" {pro} "|" {hib} "|" {ition}
+    | {SKWR} "*" {Ebg} "|" {pro} "|" {jec} "|" {tion}
+    | {SKWREbgt} "|" {pro} "|" {ject} "|" {or}
+    | "^" {HRUfr} "|" {pro} "|" {lifer} "|" {ation}
+    | {HREUf} "|" {pro} "|" {lif} "|" {ic}
+    | {PHEUpb} "|" {pro} "|" {min} "|" {ence}
+    | {PHEUpb} "|" {pro} "|" {min} "|" {ent}
+    | "^" {PHUpbt} "|" {pro} "|" {minent} "|" {ly}
+    | {PHOt} "|" {pro} "|" {mot} "|" {er}
+    | {PHO} "|" {pro} "|" {mo} "|" {tion}
+    | {PHO} "|" {pro} "|" {mo} "|" {tional}
+    | "^" {TPHEpbs} "|" {pro} "|" {nunci} "|" {ation}
+    | {PAg} "|" {pro} "|" {pag} "|" {ation}
+    | {PEl} "|" {pro} "|" {pell} "|" {er}
+    | {PEpbs} "|" {pro} "|" {pens} "|" {ity}
+    | {PEr} "|" {pro} "|" {per} "|" {ly}
+    | {TPEt} "|" {pro} "|" {phet} "|" {ic}
+    | {POpb} "|" {pro} "|" {pon} "|" {ent}
+    | {POr} "|" {pro} "|" {por} "|" {tion}
+    | {POr} "|" {pro} "|" {por} "|" {tional}
+    | {POs} "|" {pro} "|" {pos} "|" {al}
+    | {POs} "|" {pro} "|" {pos} "|" {ition}
+    | {PUl} "|" {pro} "|" {pul} "|" {sion}
+    | "^" {SKEU} "|" {pro} "|" {secu} "|" {tion}
+    | "^" {SKEUt} "|" {pro} "|" {secut} "|" {or}
+    | {SPEbgt} "|" {pro} "|" {spect} "|" {ive}
+    | {SPEr} "|" {pro} "|" {sper} "|" {ity}
+    | {SPEr} "|" {pro} "|" {sper} "|" {ous}
+    | "^" {STE} "|" {pro} "|" {stitu} "|" {tion}
+    | "^" {TAOpbg} "|" {pro} "|" {tagon} "|" {ist}
+    | {T} "*" {Ebg} "|" {pro} "|" {tec} "|" {tion}
+    | {TEbgt} "|" {pro} "|" {tect} "|" {ive}
+    | {TEbgt} "|" {pro} "|" {tect} "|" {or}
+    | {TEft} "|" {pro} "|" {test} "|" {ant}
+    | {TEft} "|" {pro} "|" {test} "|" {er}
+    | {SRErb} "|" {pro} "|" {verb} "|" {ial}
+    | {SRAOEUd} "|" {pro} "|" {vid} "|" {er}
+    | {SREU} "|" {pro} "|" {vi} "|" {sion}
+    | {SREU} "|" {pro} "|" {vi} "|" {sional}
+    | {SRO} "*" {bg} "|" {pro} "|" {voc} "|" {ation}
+    | {SRO} "*" {bg} "|" {pro} "|" {voc} "|" {ative}
+    | {A} "*" {bg} "|" {re} "|" {ac} "|" {tion}
+    | {Abgt} "|" {re} "|" {act} "|" {ive}
+    | {Al} "|" {re} "|" {al} "|" {ism}
+    | {Al} "|" {re} "|" {al} "|" {ist}
+    | "^" {HRAEUft} "|" {re} "|" {alist} "|" {ic}
+    | {Al} "|" {re} "|" {al} "|" {ity}
+    | {Al} "|" {re} "|" {al} "|" {ize}
+    | "^" {SHAUr} "|" {re} "|" {assur} "|" {ance}
+    | {PWUt} "|" {re} "|" {butt} "|" {al}
+    | {SA} "*" {Ef} "|" {re} "|" {ceiv} "|" {er}
+    | {SEpb} "|" {re} "|" {cent} "|" {ly}
+    | {SEp} "|" {re} "|" {cep} "|" {tion}
+    | {SEpt} "|" {re} "|" {cept} "|" {ive}
+    | {SE} "|" {re} "|" {ces} "|" {sion}
+    | "^" {Sp} "|" {re} "|" {cipi} "|" {ent}
+    | "^" {SOEUrpbg} "|" {re} "|" {ciproc} "|" {al}
+    | "^" {SPROEUs} "|" {re} "|" {ciproc} "|" {ity}
+    | {SAOEUt} "|" {re} "|" {cit} "|" {al}
+    | {KHRApl} "|" {re} "|" {clam} "|" {ation}
+    | {KOpbg} "|" {re} "|" {cogn} "|" {ition}
+    | "^" {TKPWHAEUz} "|" {re} "|" {cogniz} "|" {able}
+    | {KOpbg} "|" {re} "|" {cogn} "|" {ize}
+    | "^" {KHRO} "*" {Ebg} "|" {re} "|" {collec} "|" {tion}
+    | {KPHEpbd} "|" {re} "|" {commend} "|" {ation}
+    | "^" {KAOpbs} "|" {re} "|" {connaiss} "|" {ance}
+    | "^" {STKPHOEUd} "|" {re} "|" {consid} "|" {er}
+    | "^" {STKPHRO} "*" {Ubg} "|" {re} "|" {construc} "|" {tion}
+    | {KOf} "|" {re} "|" {cov} "|" {er}
+    | {KRE} "|" {re} "|" {cre} "|" {ation}
+    | {KRE} "|" {re} "|" {cre} "|" {ational}
+    | {KRAOUt} "|" {re} "|" {cruit} "|" {ment}
+    | {KUr} "|" {re} "|" {curr} "|" {ence}
+    | {KUr} "|" {re} "|" {curr} "|" {ent}
+    | {TKEfrp} "|" {re} "|" {demp} "|" {tion}
+    | {TK} "*" {Ubg} "|" {re} "|" {duc} "|" {tion}
+    | {TKUpbd} "|" {re} "|" {dund} "|" {ant}
+    | "^" {HR} "*" {bg} "|" {re} "|" {elec} "|" {tion}
+    | {TPEr} "|" {re} "|" {fer} "|" {ence}
+    | {TPEr} "|" {re} "|" {ferr} "|" {al}
+    | {TPAOEUpb} "|" {re} "|" {fine} "|" {ment}
+    | {TPHR} "*" {Ebg} "|" {re} "|" {flec} "|" {tion}
+    | {TPHREbgt} "|" {re} "|" {flect} "|" {ive}
+    | {TPHREbgt} "|" {re} "|" {flect} "|" {or}
+    | {TPOrpl} "|" {re} "|" {form} "|" {ation}
+    | "^" {TPRUrpblg} "|" {re} "|" {friger} "|" {ation}
+    | {TKPWArd} "|" {re} "|" {gard} "|" {less}
+    | {SKWREU} "|" {re} "|" {gi} "|" {ment}
+    | {SKWREUfrt} "|" {re} "|" {gistr} "|" {ation}
+    | {TKPWRE} "|" {re} "|" {gres} "|" {sion}
+    | {HAErs} "|" {re} "|" {hears} "|" {al}
+    | "^" {PWHErs} "|" {re} "|" {imburse} "|" {ment}
+    | "^" {A} "*" {EUrpbg} "|" {re} "|" {incarn} "|" {ation}
+    | "^" {TPHOUrs} "|" {re} "|" {inforce} "|" {ment}
+    | {SKWR} "*" {Ebg} "|" {re} "|" {jec} "|" {tion}
+    | {HRA} "|" {re} "|" {la} "|" {tion}
+    | {HRAt} "|" {re} "|" {lat} "|" {ive}
+    | "^" {HRAEUft} "|" {re} "|" {lative} "|" {ly}
+    | "^" {THRAEUf} "|" {re} "|" {lativ} "|" {ity}
+    | {HRAbgs} "|" {re} "|" {lax} "|" {ation}
+    | {HREf} "|" {re} "|" {lev} "|" {ance}
+    | {HREf} "|" {re} "|" {lev} "|" {ant}
+    | {HRAOEU} "|" {re} "|" {li} "|" {able}
+    | {HRAOEU} "|" {re} "|" {li} "|" {ance}
+    | {HRAOEU} "|" {re} "|" {li} "|" {ant}
+    | "^" {HRpblgs} "|" {re} "|" {ligious} "|" {ly}
+    | {HRO} "*" {bg} "|" {re} "|" {loc} "|" {ation}
+    | {HRUbgt} "|" {re} "|" {luct} "|" {ance}
+    | {HRUbgt} "|" {re} "|" {luct} "|" {ant}
+    | "^" {HRAUpbgt} "|" {re} "|" {luctant} "|" {ly}
+    | {PHA} "*" {EUpbd} "|" {re} "|" {maind} "|" {er}
+    | {PHArbg} "|" {re} "|" {mark} "|" {able}
+    | "^" {PHrbg} "|" {re} "|" {markab} "|" {ly}
+    | {PHEd} "|" {re} "|" {med} "|" {ial}
+    | {PHEpbl} "|" {re} "|" {memb} "|" {er}
+    | "^" {TPHs} "|" {re} "|" {minisc} "|" {ent}
+    | {PHEU} "|" {re} "|" {mis} "|" {sion}
+    | {PHOEt} "|" {re} "|" {mote} "|" {ly}
+    | {PHOf} "|" {re} "|" {mov} "|" {able}
+    | {PHOf} "|" {re} "|" {mov} "|" {al}
+    | {TPHAOU} "|" {re} "|" {new} "|" {able}
+    | {TPHAOU} "|" {re} "|" {new} "|" {al}
+    | {TPHOf} "|" {re} "|" {nov} "|" {ation}
+    | "^" {PAEUrt} "|" {re} "|" {patri} "|" {ation}
+    | {PAEU} "|" {re} "|" {pay} "|" {ment}
+    | "^" {PAtd} "|" {re} "|" {peated} "|" {ly}
+    | {PEpbt} "|" {re} "|" {pent} "|" {ance}
+    | {PEt} "|" {re} "|" {pet} "|" {ition}
+    | "^" {PUt} "|" {re} "|" {petit} "|" {ive}
+    | {PHRAEUs} "|" {re} "|" {place} "|" {ment}
+    | {PHR} "*" {EUbg} "|" {re} "|" {plic} "|" {ation}
+    | "^" {POErtd} "|" {re} "|" {ported} "|" {ly}
+    | "^" {PRpbtz} "|" {re} "|" {present} "|" {ation}
+    | "^" {SPRpb} "|" {re} "|" {present} "|" {ative}
+    | {PRE} "|" {re} "|" {pres} "|" {sion}
+    | {PREs} "|" {re} "|" {press} "|" {ive}
+    | "^" {TKPRO} "*" {Ubg} "|" {re} "|" {produc} "|" {tion}
+    | "^" {TKPROUbgt} "|" {re} "|" {product} "|" {ive}
+    | {PUbl} "|" {re} "|" {publ} "|" {ic}
+    | {PUls} "|" {re} "|" {puls} "|" {ive}
+    | {KWAOEUr} "|" {re} "|" {quire} "|" {ment}
+    | {SEpb} "|" {re} "|" {sent} "|" {ment}
+    | {SEfrb} "|" {re} "|" {serv} "|" {ation}
+    | {SEUd} "|" {re} "|" {sid} "|" {ence}
+    | {SEUd} "|" {re} "|" {sid} "|" {ent}
+    | "^" {SEpblg} "|" {re} "|" {sidu} "|" {al}
+    | {SEUpbg} "|" {re} "|" {sign} "|" {ation}
+    | "^" {Sl} "|" {re} "|" {sili} "|" {ence}
+    | {SEUft} "|" {re} "|" {sist} "|" {ance}
+    | {SEUft} "|" {re} "|" {sist} "|" {ant}
+    | "^" {SHROU} "|" {re} "|" {solu} "|" {tion}
+    | {SOpb} "|" {re} "|" {son} "|" {ance}
+    | {SOpb} "|" {re} "|" {son} "|" {ant}
+    | {SOUrs} "|" {re} "|" {source} "|" {ful}
+    | {SPEbgt} "|" {re} "|" {spect} "|" {able}
+    | {SPEbgt} "|" {re} "|" {spect} "|" {ful}
+    | "^" {SPEUfbgt} "|" {re} "|" {spectful} "|" {ly}
+    | {SPEbgt} "|" {re} "|" {spect} "|" {ive}
+    | "^" {SPUfbgt} "|" {re} "|" {spective} "|" {ly}
+    | {SPEUr} "|" {re} "|" {spir} "|" {ation}
+    | {SPOpbd} "|" {re} "|" {spond} "|" {ent}
+    | {SPOpbs} "|" {re} "|" {spons} "|" {ible}
+    | "^" {SPOEUpbs} "|" {re} "|" {sponsib} "|" {ly}
+    | {SPOpbs} "|" {re} "|" {spons} "|" {ive}
+    | "^" {SPOEUfpbs} "|" {re} "|" {sponsive} "|" {ness}
+    | "^" {STE} "|" {re} "|" {stitu} "|" {tion}
+    | {STOr} "|" {re} "|" {stor} "|" {ation}
+    | {STR} "*" {EUbg} "|" {re} "|" {stric} "|" {tion}
+    | {STREUbgt} "|" {re} "|" {strict} "|" {ive}
+    | {STRUfpbg} "|" {re} "|" {struct} "|" {ure}
+    | {SUlt} "|" {re} "|" {sult} "|" {ant}
+    | {SUfrp} "|" {re} "|" {sump} "|" {tion}
+    | {SUrpblg} "|" {re} "|" {surg} "|" {ence}
+    | "^" {SR} "*" {EUbg} "|" {re} "|" {surrec} "|" {tion}
+    | {TA} "*" {EUpb} "|" {re} "|" {tain} "|" {er}
+    | "^" {TAEUl} "|" {re} "|" {tali} "|" {ation}
+    | {TEpb} "|" {re} "|" {ten} "|" {tion}
+    | {TEUpb} "|" {re} "|" {tin} "|" {al}
+    | "^" {TAOUr} "|" {re} "|" {tire} "|" {ment}
+    | "^" {TPWRE} "|" {re} "|" {tribu} "|" {tion}
+    | {TRAOEf} "|" {re} "|" {triev} "|" {al}
+    | "^" {STPROEbgt} "|" {re} "|" {trospect} "|" {ive}
+    | {Us} "|" {re} "|" {us} "|" {able}
+    | {SREl} "|" {re} "|" {vel} "|" {ation}
+    | {SREr} "|" {re} "|" {ver} "|" {ence}
+    | {SRErs} "|" {re} "|" {vers} "|" {al}
+    | {SRErs} "|" {re} "|" {vers} "|" {ible}
+    | {SREU} "|" {re} "|" {vi} "|" {sion}
+    | {SRAOEUf} "|" {re} "|" {viv} "|" {al}
+    | {SROfl} "|" {re} "|" {volv} "|" {er}
+    | "^" {SKAEpt} "|" {un} "|" {accept} "|" {able}
+    | "^" {SR} "*" {EUl} "|" {un} "|" {avail} "|" {able}
+    | "^" {SRAOEUd} "|" {un} "|" {avoid} "|" {able}
+    | {PWAEr} "|" {un} "|" {bear} "|" {able}
+    | {PWAEt} "|" {un} "|" {beat} "|" {able}
+    | "^" {PWHRAOf} "|" {un} "|" {believ} "|" {able}
+    | {TKPHOrt} "|" {un} "|" {comfort} "|" {able}
+    | "^" {TKPHRl} "|" {un} "|" {controll} "|" {able}
+    | "^" {STKPHROEpb} "|" {un} "|" {conven} "|" {tional}
+    | {KOf} "|" {un} "|" {cov} "|" {er}
+    | "^" {TKPHAOU} "|" {un} "|" {deni} "|" {able}
+    | "^" {TKROEf} "|" {un} "|" {dercov} "|" {er}
+    | "^" {STKRAEpbd} "|" {un} "|" {derstand} "|" {able}
+    | "^" {TKRAEbg} "|" {un} "|" {dertak} "|" {er}
+    | {STKAOEUr} "|" {un} "|" {desir} "|" {able}
+    | "^" {TKOEUtd} "|" {un} "|" {doubted} "|" {ly}
+    | "^" {PHROU} "|" {un} "|" {employ} "|" {ment}
+    | "*" {Et} "|" {un} "|" {eth} "|" {ical}
+    | {TPA} "*" {EUr} "|" {un} "|" {fair} "|" {ly}
+    | {TPA} "*" {EUt} "|" {un} "|" {faith} "|" {ful}
+    | "^" {TPAOfr} "|" {un} "|" {favor} "|" {able}
+    | "^" {TKPWROEt} "|" {un} "|" {forgett} "|" {able}
+    | "^" {TKPWROEUf} "|" {un} "|" {forgiv} "|" {able}
+    | {TPREpbd} "|" {un} "|" {friend} "|" {ly}
+    | {TKPWRAEUt} "|" {un} "|" {grate} "|" {ful}
+    | "^" {HAEUp} "|" {un} "|" {happi} "|" {ness}
+    | "^" {PHOEUrt} "|" {un} "|" {import} "|" {ant}
+    | {SPWEpb} "|" {un} "|" {inten} "|" {tional}
+    | "^" {TPHOEUpbg} "|" {un} "|" {knowing} "|" {ly}
+    | {HRAU} "|" {un} "|" {law} "|" {ful}
+    | {HRAOEUbg} "|" {un} "|" {like} "|" {ly}
+    | "^" {STPHAEUbg} "|" {un} "|" {mistak} "|" {able}
+    | {PHRAEs} "|" {un} "|" {pleas} "|" {ant}
+    | "^" {TKPRUbgt} "|" {un} "|" {predict} "|" {able}
+    | "^" {TKPROUbgt} "|" {un} "|" {product} "|" {ive}
+    | "^" {TPROE} "|" {un} "|" {profes} "|" {sional}
+    | "^" {HRUft} "|" {un} "|" {realist} "|" {ic}
+    | "^" {HRAOU} "|" {un} "|" {reli} "|" {able}
+    | {RU} "|" {un} "|" {ru} "|" {ly}
+    | {SPAEbg} "|" {un} "|" {speak} "|" {able}
+    | {STOp} "|" {un} "|" {stopp} "|" {able}
+    | "^" {SKEUs} "|" {un} "|" {success} "|" {ful}
+    | {SAOUt} "|" {un} "|" {suit} "|" {able}
+    | {TEpb} "|" {un} "|" {ten} "|" {able}
+    | {TH} "*" {EUpbg} "|" {un} "|" {think} "|" {able}
+    | {TAOEUpl} "|" {un} "|" {time} "|" {ly}
+    | "^" {KWRpblg} "|" {un} "|" {usu} "|" {al}
+    | "^" {Wpblg} "|" {un} "|" {willing} "|" {ness}
+    | "^" {Wpbgt} "|" {un} "|" {witting} "|" {ly} ] ;

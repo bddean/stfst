@@ -33,6 +33,7 @@ class System:
 
         self.order = field("order")
         self.separator = field("separator")
+        self.implicit = field("implicit_hyphen")
         names = dict(re.findall(r'^"(.)"\s*=\s*"([^"]+)"', text, re.M))
         numbers = dict(re.findall(r'^"(\d)"\s*=\s*"(.)"', text, re.M))
 
@@ -81,3 +82,14 @@ class System:
         return self.separator.join(
             "".join(self.order[i] for i in self.stroke(chunk))
             for chunk in outline.split(self.separator))
+
+    def outline(self, tape):
+        """A key tape as a written outline, the number bar spelled as keys."""
+        def stroke(chunk):
+            idx = [self.order.index(c) for c in chunk]
+            text = "".join(self.letters[i] for i in idx)
+            right = [n for n, i in enumerate(idx) if i >= self.first_right]
+            if right and not any(c in self.implicit for c in chunk):
+                text = text[:right[0]] + "-" + text[right[0]:]
+            return text
+        return self.separator.join(stroke(c) for c in tape.split(self.separator))

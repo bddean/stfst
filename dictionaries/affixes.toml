@@ -1,0 +1,251 @@
+# The affixes of the affix stroke: a word with a prefix and a suffix is the stem's
+# stroke, then one vowelless stroke with the prefix's keys on the left bank and
+# the suffix's on the right. reservation is serve `SEFRB` then re…ation `R-GS`.
+#
+# Read by scripts/gen-affixes.py, which parses words by `spellings` and `sound`
+# and writes `keys` into dictionaries/affixes-lexicon.xfst for the grammar in
+# dictionaries/affixes.xfst. A sound is CMU phonemes without stress: `V` is any
+# vowel, `A|B` either, and an empty alternative (`V|`) nothing.
+#
+# The parser tries the rows in order and keeps the longest affixes, so a longer
+# spelling sits above the shorter one it contains.
+
+# A prefix's keys are its own: `RE`, `TKE`, `PRO`, and the prefix chords of
+# two-syllable.json. a- takes `^`, which marks the unstressed syllable before the
+# stress there too, so it is a only where a is not stressed.
+[[prefix]]
+spellings = ["dis", "des", "dys"]
+sound = "D V S|Z"
+keys = "STK"
+
+[[prefix]]
+spellings = ["inter", "enter"]
+sound = "V N T ER"
+keys = "SPW"
+
+[[prefix]]
+spellings = ["int", "ent"]
+sound = "V N T"
+keys = "SPW"
+
+[[prefix]]
+spellings = ["com"]
+sound = "K V M"
+keys = "KPH"
+
+[[prefix]]
+spellings = ["con"]
+sound = "K V N"
+keys = "K"
+
+[[prefix]]
+spellings = ["col"]
+sound = "K V L"
+keys = "KHR"
+
+[[prefix]]
+spellings = ["cor"]
+sound = "K V R"
+keys = "KR"
+
+[[prefix]]
+spellings = ["re"]
+sound = "R V"
+keys = "R"
+
+[[prefix]]
+spellings = ["de"]
+sound = "D V"
+keys = "TK"
+
+[[prefix]]
+spellings = ["pro"]
+sound = "P R V"
+keys = "PR"
+
+[[prefix]]
+spellings = ["pre", "per"]
+sound = "P R|ER V|"
+keys = "PR*"
+
+[[prefix]]
+spellings = ["ex"]
+sound = "V K|G S|Z"
+keys = "KP"
+
+[[prefix]]
+spellings = ["un"]
+sound = "AH N"
+keys = "TPH*"
+
+[[prefix]]
+spellings = ["in", "im", "en", "em"]
+sound = "V N|M"
+keys = "TPH"
+
+[[prefix]]
+spellings = ["a"]
+sound = "AH|AE"
+keys = "^"
+
+# A suffix's keys are the ones it has folded into a stroke: -tion `-GS` as in
+# action, -ment `-PLT` as in payment. A compound suffix is its parts: -tional is
+# -tion and -al, -ical -ic and -al, -ality -al and -ity. None has -D, and only
+# -ize has -Z, so -ed and the possessive fold onto any of them.
+#
+# `countable` marks a suffix that makes a noun with a plural. Where its keys have
+# S, the -S fold cannot write that plural, so the grammar writes it on -Z. -ness
+# makes a noun that has none.
+[[suffix]]
+spellings = ["ational"]
+sound = "EY SH AH N AH L"
+keys = "LGS"
+
+[[suffix]]
+spellings = ["itional"]
+sound = "IH SH AH N AH L"
+keys = "LGS"
+
+[[suffix]]
+spellings = ["tional", "sional"]
+sound = "SH|ZH AH N AH L"
+keys = "LGS"
+
+[[suffix]]
+spellings = ["ation"]
+sound = "EY SH AH N"
+keys = "GS"
+countable = true
+
+[[suffix]]
+spellings = ["ition"]
+sound = "IH SH AH N"
+keys = "GS"
+countable = true
+
+[[suffix]]
+spellings = ["tion", "sion", "ssion", "cion"]
+sound = "SH|ZH|CH AH N"
+keys = "GS"
+countable = true
+
+[[suffix]]
+spellings = ["ment"]
+sound = "M AH|EH N T"
+keys = "PLT"
+countable = true
+
+[[suffix]]
+spellings = ["ness"]
+sound = "N AH|IH S"
+keys = "PBS"
+
+[[suffix]]
+spellings = ["ance", "ence"]
+sound = "AH N S"
+keys = "PBS"
+countable = true
+
+[[suffix]]
+spellings = ["ant", "ent"]
+sound = "AH N T"
+keys = "PBT"
+
+[[suffix]]
+spellings = ["ality"]
+sound = "AE L AH|IH T IY"
+keys = "LT"
+countable = true
+
+[[suffix]]
+spellings = ["ity"]
+sound = "AH|IH T IY"
+keys = "T"
+countable = true
+
+[[suffix]]
+spellings = ["able", "ible"]
+sound = "AH B AH L"
+keys = "BL"
+
+[[suffix]]
+spellings = ["ative"]
+sound = "AH|EY T IH V"
+keys = "F"
+
+[[suffix]]
+spellings = ["ive"]
+sound = "IH V"
+keys = "F"
+
+[[suffix]]
+spellings = ["ious"]
+sound = "IY AH S"
+keys = "S"
+
+[[suffix]]
+spellings = ["ous"]
+sound = "AH S"
+keys = "S"
+
+[[suffix]]
+spellings = ["ize", "ise"]
+sound = "AY Z"
+keys = "Z"
+
+[[suffix]]
+spellings = ["ist"]
+sound = "IH|AH S T"
+keys = "FT"
+countable = true
+
+[[suffix]]
+spellings = ["ism"]
+sound = "IH Z AH M"
+keys = "FPL"
+countable = true
+
+[[suffix]]
+spellings = ["ical"]
+sound = "IH|AH K AH L"
+keys = "BLG"
+
+[[suffix]]
+spellings = ["ic"]
+sound = "IH|AH K"
+keys = "BG"
+
+[[suffix]]
+spellings = ["ful"]
+sound = "F AH L"
+keys = "FL"
+
+[[suffix]]
+spellings = ["less"]
+sound = "L AH S"
+keys = "LS"
+
+[[suffix]]
+spellings = ["ular"]
+sound = "Y AH L ER"
+keys = "RL"
+
+[[suffix]]
+spellings = ["ial"]
+sound = "IY AH L"
+keys = "L"
+
+[[suffix]]
+spellings = ["al"]
+sound = "AH L"
+keys = "L"
+
+[[suffix]]
+spellings = ["ly"]
+sound = "L IY"
+keys = "L"
+
+[[suffix]]
+spellings = ["er", "or", "ure"]
+sound = "ER"
+keys = "R"

@@ -50,7 +50,7 @@ json = "~/.config/plover/two-syllable.json"
 [[dict]]
 name = "affixes"
 priority = 33
-json = "~/.config/plover/affixes.json"
+xfst = ["morphology/ortho.xfst", "dictionaries/affixes-lexicon.xfst", "dictionaries/affixes.xfst"]
 
 [[dict]]
 name = "typey-type"

@@ -1,34 +1,36 @@
 #!/usr/bin/env python3
-"""Write `~/.config/plover/affixes.json`: a word with a prefix and a suffix as two
-strokes, the stem and then one stroke holding both affixes.
+"""Write the lexicon of the affix grammar: which words `dictionaries/affixes.xfst`
+writes, and the stem stroke of each.
 
-The affix stroke has no vowel keys. The left bank is the prefix and the right bank
-the suffix, each with the keys it has alone or folded into a stroke: re is `R`
-as in `RE`, dis is `STK` as in display `STKPHRAEU`, -tion is `-GS` as in action,
--able is `-BL`. So reservation is serve `SEFRB` and re…ation `R-GS`, and a word
-with one affix is written as it was.
+A word with a prefix and a suffix is the stem's stroke, then one stroke with the
+prefix's keys on the left bank and the suffix's on the right, no vowel:
+reservation is serve `SEFRB`, then re…ation `R-GS`. The grammar holds that rule
+and the plural; `dictionaries/affixes.toml` holds each affix's spellings, sound
+and keys. What this script decides is the rest, which is not a rule:
 
-The stem is written as a word of its syllables: one syllable by the vowel
-theory's chord and the consonants by sound, two by two-syllable.json's rule.
+- The parse. The word's CMU phonemes must split into the prefix's sound, a stem
+  of one or two syllables, and the suffix's. The longest affixes win: invitation
+  is in…ation, not in…tion.
+- The stem's stroke. One syllable is written as one-syllable words write it, by
+  the vowel theory's chord and the consonants by sound; two as two-syllable.json
+  does, the more stressed vowel carrying the stress.
+- Which words keep their outline. Two words on one outline go to the more
+  frequent, and an outline another dictionary writes is left to it. An outline is
+  not written when the stem stroke writes a word and the affix stroke alone is a
+  command, or is text that follows that word three times in the corpora: `TPH-T`
+  is "in the", so inactivity would turn "active in the" into a word.
 
--ed and the plural fold onto the affix stroke and are not entries. A suffix
-whose keys have S cannot take -S, so its plural is an entry with -Z: conditions
-is `TKEU/K-GSZ`.
+It writes `dictionaries/affixes-lexicon.xfst`, the affix tables and one line per
+word, and `tests/golden/affixes.tsv`, every entry the grammar should write with
+the outline this script computes for it, so the grammar and this script are held
+to the same rule.
 
-An outline is not written when the stem stroke writes a word and the affix
-stroke, alone, is what often follows it: `TPH-T` is "in the", so inactivity would
-turn "active in the" into a word. Nor when the affix stroke alone is a command:
-`R-R` is a new line.
-
-Two words on one outline go to the more frequent. An outline another dictionary
-writes is left to it.
-
-Usage (needs cmudict and wordfreq, which the phrasing venv has, and the corpora
-under ~/.config/plover/phrasing/corpora):
+Usage (needs cmudict and wordfreq, which the phrasing venv has, the corpora under
+~/.config/plover/phrasing/corpora, and a compiled stack):
 
     PY=~/.config/plover/phrasing/.venv/bin/python
-    $PY scripts/gen-affixes.py            # write the JSON, print the report
-    $PY scripts/gen-affixes.py --check    # fail if the committed JSON is stale
+    $PY scripts/gen-affixes.py            # write the lexicon and golden file, print the report
+    $PY scripts/gen-affixes.py --check    # fail if either is stale
 """
 import argparse
 import collections
@@ -38,14 +40,21 @@ import json
 import os
 import re
 import sys
+import tomllib
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 spec = importlib.util.spec_from_file_location("gen_two_syllable", os.path.join(HERE, "gen-two-syllable.py"))
 t = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(t)
 g = t.g
+sys.path.insert(0, HERE)
+import plover_tape
 
-OUTPUT = os.path.join(g.PLOVER, "affixes.json")
+SYSTEM = plover_tape.System.load(g.SYSTEM)
+
+TABLE = os.path.join(HERE, "..", "dictionaries", "affixes.toml")
+LEXICON = os.path.join(HERE, "..", "dictionaries", "affixes-lexicon.xfst")
+GOLDEN = os.path.join(HERE, "..", "tests", "golden", "affixes.tsv")
 NAME = "affixes"
 MIN_ZIPF = 3.0
 
@@ -53,63 +62,18 @@ MIN_ZIPF = 3.0
 # corpora (17M tokens) before the outline is not written.
 MISREAD = 3
 
-# (spellings, phonemes, keys). A phoneme `V` is any vowel, and `A|B` either.
-# The keys are the prefix's own: `RE`, `TKE`, `PRO`, the prefix chords of
-# two-syllable.json. a- takes `^`, which marks the unstressed syllable before
-# the stress there too, so it is a only where a is not stressed.
-PREFIXES = [
-    (("dis", "des", "dys"), "D V S|Z", "STK"),
-    (("inter", "enter"), "V N T ER", "SPW"),
-    (("int", "ent"), "V N T", "SPW"),
-    (("com",), "K V M", "KPH"),
-    (("con",), "K V N", "K"),
-    (("col",), "K V L", "KHR"),
-    (("cor",), "K V R", "KR"),
-    (("re",), "R V", "R"),
-    (("de",), "D V", "TK"),
-    (("pro",), "P R V", "PR"),
-    (("pre", "per"), "P R|ER V|", "PR*"),
-    (("ex",), "V K|G S|Z", "KP"),
-    (("un",), "AH N", "TPH*"),
-    (("in", "im", "en", "em"), "V N|M", "TPH"),
-    (("a",), "AH|AE", "^"),
-]
 
-# (spellings, phonemes, keys), the keys each suffix has folded into a stroke:
-# -tion `-GS` as in action, -ment `-PLT` as in payment. A compound suffix is its
-# parts: -tional is -tion and -al, -ical -ic and -al, -ality -al and -ity. None
-# has -D, and only -ize has -Z, so -ed and the possessive fold onto any of them.
-SUFFIXES = [
-    (("ational",), "EY SH AH N AH L", "LGS"),
-    (("itional",), "IH SH AH N AH L", "LGS"),
-    (("tional", "sional"), "SH|ZH AH N AH L", "LGS"),
-    (("ation",), "EY SH AH N", "GS"),
-    (("ition",), "IH SH AH N", "GS"),
-    (("tion", "sion", "ssion", "cion"), "SH|ZH|CH AH N", "GS"),
-    (("ment",), "M AH|EH N T", "PLT"),
-    (("ness",), "N AH|IH S", "PBS"),
-    (("ance", "ence"), "AH N S", "PBS"),
-    (("ant", "ent"), "AH N T", "PBT"),
-    (("ality",), "AE L AH|IH T IY", "LT"),
-    (("ity",), "AH|IH T IY", "T"),
-    (("able", "ible"), "AH B AH L", "BL"),
-    (("ative",), "AH|EY T IH V", "F"),
-    (("ive",), "IH V", "F"),
-    (("ious",), "IY AH S", "S"),
-    (("ous",), "AH S", "S"),
-    (("ize", "ise"), "AY Z", "Z"),
-    (("ist",), "IH|AH S T", "FT"),
-    (("ism",), "IH Z AH M", "FPL"),
-    (("ical",), "IH|AH K AH L", "BLG"),
-    (("ic",), "IH|AH K", "BG"),
-    (("ful",), "F AH L", "FL"),
-    (("less",), "L AH S", "LS"),
-    (("ular",), "Y AH L ER", "LR"),
-    (("ial",), "IY AH L", "L"),
-    (("al",), "AH L", "L"),
-    (("ly",), "L IY", "L"),
-    (("er", "or", "ure"), "ER", "R"),
-]
+def load_affixes(path=TABLE):
+    """(prefixes, suffixes, countable suffix spellings), each affix a row of
+    (spellings, phonemes, keys) in the file's order."""
+    with open(path, "rb") as f:
+        doc = tomllib.load(f)
+    rows = lambda kind: [(tuple(r["spellings"]), r["sound"], r["keys"]) for r in doc[kind]]
+    countable = {s for r in doc["suffix"] if r.get("countable") for s in r["spellings"]}
+    return rows("prefix"), rows("suffix"), countable
+
+
+PREFIXES, SUFFIXES, COUNTABLE = load_affixes()
 
 
 def phones_match(pron, pattern):
@@ -139,10 +103,10 @@ def affix_keys(prefix, suffix):
 
 
 def parses(word, pron):
-    """(prefix keys, stem letters, stem phonemes, suffix keys) for each way the
-    word splits into a prefix, a stem of one or two syllables and a suffix. A
-    consonant doubled across the prefix's end is the stem's too: commission is
-    com and mission."""
+    """(prefix keys, prefix, stem letters, stem phonemes, suffix keys, suffix) for
+    each way the word splits into a prefix, a stem of one or two syllables and a
+    suffix. A consonant doubled across the prefix's end is the stem's sound too:
+    commission is com and mission."""
     for pspell, pphones, pkeys in PREFIXES:
         p = next((x for x in pspell if word.startswith(x)), None)
         if not p:
@@ -162,7 +126,7 @@ def parses(word, pron):
                 for left in phones_match(list(reversed(pron[n:])), pat):
                     stem = pron[n:len(pron) - len(pron[n:]) + len(left)]
                     if 1 <= sum(q[-1].isdigit() for q in stem) <= 2:
-                        yield pkeys, word[len(p):len(word) - len(s)], stem, skeys
+                        yield pkeys, p, word[len(p):len(word) - len(s)], stem, skeys, s
 
 
 def stem_stroke(letters, phones, table, coda, onsets):
@@ -194,16 +158,28 @@ def stem_stroke(letters, phones, table, coda, onsets):
 
 
 def outline_for(word, table, coda, onsets):
-    """The rule's outline for `word`, or None when it is not in scope. The longest
-    affixes win: invitation is in…ation, not in…tion."""
+    """(outline, (prefix, stem letters, suffix)) by the rule, or None when `word`
+    is not in scope. The longest affixes win: invitation is in…ation, not
+    in…tion."""
     best = None
     for pron in g.prons(word):
-        for pkeys, letters, phones, skeys in parses(word, pron):
+        for pkeys, p, letters, phones, skeys, s in parses(word, pron):
             stroke = stem_stroke(letters, phones, table, coda, onsets)
             if stroke:
-                cand = (len(letters), f"{stroke}/{affix_keys(pkeys, skeys)}")
+                cand = (len(letters), f"{stroke}/{affix_keys(pkeys, skeys)}", (p, letters, s))
                 best = min(best or cand, cand)
-    return best and best[1]
+    return best and best[1:]
+
+
+def plural(word, suffix):
+    """The -Z entry's word, where the grammar writes one: a countable noun whose
+    suffix keys hold the -S that would fold its plural."""
+    keys = next(k for sp, _, k in SUFFIXES if suffix in sp)
+    if suffix in COUNTABLE and "S" in keys:
+        forms = g.regular_forms(word, "s")
+        assert len(forms) == 1, (word, forms)
+        return forms.pop()
+    return None
 
 
 # --- Misreads ------------------------------------------------------------------
@@ -244,22 +220,19 @@ def count_ngrams(wanted):
 # --- Build ---------------------------------------------------------------------
 
 def build(typey, table, result):
+    """({word: (stem stroke, prefix, stem letters, suffix)}, {outline: word}, the
+    report): the lexicon, and every entry the grammar writes from it."""
     coda = t.Coda(typey, result)
     words = sorted((w for w in typey.known if re.fullmatch("[a-z]+", w) and g.zipf(w) >= MIN_ZIPF),
                    key=lambda w: (-g.zipf(w), w))
     onsets = {tuple(on) for w in typey.words.values() for on, _ in w.phones}
-    outlines = {w: o for w in words if (o := outline_for(w, table, coda, onsets))}
-    # -S is the plural, and a suffix chord that has S cannot fold it, so the
-    # plural is an entry with -Z, as Typey Type's differences is TKEUFRPBSZ.
-    plural = {}
-    for w, o in list(outlines.items()):
-        if "S" in re.split(r"[-*]", o)[-1] and not o.endswith("Z"):
-            for f in sorted(g.regular_forms(w, "s") & typey.known):
-                outlines[f], plural[f] = o + "Z", w
+    found = {w: f for w in words if (f := outline_for(w, table, coda, onsets))}
+    outlines = {w: o for w, (o, _) in found.items()}
+    plurals = {w: (pl, o + "Z") for w, (o, (_, _, s)) in found.items() if (pl := plural(w, s))}
 
     stack = g.Stack(json.load(open(g.OUTPUT)), skip=NAME)
     singles = {s for o in outlines.values() for s in o.split("/")}
-    answers = stack.ask(list(outlines.values()) + sorted(singles))
+    answers = stack.ask(list(outlines.values()) + [o for _, o in plurals.values()] + sorted(singles))
     said = {s: answers[s][0][1] for s in singles if answers.get(s)}
 
     # "stem word, then the affix stroke's words", for each outline that could misread.
@@ -279,24 +252,76 @@ def build(typey, table, result):
     out, lost, left = {}, [], []
     for o, ws in by.items():
         ws.sort(key=lambda w: (-g.zipf(w), w))
-        found = [(n, tr) for n, tr in answers.get(o, []) if n != NAME]
-        if found and found[0][1] != ws[0] and not (
-                found[0][0] == "typey-type" and g.zipf(found[0][1]) <= g.zipf(ws[0]) + g.DISPLACE):
-            left += [(w, o, found[0]) for w in ws]
+        taken = [(n, tr) for n, tr in answers.get(o, []) if n != NAME]
+        if taken and taken[0][1] != ws[0] and not (
+                taken[0][0] == "typey-type" and g.zipf(taken[0][1]) <= g.zipf(ws[0]) + g.DISPLACE):
+            left += [(w, o, taken[0]) for w in ws]
             continue
         out[o] = ws[0]
         lost += [(w, ws[0], o) for w in ws[1:]]
-    kept = set(out.values())
-    out = {o: w for o, w in out.items() if plural.get(w, w) in kept}
-    return dict(sorted(out.items())), dict(outlines=outlines, plural=plural, misread=misread,
-                                          counts=counts, lost=lost, left=left, said=said)
+    lexicon = {w: (o.split("/")[0], *found[w][1]) for o, w in out.items()}
+    # A plural is the grammar's, so it follows its singular. One another
+    # dictionary also writes is reported, not dropped.
+    shadow = []
+    for w in lexicon:
+        if w in plurals:
+            pl, o = plurals[w]
+            out[o] = pl
+            shadow += [(pl, o, a) for a in answers.get(o, [])[:1] if a[0] != NAME]
+    return lexicon, dict(sorted(out.items())), dict(
+        outlines=outlines, plurals=plurals, misread=misread, counts=counts,
+        lost=lost, left=left, shadow=shadow)
 
 
-def report(out, r):
+# --- Output --------------------------------------------------------------------
+
+def xfst_string(text):
+    """A symbol string as xfst reads it: alphanumeric runs in braces, every other
+    character quoted on its own."""
+    return " ".join(f"{{{run}}}" if run.isalnum() else f'"{run}"'
+                    for run in re.findall(r"[A-Za-z]+|.", text))
+
+
+def lexicon_xfst(lexicon):
+    """dictionaries/affixes-lexicon.xfst: the tables of affixes.toml as spelling
+    to keys, the countable suffixes, and one line per word."""
+    rel = os.path.relpath(TABLE, os.path.join(HERE, ".."))
+    union = lambda items: "\n    | ".join(items)
+    pair = lambda upper, lower: f"[ [ {xfst_string(upper)} ] .x. [ {xfst_string(lower)} ] ]"
+    pre = [pair(sp, SYSTEM.tape(k)) for sps, _, k in PREFIXES for sp in sps]
+    suf = [pair(sp, SYSTEM.tape("-" + k)) for sps, _, k in SUFFIXES for sp in sps]
+    countable = [xfst_string(sp) for sps, _, _ in SUFFIXES for sp in sps if sp in COUNTABLE]
+    words = [" \"|\" ".join([xfst_string(SYSTEM.tape(stroke)), xfst_string(p), xfst_string(stem), xfst_string(s)])
+             for w, (stroke, p, stem, s) in sorted(lexicon.items())]
+    return (f"! Written by scripts/gen-affixes.py from {rel} and the words it chose.\n"
+            "! Do not edit: see dictionaries/affixes.xfst for what these mean.\n\n"
+            f"define AffixPrefix [ {union(pre)} ] ;\n\n"
+            f"define AffixSuffix [ {union(suf)} ] ;\n\n"
+            f"define AffixCountable [ {union(countable)} ] ;\n\n"
+            f"! {len(words)} words: the stem's stroke, then prefix, stem and suffix.\n"
+            f"define AffixWords [ {union(words)} ] ;\n")
+
+
+def golden(out):
+    """tests/golden/affixes.tsv: every entry, at the outline this script gives it."""
+    lines = ["! Every entry dictionaries/affixes.xfst writes, at the outline",
+             "! scripts/gen-affixes.py computes for it. Written by that script."]
+    return "\n".join(lines + [f"{SYSTEM.tape(o)}\t{w}" for o, w in out.items()]) + "\n"
+
+
+def entries():
+    """{outline: word} from the committed golden file, for readers that want what
+    the dictionary writes without building it."""
+    with open(GOLDEN) as f:
+        rows = [line.rstrip("\n").split("\t") for line in f if not line.startswith("!")]
+    return {SYSTEM.outline(tape): word for tape, word in rows}
+
+
+def report(lexicon, out, r):
     z = g.zipf
     wrap = lambda items: "\n".join("  " + " ".join(items[i:i + 8]) for i in range(0, len(items), 8))
-    print(f"{len(r['outlines']) - len(r['plural'])} words in scope; {len(out)} entries, "
-          f"{sum(w in r['plural'] for w in out.values())} of them plurals with -Z")
+    print(f"{len(r['outlines'])} words in scope; {len(lexicon)} in the lexicon, "
+          f"{len(out)} entries with the plurals on -Z")
     m = sorted(r["misread"].items(), key=lambda x: (-z(x[0]), x[0]))
     print(f"{len(m)} not written, because the stem and the affix stroke read as text:")
     print(wrap([f"{w}({'new line' if v == 'command' else ' '.join(v) + ' x' + str(r['counts'][v])})"
@@ -307,26 +332,31 @@ def report(out, r):
     left = sorted(r["left"], key=lambda x: (-z(x[0]), x[:2]))
     print(f"{len(left)} leave their outline to another dictionary:")
     print(wrap([f"{w}={o}({n}:{tr})" for w, o, (n, tr) in left]))
+    print(f"{len(r['shadow'])} plurals on an outline another dictionary also writes:")
+    print(wrap([f"{w}={o}({n}:{tr})" for w, o, (n, tr) in r["shadow"]]))
     keys = collections.Counter(o.split("/")[1] for o in out)
     print("affix strokes, most used first:", " ".join(f"{k}:{n}" for k, n in keys.most_common(30)))
 
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--check", action="store_true", help="fail if the committed JSON is stale")
+    ap.add_argument("--check", action="store_true", help="fail if the lexicon or golden file is stale")
     args = ap.parse_args()
 
     typey = g.Typey.load()
     table, _ = g.load_table()
     result = g.resolve(typey, table)
-    out, r = build(typey, table, result)
+    lexicon, out, r = build(typey, table, result)
+    files = {LEXICON: lexicon_xfst(lexicon), GOLDEN: golden(out)}
     if args.check:
-        with open(OUTPUT) as f:
-            if json.load(f) != out:
-                sys.exit(f"{OUTPUT} is stale: run {sys.argv[0]}")
+        stale = [p for p, text in files.items() if not os.path.exists(p) or open(p).read() != text]
+        if stale:
+            sys.exit(f"{', '.join(stale)} stale: run {sys.argv[0]}")
         return
-    t.write_json(out, OUTPUT)
-    report(out, r)
+    for path, text in files.items():
+        with open(path, "w") as f:
+            f.write(text)
+    report(lexicon, out, r)
 
 
 if __name__ == "__main__":

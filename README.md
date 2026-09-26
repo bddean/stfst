@@ -42,7 +42,7 @@ shadow a working entry.
 | emily-modifiers | xfst over generated tables |
 | semantic-suffixes | JSON, imported |
 | two-syllable | JSON, imported |
-| affixes | JSON, imported |
+| affixes | xfst over a generated lexicon, and the orthography rules |
 | typey-type | JSON, imported |
 | and-fold | JSON, imported |
 | phrasing-tag | xfst, `#^`: the clause with a question tag |
@@ -215,6 +215,12 @@ first is orthography, so `child` and `s` is `childs`, exactly as Plover says. Th
 second is inflection, so it is `children`. Only the second asks a lexicon, and a
 host with no lexicon refuses `{:infl:…}` rather than answering it with rules.
 
+The rules are also a layer a grammar composes as it compiles: `affixes` spells
+the plurals it writes through `Ortho`, so each is the word `{^s}` would write.
+There is no word list to rank candidates at compile time, so a rule's candidate
+is taken over the plain join, and the golden file is what says a join had only
+one.
+
 ## The vowel theory, which writes JSON
 
 `typey-type` is imported from `~/.config/plover/typey-type-full.json`, and that
@@ -243,12 +249,20 @@ in turn until both pass `--check`; one round is usually enough. It reads the com
 a stroke another dictionary writes to it, so run it after a compile. `check.sh`
 fails if its JSON is stale.
 
-`scripts/gen-affixes.py` writes `affixes.json` from the same pieces: a word with a
-prefix and a suffix as the stem's stroke, then one vowelless stroke with the
-prefix on the left bank and the suffix on the right (reservation is
-`SEFRB/R-GS`). It counts n-grams in `~/.config/plover/phrasing/corpora` to leave
-out an outline whose two strokes, read apart, are text someone writes. Run it
-after `gen-two-syllable.py` and a compile; `check.sh` fails if its JSON is stale.
+`affixes` is a grammar and not JSON, because Stenotype Extended is the only
+system that loads it. A word with a prefix and a suffix is the stem's stroke,
+then one vowelless stroke with the prefix on the left bank and the suffix on the
+right (reservation is `SEFRB/R-GS`). `dictionaries/affixes.xfst` is that rule and
+the plural a noun suffix with S takes on -Z, spelled by `morphology/ortho.xfst`;
+`dictionaries/affixes.toml` is each affix's spellings, sound and keys.
+`scripts/gen-affixes.py` writes the lexicon, `dictionaries/affixes-lexicon.xfst`:
+the words in scope by CMU and the vowel theory, less those that lose their
+outline to a more frequent word or to another dictionary, or whose two strokes,
+read apart, are text someone writes, which it counts in
+`~/.config/plover/phrasing/corpora`. It also writes `tests/golden/affixes.tsv`,
+every entry at the outline it computes, so the script and the grammar are held to
+one rule. Run it after `gen-two-syllable.py` and a compile; `check.sh` fails if
+either file is stale.
 
 ## Measurements and decisions
 
@@ -271,8 +285,8 @@ after `gen-two-syllable.py` and a compile; `check.sh` fails if its JSON is stale
 | | |
 |---|---|
 | `systems/` | Steno systems. Which tape symbol each key writes is configuration, not a convention baked into the tools. |
-| `dictionaries/` | Hand-written dictionary source, in xfst. A `-tables.xfst` file is transcribed data with an upstream owner; the grammar over it is authored. `typey-vowels.toml` is the vowel theory's table, which a script applies to JSON. |
-| `morphology/` | `ortho.xfst`, Plover's 38 orthography rules. Not a dictionary: nothing here is over the key tape. The two lexicons beside it are generated, not committed. |
+| `dictionaries/` | Hand-written dictionary source, in xfst. A `-tables.xfst` file is transcribed data with an upstream owner; the grammar over it is authored. `typey-vowels.toml` is the vowel theory's table, which a script applies to JSON, and `affixes.toml` the affix stroke's. |
+| `morphology/` | `ortho.xfst`, Plover's 38 orthography rules. Not a dictionary: nothing here is over the key tape, though a grammar may include it to spell a join, as `affixes` does. The two lexicons beside it are generated, not committed. |
 | `recipe.toml` | The dictionary stack: what to compile, and at what priority. |
 | `tests/golden/` | Host-independent golden tests for the grammars: a tape, a tab, the expected records. An imported source's is written into `build/golden/` by `check.sh`. |
 | `tests/vowels.tsv` | The same, for what the vowel table writes, checked against typey-type. |
