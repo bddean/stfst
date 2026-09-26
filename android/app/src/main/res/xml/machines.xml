@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- What UsbActivity is offered for: a HID interface that is not a boot
+     keyboard or mouse, a virtual serial port, and the common USB serial
+     adapters (FTDI, Prolific, Silicon Labs, WCH). -->
+<resources>
+    <usb-device class="3" protocol="0" />
+    <usb-device class="2" />
+    <usb-device vendor-id="1027" />
+    <usb-device vendor-id="1659" />
+    <usb-device vendor-id="4292" />
+    <usb-device vendor-id="6790" />
+</resources>

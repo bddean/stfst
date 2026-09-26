@@ -37,9 +37,9 @@ $(APK): $(LIB) $(ASSETS) $(APP_SRC) android/app/build.gradle.kts android/build.g
 $(LIB): $(RUST_SRC)
 	android/build-native.sh
 
-# The compiled dictionaries, the key system, and the dictionaries the app reads
-# as files rather than as artifacts.
-$(ASSETS): $(DICTS) systems/stenotype-extended.toml android/editable.toml $(HOME)/.config/plover/user.json
+# The compiled dictionaries, the key system, the dictionaries the app reads as
+# files rather than as artifacts, and the machines' configuration.
+$(ASSETS): $(DICTS) systems/stenotype-extended.toml android/editable.toml $(HOME)/.config/plover/user.json $(wildcard $(HOME)/.config/plover/plover.cfg)
 	android/sync-assets.sh
 
 # A directory's mtime says nothing about what is under it, so the compile

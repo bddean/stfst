@@ -14,3 +14,4 @@ stfst-dict.workspace = true
 stfst-text.workspace = true
 stfst-board.workspace = true
 jni = "0.21"
+stfst-machine.workspace = true

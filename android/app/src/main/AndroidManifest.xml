@@ -6,6 +6,9 @@
          such choice. -->
     <uses-permission android:name="android.permission.VIBRATE" />
 
+    <!-- A steno machine on USB. The keyboard works without one. -->
+    <uses-feature android:name="android.hardware.usb.host" android:required="false" />
+
     <application
         android:label="@string/app_name"
         android:allowBackup="false">
@@ -31,6 +34,20 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".UsbActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                android:resource="@xml/machines" />
         </activity>
     </application>
 </manifest>

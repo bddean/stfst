@@ -9,6 +9,8 @@
 //! edit protocol across the boundary would be a second implementation of
 //! something `Text` does correctly.
 
+mod machine;
+
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
@@ -33,6 +35,7 @@ struct Host {
     /// and not a second stack.
     saved: Option<Board<'static>>,
     order: String,
+    names: String,
 }
 
 impl Host {
@@ -107,6 +110,7 @@ fn open_host(dicts: &str, editable: &str, system: &str, morph: &str) -> Result<H
     // join, which is the honest answer rather than a refusal to start.
     let morph = Morph::open(Path::new(morph)).ok().map(Arc::new);
     let order = system.keys().iter().map(|k| k.symbol).collect();
+    let names = system.keys().iter().map(|k| k.name.as_str()).collect::<Vec<_>>().join(" ");
     Ok(Host {
         system,
         stack,
@@ -114,6 +118,7 @@ fn open_host(dicts: &str, editable: &str, system: &str, morph: &str) -> Result<H
         saved: None,
         morph,
         order,
+        names,
     })
 }
 
@@ -246,6 +251,20 @@ pub extern "system" fn Java_cx_yeet_stfst_Native_order(
 ) -> jstring {
     match unsafe { host(handle) } {
         Some(host) => give(&mut env, &host.order),
+        None => give(&mut env, ""),
+    }
+}
+
+/// The keys' Plover names in steno order, space-separated. A machine's keymap
+/// names keys this way.
+#[no_mangle]
+pub extern "system" fn Java_cx_yeet_stfst_Native_names(
+    mut env: JNIEnv,
+    _class: JClass,
+    handle: jlong,
+) -> jstring {
+    match unsafe { host(handle) } {
+        Some(host) => give(&mut env, &host.names),
         None => give(&mut env, ""),
     }
 }

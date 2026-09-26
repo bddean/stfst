@@ -135,6 +135,11 @@ building it changed here.
 
 The host loop both it and `stfst translate` drive is `stfst-board`.
 
+A steno machine on USB writes through it too: Plover HID with
+`plover-hid-timing`'s rules, Gemini PR, or Stentura, configured by the
+desktop's `plover.cfg`. What the bytes mean is `stfst-machine`, which does no
+I/O, so a desktop host could use it as well.
+
 Defining an outline is a keyboard operation there too: `{PLOVER:ADD_OUTLINE}` and
 `{PLOVER:ADD_TRANSLATION}` open a panel over the keys, and steno fills both of its
 fields. `make install` syncs `stfst-user.json` with the desktop's copy over adb.
@@ -308,6 +313,7 @@ either file is stale.
 | `crates/stfst-ol` | Reader for the `hfstol` runtime format: mapped, no decode, no HFST. |
 | `crates/stfst-dict` | The runtime: the dictionary stack, longest match, record interpretation. |
 | `crates/stfst-text` | The host side of the record language: the word buffer, the formatter, the one general rewrite, and the morphology reader. Names no operation. |
+| `crates/stfst-machine` | Steno machines: Plover HID, Gemini PR and Stentura on the wire, `plover-hid-timing`'s chorder and sounds, Plover's keymaps, and `plover.cfg`. No I/O. |
 | `crates/stfst-cli` | `stfst`. Testing only. |
 | `plover-plugin/` | The Plover host: a dictionary class, an `hfstol` reader in Python, and the record language read both ways. |
 

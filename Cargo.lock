@@ -399,7 +399,17 @@ dependencies = [
  "stfst-board",
  "stfst-core",
  "stfst-dict",
+ "stfst-machine",
  "stfst-text",
+]
+
+[[package]]
+name = "stfst-machine"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "serde_json",
+ "thiserror 2.0.19",
 ]
 
 [[package]]

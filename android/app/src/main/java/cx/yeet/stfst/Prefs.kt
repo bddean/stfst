@@ -114,6 +114,8 @@ object Prefs {
         flag("briefs", { it.briefs }, { c, v -> c.briefs = v }),
         count("briefsMost", { it.briefsMost }, { c, v -> c.briefsMost = v }),
         span("briefsIdleMs", { it.briefsIdleMs }, { c, v -> c.briefsIdleMs = v }),
+        flag("hideWithMachine", { it.hideWithMachine }, { c, v -> c.hideWithMachine = v }),
+        text("serialMachine", { it.serialMachine }, { c, v -> c.serialMachine = v }),
         flag("cloud", { it.cloud }, { c, v -> c.cloud = v }),
         count("cloudSamples", { it.cloudSamples }, { c, v -> c.cloudSamples = v }),
         size("cloudAlpha", { it.cloudAlpha }, { c, v -> c.cloudAlpha = v }),

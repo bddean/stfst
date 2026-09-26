@@ -68,6 +68,9 @@ class StenoService : InputMethodService() {
     private val hinter: ExecutorService = Executors.newSingleThreadExecutor()
     private val runtime = Any()
 
+    /** Steno machines on USB, which stroke through [stroke] like the keys do. */
+    private var machines: Machines? = null
+
     override fun onCreate() {
         super.onCreate()
         config = Prefs.load(getSharedPreferences(PREFS, MODE_PRIVATE))
@@ -86,6 +89,9 @@ class StenoService : InputMethodService() {
             else {
                 order = Native.order(handle)
                 keys = Keys.of(order)
+                val cfg = File(root, "plover.cfg").takeIf { it.isFile }?.readText() ?: ""
+                machines = Machines(this, cfg, Native.names(handle), ::serialProtocol, ::stroke, ::machineChanged)
+                    .also { it.start() }
             }
         } catch (e: Throwable) {
             trouble = "${e.javaClass.simpleName}: ${e.message}"
@@ -94,6 +100,7 @@ class StenoService : InputMethodService() {
     }
 
     override fun onDestroy() {
+        machines?.stop()
         hinter.shutdownNow()
         synchronized(runtime) {
             if (handle != 0L) Native.close(handle)
@@ -227,6 +234,21 @@ class StenoService : InputMethodService() {
         val room = Rect()
         keys.rootView.getWindowVisibleDisplayFrame(room)
         outInsets.touchableRegion.set(0, edge, room.width(), room.height())
+    }
+
+    /** The keys stay out of the way while a machine is doing the typing. */
+    override fun onEvaluateInputViewShown(): Boolean =
+        !(config.hideWithMachine && machines?.connected == true) && super.onEvaluateInputViewShown()
+
+    private fun machineChanged(note: String) {
+        if (note.isNotEmpty()) status?.text = note
+        updateInputViewShown()
+    }
+
+    private fun serialProtocol(): Int = when (config.serialMachine) {
+        Config.GEMINI -> NativeMachine.GEMINI
+        Config.STENTURA -> NativeMachine.STENTURA
+        else -> -1
     }
 
     override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {

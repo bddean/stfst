@@ -29,6 +29,9 @@ object Native {
     /** The key symbols in steno order, one character each. */
     external fun order(handle: Long): String
 
+    /** The keys' Plover names in the same order, space-separated: `🦐- # … -Z`. */
+    external fun names(handle: Long): String
+
     /** The last `strokes` strokes, as the outline they are written as. */
     external fun tail(handle: Long, strokes: Long): String
 

@@ -19,6 +19,10 @@ rm -rf "$out/dicts/user.stfst"
 mkdir -p "$out/editable"
 cp android/editable.toml "$out/editable/"
 cp ~/.config/plover/user.json "$out/editable/"
+# The desktop's machine options and keymaps, read by the keyboard as they are.
+if [ -f ~/.config/plover/plover.cfg ]; then
+    cp ~/.config/plover/plover.cfg "$out/"
+fi
 if [ -d build/morph ]; then
     mkdir -p "$out/morph"
     cp build/morph/*.hfstol "$out/morph/" 2>/dev/null || true

@@ -249,6 +249,14 @@ data class Config(
     var briefsMost: Int = 8,
     var briefsIdleMs: Long = 60_000L,
 
+    /** Hide the keys while a steno machine is connected, which is typing on it. */
+    var hideWithMachine: Boolean = true,
+    /**
+     * What a serial machine speaks: [PLOVER_CFG] for `plover.cfg`'s
+     * `machine_type` when that names one, and Gemini PR otherwise.
+     */
+    var serialMachine: String = PLOVER_CFG,
+
     /**
      * Draw every touch sample, so the shape and size of the contact is visible.
      *
@@ -388,6 +396,10 @@ data class Config(
 
         /** The long press waits from the last movement, so it is a stall. */
         const val STILLNESS = "stillness"
+
+        const val PLOVER_CFG = "plover.cfg"
+        const val GEMINI = "Gemini PR"
+        const val STENTURA = "Stentura"
     }
 }
 

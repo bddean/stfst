@@ -482,9 +482,37 @@ the two contact axes. Whether a hard press can be told from a light one is a
 question about the hardware, so it goes on the screen rather than being
 guessed at. Both are off by default.
 
+## A steno machine
+
+A machine on USB writes through the keyboard as the keys do, and the keys hide
+while one is connected; the `Machine` tab can keep them. It reads three
+protocols: Plover HID, with `plover-hid-timing`'s chord boundary, hold key and
+hold sounds, and Gemini PR and Stentura over any serial port
+`usb-serial-for-android` has a driver for. A device with both a Plover HID
+interface and a serial port is read as Plover HID.
+
+The options and the keymaps are the desktop's. `sync-assets.sh` copies
+`~/.config/plover/plover.cfg` into the APK, and the keyboard reads each
+machine's section and the current system's `keymap[...]` from it. So `X1` is
+`🦐-` here because it is there. The HID machine follows `[Plover HID Timing]`
+unless `machine_type` is stock `Plover HID`. A serial port speaks what
+`machine_type` names, or Gemini PR when that names neither; the `Machine` tab
+can choose instead.
+
+Android asks before an app may open a USB device. Picking the keyboard with
+"always" when a machine is plugged in makes the answer stick; otherwise it is
+asked again at every plug. A HID device that is not a boot keyboard or mouse is
+asked about too, because only its report descriptor says whether it is a
+machine, and reading it needs the permission.
+
+What a machine sends means nothing to the Kotlin side. `stfst-machine` has the
+wire formats, the chorder, the keymap and the sounds, so a desktop client can
+share them; `Machines` owns the transport and a thread per device, and hands
+every read across.
+
 ## The settings
 
-Six tabs, a live keyboard under them, and the rest follows from wanting to see
+Seven tabs, a live keyboard under them, and the rest follows from wanting to see
 the answer rather than read about it.
 
 A change lands in the keyboard at the foot of the screen as it is made,
@@ -555,7 +583,9 @@ which is why cargo runs inside `nix develop`.
 | `DefinePanel` | the two fields of an entry being defined. Decides nothing |
 | `RingView` | drawing and touch. Decides nothing |
 | `StenoService` | the editor, the insets, and the native handle |
+| `Machines` | steno machines on USB: permission, the transport, a reader thread each |
 | `stfst-jni` | opens the stack, hands strokes to `stfst-board`, returns the buffer |
+| `stfst-machine` | what a machine's bytes and timing mean, and the keymap. No I/O |
 
 `Ring`, `Chorder` and `Notes` are plain Kotlin so they can be tested without a
 device, and the tests in `app/src/test` are the ones worth reading first.

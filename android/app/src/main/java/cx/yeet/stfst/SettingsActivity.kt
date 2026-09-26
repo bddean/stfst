@@ -602,6 +602,25 @@ class SettingsActivity : Activity() {
         ),
 
         Group(
+            "Machine",
+            "A steno machine on USB writes through this keyboard: Plover HID, with " +
+                "plover-hid-timing's chord boundary and hold, or Gemini PR or Stentura " +
+                "over a serial port. Their options and keymaps are the desktop's, from " +
+                "plover.cfg as it was when the keyboard was built.",
+            knobs = listOf(
+                Flag(
+                    "Hide the keys while a machine is connected", { it.hideWithMachine },
+                    { c, v -> c.hideWithMachine = v },
+                ),
+                Pick(
+                    "Serial machine", Side({ it.serialMachine }, { c, v -> c.serialMachine = v }),
+                    options = { listOf(Config.PLOVER_CFG, Config.GEMINI, Config.STENTURA) },
+                    note = "what a serial port speaks. plover.cfg is its machine_type, or Gemini PR",
+                ),
+            ),
+        ),
+
+        Group(
             "Touch",
             "Whether a hard press can be told from a light one is a question about " +
                 "the hardware, so it goes on the screen rather than being guessed at.",
