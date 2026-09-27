@@ -38,10 +38,6 @@ pub fn compile_recipe(recipe_path: &Path, out: &Path, work: &Path, which: &Which
     if !unknown.is_empty() {
         bail!("{} has no dictionary named {}", recipe_path.display(), unknown.join(", "));
     }
-    // What every artifact is compiled through, so a change to any of them is a
-    // change to all of them. The compiler is one of them: a rule it changed is
-    // not in any source file.
-    let common = [recipe_path.to_path_buf(), system_path, std::env::current_exe()?];
 
     for dict in &recipe.dict {
         if !which.names.is_empty() && !which.names.contains(&dict.name) {
@@ -54,8 +50,9 @@ pub fn compile_recipe(recipe_path: &Path, out: &Path, work: &Path, which: &Which
             .iter()
             .map(|s| recipe::resolve(&base, s))
             .collect();
-        inputs.extend(common.iter().cloned());
-        if !which.force && fresh(&artifact, &inputs) {
+        inputs.push(system_path.clone());
+        let stamp = stamp(&recipe.system, dict);
+        if !which.force && fresh(&artifact, &stamp, &inputs) {
             eprintln!("  {}: up to date", dict.name);
             continue;
         }
@@ -96,6 +93,7 @@ pub fn compile_recipe(recipe_path: &Path, out: &Path, work: &Path, which: &Which
         }
 
         pipeline::write_artifact(&artifact, dict, &system, &forward, &reverse)?;
+        std::fs::write(artifact.join(STAMP), &stamp)?;
         let fwd = std::fs::metadata(artifact.join("forward.hfstol"))?.len();
         let rev = std::fs::metadata(artifact.join("reverse.hfstol"))
             .map(|m| m.len())
@@ -109,18 +107,70 @@ pub fn compile_recipe(recipe_path: &Path, out: &Path, work: &Path, which: &Which
     Ok(())
 }
 
-/// Whether this artifact was built after everything that goes into it.
+/// The file in an artifact directory that says what it was compiled from, other
+/// than the source files themselves.
+const STAMP: &str = "stamp";
+
+/// What an artifact is a function of, besides its files' contents: its own entry
+/// in the recipe, and the compiler's source. Not the rest of the recipe, so
+/// adding a dictionary rebuilds that dictionary and nothing else.
+fn stamp(system: &Path, dict: &recipe::Dict) -> String {
+    format!(
+        "compiler = {:?}\nsystem = {:?}\n{dict:#?}\n",
+        env!("STFST_COMPILER_HASH"),
+        system.display().to_string(),
+    )
+}
+
+/// Whether this artifact was built from `stamp`, after every one of `inputs`
+/// last changed.
 ///
 /// The directory's mtime is when it was built, because `write_artifact` renames
 /// the manifest into place last. An input this cannot read is a reason to
 /// compile, so the compiler reports what is wrong with it rather than this.
-fn fresh(artifact: &Path, inputs: &[PathBuf]) -> bool {
+fn fresh(artifact: &Path, stamp: &str, inputs: &[PathBuf]) -> bool {
     let Some(built) = modified(artifact) else {
         return false;
     };
-    inputs.iter().all(|p| matches!(modified(p), Some(t) if t <= built))
+    std::fs::read_to_string(artifact.join(STAMP)).is_ok_and(|s| s == stamp)
+        && inputs.iter().all(|p| matches!(modified(p), Some(t) if t <= built))
 }
 
 fn modified(path: &Path) -> Option<SystemTime> {
     std::fs::metadata(path).and_then(|m| m.modified()).ok()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn dict(toml: &str) -> recipe::Dict {
+        toml::from_str(toml).unwrap()
+    }
+
+    #[test]
+    fn an_artifact_is_fresh_for_its_own_entry_only() {
+        let dir = std::env::temp_dir().join(format!("stfst-fresh-{}", std::process::id()));
+        let artifact = dir.join("a.stfst");
+        std::fs::create_dir_all(&artifact).unwrap();
+        let source = dir.join("a.json");
+        std::fs::write(&source, "{}").unwrap();
+        let a = dict("name = \"a\"\npriority = 1\njson = \"a.json\"\n");
+        let system = Path::new("sys.toml");
+        // Built after its source, but by no recorded entry: stale.
+        std::thread::sleep(std::time::Duration::from_millis(10));
+        std::fs::write(artifact.join("forward.hfstol"), "").unwrap();
+        assert!(!fresh(&artifact, &stamp(system, &a), &[source.clone()]));
+
+        std::fs::write(artifact.join(STAMP), stamp(system, &a)).unwrap();
+        assert!(fresh(&artifact, &stamp(system, &a), &[source.clone()]));
+        // Its own entry changed.
+        let moved = dict("name = \"a\"\npriority = 2\njson = \"a.json\"\n");
+        assert!(!fresh(&artifact, &stamp(system, &moved), &[source.clone()]));
+        // A source newer than the artifact.
+        std::thread::sleep(std::time::Duration::from_millis(10));
+        std::fs::write(&source, "{ }").unwrap();
+        assert!(!fresh(&artifact, &stamp(system, &a), &[source]));
+        std::fs::remove_dir_all(&dir).unwrap();
+    }
 }

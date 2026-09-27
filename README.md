@@ -59,9 +59,12 @@ them `phrasing-tag`, and it compiles in about three minutes, against 93.6 MB res
 dictionary and its reverse index in `docs/M0.md`.
 
 A dictionary whose artifact is newer than everything it is compiled from is left
-alone, so that minute is only ever paid for what changed. The compiler counts as
-a source, because a rule it changed is in none of the files. `--dict NAME` builds
-one by name, and `--force` builds what is already built.
+alone, so that minute is only ever paid for what changed. What it is compiled
+from is its source files, the system, its own entry in the recipe and the
+compiler's source, which the artifact's `stamp` file records. Its own entry and
+not the whole recipe, so adding a dictionary compiles that one; the compiler's
+source and not its binary, so a change to `lookup` compiles nothing. `--dict
+NAME` builds one by name, and `--force` builds what is already built.
 
 ## A dictionary a host can write to
 
