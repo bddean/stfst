@@ -5,13 +5,17 @@
 //! This is that contract over the real dictionary stack: bits in, text out.
 //!
 //! Skipped when `build/dicts` is absent, because the artifacts are built rather
-//! than committed and `cargo test` runs before `stfst compile`.
+//! than committed and `cargo test` runs before `stfst compile`. The morphology
+//! in `build/morph` is used where it exists, since without it the stack refuses
+//! any -s or -ed.
 
 use std::path::PathBuf;
+use std::sync::Arc;
 
 use stfst_board::Board;
 use stfst_core::{Capabilities, Stroke, System};
 use stfst_dict::Stack;
+use stfst_text::morph::Morph;
 
 const ROOT: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/../..");
 
@@ -25,6 +29,10 @@ fn dicts() -> Option<Vec<PathBuf>> {
         .collect();
     found.sort();
     (!found.is_empty()).then_some(found)
+}
+
+fn morph() -> Option<Arc<Morph>> {
+    Morph::open(&PathBuf::from(ROOT).join("build/morph")).ok().map(Arc::new)
 }
 
 fn system() -> System {
@@ -54,7 +62,7 @@ fn a_bitmask_from_two_thumbs_writes_the_word() {
     };
     let system = system();
     let stack = Stack::open(&dicts, &system, &Capabilities::all()).expect("opening the stack");
-    let mut board = Board::new(&system, &stack, None);
+    let mut board = Board::new(&system, &stack, morph());
 
     // The left thumb took K A O and the right took E p t, which is `KAOEPT`.
     let left = bits(&system, "KAO");
@@ -83,7 +91,7 @@ fn hints_offer_a_briefer_outline_for_the_trailing_phrase() {
     };
     let system = system();
     let stack = Stack::open(&dicts, &system, &Capabilities::all()).expect("opening the stack");
-    let mut board = Board::new(&system, &stack, None);
+    let mut board = Board::new(&system, &stack, morph());
 
     // "little one" in two strokes; the phrases dictionary holds it in one.
     board.push(stroke(bits(&system, "^HRUlt"))).expect("a stroke");
@@ -106,6 +114,20 @@ fn hints_offer_a_briefer_outline_for_the_trailing_phrase() {
     board.undo();
     assert_eq!("little", board.text().trim());
     assert!(board.hints(4).iter().all(|h| h.text != "little one"));
+}
+
+#[test]
+fn a_suffix_key_inflects_the_word_before_it() {
+    let (Some(dicts), Some(morph)) = (dicts(), morph()) else {
+        eprintln!("skipped: no build/dicts or no build/morph");
+        return;
+    };
+    let system = system();
+    let stack = Stack::open(&dicts, &system, &Capabilities::all()).expect("opening the stack");
+    let mut board = Board::new(&system, &stack, Some(morph));
+    board.push(stroke(bits(&system, "KAOEp"))).expect("a stroke");
+    board.push(stroke(bits(&system, "g"))).expect("a stroke");
+    assert_eq!("keeping", board.text().trim());
 }
 
 /// A key order the phone reads out of the system file, so the ring is built from
