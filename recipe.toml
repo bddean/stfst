@@ -1,6 +1,10 @@
 # The dictionary stack. Priority mirrors plover.cfg order: higher shadows lower,
 # and the list here is that file's list, top to bottom. `main.json` is disabled
 # there, so it is absent here.
+#
+# `generator` names the script that writes a dictionary's source, and `golden`
+# the golden files beside `tests/golden/NAME.tsv`. The compiler reads neither:
+# they are how `scripts/check.sh NAME` finds a dictionary's checks.
 system = "systems/stenotype-extended.toml"
 
 [[dict]]
@@ -46,16 +50,21 @@ json = "~/.config/plover/semantic-suffixes.json"
 name = "two-syllable"
 priority = 35
 json = "~/.config/plover/two-syllable.json"
+generator = "scripts/gen-two-syllable.py"
 
 [[dict]]
 name = "affixes"
 priority = 33
 xfst = ["morphology/ortho.xfst", "dictionaries/affixes-lexicon.xfst", "dictionaries/affixes.xfst"]
+generator = "scripts/gen-affixes.py"
 
 [[dict]]
 name = "typey-type"
 priority = 30
 json = "~/.config/plover/typey-type-full.json"
+# What the vowel table writes, read back.
+generator = "scripts/gen-typey-vowels.py"
+golden = ["tests/vowels.tsv"]
 
 [[dict]]
 name = "vowel-briefs"
@@ -63,6 +72,7 @@ priority = 25
 # Written by scripts/gen-typey-vowels.py beside typey-type: only strokes no
 # other entry writes, so its place below typey-type shadows nothing.
 json = "~/.config/plover/vowel-briefs.json"
+generator = "scripts/gen-typey-vowels.py"
 
 [[dict]]
 name = "and-fold"

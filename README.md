@@ -13,6 +13,8 @@ stfst compile recipe.toml
 stfst compile tests/recipe.toml --out build/test-dicts --work build/test-work
 scripts/build-morph.sh   # orthography and inflection; needs Plover installed
 scripts/check.sh      # unit tests, then the golden files
+scripts/check.sh affixes              # one dictionary's checks: its generator, goldens, fixture
+scripts/fixture.sh tests/translate    # one stroke fixture; --update rewrites its .expected
 stfst bench build/dicts/typey-type.stfst --system systems/stenotype-extended.toml
 stfst translate build/dicts/*.stfst --system systems/stenotype-extended.toml
 stfst reverse build/dicts/typey-type.stfst --system systems/stenotype-extended.toml because
@@ -409,7 +411,14 @@ stfst lookup build/dicts/<name>.stfst --system systems/... < outlines \
 
 A dictionary whose answer depends on more than the tape gets a stroke fixture
 under `tests/<name>/` instead, as `retro-words` does: a `.strokes` file and the
-`.expected` that `stfst translate` writes for it.
+`.expected` that `stfst translate` writes for it, which `scripts/fixture.sh
+tests/<name> --update` records. `artifacts` there lists the stack when it is
+more than the one dictionary, and `requires` a file the fixture cannot run
+without.
+
+A generated dictionary names its script as `generator` in the recipe, and
+`check.sh` runs `--check` on it, which fails when what the script writes is
+stale. Any golden file that is not `tests/golden/<name>.tsv` goes in `golden`.
 
 ## xfst notes
 

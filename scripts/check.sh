@@ -2,6 +2,12 @@
 # Everything that can fail: unit tests, then the golden files against the
 # compiled artifacts.
 #
+# Usage: scripts/check.sh [DICT...]
+#
+# With names, only what belongs to those dictionaries: each is compiled, then its
+# generator's `--check`, its golden files and its stroke fixture run. The recipe
+# says which generator and golden files a dictionary has.
+#
 # It compiles first, and that is not a convenience. A stale artifact agrees with
 # the golden file that was generated from the same stale compiler, so the check
 # passes over a bug in both: `{^}` attached on the wrong side for two commits
@@ -10,28 +16,97 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
+B=./target/release/stfst
+SYSTEM=$(python3 scripts/recipe.py recipe.toml system)
+# The generators need cmudict and wordfreq, which the phrasing venv has, so a
+# generator check is skipped where that is absent.
+GEN_PYTHON=${GEN_PYTHON:-${VOWELS_PYTHON:-$HOME/.config/plover/phrasing/.venv/bin/python}}
+PLOVER_PYTHON=${PLOVER_PYTHON:-/Applications/Plover.app/Contents/Frameworks/Python.framework/Versions/3.13/bin/python3.13}
+# Generators already run, so two dictionaries one script writes cost one run.
+checked=" "
+
+# A dictionary imported as it stands, a JSON file or a plain `.dict`, is its own
+# expectation: its entries are outline to record already. So its golden file is
+# written here from the current source rather than committed, where it was a copy
+# that went stale with every entry. What it checks is the outline parse and the
+# compile; `check-plugin.py` holds the same entries to Plover.
+source_golden() {
+    local name=$1 kind=$2 source=$3 sub out
+    case $kind in
+        json) sub=import ;;
+        plain) sub=plain ;;
+        *) return 0 ;;
+    esac
+    mkdir -p build/golden
+    out=$($B "$sub" --system "$SYSTEM" "$source" -o /dev/null \
+        --golden "build/golden/$name.tsv" 2>&1) || { echo "$out" >&2; exit 1; }
+}
+
+# Every check that belongs to one dictionary. A dictionary whose answer depends
+# on more than the tape has a stroke fixture under `tests/` instead of a golden
+# file, because a golden file has nowhere to put the buffer: see
+# `tests/retro-words`.
+check_dict() {
+    local name=$1 generator=$2 goldens=$3 artifact=build/dicts/$1.stfst golden
+    echo "== $name"
+    if [ "$generator" != - ] && [ "${checked#* $generator }" = "$checked" ]; then
+        checked="$checked$generator "
+        if [ -x "$GEN_PYTHON" ]; then
+            "$GEN_PYTHON" "$generator" --check && echo "$(basename "$generator") --check: current"
+        else
+            echo "skipped $generator: no $GEN_PYTHON"
+        fi
+    fi
+    golden=tests/golden/$name.tsv
+    [ -f "$golden" ] || golden=build/golden/$name.tsv
+    [ -f "$golden" ] || [ -d "tests/$name" ] || {
+        echo "$name has no golden file and no tests/$name" >&2
+        exit 1
+    }
+    if [ -f "$golden" ]; then
+        $B test "$artifact" "$golden" | tail -30
+        # The reverse direction has no oracle of its own; forward lookup is the check.
+        scripts/check-reverse.py "$artifact" "$golden"
+    fi
+    if [ "$goldens" != - ]; then
+        for golden in $goldens; do
+            $B test "$artifact" "$golden" | tail -30
+        done
+    fi
+    if [ -d "tests/$name" ]; then
+        scripts/fixture.sh "tests/$name"
+    fi
+}
+
+dicts=$(python3 scripts/recipe.py recipe.toml dicts)
+names=" $(cut -f1 <<< "$dicts" | tr '\n' ' ')"
+in_recipe() { [ "${names#* $1 }" != "$names" ]; }
+
+if [ $# -gt 0 ]; then
+    for name in "$@"; do
+        in_recipe "$name" || {
+            echo "recipe.toml has no dictionary named $name" >&2
+            exit 1
+        }
+    done
+    cargo build --release -q
+    if [ -z "${STFST_NO_COMPILE:-}" ]; then
+        # shellcheck disable=SC2046
+        $B compile recipe.toml $(printf -- '--dict %s ' "$@") > /dev/null
+    fi
+    while IFS=$'\t' read -r name kind source generator goldens; do
+        for want in "$@"; do
+            if [ "$name" = "$want" ]; then
+                source_golden "$name" "$kind" "$source"
+                check_dict "$name" "$generator" "$goldens"
+            fi
+        done
+    done <<< "$dicts"
+    exit 0
+fi
+
 cargo test --workspace
 cargo build --release -q
-B=./target/release/stfst
-
-# A stroke fixture: what these dictionaries write for a stream, against what they
-# wrote when the file was recorded. Translation is not a per-tape question, so a
-# golden file cannot ask it.
-fixtures() {
-    local dir=$1 case
-    shift
-    for case in "$dir"/*.strokes; do
-        if $B translate "$@" --system systems/stenotype-extended.toml \
-            --strokes "$case" | diff -u "${case%.strokes}.expected" - > /dev/null; then
-            echo "$(basename "$case") ok"
-        else
-            $B translate "$@" --system systems/stenotype-extended.toml \
-                --strokes "$case" | diff -u "${case%.strokes}.expected" - || true
-            echo "$(basename "$case") FAILED" >&2
-            exit 1
-        fi
-    done
-}
 
 if [ -z "${STFST_NO_COMPILE:-}" ]; then
     echo "== compile"
@@ -51,7 +126,7 @@ raw = json.load(open(os.path.expanduser("~/.config/plover/typey-type-full.json")
 print("\n".join("%s\t%s" % (o, system.tape(o)) for o in raw))
 EOF
 cut -f1 /tmp/stfst-tapes-py.tsv \
-    | $B tape --system systems/stenotype-extended.toml \
+    | $B tape --system "$SYSTEM" \
     | cut -f1,2 > /tmp/stfst-tapes-rs.tsv
 diff -q /tmp/stfst-tapes-py.tsv /tmp/stfst-tapes-rs.tsv \
     && echo "$(wc -l < /tmp/stfst-tapes-py.tsv) outlines agree"
@@ -62,117 +137,40 @@ diff -q /tmp/stfst-tapes-py.tsv /tmp/stfst-tapes-rs.tsv \
 echo "== plugin units"
 python3 -m unittest discover plover-plugin/tests 2>&1 | tail -3
 
-# A dictionary imported as it stands, a JSON file or a plain `.dict`, is its own
-# expectation: its entries are outline to record already. So its golden file is
-# written here from the current source rather than committed, where it was a copy
-# that went stale with every entry. What it checks is the outline parse and the
-# compile; `check-plugin.py` holds the same entries to Plover.
 echo "== source goldens"
 rm -rf build/golden
-mkdir -p build/golden
-python3 - <<'PY' | while IFS=$'\t' read -r kind name source system; do
-import os, tomllib
-recipe = tomllib.load(open("recipe.toml", "rb"))
-for d in recipe["dict"]:
-    for kind in ("json", "plain"):
-        if kind in d:
-            print(kind, d["name"], os.path.expanduser(d[kind]), recipe["system"], sep="\t")
-PY
-    [ "$kind" = json ] && sub=import || sub=plain
-    out=$($B "$sub" --system "$system" "$source" -o /dev/null --golden "build/golden/$name.tsv" 2>&1) \
-        || { echo "$out" >&2; exit 1; }
-done
+while IFS=$'\t' read -r name kind source _ _; do
+    source_golden "$name" "$kind" "$source"
+done <<< "$dicts"
 ls build/golden | wc -l | xargs echo "written:"
 
 # The Python `hfstol` reader against the Rust one, over the same kind of tape list
 # `crosscheck-ol.sh` uses. One artifact, because the answer does not vary by
 # dictionary and the whole stack would cost a minute.
 echo "== python reader"
-scripts/crosscheck-py.sh build/dicts/typey-type.stfst systems/stenotype-extended.toml \
-    | tail -1
+scripts/crosscheck-py.sh build/dicts/typey-type.stfst "$SYSTEM" | tail -1
 
-# Every artifact in the stack, so adding one to the recipe cannot skip its tests.
-# A dictionary whose answer depends on more than the tape has a stroke fixture
-# under `tests/` instead, because a golden file has nowhere to put the buffer:
-# see `tests/retro-words`.
-for artifact in build/dicts/*.stfst; do
-    dict=$(basename "$artifact" .stfst)
-    echo "== $dict"
-    golden=tests/golden/$dict.tsv
-    [ -f "$golden" ] || golden=build/golden/$dict.tsv
-    [ -f "$golden" ] || [ -d "tests/$dict" ] || {
-        echo "$dict has no golden file and no tests/$dict" >&2
-        exit 1
-    }
-    if [ -f "$golden" ]; then
-        $B test "$artifact" "$golden" | tail -1
-        # The reverse direction has no oracle of its own; forward lookup is the check.
-        scripts/check-reverse.py "$artifact" "$golden"
-    fi
-    # `ahead`'s fixture needs the morphology artifacts, so it runs under that
-    # guard below.
-    if [ -d "tests/$dict" ] && [ "$dict" != ahead ]; then
-        # A frame is shown text another dictionary wrote, so a fixture may name
-        # the artifacts it needs instead of taking its own.
-        if [ -f "tests/$dict/artifacts" ]; then
-            # shellcheck disable=SC2046
-            fixtures "tests/$dict" $(cat "tests/$dict/artifacts")
-        else
-            fixtures "tests/$dict" "$artifact"
-        fi
-    fi
+# Every dictionary in the recipe, so adding one cannot skip its tests.
+while IFS=$'\t' read -r name _ _ generator goldens; do
+    check_dict "$name" "$generator" "$goldens"
+done <<< "$dicts"
+
+# The fixtures no one dictionary owns: the host contract items no dictionary in
+# `recipe.toml` uses yet, a held stroke across three dictionaries, the phrasing
+# hole, and the whole stack.
+for dir in tests/*/; do
+    name=$(basename "$dir")
+    ls "$dir"*.strokes > /dev/null 2>&1 || continue
+    in_recipe "$name" && continue
+    echo "== $name"
+    scripts/fixture.sh "$dir"
 done
-
-# The vowel theory: what its table writes, read back from typey-type, and whether
-# `typey-type-full.json`, `two-syllable.json` and the affix lexicon are still
-# what it makes. That needs cmudict and wordfreq, which the phrasing venv has, so it is
-# skipped where that is absent.
-echo "== vowels"
-$B test build/dicts/typey-type.stfst tests/vowels.tsv | tail -1
-VOWELS_PYTHON=${VOWELS_PYTHON:-$HOME/.config/plover/phrasing/.venv/bin/python}
-if [ -x "$VOWELS_PYTHON" ]; then
-    "$VOWELS_PYTHON" scripts/gen-typey-vowels.py --check && echo "typey-type-full.json is current"
-    "$VOWELS_PYTHON" scripts/gen-two-syllable.py --check && echo "two-syllable.json is current"
-    "$VOWELS_PYTHON" scripts/gen-affixes.py --check && echo "the affix lexicon is current"
-else
-    echo "skipped: no $VOWELS_PYTHON"
-fi
-
-# Host contract items 5 and 6 have no consumer in `recipe.toml`, so they are
-# checked against a fixture instead of being taken on trust. Needs
-# `stfst compile tests/recipe.toml --out build/test-dicts --work build/test-work`.
-echo "== contract"
-fixtures tests/probe build/test-dicts/probe.stfst
-
-# A held stroke, both kinds: a frame that reads the text after its keys, and a
-# record that only follows it. Three dictionaries, because the word comes from
-# another one, and that is the whole reason the host holds anything.
-echo "== held"
-fixtures tests/held build/test-dicts/held.stfst build/test-dicts/ahead.stfst \
-    build/test-dicts/words.stfst
-
-# What a held suffix writes is the host's own orthography, so this fixture needs
-# the artifacts that hold it, and is skipped rather than failed where they are
-# absent.
-echo "== ahead"
-if [ -f build/morph/ortho.hfstol ]; then
-    # shellcheck disable=SC2046
-    fixtures tests/ahead $(cat tests/ahead/artifacts)
-    # And the same mechanism as a phrasing ender, where the form the deferred word
-    # takes is the one the clause was already going to give its verb.
-    echo "== hole"
-    # shellcheck disable=SC2046
-    fixtures tests/hole $(cat tests/hole/artifacts)
-else
-    echo "skipped: no build/morph artifacts"
-fi
 
 # Morphology. Skipped rather than failed where the artifacts are absent: they are
 # built from data that ships with Plover rather than checked in, so a machine can
 # have this repo and not have them. Plover's python is also the oracle here, which
 # is why one condition covers both.
 echo "== morphology"
-PLOVER_PYTHON=${PLOVER_PYTHON:-/Applications/Plover.app/Contents/Frameworks/Python.framework/Versions/3.13/bin/python3.13}
 if [ -f build/morph/ortho.hfstol ] && [ -x "$PLOVER_PYTHON" ]; then
     "$PLOVER_PYTHON" scripts/check-ortho-rules.py build/morph/ortho.hfst 400
     "$PLOVER_PYTHON" scripts/check-ortho.py 4000
@@ -206,16 +204,3 @@ if [ -n "${STFST_RETRO:-}" ]; then
     $B test build/retro-dicts/phrasing-retro.stfst tests/golden/phrasing-retro.tsv \
         | tail -1
 fi
-
-# Translation is not a per-tape question, so it needs its own fixture: a stroke
-# stream through the whole stack, where the answer depends on the history.
-echo "== translate"
-fixtures tests/translate build/dicts/*.stfst
-
-# The editable dictionary, which the fixture writes to: a fresh copy each run, or
-# the second run starts from what the first one defined.
-echo "== editable"
-rm -rf build/editable
-mkdir -p build/editable
-cp tests/editable/editable.toml build/editable/
-fixtures tests/editable build/dicts/*.stfst --editable build/editable

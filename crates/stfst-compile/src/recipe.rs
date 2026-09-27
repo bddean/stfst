@@ -48,6 +48,13 @@ pub struct Dict {
     /// language has a longest outline, the compiler reads it off the automaton.
     #[serde(default)]
     pub strokes: Option<u32>,
+    /// The script that writes this dictionary's source, which `--check` holds to
+    /// it. For `scripts/check.sh`; the compiler does not run it.
+    #[serde(default)]
+    pub generator: Option<PathBuf>,
+    /// Golden files beside `tests/golden/NAME.tsv`, for `scripts/check.sh`.
+    #[serde(default)]
+    pub golden: Vec<PathBuf>,
 }
 
 fn default_version() -> String {
