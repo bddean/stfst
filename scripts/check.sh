@@ -137,6 +137,10 @@ diff -q /tmp/stfst-tapes-py.tsv /tmp/stfst-tapes-rs.tsv \
 echo "== plugin units"
 python3 -m unittest discover plover-plugin/tests 2>&1 | tail -3
 
+# Plover loads the same dictionaries in its own list, which has to agree.
+echo "== plover.cfg"
+python3 scripts/check-plover-cfg.py
+
 echo "== source goldens"
 rm -rf build/golden
 while IFS=$'\t' read -r name kind source _ _; do

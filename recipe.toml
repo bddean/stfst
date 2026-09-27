@@ -14,6 +14,27 @@ priority = 100
 xfst = ["dictionaries/emily-symbols-tables.xfst", "dictionaries/emily-modifiers-tables.xfst", "dictionaries/emily-symbols.xfst"]
 
 [[dict]]
+name = "phrasing-tag"
+priority = 96
+# `#^`, the question tag. Its own artifact so that only a tagged clause carries
+# the tag's features: see the file's header.
+xfst = [
+    "dictionaries/phrasing-subjects.xfst",
+    "dictionaries/phrasing-lexicon.xfst",
+    "dictionaries/phrasing.xfst",
+    "dictionaries/phrasing-tag.xfst",
+]
+
+[[dict]]
+name = "phrasing"
+priority = 95
+xfst = [
+    "dictionaries/phrasing-subjects.xfst",
+    "dictionaries/phrasing-lexicon.xfst",
+    "dictionaries/phrasing.xfst",
+]
+
+[[dict]]
 name = "shrimple"
 priority = 90
 # A syllable at a time with no end, so the outlines have no longest and a host
@@ -79,30 +100,9 @@ name = "and-fold"
 priority = 20
 json = "~/.config/plover/and-fold.json"
 
-[[dict]]
-name = "phrasing-tag"
-priority = 11
-# `#^`, the question tag. Its own artifact so that only a tagged clause carries
-# the tag's features: see the file's header.
-xfst = [
-    "dictionaries/phrasing-subjects.xfst",
-    "dictionaries/phrasing-lexicon.xfst",
-    "dictionaries/phrasing.xfst",
-    "dictionaries/phrasing-tag.xfst",
-]
-
-[[dict]]
-name = "phrasing"
-priority = 10
-xfst = [
-    "dictionaries/phrasing-subjects.xfst",
-    "dictionaries/phrasing-lexicon.xfst",
-    "dictionaries/phrasing.xfst",
-]
-
-# The retro family. `plover.cfg` has these four disabled, so they sit below
-# everything it enables and cannot shadow a working entry. They are here because
-# host contract items 5 and 6 are what they needed, and that is what M4 built.
+# The retro family sits below everything else, so it cannot shadow a working
+# entry. It is here because host contract items 5 and 6 are what it needed, and
+# that is what M4 built.
 #
 # repeat-idioms above repeat-word, as `repeat-word.py` asks: an idiom overrides
 # the trigrams whose third word is not the first (`^SKP` after IN is "in and out",

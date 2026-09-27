@@ -30,30 +30,31 @@ artifact, so `lookup`, `test` and `bench` need nothing on `PATH`;
 ## The stack
 
 `recipe.toml` is `plover.cfg`'s enabled list, in its order, so priority here means
-what file order means there. `main.json` is disabled there and absent here. The
-retro family is disabled there too, and sits below everything enabled so it cannot
-shadow a working entry.
+what file order means there, and `scripts/check-plover-cfg.py` fails where the
+two disagree. `main.json` is disabled there and absent here. The retro family
+sits below everything else so it cannot shadow a working entry.
 
 | Dictionary | Source |
 |---|---|
 | emily-symbols | xfst over a shared glyph table |
+| phrasing-tag | xfst, `#^`: the clause with a question tag |
+| phrasing | xfst, a clause grammar over 21.9M chords |
 | shrimple | xfst over a generated table |
 | user | JSON, read as itself where a host can write |
 | phrases | JSON, imported |
 | commands | JSON, imported |
 | emily-modifiers | xfst over generated tables |
 | semantic-suffixes | JSON, imported |
-| two-syllable | JSON, imported |
+| two-syllable | JSON, generated |
 | affixes | xfst over a generated lexicon, and the orthography rules |
-| typey-type | JSON, imported |
+| typey-type | JSON, generated from Typey Type |
+| vowel-briefs | JSON, generated beside typey-type |
 | and-fold | JSON, imported |
-| phrasing-tag | xfst, `#^`: the clause with a question tag |
-| phrasing | xfst, a clause grammar over 21.9M chords |
-| frames | flat source in the record language |
-| ahead | flat source in the record language |
 | retro-words | xfst over a window of written text |
 | repeat-idioms | JSON, imported |
 | repeat-word | flat source in the record language |
+| frames | flat source in the record language |
+| ahead | flat source in the record language |
 
 `stfst compile recipe.toml` prints what each artifact weighs and what it took, so
 this table does not: both directions of the whole set are about 46 MB, 31 of
