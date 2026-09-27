@@ -8,7 +8,7 @@ use std::io::Write;
 use std::path::{Path, PathBuf};
 use std::process::{Command, Stdio};
 
-use anyhow::{bail, Context, Result};
+use anyhow::{bail, Result};
 use stfst_ol::Automaton;
 
 pub trait Lookup {
@@ -68,7 +68,7 @@ impl Lookup for HfstLookup {
             .stdout(Stdio::piped())
             .stderr(Stdio::piped())
             .spawn()
-            .context("spawning hfst-optimized-lookup")?;
+            .map_err(|e| stfst_compile::pipeline::spawn_error("hfst-optimized-lookup", e))?;
         // Write from a thread. hfst answers as it reads, so filling its stdout
         // pipe while we still hold the pen deadlocks both ends.
         let mut stdin = child.stdin.take().expect("piped");

@@ -90,7 +90,7 @@ fn run(program: &str, args: &[&str]) -> Result<String> {
     let out = Command::new(program)
         .args(args)
         .output()
-        .with_context(|| format!("running {program}"))?;
+        .map_err(|e| spawn_error(program, e))?;
     let stdout = String::from_utf8_lossy(&out.stdout).into_owned();
     if !out.status.success() {
         bail!(
@@ -100,6 +100,19 @@ fn run(program: &str, args: &[&str]) -> Result<String> {
         );
     }
     Ok(stdout)
+}
+
+/// Why an HFST tool did not start. Not found is the usual case, and its cause is
+/// always the same: this is not the dev shell.
+pub fn spawn_error(program: &str, e: std::io::Error) -> anyhow::Error {
+    match e.kind() {
+        std::io::ErrorKind::NotFound => anyhow::anyhow!(
+            "{program} is not on PATH, so HFST is missing. It comes from the flake: \
+             run this inside the dev shell, as `direnv exec . <command>` or under \
+             `nix develop`."
+        ),
+        _ => anyhow::Error::new(e).context(format!("running {program}")),
+    }
 }
 
 /// Compile an xfst source that defines `Grammar`, and prove the §3 properties
