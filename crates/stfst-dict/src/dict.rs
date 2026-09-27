@@ -76,6 +76,9 @@ pub struct Input {
     pub alphabet: String,
     pub order: String,
     pub separator: char,
+    /// The longest outline, in strokes, where a host is told it.
+    #[serde(default)]
+    pub strokes: Option<u32>,
 }
 
 /// What a reverse lookup found: key tapes, shortest first, and whether a bound

@@ -95,6 +95,27 @@ impl<'a> Cursor<'a> {
         self.frontier.clear();
     }
 
+    /// The input symbols some live path can read next, in symbol order.
+    pub fn next_inputs(&self) -> Vec<Sym> {
+        let mut out = Vec::new();
+        for path in &self.frontier {
+            self.fst.out_arcs(path.loc, |sym, _, _| {
+                if sym != EPSILON {
+                    out.push(sym);
+                }
+            });
+        }
+        out.sort_unstable();
+        out.dedup();
+        out
+    }
+
+    /// Whether what has been read so far is an entry, which is `outputs` without
+    /// reading any of them.
+    pub fn accepts(&self) -> bool {
+        self.frontier.iter().any(|p| self.fst.is_final(p.loc))
+    }
+
     /// Every record reachable by what has been read so far.
     pub fn outputs(&self) -> Vec<Vec<Sym>> {
         let mut records: Vec<Vec<Sym>> = Vec::new();

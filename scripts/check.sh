@@ -154,6 +154,15 @@ ls build/golden | wc -l | xargs echo "written:"
 echo "== python reader"
 scripts/crosscheck-py.sh build/dicts/typey-type.stfst "$SYSTEM" | tail -1
 
+# A walk of the automaton lists what the source lists. One imported dictionary
+# is enough, because the walk does not depend on what the entries say.
+echo "== dump"
+python3 -c 'import json, os; print("\n".join(json.load(open(os.path.expanduser("~/.config/plover/two-syllable.json")))))' \
+    | $B tape --system "$SYSTEM" | cut -f3 | sort > /tmp/stfst-dump-source.txt
+$B dump build/dicts/two-syllable.stfst --system "$SYSTEM" | sort > /tmp/stfst-dump.txt
+diff -q /tmp/stfst-dump-source.txt /tmp/stfst-dump.txt \
+    && echo "$(wc -l < /tmp/stfst-dump.txt) outlines agree"
+
 # Every dictionary in the recipe, so adding one cannot skip its tests.
 while IFS=$'\t' read -r name _ _ generator goldens; do
     check_dict "$name" "$generator" "$goldens"

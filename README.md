@@ -18,6 +18,7 @@ scripts/fixture.sh tests/translate    # one stroke fixture; --update rewrites it
 stfst bench build/dicts/typey-type.stfst --system systems/stenotype-extended.toml
 stfst translate build/dicts/*.stfst --system systems/stenotype-extended.toml
 stfst reverse build/dicts/typey-type.stfst --system systems/stenotype-extended.toml because
+stfst dump build/dicts/affixes.stfst --system systems/stenotype-extended.toml --records
 ```
 
 HFST and foma come from the flake and are needed only to *build* a dictionary.

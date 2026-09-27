@@ -1,4 +1,5 @@
 mod bench;
+mod dump;
 mod lookup;
 mod translate;
 
@@ -79,6 +80,20 @@ enum Command {
         /// Read the arguments as key tapes, not as Plover outlines.
         #[arg(long)]
         tape: bool,
+    },
+    /// Every outline an artifact holds, one per line in steno order. What a
+    /// search for a free stroke reads.
+    Dump {
+        artifact: PathBuf,
+        #[arg(long)]
+        system: PathBuf,
+        /// The longest outline to list, in strokes. The artifact's own longest
+        /// if absent, which an artifact whose outlines have none lacks.
+        #[arg(long)]
+        strokes: Option<u32>,
+        /// Also print what each outline writes, as `lookup` does.
+        #[arg(long)]
+        records: bool,
     },
     /// Look up the outlines that write a record, which is the direction a
     /// suggestions window asks in.
@@ -318,6 +333,12 @@ fn main() -> Result<()> {
                 }
             }
         }
+        Command::Dump {
+            artifact,
+            system,
+            strokes,
+            records,
+        } => dump::run(&artifact, &System::load(&system)?, strokes, records)?,
         Command::Reverse {
             artifact,
             system,

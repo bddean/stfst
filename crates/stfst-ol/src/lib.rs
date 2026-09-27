@@ -247,6 +247,26 @@ impl Automaton {
         }
     }
 
+    /// Every transition out of `loc`, as input, output and target. `arcs` asks
+    /// what one symbol does, which is what a lookup asks; a walk of the language
+    /// asks what the state does.
+    pub(crate) fn out_arcs(&self, loc: Loc, mut f: impl FnMut(Sym, Sym, Loc)) {
+        match self.site(loc) {
+            Site::Index(_) => {
+                for want in 0..self.alphabet.input_count() as Sym {
+                    self.arcs(loc, want, |out, target| f(want, out, target));
+                }
+            }
+            Site::Trans(q) => {
+                let mut j = q + 1;
+                while j < self.trans_len && self.trans_input(j) != NO_SYMBOL {
+                    f(self.trans_input(j), self.trans_output(j), Loc(self.trans_target(j)));
+                    j += 1;
+                }
+            }
+        }
+    }
+
     fn index_input(&self, i: u32) -> Sym {
         read_u16(&self.data, self.index_at + i as usize * INDEX_ENTRY)
     }
