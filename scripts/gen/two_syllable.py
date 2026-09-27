@@ -28,6 +28,9 @@ a rule:
   `-G`).
 - Two words on one stroke go to the more frequent. A stroke another dictionary
   in the stack writes is left to it.
+- A stroke with a vowel whose onset or coda no one-syllable word's own stroke
+  has is also written without `^`, since the bank already says two syllables:
+  outside is `^OETSD` and `OETSD`, withdraw `^TKWHRAE` and `TKWHRAE`.
 
 Usage (needs wordfreq, which the phrasing venv has, a compiled stack, and HFST
 for the pipeline: run it in the dev shell):
@@ -93,6 +96,31 @@ def inflection(w, known):
     return False
 
 
+# --- Without the caret -----------------------------------------------------------
+
+def banks(typey):
+    """The onsets and codas of the one-syllable words' own strokes."""
+    on, co = set(), set()
+    for w in typey.words.values():
+        for o in w.outlines:
+            s = g.Stroke.parse(o)
+            if g.is_own_stroke(w, s, typey.habit):
+                on.add(s.onset)
+                co.add(s.coda)
+    return on, co
+
+
+def bare(out, typey):
+    """{stroke without `^`: word} for each entry whose bank says two syllables."""
+    on, co = banks(typey)
+    found = {}
+    for o, w in out.items():
+        s = g.Stroke.parse(o[1:]) if o.startswith("^") else None
+        if s and s.vowel and (s.onset not in on or s.coda not in co):
+            found[o[1:]] = w
+    return found
+
+
 # --- The stack -------------------------------------------------------------------
 
 def reserved():
@@ -130,8 +158,23 @@ def build(typey, rule):
     folded = {s: w for s, w in out.items() if w in base and out.get(strokes.get(base[w])) == base[w]}
     for s in folded:
         del out[s]
+    # A bare stroke takes a Typey Type one as a `^` stroke does, and also when
+    # this dictionary writes that word: only keeps `^OEUPBL`, so omen is
+    # `OEPBL`. The rest are reported.
+    plain = bare(out, typey)
+    gives_way = typey_gives_way(typey.reserved)
+    ours = set(out.values())
+    taken = {s: (plain[s], theirs[0]) for s, found in stack.ask(plain).items()
+             if (theirs := [(n, t) for n, t in found if n != NAME])
+             and theirs[0][1] != plain[s] and not gives_way(s, plain[s], theirs[0])
+             and not (theirs[0][0] == "typey-type" and theirs[0][1] in ours)}
+    taken.update((s, (w, (NAME, out[s]))) for s, w in plain.items() if s in out)
+    taken.update((s, (w, ("retro-words", ""))) for s, w in plain.items() if s in retro)
+    out.update((s, w) for s, w in plain.items() if s not in taken)
     return dict(sorted(out.items())), dict(strokes=strokes, base=base, folded=folded,
-                                          lost=lost, left=left, stack=stack)
+                                          lost=lost, left=left, stack=stack,
+                                          bare={s: w for s, w in plain.items() if s not in taken},
+                                          bare_taken=taken)
 
 
 def write_json(d, path):
@@ -156,6 +199,10 @@ def report(out, r):
     left.sort(key=lambda x: (-z(x[0]), x[:2]))
     print(f"{len(left)} leave their stroke to another dictionary:")
     print(wrap([f"{w}={s}({n}:{t})" for w, s, (n, t) in left]))
+    b = sorted(r["bare"].items(), key=lambda x: (-z(x[1]), x))
+    print(f"{len(b)} are also written without ^, and {len(r['bare_taken'])} could be but that stroke is taken:")
+    print(wrap([f"{w}={s}" for s, w in b]))
+    print(wrap([f"{w}={s}({n}:{t})" for s, (w, (n, t)) in r["bare_taken"].items()]))
 
     with open(os.path.join(PLOVER, "user.json")) as f:
         user = json.load(f)

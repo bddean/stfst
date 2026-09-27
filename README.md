@@ -264,7 +264,9 @@ file against the typey-type artifact and fails if the JSON is stale.
 `scripts/gen-two-syllable.py` writes `two-syllable.json` the same way, from the
 same tagger and table: a word of two syllables as one stroke marked with `^`,
 the chord the stressed vowel's XOR the other vowel's letter, or nothing for an
-r-coloured one (report is `^PROERT`, happy `^HAEUP`, mother `^PHO*RT`), or a prefix chord and no `^` (display is `STKPHRAEU`).
+r-coloured one (report is `^PROERT`, happy `^HAEUP`, mother `^PHO*RT`), and
+again without `^` when a bank no one-syllable word has says two syllables
+(withdraw `TKWHRAE`), or a prefix chord and no `^` (display is `STKPHRAEU`).
 `gen-typey-vowels.py` then supersedes the Typey Type outlines of the words it
 writes. Run the two in turn until both pass `--check`; one round is usually
 enough. It reads the compiled stack to leave
