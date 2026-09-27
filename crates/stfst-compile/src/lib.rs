@@ -4,6 +4,7 @@ pub mod pipeline;
 pub mod plain;
 pub mod prelude;
 pub mod recipe;
+pub mod stages;
 
 /// Plover translations to records. It lives in `stfst-core` because it is the
 /// record language's front door and a runtime host needs it too.
@@ -22,6 +23,8 @@ pub struct Which {
     pub names: Vec<String>,
     /// Compile one whose artifact is newer than its sources anyway.
     pub force: bool,
+    /// Write the pipelines and no artifact, which is what a generator reads.
+    pub pipelines_only: bool,
 }
 
 /// Compile every dictionary in a recipe into `out`, one artifact directory each.
@@ -41,6 +44,12 @@ pub fn compile_recipe(recipe_path: &Path, out: &Path, work: &Path, which: &Which
 
     for dict in &recipe.dict {
         if !which.names.is_empty() && !which.names.contains(&dict.name) {
+            continue;
+        }
+        if !dict.pipeline.is_empty() {
+            stages::compile(&recipe, &base, &system, &system_path, dict, work, which.force)?;
+        }
+        if which.pipelines_only {
             continue;
         }
         let source = dict.source()?;
@@ -109,7 +118,7 @@ pub fn compile_recipe(recipe_path: &Path, out: &Path, work: &Path, which: &Which
 
 /// The file in an artifact directory that says what it was compiled from, other
 /// than the source files themselves.
-const STAMP: &str = "stamp";
+pub(crate) const STAMP: &str = "stamp";
 
 /// What an artifact is a function of, besides its files' contents: the fields of
 /// its own recipe entry that reach the artifact, and the compiler's source. Not
@@ -136,7 +145,7 @@ fn stamp(system: &Path, dict: &recipe::Dict) -> Result<String> {
 /// The directory's mtime is when it was built, because `write_artifact` renames
 /// the manifest into place last. An input this cannot read is a reason to
 /// compile, so the compiler reports what is wrong with it rather than this.
-fn fresh(artifact: &Path, stamp: &str, inputs: &[PathBuf]) -> bool {
+pub(crate) fn fresh(artifact: &Path, stamp: &str, inputs: &[PathBuf]) -> bool {
     let Some(built) = modified(artifact) else {
         return false;
     };

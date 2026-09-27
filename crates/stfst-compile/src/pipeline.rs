@@ -86,7 +86,7 @@ fn shadowed(prelude: &str, bodies: &str) -> Option<String> {
         .map(str::to_string)
 }
 
-fn run(program: &str, args: &[&str]) -> Result<String> {
+pub(crate) fn run(program: &str, args: &[&str]) -> Result<String> {
     let out = Command::new(program)
         .args(args)
         .output()

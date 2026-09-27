@@ -67,6 +67,9 @@ enum Command {
         /// Compile one whose artifact is newer than its sources anyway.
         #[arg(long)]
         force: bool,
+        /// Write only the pipelines, which a generator reads, and no artifact.
+        #[arg(long)]
+        pipeline_only: bool,
     },
     /// Look up outlines in a compiled artifact.
     Lookup {
@@ -310,8 +313,8 @@ fn main() -> Result<()> {
                 None => print!("{}", compiled.lexc),
             }
         }
-        Command::Compile { recipe, out, work, dicts, force } => {
-            let which = stfst_compile::Which { names: dicts, force };
+        Command::Compile { recipe, out, work, dicts, force, pipeline_only } => {
+            let which = stfst_compile::Which { names: dicts, force, pipelines_only: pipeline_only };
             stfst_compile::compile_recipe(&recipe, &out, &work, &which)?;
         }
         Command::Lookup {

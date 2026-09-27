@@ -45,17 +45,23 @@ source_golden() {
 # Every check that belongs to one dictionary. A dictionary whose answer depends
 # on more than the tape has a stroke fixture under `tests/` instead of a golden
 # file, because a golden file has nowhere to put the buffer: see
-# `tests/retro-words`.
+# `tests/retro-words`. A dictionary with a pipeline has a golden file per stage
+# under `tests/golden/NAME/`, which `scripts/stages.sh NAME --update` rewrites.
 check_dict() {
-    local name=$1 generator=$2 goldens=$3 artifact=build/dicts/$1.stfst golden
+    local name=$1 generators=$2 goldens=$3 artifact=build/dicts/$1.stfst golden generator
     echo "== $name"
-    if [ "$generator" != - ] && [ "${checked#* "$generator" }" = "$checked" ]; then
+    [ "$generators" = - ] && generators=
+    for generator in $generators; do
+        [ "${checked#* "$generator" }" = "$checked" ] || continue
         checked="$checked$generator "
         if [ -x "$GEN_PYTHON" ]; then
             "$GEN_PYTHON" "$generator" --check && echo "$(basename "$generator") --check: current"
         else
             echo "skipped $generator: no $GEN_PYTHON"
         fi
+    done
+    if [ -d "tests/golden/$name" ]; then
+        scripts/stages.sh "$name"
     fi
     golden=tests/golden/$name.tsv
     [ -f "$golden" ] || golden=build/golden/$name.tsv

@@ -14,7 +14,35 @@ use stfst_core::Shown;
 pub struct Recipe {
     pub system: PathBuf,
     #[serde(default)]
+    pub stage: Vec<Stage>,
+    #[serde(default)]
     pub dict: Vec<Dict>,
+}
+
+/// One step of a pipeline: a relation a dictionary's `pipeline` composes with
+/// the steps before it. See `stages`.
+#[derive(Debug, Deserialize)]
+pub struct Stage {
+    pub name: String,
+    /// xfst defining `Stage`, the files concatenated in order after the prelude.
+    #[serde(default)]
+    pub xfst: Vec<PathBuf>,
+    /// A lexc lexicon, which is the relation itself.
+    #[serde(default)]
+    pub lexc: Option<PathBuf>,
+    /// The script that writes this stage's source. For `scripts/check.sh`.
+    #[serde(default)]
+    pub generator: Option<PathBuf>,
+}
+
+impl Stage {
+    pub fn files(&self) -> Result<Vec<&PathBuf>> {
+        match (self.xfst.is_empty(), &self.lexc) {
+            (false, None) => Ok(self.xfst.iter().collect()),
+            (true, Some(p)) => Ok(vec![p]),
+            _ => bail!("stage {}: needs one of `xfst` or `lexc`", self.name),
+        }
+    }
 }
 
 #[derive(Debug, Deserialize)]
@@ -55,6 +83,12 @@ pub struct Dict {
     /// Golden files beside `tests/golden/NAME.tsv`, for `scripts/check.sh`.
     #[serde(default)]
     pub golden: Vec<PathBuf>,
+    /// Stages, by name, whose composition relates words to what they write.
+    /// The compiler writes what each prefix of it relates, for the generator
+    /// to read and `scripts/check.sh` to hold to `tests/golden/NAME/`. It is not
+    /// the artifact: the generator resolves it into the source.
+    #[serde(default)]
+    pub pipeline: Vec<String>,
 }
 
 fn default_version() -> String {
@@ -110,6 +144,13 @@ impl<'a> Source<'a> {
 }
 
 impl Recipe {
+    pub fn stage(&self, name: &str) -> Result<&Stage> {
+        match self.stage.iter().find(|s| s.name == name) {
+            Some(s) => Ok(s),
+            None => bail!("the recipe has no stage named {name}"),
+        }
+    }
+
     pub fn load(path: &Path) -> Result<(Recipe, PathBuf)> {
         let text = std::fs::read_to_string(path)
             .with_context(|| format!("reading {}", path.display()))?;
@@ -134,5 +175,27 @@ pub fn resolve(base: &Path, path: &Path) -> PathBuf {
         path.to_path_buf()
     } else {
         base.join(path)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn a_stage_has_one_source() {
+        let recipe: Recipe = toml::from_str(
+            "system = \"s.toml\"\n\
+             [[stage]]\nname = \"lexicon\"\nlexc = \"l.lexc\"\n\
+             [[stage]]\nname = \"rule\"\nxfst = [\"a.xfst\", \"b.xfst\"]\n\
+             [[stage]]\nname = \"both\"\nlexc = \"l.lexc\"\nxfst = [\"a.xfst\"]\n\
+             [[dict]]\nname = \"d\"\npriority = 1\njson = \"d.json\"\npipeline = [\"lexicon\", \"rule\"]\n",
+        )
+        .unwrap();
+        assert_eq!(recipe.stage("lexicon").unwrap().files().unwrap(), [&PathBuf::from("l.lexc")]);
+        assert_eq!(recipe.stage("rule").unwrap().files().unwrap().len(), 2);
+        assert!(recipe.stage("both").unwrap().files().is_err());
+        assert!(recipe.stage("none").is_err());
+        assert_eq!(recipe.dict[0].pipeline, ["lexicon", "rule"]);
     }
 }
