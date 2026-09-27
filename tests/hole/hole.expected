@@ -1,8 +1,3 @@
-! 0 semantic-suffixes priority 40
-! 1 two-syllable priority 35
-! 2 typey-type priority 30
-! 3 phrasing-tag priority 11
-! 4 phrasing priority 10
 !buffer	""
 +T-RG	1	phrasing	it[AFTER][META=infl]s[END][END]	"it -s"
 RUPB	1	typey-type	run	"it runs"

@@ -1,22 +1,3 @@
-! 0 emily-symbols priority 100
-! 1 shrimple priority 90
-! 2 user priority 80
-! 3 phrases priority 70
-! 4 commands priority 60
-! 5 emily-modifiers priority 50
-! 6 semantic-suffixes priority 40
-! 7 two-syllable priority 35
-! 8 affixes priority 33
-! 9 typey-type priority 30
-! 10 vowel-briefs priority 25
-! 11 and-fold priority 20
-! 12 phrasing-tag priority 11
-! 13 phrasing priority 10
-! 14 retro-words priority 9
-! 15 repeat-idioms priority 8
-! 16 repeat-word priority 7
-! 17 frames priority 6
-! 18 ahead priority 5
 TP-PL	1	typey-type	.[ATTACH_L][CAP_NEXT]	"."
 TAP	1	typey-type	tap	". Tap"
 TR-TZ	1	emily-symbols	[KEY]Tab[END][ATTACH_L][ATTACH_R]	". Tap"

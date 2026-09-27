@@ -1,4 +1,3 @@
-! 0 retro-words priority 9
 !buffer the quick brown fox	"the quick brown fox"
 ^AP	1	retro-words	[LETTER][LETTER][LETTER][SP][LETTER][LETTER][LETTER][LETTER][LETTER][SP][LETTER][LETTER][LETTER][LETTER][LETTER][SP][UPPER][LETTER][LETTER]	"the quick brown Fox"
 !buffer hello world	"hello world"

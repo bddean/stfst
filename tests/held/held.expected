@@ -1,6 +1,3 @@
-! 0 held priority 3
-! 1 ahead priority 2
-! 2 words priority 1
 !buffer	""
 TPR	...	""
 HAOEUR	1	words	here	"from here to"

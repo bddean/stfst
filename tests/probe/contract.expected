@@ -1,4 +1,3 @@
-! 0 probe priority 1
 T	1	probe	the	"the"
 KPA	1	probe	[CAP_NEXT]	"the"
 T	1	probe	The	"the The"

@@ -62,8 +62,12 @@ pub fn run(
             }
         };
     }
-    for (n, dict) in stack.dicts().iter().enumerate() {
-        say!("! {n} {} priority {}", dict.name(), dict.priority());
+    // On stderr, so a fixture records what the strokes wrote and not which
+    // dictionaries were loaded: adding one would otherwise rewrite every fixture.
+    if !quiet {
+        for dict in stack.dicts() {
+            eprintln!("! {} priority {}", dict.name(), dict.priority());
+        }
     }
 
     let mut board = Board::new(&system, &stack, Some(morph));

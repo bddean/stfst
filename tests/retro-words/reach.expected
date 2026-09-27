@@ -1,4 +1,3 @@
-! 0 retro-words priority 9
 !buffer one two three	"one two three"
 ^A	-	"one two three"
 !buffer one two three	"one two three"
