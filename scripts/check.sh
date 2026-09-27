@@ -136,7 +136,9 @@ diff -q /tmp/stfst-tapes-py.tsv /tmp/stfst-tapes-rs.tsv \
 # an oracle that needed Plover would not run where the generators do.
 echo "== plugin units"
 python3 -m unittest discover plover-plugin/tests 2>&1 | tail -3
-python3 -m unittest discover scripts/tests 2>&1 | tail -1
+# The generators' own tests want the venv's cmudict, and skip without it.
+if [ -x "$GEN_PYTHON" ]; then gen_python=$GEN_PYTHON; else gen_python=python3; fi
+"$gen_python" -m unittest discover scripts/tests 2>&1 | tail -1
 
 # Plover loads the same dictionaries in its own list, which has to agree.
 echo "== plover.cfg"

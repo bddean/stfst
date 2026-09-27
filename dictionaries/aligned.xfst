@@ -1,0 +1,37 @@
+! The language of lexicon.lexc's entries, which scripts/gen/lexicon.py writes:
+! a pronunciation aligned to its spelling, one segment per consonant cluster
+! and per vowel. report is `R=r IY0=e P=p AO1=o R.T=rt`.
+!
+! A stage that reads the lexicon's entries, or writes more of them, names its
+! pieces with these.
+
+define Gap      " " ;
+define Eq       "=" ;
+define Dot      "." ;
+
+define Letter   [ a | b | c | d | e | f | g | h | i | j | k | l | m
+                | n | o | p | q | r | s | t | u | v | w | x | y | z ] ;
+define Cons     [ B | CH | D | DH | F | G | HH | JH | K | L | M | N | NG
+                | P | R | S | SH | T | TH | V | W | Y | Z | ZH ] ;
+define Unstressed [ AA0 | AE0 | AH0 | AO0 | AW0 | AY0 | EH0 | ER0 | EY0
+                  | IH0 | IY0 | OW0 | OY0 | UH0 | UW0 ] ;
+define Stressed [ AA1 | AE1 | AH1 | AO1 | AW1 | AY1 | EH1 | ER1 | EY1
+                | IH1 | IY1 | OW1 | OY1 | UH1 | UW1 ] ;
+define Secondary [ AA2 | AE2 | AH2 | AO2 | AW2 | AY2 | EH2 | ER2 | EY2
+                 | IH2 | IY2 | OW2 | OY2 | UH2 | UW2 ] ;
+define Vowel    [ Unstressed | Stressed | Secondary ] ;
+define RVowel   [ ER0 | ER1 | ER2 ] ;
+
+! A consonant cluster's phonemes, none or several.
+define Phones   [ ( Cons [ Dot Cons ]* ) ] ;
+! Letters after a segment's that spell nothing: a final e or ue, aye's e.
+define Tail     [ "_" Letter+ ] ;
+
+define ConsSeg  [ Phones Eq Letter* ] ;
+define VowelSeg [ Vowel Eq Letter+ ( Tail ) ] ;
+define LastSeg  [ Phones Eq Letter* ( Tail ) ] ;
+
+! The pronunciation's place in CMU's order.
+define Rank     [ 1 | 2 | 3 | 4 ] ;
+
+define Entry    [ Rank Gap ConsSeg [ Gap VowelSeg Gap ConsSeg ]* Gap VowelSeg Gap LastSeg ] ;
