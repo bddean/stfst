@@ -1,0 +1,19 @@
+"""The generators that share the vowel theory, as one package.
+
+`vowels` rewrites Typey Type's vowels, `two_syllable` and `affixes` build on
+its table and its resolution, and `stack` answers what the rest of the stack
+already writes. Each generator's command is `scripts/gen-*.py`.
+"""
+import os
+import sys
+
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+PLOVER = os.path.expanduser("~/.config/plover")
+SYSTEM = os.path.join(ROOT, "systems", "stenotype-extended.toml")
+RECIPE = os.path.join(ROOT, "recipe.toml")
+
+# `plover_tape` beside this package, and the plugin's reader and record language,
+# which need no Plover.
+for path in (os.path.join(ROOT, "scripts"), os.path.join(ROOT, "plover-plugin")):
+    if path not in sys.path:
+        sys.path.insert(0, path)

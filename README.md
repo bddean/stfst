@@ -310,6 +310,7 @@ either file is stale.
 | `dictionaries/` | Hand-written dictionary source, in xfst. A `-tables.xfst` file is transcribed data with an upstream owner; the grammar over it is authored. `typey-vowels.toml` is the vowel theory's table, which a script applies to JSON, and `affixes.toml` the affix stroke's. |
 | `morphology/` | `ortho.xfst`, Plover's 38 orthography rules. Not a dictionary: nothing here is over the key tape, though a grammar may include it to spell a join, as `affixes` does. The two lexicons beside it are generated, not committed. |
 | `recipe.toml` | The dictionary stack: what to compile, and at what priority. |
+| `scripts/gen/` | The generators that share the vowel theory, as a package: `vowels`, `two_syllable`, `affixes`, and `stack`, which reads what the rest of the stack writes in Plover's syntax. `scripts/gen-*.py` run them. |
 | `tests/golden/` | Host-independent golden tests for the grammars: a tape, a tab, the expected records. An imported source's is written into `build/golden/` by `check.sh`. |
 | `tests/vowels.tsv` | The same, for what the vowel table writes, checked against typey-type. |
 | `tests/translate/` | Stroke streams and what the stack makes of them, where the answer depends on the history. |

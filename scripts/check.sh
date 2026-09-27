@@ -136,6 +136,7 @@ diff -q /tmp/stfst-tapes-py.tsv /tmp/stfst-tapes-rs.tsv \
 # an oracle that needed Plover would not run where the generators do.
 echo "== plugin units"
 python3 -m unittest discover plover-plugin/tests 2>&1 | tail -3
+python3 -m unittest discover scripts/tests 2>&1 | tail -1
 
 # Plover loads the same dictionaries in its own list, which has to agree.
 echo "== plover.cfg"
