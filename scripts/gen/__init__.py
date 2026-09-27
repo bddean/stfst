@@ -1,8 +1,9 @@
 """The generators that share the vowel theory, as one package.
 
-`vowels` rewrites Typey Type's vowels, `two_syllable` and `affixes` build on
-its table and its resolution, and `stack` answers what the rest of the stack
-already writes. Each generator's command is `scripts/gen-*.py`.
+`vowels` rewrites Typey Type's vowels. `lexicon` and `theory` write the sources
+of the pipeline stages recipe.toml names, and `two_syllable` and `affixes`
+resolve what their pipelines relate, by `resolve`. `stack` answers what the
+rest of the stack already writes. Each generator's command is `scripts/gen-*.py`.
 """
 import os
 import sys

@@ -10,22 +10,27 @@ and keys. What this script decides is the rest, which is not a rule:
 - The parse. The word's CMU phonemes must split into the prefix's sound, a stem
   of one or two syllables, and the suffix's. The longest affixes win: invitation
   is in…ation, not in…tion.
-- The stem's stroke. One syllable is written as one-syllable words write it, by
-  the vowel theory's chord and the consonants by sound; two as two-syllable.json
-  does, the more stressed vowel carrying the stress.
+- The stem. Its letters and phonemes, the more stressed vowel carrying the
+  stress, are an entry of the lexicon's kind, and `dictionaries/affixes-stems.lexc`
+  lists them. The pipeline recipe.toml names writes each as a stroke: one
+  syllable as one-syllable words are written, two as two-syllable.json writes
+  them. A stem whose onset no one-syllable word has (the kt of activity) is
+  not listed.
 - Which words keep their outline. Two words on one outline go to the more
   frequent, and an outline another dictionary writes is left to it. An outline is
   not written when the stem stroke writes a word and the affix stroke alone is a
   command, or is text that follows that word three times in the corpora: `TPH-T`
   is "in the", so inactivity would turn "active in the" into a word.
 
-It writes `dictionaries/affixes-lexicon.xfst`, the affix tables and one line per
-word, and `tests/golden/affixes.tsv`, every entry the grammar should write with
+It writes the stems, compiles the pipeline, and then writes
+`dictionaries/affixes-lexicon.xfst`, the affix tables and one line per word, and
+`tests/golden/affixes.tsv`, every entry the grammar should write with
 the outline this script computes for it, so the grammar and this script are held
 to the same rule.
 
 Usage (needs cmudict and wordfreq, which the phrasing venv has, the corpora under
-~/.config/plover/phrasing/corpora, and a compiled stack):
+~/.config/plover/phrasing/corpora, a compiled stack, and HFST: run it in the dev
+shell):
 
     PY=~/.config/plover/phrasing/.venv/bin/python
     $PY scripts/gen-affixes.py            # write the lexicon and golden file, print the report
@@ -44,14 +49,16 @@ import tomllib
 import plover_tape
 
 from . import PLOVER, ROOT
-from . import two_syllable as t
 from . import vowels as g
+from .lexicon import align, lexc
+from .resolve import candidates, compile_pipeline
 from .stack import Stack
 
 SYSTEM = plover_tape.System.load(g.SYSTEM)
 
 TABLE = os.path.join(ROOT, "dictionaries", "affixes.toml")
 LEXICON = os.path.join(ROOT, "dictionaries", "affixes-lexicon.xfst")
+STEMS = os.path.join(ROOT, "dictionaries", "affixes-stems.lexc")
 GOLDEN = os.path.join(ROOT, "tests", "golden", "affixes.tsv")
 NGRAMS = os.path.join(ROOT, "build", "cache", "affix-ngrams.json")
 NAME = "affixes"
@@ -128,45 +135,41 @@ def parses(word, pron):
                         yield pkeys, p, word[len(p):len(word) - len(s)], stem, skeys, s
 
 
-def stem_stroke(letters, phones, table, coda, onsets):
-    """The stroke for a stem: of one syllable as one-syllable words write it, of
-    two as two-syllable.json does, the more stressed vowel carrying the stress.
-    An onset no one-syllable word has (the kt of activity) is not written."""
+def stem_entry(letters, phones, onsets):
+    """The lexicon entry of a stem, which the pipeline writes as a stroke: of one
+    syllable as one-syllable words write it, of two as two-syllable.json does,
+    the more stressed vowel carrying the stress. None where the stem does not
+    align, or has an onset no one-syllable word has (the kt of activity)."""
     vowels = [i for i, q in enumerate(phones) if q[-1].isdigit()]
     if tuple(phones[:vowels[0]]) not in onsets:
         return None
-    if len(vowels) == 2:
-        rank = {"1": 0, "2": 1, "0": 2}
-        top = min(vowels, key=lambda i: (rank[phones[i][-1]], i))
-        pron = [q[:-1] + ("1" if i == top else "0") if q[-1].isdigit() else q for i, q in enumerate(phones)]
-        return t.stroke_of(letters, pron, table, coda)
-    st = g.stressed([q[:-1] + "1" if q[-1].isdigit() else q for q in phones])
-    sp = g.spell(letters)
-    if not st or not sp:
-        return None
-    onset, sound, co = st
-    rule = g.rule_for(table, sp, sound)
-    right = coda(co, re.sub(r"g?h$", "", sp.coda)) if co else ("", False)
-    if not rule or right is None or any(q not in t.LEFT for q in onset):
-        return None
-    left = set()
-    for q in onset:
-        left |= set("S" if q == "Z" and "z" not in letters else t.LEFT[q])
-    return str(g.Stroke("".join(k for k in "STKPWHR" if k in left), rule.keys,
-                        rule.star or right[1], right[0]))
+    rank = {"1": 0, "2": 1, "0": 2}
+    top = min(vowels, key=lambda i: (rank[phones[i][-1]], i))
+    pron = [q[:-1] + ("1" if i == top else "0") if q[-1].isdigit() else q for i, q in enumerate(phones)]
+    entry = align(letters, pron)
+    return entry and str(entry)
 
 
-def outline_for(word, table, coda, onsets):
-    """(outline, (prefix, stem letters, suffix)) by the rule, or None when `word`
-    is not in scope. The longest affixes win: invitation is in…ation, not
-    in…tion."""
+def stems(words, onsets):
+    """{word: [(stem entry, prefix keys, prefix, stem letters, suffix keys, suffix)]}."""
+    out = {}
+    for w in words:
+        for pron in g.prons(w):
+            for pkeys, p, letters, phones, skeys, s in parses(w, pron):
+                if (e := stem_entry(letters, phones, onsets)):
+                    out.setdefault(w, []).append((e, pkeys, p, letters, skeys, s))
+    return out
+
+
+def outline_for(parsed, strokes):
+    """(outline, (prefix, stem letters, suffix)) by the rule, or None when no
+    parse's stem has a stroke. The longest affixes win: invitation is
+    in…ation, not in…tion."""
     best = None
-    for pron in g.prons(word):
-        for pkeys, p, letters, phones, skeys, s in parses(word, pron):
-            stroke = stem_stroke(letters, phones, table, coda, onsets)
-            if stroke:
-                cand = (len(letters), f"{stroke}/{affix_keys(pkeys, skeys)}", (p, letters, s))
-                best = min(best or cand, cand)
+    for e, pkeys, p, letters, skeys, s in parsed:
+        if (stroke := strokes.get(e)):
+            cand = (len(letters), f"{stroke}/{affix_keys(pkeys, skeys)}", (p, letters, s))
+            best = min(best or cand, cand)
     return best and best[1:]
 
 
@@ -241,14 +244,10 @@ def count_ngrams(wanted):
 
 # --- Build ---------------------------------------------------------------------
 
-def build(typey, table, result):
+def build(typey, parsed, strokes):
     """({word: (stem stroke, prefix, stem letters, suffix)}, {outline: word}, the
     report): the lexicon, and every entry the grammar writes from it."""
-    coda = t.Coda(typey, result)
-    words = sorted((w for w in typey.known if re.fullmatch("[a-z]+", w) and g.zipf(w) >= MIN_ZIPF),
-                   key=lambda w: (-g.zipf(w), w))
-    onsets = {tuple(on) for w in typey.words.values() for on, _ in w.phones}
-    found = {w: f for w in words if (f := outline_for(w, table, coda, onsets))}
+    found = {w: f for w, ps in parsed.items() if (f := outline_for(ps, strokes))}
     outlines = {w: o for w, (o, _) in found.items()}
     plurals = {w: (pl, o + "Z") for w, (o, (_, _, s)) in found.items() if (pl := plural(w, s))}
 
@@ -361,15 +360,34 @@ def report(lexicon, out, r):
     print("affix strokes, most used first:", " ".join(f"{k}:{n}" for k, n in keys.most_common(30)))
 
 
+def stems_lexc(parsed):
+    """dictionaries/affixes-stems.lexc: each stem, which the pipeline writes."""
+    entries = sorted({e for ps in parsed.values() for e, *_ in ps})
+    return lexc("Written by scripts/gen-affixes.py: every stem of a word the affix grammar\n"
+                "could write, as the lexicon writes an entry. Do not edit.",
+                [(e, e, None) for e in entries])
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--check", action="store_true", help="fail if the lexicon or golden file is stale")
     args = ap.parse_args()
 
     typey = g.Typey.load()
-    table, _ = g.load_table()
-    result = g.resolve(typey, table)
-    lexicon, out, r = build(typey, table, result)
+    words = sorted((w for w in typey.known if re.fullmatch("[a-z]+", w) and g.zipf(w) >= MIN_ZIPF),
+                   key=lambda w: (-g.zipf(w), w))
+    onsets = {tuple(on) for w in typey.words.values() for on, _ in w.phones}
+    parsed = stems(words, onsets)
+    text = stems_lexc(parsed)
+    current = os.path.exists(STEMS) and open(STEMS).read() == text
+    if args.check and not current:
+        sys.exit(f"{STEMS} stale: run {sys.argv[0]}")
+    if not args.check:
+        if not current:
+            with open(STEMS, "w") as f:
+                f.write(text)
+        compile_pipeline(NAME)
+    lexicon, out, r = build(typey, parsed, candidates(NAME))
     files = {LEXICON: lexicon_xfst(lexicon), GOLDEN: golden(out)}
     if args.check:
         stale = [p for p, text in files.items() if not os.path.exists(p) or open(p).read() != text]

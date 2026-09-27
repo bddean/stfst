@@ -1,0 +1,90 @@
+! Two syllables contracted to one, the rule of the two-syllable dictionary.
+!
+! An entry of the lexicon with two vowels becomes a syllable theory.xfst can
+! write as one stroke, after marks that say what the stroke adds. The stressed
+! vowel is the syllable's vowel: every consonant before it is the onset and
+! every one after it the coda. The other vowel is the mark: `^` and its first
+! letter, which caret.xfst turns into keys.
+!
+!     report   R=r IY0=e P=p AO1=o R.T=rt  ->  ^e R.P=p AO1=o R.T=rt
+!     happy    HH=h AE1=a P=pp IY0=y =      ->  ^y HH=h AE1=a P=-
+!
+! The onset's letters are the stressed syllable's own, and so are the coda's
+! when it is the last syllable. When the first vowel has the stress, the coda
+! spans the second and its letters say nothing: they are `-`. An r-coloured
+! unstressed vowel leaves its R, and z spelled s is S at the start.
+!
+! A prefix spelled with a cluster no English onset has marks the syllable with
+! the cluster's keys instead, and the rest of the word is the syllable: display
+! is `STK P.L=pl EY1=ay =`. It is tried first, and a word it matches is not
+! read the other way.
+
+! A cluster's phonemes with the dots dropped, each read through C, and one of
+! at least one phoneme. `Dots` puts them back once the syllable is written.
+define Bare(C)  [ ( C [ Del(Dot) C ]* ) ] ;
+define Bare1(C) [ C [ Del(Dot) C ]* ] ;
+define Dots     [ [..] -> Dot || .#. Rank Gap [ ? - Gap ]* Gap ?* Cons _ Cons ] ;
+
+define NoZ      [ [ Cons - Z ] | Z:S ] ;
+define Weak     [ Unstressed | Secondary ] ;
+define Syllable [ Gap VowelSeg Gap LastSeg ] ;
+
+! The second vowel has the stress. The first's letters are one of a run that
+! is two vowels (react) exactly when nothing comes between the two, and then a
+! y after them is the onset's (cayenne).
+define Second(T, C) [ Rank Gap Ins("^" T Gap) Bare(C) Del(Eq Letter* Gap)
+    [ Del([ Weak - RVowel ] Eq T Gap) Eq Gap Stressed Eq [ [ Letter+ - [ y [ a | e | i | o | u ] ?* ] ] ( Tail ) ]
+    | Del([ Weak & RVowel ] Eq T Letter* ( Tail ) Gap) Ins(R) Bare(C) Eq Letter+ Gap Stressed Eq Letter+ ( Tail )
+    | Del([ Weak - RVowel ] Eq T Letter* ( Tail ) Gap) Bare1(C) Eq Letter+ Gap Stressed Eq Letter+ ( Tail ) ]
+    Gap LastSeg ] ;
+
+! The first vowel has the stress. A final e is a vowel only in -le and -re
+! (little, acre), where it cannot be silent (agile), and a run of letters that
+! is two vowels is one vowel group.
+define First(T, C) [ [ ~[ Rank Gap ConsSeg Gap Vowel Eq Letter Gap Phones Eq Gap ?* ]
+    & ~[ Rank Gap ConsSeg Gap VowelSeg Gap Phones Eq [ Letter* - [ Letter* [ l | r ] ] ]
+         Gap Vowel Eq e Gap Phones Eq ]
+    & ~[ ?* [ [ l | r ] "_" e | "_" u e ] ] ]
+    .o. [ Rank Gap Ins("^" T Gap) Bare(C) Eq Letter* Gap Stressed Eq Letter+ ( Tail ) Gap
+          Bare(Cons) Del(Eq Letter* Gap)
+          [ Del(RVowel Eq T Letter* ( Tail ) Gap) Ins(R) | Del([ Vowel - RVowel ] Eq T Letter* ( Tail ) Gap) ]
+          Bare(Cons) Del(Eq Letter* ( Tail )) Ins(Eq "-") ] ] ;
+
+! The syllable's letters read as a word of their own: gu before a vowel is a
+! hard g (guile).
+define Head     [ Rank Gap [ ? - Gap ]* Gap Cons* Eq ] ;
+define GuVowel  [ g Gap Vowel Eq u [ a | e | i | o | u | y ] ?* ] ;
+define Gu       [ Head [ [ GuVowel .o. [ g Ins(u) Gap ? Eq Del(u) ?* ] ] | [ ?* - GuVowel ] ] ] ;
+
+! The last onset Y of two phonemes or more is the vowel's glide (accuse).
+define Glide    [ Rank Gap [ ? - Gap ]* Gap [ [ Cons+ Del(Y) ] | [ Cons* - [ Cons+ Y ] ] ] Eq ?* ] ;
+
+define Tints(C) [ [ [ Second(a, C) | Second(e, C) | Second(i, C) | Second(o, C) | Second(u, C)
+                    | Second(y, C) ] .o. Glide .o. Gu ]
+                | First(a, C) | First(e, C) | First(i, C) | First(o, C) | First(u, C) | First(y, C) ] ;
+define Stress   [ [ ~$[z] .o. Tints(NoZ) ] | [ $[z] .o. Tints(Cons) ] ] ;
+
+! A prefix, as its letters and phonemes before the vowel, its vowel's letters,
+! and its letters and phonemes after it; then its keys. A y-glide spelled with
+! no y is the vowel's: commute is KPH and ute.
+define Rest(P, L) [ Del(P) [ Del(Dot) [ [ Phones - [ Y ?* ] ] .o. Bare1(Cons) ] Eq Del(L) Letter*
+                           | Eq Del(L) Letter*
+                           | Del(Dot) [ [ Y ?* ] .o. Bare1(Cons) ] Eq Del(L) [ y Letter* ]
+                           | Del(Dot Y) [ 0 | Del(Dot) Bare1(Cons) ] Eq Del(L) [ Letter* - [ y ?* ] ] ] ] ;
+define Pre(OnP, OnL, VL, CoP, CoL, K) [ Rank Gap Ins(K Gap) Del(OnP Eq OnL Gap Vowel Eq VL Gap)
+                                        Rest(CoP, CoL) Syllable ] ;
+
+define Dis  [ Pre(D, d, [ i | e | y ], [ S | Z ], s, {STK}) ] ;
+define Int  [ Pre(0, 0, [ i | e ], N Dot T, {nt}, {SPW}) ] ;
+define Ex   [ Pre(0, 0, e, [ K | G ] Dot [ S | Z ], x, {KP}) ] ;
+define Comb [ Pre(K, c, o, M Dot B, {mb}, {KPW}) ] ;
+define Emb  [ Pre(0, 0, e, M Dot B, {mb}, {KPW}) ] ;
+! com and not comm: the first spelling in the row that the word starts with
+! is the one it is read by.
+define Comm [ Pre(K, c, o, M, {mm}, {KPH})
+            | [ ~[ Rank Gap K Eq c Gap Vowel Eq o Gap Phones Eq m m ?* ] .o. Pre(K, c, o, M, m, {KPH}) ] ] ;
+define Prefixed PU(Dis, PU(Int, PU(Ex, PU(Comb, PU(Emb, Comm))))) ;
+
+define Contract [ Entry .o. PU(Prefixed .o. Glide .o. Gu, Stress) .o. Dots ] ;
+
+define Stage    Contract ;

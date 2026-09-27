@@ -7,6 +7,47 @@
 # they are how `scripts/check.sh NAME` finds a dictionary's checks.
 system = "systems/stenotype-extended.toml"
 
+# Stages: relations a dictionary's `pipeline` composes, from a word to what it
+# writes. An xfst stage defines `Stage`. What each prefix of a pipeline relates
+# is written under build/work/NAME/pipeline, which the generator resolves into
+# the dictionary's source and check.sh holds to tests/golden/NAME/.
+
+# Each word Typey Type writes, its pronunciations aligned to its spelling.
+[[stage]]
+name = "lexicon"
+lexc = "dictionaries/lexicon.lexc"
+generator = "scripts/gen-lexicon.py"
+
+# Two syllables contracted to one, marked with what the stroke adds.
+[[stage]]
+name = "contract"
+xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/contract.xfst"]
+
+# A syllable's stroke by the vowel theory.
+[[stage]]
+name = "theory"
+xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/theory-tables.xfst",
+        "dictionaries/theory.xfst"]
+generator = "scripts/gen-theory.py"
+
+# A stem of one syllable or two, written as one syllable: the words the affix
+# grammar could write, cut to their stems by scripts/gen-affixes.py.
+[[stage]]
+name = "affix-stems"
+lexc = "dictionaries/affixes-stems.lexc"
+generator = "scripts/gen-affixes.py"
+
+# A syllable as it is, or two contracted to one.
+[[stage]]
+name = "stem"
+xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/contract.xfst",
+        "dictionaries/one.xfst"]
+
+# The marks applied: `^` and the other vowel's letter, or a prefix's cluster.
+[[stage]]
+name = "caret"
+xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/caret.xfst"]
+
 [[dict]]
 name = "emily-symbols"
 priority = 100
@@ -72,12 +113,14 @@ name = "two-syllable"
 priority = 35
 json = "~/.config/plover/two-syllable.json"
 generator = "scripts/gen-two-syllable.py"
+pipeline = ["lexicon", "contract", "theory", "caret"]
 
 [[dict]]
 name = "affixes"
 priority = 33
 xfst = ["morphology/ortho.xfst", "dictionaries/affixes-lexicon.xfst", "dictionaries/affixes.xfst"]
 generator = "scripts/gen-affixes.py"
+pipeline = ["affix-stems", "stem", "theory", "caret"]
 
 [[dict]]
 name = "typey-type"

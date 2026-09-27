@@ -1,0 +1,12 @@
+! What the stages of a pipeline share: see recipe.toml's [[stage]].
+
+define Del(X)   [ X .x. 0 ] ;
+define Ins(X)   [ 0 .x. X ] ;
+
+define LeftKey  [ S | T | K | P | W | H | R ] ;
+define RightKey [ f | r | p | b | l | g | t | s | d | z ] ;
+
+! Left-bank keys in any order and repeated, to the stroke's: each is moved to
+! the end once, in steno order.
+define Last(K)  [ [ ? - K ]* | [ ? - K ]* Del(K) [ [ ? - K ] | Del(K) ]* Ins(K) ] ;
+define LeftBank [ Last(S) .o. Last(T) .o. Last(K) .o. Last(P) .o. Last(W) .o. Last(H) .o. Last(R) ] ;

@@ -1,0 +1,28 @@
+! The marks contract.xfst puts before a syllable, applied to its stroke.
+!
+! `^` and a vowel letter: the stroke takes `^`, and its chord XOR the letter's
+! keys (a A, e E, i and y EU, o O, u U), a key both have not pressed. A stroke
+! left with no key, or only the star, is not written.
+!
+!     ^e PROrt  ->  ^PROErt     report
+!     ^y HAP    ->  ^HAEUP      happy
+!
+! Keys: the prefix's cluster, on the left bank beside the stroke's own.
+!
+!     STK PHRAEU  ->  STKPHRAEU  display
+!
+! `-`: nothing.
+
+define Vowels   [ (A) (O) ("*") (E) (U) ] ;
+define Flip(X)  [ X:0 | 0:X ] ;
+define FlipA    [ LeftKey* Flip(A) (O) ("*") (E) (U) RightKey* ] ;
+define FlipO    [ LeftKey* (A) Flip(O) ("*") (E) (U) RightKey* ] ;
+define FlipE    [ LeftKey* (A) (O) ("*") Flip(E) (U) RightKey* ] ;
+define FlipU    [ LeftKey* (A) (O) ("*") (E) Flip(U) RightKey* ] ;
+
+define Tint(L, X) [ Del(L Gap) [ X .o. [ ?+ - "*" ] ] ] ;
+define Caret    [ "^" [ Tint(a, FlipA) | Tint(e, FlipE) | Tint(i, FlipE .o. FlipU)
+                      | Tint(o, FlipO) | Tint(u, FlipU) | Tint(y, FlipE .o. FlipU) ] ] ;
+define Cluster  [ [ [ LeftKey+ Del(Gap) LeftKey* ] .o. LeftBank ] Vowels RightKey* ] ;
+
+define Stage    [ Rank Gap [ Caret | Cluster | Del("-" Gap) ?* ] ] ;

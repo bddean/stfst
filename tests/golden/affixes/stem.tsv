@@ -1,0 +1,1267 @@
+1 = AA1=a R.M=rm AH0=a =	1 ^a = AA1=a R.M=-
+1 = AA1=a R.M=rm AH0=a M=m	1 ^a = AA1=a R.M.M=-
+1 = AA1=o K.S=x AH0=i K=c	1 ^i = AA1=o K.S.K=-
+1 = AA1=o L=l ER0=e =r	1 ^e = AA1=o L.R=-
+1 = AA1=o S=ss	1 - = AA1=o S=ss
+1 = AA1=o T=t	1 - = AA1=o T=t
+1 = AE0=a K.S=cc EH1=e P.T=pt	1 ^a K.S=cc EH1=e P.T=pt
+1 = AE0=a K.T=ct IH1=i V=v	1 ^a K.T=ct IH1=i V=v
+1 = AE1=a JH=g AH0=i N=n	1 ^i = AE1=a JH.N=-
+1 = AE1=a JH=gg ER0=e =r	1 ^e = AE1=a JH.R=-
+1 = AE1=a K.M=ctm	1 - = AE1=a K.M=ctm
+1 = AE1=a K.T.M=ctm	1 - = AE1=a K.T.M=ctm
+1 = AE1=a K.T=ct	1 - = AE1=a K.T=ct
+1 = AE1=a K=c	1 - = AE1=a K=c
+1 = AE1=a K=ct	1 - = AE1=a K=ct
+1 = AE1=a L=l	1 - = AE1=a L=l
+1 = AE1=a M=m AH0=i N=n	1 ^i = AE1=a M.N=-
+1 = AE1=a N.JH=ng	1 - = AE1=a N.JH=ng
+1 = AE1=a N.S=nc AH0=i P=p	1 ^i = AE1=a N.S.P=-
+1 = AE1=a S.T.R=str	1 - = AE1=a S.T.R=str
+1 = AE1=a S.T=st	1 - = AE1=a S.T=st
+1 = AH0=a B=b IH1=i L=l	1 ^a B=b IH1=i L=l
+1 = AH0=a G.R=gr IY1=ee =	1 ^a G.R=gr IY1=ee =
+1 = AH0=a G.R=gr IY1=ee M=m	1 ^a G.R=gr IY1=ee M=m
+1 = AH0=a K.S=cc EH1=e S=ss	1 ^a K.S=cc EH1=e S=ss
+1 = AH0=a L=l IH1=i S.T=st	1 ^a L=l IH1=i S.T=st
+1 = AH0=a P.R=ppr UW1=o V=v	1 ^a P.R=ppr UW1=o V=v
+1 = AH0=a P=pp IH1=ea R=r	1 ^a P=pp IH1=ea R=r
+1 = AH0=a P=pp IY1=ea R=r	1 ^a P=pp IY1=ea R=r
+1 = AH0=a P=pp OY1=oi N.T.M=ntm	1 ^a P=pp OY1=oi N.T.M=ntm
+1 = AH0=a P=pp OY1=oi N.T=nt	1 ^a P=pp OY1=oi N.T=nt
+1 = AH0=a SH=ss UH1=u R=r	1 ^a SH=ss UH1=u R=r
+1 = AH0=a V=v EY1=ai L=l	1 ^a V=v EY1=ai L=l
+1 = AH0=a V=v OY1=oi D=d	1 ^a V=v OY1=oi D=d
+1 = AH0=e G.R=gr EY1=a =	1 ^e G.R=gr EY1=a =
+1 = AH0=e K.S.P.L=xpl IH1=i S=c	1 KP P.L=pl IH1=i S=c
+1 = AH0=e K.W=qu AA1=a L=l	1 ^e K.W=qu AA1=a L=l
+1 = AH0=e K.Y=c UW1=u =	1 ^e K=c UW1=u =
+1 = AH0=i G.N=gn EY1=a =	1 ^i G.N=gn EY1=a =
+1 = AH0=i G.R=gr EY1=a =	1 ^i G.R=gr EY1=a =
+1 = AH0=i T=t EY1=a =	1 ^i T=t EY1=a =
+1 = AH0=o L=l EY1=a =	1 ^o L=l EY1=a =
+1 = AH0=o N=n EY1=a =	1 ^o N=n EY1=a =
+1 = AH1=a L.T=lt	1 - = AH1=a L.T=lt
+1 = AH1=a L=l	1 - = AH1=a L=l
+1 = AH1=e G.R=gr	1 - = AH1=e G.R=gr
+1 = AH1=e JH=g	1 - = AH1=e JH=g
+1 = AH1=i G.N=gn	1 - = AH1=i G.N=gn
+1 = AH1=i G.R=gr	1 - = AH1=i G.R=gr
+1 = AH1=i M=m AH0=a T=t_e	1 ^a = AH1=i M.T=-
+1 = AH1=i N=n	1 - = AH1=i N=n
+1 = AH1=i T=t	1 - = AH1=i T=t
+1 = AH1=o L=l	1 - = AH1=o L=l
+1 = AH1=o N=n	1 - = AH1=o N=n
+1 = AH1=o N=n IH0=i Z=z	1 ^i = AH1=o N.Z=-
+1 = AH1=u M.N=mn	1 - = AH1=u M.N=mn
+1 = AO0=o R.G=rg AE1=a N=n	1 ^o R.G=rg AE1=a N=n
+1 = AO1=au G.Y=g ER0=u =r	1 ^u = AO1=au G.Y.R=-
+1 = AO1=au G=g ER0=u =r	1 ^u = AO1=au G.R=-
+1 = AO1=o R.B=rb IH0=i T=t	1 ^i = AO1=o R.B.T=-
+1 = AO1=o R.D=rd	1 - = AO1=o R.D=rd
+1 = AO1=o R.D=rd ER0=e =r	1 ^e = AO1=o R.D.R=-
+1 = AO1=o R.M=rm	1 - = AO1=o R.M=rm
+1 = AO1=o R.M=rm AH0=ou S=s	1 ^o = AO1=o R.M.S=-
+1 = AY1=i =r ER0=e =	1 ^e = AY1=i R=-
+1 = AY1=i N=gn	1 - = AY1=i N=gn
+1 = AY1=i R=r	1 - = AY1=i R=r
+1 = AY1=i T=tl AH0=e L.M=m	1 ^e = AY1=i T.L.M=-
+1 = AY1=i T=tl AH0=e L=	1 ^e = AY1=i T.L=-
+1 = EH1=e G.R=gr	1 - = EH1=e G.R=gr
+1 = EH1=e K.Y=c AH0=u T=t	1 ^u = EH1=e K.Y.T=-
+1 = EH1=e L=l IH0=i JH=g	1 ^i = EH1=e L.JH=-
+1 = EH1=e L=ll AH0=i JH=g	1 ^i = EH1=e L.JH=-
+1 = EH1=e M.P=mp	1 - = EH1=e M.P=mp
+1 = EH1=e M=mp	1 - = EH1=e M=mp
+1 = EH1=e N.S=ns	1 - = EH1=e N.S=ns
+1 = EH1=e N.S=ns_e	1 - = EH1=e N.S=ns_e
+1 = EH1=e N.SH=nt AH0=io N=n	1 ^i = EH1=e N.SH.N=-
+1 = EH1=e N=n	1 - = EH1=e N=n
+1 = EH1=e N=nn	1 - = EH1=e N=nn
+1 = EH1=e N=nn IY0=i =	1 ^i = EH1=e N=-
+1 = EH1=e R=rr AH0=o G=g	1 ^o = EH1=e R.G=-
+1 = EH1=e S.T=st AH0=i N=n	1 ^i = EH1=e S.T.N=-
+1 = EH1=e S.T=st IH0=i NG=ng	1 ^i = EH1=e S.T.NG=-
+1 = EH1=e TH=th	1 - = EH1=e TH=th
+1 = EH1=e TH=th IH0=i K=c	1 ^i = EH1=e TH.K=-
+1 = EH1=e V=v AH0=i T=t	1 ^i = EH1=e V.T=-
+1 = ER0=e =r AE1=a K.T=ct	1 ^e R=r AE1=a K.T=ct
+1 = ER0=e =r AE1=a K=c	1 ^e R=r AE1=a K=c
+1 = ER0=e =rr AH1=u P=p	1 ^e R=rr AH1=u P=p
+1 = ER0=e CH=rch EY1=a N.JH=ng_e	1 ^e R.CH=rch EY1=a N.JH=ng_e
+1 = ER0=e F=rf IH1=e R=r	1 ^e R.F=rf IH1=e R=r
+1 = ER0=e JH=rg EH1=e T=t	1 ^e R.JH=rg EH1=e T=t
+1 = ER0=e M=rm IH1=i =s	1 ^e R.M=rm IH1=i =s
+1 = ER0=e M=rm IH1=i T=tt	1 ^e R.M=rm IH1=i T=tt
+1 = ER0=e N=rn AE1=a =	1 ^e R.N=rn AE1=a =
+1 = ER0=e S=rc EH1=e P=p	1 ^e R.S=rc EH1=e P=p
+1 = ER0=e S=rs EH1=e K=c	1 ^e R.S=rs EH1=e K=c
+1 = ER0=e T=rt EY1=ai N.M=nm	1 ^e R.T=rt EY1=ai N.M=nm
+1 = ER0=e T=rt EY1=ai N=n	1 ^e R.T=rt EY1=ai N=n
+1 = ER0=e V.Y=rv UW1=iew =	1 ^e R.V=rv UW1=iew =
+1 = ER0=e V=rv EH1=e N=n	1 ^e R.V=rv EH1=e N=n
+1 = ER0=o =r EY1=a =	1 ^o R=r EY1=a =
+1 = ER1=e JH=rg	1 - = ER1=e JH=rg
+1 = ER1=e N=rn	1 - = ER1=e N=rn
+1 = ER1=e N=rn AH0=a =l	1 ^a = ER1=e N=-
+1 = ER1=e P.R=rpr	1 - = ER1=e P.R=rpr
+1 = ER1=e P.R=rpr AH0=e T=t	1 ^e = ER1=e P.R.T=-
+1 = ER1=e P.R=rpr IH0=e T=t	1 ^e = ER1=e P.R.T=-
+1 = ER1=e S=rc	1 - = ER1=e S=rc
+1 = ER1=e V=rv	1 - = ER1=e V=rv
+1 = ER1=o =r	1 - = ER1=o =r
+1 = IH0=e F=ff EH1=e K.T=ct	1 ^e F=ff EH1=e K.T=ct
+1 = IH0=e K.S.P=xp EH1=e N.S=ns	1 KP P=p EH1=e N.S=ns
+1 = IH0=e K.W=qu AA1=a L=l	1 ^e K.W=qu AA1=a L=l
+1 = IH0=e L=l EH1=e K=c	1 ^e L=l EH1=e K=c
+1 = IH0=e M.P.L=mpl OY1=oy =	1 ^e M.P.L=mpl OY1=oy =
+1 = IH0=e M.P.L=mpl OY1=oy M=m	1 ^e M.P.L=mpl OY1=oy M=m
+1 = IH0=i G.M=gm AE1=a T=t	1 ^i G.M=gm AE1=a T=t
+1 = IH0=i G.N=gn EY1=a =	1 ^i G.N=gn EY1=a =
+1 = IH0=i M.B=mb ER1=u S=rs_e	1 ^i M.B=mb ER1=u S=rs_e
+1 = IH0=i M.P=mp AO1=o R.T=rt	1 ^i M.P=mp AO1=o R.T=rt
+1 = IH0=i N.F=nf AO1=o R.S=rc_e	1 ^i N.F=nf AO1=o R.S=rc_e
+1 = IH0=i N.T=nt EH1=e N=n	1 SPW = EH1=e N=n
+1 = IH1=e R=r IY0=i =	1 ^i = IH1=e R=-
+1 = IH1=i =s	1 - = IH1=i =s
+1 = IH1=i F=ph ER0=e =r	1 ^e = IH1=i F.R=-
+1 = IH1=i G.N=gn	1 - = IH1=i G.N=gn
+1 = IH1=i K=c	1 - = IH1=i K=c
+1 = IH1=i M=m AH0=e T=t	1 ^e = IH1=i M.T=-
+1 = IH1=i M=m IH0=i D=d	1 ^i = IH1=i M.D=-
+1 = IH1=i N.K=nc AA0=a R.N=rn	1 ^a = IH1=i N.K.R.N=-
+1 = IH1=i S.T=st	1 - = IH1=i S.T=st
+1 = IH1=i SH.Y=t AH0=ia T=t	1 ^i = IH1=i SH.Y.T=-
+1 = IH1=i SH=t AH0=ia =l	1 ^i = IH1=i SH=-
+1 = IH1=i SH=t AH0=ia T=t	1 ^i = IH1=i SH.T=-
+1 = IH1=i SH=t IY0=i =	1 ^i = IH1=i SH=-
+1 = IY0=e K.W=qu AA1=a L=l	1 ^e K.W=qu AA1=a L=l
+1 = IY1=a CH=ch	1 - = IY1=a CH=ch
+1 = IY1=e D=d	1 - = IY1=e D=d
+1 = IY1=e K.W=qu	1 - = IY1=e K.W=qu
+1 = OW0=o R=r EH1=e K.T=ct	1 ^o R=r EH1=e K.T=ct
+1 = OW1=o =	1 - = OW1=o =
+1 = OW1=o D=d ER0=o =r	1 ^o = OW1=o D.R=-
+1 = OW1=o N=n	1 - = OW1=o N=n
+1 = OW1=o N=n IY0=i =	1 ^i = OW1=o N=-
+1 = OW1=o SH=t AH0=io N=n	1 ^i = OW1=o SH.N=-
+1 = UW0=u = IH1=i =	1 ^u = IH1=i =
+1 = UW1=u =	1 - = UW1=u =
+1 = UW1=u Z=s	1 - = UW1=u Z=s
+1 =c AH1=e L=ll	1 - =c AH1=e L=ll
+1 =c AY0=i T=t EY1=a =	1 ^i T=t EY1=a =
+1 =c AY1=i T=t	1 - =c AY1=i T=t
+1 =c AY1=i T=t AH0=e D=d	1 ^e =c AY1=i T.D=-
+1 =c AY1=i T=t_e	1 - =c AY1=i T=t_e
+1 =c EH1=e N.D=nd	1 - =c EH1=e N.D=nd
+1 =c EH1=e P.SH=pt AH0=io N=n	1 ^i =c EH1=e P.SH.N=-
+1 =c EH1=e P=p	1 - =c EH1=e P=p
+1 =c EH1=e S=ss	1 - =c EH1=e S=ss
+1 =c EH1=e S=ss IH0=i V=v_e	1 ^i =c EH1=e S.V=-
+1 =c EH1=i SH=	1 - =c EH1=i SH=
+1 =c IH0=i S=s AY1=e S=	1 ^i S=s AY1=e S=
+1 =c IY0=i S=s AY1=e S=	1 ^i S=s AY1=e S=
+1 =c IY1=ee D=d IH0=i NG=ng	1 ^i =c IY1=ee D.NG=-
+1 =f EH1=e F.R=r	1 - =f EH1=e F.R=r
+1 =f EH1=e F.R=r AH0=a B=b	1 ^a =f EH1=e F.R.B=-
+1 =h AH0=a L=l EY1=a =	1 ^a L=l EY1=a =
+1 =h AH0=i B=b IH1=i =	1 ^i B=b IH1=i =
+1 =h AH1=a L=l	1 - =h AH1=a L=l
+1 =h AH1=i B=b	1 - =h AH1=i B=b
+1 =h AO1=au S.T=st	1 - =h AO1=au S.T=st
+1 =h AO1=au S=s	1 - =h AO1=au S=s
+1 =p IH0=o P=st AA1=e S.T.R=r	1 ^o P=st AA1=e S.T.R=r
+1 =r AA1=o G=g	1 - =r AA1=o G=g
+1 =r AA1=o G=g AH0=a T=t	1 ^a =r AA1=o G.T=-
+1 =r IH1=i V=v	1 - =r IH1=i V=v
+1 =r IH1=i V=v AH0=a T=t	1 ^a =r IH1=i V.T=-
+1 =r IH1=i V=v IH0=a T=t	1 ^a =r IH1=i V.T=-
+1 =st EH0=i S.T=g IH1=i JH=	1 ^i S.T=g IH1=i JH=
+1 =t AH0=e G.R=gr EY1=a =	1 ^e G.R=gr EY1=a =
+1 =t AH1=e G.R=gr	1 - =t AH1=e G.R=gr
+1 =t ER0=e =r AE1=a K.T=ct	1 ^e R=r AE1=a K.T=ct
+1 =t ER0=e =r AE1=a K=c	1 ^e R=r AE1=a K=c
+1 =t ER0=e CH=rch EY1=a N.JH=ng_e	1 ^e R.CH=rch EY1=a N.JH=ng_e
+1 =t ER0=e F=rf IH1=e R=r	1 ^e R.F=rf IH1=e R=r
+1 =t ER0=e N=rn AE1=a =	1 ^e R.N=rn AE1=a =
+1 =t ER0=e S=rc EH1=e P=p	1 ^e R.S=rc EH1=e P=p
+1 =t ER0=e T=rt EY1=ai N.M=nm	1 ^e R.T=rt EY1=ai N.M=nm
+1 =t ER0=e T=rt EY1=ai N=n	1 ^e R.T=rt EY1=ai N=n
+1 =t ER1=e P.R=rpr	1 - =t ER1=e P.R=rpr
+1 =t IY0=e T=nt EH1=i N.SH=	1 ^e T=nt EH1=i N.SH=
+1 =v EY1=a S=s	1 - =v EY1=a S=s
+1 B.L=bl AH0=e M=m AE1=a T=t	1 ^e B.L.M=m AE1=a T=t
+1 B.R=bbr IY1=e V=v IY0=i =	1 ^i B.R=bbr IY1=e V=-
+1 B.R=br AH1=u P.T=pt	1 - B.R=br AH1=u P.T=pt
+1 B.R=br EY1=a S=s	1 - B.R=br EY1=a S=s
+1 B.R=br IY0=y = AA1=o N=n	1 ^y B.R= AA1=o N=n
+1 B=b AA1=o D=d IY0=i =	1 ^i B=b AA1=o D=-
+1 B=b AA1=o D=d IY0=i M=m	1 ^i B=b AA1=o D.M=-
+1 B=b AA1=o M=m AH0=i N=n	1 ^i B=b AA1=o M.N=-
+1 B=b AE1=a L=l	1 - B=b AE1=a L=l
+1 B=b AE1=a N.D=nd AH0=o N.M=nm	1 ^o B=b AE1=a N.D.N.M=-
+1 B=b AE1=a N.D=nd AH0=o N=n	1 ^o B=b AE1=a N.D.N=-
+1 B=b AE1=a NG.K.M=nkm	1 - B=b AE1=a NG.K.M=nkm
+1 B=b AE1=a NG.K=nk	1 - B=b AE1=a NG.K=nk
+1 B=b AH0=a B=b IH1=i L=l	1 ^a B.B=b IH1=i L=l
+1 B=b AH0=e L=l IY1=ie V=v	1 ^e B.L=l IY1=ie V=v
+1 B=b AH0=i N=n EY1=a =	1 ^i B.N=n EY1=a =
+1 B=b AH0=o L=l IH1=i =	1 ^o B.L=l IH1=i =
+1 B=b AH1=a B=b	1 - B=b AH1=a B=b
+1 B=b AH1=i N=n	1 - B=b AH1=i N=n
+1 B=b AH1=o L=l	1 - B=b AH1=o L=l
+1 B=b AH1=u N.D=nd	1 - B=b AH1=u N.D=nd
+1 B=b AH1=u N.D=nd AH0=a N.T=nt	1 ^a B=b AH1=u N.D.N.T=-
+1 B=b AH1=u S=s	1 - B=b AH1=u S=s
+1 B=b AH1=u T=tt	1 - B=b AH1=u T=tt
+1 B=b AO1=o R=r	1 - B=b AO1=o R=r
+1 B=b EH1=a R=rr AH0=a S.M=ssm	1 ^a B=b EH1=a R.S.M=-
+1 B=b EH1=a R=rr AH0=a S=ss	1 ^a B=b EH1=a R.S=-
+1 B=b EH1=e Z=zzl AH0=e L.M=m	1 ^e B=b EH1=e Z.L.M=-
+1 B=b EH1=e Z=zzl AH0=e L=	1 ^e B=b EH1=e Z.L=-
+1 B=b EH1=ea R=r	1 - B=b EH1=ea R=r
+1 B=b EY1=a =	1 - B=b EY1=a =
+1 B=b EY1=a T=t	1 - B=b EY1=a T=t
+1 B=b IH1=i L=l	1 - B=b IH1=i L=l
+1 B=b IY1=ea T=t	1 - B=b IY1=ea T=t
+1 CH=ch EH1=e K=qu	1 - CH=ch EH1=e K=qu
+1 CH=ch EY1=a N.JH=ng_e	1 - CH=ch EY1=a N.JH=ng_e
+1 CH=ch IY1=ie V=v_e	1 - CH=ch IY1=ie V=v_e
+1 D=d AA1=o M=m AH0=i N=n	1 ^i D=d AA1=o M.N=-
+1 D=d AA1=o P.T=pt	1 - D=d AA1=o P.T=pt
+1 D=d AA1=o P=p	1 - D=d AA1=o P=p
+1 D=d AE1=a P.T=pt	1 - D=d AE1=a P.T=pt
+1 D=d AH0=a P.T=pt EY1=a =	1 ^a D.P.T=pt EY1=a =
+1 D=d AH0=e M.N=mn EY1=a =	1 ^e D.M.N=mn EY1=a =
+1 D=d AH0=e N.S=ns EY1=a =	1 ^e D.N.S=ns EY1=a =
+1 D=d AH0=e S=c EH1=e S=ss	1 ^e D.S=c EH1=e S=ss
+1 D=d AH0=i K=c EY1=a =	1 ^i D.K=c EY1=a =
+1 D=d AH0=i K=c EY1=a T=t	1 ^i D.K=c EY1=a T=t
+1 D=d AH0=o L=l EH1=e S=sc	1 ^o D.L=l EH1=e S=sc
+1 D=d AH0=u K.T=ct IH1=i V=v	1 ^u D.K.T=ct IH1=i V=v
+1 D=d AH1=a P.T=pt	1 - D=d AH1=a P.T=pt
+1 D=d AH1=a T=t	1 - D=d AH1=a T=t
+1 D=d AH1=e M.N=mn	1 - D=d AH1=e M.N=mn
+1 D=d AH1=e N.S=ns	1 - D=d AH1=e N.S=ns
+1 D=d AH1=i K=c	1 - D=d AH1=i K=c
+1 D=d AH1=u K.T=ct	1 - D=d AH1=u K.T=ct
+1 D=d AH1=u K=c	1 - D=d AH1=u K=c
+1 D=d AH1=u L.JH=lg	1 - D=d AH1=u L.JH=lg
+1 D=d AH1=u N.D=nd	1 - D=d AH1=u N.D=nd
+1 D=d AH1=u S.T.R=str	1 - D=d AH1=u S.T.R=str
+1 D=d AH1=u S.T.R=str IY0=i =	1 ^i D=d AH1=u S.T.R=-
+1 D=d AO1=o R.S=rs_e	1 - D=d AO1=o R.S=rs_e
+1 D=d AO1=o R=r	1 - D=d AO1=o R=r
+1 D=d AW1=ou T=bt IH0=e D=d	1 ^e D=d AW1=ou T.D=-
+1 D=d AW1=ow =	1 - D=d AW1=ow =
+1 D=d AW1=ow M=m	1 - D=d AW1=ow M=m
+1 D=d AY1=i T.M=ctm	1 - D=d AY1=i T.M=ctm
+1 D=d AY1=i T=ct	1 - D=d AY1=i T=ct
+1 D=d EH1=e M.P=mp	1 - D=d EH1=e M.P=mp
+1 D=d EH1=e M=m	1 - D=d EH1=e M=m
+1 D=d EH1=e M=mp	1 - D=d EH1=e M=mp
+1 D=d EH1=ea V=v	1 - D=d EH1=ea V=v
+1 D=d ER0=e K=rc AH1=o V=v	1 ^e D.R.K=rc AH1=o V=v
+1 D=d ER0=e S.T=rst AE1=a N.D=nd	1 ^e D.R.S.T=rst AE1=a N.D=nd
+1 D=d ER0=e T=rt EY1=a K=k	1 ^e D.R.T=rt EY1=a K=k
+1 D=d ER0=i =r EH1=e K.T=ct	1 ^i D.R=r EH1=e K.T=ct
+1 D=d ER0=o =r EY1=a =	1 ^o D.R=r EY1=a =
+1 D=d ER1=o =r	1 - D=d ER1=o =r
+1 D=d ER1=u =r	1 - D=d ER1=u =r
+1 D=d EY1=a N.JH=ng	1 - D=d EY1=a N.JH=ng
+1 D=d IH0=e N=n AY1=i =	1 ^e D.N=n AY1=i =
+1 D=d IH0=e P=p EH1=e N.D=nd	1 ^e D.P=p EH1=e N.D=nd
+1 D=d IH0=e Z=s AY1=i R=r	1 STK = AY1=i R=r
+1 D=d IH0=i G.N=gn EY1=a =	1 ^i D.G.N=gn EY1=a =
+1 D=d IH0=i S.P=sp EH1=e N.S=ns	1 STK P=p EH1=e N.S=ns
+1 D=d IH1=i =	1 - D=d IH1=i =
+1 D=d IH1=i F=ff ER0=e =r	1 ^e D=d IH1=i F.R=-
+1 D=d IH1=i G.N=gn	1 - D=d IH1=i G.N=gn
+1 D=d IH1=i JH=g AH0=e N=n	1 ^e D=d IH1=i JH.N=-
+1 D=d IH1=i K.T=ct	1 - D=d IH1=i K.T=ct
+1 D=d IH1=i K.T=ct AH0=a B=b	1 ^a D=d IH1=i K.T.B=-
+1 D=d IH1=i K=c	1 - D=d IH1=i K=c
+1 D=d IH1=i K=c AH0=a =	1 ^a D=d IH1=i K=-
+1 D=d IH1=i K=c AH0=a M=m	1 ^a D=d IH1=i K.M=-
+1 D=d IH1=i K=c AH0=a T=t	1 ^a D=d IH1=i K.T=-
+1 D=d IH1=i SH=t AH0=io N=n	1 ^i D=d IH1=i SH.N=-
+1 D=d IY1=e S=c	1 - D=d IY1=e S=c
+1 D=d OW0=o L=l EH1=e S=sc	1 ^o D.L=l EH1=e S=sc
+1 D=d OW0=o TH=th IY1=e L=l	1 ^o D.TH=th IY1=e L=l
+1 D=d UW1=u S=c	1 - D=d UW1=u S=c
+1 D=dd IH1=i =	1 - D=dd IH1=i =
+1 D=dd IH1=i K.T=ct	1 - D=dd IH1=i K.T=ct
+1 D=dd IH1=i K=c	1 - D=dd IH1=i K=c
+1 D=dd IH1=i SH=t AH0=io N=n	1 ^i D=dd IH1=i SH.N=-
+1 F.L=ffl IH1=i K=c	1 - F.L=ffl IH1=i K=c
+1 F.L=fl AH0=a M=mm EY1=a =	1 ^a F.L.M=mm EY1=a =
+1 F.L=fl AH1=a M=mm	1 - F.L=fl AH1=a M=mm
+1 F.L=fl EH1=e K.T=ct	1 - F.L=fl EH1=e K.T=ct
+1 F.L=fl EH1=e K=c	1 - F.L=fl EH1=e K=c
+1 F.L=fl EY1=a =	1 - F.L=fl EY1=a =
+1 F.L=fl EY1=a T=t	1 - F.L=fl EY1=a T=t
+1 F.L=fl UW1=u =	1 - F.L=fl UW1=u =
+1 F.R=fr AH0=a S.T.R=str AH1=u K.CH=ct	1 ^a F.R.S.T.R=str AH1=u K.CH=ct
+1 F.R=fr AH0=o N.T=nt EY1=a =	1 ^o F.R.N.T=nt EY1=a =
+1 F.R=fr AH1=o N.T=nt	1 - F.R=fr AH1=o N.T=nt
+1 F.R=fr EH1=ie N.D=nd	1 - F.R=fr EH1=ie N.D=nd
+1 F.R=fr IH1=i JH=g ER0=e =r	1 ^e F.R=fr IH1=i JH.R=-
+1 F.R=fr IH1=i N.JH=ng_e	1 - F.R=fr IH1=i N.JH=ng_e
+1 F.R=fr IY1=e K.W=qu AH0=e N.T=nt	1 ^e F.R=fr IY1=e K.W.N.T=-
+1 F=f AE1=a L=ll	1 - F=f AE1=a L=ll
+1 F=f AE1=a N=n	1 - F=f AE1=a N=n
+1 F=f AH0=a M=m EY1=a =	1 ^a F.M=m EY1=a =
+1 F=f AH0=i N=n IH1=i =	1 ^i F.N=n IH1=i =
+1 F=f AH1=a M=m	1 - F=f AH1=a M=m
+1 F=f AH1=e K.T=ct	1 - F=f AH1=e K.T=ct
+1 F=f AH1=e K=ct	1 - F=f AH1=e K=ct
+1 F=f AH1=i D=d	1 - F=f AH1=i D=d
+1 F=f AH1=i D=d AH0=e N.T=nt	1 ^e F=f AH1=i D.N.T=-
+1 F=f AH1=i N=n	1 - F=f AH1=i N=n
+1 F=f AH1=i N=n AH0=i T=t_e	1 ^i F=f AH1=i N.T=-
+1 F=f AH1=i T=t	1 - F=f AH1=i T=t
+1 F=f AH1=u NG.K=nc	1 - F=f AH1=u NG.K=nc
+1 F=f AO0=o R.G=rg IH1=i V=v	1 ^o F.R.G=rg IH1=i V=v
+1 F=f AO0=o R.M=rm EY1=a =	1 ^o F.R.M=rm EY1=a =
+1 F=f AO1=o R.M=rm	1 - F=f AO1=o R.M=rm
+1 F=f AO1=o R.M=rm AH0=a =l	1 ^a F=f AO1=o R.M=-
+1 F=f AO1=o R.M=rm AH0=a T=t	1 ^a F=f AO1=o R.M.T=-
+1 F=f AO1=o R.M=rm EY0=a =	1 ^a F=f AO1=o R.M=-
+1 F=f AO1=o R.S=rc_e	1 - F=f AO1=o R.S=rc_e
+1 F=f AW1=ou N.D=nd	1 - F=f AW1=ou N.D=nd
+1 F=f AY1=i =	1 - F=f AY1=i =
+1 F=f AY1=i N=n_e	1 - F=f AY1=i N=n_e
+1 F=f EH1=ai R=r	1 - F=f EH1=ai R=r
+1 F=f EH1=e =s	1 - F=f EH1=e =s
+1 F=f EH1=e D=d ER0=e =r	1 ^e F=f EH1=e D.R=-
+1 F=f EH1=e K.T=ct	1 - F=f EH1=e K.T=ct
+1 F=f EH1=e K=c	1 - F=f EH1=e K=c
+1 F=f EH1=e N.D=nd	1 - F=f EH1=e N.D=nd
+1 F=f EH1=e N.S=ns	1 - F=f EH1=e N.S=ns
+1 F=f EH1=e N.S=ns IH0=i V=v_e	1 ^i F=f EH1=e N.S.V=-
+1 F=f EH1=e S.T=st	1 - F=f EH1=e S.T=st
+1 F=f EH1=e S.T=st EY0=a =	1 ^a F=f EH1=e S.T=-
+1 F=f EH1=e S=ss	1 - F=f EH1=e S=ss
+1 F=f EH1=e SH=ss AH0=io N=n	1 ^i F=f EH1=e SH.N=-
+1 F=f ER0=e T=rt IH1=i L=l	1 ^e F.R.T=rt IH1=i L=l
+1 F=f ER0=i M=rm EY1=a =	1 ^i F.R.M=rm EY1=a =
+1 F=f ER0=o G=rg EH1=e T=tt	1 ^o F.R.G=rg EH1=e T=tt
+1 F=f ER0=o M=rm EY1=a =	1 ^o F.R.M=rm EY1=a =
+1 F=f ER1=e =r	1 - F=f ER1=e =r
+1 F=f ER1=e =r AH0=a B=b	1 ^a F=f ER1=e B=-
+1 F=f ER1=e =rr	1 - F=f ER1=e =rr
+1 F=f ER1=e N=rn	1 - F=f ER1=e N=rn
+1 F=f ER1=i M=rm	1 - F=f ER1=i M=rm
+1 F=f ER1=o M=rm	1 - F=f ER1=o M=rm
+1 F=f ER1=o T=rt	1 - F=f ER1=o T=rt
+1 F=f ER1=o T=rt AH0=a B=b	1 ^a F=f ER1=o T.B=-
+1 F=f EY1=a V=v ER0=o =r	1 ^o F=f EY1=a V.R=-
+1 F=f EY1=ai TH=th	1 - F=f EY1=ai TH=th
+1 F=f IH0=i D=d EH1=e L=l	1 ^i F.D=d EH1=e L=l
+1 F=f IH0=i L.T.R=ltr EY1=a =	1 ^i F.L.T.R=ltr EY1=a =
+1 F=f IH1=e R=r	1 - F=f IH1=e R=r
+1 F=f IH1=e R=r IY0=i =	1 ^i F=f IH1=e R=-
+1 F=f IH1=i G.Y=g	1 - F=f IH1=i G.Y=g
+1 F=f IH1=i G.Y=g ER0=u =r	1 ^u F=f IH1=i G.Y.R=-
+1 F=f IH1=i L.T.R=ltr	1 - F=f IH1=i L.T.R=ltr
+1 F=f IH1=i N=n	1 - F=f IH1=i N=n
+1 F=f IH1=i N=n IH0=i T=t	1 ^i F=f IH1=i N.T=-
+1 F=f OW0=o G.R=gr AE1=a F=ph	1 ^o F.G.R=gr AE1=a F=ph
+1 F=ff AO1=o R.D=rd	1 - F=ff AO1=o R.D=rd
+1 F=ff EH1=e K.T=ct	1 - F=ff EH1=e K.T=ct
+1 F=ff EH1=e K=c	1 - F=ff EH1=e K=c
+1 F=ff ER0=i M=rm EY1=a =	1 ^i F.R.M=rm EY1=a =
+1 F=ff ER1=i M=rm	1 - F=ff ER1=i M=rm
+1 F=ff ER1=i M=rm AH0=a T=t	1 ^a F=ff ER1=i M.T=-
+1 F=ff IH1=i L=l IY0=i =	1 ^i F=ff IH1=i L=-
+1 F=ff IH1=i N=n	1 - F=ff IH1=i N=n
+1 F=ph AE1=a T=t	1 - F=ph AE1=a T=t
+1 F=ph AH1=a S=s	1 - F=ph AH1=a S=s
+1 F=ph EH1=e T=t	1 - F=ph EH1=e T=t
+1 G.R=ggr AH0=e G=g EY1=a =	1 ^e G.R.G=g EY1=a =
+1 G.R=ggr AH1=e G=g	1 - G.R=ggr AH1=e G=g
+1 G.R=ggr EH1=e =s	1 - G.R=ggr EH1=e =s
+1 G.R=ggr EH1=e S=ss	1 - G.R=ggr EH1=e S=ss
+1 G.R=ggr EH1=e S=ss IH0=i V=v_e	1 ^i G.R=ggr EH1=e S.V=-
+1 G.R=gr AE1=a M=mm	1 - G.R=gr AE1=a M=mm
+1 G.R=gr AH0=a D=d EY1=a =	1 ^a G.R.D=d EY1=a =
+1 G.R=gr AH1=a D=d	1 - G.R=gr AH1=a D=d
+1 G.R=gr EH1=e =s	1 - G.R=gr EH1=e =s
+1 G.R=gr EH1=e S=ss	1 - G.R=gr EH1=e S=ss
+1 G.R=gr EH1=e S=ss IH0=i V=v_e	1 ^i G.R=gr EH1=e S.V=-
+1 G.R=gr EH1=e SH=ss AH0=io N=n	1 ^i G.R=gr EH1=e SH.N=-
+1 G.R=gr EY1=a S=c_e	1 - G.R=gr EY1=a S=c_e
+1 G.R=gr EY1=a T=t_e	1 - G.R=gr EY1=a T=t_e
+1 G.R=gr IY1=e D=d IY0=i =	1 ^i G.R=gr IY1=e D=-
+1 G.R=gr IY1=ee =	1 - G.R=gr IY1=ee =
+1 G.R=gr IY1=ee M=m	1 - G.R=gr IY1=ee M=m
+1 G=g AA1=a R.D=rd	1 - G=g AA1=a R.D=rd
+1 G=g EY1=a JH=g_e	1 - G=g EY1=a JH=g_e
+1 HH=h AE1=a N.S=nc_e	1 - HH=h AE1=a N.S=nc_e
+1 HH=h AE1=a P=pp IY0=i =	1 ^i HH=h AE1=a P=-
+1 HH=h AH0=a L=l EY1=a =	1 ^a HH.L=l EY1=a =
+1 HH=h AH0=i B=b IH1=i =	1 ^i HH.B=b IH1=i =
+1 HH=h AH1=a L=l	1 - HH=h AH1=a L=l
+1 HH=h AH1=i B=b	1 - HH=h AH1=i B=b
+1 HH=h AY0=y D.R=dr EY1=a =	1 ^y HH.D.R=dr EY1=a =
+1 HH=h AY1=y D.R=dr	1 - HH=h AY1=y D.R=dr
+1 HH=h EH1=e R=r	1 - HH=h EH1=e R=r
+1 HH=h EH1=e R=r AH0=e N.T=nt	1 ^e HH=h EH1=e R.N.T=-
+1 HH=h EH1=e R=r AH0=i T=t	1 ^i HH=h EH1=e R.T=-
+1 HH=h ER1=ea S=rs	1 - HH=h ER1=ea S=rs
+1 HH=h IH1=e R=r	1 - HH=h IH1=e R=r
+1 HH=h IH1=e R=r AH0=e N.T=nt	1 ^e HH=h IH1=e R.N.T=-
+1 HH=h IH1=i B=b AH0=i T=t	1 ^i HH=h IH1=i B.T=-
+1 JH=dj AH1=u S.T.M=stm	1 - JH=dj AH1=u S.T.M=stm
+1 JH=dj AH1=u S.T=st	1 - JH=dj AH1=u S.T=st
+1 JH=dj EY1=a S=c	1 - JH=dj EY1=a S=c
+1 JH=g AH0=e N=n UW1=u =	1 ^e JH.N=n UW1=u =
+1 JH=g AH0=i T=t EY1=a =	1 ^i JH.T=t EY1=a =
+1 JH=g AH1=i =	1 - JH=g AH1=i =
+1 JH=g AH1=i M=m	1 - JH=g AH1=i M=m
+1 JH=g AH1=i T=t	1 - JH=g AH1=i T=t
+1 JH=g AH1=io N=n	1 - JH=g AH1=io N=n
+1 JH=g EH1=e N=n AH0=i T=t	1 ^i JH=g EH1=e N.T=-
+1 JH=g EH1=e N=n ER0=e =r	1 ^e JH=g EH1=e N.R=-
+1 JH=g EH1=e S=s	1 - JH=g EH1=e S=s
+1 JH=g IH0=i S.T.R=str EY1=a =	1 ^i JH.S.T.R=str EY1=a =
+1 JH=g IH1=i L=l	1 - JH=g IH1=i L=l
+1 JH=g IH1=i S.T.R=str	1 - JH=g IH1=i S.T.R=str
+1 JH=g IH1=i S.T=st	1 - JH=g IH1=i S.T=st
+1 JH=j AH1=u NG.K=nc	1 - JH=j AH1=u NG.K=nc
+1 JH=j AH1=u NG=nc	1 - JH=j AH1=u NG=nc
+1 JH=j EH1=e K.CH=ct	1 - JH=j EH1=e K.CH=ct
+1 JH=j EH1=e K.SH=ct	1 - JH=j EH1=e K.SH=ct
+1 JH=j EH1=e K.T=ct	1 - JH=j EH1=e K.T=ct
+1 JH=j EH1=e K=c	1 - JH=j EH1=e K=c
+1 JH=j OY1=oy =	1 - JH=j OY1=oy =
+1 JH=j OY1=oy M=m	1 - JH=j OY1=oy M=m
+1 K.L=cl AH0=a M=m EY1=a =	1 ^a K.L.M=m EY1=a =
+1 K.L=cl AH0=i N=n EY1=a =	1 ^i K.L.N=n EY1=a =
+1 K.L=cl AH1=a M=m	1 - K.L=cl AH1=a M=m
+1 K.L=cl AH1=i N=n	1 - K.L=cl AH1=i N=n
+1 K.L=cl ER0=a =r EY1=a =	1 ^a K.L.R=r EY1=a =
+1 K.L=cl ER1=a =r	1 - K.L=cl ER1=a =r
+1 K.L=cl EY1=ai M=m	1 - K.L=cl EY1=ai M=m
+1 K.L=cl OW1=o ZH=s	1 - K.L=cl OW1=o ZH=s
+1 K.L=cl UW0=u S=s IH1=i V=v	1 ^u K.L.S=s IH1=i V=v
+1 K.L=cl UW1=u =	1 - K.L=cl UW1=u =
+1 K.L=cl UW1=u S=s	1 - K.L=cl UW1=u S=s
+1 K.L=cl UW1=u S=s IH0=i V=v_e	1 ^i K.L=cl UW1=u S.V=-
+1 K.R=ccr EH1=e D=d AH0=i T=t	1 ^i K.R=ccr EH1=e D.T=-
+1 K.R=cr AH0=e M=m EH1=e N.T=nt	1 ^e K.R.M=m EH1=e N.T=nt
+1 K.R=cr EH1=e =	1 - K.R=cr EH1=e =
+1 K.R=cr EH1=e D=d	1 - K.R=cr EH1=e D=d
+1 K.R=cr EH1=e D=d AH0=i B=b	1 ^i K.R=cr EH1=e D.B=-
+1 K.R=cr IH1=i M=m AH0=i N=n	1 ^i K.R=cr IH1=i M.N=-
+1 K.R=cr IH1=i P.T=pt	1 - K.R=cr IH1=i P.T=pt
+1 K.R=cr IH1=i P=p	1 - K.R=cr IH1=i P=p
+1 K.R=cr IH1=y L=l	1 - K.R=cr IH1=y L=l
+1 K.R=cr IH1=y P=p	1 - K.R=cr IH1=y P=p
+1 K.R=cr IY0=e = EY1=a =	1 ^e K.R= EY1=a =
+1 K.R=cr IY1=e =	1 - K.R=cr IY1=e =
+1 K.R=cr IY1=ea S=s IH0=i NG.G=ng	1 ^i K.R=cr IY1=ea S.NG.G=-
+1 K.R=cr IY1=ea S=s IH0=i NG=ng	1 ^i K.R=cr IY1=ea S.NG=-
+1 K.R=cr IY1=ee T=t	1 - K.R=cr IY1=ee T=t
+1 K.R=cr UW1=ui T.M=tm	1 - K.R=cr UW1=ui T.M=tm
+1 K.R=cr UW1=ui T=t	1 - K.R=cr UW1=ui T=t
+1 K.W=cqu AH0=i Z=s IH1=i =	1 ^i K.W.S=s IH1=i =
+1 K.W=cqu AH1=i Z=s	1 - K.W=cqu AH1=i Z=s
+1 K.W=cqu EY1=ai N.T=nt	1 - K.W=cqu EY1=ai N.T=nt
+1 K.W=cqu IH1=i T=tt	1 - K.W=cqu IH1=i T=tt
+1 K.W=qu AA1=a T=t	1 - K.W=qu AA1=a T=t
+1 K.W=qu AE1=a T=t	1 - K.W=qu AE1=a T=t
+1 K.W=qu AH0=i Z=s IH1=i =	1 ^i K.W.S=s IH1=i =
+1 K.W=qu AH1=i Z=s	1 - K.W=qu AH1=i Z=s
+1 K.W=qu AY1=i R=r_e	1 - K.W=qu AY1=i R=r_e
+1 K=c AA1=a R.N=rn	1 - K=c AA1=a R.N=rn
+1 K=c AA1=a R.N=rn EY0=a =	1 ^a K=c AA1=a R.N=-
+1 K=c AA1=a R.S=rc ER0=e =r	1 ^e K=c AA1=a R.S.R=-
+1 K=c AA1=o M.P=mp AH0=e T=t	1 KPH P=p AH0=e T=t
+1 K=c AA1=o N.SH=nsc AH0=iou S=s	1 ^i K=c AA1=o N.SH.S=-
+1 K=c AA1=o N=nn AH0=ai S=ss	1 ^a K=c AA1=o N.S=-
+1 K=c AE1=a P.CH=pt	1 - K=c AE1=a P.CH=pt
+1 K=c AH0=a D=d EH1=e M=m	1 ^a K.D=d EH1=e M=m
+1 K=c AH0=a N.D=nd EH1=e S=sc	1 ^a K.N.D=nd EH1=e S=sc
+1 K=c AH0=a V=v EY1=a =	1 ^a K.V=v EY1=a =
+1 K=c AH0=o G.N=gn AY1=i Z=z	1 ^o K.G.N=gn AY1=i Z=z
+1 K=c AH0=o G.N=gn IH1=i =	1 ^o K.G.N=gn IH1=i =
+1 K=c AH0=o L=ll EH1=e K=c	1 ^o K.L=ll EH1=e K=c
+1 K=c AH0=o N.K.L=ncl UW1=u S=s	1 ^o K.N.K.L=ncl UW1=u S=s
+1 K=c AH0=o N.S.T.R=nstr AH1=u K=c	1 ^o K.N.S.T.R=nstr AH1=u K=c
+1 K=c AH0=o N.S=nc IY1=ei V=v	1 ^o K.N.S=nc IY1=ei V=v
+1 K=c AH0=o N.S=ns IH1=i D=d	1 ^o K.N.S=ns IH1=i D=d
+1 K=c AH0=o N.S=ns IH1=i S.T=st	1 ^o K.N.S=ns IH1=i S.T=st
+1 K=c AH0=o N.T.R=ntr OW1=o L=ll	1 ^o K.N.T.R=ntr OW1=o L=ll
+1 K=c AH0=o N.V=nv EH1=e N=n	1 ^o K.N.V=nv EH1=e N=n
+1 K=c AH1=a D=d	1 - K=c AH1=a D=d
+1 K=c AH1=a V=v	1 - K=c AH1=a V=v
+1 K=c AH1=o G.N=gn	1 - K=c AH1=o G.N=gn
+1 K=c AH1=o M.F=mf ER0=o T=rt	1 KPH F=f ER0=o T=rt
+1 K=c AH1=o M=mm AH0=e N.D=nd	1 KPH = AH0=e N.D=nd
+1 K=c AH1=o V=v	1 - K=c AH1=o V=v
+1 K=c AH1=u =s	1 - K=c AH1=u =s
+1 K=c AH1=u M.B=mb	1 - K=c AH1=u M.B=mb
+1 K=c AO1=au =	1 - K=c AO1=au =
+1 K=c AO1=o R.D=rd	1 - K=c AO1=o R.D=rd
+1 K=c AO1=o R.P=rp ER0=o =r	1 ^o K=c AO1=o R.P.R=-
+1 K=c AW1=ou N.T=nt	1 - K=c AW1=ou N.T=nt
+1 K=c AW1=ou N=nt	1 - K=c AW1=ou N=nt
+1 K=c EH1=a R=r	1 - K=c EH1=a R=r
+1 K=c EH1=a R=r IY0=i =	1 ^i K=c EH1=a R=-
+1 K=c ER0=o =r EY1=a =	1 ^o K.R=r EY1=a =
+1 K=c ER0=o =rr EH1=e K.T=ct	1 ^o K.R=rr EH1=e K.T=ct
+1 K=c ER1=o =r	1 - K=c ER1=o =r
+1 K=c ER1=ou =r IH0=a JH=g_e	1 ^a K=c ER1=ou JH=-
+1 K=c ER1=u =r	1 - K=c ER1=u =r
+1 K=c ER1=u =rr	1 - K=c ER1=u =rr
+1 K=c ER1=u S=rs	1 - K=c ER1=u S=rs
+1 K=c EY1=a P=p	1 - K=c EY1=a P=p
+1 K=c IH0=o G.N=gn IH1=i =	1 ^o K.G.N=gn IH1=i =
+1 K=c IH1=o G.N=gn	1 - K=c IH1=o G.N=gn
+1 K=c OW0=o HH=h IH1=e R=r	1 ^o K.HH=h IH1=e R=r
+1 K=c UW1=ou S.T=st	1 - K=c UW1=ou S.T=st
+1 K=cc AA1=o M.P.L=mpl IH0=i SH.M=shm	1 ^i K=cc AA1=o M.P.L.SH.M=-
+1 K=cc AA1=o M.P.L=mpl IH0=i SH=sh	1 ^i K=cc AA1=o M.P.L.SH=-
+1 K=cc AA1=o M=mm AH0=o D=d	1 ^o K=cc AA1=o M.D=-
+1 K=cc AO1=o R.D=rd	1 - K=cc AO1=o R.D=rd
+1 K=cc AO1=o R.D=rd IH0=i NG=ng	1 ^i K=cc AO1=o R.D.NG=-
+1 K=cc AW1=ou N.T=nt	1 - K=cc AW1=ou N.T=nt
+1 K=cc AW1=ou N=nt	1 - K=cc AW1=ou N=nt
+1 L=l AA1=a R.JH=rg_e	1 - L=l AA1=a R.JH=rg_e
+1 L=l AE0=a K.S=x EY1=a =	1 ^a L.K.S=x EY1=a =
+1 L=l AE1=a B=b ER0=o =r	1 ^o L=l AE1=a B.R=-
+1 L=l AE1=a K.S=x	1 - L=l AE1=a K.S=x
+1 L=l AE1=a T=t ER0=e =r	1 ^e L=l AE1=a T.R=-
+1 L=l AH0=a T=t IH1=i V=v	1 ^a L.T=t IH1=i V=v
+1 L=l AH0=e G=g EY1=a =	1 ^e L.G=g EY1=a =
+1 L=l AH1=a T=t	1 - L=l AH1=a T=t
+1 L=l AH1=a T=t IH0=i V=v_e	1 ^i L=l AH1=a T.V=-
+1 L=l AH1=e G=g	1 - L=l AH1=e G=g
+1 L=l AH1=e V=v	1 - L=l AH1=e V=v
+1 L=l AH1=i K=c AH0=a T=t_e	1 ^a L=l AH1=i K.T=-
+1 L=l AH1=u K.T=ct	1 - L=l AH1=u K.T=ct
+1 L=l AH1=u K.T=ct AH0=a N.T=nt	1 ^a L=l AH1=u K.T.N.T=-
+1 L=l AO1=aw =	1 - L=l AO1=aw =
+1 L=l AY1=i =	1 - L=l AY1=i =
+1 L=l AY1=i K=k_e	1 - L=l AY1=i K=k_e
+1 L=l AY1=i N.M=gnm	1 - L=l AY1=i N.M=gnm
+1 L=l AY1=i N=gn	1 - L=l AY1=i N=gn
+1 L=l AY1=igh T=t	1 - L=l AY1=igh T=t
+1 L=l AY1=igh T=t AH0=e N.M=nm	1 ^e L=l AY1=igh T.N.M=-
+1 L=l AY1=igh T=t AH0=e N=n	1 ^e L=l AY1=igh T.N=-
+1 L=l EH1=e K.T=ct	1 - L=l EH1=e K.T=ct
+1 L=l EH1=e K.T=ct IH0=i V=v_e	1 ^i L=l EH1=e K.T.V=-
+1 L=l EH1=e K=c	1 - L=l EH1=e K=c
+1 L=l EY1=a =	1 - L=l EY1=a =
+1 L=l IH1=i =	1 - L=l IH1=i =
+1 L=l IH1=i B=b ER0=e =r	1 ^e L=l IH1=i B.R=-
+1 L=l IH1=i F=f	1 - L=l IH1=i F=f
+1 L=l IH1=i F=f ER0=e =r	1 ^e L=l IH1=i F.R=-
+1 L=l IH1=i JH=g AH0=iou S=s	1 ^i L=l IH1=i JH.S=-
+1 L=l IH1=i NG.K.W=nqu	1 - L=l IH1=i NG.K.W=nqu
+1 L=l IH1=i V=v	1 - L=l IH1=i V=v
+1 L=l IH1=i V=v ER0=e =r	1 ^e L=l IH1=i V.R=-
+1 L=l IY1=e =	1 - L=l IY1=e =
+1 L=l IY1=ie V=v	1 - L=l IY1=ie V=v
+1 L=l OW1=o K=c	1 - L=l OW1=o K=c
+1 L=l OW1=o K=c EY0=a =	1 ^a L=l OW1=o K=-
+1 L=l UW1=u =	1 - L=l UW1=u =
+1 L=l UW1=u ZH=s AH0=io N=n	1 ^i L=l UW1=u ZH.N=-
+1 L=ll AA1=o T.M=tm	1 - L=ll AA1=o T.M=tm
+1 L=ll AA1=o T=t	1 - L=ll AA1=o T=t
+1 L=ll AH0=e G=g EY1=a =	1 ^e L.G=g EY1=a =
+1 L=ll AH0=o K=c EY1=a =	1 ^o L.K=c EY1=a =
+1 L=ll AH1=e G=g	1 - L=ll AH1=e G=g
+1 L=ll AH1=o K=c	1 - L=ll AH1=o K=c
+1 L=ll AW1=ow =	1 - L=ll AW1=ow =
+1 L=ll AY1=i =	1 - L=ll AY1=i =
+1 L=ll EH1=e JH=g AH0=e D=d	1 ^e L=ll EH1=e JH.D=-
+1 L=ll ER1=e JH=rg	1 - L=ll ER1=e JH=rg
+1 M=m AA1=a R.K=rk	1 - M=m AA1=a R.K=rk
+1 M=m AA1=a R.K=rk AH0=a B=b	1 ^a M=m AA1=a R.K.B=-
+1 M=m AA1=o D=d	1 - M=m AA1=o D=d
+1 M=m AE1=a L.G=lg AH0=a M=m	1 ^a M=m AE1=a L.G.M=-
+1 M=m AE1=a N.D=nd	1 - M=m AE1=a N.D=nd
+1 M=m AH0=a CH=t UH1=u R=r_e	1 ^a M.CH=t UH1=u R=r_e
+1 M=m AH0=e N.D=nd EY1=a =	1 ^e M.N.D=nd EY1=a =
+1 M=m AH0=e N.T=nt EY1=a T=t	1 ^e M.N.T=nt EY1=a T=t
+1 M=m AH0=i G.R=gr EY1=a =	1 ^i M.G.R=gr EY1=a =
+1 M=m AH0=i N=n IH1=i S=sc	1 ^i M.N=n IH1=i S=sc
+1 M=m AH0=o G.R=gr AE1=a F=ph	1 ^o M.G.R=gr AE1=a F=ph
+1 M=m AH0=o K.R=cr AE1=a T=t	1 ^o M.K.R=cr AE1=a T=t
+1 M=m AH0=o L=l IH1=i =	1 ^o M.L=l IH1=i =
+1 M=m AH0=o N.S.T.R=nstr EY1=a =	1 ^o M.N.S.T.R=nstr EY1=a =
+1 M=m AH1=a N=n	1 - M=m AH1=a N=n
+1 M=m AH1=a N=n AH0=e N.T=nt	1 ^e M=m AH1=a N.N.T=-
+1 M=m AH1=e N.D=nd	1 - M=m AH1=e N.D=nd
+1 M=m AH1=i G.R=gr	1 - M=m AH1=i G.R=gr
+1 M=m AH1=i N=n	1 - M=m AH1=i N=n
+1 M=m AH1=i N=n AH0=e N.T=nt	1 ^e M=m AH1=i N.N.T=-
+1 M=m AH1=o L=l	1 - M=m AH1=o L=l
+1 M=m AH1=o N.S.T.R=nstr	1 - M=m AH1=o N.S.T.R=nstr
+1 M=m AH1=o N=n	1 - M=m AH1=o N=n
+1 M=m AO0=o R.T=rt AE1=a L=l	1 ^o M.R.T=rt AE1=a L=l
+1 M=m AO1=o R.T=rt	1 - M=m AO1=o R.T=rt
+1 M=m AO1=o R=r	1 - M=m AO1=o R=r
+1 M=m AY1=i N.D=nd	1 - M=m AY1=i N.D=nd
+1 M=m EH1=e M.B.R=mbr	1 - M=m EH1=e M.B.R=mbr
+1 M=m EH1=e M.B=mb	1 - M=m EH1=e M.B=mb
+1 M=m EH1=e M=m ER0=o =r	1 ^o M=m EH1=e M.R=-
+1 M=m EH1=e N.D.M=ndm	1 - M=m EH1=e N.D.M=ndm
+1 M=m EH1=e N.D=nd	1 - M=m EH1=e N.D=nd
+1 M=m EH1=e N.S=nc_e	1 - M=m EH1=e N.S=nc_e
+1 M=m EH1=e N.S=ns_e	1 - M=m EH1=e N.S=ns_e
+1 M=m ER1=e =r	1 - M=m ER1=e =r
+1 M=m ER1=e SH=rc AH0=ia =l	1 ^i M=m ER1=e SH=-
+1 M=m EY1=a Z=z_e	1 - M=m EY1=a Z=z_e
+1 M=m EY1=ai N.D=nd	1 - M=m EY1=ai N.D=nd
+1 M=m IH0=i S.T=st EY1=a K=k	1 ^i M.S.T=st EY1=a K=k
+1 M=m IH1=i =s	1 - M=m IH1=i =s
+1 M=m IH1=i S=ss	1 - M=m IH1=i S=ss
+1 M=m IH1=i SH=ss AH0=io N=n	1 ^i M=m IH1=i SH.N=-
+1 M=m IH1=i T.M=tm	1 - M=m IH1=i T.M=tm
+1 M=m IH1=i T=t	1 - M=m IH1=i T=t
+1 M=m IH1=i T=tt	1 - M=m IH1=i T=tt
+1 M=m IH1=i T=tt AH0=e N.T=nt	1 ^e M=m IH1=i T.N.T=-
+1 M=m IY1=e D=d	1 - M=m IY1=e D=d
+1 M=m IY1=e D=d IY0=i =	1 ^i M=m IY1=e D=-
+1 M=m IY1=ea N=n	1 - M=m IY1=ea N=n
+1 M=m OW1=o =	1 - M=m OW1=o =
+1 M=m OW1=o SH=t AH0=io N=n	1 ^i M=m OW1=o SH.N=-
+1 M=m OW1=o T=t	1 - M=m OW1=o T=t
+1 M=m OW1=o T=t_e	1 - M=m OW1=o T=t_e
+1 M=m UW1=o V=v	1 - M=m UW1=o V=v
+1 N=kn OW1=o =w IH0=i NG=ng	1 ^i N=kn OW1=o NG=-
+1 N=n AA1=o K.Y=c UW0=u =	1 ^u N=n AA1=o K.Y=-
+1 N=n AA1=o M=m AH0=a =	1 ^a N=n AA1=o M=-
+1 N=n AA1=o N=n AH0=y M=m	1 ^y N=n AA1=o N.M=-
+1 N=n AE1=a =	1 - N=n AE1=a =
+1 N=n AE1=a L=l AH0=o G=g	1 ^o N=n AE1=a L.G=-
+1 N=n AE1=a SH=t AH0=io N=n	1 ^i N=n AE1=a SH.N=-
+1 N=n AH0=a L=l IH1=y T=t	1 ^a N.L=l IH1=y T=t
+1 N=n AH0=a T=t AA1=o M=m	1 ^a N.T=t AA1=o M=m
+1 N=n AH0=e K.D=cd OW1=o T=t	1 ^e N.K.D=cd OW1=o T=t
+1 N=n AH0=e S.TH=sth EH1=e T=t	1 ^e N.S.TH=sth EH1=e T=t
+1 N=n AH0=i M=m AA1=o S=s	1 ^i N.M=m AA1=o S=s
+1 N=n AH0=i M=m EY1=a =	1 ^i N.M=m EY1=a =
+1 N=n AH0=o N=n IH1=y M=m	1 ^o N.N=n IH1=y M=m
+1 N=n AH0=o V=v EY1=a =	1 ^o N.V=v EY1=a =
+1 N=n AH0=o V=v EY1=a T=t	1 ^o N.V=v EY1=a T=t
+1 N=n AH1=a =l	1 - N=n AH1=a =l
+1 N=n AH1=i M=m	1 - N=n AH1=i M=m
+1 N=n AH1=o DH=th	1 - N=n AH1=o DH=th
+1 N=n AH1=o S=c	1 - N=n AH1=o S=c
+1 N=n AH1=o V=v	1 - N=n AH1=o V=v
+1 N=n AH1=u N.S=nc IY0=i =	1 ^i N=n AH1=u N.S=-
+1 N=n AO1=o M=m AH0=i N=n	1 ^i N=n AO1=o M.N=-
+1 N=n AY1=i =	1 - N=n AY1=i =
+1 N=n EH0=e K.T=ct IH1=i V=v	1 ^e N.K.T=ct IH1=i V=v
+1 N=n EH1=e K.T=ct	1 - N=n EH1=e K.T=ct
+1 N=n EH1=e K=c	1 - N=n EH1=e K=c
+1 N=n EY1=a T=t	1 - N=n EY1=a T=t
+1 N=n IH0=e K.D=cd OW1=o T=t	1 ^e N.K.D=cd OW1=o T=t
+1 N=n OW0=o V=v EY1=a =	1 ^o N.V=v EY1=a =
+1 N=n OW0=o V=v EY1=a T=t	1 ^o N.V=v EY1=a T=t
+1 N=n OW1=o V=v	1 - N=n OW1=o V=v
+1 N=n UW1=ew =	1 - N=n UW1=ew =
+1 N=n UW1=u M=m ER0=e =r	1 ^e N=n UW1=u M.R=-
+1 N=nn AW1=ou N.S=nc_e	1 - N=nn AW1=ou N.S=nc_e
+1 N=nn AY1=i =h AH0=i L=l	1 ^i N=nn AY1=i L=-
+1 N=nn EH0=e K.S=x EY1=a =	1 ^e N.K.S=x EY1=a =
+1 N=nn EH1=e K.S=x	1 - N=nn EH1=e K.S=x
+1 N=nn OY1=oy =	1 - N=nn OY1=oy =
+1 N=nn UW1=u =	1 - N=nn UW1=u =
+1 P.L=pl AE0=a N.T=nt EY1=a =	1 ^a P.L.N.T=nt EY1=a =
+1 P.L=pl AE1=a N.T=nt	1 - P.L=pl AE1=a N.T=nt
+1 P.L=pl AH0=a N=n EY1=a =	1 ^a P.L.N=n EY1=a =
+1 P.L=pl AH0=i K=c EY1=a =	1 ^i P.L.K=c EY1=a =
+1 P.L=pl AH1=a N=n	1 - P.L=pl AH1=a N=n
+1 P.L=pl AH1=e =	1 - P.L=pl AH1=e =
+1 P.L=pl AH1=e M=m	1 - P.L=pl AH1=e M=m
+1 P.L=pl AH1=e M=m EH0=e N.T=nt	1 ^e P.L=pl AH1=e M.N.T=-
+1 P.L=pl AH1=i =	1 - P.L=pl AH1=i =
+1 P.L=pl AH1=i K=c	1 - P.L=pl AH1=i K=c
+1 P.L=pl AO0=o R=r EY1=a =	1 ^o P.L.R=r EY1=a =
+1 P.L=pl AO1=o R=r	1 - P.L=pl AO1=o R=r
+1 P.L=pl AY1=i =	1 - P.L=pl AY1=i =
+1 P.L=pl EH1=e K.S=x	1 - P.L=pl EH1=e K.S=x
+1 P.L=pl EH1=ea Z=s	1 - P.L=pl EH1=ea Z=s
+1 P.L=pl EH1=ea ZH=s	1 - P.L=pl EH1=ea ZH=s
+1 P.L=pl ER0=o =r EY1=a =	1 ^o P.L.R=r EY1=a =
+1 P.L=pl ER1=o =r	1 - P.L=pl ER1=o =r
+1 P.L=pl EY1=a S=c	1 - P.L=pl EY1=a S=c
+1 P.L=pl EY1=a S=c_e	1 - P.L=pl EY1=a S=c_e
+1 P.L=pl EY1=ai N=n	1 - P.L=pl EY1=ai N=n
+1 P.L=pl IH1=i S=c	1 - P.L=pl IH1=i S=c
+1 P.L=pl IH1=i S=c AH0=i T=t	1 ^i P.L=pl IH1=i S.T=-
+1 P.L=pl IY1=e =	1 - P.L=pl IY1=e =
+1 P.L=pl IY1=e T=t_e	1 - P.L=pl IY1=e T=t_e
+1 P.L=pl OW1=o =	1 - P.L=pl OW1=o =
+1 P.L=pl OW1=o S=s	1 - P.L=pl OW1=o S=s
+1 P.L=pl OY0=oi T=t EY1=a =	1 ^o P.L.T=t EY1=a =
+1 P.L=pl OY1=oi T=t	1 - P.L=pl OY1=oi T=t
+1 P.L=pl OY1=oy =	1 - P.L=pl OY1=oy =
+1 P.L=pl OY1=oy M=m	1 - P.L=pl OY1=oy M=m
+1 P.L=ppl AH0=i K=c EY1=a =	1 ^i P.L.K=c EY1=a =
+1 P.L=ppl AH1=i K=c	1 - P.L=ppl AH1=i K=c
+1 P.L=ppl AY1=i =	1 - P.L=ppl AY1=i =
+1 P.R=ppr AA1=o K.S=x AH0=i M=m	1 ^i P.R=ppr AA1=o K.S.M=-
+1 P.R=ppr EY1=ai Z=s	1 - P.R=ppr EY1=ai Z=s
+1 P.R=ppr IH0=e HH=h EH1=e N.S=ns	1 ^e P.R.HH=h EH1=e N.S=ns
+1 P.R=ppr IH0=e HH=h EH1=e N=n	1 ^e P.R.HH=h EH1=e N=n
+1 P.R=ppr IY0=e HH=h EH1=e N.S=ns	1 ^e P.R.HH=h EH1=e N.S=ns
+1 P.R=ppr IY1=e SH.Y=c AH0=ia T=t	1 ^i P.R=ppr IY1=e SH.Y.T=-
+1 P.R=ppr IY1=e SH=c IY0=i =	1 ^i P.R=ppr IY1=e SH=-
+1 P.R=ppr OW1=o P.R=pr IY0=i =	1 ^i P.R=ppr OW1=o P.R=-
+1 P.R=ppr UW1=o V=v	1 - P.R=ppr UW1=o V=v
+1 P.R=pr AA1=o B=b	1 - P.R=pr AA1=o B=b
+1 P.R=pr AA1=o P=p	1 - P.R=pr AA1=o P=p
+1 P.R=pr AA1=o P=p ER0=e =r	1 ^e P.R=pr AA1=o P.R=-
+1 P.R=pr AA1=o V=v IH0=i Z=s	1 ^i P.R=pr AA1=o V.Z=-
+1 P.R=pr AE1=a K.T=ct	1 - P.R=pr AE1=a K.T=ct
+1 P.R=pr AE1=a K.T=ct AH0=i K=c	1 ^i P.R=pr AE1=a K.T.K=-
+1 P.R=pr AE1=a K.T=ct IH0=i K=c	1 ^i P.R=pr AE1=a K.T.K=-
+1 P.R=pr AH0=e Z=s EH1=e N.T=nt	1 ^e P.R.S=s EH1=e N.T=nt
+1 P.R=pr AH0=e Z=s EH1=e N=nt	1 ^e P.R.S=s EH1=e N=nt
+1 P.R=pr AH0=i V=v EY1=a =	1 ^i P.R.V=v EY1=a =
+1 P.R=pr AH0=o D=d AH1=u K.T=ct	1 ^o P.R.D=d AH1=u K.T=ct
+1 P.R=pr AH0=o D=d AH1=u K=c	1 ^o P.R.D=d AH1=u K=c
+1 P.R=pr AH0=o F=f EH1=e =s	1 ^o P.R.F=f EH1=e =s
+1 P.R=pr AH1=e T=t	1 - P.R=pr AH1=e T=t
+1 P.R=pr AH1=e Z=s EH0=e N.T=nt	1 ^e P.R=pr AH1=e Z.N.T=-
+1 P.R=pr AH1=i V=v	1 - P.R=pr AH1=i V=v
+1 P.R=pr AH1=o M=m	1 - P.R=pr AH1=o M=m
+1 P.R=pr AH1=o V=v	1 - P.R=pr AH1=o V=v
+1 P.R=pr EH1=e =s	1 - P.R=pr EH1=e =s
+1 P.R=pr EH1=e S=ss	1 - P.R=pr EH1=e S=ss
+1 P.R=pr IH0=e D=d IH1=i K.T=ct	1 ^e P.R.D=d IH1=i K.T=ct
+1 P.R=pr IH0=e T=t EY1=a =	1 ^e P.R.T=t EY1=a =
+1 P.R=pr IH0=e Z=s EH1=e N.T=nt	1 ^e P.R.S=s EH1=e N.T=nt
+1 P.R=pr IH0=e Z=s EH1=e N=nt	1 ^e P.R.S=s EH1=e N=nt
+1 P.R=pr IH1=e T=t	1 - P.R=pr IH1=e T=t
+1 P.R=pr IH1=i Z=s AH0=o N.M=nm	1 ^o P.R=pr IH1=i Z.N.M=-
+1 P.R=pr IH1=i Z=s AH0=o N=n	1 ^o P.R=pr IH1=i Z.N=-
+1 P.R=pr IY0=e HH=h EH1=e N.S=ns	1 ^e P.R.HH=h EH1=e N.S=ns
+1 P.R=pr IY0=e HH=h EH1=e N=n	1 ^e P.R.HH=h EH1=e N=n
+1 P.R=pr IY1=e SH=c IY0=i =	1 ^i P.R=pr IY1=e SH=-
+1 P.R=pr UW1=o V=v_e	1 - P.R=pr UW1=o V=v_e
+1 P=p AA0=a R.T.M=rtm EH1=e N.T=nt	1 ^a P.R.T.M=rtm EH1=e N.T=nt
+1 P=p AA0=a R.T.M=rtm EH1=e N=nt	1 ^a P.R.T.M=rtm EH1=e N=nt
+1 P=p AA1=a R.CH=rt	1 - P=p AA1=a R.CH=rt
+1 P=p AA1=a R.T.M=rtm	1 - P=p AA1=a R.T.M=rtm
+1 P=p AA1=a R.T=rt	1 - P=p AA1=a R.T=rt
+1 P=p AA1=o L=l AH0=o JH=g	1 ^o P=p AA1=o L.JH=-
+1 P=p AA1=o S.T=st ER0=e =r	1 ^e P=p AA1=o S.T.R=-
+1 P=p AA1=o S=ss	1 - P=p AA1=o S=ss
+1 P=p AE1=a =s	1 - P=p AE1=a =s
+1 P=p AE1=a CH=tch	1 - P=p AE1=a CH=tch
+1 P=p AE1=a N.S=ns	1 - P=p AE1=a N.S=ns
+1 P=p AE1=a N=n	1 - P=p AE1=a N=n
+1 P=p AE1=a T=t	1 - P=p AE1=a T=t
+1 P=p AH0=a G=g EY1=a =	1 ^a P.G=g EY1=a =
+1 P=p AH0=e D=d IH1=i =	1 ^e P.D=d IH1=i =
+1 P=p AH0=e N.D=nd IH1=i K=c	1 ^e P.N.D=nd IH1=i K=c
+1 P=p AH0=e N.S=ns EY1=a =	1 ^e P.N.S=ns EY1=a =
+1 P=p AH0=e T.R=tr EY1=a T=t	1 ^e P.T.R=tr EY1=a T=t
+1 P=p AH0=e T=t IH1=i =	1 ^e P.T=t IH1=i =
+1 P=p AH0=i L=l EY1=a =	1 ^i P.L=l EY1=a =
+1 P=p AH0=o S.T=st AO1=o L=l	1 ^o P.S.T=st AO1=o L=l
+1 P=p AH0=o Z=s IH1=i =	1 ^o P.S=s IH1=i =
+1 P=p AH1=a G=g	1 - P=p AH1=a G=g
+1 P=p AH1=e D=d	1 - P=p AH1=e D=d
+1 P=p AH1=e N.S=ns	1 - P=p AH1=e N.S=ns
+1 P=p AH1=e T=t	1 - P=p AH1=e T=t
+1 P=p AH1=i L=l	1 - P=p AH1=i L=l
+1 P=p AH1=o T=t	1 - P=p AH1=o T=t
+1 P=p AH1=o Z=s	1 - P=p AH1=o Z=s
+1 P=p AH1=u B.L=bl	1 - P=p AH1=u B.L=bl
+1 P=p AH1=u L.S=ls	1 - P=p AH1=u L.S=ls
+1 P=p AH1=u L=l	1 - P=p AH1=u L=l
+1 P=p AO0=o R.T=rt EY1=a =	1 ^o P.R.T=rt EY1=a =
+1 P=p AO1=o R.SH=rt AH0=io N=n	1 ^i P=p AO1=o R.SH.N=-
+1 P=p AO1=o R.T=rt	1 - P=p AO1=o R.T=rt
+1 P=p AO1=o R.T=rt AH0=a N.T=nt	1 ^a P=p AO1=o R.T.N.T=-
+1 P=p AO1=o R.T=rt AH0=e D=d	1 ^e P=p AO1=o R.T.D=-
+1 P=p AO1=o R=r	1 - P=p AO1=o R=r
+1 P=p AW1=o =w ER0=e =r	1 ^e P=p AW1=o R=-
+1 P=p AW1=o =w ER0=e M=rm	1 ^e P=p AW1=o R.M=-
+1 P=p AY1=i L=l	1 - P=p AY1=i L=l
+1 P=p EH0=e K.T=ct EY1=a =	1 ^e P.K.T=ct EY1=a =
+1 P=p EH1=a R=r	1 - P=p EH1=a R=r
+1 P=p EH1=a R=r AH0=a T=t	1 ^a P=p EH1=a R.T=-
+1 P=p EH1=a R=r AH0=e D=d	1 ^e P=p EH1=a R.D=-
+1 P=p EH1=ai R.M=rm	1 - P=p EH1=ai R.M=rm
+1 P=p EH1=ai R=r	1 - P=p EH1=ai R=r
+1 P=p EH1=e CH=t UW0=u =	1 ^u P=p EH1=e CH=-
+1 P=p EH1=e D=d AH0=i =	1 ^i P=p EH1=e D=-
+1 P=p EH1=e D=d AH0=i M=m	1 ^i P=p EH1=e D.M=-
+1 P=p EH1=e K.T=ct	1 - P=p EH1=e K.T=ct
+1 P=p EH1=e K=cc	1 - P=p EH1=e K=cc
+1 P=p EH1=e L=ll	1 - P=p EH1=e L=ll
+1 P=p EH1=e N.D=nd	1 - P=p EH1=e N.D=nd
+1 P=p EH1=e N.D=nd AH0=i CH=t	1 ^i P=p EH1=e N.D.CH=-
+1 P=p EH1=e N.D=nd IH0=i CH=t	1 ^i P=p EH1=e N.D.CH=-
+1 P=p EH1=e N.S=ns	1 - P=p EH1=e N.S=ns
+1 P=p EH1=e N.T=nt	1 - P=p EH1=e N.T=nt
+1 P=p EH1=e N=n AH0=e T.R=tr	1 ^e P=p EH1=e N.T.R=-
+1 P=p EH1=e R=r	1 - P=p EH1=e R=r
+1 P=p EH1=e R=r AH0=a T=t	1 ^a P=p EH1=e R.T=-
+1 P=p EH1=e R=r AH0=i =	1 ^i P=p EH1=e R=-
+1 P=p EH1=e R=r AH0=i M=m	1 ^i P=p EH1=e R.M=-
+1 P=p EH1=e T=t AH0=i T=t	1 ^i P=p EH1=e T.T=-
+1 P=p EH1=e T=t IH0=i T=t	1 ^i P=p EH1=e T.T=-
+1 P=p ER0=a =r EY1=a =	1 ^a P.R=r EY1=a =
+1 P=p ER0=e =r EY1=a =	1 ^e P.R=r EY1=a =
+1 P=p ER0=i =r EY1=a =	1 ^i P.R=r EY1=a =
+1 P=p ER0=o =r EY1=a =	1 ^o P.R=r EY1=a =
+1 P=p ER1=a =r	1 - P=p ER1=a =r
+1 P=p ER1=e =r	1 - P=p ER1=e =r
+1 P=p ER1=e =r AH0=a T=t_e	1 ^a P=p ER1=e T=-
+1 P=p ER1=e S=rs	1 - P=p ER1=e S=rs
+1 P=p ER1=e S=rs AH0=o N=n	1 ^o P=p ER1=e S.N=-
+1 P=p ER1=i =r	1 - P=p ER1=i =r
+1 P=p ER1=o =r	1 - P=p ER1=o =r
+1 P=p EY1=a T.R=tr IY0=i =	1 ^i P=p EY1=a T.R=-
+1 P=p EY1=ay =	1 - P=p EY1=ay =
+1 P=p EY1=ay M=m	1 - P=p EY1=ay M=m
+1 P=p IH1=e R=r	1 - P=p IH1=e R=r
+1 P=p IH1=e R=r IY0=i =	1 ^i P=p IH1=e R=-
+1 P=p IH1=i K=c	1 - P=p IH1=i K=c
+1 P=p IH1=i R=r	1 - P=p IH1=i R=r
+1 P=p IH1=i R=r IH0=i K=c	1 ^i P=p IH1=i R.K=-
+1 P=p IY1=e D=d	1 - P=p IY1=e D=d
+1 P=p IY1=ea CH.M=chm	1 - P=p IY1=ea CH.M=chm
+1 P=p IY1=ea CH=ch	1 - P=p IY1=ea CH=ch
+1 P=p IY1=ea T=t IH0=e D=d	1 ^e P=p IY1=ea T.D=-
+1 P=p OW1=o N=n	1 - P=p OW1=o N=n
+1 P=p OW1=o Z=s	1 - P=p OW1=o Z=s
+1 P=p OW1=o ZH=s	1 - P=p OW1=o ZH=s
+1 P=pp EH1=a R=r	1 - P=pp EH1=a R=r
+1 P=pp EH1=a R=r AH0=e N.T=nt	1 ^e P=pp EH1=a R.N.T=-
+1 P=pp IH1=ea R=r	1 - P=pp IH1=ea R=r
+1 P=pp OY1=oi N.T.M=ntm	1 - P=pp OY1=oi N.T.M=ntm
+1 P=pp OY1=oi N.T=nt	1 - P=pp OY1=oi N.T=nt
+1 R=r AA0=a S=c EH1=e L=ll	1 ^a R.S=c EH1=e L=ll
+1 R=r AA1=o G=g	1 - R=r AA1=o G=g
+1 R=r AA1=o G=g AH0=a T=t	1 ^a R=r AA1=o G.T=-
+1 R=r AH0=a V=v IY1=e N=n	1 ^a R.V=v IY1=e N=n
+1 R=r AH0=e L=l EY1=a =	1 ^e R.L=l EY1=a =
+1 R=r AH0=e S.P=sp AA1=o N.D=nd	1 ^e R.S.P=sp AA1=o N.D=nd
+1 R=r AH0=i V=v EY1=a =	1 ^i R.V=v EY1=a =
+1 R=r AH0=o D=d AH1=u K=c	1 ^o R.D=d AH1=u K=c
+1 R=r AH1=e L=l	1 - R=r AH1=e L=l
+1 R=r AH1=i D=d	1 - R=r AH1=i D=d
+1 R=r AH1=i V=v	1 - R=r AH1=i V=v
+1 R=r AH1=u P.T=pt	1 - R=r AH1=u P.T=pt
+1 R=r AH1=u P=p	1 - R=r AH1=u P=p
+1 R=r EH1=e G.Y=g AH0=u L=l	1 ^u R=r EH1=e G.Y.L=-
+1 R=r IH0=e L=l AY1=i =	1 ^e R.L=l AY1=i =
+1 R=r IH0=e S.P=sp EH1=e K.T=ct	1 ^e R.S.P=sp EH1=e K.T=ct
+1 R=r IH1=i CH.M=chm	1 - R=r IH1=i CH.M=chm
+1 R=r IH1=i CH=ch	1 - R=r IH1=i CH=ch
+1 R=r IH1=i D=d	1 - R=r IH1=i D=d
+1 R=r IH1=i N.S=ns	1 - R=r IH1=i N.S=ns
+1 R=r IY0=e L=l AY1=i =	1 ^e R.L=l AY1=i =
+1 R=r IY0=ea L=l IH1=i S.T=st	1 ^e R.L=l IH1=i S.T=st
+1 R=r OW0=o D=d AH1=u K=c	1 ^o R.D=d AH1=u K=c
+1 R=r OW1=o L.M=llm	1 - R=r OW1=o L.M=llm
+1 R=r OW1=o L=ll	1 - R=r OW1=o L=ll
+1 R=r UW1=u =	1 - R=r UW1=u =
+1 R=r UW1=u D=d	1 - R=r UW1=u D=d
+1 R=r UW1=u S=s	1 - R=r UW1=u S=s
+1 S.K.R=scr IH1=i P.T=pt	1 - S.K.R=scr IH1=i P.T=pt
+1 S.K.R=scr IH1=i P=p	1 - S.K.R=scr IH1=i P=p
+1 S.K.R=scr UW1=u P.Y=p AH0=u L=l	1 ^u S.K.R=scr UW1=u P.Y.L=-
+1 S.P=sp AA1=o N.D=nd	1 - S.P=sp AA1=o N.D=nd
+1 S.P=sp AA1=o N.S=ns	1 - S.P=sp AA1=o N.S=ns
+1 S.P=sp AA1=o N.S=ns AH0=i B=b	1 ^i S.P=sp AA1=o N.S.B=-
+1 S.P=sp AA1=o N.S=ns IH0=i V=v_e	1 ^i S.P=sp AA1=o N.S.V=-
+1 S.P=sp EH1=e K.T.F=ctf AH0=u =l	1 ^u S.P=sp EH1=e K.T.F=-
+1 S.P=sp EH1=e K.T=ct	1 - S.P=sp EH1=e K.T=ct
+1 S.P=sp EH1=e K.T=ct IH0=i V=v_e	1 ^i S.P=sp EH1=e K.T.V=-
+1 S.P=sp EH1=e K=c	1 - S.P=sp EH1=e K=c
+1 S.P=sp EH1=e R=r	1 - S.P=sp EH1=e R=r
+1 S.P=sp ER0=e =r EY1=a =	1 ^e S.P.R=r EY1=a =
+1 S.P=sp ER0=i =r EY1=a =	1 ^i S.P.R=r EY1=a =
+1 S.P=sp ER1=e =r	1 - S.P=sp ER1=e =r
+1 S.P=sp ER1=e =r AH0=a T=t_e	1 ^a S.P=sp ER1=e T=-
+1 S.P=sp ER1=i =r	1 - S.P=sp ER1=i =r
+1 S.P=sp IH1=i K.Y=c UW0=u =	1 ^u S.P=sp IH1=i K.Y=-
+1 S.P=sp IH1=i K=c	1 - S.P=sp IH1=i K=c
+1 S.P=sp IY1=ea K=k	1 - S.P=sp IY1=ea K=k
+1 S.T.R=str AA1=o N=n AH0=o M=m	1 ^o S.T.R=str AA1=o N.M=-
+1 S.T.R=str AH0=o N=n AA1=o M=m	1 ^o S.T.R.N=n AA1=o M=m
+1 S.T.R=str AH0=u M=m EH1=e N.T=nt	1 ^u S.T.R.M=m EH1=e N.T=nt
+1 S.T.R=str AH0=u M=m EH1=e N=nt	1 ^u S.T.R.M=m EH1=e N=nt
+1 S.T.R=str AH1=u =	1 - S.T.R=str AH1=u =
+1 S.T.R=str AH1=u K.CH=ct	1 - S.T.R=str AH1=u K.CH=ct
+1 S.T.R=str AH1=u K.SH=ct AH0=io N=n	1 ^i S.T.R=str AH1=u K.SH.N=-
+1 S.T.R=str AH1=u K.T=ct	1 - S.T.R=str AH1=u K.T=ct
+1 S.T.R=str AH1=u K=c	1 - S.T.R=str AH1=u K=c
+1 S.T.R=str AH1=u M=m	1 - S.T.R=str AH1=u M=m
+1 S.T.R=str IH1=i K.T=ct	1 - S.T.R=str IH1=i K.T=ct
+1 S.T.R=str IH1=i K=c	1 - S.T.R=str IH1=i K=c
+1 S.T=st AA1=o P=pp	1 - S.T=st AA1=o P=pp
+1 S.T=st AH0=a B=b IH1=i L=l	1 ^a S.T.B=b IH1=i L=l
+1 S.T=st AH0=a L=ll EY1=a =	1 ^a S.T.L=ll EY1=a =
+1 S.T=st AH0=e L=ll EY1=a =	1 ^e S.T.L=ll EY1=a =
+1 S.T=st AH0=i N=n EY1=a =	1 ^i S.T.N=n EY1=a =
+1 S.T=st AH0=i P=p EY1=a =	1 ^i S.T.P=p EY1=a =
+1 S.T=st AH0=i T=t UW1=u =	1 ^i S.T.T=t UW1=u =
+1 S.T=st AH1=a L=ll	1 - S.T=st AH1=a L=ll
+1 S.T=st AH1=a N.T=nt	1 - S.T=st AH1=a N.T=nt
+1 S.T=st AH1=e L=ll	1 - S.T=st AH1=e L=ll
+1 S.T=st AH1=i N=n	1 - S.T=st AH1=i N=n
+1 S.T=st AH1=i P=p	1 - S.T=st AH1=i P=p
+1 S.T=st AO1=a L.M=llm	1 - S.T=st AO1=a L.M=llm
+1 S.T=st AO1=a L=ll	1 - S.T=st AO1=a L=ll
+1 S.T=st ER0=o =r EY1=a =	1 ^o S.T.R=r EY1=a =
+1 S.T=st ER1=o =r	1 - S.T=st ER1=o =r
+1 S.T=st IH0=i N=n EY1=a =	1 ^i S.T.N=n EY1=a =
+1 S.T=st IH0=i T=t UW1=u =	1 ^i S.T.T=t UW1=u =
+1 S.T=st IH1=i CH=t UW0=u =	1 ^u S.T=st IH1=i CH=-
+1 S.T=st IH1=i N=n	1 - S.T=st IH1=i N=n
+1 S.T=st IH1=i NG.K.T=nct	1 - S.T=st IH1=i NG.K.T=nct
+1 S.T=st IH1=i NG.K.T=nct IH0=i V=v_e	1 ^i S.T=st IH1=i NG.K.T.V=-
+1 S.W=s EY1=ua =	1 - S.W=s EY1=ua =
+1 S.W=s EY1=ua S=s	1 - S.W=s EY1=ua S=s
+1 S=c AH0=e N.T.R=ntr EY1=a =	1 ^e S.N.T.R=ntr EY1=a =
+1 S=c AH1=e D=d	1 - S=c AH1=e D=d
+1 S=c AH1=e N.T.R=ntr	1 - S=c AH1=e N.T.R=ntr
+1 S=c AH1=e N.T=nt	1 - S=c AH1=e N.T=nt
+1 S=c AH1=e N=nt	1 - S=c AH1=e N=nt
+1 S=c AH1=i D=d	1 - S=c AH1=i D=d
+1 S=c AH1=i M=m	1 - S=c AH1=i M=m
+1 S=c AY1=i D=d AH0=e D=d	1 ^e S=c AY1=i D.D=-
+1 S=c AY1=i F=ph	1 - S=c AY1=i F=ph
+1 S=c AY1=i S=s	1 - S=c AY1=i S=s
+1 S=c AY1=i S=s IH0=i V=v_e	1 ^i S=c AY1=i S.V=-
+1 S=c AY1=i S=s_e	1 - S=c AY1=i S=s_e
+1 S=c AY1=i T=t	1 - S=c AY1=i T=t
+1 S=c EH1=e =s	1 - S=c EH1=e =s
+1 S=c EH1=e N.T=nt	1 - S=c EH1=e N.T=nt
+1 S=c EH1=e N=nt	1 - S=c EH1=e N=nt
+1 S=c EH1=e P.CH=pt UW0=u =	1 ^u S=c EH1=e P.CH=-
+1 S=c EH1=e P.SH=pt AH0=io N=n	1 ^i S=c EH1=e P.SH.N=-
+1 S=c EH1=e P.T=pt	1 - S=c EH1=e P.T=pt
+1 S=c EH1=e P=p	1 - S=c EH1=e P=p
+1 S=c EH1=e S=ss	1 - S=c EH1=e S=ss
+1 S=c IH0=i D=d EH1=e N.T=nt	1 ^i S.D=d EH1=e N.T=nt
+1 S=c IH0=i P.R=pr AA1=o S=c	1 ^i S.P.R=pr AA1=o S=c
+1 S=c IH1=e D=d	1 - S=c IH1=e D=d
+1 S=c IH1=i =	1 - S=c IH1=i =
+1 S=c IH1=i D=d	1 - S=c IH1=i D=d
+1 S=c IH1=i JH=d UW0=u =	1 ^u S=c IH1=i JH=-
+1 S=c IH1=i P.R=pr AH0=o K=c	1 ^o S=c IH1=i P.R.K=-
+1 S=c IH1=i P=p IH0=i T=t	1 ^i S=c IH1=i P.T=-
+1 S=c IH1=i P=p IY0=i =	1 ^i S=c IH1=i P=-
+1 S=c IY1=e JH=d	1 - S=c IY1=e JH=d
+1 S=c IY1=e JH=d ER0=u =r	1 ^u S=c IY1=e JH.R=-
+1 S=c IY1=ei V=v	1 - S=c IY1=ei V=v
+1 S=s AA1=o L=l AH0=i D=d	1 ^i S=s AA1=o L.D=-
+1 S=s AE1=a N=n	1 - S=s AE1=a N=n
+1 S=s AH0=e K.W=qu EH1=e N.T=nt	1 ^e S.K.W=qu EH1=e N.T=nt
+1 S=s AH0=e K.Y=c UW1=u =	1 ^e S.K=c UW1=u =
+1 S=s AH0=e V=v IH1=e R=r	1 ^e S.V=v IH1=e R=r
+1 S=s AH0=o L=l EY1=a =	1 ^o S.L=l EY1=a =
+1 S=s AH0=o L=l UW1=u =	1 ^o S.L=l UW1=u =
+1 S=s AH0=o N=n AE1=a L=l	1 ^o S.N=n AE1=a L=l
+1 S=s AH0=u K.S=cc EH1=e S=ss	1 ^u S.K.S=cc EH1=e S=ss
+1 S=s AH0=u L.T=lt EY1=a =	1 ^u S.L.T=lt EY1=a =
+1 S=s AH0=u L=l EY1=a =	1 ^u S.L=l EY1=a =
+1 S=s AH1=e K.W=qu	1 - S=s AH1=e K.W=qu
+1 S=s AH1=e K.W=qu AH0=e N.T=nt	1 ^e S=s AH1=e K.W.N.T=-
+1 S=s AH1=e K.Y=c	1 - S=s AH1=e K.Y=c
+1 S=s AH1=i D=d	1 - S=s AH1=i D=d
+1 S=s AH1=o L=l	1 - S=s AH1=o L=l
+1 S=s AH1=o N=n	1 - S=s AH1=o N=n
+1 S=s AH1=o N=n AH0=a =l	1 ^a S=s AH1=o N=-
+1 S=s AH1=u L.T=lt	1 - S=s AH1=u L.T=lt
+1 S=s AH1=u L=l	1 - S=s AH1=u L=l
+1 S=s AH1=u M.P=mp	1 - S=s AH1=u M.P=mp
+1 S=s AH1=u M=mp	1 - S=s AH1=u M=mp
+1 S=s AO1=ou R.S=rc_e	1 - S=s AO1=ou R.S=rc_e
+1 S=s AY1=i D=d	1 - S=s AY1=i D=d
+1 S=s AY1=i N.M=gnm	1 - S=s AY1=i N.M=gnm
+1 S=s AY1=i N=gn	1 - S=s AY1=i N=gn
+1 S=s AY1=igh T=t	1 - S=s AY1=igh T=t
+1 S=s EH1=e K.Y=c AH0=u T=t	1 ^u S=s EH1=e K.Y.T=-
+1 S=s EH1=e K=c	1 - S=s EH1=e K=c
+1 S=s EH1=e M=m AH0=i N=n	1 ^i S=s EH1=e M.N=-
+1 S=s EH1=e N.S=ns AH0=i T=t	1 ^i S=s EH1=e N.S.T=-
+1 S=s EH1=e N.S=ns IH0=i T=t	1 ^i S=s EH1=e N.S.T=-
+1 S=s EH1=e N.S=ns UW0=u =	1 ^u S=s EH1=e N.S=-
+1 S=s EH1=e N.SH=ns UW0=u =	1 ^u S=s EH1=e N.SH=-
+1 S=s EH1=e P=p ER0=a =r	1 ^a S=s EH1=e P.R=-
+1 S=s ER0=e T=rt EY1=a =	1 ^e S.R.T=rt EY1=a =
+1 S=s ER0=e V=rv EY1=a =	1 ^e S.R.V=rv EY1=a =
+1 S=s ER0=u =rr EH1=e K=c	1 ^u S.R=rr EH1=e K=c
+1 S=s ER0=u M=rm AW1=ou N.T=nt	1 ^u S.R.M=rm AW1=ou N.T=nt
+1 S=s ER1=e =r	1 - S=s ER1=e =r
+1 S=s ER1=e T=rt	1 - S=s ER1=e T=rt
+1 S=s ER1=e V=rv	1 - S=s ER1=e V=rv
+1 S=s ER1=e V=rv AH0=a T=t	1 ^a S=s ER1=e V.T=-
+1 S=s ER1=ea CH=rch	1 - S=s ER1=ea CH=rch
+1 S=s ER1=u JH=rg	1 - S=s ER1=u JH=rg
+1 S=s IH0=e K.Y=c UH1=u R=r	1 ^e S.K=c UH1=u R=r
+1 S=s IH0=e K.Y=c UW1=u T=t	1 ^e S.K=c UW1=u T=t
+1 S=s IH1=i D=d	1 - S=s IH1=i D=d
+1 S=s IH1=i D=d ER0=e =r	1 ^e S=s IH1=i D.R=-
+1 S=s IH1=i D=d IY0=i =	1 ^i S=s IH1=i D=-
+1 S=s IH1=i S.T=st	1 - S=s IH1=i S.T=st
+1 S=s IH1=i S.T=st AH0=e N.T=nt	1 ^e S=s IH1=i S.T.N.T=-
+1 S=s IH1=o N=n	1 - S=s IH1=o N=n
+1 S=s UW1=u M=m	1 - S=s UW1=u M=m
+1 S=s UW1=ui T=t	1 - S=s UW1=ui T=t
+1 S=sc EH1=e N.D=nd	1 - S=sc EH1=e N.D=nd
+1 S=sc EH1=e N=n	1 - S=sc EH1=e N=n
+1 S=ss AE1=a S=ss AH0=i N=n	1 ^i S=ss AE1=a S.N=-
+1 S=ss AH1=u M.P=mp	1 - S=ss AH1=u M.P=mp
+1 S=ss AO1=o R.T.M=rtm	1 - S=ss AO1=o R.T.M=rtm
+1 S=ss AO1=o R.T=rt	1 - S=ss AO1=o R.T=rt
+1 S=ss AY1=i N.M=gnm	1 - S=ss AY1=i N.M=gnm
+1 S=ss AY1=i N=gn	1 - S=ss AY1=i N=gn
+1 S=ss EH1=e M.B=mb	1 - S=ss EH1=e M.B=mb
+1 S=ss EH1=e S.M=ssm	1 - S=ss EH1=e S.M=ssm
+1 S=ss EH1=e S=ss	1 - S=ss EH1=e S=ss
+1 S=ss ER1=e =r	1 - S=ss ER1=e =r
+1 S=ss ER1=e T=rt	1 - S=ss ER1=e T=rt
+1 S=ss EY1=ai L=l	1 - S=ss EY1=ai L=l
+1 S=ss IH1=i M=m AH0=i L=l	1 ^i S=ss IH1=i M.L=-
+1 S=ss IH1=i S.T=st	1 - S=ss IH1=i S.T=st
+1 S=ss OW1=o S=c IY0=i =	1 ^i S=ss OW1=o S=-
+1 S=ss OW1=o SH=c IY0=i =	1 ^i S=ss OW1=o SH=-
+1 SH=s UH1=u R=r	1 - SH=s UH1=u R=r
+1 SH=sc AH1=iou S=s	1 - SH=sc AH1=iou S=s
+1 SH=ss UH1=u R=r	1 - SH=ss UH1=u R=r
+1 T.R=ptr OW1=o L=ll	1 - T.R=ptr OW1=o L=ll
+1 T.R=tr AA0=a S=c EH1=e L=ll	1 ^a T.R.S=c EH1=e L=ll
+1 T.R=tr AA1=o S=c	1 - T.R=tr AA1=o S=c
+1 T.R=tr AE1=a K.CH=ct UW0=u =	1 ^u T.R=tr AE1=a K.CH=-
+1 T.R=tr AE1=a K.T=ct	1 - T.R=tr AE1=a K.T=ct
+1 T.R=tr AE1=a K=c	1 - T.R=tr AE1=a K=c
+1 T.R=tr AE1=a V=v AH0=a G=g	1 ^a T.R=tr AE1=a V.G=-
+1 T.R=tr AH0=a D=d IH1=i =	1 ^a T.R.D=d IH1=i =
+1 T.R=tr AH0=a D=d IH1=i K=c	1 ^a T.R.D=d IH1=i K=c
+1 T.R=tr AH0=a S=c EH1=e L=ll	1 ^a T.R.S=c EH1=e L=ll
+1 T.R=tr AH0=a S=c EH1=e P.T=pt	1 ^a T.R.S=c EH1=e P.T=pt
+1 T.R=tr AH0=a S=c EH1=e P=p	1 ^a T.R.S=c EH1=e P=p
+1 T.R=tr AH0=a V=v IY1=e N=n	1 ^a T.R.V=v IY1=e N=n
+1 T.R=tr AH0=i B.Y=b UW1=u =	1 ^i T.R.B=b UW1=u =
+1 T.R=tr AH0=i M=m EH1=e N.T=nt	1 ^i T.R.M=m EH1=e N.T=nt
+1 T.R=tr AH0=i M=m EH1=e N=nt	1 ^i T.R.M=m EH1=e N=nt
+1 T.R=tr AH0=o D=d AH1=u K=c	1 ^o T.R.D=d AH1=u K=c
+1 T.R=tr AH0=o S.P=sp EH1=e K.T=ct	1 ^o T.R.S.P=sp EH1=e K.T=ct
+1 T.R=tr AH1=a D=d	1 - T.R=tr AH1=a D=d
+1 T.R=tr AH1=i =	1 - T.R=tr AH1=i =
+1 T.R=tr AH1=i M=m	1 - T.R=tr AH1=i M=m
+1 T.R=tr AH1=u K.T=ct	1 - T.R=tr AH1=u K.T=ct
+1 T.R=tr AH1=u K=c	1 - T.R=tr AH1=u K=c
+1 T.R=tr EH1=e M=m	1 - T.R=tr EH1=e M=m
+1 T.R=tr IH1=i B.Y=b AH0=u T=t	1 ^u T.R=tr IH1=i B.Y.T=-
+1 T.R=tr IH1=i N.S=ns	1 - T.R=tr IH1=i N.S=ns
+1 T.R=tr IY1=e M=m	1 - T.R=tr IY1=e M=m
+1 T.R=tr IY1=e M=m_e	1 - T.R=tr IY1=e M=m_e
+1 T.R=tr IY1=ie V=v	1 - T.R=tr IY1=ie V=v
+1 T.R=tr OW0=o D=d AH1=u K=c	1 ^o T.R.D=d AH1=u K=c
+1 T.R=tr OW1=o L=ll	1 - T.R=tr OW1=o L=ll
+1 T.R=tr UW1=u =	1 - T.R=tr UW1=u =
+1 T.R=tr UW1=u D=d	1 - T.R=tr UW1=u D=d
+1 T.R=tr UW1=u S=s	1 - T.R=tr UW1=u S=s
+1 T.R=ttr AE1=a K.T=ct	1 - T.R=ttr AE1=a K.T=ct
+1 T.R=ttr AE1=a K.T=ct IH0=i V=v_e	1 ^i T.R=ttr AE1=a K.T.V=-
+1 T.R=ttr AE1=a K=c	1 - T.R=ttr AE1=a K=c
+1 T.R=ttr IH0=i B.Y=b UW1=u =	1 ^i T.R.B=b UW1=u =
+1 T.R=ttr IH1=i =	1 - T.R=ttr IH1=i =
+1 T.R=ttr IH1=i B.Y=b AH0=u T=t	1 ^u T.R=ttr IH1=i B.Y.T=-
+1 T=pt IY1=i =	1 - T=pt IY1=i =
+1 T=t AA1=o K.S=x AH0=i K=c	1 ^i T=t AA1=o K.S.K=-
+1 T=t AA1=o L=l ER0=e =r	1 ^e T=t AA1=o L.R=-
+1 T=t AA1=o M=m	1 - T=t AA1=o M=m
+1 T=t AE1=a CH.M=chm	1 - T=t AE1=a CH.M=chm
+1 T=t AE1=a CH=ch	1 - T=t AE1=a CH=ch
+1 T=t AE1=a G=g AH0=o N=n	1 ^o T=t AE1=a G.N=-
+1 T=t AE1=a L=l IY0=i =	1 ^i T=t AE1=a L=-
+1 T=t AE1=a M=m AH0=i N=n	1 ^i T=t AE1=a M.N=-
+1 T=t AE1=a N.JH=ng	1 - T=t AE1=a N.JH=ng
+1 T=t AH0=e G.R=gr EY1=a =	1 ^e T.G.R=gr EY1=a =
+1 T=t AH0=e M.P.L=mpl EY1=a =	1 ^e T.M.P.L=mpl EY1=a =
+1 T=t AH0=i L=ll EY1=a =	1 ^i T.L=ll EY1=a =
+1 T=t AH0=i N=n EH1=e N.T=nt	1 ^i T.N=n EH1=e N.T=nt
+1 T=t AH0=i N=n EH1=e N=nt	1 ^i T.N=n EH1=e N=nt
+1 T=t AH0=i N=n EY1=a =	1 ^i T.N=n EY1=a =
+1 T=t AH0=i N=n UW1=u =	1 ^i T.N=n UW1=u =
+1 T=t AH0=o N=n EY1=a =	1 ^o T.N=n EY1=a =
+1 T=t AH1=e G.R=gr	1 - T=t AH1=e G.R=gr
+1 T=t AH1=e JH=g	1 - T=t AH1=e JH=g
+1 T=t AH1=e M.P.L=mpl	1 - T=t AH1=e M.P.L=mpl
+1 T=t AH1=e S.T=st	1 - T=t AH1=e S.T=st
+1 T=t AH1=i K=c	1 - T=t AH1=i K=c
+1 T=t AH1=i L=ll	1 - T=t AH1=i L=ll
+1 T=t AH1=i M=m AH0=a T=t_e	1 ^a T=t AH1=i M.T=-
+1 T=t AH1=i N=n	1 - T=t AH1=i N=n
+1 T=t AH1=o N=n	1 - T=t AH1=o N=n
+1 T=t AO1=o R=r	1 - T=t AO1=o R=r
+1 T=t AY1=i =r ER0=e =	1 ^e T=t AY1=i R=-
+1 T=t AY1=i =r ER0=e M=m	1 ^e T=t AY1=i R.M=-
+1 T=t AY1=i M=m_e	1 - T=t AY1=i M=m_e
+1 T=t AY1=i T=tl AH0=e L.M=m	1 ^e T=t AY1=i T.L.M=-
+1 T=t AY1=i T=tl AH0=e L=	1 ^e T=t AY1=i T.L=-
+1 T=t EH1=e G.R=gr	1 - T=t EH1=e G.R=gr
+1 T=t EH1=e K.S.CH=xt UW0=u =	1 ^u T=t EH1=e K.S.CH=-
+1 T=t EH1=e K.T=ct	1 - T=t EH1=e K.T=ct
+1 T=t EH1=e K=c	1 - T=t EH1=e K=c
+1 T=t EH1=e L=ll AH0=i JH=g	1 ^i T=t EH1=e L.JH=-
+1 T=t EH1=e N.D=nd	1 - T=t EH1=e N.D=nd
+1 T=t EH1=e N.S=ns	1 - T=t EH1=e N.S=ns
+1 T=t EH1=e N.S=ns IH0=i V=v_e	1 ^i T=t EH1=e N.S.V=-
+1 T=t EH1=e N.S=ns_e	1 - T=t EH1=e N.S=ns_e
+1 T=t EH1=e N.SH=nt AH0=io N=n	1 ^i T=t EH1=e N.SH.N=-
+1 T=t EH1=e N.T.M=ntm	1 - T=t EH1=e N.T.M=ntm
+1 T=t EH1=e N.T=nt	1 - T=t EH1=e N.T=nt
+1 T=t EH1=e N=n	1 - T=t EH1=e N=n
+1 T=t EH1=e R=rr AH0=o G=g	1 ^o T=t EH1=e R.G=-
+1 T=t EH1=e S.T=st	1 - T=t EH1=e S.T=st
+1 T=t EH1=e S.T=st AH0=i N=n	1 ^i T=t EH1=e S.T.N=-
+1 T=t ER0=e =r AE1=a K.T=ct	1 ^e T.R=r AE1=a K.T=ct
+1 T=t ER0=e =r AE1=a K=c	1 ^e T.R=r AE1=a K=c
+1 T=t ER0=e =rr AH1=u P=p	1 ^e T.R=rr AH1=u P=p
+1 T=t ER0=e CH=rch EY1=a N.JH=ng_e	1 ^e T.R.CH=rch EY1=a N.JH=ng_e
+1 T=t ER0=e F=rf IH1=e R=r	1 ^e T.R.F=rf IH1=e R=r
+1 T=t ER0=e M=rm IH1=i =s	1 ^e T.R.M=rm IH1=i =s
+1 T=t ER0=e M=rm IH1=i T=tt	1 ^e T.R.M=rm IH1=i T=tt
+1 T=t ER0=e N=rn AE1=a =	1 ^e T.R.N=rn AE1=a =
+1 T=t ER0=e S=rc EH1=e P=p	1 ^e T.R.S=rc EH1=e P=p
+1 T=t ER0=e S=rs EH1=e K=c	1 ^e T.R.S=rs EH1=e K=c
+1 T=t ER0=e T=rt EY1=ai N.M=nm	1 ^e T.R.T=rt EY1=ai N.M=nm
+1 T=t ER0=e T=rt EY1=ai N=n	1 ^e T.R.T=rt EY1=ai N=n
+1 T=t ER0=e V.Y=rv UW1=iew =	1 ^e T.R.V=rv UW1=iew =
+1 T=t ER0=e V=rv EH1=e N=n	1 ^e T.R.V=rv EH1=e N=n
+1 T=t ER1=e JH=rg	1 - T=t ER1=e JH=rg
+1 T=t ER1=e M=rm AH0=i N=n	1 ^i T=t ER1=e M.N=-
+1 T=t ER1=e N=rn	1 - T=t ER1=e N=rn
+1 T=t ER1=e N=rn AH0=a =l	1 ^a T=t ER1=e N=-
+1 T=t ER1=e P.R=rpr	1 - T=t ER1=e P.R=rpr
+1 T=t ER1=e P.R=rpr AH0=e T=t	1 ^e T=t ER1=e P.R.T=-
+1 T=t ER1=e P.R=rpr IH0=e T=t	1 ^e T=t ER1=e P.R.T=-
+1 T=t ER1=e R=rr	1 - T=t ER1=e R=rr
+1 T=t ER1=e V=rv	1 - T=t ER1=e V=rv
+1 T=t ER1=u B=rb	1 - T=t ER1=u B=rb
+1 T=t EY1=ai L=l	1 - T=t EY1=ai L=l
+1 T=t EY1=ai N.M=nm	1 - T=t EY1=ai N.M=nm
+1 T=t EY1=ai N=n	1 - T=t EY1=ai N=n
+1 T=t IH0=i N=n EY1=a =	1 ^i T.N=n EY1=a =
+1 T=t IH1=e R=r IY0=i =	1 ^i T=t IH1=e R=-
+1 T=t IH1=i G.Y=g UW0=u =	1 ^u T=t IH1=i G.Y=-
+1 T=t IH1=i M=m IH0=i D=d	1 ^i T=t IH1=i M.D=-
+1 T=t IH1=i N.JH=ng	1 - T=t IH1=i N.JH=ng
+1 T=t IH1=i N.Y=n UW0=u =	1 ^u T=t IH1=i N.Y=-
+1 T=t IH1=i N.Y=n UW0=ua =l	1 ^u T=t IH1=i N.Y=-
+1 T=t IH1=i N=n	1 - T=t IH1=i N=n
+1 T=t IH1=i NG.K.T=nct	1 - T=t IH1=i NG.K.T=nct
+1 T=t IH1=i NG.K=nc	1 - T=t IH1=i NG.K=nc
+1 T=t IH1=i NG=nc	1 - T=t IH1=i NG=nc
+1 T=t OW1=o N=n_e	1 - T=t OW1=o N=n_e
+1 T=t UW0=u = IH1=i =	1 ^u T= IH1=i =
+1 T=t UW1=u =	1 - T=t UW1=u =
+1 T=tt AE1=a CH.M=chm	1 - T=tt AE1=a CH.M=chm
+1 T=tt AE1=a CH=ch	1 - T=tt AE1=a CH=ch
+1 T=tt AE1=a K=ck	1 - T=tt AE1=a K=ck
+1 T=tt EH1=e N.D=nd	1 - T=tt EH1=e N.D=nd
+1 T=tt EH1=e N.T=nt	1 - T=tt EH1=e N.T=nt
+1 T=tt EH1=e N=n	1 - T=tt EH1=e N=n
+1 T=tt EY1=ai N.M=nm	1 - T=tt EY1=ai N.M=nm
+1 T=tt EY1=ai N=n	1 - T=tt EY1=ai N=n
+1 T=tt IY1=i =	1 - T=tt IY1=i =
+1 TH=th IH1=i NG.K=nk	1 - TH=th IH1=i NG.K=nk
+1 V=v AA1=o K=c	1 - V=v AA1=o K=c
+1 V=v AA1=o K=c AH0=a T=t	1 ^a V=v AA1=o K.T=-
+1 V=v AA1=o L.V=lv	1 - V=v AA1=o L.V=lv
+1 V=v AA1=o L.V=lv_e	1 - V=v AA1=o L.V=lv_e
+1 V=v AH0=a S.T=st EY1=a =	1 ^a V.S.T=st EY1=a =
+1 V=v AH0=e L=l EY1=a =	1 ^e V.L=l EY1=a =
+1 V=v AH0=o K=c EY1=a =	1 ^o V.K=c EY1=a =
+1 V=v AH0=o L=l UW1=u =	1 ^o V.L=l UW1=u =
+1 V=v AH1=a L=l	1 - V=v AH1=a L=l
+1 V=v AH1=a S.T=st	1 - V=v AH1=a S.T=st
+1 V=v AH1=e L=l	1 - V=v AH1=e L=l
+1 V=v AH1=e N=n	1 - V=v AH1=e N=n
+1 V=v AH1=i D=d	1 - V=v AH1=i D=d
+1 V=v AH1=o K=c	1 - V=v AH1=o K=c
+1 V=v AY1=i D=d	1 - V=v AY1=i D=d
+1 V=v AY1=i R=r AH0=o N.M=nm	1 ^o V=v AY1=i R.N.M=-
+1 V=v AY1=i R=r AH0=o N=n	1 ^o V=v AY1=i R.N=-
+1 V=v AY1=i V=v	1 - V=v AY1=i V=v
+1 V=v EH1=e K=c	1 - V=v EH1=e K=c
+1 V=v EH1=e L=l AH0=o P.M=pm	1 ^o V=v EH1=e L.P.M=-
+1 V=v EH1=e L=l AH0=o P=p	1 ^o V=v EH1=e L.P=-
+1 V=v EH1=e N.JH=ng	1 - V=v EH1=e N.JH=ng
+1 V=v EH1=e N.SH=nt AH0=io N=n	1 ^i V=v EH1=e N.SH.N=-
+1 V=v EH1=e N.T=nt	1 - V=v EH1=e N.T=nt
+1 V=v EH1=e N.T=nt AH0=a T=t	1 ^a V=v EH1=e N.T.T=-
+1 V=v EH1=e N=n	1 - V=v EH1=e N=n
+1 V=v EH1=e N=nt	1 - V=v EH1=e N=nt
+1 V=v EH1=e S.M=stm	1 - V=v EH1=e S.M=stm
+1 V=v EH1=e S.T.M=stm	1 - V=v EH1=e S.T.M=stm
+1 V=v EH1=e S.T=st	1 - V=v EH1=e S.T=st
+1 V=v EH1=e S.T=st AH0=i G=g	1 ^i V=v EH1=e S.T.G=-
+1 V=v EH1=e S=st	1 - V=v EH1=e S=st
+1 V=v ER0=e S=rs EY1=a =	1 ^e V.R.S=rs EY1=a =
+1 V=v ER1=e =r	1 - V=v ER1=e =r
+1 V=v ER1=e B=rb	1 - V=v ER1=e B=rb
+1 V=v ER1=e B=rb IY0=i =	1 ^i V=v ER1=e B=-
+1 V=v ER1=e JH=rg	1 - V=v ER1=e JH=rg
+1 V=v ER1=e S=rs	1 - V=v ER1=e S=rs
+1 V=v ER1=e S=rs_e	1 - V=v ER1=e S=rs_e
+1 V=v ER1=e T=rt	1 - V=v ER1=e T=rt
+1 V=v EY1=a =	1 - V=v EY1=a =
+1 V=v EY1=a S=s	1 - V=v EY1=a S=s
+1 V=v EY1=ai L=l	1 - V=v EY1=ai L=l
+1 V=v IH0=i T=t EY1=a =	1 ^i V.T=t EY1=a =
+1 V=v IH1=i =	1 - V=v IH1=i =
+1 V=v IH1=i K=c	1 - V=v IH1=i K=c
+1 V=v IH1=i N.S=nc	1 - V=v IH1=i N.S=nc
+1 V=v IH1=i N.S=nc IH0=i NG=ng	1 ^i V=v IH1=i N.S.NG=-
+1 V=v IH1=i T=t	1 - V=v IH1=i T=t
+1 V=v IH1=i Z=s	1 - V=v IH1=i Z=s
+1 V=v IH1=i ZH=s AH0=io N=n	1 ^i V=v IH1=i ZH.N=-
+1 V=v IY0=i = EY1=a =	1 ^i V= EY1=a =
+1 V=v IY1=e N.Y=n AH0=ie N.T=nt	1 ^i V=v IY1=e N.Y.N.T=-
+1 V=v IY1=i =	1 - V=v IY1=i =
+1 V=v OW1=o =	1 - V=v OW1=o =
+1 V=v OW1=o SH=t AH0=io N=n	1 ^i V=v OW1=o SH.N=-
+1 V=v OY1=oi D=d	1 - V=v OY1=oi D=d
+1 W=w EH1=a R=r_e	1 - W=w EH1=a R=r_e
+1 W=w IH1=i L=ll IH0=i NG=ng	1 ^i W=w IH1=i L.NG=-
+1 W=w IH1=i T=tt IH0=i NG=ng	1 ^i W=w IH1=i T.NG=-
+1 Y= AH0=u L=l EY1=a =	1 ^u Y.L=l EY1=a =
+1 Y= AH1=u L=l	1 - Y= AH1=u L=l
+1 Y= UW1=u ZH.W=s AH0=ua =l	1 ^u Y= UW1=u ZH.W=-
+1 Y= UW1=u ZH=s UW0=u =	1 ^u Y= UW1=u ZH=-
+1 Z=s AH0=e N.T=nt EY1=a =	1 ^e S.N.T=nt EY1=a =
+1 Z=s AH0=i G.N=gn EY1=a =	1 ^i S.G.N=gn EY1=a =
+1 Z=s AH0=o L=l UW1=u =	1 ^o S.L=l UW1=u =
+1 Z=s AH1=e N.T=nt	1 - S=s AH1=e N.T=nt
+1 Z=s AH1=i G.N=gn	1 - S=s AH1=i G.N=gn
+1 Z=s AH1=o N=n	1 - S=s AH1=o N=n
+1 Z=s AH1=u L.T=lt	1 - S=s AH1=u L.T=lt
+1 Z=s AH1=u M.P=mp	1 - S=s AH1=u M.P=mp
+1 Z=s AH1=u M=mp	1 - S=s AH1=u M=mp
+1 Z=s AY1=i N=gn	1 - S=s AY1=i N=gn
+1 Z=s AY1=i R=r	1 - S=s AY1=i R=r
+1 Z=s EH1=e M.B.L=mbl	1 - S=s EH1=e M.B.L=mbl
+1 Z=s EH1=e N.M=ntm	1 - S=s EH1=e N.M=ntm
+1 Z=s EH1=e N.T.M=ntm	1 - S=s EH1=e N.T.M=ntm
+1 Z=s EH1=e N.T=nt	1 - S=s EH1=e N.T=nt
+1 Z=s EH1=e N=nt	1 - S=s EH1=e N=nt
+1 Z=s ER0=e V=rv EY1=a =	1 ^e S.R.V=rv EY1=a =
+1 Z=s ER0=u =rr EH1=e K=c	1 ^u S.R=rr EH1=e K=c
+1 Z=s ER1=e V=rv	1 - S=s ER1=e V=rv
+1 Z=s IH0=i G.N=gn EY1=a =	1 ^i S.G.N=gn EY1=a =
+1 Z=s IH1=i D=d	1 - S=s IH1=i D=d
+1 Z=s IH1=i G.N=gn	1 - S=s IH1=i G.N=gn
+1 Z=s IH1=i JH=d UW0=u =	1 ^u S=s IH1=i JH=-
+1 Z=s IH1=i L=l IY0=i =	1 ^i S=s IH1=i L=-
+1 Z=s IH1=i S.T=st	1 - S=s IH1=i S.T=st
+1 Z=s UW1=u M=m AH0=a B=b	1 ^a S=s UW1=u M.B=-
