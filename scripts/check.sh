@@ -49,7 +49,7 @@ source_golden() {
 check_dict() {
     local name=$1 generator=$2 goldens=$3 artifact=build/dicts/$1.stfst golden
     echo "== $name"
-    if [ "$generator" != - ] && [ "${checked#* $generator }" = "$checked" ]; then
+    if [ "$generator" != - ] && [ "${checked#* "$generator" }" = "$checked" ]; then
         checked="$checked$generator "
         if [ -x "$GEN_PYTHON" ]; then
             "$GEN_PYTHON" "$generator" --check && echo "$(basename "$generator") --check: current"
@@ -80,7 +80,7 @@ check_dict() {
 
 dicts=$(python3 scripts/recipe.py recipe.toml dicts)
 names=" $(cut -f1 <<< "$dicts" | tr '\n' ' ')"
-in_recipe() { [ "${names#* $1 }" != "$names" ]; }
+in_recipe() { [ "${names#* "$1" }" != "$names" ]; }
 
 if [ $# -gt 0 ]; then
     for name in "$@"; do

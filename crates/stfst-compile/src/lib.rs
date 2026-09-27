@@ -168,13 +168,13 @@ mod tests {
         // Built after its source, but by no recorded entry: stale.
         std::thread::sleep(std::time::Duration::from_millis(10));
         std::fs::write(artifact.join("forward.hfstol"), "").unwrap();
-        assert!(!fresh(&artifact, &stamp(system, &a).unwrap(), &[source.clone()]));
+        assert!(!fresh(&artifact, &stamp(system, &a).unwrap(), std::slice::from_ref(&source)));
 
         std::fs::write(artifact.join(STAMP), stamp(system, &a).unwrap()).unwrap();
-        assert!(fresh(&artifact, &stamp(system, &a).unwrap(), &[source.clone()]));
+        assert!(fresh(&artifact, &stamp(system, &a).unwrap(), std::slice::from_ref(&source)));
         // Its own entry changed.
         let moved = dict("name = \"a\"\npriority = 2\njson = \"a.json\"\n");
-        assert!(!fresh(&artifact, &stamp(system, &moved).unwrap(), &[source.clone()]));
+        assert!(!fresh(&artifact, &stamp(system, &moved).unwrap(), std::slice::from_ref(&source)));
         // A source newer than the artifact.
         std::thread::sleep(std::time::Duration::from_millis(10));
         std::fs::write(&source, "{ }").unwrap();

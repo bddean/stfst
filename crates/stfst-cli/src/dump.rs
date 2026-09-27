@@ -28,14 +28,14 @@ pub fn run(artifact: &Path, system: &System, strokes: Option<u32>, records: bool
     let alphabet = fst.alphabet();
     // The walk reads keys and the separator only, in steno order with the
     // separator first, so an outline comes before every outline it begins.
-    let mut order: Vec<Option<Sym>> = vec![alphabet.number(&system.separator.to_string())];
+    let separator = alphabet.number(&system.separator.to_string());
+    let mut order = vec![separator];
     order.extend(system.keys().iter().map(|k| alphabet.number(&k.symbol.to_string())));
-    let rank = |sym: Sym| order.iter().position(|&s| s == Some(sym));
     let walk = Walk {
         system,
         fst: &fst,
-        rank: &rank,
-        separator: order[0],
+        order,
+        separator,
         window: dict.shown().and_then(|_| alphabet.number(WINDOW_OPEN)),
         strokes,
         records,
@@ -49,7 +49,8 @@ pub fn run(artifact: &Path, system: &System, strokes: Option<u32>, records: bool
 struct Walk<'a> {
     system: &'a System,
     fst: &'a Automaton,
-    rank: &'a dyn Fn(Sym) -> Option<usize>,
+    /// The symbols the walk reads, in the order it reads them.
+    order: Vec<Option<Sym>>,
     separator: Option<Sym>,
     window: Option<Sym>,
     strokes: u32,
@@ -73,7 +74,7 @@ impl Walk<'_> {
         let mut next: Vec<(usize, Sym)> = cursor
             .next_inputs()
             .into_iter()
-            .filter_map(|s| (self.rank)(s).map(|r| (r, s)))
+            .filter_map(|s| self.order.iter().position(|&o| o == Some(s)).map(|r| (r, s)))
             .collect();
         next.sort_unstable();
         for (_, sym) in next {
