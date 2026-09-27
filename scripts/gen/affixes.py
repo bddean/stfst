@@ -51,7 +51,7 @@ import plover_tape
 from . import PLOVER, ROOT
 from . import vowels as g
 from .lexicon import align, lexc
-from .resolve import candidates, compile_pipeline
+from .resolve import candidates, compile_pipeline, resolve, typey_gives_way
 from .stack import Stack
 
 SYSTEM = plover_tape.System.load(g.SYSTEM)
@@ -267,20 +267,10 @@ def build(typey, parsed, strokes):
     counts = count_ngrams({r for r in risk.values() if isinstance(r, tuple)})
     misread = {w: r for w, r in risk.items() if r == "command" or (r and counts[r] >= MISREAD)}
 
-    by = collections.defaultdict(list)
-    for w, o in outlines.items():
-        if w not in misread:
-            by[o].append(w)
-    out, lost, left = {}, [], []
-    for o, ws in by.items():
-        ws.sort(key=lambda w: (-g.zipf(w), w))
-        taken = [(n, tr) for n, tr in answers.get(o, []) if n != NAME]
-        if taken and taken[0][1] != ws[0] and not (
-                taken[0][0] == "typey-type" and g.zipf(taken[0][1]) <= g.zipf(ws[0]) + g.DISPLACE):
-            left += [(w, o, taken[0]) for w in ws]
-            continue
-        out[o] = ws[0]
-        lost += [(w, ws[0], o) for w in ws[1:]]
+    taken = {o: theirs[0] for o, found in answers.items()
+             if (theirs := [(n, tr) for n, tr in found if n != NAME])}
+    out, lost, left = resolve({w: o for w, o in outlines.items() if w not in misread},
+                              lambda w: (-g.zipf(w), w), taken, typey_gives_way())
     lexicon = {w: (o.split("/")[0], *found[w][1]) for o, w in out.items()}
     # A plural is the grammar's, so it follows its singular. One another
     # dictionary also writes is reported, not dropped.

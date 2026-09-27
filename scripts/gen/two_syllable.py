@@ -36,7 +36,6 @@ for the pipeline: run it in the dev shell):
     $PY scripts/gen-two-syllable.py --check    # fail if the committed JSON is stale
 """
 import argparse
-import collections
 import importlib.util
 import json
 import os
@@ -45,7 +44,7 @@ import sys
 
 from . import PLOVER
 from . import vowels as g
-from .resolve import candidates, compile_pipeline
+from .resolve import candidates, compile_pipeline, resolve, typey_gives_way
 from .stack import Stack
 
 OUTPUT = os.path.join(PLOVER, "two-syllable.json")
@@ -122,25 +121,11 @@ def build(typey, rule):
     retro = reserved()
     others.update((s, ("retro-words", "")) for s in strokes.values() if s in retro)
     # An inflection ranks as its base, so the base that wins a stroke also
-    # wins the stroke its suffix key folds to: agrees goes with agree.
-    by = collections.defaultdict(list)
-    for w, s in strokes.items():
-        by[s].append(w)
-    out, lost, left = {}, [], []
-    for s, ws in by.items():
-        ws.sort(key=lambda w: (-g.zipf(base.get(w, w)), -g.zipf(w), w))
-        # Another dictionary writing the rule's own choice is the same entry.
-        # A Typey Type entry gives way, as it does to the vowel theory, unless
-        # it is an affix or a hundred times as frequent: compress is KPHRES
-        # here, so its old KPRES can be express.
-        if s in others and others[s][0] == "typey-type" and s not in typey.reserved \
-                and g.zipf(others[s][1]) <= g.zipf(ws[0]) + g.DISPLACE:
-            del others[s]
-        if s in others and others[s][1] != ws[0]:
-            left += [(w, s, others[s]) for w in ws]
-            continue
-        out[s] = ws[0]
-        lost += [(w, ws[0], s) for w in ws[1:]]
+    # wins the stroke its suffix key folds to: agrees goes with agree. A Typey
+    # Type entry gives way unless it is an affix or a hundred times as
+    # frequent: compress is KPHRES here, so its old KPRES can be express.
+    out, lost, left = resolve(strokes, lambda w: (-g.zipf(base.get(w, w)), -g.zipf(w), w), others,
+                              typey_gives_way(typey.reserved))
     folded = {s: w for s, w in out.items() if w in base and out.get(strokes.get(base[w])) == base[w]}
     for s in folded:
         del out[s]
