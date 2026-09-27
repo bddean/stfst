@@ -1,13 +1,13 @@
 1 = AA1=a R.M=rm AH0=a =	1 ^a Arpl
 1 = AA1=a R.M=rm AH0=a M=m	1 ^a Arpl
 1 = AA1=o K.S=x AH0=i K=c	1 ^i Obgs
-1 = AA1=o L=l ER0=e =r	1 ^e Orl
+1 = AA1=o L=l ER0=e =r	1 ^ Orl
 1 = AA1=o S=ss	1 - Os
 1 = AA1=o T=t	1 - Ot
 1 = AE0=a K.S=cc EH1=e P.T=pt	1 ^a SKEpt
 1 = AE0=a K.T=ct IH1=i V=v	1 ^a TKEUf
 1 = AE1=a JH=g AH0=i N=n	1 ^i Apblg
-1 = AE1=a JH=gg ER0=e =r	1 ^e Arpblg
+1 = AE1=a JH=gg ER0=e =r	1 ^ Arpblg
 1 = AE1=a K.M=ctm	1 - Apblg
 1 = AE1=a K.T.M=ctm	1 - Apblgt
 1 = AE1=a K.T=ct	1 - Abgt
@@ -55,13 +55,13 @@
 1 = AH1=o N=n IH0=i Z=z	1 ^i Opbz
 1 = AH1=u M.N=mn	1 - Upbl
 1 = AO0=o R.G=rg AE1=a N=n	1 ^o TKPWRApb
-1 = AO1=au G=g ER0=u =r	1 ^u AUrg
+1 = AO1=au G=g ER0=u =r	1 ^ AUrg
 1 = AO1=o R.B=rb IH0=i T=t	1 ^i Orbt
 1 = AO1=o R.D=rd	1 - Ord
-1 = AO1=o R.D=rd ER0=e =r	1 ^e Ord
+1 = AO1=o R.D=rd ER0=e =r	1 ^ Ord
 1 = AO1=o R.M=rm	1 - Orpl
 1 = AO1=o R.M=rm AH0=ou S=s	1 ^o Orpls
-1 = AY1=i =r ER0=e =	1 ^e AOEUr
+1 = AY1=i =r ER0=e =	1 ^ AOEUr
 1 = AY1=i N=gn	1 - AOEUpb
 1 = AY1=i R=r	1 - AOEUr
 1 = AY1=i T=tl AH0=e L.M=m	1 ^e AOEUplt
@@ -82,21 +82,21 @@
 1 = EH1=e TH=th	1 - *Et
 1 = EH1=e TH=th IH0=i K=c	1 ^i *Ebgt
 1 = EH1=e V=v AH0=i T=t	1 ^i Eft
-1 = ER0=e =r AE1=a K.T=ct	1 ^e RAbgt
-1 = ER0=e =r AE1=a K=c	1 ^e RA*bg
-1 = ER0=e =rr AH1=u P=p	1 ^e RUp
-1 = ER0=e CH=rch EY1=a N.JH=ng_e	1 ^e KHRAEUpbg
-1 = ER0=e F=rf IH1=e R=r	1 ^e TPREr
-1 = ER0=e JH=rg EH1=e T=t	1 ^e SKWREt
-1 = ER0=e M=rm IH1=i =s	1 ^e PHREU
-1 = ER0=e M=rm IH1=i T=tt	1 ^e PHREUt
-1 = ER0=e N=rn AE1=a =	1 ^e TPHRA
-1 = ER0=e S=rc EH1=e P=p	1 ^e SREp
-1 = ER0=e S=rs EH1=e K=c	1 ^e SR*Ebg
-1 = ER0=e T=rt EY1=ai N.M=nm	1 ^e TRA*EUpbl
-1 = ER0=e T=rt EY1=ai N=n	1 ^e TRA*EUpb
-1 = ER0=e V=rv EH1=e N=n	1 ^e SREpb
-1 = ER0=o =r EY1=a =	1 ^o RA
+1 = ER0=e =r AE1=a K.T=ct	1 ^ RAbgt
+1 = ER0=e =r AE1=a K=c	1 ^ RA*bg
+1 = ER0=e =rr AH1=u P=p	1 ^ RUp
+1 = ER0=e CH=rch EY1=a N.JH=ng_e	1 ^ KHRAEUpbg
+1 = ER0=e F=rf IH1=e R=r	1 ^ TPREr
+1 = ER0=e JH=rg EH1=e T=t	1 ^ SKWREt
+1 = ER0=e M=rm IH1=i =s	1 ^ PHREU
+1 = ER0=e M=rm IH1=i T=tt	1 ^ PHREUt
+1 = ER0=e N=rn AE1=a =	1 ^ TPHRA
+1 = ER0=e S=rc EH1=e P=p	1 ^ SREp
+1 = ER0=e S=rs EH1=e K=c	1 ^ SR*Ebg
+1 = ER0=e T=rt EY1=ai N.M=nm	1 ^ TRA*EUpbl
+1 = ER0=e T=rt EY1=ai N=n	1 ^ TRA*EUpb
+1 = ER0=e V=rv EH1=e N=n	1 ^ SREpb
+1 = ER0=o =r EY1=a =	1 ^ RA
 1 = ER1=e JH=rg	1 - Erpblg
 1 = ER1=e N=rn	1 - Erpb
 1 = ER1=e N=rn AH0=a =l	1 ^a Erpb
@@ -120,7 +120,7 @@
 1 = IH0=i N.T=nt EH1=e N=n	1 SPW Epb
 1 = IH1=e R=r IY0=i =	1 ^i Er
 1 = IH1=i =s	1 - EU
-1 = IH1=i F=ph ER0=e =r	1 ^e EUfr
+1 = IH1=i F=ph ER0=e =r	1 ^ EUfr
 1 = IH1=i G.N=gn	1 - EUpbg
 1 = IH1=i K=c	1 - *EUbg
 1 = IH1=i M=m AH0=e T=t	1 ^e EUplt
@@ -135,7 +135,7 @@
 1 = IY1=e D=d	1 - Ed
 1 = OW0=o R=r EH1=e K.T=ct	1 ^o REbgt
 1 = OW1=o =	1 - O
-1 = OW1=o D=d ER0=o =r	1 ^o Ord
+1 = OW1=o D=d ER0=o =r	1 ^ Ord
 1 = OW1=o N=n	1 - Opb
 1 = OW1=o N=n IY0=i =	1 ^i Opb
 1 = OW1=o SH=t AH0=io N=n	1 ^i Orpb
@@ -172,14 +172,14 @@
 1 =st EH0=i S.T=g IH1=i JH=	1 ^i STEUpblg
 1 =t AH0=e G.R=gr EY1=a =	1 ^e TKPWRA
 1 =t AH1=e G.R=gr	1 - Erg
-1 =t ER0=e =r AE1=a K.T=ct	1 ^e RAbgt
-1 =t ER0=e =r AE1=a K=c	1 ^e RA*bg
-1 =t ER0=e CH=rch EY1=a N.JH=ng_e	1 ^e KHRAEUpbg
-1 =t ER0=e F=rf IH1=e R=r	1 ^e TPREr
-1 =t ER0=e N=rn AE1=a =	1 ^e TPHRA
-1 =t ER0=e S=rc EH1=e P=p	1 ^e SREp
-1 =t ER0=e T=rt EY1=ai N.M=nm	1 ^e TRA*EUpbl
-1 =t ER0=e T=rt EY1=ai N=n	1 ^e TRA*EUpb
+1 =t ER0=e =r AE1=a K.T=ct	1 ^ RAbgt
+1 =t ER0=e =r AE1=a K=c	1 ^ RA*bg
+1 =t ER0=e CH=rch EY1=a N.JH=ng_e	1 ^ KHRAEUpbg
+1 =t ER0=e F=rf IH1=e R=r	1 ^ TPREr
+1 =t ER0=e N=rn AE1=a =	1 ^ TPHRA
+1 =t ER0=e S=rc EH1=e P=p	1 ^ SREp
+1 =t ER0=e T=rt EY1=ai N.M=nm	1 ^ TRA*EUpbl
+1 =t ER0=e T=rt EY1=ai N=n	1 ^ TRA*EUpb
 1 =t ER1=e P.R=rpr	1 - Erp
 1 =t IY0=e T=nt EH1=i N.SH=	1 ^e TEUrpb
 1 =v EY1=a S=s	1 - As
@@ -253,11 +253,11 @@
 1 D=d EH1=e M=m	1 - TKEpl
 1 D=d EH1=e M=mp	1 - TKEpl
 1 D=d EH1=ea V=v	1 - TKAEf
-1 D=d ER0=e K=rc AH1=o V=v	1 ^e TKROf
-1 D=d ER0=e S.T=rst AE1=a N.D=nd	1 ^e STKRApbd
-1 D=d ER0=e T=rt EY1=a K=k	1 ^e TKRAbg
-1 D=d ER0=i =r EH1=e K.T=ct	1 ^i TKREbgt
-1 D=d ER0=o =r EY1=a =	1 ^o TKRA
+1 D=d ER0=e K=rc AH1=o V=v	1 ^ TKROf
+1 D=d ER0=e S.T=rst AE1=a N.D=nd	1 ^ STKRApbd
+1 D=d ER0=e T=rt EY1=a K=k	1 ^ TKRAbg
+1 D=d ER0=i =r EH1=e K.T=ct	1 ^ TKREbgt
+1 D=d ER0=o =r EY1=a =	1 ^ TKRA
 1 D=d ER1=o =r	1 - TKOr
 1 D=d ER1=u =r	1 - TKUr
 1 D=d EY1=a N.JH=ng	1 - TKApbg
@@ -267,7 +267,7 @@
 1 D=d IH0=i G.N=gn EY1=a =	1 ^i TKPWHA
 1 D=d IH0=i S.P=sp EH1=e N.S=ns	1 STK PEpbs
 1 D=d IH1=i =	1 - TKEU
-1 D=d IH1=i F=ff ER0=e =r	1 ^e TKEUfr
+1 D=d IH1=i F=ff ER0=e =r	1 ^ TKEUfr
 1 D=d IH1=i G.N=gn	1 - TKEUpbg
 1 D=d IH1=i JH=g AH0=e N=n	1 ^e TKEUpblg
 1 D=d IH1=i K.T=ct	1 - TKEUbgt
@@ -297,7 +297,7 @@
 1 F.R=fr AH0=o N.T=nt EY1=a =	1 ^o TPHRA
 1 F.R=fr AH1=o N.T=nt	1 - TPROpbt
 1 F.R=fr EH1=ie N.D=nd	1 - TPREpbd
-1 F.R=fr IH1=i JH=g ER0=e =r	1 ^e TPREUrpblg
+1 F.R=fr IH1=i JH=g ER0=e =r	1 ^ TPREUrpblg
 1 F.R=fr IH1=i N.JH=ng_e	1 - TPREUpbg
 1 F=f AE1=a L=ll	1 - TPAl
 1 F=f AE1=a N=n	1 - TPApb
@@ -324,7 +324,7 @@
 1 F=f AY1=i N=n_e	1 - TPAOEUpb
 1 F=f EH1=ai R=r	1 - TPA*EUr
 1 F=f EH1=e =s	1 - TPE
-1 F=f EH1=e D=d ER0=e =r	1 ^e TPErd
+1 F=f EH1=e D=d ER0=e =r	1 ^ TPErd
 1 F=f EH1=e K.T=ct	1 - TPEbgt
 1 F=f EH1=e K=c	1 - TP*Ebg
 1 F=f EH1=e N.D=nd	1 - TPEpbd
@@ -334,10 +334,10 @@
 1 F=f EH1=e S.T=st EY0=a =	1 ^a TPEft
 1 F=f EH1=e S=ss	1 - TPEs
 1 F=f EH1=e SH=ss AH0=io N=n	1 ^i TPErpb
-1 F=f ER0=e T=rt IH1=i L=l	1 ^e TPREUl
-1 F=f ER0=i M=rm EY1=a =	1 ^i TPHRA
-1 F=f ER0=o G=rg EH1=e T=tt	1 ^o TKPWREt
-1 F=f ER0=o M=rm EY1=a =	1 ^o TPHRA
+1 F=f ER0=e T=rt IH1=i L=l	1 ^ TPREUl
+1 F=f ER0=i M=rm EY1=a =	1 ^ TPHRA
+1 F=f ER0=o G=rg EH1=e T=tt	1 ^ TKPWREt
+1 F=f ER0=o M=rm EY1=a =	1 ^ TPHRA
 1 F=f ER1=e =r	1 - TPEr
 1 F=f ER1=e =r AH0=a B=b	1 ^a TPErb
 1 F=f ER1=e =rr	1 - TPEr
@@ -346,7 +346,7 @@
 1 F=f ER1=o M=rm	1 - TPOrpl
 1 F=f ER1=o T=rt	1 - TPOrt
 1 F=f ER1=o T=rt AH0=a B=b	1 ^a TPOrbt
-1 F=f EY1=a V=v ER0=o =r	1 ^o TPAfr
+1 F=f EY1=a V=v ER0=o =r	1 ^ TPAfr
 1 F=f EY1=ai TH=th	1 - TPA*EUt
 1 F=f IH0=i D=d EH1=e L=l	1 ^i TKPEl
 1 F=f IH0=i L.T.R=ltr EY1=a =	1 ^i TPHRA
@@ -359,7 +359,7 @@
 1 F=ff AO1=o R.D=rd	1 - TPOrd
 1 F=ff EH1=e K.T=ct	1 - TPEbgt
 1 F=ff EH1=e K=c	1 - TP*Ebg
-1 F=ff ER0=i M=rm EY1=a =	1 ^i TPHRA
+1 F=ff ER0=i M=rm EY1=a =	1 ^ TPHRA
 1 F=ff ER1=i M=rm	1 - TPEUrpl
 1 F=ff ER1=i M=rm AH0=a T=t	1 ^a TPEUrplt
 1 F=ff IH1=i L=l IY0=i =	1 ^i TPEUl
@@ -410,7 +410,7 @@
 1 JH=g AH1=i M=m	1 - SKWREUpl
 1 JH=g AH1=i T=t	1 - SKWREUt
 1 JH=g EH1=e N=n AH0=i T=t	1 ^i SKWREpbt
-1 JH=g EH1=e N=n ER0=e =r	1 ^e SKWRErpb
+1 JH=g EH1=e N=n ER0=e =r	1 ^ SKWRErpb
 1 JH=g EH1=e S=s	1 - SKWREs
 1 JH=g IH0=i S.T.R=str EY1=a =	1 ^i STKWRA
 1 JH=g IH1=i L=l	1 - SKWREUl
@@ -428,7 +428,7 @@
 1 K.L=cl AH0=i N=n EY1=a =	1 ^i TKPHRA
 1 K.L=cl AH1=a M=m	1 - KHRApl
 1 K.L=cl AH1=i N=n	1 - KHREUpb
-1 K.L=cl ER0=a =r EY1=a =	1 ^a KHRA
+1 K.L=cl ER0=a =r EY1=a =	1 ^ KHRA
 1 K.L=cl ER1=a =r	1 - KHRAr
 1 K.L=cl EY1=ai M=m	1 - KHRA*EUpl
 1 K.L=cl OW1=o ZH=s	1 - KHROpblg
@@ -464,7 +464,7 @@
 1 K.W=qu AY1=i R=r_e	1 - KWAOEUr
 1 K=c AA1=a R.N=rn	1 - KArpb
 1 K=c AA1=a R.N=rn EY0=a =	1 ^a KArpb
-1 K=c AA1=a R.S=rc ER0=e =r	1 ^e KArs
+1 K=c AA1=a R.S=rc ER0=e =r	1 ^ KArs
 1 K=c AA1=o M.P=mp AH0=e T=t	1 KPH PEt
 1 K=c AA1=o N=nn AH0=ai S=ss	1 ^a KOpbs
 1 K=c AE1=a P.CH=pt	1 - KAfp
@@ -491,13 +491,13 @@
 1 K=c AH1=u M.B=mb	1 - KUpbl
 1 K=c AO1=au =	1 - KAU
 1 K=c AO1=o R.D=rd	1 - KOrd
-1 K=c AO1=o R.P=rp ER0=o =r	1 ^o KOrp
+1 K=c AO1=o R.P=rp ER0=o =r	1 ^ KOrp
 1 K=c AW1=ou N.T=nt	1 - KOUpbt
 1 K=c AW1=ou N=nt	1 - KOUpb
 1 K=c EH1=a R=r	1 - KAr
 1 K=c EH1=a R=r IY0=i =	1 ^i KAr
-1 K=c ER0=o =r EY1=a =	1 ^o KRA
-1 K=c ER0=o =rr EH1=e K.T=ct	1 ^o KREbgt
+1 K=c ER0=o =r EY1=a =	1 ^ KRA
+1 K=c ER0=o =rr EH1=e K.T=ct	1 ^ KREbgt
 1 K=c ER1=o =r	1 - KOr
 1 K=c ER1=ou =r IH0=a JH=g_e	1 ^a KOUrpblg
 1 K=c ER1=u =r	1 - KUr
@@ -515,9 +515,9 @@
 1 K=cc AW1=ou N=nt	1 - KOUpb
 1 L=l AA1=a R.JH=rg_e	1 - HRArpblg
 1 L=l AE0=a K.S=x EY1=a =	1 ^a SKHRA
-1 L=l AE1=a B=b ER0=o =r	1 ^o HRArb
+1 L=l AE1=a B=b ER0=o =r	1 ^ HRArb
 1 L=l AE1=a K.S=x	1 - HRAbgs
-1 L=l AE1=a T=t ER0=e =r	1 ^e HRArt
+1 L=l AE1=a T=t ER0=e =r	1 ^ HRArt
 1 L=l AH0=a T=t IH1=i V=v	1 ^a THREUf
 1 L=l AH0=e G=g EY1=a =	1 ^e TKPWHRA
 1 L=l AH1=a T=t	1 - HRAt
@@ -539,12 +539,12 @@
 1 L=l EH1=e K=c	1 - HR*Ebg
 1 L=l EY1=a =	1 - HRA
 1 L=l IH1=i =	1 - HREU
-1 L=l IH1=i B=b ER0=e =r	1 ^e HREUrb
+1 L=l IH1=i B=b ER0=e =r	1 ^ HREUrb
 1 L=l IH1=i F=f	1 - HREUf
-1 L=l IH1=i F=f ER0=e =r	1 ^e HREUfr
+1 L=l IH1=i F=f ER0=e =r	1 ^ HREUfr
 1 L=l IH1=i JH=g AH0=iou S=s	1 ^i HREUpblgs
 1 L=l IH1=i V=v	1 - HREUf
-1 L=l IH1=i V=v ER0=e =r	1 ^e HREUfr
+1 L=l IH1=i V=v ER0=e =r	1 ^ HREUfr
 1 L=l IY1=e =	1 - HRE
 1 L=l IY1=ie V=v	1 - HRAOEf
 1 L=l OW1=o K=c	1 - HRO*bg
@@ -587,7 +587,7 @@
 1 M=m AO1=o R=r	1 - PHOr
 1 M=m AY1=i N.D=nd	1 - PHAOEUpbd
 1 M=m EH1=e M.B=mb	1 - PHEpbl
-1 M=m EH1=e M=m ER0=o =r	1 ^o PHErpl
+1 M=m EH1=e M=m ER0=o =r	1 ^ PHErpl
 1 M=m EH1=e N.D.M=ndm	1 - PHEpbld
 1 M=m EH1=e N.D=nd	1 - PHEpbd
 1 M=m EH1=e N.S=nc_e	1 - PHEpbs
@@ -644,7 +644,7 @@
 1 N=n OW0=o V=v EY1=a T=t	1 ^o STPHRAt
 1 N=n OW1=o V=v	1 - TPHOf
 1 N=n UW1=ew =	1 - TPHAOU
-1 N=n UW1=u M=m ER0=e =r	1 ^e TPHUrpl
+1 N=n UW1=u M=m ER0=e =r	1 ^ TPHUrpl
 1 N=nn AW1=ou N.S=nc_e	1 - TPHOUpbs
 1 N=nn AY1=i =h AH0=i L=l	1 ^i TPHAOEUl
 1 N=nn EH0=e K.S=x EY1=a =	1 ^e STKPHA
@@ -667,7 +667,7 @@
 1 P.L=pl EH1=e K.S=x	1 - PHREbgs
 1 P.L=pl EH1=ea Z=s	1 - PHRAEs
 1 P.L=pl EH1=ea ZH=s	1 - PHRAEpblg
-1 P.L=pl ER0=o =r EY1=a =	1 ^o PHRA
+1 P.L=pl ER0=o =r EY1=a =	1 ^ PHRA
 1 P.L=pl ER1=o =r	1 - PHROr
 1 P.L=pl EY1=a S=c	1 - PHRAs
 1 P.L=pl EY1=a S=c_e	1 - PHRAEUs
@@ -695,7 +695,7 @@
 1 P.R=ppr UW1=o V=v	1 - PROf
 1 P.R=pr AA1=o B=b	1 - PROb
 1 P.R=pr AA1=o P=p	1 - PROp
-1 P.R=pr AA1=o P=p ER0=e =r	1 ^e PROrp
+1 P.R=pr AA1=o P=p ER0=e =r	1 ^ PROrp
 1 P.R=pr AA1=o V=v IH0=i Z=s	1 ^i PROfz
 1 P.R=pr AE1=a K.T=ct	1 - PRAbgt
 1 P.R=pr AE1=a K.T=ct AH0=i K=c	1 ^i PRAbgt
@@ -729,7 +729,7 @@
 1 P=p AA1=a R.T.M=rtm	1 - PArplt
 1 P=p AA1=a R.T=rt	1 - PArt
 1 P=p AA1=o L=l AH0=o JH=g	1 ^o POlg
-1 P=p AA1=o S.T=st ER0=e =r	1 ^e POfrt
+1 P=p AA1=o S.T=st ER0=e =r	1 ^ POfrt
 1 P=p AA1=o S=ss	1 - POs
 1 P=p AE1=a =s	1 - PA
 1 P=p AE1=a CH=tch	1 - PAfp
@@ -761,8 +761,8 @@
 1 P=p AO1=o R.T=rt AH0=a N.T=nt	1 ^a POrpbt
 1 P=p AO1=o R.T=rt AH0=e D=d	1 ^e POrtd
 1 P=p AO1=o R=r	1 - POr
-1 P=p AW1=o =w ER0=e =r	1 ^e POr
-1 P=p AW1=o =w ER0=e M=rm	1 ^e POrpl
+1 P=p AW1=o =w ER0=e =r	1 ^ POr
+1 P=p AW1=o =w ER0=e M=rm	1 ^ POrpl
 1 P=p AY1=i L=l	1 - PAOEUl
 1 P=p EH0=e K.T=ct EY1=a =	1 ^e TKPA
 1 P=p EH1=a R=r	1 - PAr
@@ -788,10 +788,10 @@
 1 P=p EH1=e R=r AH0=i M=m	1 ^i PErpl
 1 P=p EH1=e T=t AH0=i T=t	1 ^i PEt
 1 P=p EH1=e T=t IH0=i T=t	1 ^i PEt
-1 P=p ER0=a =r EY1=a =	1 ^a PRA
-1 P=p ER0=e =r EY1=a =	1 ^e PRA
-1 P=p ER0=i =r EY1=a =	1 ^i PRA
-1 P=p ER0=o =r EY1=a =	1 ^o PRA
+1 P=p ER0=a =r EY1=a =	1 ^ PRA
+1 P=p ER0=e =r EY1=a =	1 ^ PRA
+1 P=p ER0=i =r EY1=a =	1 ^ PRA
+1 P=p ER0=o =r EY1=a =	1 ^ PRA
 1 P=p ER1=a =r	1 - PAr
 1 P=p ER1=e =r	1 - PEr
 1 P=p ER1=e =r AH0=a T=t_e	1 ^a PErt
@@ -857,8 +857,8 @@
 1 S.P=sp EH1=e K.T=ct IH0=i V=v_e	1 ^i SPEfbgt
 1 S.P=sp EH1=e K=c	1 - SP*Ebg
 1 S.P=sp EH1=e R=r	1 - SPEr
-1 S.P=sp ER0=e =r EY1=a =	1 ^e SPRA
-1 S.P=sp ER0=i =r EY1=a =	1 ^i SPRA
+1 S.P=sp ER0=e =r EY1=a =	1 ^ SPRA
+1 S.P=sp ER0=i =r EY1=a =	1 ^ SPRA
 1 S.P=sp ER1=e =r	1 - SPEr
 1 S.P=sp ER1=e =r AH0=a T=t_e	1 ^a SPErt
 1 S.P=sp ER1=i =r	1 - SPEUr
@@ -889,7 +889,7 @@
 1 S.T=st AH1=i P=p	1 - STEUp
 1 S.T=st AO1=a L.M=llm	1 - STAUpl
 1 S.T=st AO1=a L=ll	1 - STAUl
-1 S.T=st ER0=o =r EY1=a =	1 ^o STRA
+1 S.T=st ER0=o =r EY1=a =	1 ^ STRA
 1 S.T=st ER1=o =r	1 - STOr
 1 S.T=st IH0=i N=n EY1=a =	1 ^i STPHA
 1 S.T=st IH0=i T=t UW1=u =	1 ^i STU
@@ -926,7 +926,7 @@
 1 S=c IH1=i P=p IH0=i T=t	1 ^i SEUpt
 1 S=c IH1=i P=p IY0=i =	1 ^i SEUp
 1 S=c IY1=e JH=d	1 - SEpblg
-1 S=c IY1=e JH=d ER0=u =r	1 ^u SErpblg
+1 S=c IY1=e JH=d ER0=u =r	1 ^ SErpblg
 1 S=c IY1=ei V=v	1 - SA*Ef
 1 S=s AA1=o L=l AH0=i D=d	1 ^i SOld
 1 S=s AE1=a N=n	1 - SApb
@@ -958,11 +958,11 @@
 1 S=s EH1=e N.S=ns IH0=i T=t	1 ^i SEfpbt
 1 S=s EH1=e N.S=ns UW0=u =	1 ^u SEpbs
 1 S=s EH1=e N.SH=ns UW0=u =	1 ^u SErpb
-1 S=s EH1=e P=p ER0=a =r	1 ^a SErp
-1 S=s ER0=e T=rt EY1=a =	1 ^e STRA
-1 S=s ER0=e V=rv EY1=a =	1 ^e SRA
-1 S=s ER0=u =rr EH1=e K=c	1 ^u SR*Ebg
-1 S=s ER0=u M=rm AW1=ou N.T=nt	1 ^u SPHROUpbt
+1 S=s EH1=e P=p ER0=a =r	1 ^ SErp
+1 S=s ER0=e T=rt EY1=a =	1 ^ STRA
+1 S=s ER0=e V=rv EY1=a =	1 ^ SRA
+1 S=s ER0=u =rr EH1=e K=c	1 ^ SR*Ebg
+1 S=s ER0=u M=rm AW1=ou N.T=nt	1 ^ SPHROUpbt
 1 S=s ER1=e =r	1 - SEr
 1 S=s ER1=e T=rt	1 - SErt
 1 S=s ER1=e V=rv	1 - SEfrb
@@ -972,7 +972,7 @@
 1 S=s IH0=e K.Y=c UH1=u R=r	1 ^e SKUr
 1 S=s IH0=e K.Y=c UW1=u T=t	1 ^e SKUt
 1 S=s IH1=i D=d	1 - SEUd
-1 S=s IH1=i D=d ER0=e =r	1 ^e SEUrd
+1 S=s IH1=i D=d ER0=e =r	1 ^ SEUrd
 1 S=s IH1=i D=d IY0=i =	1 ^i SEUd
 1 S=s IH1=i S.T=st	1 - SEUft
 1 S=s IH1=i S.T=st AH0=e N.T=nt	1 ^e SEUfpbt
@@ -1039,7 +1039,7 @@
 1 T.R=ttr IH1=i =	1 - TREU
 1 T=pt IY1=i =	1 - TAOE
 1 T=t AA1=o K.S=x AH0=i K=c	1 ^i TObgs
-1 T=t AA1=o L=l ER0=e =r	1 ^e TOrl
+1 T=t AA1=o L=l ER0=e =r	1 ^ TOrl
 1 T=t AA1=o M=m	1 - TOpl
 1 T=t AE1=a CH.M=chm	1 - TAfpl
 1 T=t AE1=a CH=ch	1 - TAfp
@@ -1065,8 +1065,8 @@
 1 T=t AH1=i N=n	1 - TEUpb
 1 T=t AH1=o N=n	1 - TOpb
 1 T=t AO1=o R=r	1 - TOr
-1 T=t AY1=i =r ER0=e =	1 ^e TAOEUr
-1 T=t AY1=i =r ER0=e M=m	1 ^e TAOEUrpl
+1 T=t AY1=i =r ER0=e =	1 ^ TAOEUr
+1 T=t AY1=i =r ER0=e M=m	1 ^ TAOEUrpl
 1 T=t AY1=i M=m_e	1 - TAOEUpl
 1 T=t AY1=i T=tl AH0=e L.M=m	1 ^e TAOEUplt
 1 T=t AY1=i T=tl AH0=e L=	1 ^e TAOEUlt
@@ -1085,19 +1085,19 @@
 1 T=t EH1=e R=rr AH0=o G=g	1 ^o TErg
 1 T=t EH1=e S.T=st	1 - TEft
 1 T=t EH1=e S.T=st AH0=i N=n	1 ^i TEfpbt
-1 T=t ER0=e =r AE1=a K.T=ct	1 ^e TRAbgt
-1 T=t ER0=e =r AE1=a K=c	1 ^e TRA*bg
-1 T=t ER0=e =rr AH1=u P=p	1 ^e TRUp
-1 T=t ER0=e CH=rch EY1=a N.JH=ng_e	1 ^e TKHRAEUpbg
-1 T=t ER0=e F=rf IH1=e R=r	1 ^e TPREr
-1 T=t ER0=e M=rm IH1=i =s	1 ^e TPHREU
-1 T=t ER0=e M=rm IH1=i T=tt	1 ^e TPHREUt
-1 T=t ER0=e N=rn AE1=a =	1 ^e TPHRA
-1 T=t ER0=e S=rc EH1=e P=p	1 ^e STREp
-1 T=t ER0=e S=rs EH1=e K=c	1 ^e STR*Ebg
-1 T=t ER0=e T=rt EY1=ai N.M=nm	1 ^e TRA*EUpbl
-1 T=t ER0=e T=rt EY1=ai N=n	1 ^e TRA*EUpb
-1 T=t ER0=e V=rv EH1=e N=n	1 ^e STREpb
+1 T=t ER0=e =r AE1=a K.T=ct	1 ^ TRAbgt
+1 T=t ER0=e =r AE1=a K=c	1 ^ TRA*bg
+1 T=t ER0=e =rr AH1=u P=p	1 ^ TRUp
+1 T=t ER0=e CH=rch EY1=a N.JH=ng_e	1 ^ TKHRAEUpbg
+1 T=t ER0=e F=rf IH1=e R=r	1 ^ TPREr
+1 T=t ER0=e M=rm IH1=i =s	1 ^ TPHREU
+1 T=t ER0=e M=rm IH1=i T=tt	1 ^ TPHREUt
+1 T=t ER0=e N=rn AE1=a =	1 ^ TPHRA
+1 T=t ER0=e S=rc EH1=e P=p	1 ^ STREp
+1 T=t ER0=e S=rs EH1=e K=c	1 ^ STR*Ebg
+1 T=t ER0=e T=rt EY1=ai N.M=nm	1 ^ TRA*EUpbl
+1 T=t ER0=e T=rt EY1=ai N=n	1 ^ TRA*EUpb
+1 T=t ER0=e V=rv EH1=e N=n	1 ^ STREpb
 1 T=t ER1=e JH=rg	1 - TErpblg
 1 T=t ER1=e M=rm AH0=i N=n	1 ^i TErpbl
 1 T=t ER1=e N=rn	1 - TErpb
@@ -1163,7 +1163,7 @@
 1 V=v EH1=e S.T=st	1 - SREft
 1 V=v EH1=e S.T=st AH0=i G=g	1 ^i SREfgt
 1 V=v EH1=e S=st	1 - SREft
-1 V=v ER0=e S=rs EY1=a =	1 ^e SRA
+1 V=v ER0=e S=rs EY1=a =	1 ^ SRA
 1 V=v ER1=e =r	1 - SREr
 1 V=v ER1=e B=rb	1 - SRErb
 1 V=v ER1=e B=rb IY0=i =	1 ^i SRErb
@@ -1208,8 +1208,8 @@
 1 Z=s EH1=e N.T.M=ntm	1 - SEpblt
 1 Z=s EH1=e N.T=nt	1 - SEpbt
 1 Z=s EH1=e N=nt	1 - SEpb
-1 Z=s ER0=e V=rv EY1=a =	1 ^e SRA
-1 Z=s ER0=u =rr EH1=e K=c	1 ^u SR*Ebg
+1 Z=s ER0=e V=rv EY1=a =	1 ^ SRA
+1 Z=s ER0=u =rr EH1=e K=c	1 ^ SR*Ebg
 1 Z=s ER1=e V=rv	1 - SEfrb
 1 Z=s IH0=i G.N=gn EY1=a =	1 ^i STKPWHA
 1 Z=s IH1=i D=d	1 - SEUd

@@ -223,9 +223,9 @@ define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | {SREr} "|" {a} "|" {ver} "|" {sion}
     | {SROEUd} "|" {a} "|" {void} "|" {ance}
     | {WAEUr} "|" {a} "|" {ware} "|" {ness}
-    | "^" {HRAOrb} "|" {col} "|" {labor} "|" {ation}
-    | "^" {HRAOrb} "|" {col} "|" {labor} "|" {ative}
-    | "^" {HRAErt} "|" {col} "|" {later} "|" {al}
+    | "^" {HRArb} "|" {col} "|" {labor} "|" {ation}
+    | "^" {HRArb} "|" {col} "|" {labor} "|" {ative}
+    | "^" {HRArt} "|" {col} "|" {later} "|" {al}
     | {HREbgt} "|" {col} "|" {lect} "|" {ible}
     | {HR} "*" {Ebg} "|" {col} "|" {lec} "|" {tion}
     | {HREbgt} "|" {col} "|" {lect} "|" {ive}
@@ -246,8 +246,8 @@ define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | "^" {TPAOrbt} "|" {com} "|" {fortab} "|" {ly}
     | "*" {EUbg} "|" {com} "|" {ic} "|" {al}
     | {PHApbd} "|" {com} "|" {mand} "|" {er}
-    | "^" {PHOErpl} "|" {com} "|" {memor} "|" {ation}
-    | "^" {PHOErpl} "|" {com} "|" {memor} "|" {ative}
+    | "^" {PHErpl} "|" {com} "|" {memor} "|" {ation}
+    | "^" {PHErpl} "|" {com} "|" {memor} "|" {ative}
     | {PHEpbs} "|" {com} "|" {mence} "|" {ment}
     | {PHEpbd} "|" {com} "|" {mend} "|" {able}
     | {PHEpbd} "|" {com} "|" {mend} "|" {ation}
@@ -312,7 +312,7 @@ define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | {TKUbgt} "|" {con} "|" {duct} "|" {ive}
     | "^" {TKEf} "|" {con} "|" {ductiv} "|" {ity}
     | {TKUbgt} "|" {con} "|" {duct} "|" {or}
-    | "^" {TPrd} "|" {con} "|" {feder} "|" {ation}
+    | "^" {TPErd} "|" {con} "|" {feder} "|" {ation}
     | {TPEr} "|" {con} "|" {fer} "|" {ence}
     | {TPE} "|" {con} "|" {fes} "|" {sion}
     | {TPE} "|" {con} "|" {fes} "|" {sional}
@@ -341,8 +341,8 @@ define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | "^" {SAEfrbt} "|" {con} "|" {servat} "|" {ism}
     | {SEfrb} "|" {con} "|" {serv} "|" {ative}
     | {SEUd} "|" {con} "|" {sid} "|" {er}
-    | "^" {SUrd} "|" {con} "|" {sider} "|" {able}
-    | "^" {SUrd} "|" {con} "|" {sider} "|" {ation}
+    | "^" {SEUrd} "|" {con} "|" {sider} "|" {able}
+    | "^" {SEUrd} "|" {con} "|" {sider} "|" {ation}
     | {SAOEUpb} "|" {con} "|" {sign} "|" {ment}
     | {SEUft} "|" {con} "|" {sist} "|" {ent}
     | "^" {SUfpbt} "|" {con} "|" {sistent} "|" {ly}
@@ -430,17 +430,17 @@ define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | "^" {TPpbt} "|" {de} "|" {finit} "|" {ive}
     | {TPHR} "*" {Ebg} "|" {de} "|" {flec} "|" {tion}
     | {TPOrpl} "|" {de} "|" {form} "|" {ation}
-    | "^" {SKWRrpb} "|" {de} "|" {gener} "|" {ation}
-    | "^" {SKWRrpb} "|" {de} "|" {gener} "|" {ative}
+    | "^" {SKWRErpb} "|" {de} "|" {gener} "|" {ation}
+    | "^" {SKWRErpb} "|" {de} "|" {gener} "|" {ative}
     | {TKPWRAd} "|" {de} "|" {grad} "|" {ation}
     | {HAOEUrd} "|" {de} "|" {hydr} "|" {ation}
     | {HREg} "|" {de} "|" {leg} "|" {ation}
     | {HRE} "|" {de} "|" {le} "|" {tion}
-    | "^" {HRUrb} "|" {de} "|" {liber} "|" {ation}
+    | "^" {HREUrb} "|" {de} "|" {liber} "|" {ation}
     | "^" {HRAEUbgt} "|" {de} "|" {licate} "|" {ly}
     | {HRAO} "*" {EUt} "|" {de} "|" {light} "|" {ful}
     | {HREUf} "|" {de} "|" {liv} "|" {er}
-    | "^" {HRUfr} "|" {de} "|" {liver} "|" {ance}
+    | "^" {HREUfr} "|" {de} "|" {liver} "|" {ance}
     | {HRU} "|" {de} "|" {lu} "|" {sion}
     | {HRU} "|" {de} "|" {lu} "|" {sional}
     | {PHAEpb} "|" {de} "|" {mean} "|" {or}
@@ -450,7 +450,7 @@ define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | "^" {STPHRAO} "|" {de} "|" {monstra} "|" {tion}
     | {TPHAOEU} "|" {de} "|" {ni} "|" {al}
     | "^" {TPHOEUpbl} "|" {de} "|" {nomin} "|" {ation}
-    | "^" {rd} "|" {de} "|" {odor} "|" {ant}
+    | "^" {Ord} "|" {de} "|" {odor} "|" {ant}
     | {PArt} "|" {de} "|" {part} "|" {ment}
     | "^" {TPHRAEpb} "|" {de} "|" {partment} "|" {al}
     | {PAfrpb} "|" {de} "|" {part} "|" {ure}
@@ -520,7 +520,7 @@ define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | {TKPWRAEUs} "|" {dis} "|" {grace} "|" {ful}
     | {PHEUs} "|" {dis} "|" {miss} "|" {al}
     | {Ord} "|" {dis} "|" {ord} "|" {er}
-    | "^" {OErd} "|" {dis} "|" {order} "|" {ly}
+    | "^" {Ord} "|" {dis} "|" {order} "|" {ly}
     | {PAr} "|" {dis} "|" {par} "|" {ity}
     | {PAfp} "|" {dis} "|" {patch} "|" {er}
     | {PEpbs} "|" {dis} "|" {pens} "|" {er}
@@ -566,7 +566,7 @@ define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | {TPAt} "|" {em} "|" {phat} "|" {ic}
     | {PEUr} "|" {em} "|" {pir} "|" {ical}
     | {PHROEU} "|" {em} "|" {ploy} "|" {ment}
-    | "^" {POEr} "|" {em} "|" {power} "|" {ment}
+    | "^" {POr} "|" {em} "|" {power} "|" {ment}
     | {TAOE} "|" {em} "|" {pti} "|" {ness}
     | {KWRUl} "|" {em} "|" {ul} "|" {ation}
     | {Abg} "|" {en} "|" {act} "|" {ment}
@@ -581,7 +581,7 @@ define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | "^" {TKHOEl} "|" {en} "|" {dothel} "|" {ial}
     | {TKOU} "|" {en} "|" {dow} "|" {ment}
     | {TKUr} "|" {en} "|" {dur} "|" {ance}
-    | "^" {SKWRt} "|" {en} "|" {erget} "|" {ic}
+    | "^" {SKWREt} "|" {en} "|" {erget} "|" {ic}
     | {TPOErs} "|" {en} "|" {force} "|" {able}
     | {TPOErs} "|" {en} "|" {force} "|" {ment}
     | {TKPWAEUpblg} "|" {en} "|" {gage} "|" {ment}
@@ -598,13 +598,13 @@ define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | {Erp} "|" {ent} "|" {erpr} "|" {ise}
     | {TA} "*" {EUpb} "|" {enter} "|" {tain} "|" {er}
     | {TA} "*" {EUpb} "|" {enter} "|" {tain} "|" {ment}
-    | "^" {AOUr} "|" {ent} "|" {ire} "|" {ly}
+    | "^" {AOEUr} "|" {ent} "|" {ire} "|" {ly}
     | "^" {AOUlt} "|" {ent} "|" {itle} "|" {ment}
     | {SRAOE} "|" {en} "|" {vi} "|" {ous}
     | "^" {SRAEUrpb} "|" {en} "|" {viron} "|" {ment}
     | {SREU} "|" {en} "|" {vi} "|" {sion}
     | {Abgt} "|" {ex} "|" {act} "|" {ly}
-    | "^" {AErpblg} "|" {ex} "|" {agger} "|" {ation}
+    | "^" {Arpblg} "|" {ex} "|" {agger} "|" {ation}
     | "^" {AEUpbl} "|" {ex} "|" {amin} "|" {ation}
     | "^" {AEUpbl} "|" {ex} "|" {amin} "|" {er}
     | {KAf} "|" {ex} "|" {cav} "|" {ation}
@@ -712,7 +712,7 @@ define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | "^" {PROEUpbz} "|" {im} "|" {prison} "|" {ment}
     | {PROb} "|" {im} "|" {prob} "|" {able}
     | {PROp} "|" {im} "|" {prop} "|" {er}
-    | "^" {PROErp} "|" {im} "|" {proper} "|" {ly}
+    | "^" {PROrp} "|" {im} "|" {proper} "|" {ly}
     | {PROf} "|" {im} "|" {prove} "|" {ment}
     | "^" {PROEUfz} "|" {im} "|" {provis} "|" {ation}
     | {PROf} "|" {im} "|" {prov} "|" {ise}
@@ -722,10 +722,10 @@ define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | {A} "*" {bg} "|" {in} "|" {ac} "|" {tion}
     | {Abgt} "|" {in} "|" {act} "|" {ive}
     | "^" {TKAEUf} "|" {in} "|" {activ} "|" {ity}
-    | "^" {Arg} "|" {in} "|" {augur} "|" {al}
+    | "^" {AUrg} "|" {in} "|" {augur} "|" {al}
     | "^" {TKPHAEs} "|" {in} "|" {candesc} "|" {ent}
     | {KAp} "|" {in} "|" {cap} "|" {able}
-    | "^" {KAErs} "|" {in} "|" {carcer} "|" {ation}
+    | "^" {KArs} "|" {in} "|" {carcer} "|" {ation}
     | {KArpb} "|" {in} "|" {carn} "|" {ation}
     | {SEpb} "|" {in} "|" {cent} "|" {ive}
     | {SEp} "|" {in} "|" {cep} "|" {tion}
@@ -743,8 +743,8 @@ define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | "^" {STKPHAO} "*" {Ef} "|" {in} "|" {conceiv} "|" {able}
     | "^" {TKPHROUs} "|" {in} "|" {conclus} "|" {ive}
     | "^" {STKPHOEUft} "|" {in} "|" {consist} "|" {ent}
-    | "^" {Krp} "|" {in} "|" {corpor} "|" {ation}
-    | "^" {KROEbgt} "|" {in} "|" {correct} "|" {ly}
+    | "^" {KOrp} "|" {in} "|" {corpor} "|" {ation}
+    | "^" {KREbgt} "|" {in} "|" {correct} "|" {ly}
     | "^" {KRAUpbgs} "|" {in} "|" {creasing} "|" {ly}
     | {KREd} "|" {in} "|" {cred} "|" {ible}
     | "^" {KRUbd} "|" {in} "|" {credib} "|" {ly}
@@ -757,11 +757,11 @@ define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | {TK} "*" {EUbg} "|" {in} "|" {dic} "|" {ative}
     | "^" {TKAEUt} "|" {in} "|" {dicat} "|" {or}
     | {TKAOEUt} "|" {in} "|" {dict} "|" {ment}
-    | "^" {TKUfr} "|" {in} "|" {differ} "|" {ence}
-    | "^" {TKUfr} "|" {in} "|" {differ} "|" {ent}
+    | "^" {TKEUfr} "|" {in} "|" {differ} "|" {ence}
+    | "^" {TKEUfr} "|" {in} "|" {differ} "|" {ent}
     | "^" {TKUpblg} "|" {in} "|" {digen} "|" {ous}
     | {TKEUpbg} "|" {in} "|" {dign} "|" {ation}
-    | "^" {TKRUbgt} "|" {in} "|" {direct} "|" {ly}
+    | "^" {TKREbgt} "|" {in} "|" {direct} "|" {ly}
     | {STKPEpbs} "|" {in} "|" {dispens} "|" {able}
     | {TK} "*" {Ubg} "|" {in} "|" {duc} "|" {tion}
     | {TKUlg} "|" {in} "|" {dulg} "|" {ence}
@@ -779,7 +779,7 @@ define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | {TPEr} "|" {in} "|" {fer} "|" {ence}
     | "^" {TPUr} "|" {in} "|" {feri} "|" {or}
     | {TPErpb} "|" {in} "|" {fern} "|" {al}
-    | "^" {TPRUl} "|" {in} "|" {fertil} "|" {ity}
+    | "^" {TPREUl} "|" {in} "|" {fertil} "|" {ity}
     | {TPEft} "|" {in} "|" {fest} "|" {ation}
     | "^" {TKPUl} "|" {in} "|" {fidel} "|" {ity}
     | {TPEUrlt} "|" {in} "|" {filtr} "|" {ation}
@@ -816,14 +816,14 @@ define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | {TPHOf} "|" {in} "|" {nov} "|" {ation}
     | {TPHOf} "|" {in} "|" {nov} "|" {ative}
     | "^" {STPHRAOt} "|" {in} "|" {novat} "|" {or}
-    | "^" {TPHEUrpl} "|" {in} "|" {numer} "|" {able}
+    | "^" {TPHUrpl} "|" {in} "|" {numer} "|" {able}
     | "^" {TKPWRAOpb} "|" {in} "|" {organ} "|" {ic}
     | {KWEUs} "|" {in} "|" {quis} "|" {ition}
     | {SApb} "|" {in} "|" {san} "|" {ity}
     | {SKREUp} "|" {in} "|" {scrip} "|" {tion}
     | "^" {SKEUr} "|" {in} "|" {secur} "|" {ity}
     | "^" {SUfpbt} "|" {in} "|" {sensit} "|" {ive}
-    | "^" {SAErp} "|" {in} "|" {separ} "|" {able}
+    | "^" {SErp} "|" {in} "|" {separ} "|" {able}
     | {SEr} "|" {in} "|" {ser} "|" {tion}
     | {SAOEUd} "|" {in} "|" {sid} "|" {er}
     | {SEUd} "|" {in} "|" {sid} "|" {ious}
@@ -850,8 +850,8 @@ define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | {SHUr} "|" {in} "|" {sur} "|" {ance}
     | {SHUr} "|" {in} "|" {sur} "|" {er}
     | {SUrpblg} "|" {in} "|" {surg} "|" {ent}
-    | "^" {SPHROpbt} "|" {in} "|" {surmount} "|" {able}
-    | "^" {SR} "*" {EUbg} "|" {in} "|" {surrec} "|" {tion}
+    | "^" {SPHROUpbt} "|" {in} "|" {surmount} "|" {able}
+    | "^" {SR} "*" {Ebg} "|" {in} "|" {surrec} "|" {tion}
     | {Apbg} "|" {int} "|" {ang} "|" {ible}
     | {Epblg} "|" {int} "|" {eg} "|" {er}
     | {Erg} "|" {int} "|" {egr} "|" {al}
@@ -882,16 +882,16 @@ define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | {PREt} "|" {inter} "|" {pret} "|" {er}
     | {PREt} "|" {inter} "|" {pret} "|" {ive}
     | "^" {OErg} "|" {int} "|" {errog} "|" {ation}
-    | "^" {REUp} "|" {int} "|" {errup} "|" {tion}
+    | "^" {RUp} "|" {int} "|" {errup} "|" {tion}
     | {S} "*" {Ebg} "|" {inter} "|" {sec} "|" {tion}
     | {Efrb} "|" {int} "|" {erv} "|" {al}
     | {SREpb} "|" {inter} "|" {ven} "|" {tion}
     | "^" {Ufpbt} "|" {int} "|" {estin} "|" {al}
     | "^" {AEUplt} "|" {int} "|" {imate} "|" {ly}
     | "^" {pld} "|" {int} "|" {imid} "|" {ation}
-    | "^" {OErl} "|" {int} "|" {oler} "|" {able}
-    | "^" {OErl} "|" {int} "|" {oler} "|" {ance}
-    | "^" {OErl} "|" {int} "|" {oler} "|" {ant}
+    | "^" {Orl} "|" {int} "|" {oler} "|" {able}
+    | "^" {Orl} "|" {int} "|" {oler} "|" {ance}
+    | "^" {Orl} "|" {int} "|" {oler} "|" {ant}
     | "^" {OEUbgs} "|" {int} "|" {oxic} "|" {ation}
     | "^" {SRAEl} "|" {int} "|" {racell} "|" {ular}
     | "^" {SRAEpb} "|" {int} "|" {raven} "|" {ous}
@@ -923,7 +923,7 @@ define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | {TPOrpl} "|" {per} "|" {form} "|" {ance}
     | {TPOrpl} "|" {per} "|" {form} "|" {er}
     | "^" {Uplt} "|" {per} "|" {imet} "|" {er}
-    | "^" {Ufr} "|" {per} "|" {ipher} "|" {al}
+    | "^" {EUfr} "|" {per} "|" {ipher} "|" {al}
     | {PHApb} "|" {per} "|" {man} "|" {ent}
     | "^" {PHAEpbt} "|" {per} "|" {manent} "|" {ly}
     | {PHEUs} "|" {per} "|" {miss} "|" {ible}
@@ -992,7 +992,7 @@ define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | {PWAb} "|" {pro} "|" {bab} "|" {ly}
     | {PWA} "|" {pro} "|" {ba} "|" {tion}
     | "^" {PWHRAEt} "|" {pro} "|" {blemat} "|" {ic}
-    | "^" {SEUrpblg} "|" {pro} "|" {cedur} "|" {al}
+    | "^" {SErpblg} "|" {pro} "|" {cedur} "|" {al}
     | {SEpblg} "|" {pro} "|" {ced} "|" {ure}
     | {SE} "|" {pro} "|" {ces} "|" {sion}
     | {SEs} "|" {pro} "|" {cess} "|" {or}
@@ -1015,7 +1015,7 @@ define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | {EUb} "|" {pro} "|" {hib} "|" {ition}
     | {SKWR} "*" {Ebg} "|" {pro} "|" {jec} "|" {tion}
     | {SKWREbgt} "|" {pro} "|" {ject} "|" {or}
-    | "^" {HRUfr} "|" {pro} "|" {lifer} "|" {ation}
+    | "^" {HREUfr} "|" {pro} "|" {lifer} "|" {ation}
     | {HREUf} "|" {pro} "|" {lif} "|" {ic}
     | {PHEUpb} "|" {pro} "|" {min} "|" {ence}
     | {PHEUpb} "|" {pro} "|" {min} "|" {ent}
@@ -1097,7 +1097,7 @@ define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | {TPHREbgt} "|" {re} "|" {flect} "|" {ive}
     | {TPHREbgt} "|" {re} "|" {flect} "|" {or}
     | {TPOrpl} "|" {re} "|" {form} "|" {ation}
-    | "^" {TPRUrpblg} "|" {re} "|" {friger} "|" {ation}
+    | "^" {TPREUrpblg} "|" {re} "|" {friger} "|" {ation}
     | {TKPWArd} "|" {re} "|" {gard} "|" {less}
     | {SKWREU} "|" {re} "|" {gi} "|" {ment}
     | {SKWREUfrt} "|" {re} "|" {gistr} "|" {ation}
@@ -1185,12 +1185,12 @@ define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | {SUlt} "|" {re} "|" {sult} "|" {ant}
     | {SUfrp} "|" {re} "|" {sump} "|" {tion}
     | {SUrpblg} "|" {re} "|" {surg} "|" {ence}
-    | "^" {SR} "*" {EUbg} "|" {re} "|" {surrec} "|" {tion}
+    | "^" {SR} "*" {Ebg} "|" {re} "|" {surrec} "|" {tion}
     | {TA} "*" {EUpb} "|" {re} "|" {tain} "|" {er}
     | "^" {TAEUl} "|" {re} "|" {tali} "|" {ation}
     | {TEpb} "|" {re} "|" {ten} "|" {tion}
     | {TEUpb} "|" {re} "|" {tin} "|" {al}
-    | "^" {TAOUr} "|" {re} "|" {tire} "|" {ment}
+    | "^" {TAOEUr} "|" {re} "|" {tire} "|" {ment}
     | "^" {TPWRE} "|" {re} "|" {tribu} "|" {tion}
     | {TRAOEf} "|" {re} "|" {triev} "|" {al}
     | "^" {STPROEbgt} "|" {re} "|" {trospect} "|" {ive}
@@ -1213,17 +1213,17 @@ define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | "^" {STKPHROEpb} "|" {un} "|" {conven} "|" {tional}
     | {KOf} "|" {un} "|" {cov} "|" {er}
     | "^" {TKPHAOU} "|" {un} "|" {deni} "|" {able}
-    | "^" {TKROEf} "|" {un} "|" {dercov} "|" {er}
-    | "^" {STKRAEpbd} "|" {un} "|" {derstand} "|" {able}
-    | "^" {TKRAEbg} "|" {un} "|" {dertak} "|" {er}
+    | "^" {TKROf} "|" {un} "|" {dercov} "|" {er}
+    | "^" {STKRApbd} "|" {un} "|" {derstand} "|" {able}
+    | "^" {TKRAbg} "|" {un} "|" {dertak} "|" {er}
     | {STKAOEUr} "|" {un} "|" {desir} "|" {able}
     | "^" {TKOEUtd} "|" {un} "|" {doubted} "|" {ly}
     | "^" {PHROU} "|" {un} "|" {employ} "|" {ment}
     | "*" {Et} "|" {un} "|" {eth} "|" {ical}
     | {TPA} "*" {EUr} "|" {un} "|" {fair} "|" {ly}
     | {TPA} "*" {EUt} "|" {un} "|" {faith} "|" {ful}
-    | "^" {TPAOfr} "|" {un} "|" {favor} "|" {able}
-    | "^" {TKPWROEt} "|" {un} "|" {forgett} "|" {able}
+    | "^" {TPAfr} "|" {un} "|" {favor} "|" {able}
+    | "^" {TKPWREt} "|" {un} "|" {forgett} "|" {able}
     | "^" {TKPWROEUf} "|" {un} "|" {forgiv} "|" {able}
     | {TPREpbd} "|" {un} "|" {friend} "|" {ly}
     | {TKPWRAEUt} "|" {un} "|" {grate} "|" {ful}

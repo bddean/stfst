@@ -7,10 +7,11 @@
   those sounds;
 - the chord is the stressed vowel's chord under `dictionaries/typey-vowels.toml`
   XOR the other vowel's letter (a `A`, e `E`, i and y `EU`, o `O`, u `U`): a key
-  both have is not pressed.
+  both have is not pressed. An r-coloured other vowel is its R and adds no key.
 
 So report is `^PROERT` (o `O`, e `E`), happy `^HAEUP` (a `A`, y `EU`), about
-`^PWAOUT` (ou `OU`, a `A`), and city `^S-T` (i `EU`, y `EU`: no vowel).
+`^PWAOUT` (ou `OU`, a `A`), city `^S-T` (i `EU`, y `EU`: no vowel), and mother
+`^PHO*RT` (o `O`, and -er's R).
 
 A prefix spelled with a cluster no English onset has takes that cluster instead
 of `^`, and the rest of the word is one syllable by the table: display is

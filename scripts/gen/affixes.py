@@ -358,16 +358,21 @@ def stems_lexc(parsed):
                 [(e, e, None) for e in entries])
 
 
+def parse_words(typey):
+    """stems() over every word in scope."""
+    words = sorted((w for w in typey.known if re.fullmatch("[a-z]+", w) and g.zipf(w) >= MIN_ZIPF),
+                   key=lambda w: (-g.zipf(w), w))
+    onsets = {tuple(on) for w in typey.words.values() for on, _ in w.phones}
+    return stems(words, onsets)
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--check", action="store_true", help="fail if the lexicon or golden file is stale")
     args = ap.parse_args()
 
     typey = g.Typey.load()
-    words = sorted((w for w in typey.known if re.fullmatch("[a-z]+", w) and g.zipf(w) >= MIN_ZIPF),
-                   key=lambda w: (-g.zipf(w), w))
-    onsets = {tuple(on) for w in typey.words.values() for on, _ in w.phones}
-    parsed = stems(words, onsets)
+    parsed = parse_words(typey)
     text = stems_lexc(parsed)
     current = os.path.exists(STEMS) and open(STEMS).read() == text
     if args.check and not current:

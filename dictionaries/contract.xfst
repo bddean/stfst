@@ -4,15 +4,17 @@
 ! write as one stroke, after marks that say what the stroke adds. The stressed
 ! vowel is the syllable's vowel: every consonant before it is the onset and
 ! every one after it the coda. The other vowel is the mark: `^` and its first
-! letter, which caret.xfst turns into keys.
+! letter, which caret.xfst turns into keys. An r-coloured one is its R, and its
+! mark is `^` alone.
 !
 !     report   R=r IY0=e P=p AO1=o R.T=rt  ->  ^e R.P=p AO1=o R.T=rt
 !     happy    HH=h AE1=a P=pp IY0=y =      ->  ^y HH=h AE1=a P=-
+!     mother   M=m AH1=o DH=th ER0=e =r     ->  ^ M=m AH1=o DH.R=-
 !
 ! The onset's letters are the stressed syllable's own, and so are the coda's
 ! when it is the last syllable. When the first vowel has the stress, the coda
-! spans the second and its letters say nothing: they are `-`. An r-coloured
-! unstressed vowel leaves its R, and z spelled s is S at the start.
+! spans the second and its letters say nothing: they are `-`. Z spelled s is
+! S at the start.
 !
 ! A prefix spelled with a cluster no English onset has marks the syllable with
 ! the cluster's keys instead, and the rest of the word is the syllable: display
@@ -27,6 +29,8 @@ define Dots     [ [..] -> Dot || .#. Rank Gap [ ? - Gap ]* Gap ?* Cons _ Cons ] 
 
 define NoZ      [ [ Cons - Z ] | Z:S ] ;
 define Weak     [ Unstressed | Secondary ] ;
+! The letters a mark can be.
+define Written  [ a | e | i | o | u | y ] ;
 define Syllable [ Gap VowelSeg Gap LastSeg ] ;
 
 ! The second vowel has the stress. The first's letters are one of a run that
@@ -34,21 +38,23 @@ define Syllable [ Gap VowelSeg Gap LastSeg ] ;
 ! y after them is the onset's (cayenne).
 define Second(T, C) [ Rank Gap Ins("^" T Gap) Bare(C) Del(Eq Letter* Gap)
     [ Del([ Weak - RVowel ] Eq T Gap) Eq Gap Stressed Eq [ [ Letter+ - [ y [ a | e | i | o | u ] ?* ] ] ( Tail ) ]
-    | Del([ Weak & RVowel ] Eq T Letter* ( Tail ) Gap) Ins(R) Bare(C) Eq Letter+ Gap Stressed Eq Letter+ ( Tail )
     | Del([ Weak - RVowel ] Eq T Letter* ( Tail ) Gap) Bare1(C) Eq Letter+ Gap Stressed Eq Letter+ ( Tail ) ]
+    Gap LastSeg ] ;
+define SecondR(C) [ Rank Gap Ins("^" Gap) Bare(C) Del(Eq Letter* Gap)
+    Del([ Weak & RVowel ] Eq Written Letter* ( Tail ) Gap) Ins(R) Bare(C) Eq Letter+ Gap Stressed Eq Letter+ ( Tail )
     Gap LastSeg ] ;
 
 ! The first vowel has the stress. A final e is a vowel only in -le and -re
-! (little, acre), where it cannot be silent (agile), and a run of letters that
-! is two vowels is one vowel group.
-define First(T, C) [ [ ~[ Rank Gap ConsSeg Gap Vowel Eq Letter Gap Phones Eq Gap ?* ]
+! (little, acre), and a run of letters that is two vowels is one vowel group.
+define FirstShape [ ~[ Rank Gap ConsSeg Gap Vowel Eq Letter Gap Phones Eq Gap ?* ]
     & ~[ Rank Gap ConsSeg Gap VowelSeg Gap Phones Eq [ Letter* - [ Letter* [ l | r ] ] ]
          Gap Vowel Eq e Gap Phones Eq ]
-    & ~[ ?* [ [ l | r ] "_" e | "_" u e ] ] ]
-    .o. [ Rank Gap Ins("^" T Gap) Bare(C) Eq Letter* Gap Stressed Eq Letter+ ( Tail ) Gap
-          Bare(Cons) Del(Eq Letter* Gap)
-          [ Del(RVowel Eq T Letter* ( Tail ) Gap) Ins(R) | Del([ Vowel - RVowel ] Eq T Letter* ( Tail ) Gap) ]
-          Bare(Cons) Del(Eq Letter* ( Tail )) Ins(Eq "-") ] ] ;
+    & ~[ ?* "_" u e ] ] ;
+! The stressed vowel and the consonants on either side of it.
+define Front(C) [ Bare(C) Eq Letter* Gap Stressed Eq Letter+ ( Tail ) Gap Bare(Cons) Del(Eq Letter* Gap) ] ;
+define Close    [ Bare(Cons) Del(Eq Letter* ( Tail )) Ins(Eq "-") ] ;
+define First(T, C) [ Rank Gap Ins("^" T Gap) Front(C) Del([ Vowel - RVowel ] Eq T Letter* ( Tail ) Gap) Close ] ;
+define FirstR(C) [ Rank Gap Ins("^" Gap) Front(C) Del(RVowel Eq Written Letter* ( Tail ) Gap) Ins(R) Close ] ;
 
 ! The syllable's letters read as a word of their own: gu before a vowel is a
 ! hard g (guile).
@@ -60,8 +66,9 @@ define Gu       [ Head [ [ GuVowel .o. [ g Ins(u) Gap ? Eq Del(u) ?* ] ] | [ ?* 
 define Glide    [ Rank Gap [ ? - Gap ]* Gap [ [ Cons+ Del(Y) ] | [ Cons* - [ Cons+ Y ] ] ] Eq ?* ] ;
 
 define Tints(C) [ [ [ Second(a, C) | Second(e, C) | Second(i, C) | Second(o, C) | Second(u, C)
-                    | Second(y, C) ] .o. Glide .o. Gu ]
-                | First(a, C) | First(e, C) | First(i, C) | First(o, C) | First(u, C) | First(y, C) ] ;
+                    | Second(y, C) | SecondR(C) ] .o. Glide .o. Gu ]
+                | [ FirstShape .o. [ First(a, C) | First(e, C) | First(i, C) | First(o, C) | First(u, C)
+                                   | First(y, C) | FirstR(C) ] .o. Glide ] ] ;
 define Stress   [ [ ~$[z] .o. Tints(NoZ) ] | [ $[z] .o. Tints(Cons) ] ] ;
 
 ! A prefix, as its letters and phonemes before the vowel, its vowel's letters,

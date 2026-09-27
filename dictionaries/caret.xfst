@@ -7,6 +7,10 @@
 !     ^e PROrt  ->  ^PROErt     report
 !     ^y HAP    ->  ^HAEUP      happy
 !
+! `^` alone: the stroke takes `^`.
+!
+!     ^ PHO*rt  ->  ^PHO*rt     mother
+!
 ! Keys: the prefix's cluster, on the left bank beside the stroke's own.
 !
 !     STK PHRAEU  ->  STKPHRAEU  display
@@ -22,7 +26,8 @@ define FlipU    [ LeftKey* (A) (O) ("*") (E) Flip(U) RightKey* ] ;
 
 define Tint(L, X) [ Del(L Gap) [ X .o. [ ?+ - "*" ] ] ] ;
 define Caret    [ "^" [ Tint(a, FlipA) | Tint(e, FlipE) | Tint(i, FlipE .o. FlipU)
-                      | Tint(o, FlipO) | Tint(u, FlipU) | Tint(y, FlipE .o. FlipU) ] ] ;
+                      | Tint(o, FlipO) | Tint(u, FlipU) | Tint(y, FlipE .o. FlipU)
+                      | Tint(0, ?*) ] ] ;
 define Cluster  [ [ [ LeftKey+ Del(Gap) LeftKey* ] .o. LeftBank ] Vowels RightKey* ] ;
 
 define Stage    [ Rank Gap [ Caret | Cluster | Del("-" Gap) ?* ] ] ;
