@@ -127,12 +127,12 @@ pub fn run(
                 Outcome::Match {
                     strokes,
                     dict,
-                    suffix,
+                    fold,
                     emissions,
                 } => say!(
                     "{label}\t{strokes}\t{dict}{}\t{}\t{:?}",
-                    match &suffix {
-                        Some(s) => format!("+{s}"),
+                    match &fold {
+                        Some(f) => format!("+{f}"),
                         None => String::new(),
                     },
                     emissions.join("\t"),

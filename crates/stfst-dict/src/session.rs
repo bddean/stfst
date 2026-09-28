@@ -20,7 +20,7 @@
 //! state as they were at `p`, and replay has to reproduce them. So undo is a pop
 //! and redo is a replay, which is what host contract items 5 and 6 ask for.
 
-use stfst_core::{Context, Emission, Prefix, Record, Shown, State, Stroke, Window};
+use stfst_core::{Alternative, Around, Context, Emission, Prefix, Record, Shown, State, Stroke, Window};
 use stfst_ol::Cursor;
 
 use crate::{Dict, DictError, Stack};
@@ -38,12 +38,9 @@ pub struct Match {
     /// The window this match was read against, when the dictionary asked for one.
     /// The host needs it to substitute the characters back.
     pub window: Option<Window>,
-    /// What a folded key means on its own, to be written after this match.
-    ///
-    /// Set when the match was found by stripping a suffix key from the last stroke:
-    /// `PWABGS` is `PWABG` plus whatever `-S` means, and the base dictionary knows
-    /// nothing about the suffix. Host contract item 8.
-    pub suffix: Option<Emission>,
+    /// What a fold writes around this match, which is then its base. Host
+    /// contract item 8, and `stfst_core::fold`.
+    pub fold: Option<Around>,
 }
 
 /// A candidate in a dictionary that reads the text after its keys.
@@ -299,7 +296,7 @@ impl<'a> Session<'a> {
             }
             let dict = compiled(self.stack, live.dict);
             let (outputs, window) = match dict.shown() {
-                None => (live.cursor.outputs(), None),
+                None => (dict.outputs(&live.cursor), None),
                 // The text a frame reads is not written yet, so nothing can be
                 // harvested here. `held` offers the candidate to the host instead.
                 Some(shown) if shown.deferred() => continue,
@@ -322,7 +319,7 @@ impl<'a> Session<'a> {
                 strokes: self.history.len() - at,
                 emissions: vec![Emission { record, state: None }],
                 window: None,
-                suffix: None,
+                fold: None,
             }));
         }
         let Some((live, outputs, window)) = best else {
@@ -333,7 +330,7 @@ impl<'a> Session<'a> {
             strokes: self.history.len() - live.start,
             emissions: compiled(self.stack, live.dict).interpret(&outputs)?,
             window,
-            suffix: None,
+            fold: None,
         }))
     }
 
@@ -382,21 +379,21 @@ impl<'a> Session<'a> {
             strokes: held.strokes.len(),
             emissions: dict.interpret(&outputs)?,
             window: Some(window),
-            suffix: None,
+            fold: None,
         }))
     }
 
-    /// The best match that needed a key folded off the last stroke, with what that
-    /// key means on its own.
+    /// The best match a fold finds for the last stroke, with what it writes
+    /// around its base.
     ///
     /// A fallback, as it is in Plover: a host asks only where nothing matched the
-    /// stroke as it was written, or `PWABGS` would fold when it has an entry of
-    /// its own. A held candidate comes first, because it *is* a match on the
-    /// stroke as written and only its answer has to wait.
+    /// stroke as written, or `PWABGS` would fold when it has an entry of its own.
+    /// A held candidate comes first, because it *is* a match on the stroke as
+    /// written and only its answer has to wait.
     ///
-    /// Host contract item 8, and the answer to where a suffix rule lives when the
-    /// base word is in a dictionary that has never heard of the suffix: not in a
-    /// dictionary at all.
+    /// Longest first, and among equals the first alternative, which is Plover's
+    /// order: `SEFRB/R-GTS` folds `-T` onto reservation before it tries `R-GS`
+    /// alone. The base is looked up and not folded again, as Plover does.
     ///
     /// Built here rather than as the strokes arrive. A fold can only matter on a
     /// stroke that matched nothing, which is the rare case, and building it eagerly
@@ -409,81 +406,107 @@ impl<'a> Session<'a> {
         let Some(newest) = self.history.len().checked_sub(1) else {
             return Ok(None);
         };
-        // Interpreted where it is found rather than at the end, so a fold from a
-        // map and a fold from an automaton are the same value from here on.
-        let mut best: Option<(usize, usize, Vec<Emission>, Option<Window>)> = None;
-        for &key in self.stack.system_suffix_keys() {
-            if !self.history[newest].contains(key) {
-                continue;
-            }
-            let bare = self.history[newest].without(key);
-            if bare.is_empty() {
-                continue;
-            }
-            // A start live before the last stroke, whether or not it survived the
-            // stroke as written: `SEFRB/R-GSZ` folds to `SEFRB/R-GS`, and its
-            // cursor died on `R-GSZ`.
-            let oldest = newest.checked_sub(1).map_or(newest, |p| self.oldest[p]);
-            for start in (oldest..=newest).filter(|&s| self.begins_unit(s)) {
-                for (dict, slot) in self.stack.dicts().iter().enumerate() {
-                    if !self.enabled(newest, dict) || best.as_ref().is_some_and(|b| start >= b.1) {
-                        continue;
-                    }
-                    // The history up to the last stroke as written, then the last
-                    // stroke with the key taken off it.
-                    let entry = match slot {
-                        crate::Slot::Editable(editable) => {
-                            let mut strokes = self.history[start..newest].to_vec();
-                            strokes.push(bare);
-                            if let Some(record) = editable.lookup(&strokes) {
-                                let emission = Emission { record, state: None };
-                                best = Some((dict, start, vec![emission], None));
-                            }
-                            continue;
-                        }
-                        crate::Slot::Compiled(dict) => dict,
-                    };
-                    let mut cursor = entry.cursor(&self.prefix(start, dict));
-                    for (n, &stroke) in self.history[start..newest].iter().enumerate() {
-                        if cursor.live() == 0 {
-                            break;
-                        }
-                        entry.feed(&mut cursor, stroke, n > 0);
-                    }
-                    if cursor.live() == 0 {
-                        continue;
-                    }
-                    entry.feed(&mut cursor, bare, start < newest);
-                    let (outputs, window) = match entry.shown() {
-                        None => (cursor.outputs(), None),
-                        // A fold of a held stroke would be a fallback to a
-                        // fallback, and the keys a frame reads are its own.
-                        Some(shown) if shown.deferred() => continue,
-                        Some(shown) => {
-                            let window = entry.window(&span(shown.words()));
-                            (entry.harvest(&cursor, &window), Some(window))
-                        }
-                    };
-                    if !outputs.is_empty() {
-                        best = Some((dict, start, entry.interpret(&outputs)?, window));
-                    }
+        let stroke = self.history[newest];
+        let alternatives = self.alternatives(newest, stroke)?;
+        if alternatives.is_empty() {
+            return Ok(None);
+        }
+        // A start live before the last stroke, whether or not it survived the
+        // stroke as written: `SEFRB/R-GSZ` folds to `SEFRB/R-GS`, and its cursor
+        // died on `R-GSZ`.
+        let oldest = newest.checked_sub(1).map_or(newest, |p| self.oldest[p]);
+        for start in (oldest..=newest).filter(|&s| self.begins_unit(s)) {
+            for alt in &alternatives {
+                // What goes before the base is a unit of its own, so the base has
+                // to begin one.
+                if start < newest && !alt.around.before.is_empty() {
+                    continue;
+                }
+                let Some(base) = alt.base(stroke) else {
+                    continue;
+                };
+                if let Some((dict, emissions, window)) = self.replay(start, base, &span)? {
+                    return Ok(Some(Match {
+                        dict,
+                        strokes: self.history.len() - start,
+                        emissions,
+                        window,
+                        fold: Some(alt.around.clone()),
+                    }));
                 }
             }
-            if let Some((dict, start, emissions, window)) = best {
-                // What the bare key means is a lookup like any other, in the whole
-                // stack, so the suffix and the base need not be in the same
-                // dictionary or know about each other.
-                let frame = &self.frames[newest];
-                let Some(suffix) = self.stack.bare(key, &frame.context, &frame.enabled)? else {
-                    return Ok(None);
-                };
-                return Ok(Some(Match {
-                    dict,
-                    strokes: self.history.len() - start,
-                    emissions,
-                    window,
-                    suffix: Some(suffix),
-                }));
+        }
+        Ok(None)
+    }
+
+    /// Every fold alternative the stack holds for one stroke, highest dictionary
+    /// first.
+    fn alternatives(&self, at: usize, stroke: Stroke) -> Result<Vec<Alternative>, DictError> {
+        let mut out = Vec::new();
+        for (dict, slot) in self.stack.dicts().iter().enumerate() {
+            let Some(entry) = slot.compiled() else {
+                continue;
+            };
+            if !self.enabled(at, dict) || entry.shown().is_some() {
+                continue;
+            }
+            let mut cursor = entry.cursor(&self.prefix(at, dict));
+            entry.feed(&mut cursor, stroke, false);
+            for fold in entry.folds(&cursor, self.stack.system())? {
+                out.extend(fold.0);
+            }
+        }
+        Ok(out)
+    }
+
+    /// What the stack writes for the history from `start`, with `base` in place of
+    /// the last stroke: the dictionary, its emissions and the window it read.
+    #[allow(clippy::type_complexity)]
+    fn replay(
+        &self,
+        start: usize,
+        base: Stroke,
+        span: &impl Fn(u8) -> String,
+    ) -> Result<Option<(usize, Vec<Emission>, Option<Window>)>, DictError> {
+        let newest = self.history.len() - 1;
+        for (dict, slot) in self.stack.dicts().iter().enumerate() {
+            if !self.enabled(newest, dict) {
+                continue;
+            }
+            let entry = match slot {
+                crate::Slot::Editable(editable) => {
+                    let mut strokes = self.history[start..newest].to_vec();
+                    strokes.push(base);
+                    if let Some(record) = editable.lookup(&strokes) {
+                        return Ok(Some((dict, vec![Emission { record, state: None }], None)));
+                    }
+                    continue;
+                }
+                crate::Slot::Compiled(dict) => dict,
+            };
+            let mut cursor = entry.cursor(&self.prefix(start, dict));
+            for (n, &stroke) in self.history[start..newest].iter().enumerate() {
+                if cursor.live() == 0 {
+                    break;
+                }
+                entry.feed(&mut cursor, stroke, n > 0);
+            }
+            if cursor.live() == 0 {
+                continue;
+            }
+            entry.feed(&mut cursor, base, start < newest);
+            let (outputs, window) = match entry.shown() {
+                None => (entry.outputs(&cursor), None),
+                // A fold of a held stroke would be a fallback to a fallback, and
+                // the keys a frame reads are its own.
+                Some(shown) if shown.deferred() => continue,
+                Some(shown) => {
+                    let window = entry.window(&span(shown.words()));
+                    (entry.harvest(&cursor, &window), Some(window))
+                }
+            };
+            if !outputs.is_empty() {
+                return Ok(Some((dict, entry.interpret(&outputs)?, window)));
             }
         }
         Ok(None)

@@ -1,0 +1,37 @@
+! Folds: a stroke nothing matched, read as another with something written around
+! it. `dictionaries/folds.xfst` says how, and the base is in another dictionary.
+! `scripts/check-hold.py` asks Plover the same questions.
+
+! ---- a suffix key, and -T as "the"
+!buffer
+KAOEPT
+!buffer
+TAPGS
+!buffer
+RUPB
+-G
+! ---- onto a word of two strokes: the base extends the outline before it
+!buffer
+SEFRB
+R-GTS
+!buffer
+PART
+TK-PLTS
+! ---- "and" before the base, and T- put back after H-
+!buffer
+SKPAD
+!buffer
+SKPHA
+!buffer
+SKPHAPBG
+! ---- "and" needs its base to be a word, so a suffix still applies after it:
+! SKPAOEP is "and keep" in user.json, then "the"
+!buffer
+SKPAOEPT
+! ---- a real entry is never folded
+!buffer
+PWABGS
+! ---- and "and" does not reach back over a word already written
+!buffer
+SEFRB
+SKPAD

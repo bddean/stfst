@@ -45,6 +45,10 @@ STATE_OPEN, STATE_CLOSE = "[STATE]", "[END]"
 # `[AFTER]…[END]`: the record's tail, written after the unit that follows it.
 AFTER = "[AFTER]"
 
+# A fold record's tags. `plover_stfst.fold` reads one; nothing else may take one
+# for an entry, because a fold answers only where nothing matched.
+FOLD, STRIP, ADD = "[FOLD]", "[STRIP]", "[ADD]"
+
 # `stfst_core::host`. A host implements a fixed set of operations, so the set is
 # closed and a name outside it is an error rather than a request.
 COMMANDS = [
@@ -1053,3 +1057,57 @@ def _long_form(d, name, arg, record, join):
             _set_case(record, "cap")
         return [("text", arg)]
     raise Unsupported("unsupported directive {%s}" % d)
+
+
+class Alternative:
+    """One way to read a fold's stroke: before, the keys off and on, after.
+
+    `before` and `after` are Plover translations, and an empty one is "" rather
+    than `{}`, because it writes nothing and is not a unit of its own.
+    """
+
+    def __init__(self, before, strip, add, after):
+        self.before = before
+        self.strip = frozenset(strip)
+        self.add = frozenset(add)
+        self.after = after
+
+    def base(self, keys):
+        """The keys to look up in place of a stroke's `keys`, or None."""
+        keys = set(keys)
+        if not self.strip <= keys:
+            return None
+        return frozenset((keys - self.strip) | self.add) or None
+
+
+def parse_fold(symbols, names):
+    """A fold record's alternatives, in order. `names` maps a tape symbol to the
+    key it stands for."""
+    if not symbols or symbols[0] != FOLD:
+        raise Unsupported("a fold record starts with %s" % FOLD)
+    alts, current = [], []
+    for s in list(symbols[1:]) + [FOLD]:
+        if s != FOLD:
+            current.append(s)
+            continue
+        if STRIP not in current:
+            raise Unsupported("a fold alternative has no %s" % STRIP)
+        at = current.index(STRIP)
+        end = current.index("[END]", at)
+        keys = current[at + 1:end]
+        strip, add = keys, []
+        if ADD in keys:
+            i = keys.index(ADD)
+            strip, add = keys[:i], keys[i + 1:]
+        try:
+            strip = [names[k] for k in strip]
+            add = [names[k] for k in add]
+        except KeyError as e:
+            raise Unsupported("%s is not a key" % e) from None
+        alts.append(Alternative(_side(current[:at]), strip, add, _side(current[end + 1:])))
+        current = []
+    return alts
+
+
+def _side(symbols):
+    return Record.parse(symbols).translation() if symbols else ""

@@ -55,6 +55,10 @@ CONTEXTS = ("run", "I", "the", "")
 # cannot be composed, so it is not asked about.
 SUFFIX_KEYS = "SDZG"
 
+# The suffix keys of `dictionaries/folds.xfst`, which is where Stenotype
+# Extended's folds are: that system declares no `SUFFIX_KEYS` of its own.
+EXTENDED_SUFFIXES = ("-Z", "-D", "-S", "-G", "-T")
+
 # A number stroke Plover writes as its digits when nothing defines it, and the
 # Rust host writes nothing, so an entry holding one is not composed there.
 NUMBER = re.compile(r"[0-9#]")
@@ -127,7 +131,7 @@ def broken_in(system_name, removed, alone):
     from plover.steno import Stroke, normalize_steno
     from plover.steno_dictionary import StenoDictionaryCollection
     from plover.translation import Translation, Translator
-    from plover_stfst import host
+    from plover_stfst import fold, host
     from plover_stfst.dictionary import StfstDictionary
 
     registry.update()
@@ -167,6 +171,7 @@ def broken_in(system_name, removed, alone):
             translator = Translator()
             translator.set_dictionary(collection)
             translator.add_listener(formatter.format)
+            fold.install(translator)
             if before:
                 translator.translate_translation(Translation([Stroke.from_steno("TEFT")], before))
             for s in strokes:
@@ -179,7 +184,9 @@ def broken_in(system_name, removed, alone):
     inflecting = [Stroke.from_steno("-" + k) for k in SUFFIX_KEYS]
     gerund, past = Stroke.from_steno("-G"), Stroke.from_steno("-D")
 
-    suffixes = [Stroke.from_steno(k) for k in system.SUFFIX_KEYS]
+    extended = system_name == "Stenotype Extended"
+    suffixes = [Stroke.from_steno(k)
+                for k in (EXTENDED_SUFFIXES if extended else system.SUFFIX_KEYS)]
 
     def asked(key):
         """The entry's strokes, and each with a suffix key folded onto the last,

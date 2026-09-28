@@ -5,6 +5,7 @@ use std::path::Path;
 
 use serde::Deserialize;
 use stfst_core::context;
+use stfst_core::fold::{Fold, FOLD};
 use stfst_core::record::{all_tags, is_tag};
 use stfst_core::{Capabilities, Emission, Prefix, Record, Shown, Stroke, System, Window};
 use stfst_ol::{Automaton, Cursor, Sym};
@@ -367,6 +368,36 @@ impl Dict {
                 .collect(),
             truncated: found.truncated,
         })
+    }
+
+    /// What a cursor says as the stroke was written: every record but a fold,
+    /// which answers only where nothing did. See `folds`.
+    pub(crate) fn outputs(&self, cursor: &Cursor<'_>) -> Vec<Vec<Sym>> {
+        let mut outputs = cursor.outputs();
+        outputs.retain(|o| !self.is_fold(o));
+        outputs
+    }
+
+    /// The fold records a cursor holds, in the automaton's order.
+    pub(crate) fn folds(&self, cursor: &Cursor<'_>, system: &System) -> Result<Vec<Fold>, DictError> {
+        let alphabet = self.fst.alphabet();
+        cursor
+            .outputs()
+            .iter()
+            .filter(|o| self.is_fold(o))
+            .map(|symbols| {
+                let text: Vec<&str> = symbols.iter().map(|&s| alphabet.symbol(s)).collect();
+                Fold::parse_symbols(&text, system).map_err(|source| DictError::Fold {
+                    name: self.name().to_string(),
+                    source,
+                })
+            })
+            .collect()
+    }
+
+    fn is_fold(&self, output: &[Sym]) -> bool {
+        let alphabet = self.fst.alphabet();
+        output.first().is_some_and(|&s| alphabet.symbol(s) == FOLD)
     }
 
     pub(crate) fn interpret(&self, outputs: &[Vec<Sym>]) -> Result<Vec<Emission>, DictError> {

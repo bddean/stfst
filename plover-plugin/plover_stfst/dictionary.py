@@ -24,7 +24,7 @@ from plover.steno_dictionary import StenoDictionary
 
 from . import host, window
 from .ol import Automaton
-from .record import PLUGIN_COMMANDS, Record, Unsupported
+from .record import FOLD, PLUGIN_COMMANDS, Record, Unsupported, parse_fold
 
 # What this plugin cannot do, by the manifest field that asks for it. Not a host
 # version: the version is one number and these are separate abilities, and the
@@ -191,11 +191,11 @@ class StfstDictionary(StenoDictionary):
         alphabet = self._fst.alphabet
         for tape, record in pairs:
             outline = self._outline(alphabet.render(tape))
-            if outline is None:
+            symbols = [alphabet.symbol(s) for s in record]
+            if outline is None or symbols[:1] == [FOLD]:
                 continue
             try:
-                self._entries[outline] = Record.parse(
-                    [alphabet.symbol(s) for s in record]).translation()
+                self._entries[outline] = Record.parse(symbols).translation()
             except Unsupported:
                 # What `get` answers nothing for is not listed either, so the two
                 # agree on what this dictionary holds.
@@ -315,13 +315,39 @@ class StfstDictionary(StenoDictionary):
         cursor = self._cursor(tuple(key))
         if cursor is None:
             return None
-        alphabet = self._fst.alphabet
-        for output in cursor.outputs():
+        for symbols in self._outputs(cursor):
+            if symbols[:1] == [FOLD]:
+                continue
             try:
-                return Record.parse([alphabet.symbol(s) for s in output])
+                return Record.parse(symbols)
             except Unsupported as e:
                 log.error("%s: %s does not parse: %s", self.path, "/".join(key), e)
         return None
+
+    def _outputs(self, cursor):
+        alphabet = self._fst.alphabet
+        return [[alphabet.symbol(s) for s in output] for output in cursor.outputs()]
+
+    def folds(self, steno):
+        """The fold alternatives this artifact holds for one stroke, in order.
+
+        A fold answers only where nothing matched, so `get` never returns one and
+        `plover_stfst.fold` asks here instead.
+        """
+        if self._next or self._words:
+            return []
+        cursor = self._cursor((steno,))
+        if cursor is None:
+            return []
+        out = []
+        for symbols in self._outputs(cursor):
+            if symbols[:1] != [FOLD]:
+                continue
+            try:
+                out.extend(parse_fold(symbols, self._names))
+            except Unsupported as e:
+                log.info("%s: %s folds in a way Plover cannot write: %s", self.path, steno, e)
+        return out
 
     def _cursor(self, key):
         """The cursor after this outline, or None where no entry extends it.

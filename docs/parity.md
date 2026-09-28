@@ -235,11 +235,12 @@ whether "run" is a noun here is a statistical model, so an artifact holding one 
 not be checked and would not be a function of its input, which are the two properties
 the format exists to have.
 
-What replaces it is a rule about direction. **What a folded key adds, it appends.**
-`KAOEPT` is "keep the" and never "the keep", and the plugin's own README came to the
-same place for the same reason: the insertion that landed *before* a phrase fought
-with the ordinary reading too often. Appending needs no part of speech, which is why
-dropping the tagger costs nothing here.
+What replaces it is a rule about placement. **A fold writes where its record
+says, and no part of speech moves it.** `KAOEPT` is "keep the" and never "the keep",
+and the plugin's own README came to the same place for the same reason: the
+insertion that landed *before* a phrase fought with the ordinary reading too often.
+A fixed place needs no part of speech, which is why dropping the tagger costs
+nothing here.
 
 **The phrasing retro modifier layer.** *The rest of phrasing is done.* The whole
 single-stroke language is ported and checked against `phrasing.py` over 238,138
@@ -278,31 +279,44 @@ not load.
 `stack.priority` is declared and not implemented. Reordering needs an order per
 frame rather than a flag per dictionary, and nothing here asks for it.
 
-## Suffix folding, which was the last piece of engine parity
+## Folding, which was the last piece of engine parity
 
-*Done.* Plover's translator strips a `SUFFIX_KEYS` key from the last stroke, looks
-the base up in the whole stack, and appends what the bare key means on its own. So
-a folding rule does not live in a dictionary at all, which is why §4a could not
-find a home for it and why §9 kept the question open.
+*Done.* Plover's translator strips a `SUFFIX_KEYS` key from the last stroke of a
+match that failed, looks the base up in the whole stack, and appends what the bare
+key means on its own. So in Plover a folding rule does not live in a dictionary at
+all, which is why §4a could not find a home for it.
 
-The engine detail worth writing down: a fold applies to the *last* stroke of a
-match, and no candidate knows it is at the last stroke. So the fold is tried as the
-stroke arrives, by cloning each live candidate and feeding it the stroke with the
-key removed. The clone is cheap, the folded candidate is one shot and the next
-stroke clears it, and a candidate nobody harvests costs nothing. A fold is a
-fallback, as it is in Plover: `PWABGS` has an entry of its own, so it never folds.
+Here it does. A fold record says which keys come off the stroke and which go back
+on, and what to write before and after the base, and it lists alternatives in the
+order to try them. `dictionaries/folds.xfst` writes them; `stfst_core::fold` is
+the record.
 
 ```
-KAOEPT   keep + what -T means      "keep the"
-TAPGS    tapping + what -S means   "tappings"
+KAOEPT   -T off: keep, then "the"                         keep the
+TAPGS    -S off: tapping, then -s                         tappings
+SKPAD    S-K-P- off: "and", then add                      and add
+SKPHA    S-K-P- off and T- on: "and", then that           and that
 ```
 
-The second one crosses three parties. `TAPG` is typey-type's, `-S` is
-`semantic-suffixes.json`'s `{:infl:ofs}`, and the inflection is the host's
-orthography. None of the three knows about the others.
+`TAPGS` crosses three parties. `TAPG` is typey-type's, the fold is `folds`', and
+the inflection is the host's morphology. None of the three knows about the others.
 
-`suffix_keys` is system configuration, like the keys themselves, and it carries the
-local fork's `-T` so that `KAOEPT` reads as "keep the".
+The host's order is Plover's. A fold is tried only where nothing matched the stroke
+as written, so `PWABGS` never folds: it has an entry of its own. Then the longest
+outline the base can end comes first, and among those the first alternative whose
+base translates. So `SEFRB/R-GTS` is reservation and then "the", because `R-GS`
+extends `SEFRB`. The base is looked up and not folded again, as in Plover. What
+goes before the base is a unit of its own, so that alternative only applies where
+the base begins an outline.
+
+A fold is built only when it can matter, which is a stroke that matched nothing.
+Building one as each stroke arrived cost a cursor per key per candidate on every
+stroke. The replay is the one undo uses.
+
+In Plover, the Stenotype Extended system declares no `SUFFIX_KEYS`, and
+`plover_stfst.fold` takes over the translator's suffix step, which is the one call
+to `_find_longest_match` with `min_len` 1. `scripts/check-hold.py` replays
+`tests/folds` through a real Plover translator and compares it with this host.
 
 ## What a rule writer pays for the regions
 

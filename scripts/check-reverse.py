@@ -36,7 +36,8 @@ def cases(path, count):
         if line.startswith("!") or "\t" not in line:
             continue
         tape, record = line.split("\t")[:2]
-        if record:
+        # A fold answers only where nothing matched, so nothing writes it.
+        if record and not record.startswith("[FOLD]"):
             out.append((tape, record))
     step = max(1, len(out) // count)
     return out[::step][:count]

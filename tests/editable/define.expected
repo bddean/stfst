@@ -4,4 +4,4 @@ TAEUP	1	typey-type	tape	"like tape"
 TAEUP	1	stfst-user	sticky tape	"like sticky tape sticky tape"
 !define	TAEUP	"like sticky tape tape"
 TAEUP	1	typey-type	tape	"like sticky tape tape tape"
-! 4 strokes, 2 candidates at the widest
+! 4 strokes, 3 candidates at the widest

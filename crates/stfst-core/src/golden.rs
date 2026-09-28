@@ -4,6 +4,7 @@
 //! should pass the same files, so the format has no room for a host's opinion:
 //! a tape, a tab, and the expected records.
 
+use crate::fold::{Fold, FOLD};
 use crate::record::Record;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -96,8 +97,12 @@ pub fn check_expectations(cases: &[Case]) -> Vec<(String, String, String)> {
     let mut bad = Vec::new();
     for case in cases {
         for r in &case.expect {
-            if let Err(e) = Record::parse_display(r) {
-                bad.push((case.tape.clone(), r.clone(), e.to_string()));
+            let checked = match r.starts_with(FOLD) {
+                true => Fold::check_display(r).map_err(|e| e.to_string()),
+                false => Record::parse_display(r).map(|_| ()).map_err(|e| e.to_string()),
+            };
+            if let Err(e) = checked {
+                bad.push((case.tape.clone(), r.clone(), e));
             }
         }
     }

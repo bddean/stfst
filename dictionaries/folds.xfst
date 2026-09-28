@@ -1,0 +1,66 @@
+! Folds: a stroke nothing matched, read as another stroke with something
+! written around it. `stfst_core::fold` is the record and what a host does
+! with it.
+!
+!   KAOEPT   -T off, KAOEP is "keep", then "the"       keep the
+!   TAPGS    -S off, TAPG is "tapping", then -s         tappings
+!   SKPAD    S-K-P- off, "and", then AD is "add"        and add
+!
+! A record lists alternatives, and the host takes the first whose base
+! translates. Each names the keys it takes off and puts on rather than the
+! base, so the automaton never copies a stroke:
+!
+!   [FOLD] before [STRIP] keys ([ADD] keys) [END] after
+!
+! "and" comes first, then the suffixes in Plover's order for its suffix keys.
+! A suffix on an "and" brief is junk (SKPA is "and a", so SKPAD would be "and
+! aed"), and the "and" alternative needs its base to be a word, so where it is
+! not the suffix still applies: SKPAOEPT is "and keep" and then "the".
+
+define Say(X)   [ 0 .x. X ] ;
+
+! ---- what the keys write
+
+define Infl(M)  [ "[META=infl]" M "[END]" ] ;
+
+! A suffix key alone inflects the word before it.
+define Bare     [ [ z .x. Infl({ofz}) ] | [ d .x. Infl({ed}) ]
+                | [ s .x. Infl({ofs}) ] | [ g .x. Infl({ing}) ] ] ;
+
+! ---- the alternatives
+!
+! Each rule reads the stroke and adds its alternative after the ones before
+! it, where the stroke is one it applies to. So the rules compose in the order
+! the host tries them.
+
+define Alts       [ "[FOLD]" ?* ] ;
+define Rule(C, O) [ [ C (Alts) Say(O) ] | [ [ Stroke - C ] (Alts) ] ] ;
+
+! A key and something else, because the base has to be a stroke too.
+define Suffix(K, R)  Rule([ [ Stroke & $[K] ] - K ],
+                          [ "[FOLD]" "[STRIP]" K "[END]" R ]) ;
+
+! "and" is S-K-P- on a base that holds none of them. T- sorts inside the chord
+! (STKP), so a word that begins with it drops it and the host puts it back:
+! SKPEPB is "and then". Which base goes first is a guess about which word is
+! more common, and one guess per initial is as good as a rule gets: after H-
+! the th- word (SKPHA "and that", not "and hah"), elsewhere the word as struck
+! (SKPAD "and add", not "and tad"). Over the 635 strokes the mined and-fold
+! dictionary held, that writes the same word for 80% of their use.
+define AndStroke  [ Stroke & [ S K P ?+ ] ] ;
+define AndH       [ Stroke & [ S K P H ?* ] ] ;
+define And(C, Add) Rule(C, [ "[FOLD]" {and} "[STRIP]" S K P Add "[END]" ]) ;
+define PutT       [ "[ADD]" T ] ;
+
+define Folds [ Stroke
+  .o. And(AndH, PutT)
+  .o. And(AndStroke, 0)
+  .o. And([ AndStroke - AndH ], PutT)
+  .o. Suffix(z, Infl({ofz}))
+  .o. Suffix(d, Infl({ed}))
+  .o. Suffix(s, Infl({ofs}))
+  .o. Suffix(g, Infl({ing}))
+  .o. Suffix(t, {the})
+  .o. [ [ Stroke .x. 0 ] Alts ] ] ;
+
+define Grammar [ Bare | Folds ] ;

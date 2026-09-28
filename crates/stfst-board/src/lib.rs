@@ -46,8 +46,8 @@ pub enum Outcome {
         /// How many strokes the entry consumed, counting back from this one.
         strokes: usize,
         dict: String,
-        /// What the key folded off the last stroke meant on its own.
-        suffix: Option<String>,
+        /// What a fold wrote around the base: `and _`, `_ the`.
+        fold: Option<String>,
         emissions: Vec<String>,
     },
 }
@@ -339,6 +339,9 @@ impl<'a> Board<'a> {
         }
         let dict = self.stack.dict(m.dict);
         let first = m.emissions.first().cloned().unwrap_or_default();
+        // A fold writes around its base, and the base never heard of it.
+        let around = m.fold.clone().unwrap_or_default();
+        self.write_plain(&around.before)?;
         let events = match (&m.window, dict.shown()) {
             (Some(window), Some(shown)) => {
                 self.text.rewrite(&first.record, window, shown.words())?
@@ -348,13 +351,7 @@ impl<'a> Board<'a> {
                 self.text.apply(&first.record, &registers)?
             }
         };
-        // A folded match writes the base, then what the folded key means. The base
-        // dictionary never heard of the suffix, and the suffix dictionary never
-        // heard of the word.
-        if let Some(suffix) = &m.suffix {
-            let registers = self.text.registers(9);
-            self.text.apply(&suffix.record, &registers)?;
-        }
+        self.write_plain(&around.after)?;
         self.session.accept(m.dict, first.state.clone());
         self.session.wrote(m.strokes);
 
@@ -418,7 +415,7 @@ impl<'a> Board<'a> {
         let outcome = Outcome::Match {
             strokes: m.strokes,
             dict: dict.name().to_string(),
-            suffix: m.suffix.as_ref().map(ToString::to_string),
+            fold: m.fold.as_ref().map(ToString::to_string),
             emissions: m.emissions.iter().map(Emission::to_string).collect(),
         };
         // What was already waiting lands first: it belongs to the text this unit
@@ -440,6 +437,16 @@ impl<'a> Board<'a> {
             framed,
             fire: None,
         })
+    }
+
+    /// Write a record that reads no window and carries no state, if it writes
+    /// anything.
+    fn write_plain(&mut self, record: &Record) -> Result<(), BoardError> {
+        if !record.is_empty() {
+            let registers = self.text.registers(9);
+            self.text.apply(record, &registers)?;
+        }
+        Ok(())
     }
 
     /// A stroke that framed nothing: it wrote no text of its own, so no frame can
@@ -500,12 +507,11 @@ impl<'a> Board<'a> {
         let outcome = match held.kind {
             Kind::Frame { ref held, words } => self.frame(held, self.text.words() - words)?,
             Kind::After { ref record, dict } => {
-                let registers = self.text.registers(9);
-                self.text.apply(record, &registers)?;
+                self.write_plain(record)?;
                 Some(Outcome::Match {
                     strokes: held.strokes.len(),
                     dict: self.stack.dict(dict).name().to_string(),
-                    suffix: None,
+                    fold: None,
                     emissions: vec![record.to_string()],
                 })
             }
@@ -531,7 +537,7 @@ impl<'a> Board<'a> {
         Ok(Some(Outcome::Match {
             strokes: m.strokes,
             dict: self.stack.dict(m.dict).name().to_string(),
-            suffix: None,
+            fold: None,
             emissions: m.emissions.iter().map(Emission::to_string).collect(),
         }))
     }

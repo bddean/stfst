@@ -323,6 +323,11 @@ pub enum RecordError {
 }
 
 impl Record {
+    /// Whether this record writes and does nothing.
+    pub fn is_empty(&self) -> bool {
+        *self == Record::default()
+    }
+
     pub fn text(s: impl Into<String>) -> Record {
         Record {
             body: vec![Item::Text(s.into())],
@@ -686,6 +691,13 @@ fn counted_tag(symbol: &str, prefix: &str) -> Option<u8> {
         .ok()
 }
 
+/// Whether a tag belongs in a grammar's alphabet only when the grammar writes it.
+/// Each one a check has to complement over costs, so an operation from a closed
+/// table and a fold's tags join the alphabet of the grammars that use them.
+pub fn is_optional_tag(tag: &str) -> bool {
+    host::is_command(tag) || host::is_meta(tag) || crate::fold::FOLD_TAGS.contains(&tag)
+}
+
 /// Every tag of the closed alphabet, which is also what the prelude's acceptor
 /// enumerates.
 pub fn all_tags() -> Vec<String> {
@@ -702,6 +714,7 @@ pub fn all_tags() -> Vec<String> {
         out.push(replace_tag(n));
     }
     out.push(AFTER.to_string());
+    out.extend(crate::fold::FOLD_TAGS.iter().map(|s| s.to_string()));
     out.extend(host::COMMANDS.iter().map(|c| host::command_tag(c)));
     out.extend(host::METAS.iter().map(|m| host::meta_tag(m)));
     out.extend(Class::ALL.iter().map(|c| c.tag().to_string()));
@@ -711,7 +724,7 @@ pub fn all_tags() -> Vec<String> {
     out
 }
 
-fn tokenise_display(s: &str) -> Vec<String> {
+pub(crate) fn tokenise_display(s: &str) -> Vec<String> {
     let owned = all_tags();
     let known: Vec<&str> = owned.iter().map(|s| s.as_str()).collect();
     let mut out = Vec::new();

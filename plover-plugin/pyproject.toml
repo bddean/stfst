@@ -28,8 +28,9 @@ stfst_hold = "plover_stfst.host:stfst_hold"
 stfst_frame = "plover_stfst.host:stfst_frame"
 stfst_drop = "plover_stfst.host:stfst_drop"
 
+# The translator's half: a held stroke waiting for the next unit, and a fold.
 [project.entry-points."plover.extension"]
-stfst = "plover_stfst.host:Ahead"
+stfst = "plover_stfst.extension:Extension"
 # Optional, and separate because it is a development loop and not a dictionary:
 # it reloads an artifact that has been rebuilt, so a change needs no restart.
 stfst_reload = "plover_stfst.reload:Reload"

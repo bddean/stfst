@@ -39,8 +39,6 @@ SOURCES = {
     "commands": "commands.json",
     "user": "user.json",
     "phrases": "phrases.json",
-    "and-fold": "and-fold.json",
-    "semantic-suffixes": "semantic-suffixes.json",
     "repeat-idioms": "repeat-idioms.json",
     "two-syllable": "two-syllable.json",
     "typey-type": "typey-type-full.json",

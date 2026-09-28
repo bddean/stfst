@@ -57,6 +57,8 @@ pub enum DictError {
     NoReverse { name: String },
     #[error("{name} produced a record that does not parse: {source}")]
     Record { name: String, source: RecordError },
+    #[error("{name} produced a fold that does not parse: {source}")]
+    Fold { name: String, source: stfst_core::FoldError },
     #[error("{path}: {source}")]
     Json {
         path: String,
@@ -211,46 +213,7 @@ impl Stack {
         Session::new(self)
     }
 
-    pub(crate) fn system_suffix_keys(&self) -> &[usize] {
-        self.system.suffix_keys()
-    }
-
-    /// What one key means on its own, looked up across the whole stack.
-    ///
-    /// This is what makes folding cross-stack: `-S` is defined in whichever
-    /// dictionary defines it, and the base word is in whichever dictionary has the
-    /// base word, and neither knows about the other.
-    pub(crate) fn bare(
-        &self,
-        key: usize,
-        context: &stfst_core::Context,
-        enabled: &[bool],
-    ) -> Result<Option<stfst_core::Emission>, DictError> {
-        let stroke = stfst_core::Stroke::EMPTY.with(key);
-        for (at, slot) in self.dicts.iter().enumerate() {
-            if !enabled[at] {
-                continue;
-            }
-            let dict = match slot {
-                Slot::Editable(editable) => {
-                    if let Some(record) = editable.lookup(&[stroke]) {
-                        return Ok(Some(stfst_core::Emission { record, state: None }));
-                    }
-                    continue;
-                }
-                Slot::Compiled(dict) => dict,
-            };
-            let prefix = stfst_core::Prefix {
-                state: None,
-                context: context.select(dict.context()),
-            };
-            let mut cursor = dict.cursor(&prefix);
-            dict.feed(&mut cursor, stroke, false);
-            let outputs = cursor.outputs();
-            if !outputs.is_empty() {
-                return Ok(dict.interpret(&outputs)?.into_iter().next());
-            }
-        }
-        Ok(None)
+    pub(crate) fn system(&self) -> &System {
+        &self.system
     }
 }

@@ -9,7 +9,7 @@ use std::process::Command;
 use anyhow::{bail, Context, Result};
 use stfst_core::context;
 use stfst_core::host;
-use stfst_core::record::{all_tags, copy_tag, is_tag};
+use stfst_core::record::{all_tags, copy_tag, is_optional_tag, is_tag};
 use stfst_core::window;
 use stfst_core::{Shown, System};
 
@@ -139,7 +139,7 @@ pub fn compile_xfst(
     // never writes is one the acceptor need not know.
     let used: Vec<String> = all_tags()
         .into_iter()
-        .filter(|tag| (host::is_command(tag) || host::is_meta(tag)) && bodies.contains(tag))
+        .filter(|tag| is_optional_tag(tag) && bodies.contains(tag))
         .collect();
     let mut s = prelude::generate_for(system, Some(&used));
     // `define Record` in a grammar cost the whole reverse direction, silently:

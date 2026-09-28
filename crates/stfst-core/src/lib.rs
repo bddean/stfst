@@ -5,6 +5,7 @@
 //! the runtime without pulling in the compiler.
 
 pub mod context;
+pub mod fold;
 pub mod golden;
 pub mod host;
 pub mod record;
@@ -13,6 +14,7 @@ pub mod translate;
 pub mod window;
 
 pub use context::{Context, Prefix, State};
+pub use fold::{Alternative, Around, Fold, FoldError};
 pub use host::Capabilities;
 pub use record::{Case, Emission, Flags, Item, Record, RecordError, SpaceOp};
 pub use window::{Class, Glyph, Shown, Window};

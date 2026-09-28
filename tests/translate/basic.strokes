@@ -38,12 +38,15 @@ RUPB
 ! `{<}` cases the whole next word, which `{-|}` does not
 KPA*L
 RUPB
-! folding a suffix key onto a stroke, which reaches across the stack: the base is
-! in one dictionary and what the key means is in another
+! a fold: a stroke nothing matched, read as another with something written
+! around it. The base is in one dictionary and the fold in another.
 KAOEP
 KAOEPT
 TAPG
 TAPGS
+! "and" goes before the base, and T- comes back after H-: SKPHA is "and that"
+SKPAD
+SKPHA
 ! a stroke that changes the dictionary set, and undo putting it back. Plover's
 ! dictionary commands have no undo; here it falls out of the frame stack.
 SKAEBG
@@ -68,3 +71,6 @@ OTZ
 ! department is `PART/TK-PLT`, and the cursor that read `PART` died on `TK-PLTS`.
 PART
 TK-PLTS
+! and -T, "the", after the whole outline: serve, then reservation
+SEFRB
+R-GTS

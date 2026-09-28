@@ -53,8 +53,8 @@ for candidates and then asks the 338,882-word list about each, so up to forty
 lookups answer one `{^ing}`. That costs 16 microseconds and does not move the
 per-stroke number, because a stroke does at most one join: a stream where every
 third stroke folds a suffix and inflects it measures 59 microseconds a stroke,
-which is the ordinary number. The fold is a clone of a live candidate and the
-inflection is one lookup.
+which is the ordinary number. The fold is a replay of the strokes it spans and
+the inflection is one lookup.
 
 Against a 16 ms frame, so a stroke uses four tenths of one per cent of the time
 available. The stack size is nearly free: 13 dictionaries cost 9 microseconds more
@@ -73,7 +73,7 @@ microseconds. The document a writer is filling lives in their editor, not in the
 engine.
 
 **The fold.** Building a folded candidate as each stroke arrived cost a cursor per
-suffix key per candidate on every stroke, and a fold can only matter on a stroke
+foldable key per candidate on every stroke, and a fold can only matter on a stroke
 that matched nothing. Built on demand instead, from the same replay undo uses, it
 costs nothing until it is needed.
 

@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Does a held tail land in Plover where `stfst translate` puts it?
+"""Does Plover write what `stfst translate` writes, where a lookup is not enough?
 
-`[AFTER]` is the one mechanism whose Plover half is not a dictionary. The tail
-leaves the artifact inside a meta and `plover_stfst.hold` writes it when a
-translation puts a word on screen, so what has to be checked is a whole engine
-and not one lookup: a real translator, the real artifacts, the meta and the
-extension wired the way the entry points wire them.
+A held tail and a fold are the two mechanisms whose Plover half is not a
+dictionary. A tail leaves the artifact inside a meta and `plover_stfst.host`
+writes it when a translation puts a word on screen, and a fold is a step of the
+translator's own. So what has to be checked is a whole engine and not one
+lookup: a real translator, the real artifacts, the meta and the extension wired
+the way the entry points wire them.
 
 The questions are the fixture's own. `tests/ahead/*.strokes` is a stroke stream
 with the Rust host's answer beside it, so this replays it through Plover and
@@ -30,6 +31,7 @@ BUFFER, UNDO = "!buffer", "!undo"
 # and Plover writes the raw steno for one where `stfst-board` writes nothing.
 DEFAULT = [
     "tests/ahead/ahead.strokes",
+    "tests/folds/folds.strokes",
     "tests/frames/frames.strokes",
     "tests/hole/hole.strokes",
     "tests/repeat-word/repeat-word.strokes",
@@ -92,7 +94,7 @@ def main(paths):
     from plover.translation import Translation, Translator
     from plover_stfst.dictionary import StfstDictionary
     from plover_stfst import host
-    from plover_stfst.host import Ahead
+    from plover_stfst.extension import Extension
 
     registry.update()
     # What the entry points do, done by hand, so nothing has to be installed.
@@ -126,7 +128,7 @@ def main(paths):
             translator = Translator()
             translator.set_dictionary(StenoDictionaryCollection(list(dicts)))
             translator.add_listener(formatter.format)
-            Ahead(engine_for(translator)).start()
+            Extension(engine_for(translator)).start()
             if seed:
                 # Text the fixture starts from. A translation of its own, so a
                 # window reads it the way it reads anything else written.

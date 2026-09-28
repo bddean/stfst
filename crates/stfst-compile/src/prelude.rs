@@ -7,10 +7,12 @@
 //! cannot drift.
 
 use stfst_core::context::{self, Slot};
+use stfst_core::fold::{ADD, FOLD, STRIP};
 use stfst_core::host;
 use stfst_core::window::{self, Class};
 use stfst_core::record::{
-    all_tags, copy_tag, repeat_tag, replace_tag, AFTER, FLAG_TAGS, MAX_COUNT, MOD_TAGS,
+    all_tags, copy_tag, is_optional_tag, repeat_tag, replace_tag, AFTER, FLAG_TAGS, MAX_COUNT,
+    MOD_TAGS,
 };
 use stfst_core::System;
 
@@ -122,8 +124,7 @@ pub fn generate_for(system: &System, used: Option<&[String]>) -> String {
         .filter(|t| {
             // The same reasoning as `named`: a tag no grammar here can emit does not
             // need to be in the alphabet the check complements over.
-            let operation = host::is_command(t) || host::is_meta(t);
-            !operation || used.is_none_or(|u| u.iter().any(|s| s == *t))
+            !is_optional_tag(t) || used.is_none_or(|u| u.iter().any(|s| s == *t))
         })
         .map(|t| format!("\"{t}\""))
         .collect();
@@ -223,7 +224,17 @@ pub fn generate_for(system: &System, used: Option<&[String]>) -> String {
     ));
     out.push_str("define Prefix [ (StateBlock) Ctx ] ;\n");
     out.push_str("define Outline [ Prefix Keys (Win) ] ;\n");
-    out.push_str("define Emission [ Record (StateBlock) ] ;\n");
+    // A fold names keys, so they are the stroke acceptor's symbols on this tape.
+    // See `stfst_core::fold`.
+    let fold = match used.is_none_or(|u| u.iter().any(|s| s == FOLD)) {
+        true => format!(
+            "define FoldAlt [ \"{FOLD}\" Plain \"{STRIP}\" Stroke (\"{ADD}\" Stroke) \"[END]\" Plain ] ;\n\
+             define Fold [ FoldAlt+ ] ;\n"
+        ),
+        false => "define Fold [ 0 - 0 ] ;\n".to_string(),
+    };
+    out.push_str(&fold);
+    out.push_str("define Emission [ Record (StateBlock) | Fold ] ;\n");
     out.push_str(
         "define Fresh(G) [ [ [ 0 .x. Ctx ] Keys ] .o. G .o. [ Record ([ StateBlock .x. 0 ]) ] ] ;\n\n",
     );

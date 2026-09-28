@@ -20,8 +20,8 @@ import subprocess
 import sys
 
 BINARY = "./target/release/stfst"
-DEFAULT = ["commands.json", "user.json", "phrases.json", "and-fold.json",
-           "semantic-suffixes.json", "typey-type-full.json"]
+DEFAULT = ["commands.json", "user.json", "phrases.json", "semantic-suffixes.json",
+           "typey-type-full.json"]
 
 
 def plover_output(translations):

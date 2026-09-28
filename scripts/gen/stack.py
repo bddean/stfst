@@ -7,7 +7,7 @@ import tomllib
 
 import plover_tape
 from plover_stfst import ol
-from plover_stfst.record import Record, Unsupported
+from plover_stfst.record import FOLD, Record, Unsupported
 
 from . import PLOVER, RECIPE, SYSTEM
 
@@ -77,6 +77,9 @@ def translation(fst, tape):
     syms = fst.alphabet.tokenize(tape)
     for record in fst.lookup_symbols(syms) if syms is not None else ():
         symbols = [fst.alphabet.symbol(s) for s in record]
+        # A fold answers only where nothing matched, so it is no entry here.
+        if symbols[:1] == [FOLD]:
+            continue
         try:
             return Record.parse(symbols).translation()
         except Unsupported:

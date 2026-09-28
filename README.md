@@ -45,17 +45,24 @@ sits below everything else so it cannot shadow a working entry.
 | phrases | JSON, imported |
 | commands | JSON, imported |
 | emily-modifiers | xfst over generated tables |
-| semantic-suffixes | JSON, imported |
+| folds | xfst: what a stroke nothing matched folds to |
 | two-syllable | JSON, generated |
 | affixes | xfst over a generated lexicon, and the orthography rules |
 | typey-type | JSON, generated from Typey Type |
 | vowel-briefs | JSON, generated beside typey-type |
-| and-fold | JSON, imported |
 | retro-words | xfst over a window of written text |
 | repeat-idioms | JSON, imported |
 | repeat-word | flat source in the record language |
 | frames | flat source in the record language |
 | ahead | flat source in the record language |
+
+A fold is a stroke nothing matched, read as another stroke with something
+written around it: `KAOEPT` is "keep" then "the", `SKPAD` is "and" then "add".
+`dictionaries/folds.xfst` says which keys come off and what they write, as a
+record of ordered alternatives, and the host looks the base up across the whole
+stack and takes the first that translates. So a fold is a rule in a dictionary
+like any other, where Plover's is the system's `SUFFIX_KEYS` and the bare key's
+entry. `stfst_core::fold` is the record and `docs/parity.md` the host's half.
 
 `stfst compile recipe.toml` prints what each artifact weighs and what it took, so
 this table does not: both directions of the whole set are about 46 MB, 31 of
@@ -251,8 +258,8 @@ or `affixes` writes, as long as the rule's, moves to `typey-superseded.json`,
 which Stenotype Extended does not load. An entry whose strokes the stack writes
 the same without it, `RAOE/HROEBGTS` relocates being {re^} then locates, moves to
 `typey-composed.json`, which neither system loads. Which entries those are is
-Plover's question, since the stack's meaning of a fold is
-`plover-semantic-suffixes`, so `scripts/find-typey-composed.py` runs under
+Plover's question, since what `{:infl:…}` writes is
+`plover-semantic-suffixes`' answer, so `scripts/find-typey-composed.py` runs under
 Plover's python and asks both systems' real translator, then the vowel generator
 runs again to drop what it found.
 
