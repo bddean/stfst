@@ -197,6 +197,9 @@ KPHEt/TPHpbs	incompetence
 KPHEt/TPHpbsz	incompetences
 KPHEt/TPHpbt	incompetent
 KPHREUs/TPHbl	inexplicable
+KPWHROEU/TPH*plt	unemployment
+KPWOrt/TPH*pbt	unimportant
+KPWUrs/Rplt	reimbursement
 KRAOEt/STKl	discreetly
 KRAOUt/Rplt	recruitment
 KRE/Rgs	recreation
@@ -1262,7 +1265,6 @@ WAEUr/^pbs	awareness
 ^PHErpl/KPHf	commemorative
 ^PHErpl/KPHgs	commemoration
 ^PHErpl/KPHgsz	commemorations
-^PHOEUrt/TPH*pbt	unimportant
 ^PHRft/KPl	explicitly
 ^PHRft/TPHl	implicitly
 ^PHRpb/KPHgs	comprehension
@@ -1273,7 +1275,6 @@ WAEUr/^pbs	awareness
 ^PHRpblt/TPHgsz	implementations
 ^PHRpbs/KPHf	comprehensive
 ^PHRpbs/^f	apprehensive
-^PHROU/TPH*plt	unemployment
 ^PHUpbt/PRl	prominently
 ^PHUpbt/SPWl	intermittently
 ^POEfrt/PR*s	preposterous
@@ -1311,7 +1312,6 @@ WAEUr/^pbs	awareness
 ^PWAEUl/TPHt	inability
 ^PWAOpbd/^plt	abandonment
 ^PWAUpbtd/^l	abundantly
-^PWHErs/Rplt	reimbursement
 ^PWHRAEt/PRbg	problematic
 ^PWHRAOf/TPH*bl	unbelievable
 ^PWOEUd/TPHplt	embodiment

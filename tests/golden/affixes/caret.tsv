@@ -110,12 +110,12 @@
 1 = IH0=e K.S.P=xp EH1=e N.S=ns	1 KPEpbs
 1 = IH0=e K.W=qu AA1=a L=l	1 ^KWAEl
 1 = IH0=e L=l EH1=e K=c	1 ^HR*bg
-1 = IH0=e M.P.L=mpl OY1=oy =	1 ^PHROU
-1 = IH0=e M.P.L=mpl OY1=oy M=m	1 ^PHROUpl
+1 = IH0=e M.P.L=mpl OY1=oy =	1 KPWHROEU
+1 = IH0=e M.P.L=mpl OY1=oy M=m	1 KPWHROEUpl
 1 = IH0=i G.M=gm AE1=a T=t	1 ^TKPWHAEUt
 1 = IH0=i G.N=gn EY1=a =	1 ^TKPWHAEU
-1 = IH0=i M.B=mb ER1=u S=rs_e	1 ^PWHErs
-1 = IH0=i M.P=mp AO1=o R.T=rt	1 ^PHOEUrt
+1 = IH0=i M.B=mb ER1=u S=rs_e	1 KPWUrs
+1 = IH0=i M.P=mp AO1=o R.T=rt	1 KPWOrt
 1 = IH0=i N.F=nf AO1=o R.S=rc_e	1 ^TPHOUrs
 1 = IH0=i N.T=nt EH1=e N=n	1 SPWEpb
 1 = IH1=e R=r IY0=i =	1 ^Ur

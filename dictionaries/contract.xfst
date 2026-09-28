@@ -85,7 +85,7 @@ define Dis  [ Pre(D, d, [ i | e | y ], [ S | Z ], s, {STK}) ] ;
 define Int  [ Pre(0, 0, [ i | e ], N Dot T, {nt}, {SPW}) ] ;
 define Ex   [ Pre(0, 0, e, [ K | G ] Dot [ S | Z ], x, {KP}) ] ;
 define Comb [ Pre(K, c, o, M Dot B, {mb}, {KPW}) ] ;
-define Emb  [ Pre(0, 0, e, M Dot B, {mb}, {KPW}) ] ;
+define Emb  [ Pre(0, 0, [ e | i ], M Dot B, {mb}, {KPW}) | Pre(0, 0, [ e | i ], M Dot P, {mp}, {KPW}) ] ;
 ! com and not comm: the first spelling in the row that the word starts with
 ! is the one it is read by.
 define Comm [ Pre(K, c, o, M, {mm}, {KPH})
