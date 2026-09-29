@@ -160,7 +160,7 @@ fields. `make install` syncs `stfst-user.json` with the desktop's copy over adb.
 
 ## pitman-board
 
-`~/src/pitman-board` is a second consumer: an Android keyboard for Pitman's
+`~/src/me/pitman-board` is a second consumer: an Android keyboard for Pitman's
 Shorthand, where an outline is the chord and a sign is the key. It brings its own
 `systems/pitman.toml` and dictionaries and changes nothing here, which is the
 answer to whether the general half wants factoring out. `System` was already the

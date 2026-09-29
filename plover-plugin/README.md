@@ -25,7 +25,7 @@ Then name an artifact in `plover.cfg`, under the system it was compiled for. The
 extension picks the format, and an artifact is a directory:
 
 ```
-dictionaries = [..., {"enabled": true, "path": "~/src/stfst/build/dicts/typey-type.stfst"}]
+dictionaries = [..., {"enabled": true, "path": "~/src/me/stfst/build/dicts/typey-type.stfst"}]
 ```
 
 Order is priority, as it is for every other Plover dictionary, so the list in
