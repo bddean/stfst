@@ -38,6 +38,9 @@ PAIRS = [
     ("{*+}", "[CMD=engine.repeat_stroke][END]"),
     ("{}", ""),
     ("{^~|'^}", "'[ATTACH_L][ATTACH_R][CARRY_CAP]"),
+    ("{=(?i)[aeiou]/an/a}", "[IF_NEXT](?i)[aeiou][THEN]an[ELSE]a[END]"),
+    ("such {=x/an/a}", "such [IF_NEXT]x[THEN]an[ELSE]a[END]"),
+    (r"{=a\/b/X/Y\\Z}", r"[IF_NEXT]a/b[THEN]X[ELSE]Y\Z[END]"),
 ]
 
 # Translations that read as a record which spells back as something else. Each is
@@ -54,6 +57,8 @@ SPELLED = [
     ("{:attach:}", "[ATTACH_L][ATTACH_R]", "{^}"),
     ("{:glue:x}", "x[GLUE]", "{&x}"),
     ("{:stop:.}", ".[ATTACH_L][CAP_NEXT]", "{^^}.{-|}"),
+    # `\/` is a slash in any field, and the else field is the rest.
+    (r"{=a/X/Y/Z}", "[IF_NEXT]a[THEN]X[ELSE]Y/Z[END]", r"{=a/X/Y\/Z}"),
     ("{^^}", "[ATTACH_L][ATTACH_R]", "{^}"),
     ("{#Alt_L(Tab)}", "[KEY]Tab[ALT][END]", "{#alt(Tab)}"),
     ("{#a b}", "[KEY]a[END][KEY]b[END]", "{#a}{#b}"),
@@ -74,7 +79,7 @@ class ReadsPloverTranslations(unittest.TestCase):
     def test_a_directive_naming_no_operation_is_refused(self):
         # Plover writes nothing at all for one, and guessing either way would be
         # this module guessing.
-        for translation in ("{pgh}", "{--}", "{...}", "{"):
+        for translation in ("{pgh}", "{--}", "{...}", "{", r"{=\d/X/Y}", "{=x//y}"):
             with self.subTest(translation):
                 self.assertRaises(Unsupported, Record.from_translation, translation)
 

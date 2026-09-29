@@ -12,7 +12,7 @@
 use stfst_core::record::{Case, Item, Mods, Record, SpaceOp};
 use stfst_core::window::{Class, Window};
 
-use crate::{Cell, ModeCase, Tail, Text};
+use crate::{Cell, ModeCase, Tail, Text, Undecided};
 
 /// What only the host can carry out.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -35,6 +35,8 @@ pub enum FormatError {
     BadMeta(String, String),
     #[error("this host has no morphology artifacts, so it cannot inflect")]
     NoMorph,
+    #[error("{0:?} is not a pattern: {1}")]
+    BadPattern(String, String),
 }
 
 impl Text {
@@ -50,7 +52,50 @@ impl Text {
         registers: &[String],
     ) -> Result<Vec<Event>, FormatError> {
         self.open(record);
+        let undecided = self.tail.undecided.clone();
+        let before = undecided.as_ref().map(|_| self.to_string());
+        let events = self.put(record, registers, None)?;
+        if let (Some(undecided), Some(before), true) = (undecided, before, self.tail.wrote) {
+            self.decide(undecided, &before, record, registers)?;
+        }
+        Ok(events)
+    }
 
+    /// Write a choice again now that the text after it exists, and what came
+    /// after it the same as before.
+    ///
+    /// The text it reads is what this unit added to the buffer less the gap
+    /// before it, so a suffix that joined is read as itself: `{^ing}` is "ing",
+    /// as it is in Plover.
+    fn decide(
+        &mut self,
+        undecided: Undecided,
+        before: &str,
+        record: &Record,
+        registers: &[String],
+    ) -> Result<(), FormatError> {
+        let after = self.to_string();
+        let same = before.chars().zip(after.chars()).take_while(|(a, b)| a == b).count();
+        let next: String = after.chars().skip(same).collect();
+        let next = next.trim_start();
+        self.restore(*undecided.from);
+        for (n, (unit, registers)) in undecided.units.iter().enumerate() {
+            self.put(unit, registers, (n == 0).then_some(next))?;
+        }
+        self.put(record, registers, None)?;
+        Ok(())
+    }
+
+    /// Write a record's body and leave the tail it leaves, with `next` as the
+    /// text its choices read. `None` writes each one undecided.
+    fn put(
+        &mut self,
+        record: &Record,
+        registers: &[String],
+        next: Option<&str>,
+    ) -> Result<Vec<Event>, FormatError> {
+        let asks = next.is_none() && record.body.iter().any(|i| matches!(i, Item::IfNext(_)));
+        let from = asks.then(|| Box::new(self.snapshot()));
         let flags = &record.flags;
         let attached = self.tail.attach
             || flags.attach_l
@@ -62,10 +107,9 @@ impl Text {
         // Only a record that writes text opens a gap. `[CAP_NEXT]` alone must not:
         // it is a note for the next record, and a space here would strand the
         // word it was meant to join.
-        let writes = record
-            .body
-            .iter()
-            .any(|i| matches!(i, Item::Text(_) | Item::Copy(_) | Item::Glyph(_)));
+        let writes = record.body.iter().any(|i| {
+            matches!(i, Item::Text(_) | Item::Copy(_) | Item::Glyph(_) | Item::IfNext(_))
+        });
         if writes && !attached {
             let space = self.mode.space.clone();
             self.gap(&space);
@@ -116,6 +160,12 @@ impl Text {
                     // belongs to `rewrite`, not here.
                     Item::Glyph(_) | Item::Drop => return Err(FormatError::NoWindow),
                     Item::Meta { name, arg } => self.meta(name, arg)?,
+                    Item::IfNext(choice) => {
+                        let text = choice.text(next).map_err(|e| {
+                            FormatError::BadPattern(choice.pattern.clone(), e.to_string())
+                        })?;
+                        self.write(text);
+                    }
                 }
             }
         }
@@ -136,6 +186,19 @@ impl Text {
         // case, and Plover says it about all of them: a keystroke between two
         // words does not open the gap the attachment closed.
         let kept = wrote.is_none();
+        // A record that wrote nothing is not the text a choice waits for, so it
+        // joins the units the choice writes again.
+        let undecided = match (from, self.tail.undecided.take()) {
+            (Some(from), _) => Some(Undecided {
+                from,
+                units: vec![(record.clone(), registers.to_vec())],
+            }),
+            (None, Some(mut waiting)) if kept => {
+                waiting.units.push((record.clone(), registers.to_vec()));
+                Some(waiting)
+            }
+            (None, _) => None,
+        };
         self.tail = Tail {
             attach: flags.attach_r || (kept && self.tail.attach),
             glue: flags.glue || (kept && self.tail.glue),
@@ -155,6 +218,7 @@ impl Text {
                 (None, true) => self.tail.case,
                 (None, false) => None,
             },
+            undecided,
         };
         Ok(events)
     }
@@ -242,6 +306,7 @@ impl Text {
                 Item::Meta { name, .. } => {
                     return Err(FormatError::UnknownMeta(name.clone()))
                 }
+                Item::IfNext(choice) => text.push_str(&choice.otherwise),
             }
         }
         self.write(&text);
@@ -251,8 +316,10 @@ impl Text {
             }
         }
         // The rest of the tail is the one the rewritten words left, because a
-        // rewrite takes their place rather than following them.
+        // rewrite takes their place rather than following them. A choice among
+        // them stays as it was written.
         self.tail.wrote = !text.is_empty();
+        self.tail.undecided = None;
         Ok(events)
     }
 
@@ -562,6 +629,36 @@ mod tests {
         // rather than the tail joining the body: "ands" would be a lie.
         assert_eq!(preview("and[AFTER]s[ORTHO_L][END]"), "and -s");
         assert_eq!(preview("by[AFTER][META=infl]ing[END][END]"), "by -ing");
+    }
+
+    #[test]
+    fn a_choice_is_written_again_once_the_next_text_exists() {
+        const AN: &str = "[IF_NEXT](?i)[aeiou][THEN]an[ELSE]a[END]";
+        assert_eq!(text(&[AN]), "a");
+        assert_eq!(text(&[AN, "egg"]), "an egg");
+        assert_eq!(text(&[AN, "dog"]), "a dog");
+        assert_eq!(text(&["such", AN, "Owl"]), "such an Owl");
+        // The text a choice reads is what the next unit added, joined or not.
+        assert_eq!(text(&["run", AN, "ing[ORTHO_L]"]), "run aning");
+        // Each reads the one after it, so the first reads the second's guess.
+        assert_eq!(text(&[AN, AN, "egg"]), "an an egg");
+        // A unit that writes nothing is not the one it waits for, and what it
+        // set still applies once the choice is written again.
+        assert_eq!(text(&[AN, "[CAP_NEXT]", "egg"]), "an Egg");
+        assert_eq!(text(&[AN, "[CMD=mode.caps][END]", "egg"]), "an EGG");
+        assert_eq!(text(&["[CMD=mode.caps][END]", AN, "egg"]), "AN EGG");
+        assert_eq!(text(&[".[CAP_NEXT]", AN, "egg"]), ". An egg");
+        assert_eq!(text(&[AN, ".[ATTACH_L]", "egg"]), "a. egg");
+
+        // Undoing the word that decided it brings the guess back, still waiting.
+        let mut out = Text::default();
+        for r in [AN, "egg"] {
+            out.apply(&Record::parse_display(r).unwrap(), &[]).unwrap();
+        }
+        out.undo();
+        assert_eq!(out.to_string(), "a");
+        out.apply(&Record::parse_display("owl").unwrap(), &[]).unwrap();
+        assert_eq!(out.to_string(), "an owl");
     }
 
     #[test]

@@ -11,8 +11,8 @@ use stfst_core::fold::{ADD, FOLD, STRIP};
 use stfst_core::host;
 use stfst_core::window::{self, Class};
 use stfst_core::record::{
-    all_tags, copy_tag, is_optional_tag, repeat_tag, replace_tag, AFTER, FLAG_TAGS, MAX_COUNT,
-    MOD_TAGS,
+    all_tags, copy_tag, is_optional_tag, repeat_tag, replace_tag, AFTER, ELSE, FLAG_TAGS, IF_NEXT,
+    MAX_COUNT, MOD_TAGS, THEN,
 };
 use stfst_core::System;
 
@@ -175,9 +175,14 @@ pub fn generate_for(system: &System, used: Option<&[String]>) -> String {
         "define EscItem [ \"{}\" Hex Hex \"[END]\" ] ;\n",
         stfst_core::record::ESCAPE
     ));
+    let if_next = match used.is_none_or(|u| u.iter().any(|s| s == IF_NEXT)) {
+        true => format!("[ \"{IF_NEXT}\" Text* \"{THEN}\" Text* \"{ELSE}\" Text* \"[END]\" ]"),
+        false => "[ 0 - 0 ]".to_string(),
+    };
+    out.push_str(&format!("define IfNextItem {if_next} ;\n"));
     out.push_str(
         "define Item [ Text | AnyClass | Drop | KeyItem | CmdItem | MetaItem | CopyItem\n\
-         \x20            | EscItem ] ;\n\n",
+         \x20            | EscItem | IfNextItem ] ;\n\n",
     );
 
     let repeats: Vec<String> = (2..=MAX_COUNT)

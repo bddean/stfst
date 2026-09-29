@@ -25,7 +25,7 @@ installed system's 38 orthography rules.
 | `{plover:…}` | `[CMD=plover.…]` |
 | `{:infl:ed}` | `[META=infl]ed[END]`: a lexicon, no part of speech |
 | `{:retro:past}` | **not carried.** A clause rewrite over a tagger |
-| `{=regex/yes/no}` | **not expressible.** It reads the *next* translation |
+| `{=regex/yes/no}` | `[IF_NEXT]regex[THEN]yes[ELSE]no[END]`: decided by the host |
 | `{}` and any unknown brace atom | **refused.** Plover writes nothing for one |
 | a control character in text | `[U+]0A[END]`: the code point, two hex digits |
 
@@ -216,16 +216,29 @@ noun "abandon" is "abandon", so `-S` there means "abandons". Where neither readi
 changes it, that is the answer and not a failure, because an invariant plural is a
 lexicon fact and only a word list knows it: `sheep` and `-S` is `sheep`.
 
+## Lookahead
+
+`{=regex/yes/no}` depends on the translation that has not arrived, and every other
+context mechanism here looks backwards. `AEU` in `user.json` is the one that asks
+for it: "a", and "an" before a vowel sound.
+
+It is an item, `[IF_NEXT]regex[THEN]yes[ELSE]no[END]`, and the formatter decides
+it, because the next unit is on no tape the dictionary reads. The item writes
+`no` at once. The next unit that writes text decides it: `stfst-text` writes the
+record again from where it started, with the branch that text chose, and then the
+units after it. A unit that wrote nothing is written again too, so `{-|}` or a
+mode set between them still applies. Undoing the word that decided it brings the
+guess back, still waiting.
+
+What it reads is what that unit added, less the gap before it, so `{^ing}` is
+read as "ing". Plover reads the same, and in both a unit that writes nothing
+leaves the choice waiting. The regex is Plover's `re.match`: anchored
+at the start and not the end. `regex-lite` reads it here, so a pattern with
+Python-only syntax, a lookahead say, is refused at import. The fields are split as
+Plover splits them: `\\` and `\/` are escapes, and Plover drops an empty field and
+misreads any other backslash before the last, so the import refuses both.
+
 ## What the ecosystem needs that the format still cannot do
-
-**Lookahead.** `{=regex/yes/no}` depends on the translation that has not arrived.
-Every context mechanism here looks backwards. The state half of host contract 6 plus
-`[REPLACE1]` is the shape of an answer: write the guess, correct it next stroke.
-
-Left undone on purpose, and the reason is a count: no dictionary in
-`~/.config/plover` uses it. Zero across typey-type's 145,345 entries, `main.json`,
-and every other JSON file there. It would cost the formatter a pending unit, which
-is a real change to what a host must do, and nothing is asking.
 
 **Not a tagger, and that is a decision rather than a gap.** The same plugin also
 chooses *words* by part of speech: `-S` after an "of" word writes "of", after a

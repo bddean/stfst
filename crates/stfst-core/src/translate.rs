@@ -7,7 +7,7 @@
 //! Anything unrecognised is reported rather than guessed at. The import is only
 //! worth trusting if it says what it could not convert.
 
-use crate::record::{Case, Flags, Item, Mods, Record, SpaceOp};
+use crate::record::{Case, Flags, IfNext, Item, Mods, Record, SpaceOp};
 
 #[derive(Debug, thiserror::Error, PartialEq, Eq)]
 pub enum TranslateError {
@@ -153,7 +153,9 @@ fn recase(text: &str, case: Case) -> String {
 fn writes_word(items: &[Item]) -> bool {
     items
         .iter()
-        .any(|i| matches!(i, Item::Text(_) | Item::Copy(_) | Item::Glyph(_)))
+        .any(|i| {
+            matches!(i, Item::Text(_) | Item::Copy(_) | Item::Glyph(_) | Item::IfNext(_))
+        })
 }
 
 enum Piece {
@@ -431,6 +433,12 @@ fn core_items(
         }]);
     }
 
+    if let Some(rest) = core.strip_prefix('=') {
+        return if_next(rest)
+            .map(|choice| vec![Item::IfNext(choice)])
+            .ok_or_else(|| TranslateError::Unsupported(d.to_string()));
+    }
+
     if let Some(rest) = core.strip_prefix('&') {
         flags.glue = true;
         return Ok(vec![Item::Text(rest.to_string())]);
@@ -482,6 +490,40 @@ fn core_items(
     // would be the other kind of guess. So it is reported, and `stfst import
     // --report` names all thirty-one.
     Err(TranslateError::Unsupported(d.to_string()))
+}
+
+/// `{=pattern/then/else}`, read as Plover reads it. `\\` and `\/` are a backslash
+/// and a slash, an unescaped slash ends the pattern and then `then`, and `else` is
+/// the rest. Plover drops an empty field and misreads any other backslash before
+/// `else`, so neither is here. A pattern Rust cannot read is refused here rather
+/// than at the first stroke.
+fn if_next(arg: &str) -> Option<IfNext> {
+    let mut fields = vec![String::new()];
+    let mut chars = arg.chars();
+    while let Some(c) = chars.next() {
+        let last = fields.len() == 3;
+        let field = fields.last_mut()?;
+        match (c, last) {
+            ('\\', _) => match chars.next() {
+                Some(n @ ('\\' | '/')) => field.push(n),
+                Some(n) if last => field.extend(['\\', n]),
+                None if last => field.push('\\'),
+                _ => return None,
+            },
+            ('/', false) => fields.push(String::new()),
+            (c, _) => field.push(c),
+        }
+    }
+    let [pattern, then, otherwise] = <[String; 3]>::try_from(fields).ok()?;
+    if pattern.is_empty() || then.is_empty() || otherwise.is_empty() {
+        return None;
+    }
+    IfNext::regex(&pattern).ok()?;
+    Some(IfNext {
+        pattern,
+        then,
+        otherwise,
+    })
 }
 
 /// A prefix match that ignores case, which is what Plover's meta lookup does.
@@ -781,6 +823,29 @@ mod tests {
         assert_eq!(r("{<}").to_string(), "[UPPER_NEXT]");
         assert_eq!(r("{$}").to_string(), "[WORD_END]");
         assert_eq!(r("{.}").to_string(), ".[ATTACH_L][CAP_NEXT]");
+    }
+
+    #[test]
+    fn if_next_is_split_as_plover_splits_it() {
+        assert_eq!(
+            r("{=(?i)[aeiou]/an/a}").to_string(),
+            "[IF_NEXT](?i)[aeiou][THEN]an[ELSE]a[END]"
+        );
+        // `\/` is a slash, `\\` a backslash, and the else branch is the rest.
+        assert_eq!(r("{=a\\/b/X/Y/Z}").to_string(), "[IF_NEXT]a/b[THEN]X[ELSE]Y/Z[END]");
+        assert_eq!(r("{=\\\\d/X/Y}").to_string(), "[IF_NEXT]\\d[THEN]X[ELSE]Y[END]");
+        // Plover misreads any other backslash, and drops an empty field.
+        assert!(translate("{=\\d/X/Y}").is_err());
+        assert!(translate("{=x//y}").is_err());
+        assert!(translate("{=x/an/}").is_err());
+        // It writes a word, so it takes a gap like one.
+        assert_eq!(
+            r("such {=x/an/a}").to_string(),
+            "such [IF_NEXT]x[THEN]an[ELSE]a[END]"
+        );
+        assert!(translate("{=a/X}").is_err());
+        // Lookahead is Python's and not Rust's, so a pattern with one is refused.
+        assert!(translate("{=a(?!b)/X/Y}").is_err());
     }
 
     #[test]

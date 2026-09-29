@@ -1,0 +1,25 @@
+! `AEU` writes "a", and the word after it makes it "an" where that word starts
+! with a vowel sound. What waits is only the choice, so "a" shows at once.
+AEU
+EG
+AEU
+TKOG
+AEU
+HOUR
+! Two strokes: "an um" becomes "an umbrella", and the choice reads it again.
+AEU
+UPL
+PWREL
+HRA
+AEU
+WUPB
+TP-PL
+AEU
+OUL
+AEU
+TP*EUB
+! Undoing the word that decided it brings the guess back, still waiting.
+AEU
+EG
+!undo
+TKOG

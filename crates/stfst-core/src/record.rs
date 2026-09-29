@@ -59,6 +59,11 @@ pub const FLAG_TAGS: &[&str] = &[
 /// see `Emission`.
 pub const OPEN_TAGS: &[&str] = &["[KEY]", "[STATE]", "[END]", ESCAPE];
 
+/// The delimiters of an `Item::IfNext`, in the order they appear.
+pub const IF_NEXT: &str = "[IF_NEXT]";
+pub const THEN: &str = "[THEN]";
+pub const ELSE: &str = "[ELSE]";
+
 /// A character the tape cannot carry, written as its code point: `[U+]0A[END]`
 /// is a newline.
 ///
@@ -284,6 +289,41 @@ pub enum Item {
     /// and where it changes the class, the host recases the character. See
     /// `window`.
     Glyph(Class),
+    /// `[IF_NEXT](?i)[aeiou][THEN]an[ELSE]a[END]`: text chosen by what the next
+    /// unit writes.
+    IfNext(IfNext),
+}
+
+/// Plover's `{=pattern/then/else}`. It writes `otherwise` until the next unit
+/// writes, and is then rewritten as `then` if that unit's text matches.
+///
+/// The host decides, because the next unit is not on any tape this dictionary
+/// reads. The pattern is a regex anchored at the start of that text, as Python's
+/// `re.match` is, so a pattern means the same here and in Plover.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct IfNext {
+    pub pattern: String,
+    pub then: String,
+    pub otherwise: String,
+}
+
+impl IfNext {
+    /// The text this item writes, given the next unit's text, or `None` while
+    /// there is none.
+    pub fn text(&self, next: Option<&str>) -> Result<&str, regex_lite::Error> {
+        let Some(next) = next else {
+            return Ok(&self.otherwise);
+        };
+        Ok(match IfNext::regex(&self.pattern)?.is_match(next) {
+            true => &self.then,
+            false => &self.otherwise,
+        })
+    }
+
+    /// The pattern as an anchored regex, which is also the check that it is one.
+    pub fn regex(pattern: &str) -> Result<regex_lite::Regex, regex_lite::Error> {
+        regex_lite::Regex::new(&format!("^(?:{pattern})"))
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
@@ -350,6 +390,7 @@ impl Record {
             || self.body.iter().any(|i| matches!(i, Item::Meta { .. }));
         let body = self.body.iter().filter_map(|item| match item {
             Item::Meta { arg, .. } => Some(Item::Text(arg.clone())),
+            Item::IfNext(choice) => Some(Item::Text(choice.otherwise.clone())),
             Item::Text(_) | Item::Copy(_) => Some(item.clone()),
             Item::Key { .. } | Item::Cmd { .. } | Item::Glyph(_) | Item::Drop => None,
         });
@@ -491,6 +532,17 @@ impl Record {
                     body.push(Item::Text(sig_char(s).unwrap().to_string()));
                     i += 1;
                 }
+                IF_NEXT => {
+                    let (pattern, i1) = take_until(symbols, i + 1, THEN, s)?;
+                    let (then, i2) = take_until(symbols, i1, ELSE, s)?;
+                    let (otherwise, next) = take_until(symbols, i2, "[END]", s)?;
+                    body.push(Item::IfNext(IfNext {
+                        pattern,
+                        then,
+                        otherwise,
+                    }));
+                    i = next;
+                }
                 _ if counted_tag(s, "COPY").is_some() => {
                     body.push(Item::Copy(counted_tag(s, "COPY").unwrap()));
                     i += 1;
@@ -548,6 +600,15 @@ impl Record {
                 Item::Copy(n) => out.push(copy_tag(*n)),
                 Item::Glyph(class) => out.push(class.tag().to_string()),
                 Item::Drop => out.push(DROP.to_string()),
+                Item::IfNext(choice) => {
+                    out.push(IF_NEXT.into());
+                    out.extend(choice.pattern.chars().map(|c| c.to_string()));
+                    out.push(THEN.into());
+                    out.extend(choice.then.chars().map(|c| c.to_string()));
+                    out.push(ELSE.into());
+                    out.extend(choice.otherwise.chars().map(|c| c.to_string()));
+                    out.push("[END]".into());
+                }
                 Item::Cmd { name, arg } | Item::Meta { name, arg } => {
                     out.push(match item {
                         Item::Cmd { .. } => host::command_tag(name),
@@ -695,7 +756,10 @@ fn counted_tag(symbol: &str, prefix: &str) -> Option<u8> {
 /// Each one a check has to complement over costs, so an operation from a closed
 /// table and a fold's tags join the alphabet of the grammars that use them.
 pub fn is_optional_tag(tag: &str) -> bool {
-    host::is_command(tag) || host::is_meta(tag) || crate::fold::FOLD_TAGS.contains(&tag)
+    host::is_command(tag)
+        || host::is_meta(tag)
+        || crate::fold::FOLD_TAGS.contains(&tag)
+        || [IF_NEXT, THEN, ELSE].contains(&tag)
 }
 
 /// Every tag of the closed alphabet, which is also what the prelude's acceptor
@@ -714,6 +778,7 @@ pub fn all_tags() -> Vec<String> {
         out.push(replace_tag(n));
     }
     out.push(AFTER.to_string());
+    out.extend([IF_NEXT, THEN, ELSE].map(str::to_string));
     out.extend(crate::fold::FOLD_TAGS.iter().map(|s| s.to_string()));
     out.extend(host::COMMANDS.iter().map(|c| host::command_tag(c)));
     out.extend(host::METAS.iter().map(|m| host::meta_tag(m)));
@@ -976,6 +1041,28 @@ mod tests {
     }
 
     #[test]
+    fn a_choice_waits_for_the_next_text() {
+        let r = Record::parse_display("[IF_NEXT](?i)[aeiou][THEN]an[ELSE]a[END]").unwrap();
+        let Item::IfNext(choice) = &r.body[0] else {
+            panic!("{r:?}");
+        };
+        assert_eq!(choice.text(None).unwrap(), "a");
+        assert_eq!(choice.text(Some("Egg")).unwrap(), "an");
+        assert_eq!(choice.text(Some("dog")).unwrap(), "a");
+        // Anchored at the start and not the end, which is `re.match`.
+        assert_eq!(choice.text(Some("dove")).unwrap(), "a");
+        let r = Record::parse_display("[IF_NEXT]a\\/b[THEN]x[ELSE]y[END]").unwrap();
+        let Item::IfNext(choice) = &r.body[0] else {
+            panic!("{r:?}");
+        };
+        assert_eq!(choice.text(Some("a/b")).unwrap(), "x");
+        assert_eq!(
+            Record::parse_display("[IF_NEXT]a[THEN]x[END]"),
+            Err(RecordError::Unterminated(IF_NEXT.into()))
+        );
+    }
+
+    #[test]
     fn display_form_round_trips() {
         for s in [
             "ing[ATTACH_L][CAP_NEXT]",
@@ -985,6 +1072,7 @@ mod tests {
             "[COPY1]",
             "a[GLUE]",
             "plain text",
+            "such [IF_NEXT](?i)[aeiou][THEN]an[ELSE]a[END]",
         ] {
             let r = Record::parse_display(s).unwrap();
             assert_eq!(r.to_string(), s, "{s} did not round-trip");

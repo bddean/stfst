@@ -79,6 +79,22 @@ pub struct Tail {
     /// and those are the cases where a retrospective space operation has no gap
     /// to edit. Counted from the end because `trim` drops words from the front.
     pub start: Option<usize>,
+    /// A choice that waits for the next unit's text, with what it takes to write
+    /// it again once that text exists.
+    pub(crate) undecided: Option<Undecided>,
+}
+
+/// A record holding an `IfNext`, written as if the next text matched nothing.
+///
+/// Deciding it writes it again from `from` with that text, and after it the
+/// units that wrote nothing since, so a capital or a mode they set still
+/// applies. Kept in the tail because undoing the unit that decided it has to
+/// bring it back undecided.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) struct Undecided {
+    pub from: Box<Snapshot>,
+    /// Each record and the registers it was given, oldest first.
+    pub units: Vec<(stfst_core::Record, Vec<String>)>,
 }
 
 /// A persistent output mode, which a `[CMD=mode.*]` sets and only another command
@@ -151,7 +167,7 @@ pub struct Text {
 }
 
 /// The text and the state that goes with it, as one unit found it.
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub(crate) struct Snapshot {
     pub cells: Vec<Cell>,
     pub tail: Tail,

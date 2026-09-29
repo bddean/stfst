@@ -45,6 +45,9 @@ STATE_OPEN, STATE_CLOSE = "[STATE]", "[END]"
 # `[AFTER]…[END]`: the record's tail, written after the unit that follows it.
 AFTER = "[AFTER]"
 
+# `[IF_NEXT]pattern[THEN]text[ELSE]text[END]`: Plover's `{=pattern/then/else}`.
+IF_NEXT, THEN, ELSE = "[IF_NEXT]", "[THEN]", "[ELSE]"
+
 # A fold record's tags. `plover_stfst.fold` reads one; nothing else may take one
 # for an entry, because a fold answers only where nothing matched.
 FOLD, STRIP, ADD = "[FOLD]", "[STRIP]", "[ADD]"
@@ -164,8 +167,9 @@ class Record:
         preview does neither.
         """
         suffix = self.ortho_l or any(i[0] == "meta" for i in self.body)
-        body = [("text", i[2]) if i[0] == "meta" else i
-                for i in self.body if i[0] in ("text", "meta", "copy")]
+        shown = {"meta": lambda i: ("text", i[2]), "if_next": lambda i: ("text", i[3])}
+        body = [shown.get(i[0], lambda i: i)(i)
+                for i in self.body if i[0] in ("text", "meta", "copy", "if_next")]
         if not suffix:
             return Record(body, **self._flags())
         flags = self._flags()
@@ -273,6 +277,11 @@ class Record:
                 out.append("[END]")
             elif kind == "copy":
                 out.append("[COPY%d]" % item[1])
+            elif kind == "if_next":
+                for tag, text in zip((IF_NEXT, THEN, ELSE), item[1:]):
+                    out.append(tag)
+                    out.extend(text)
+                out.append("[END]")
             elif kind == "glyph":
                 out.append(item[1])
             else:
@@ -340,6 +349,11 @@ def _parse_body(symbols):
         elif counted(s, "COPY") is not None:
             body.append(("copy", counted(s, "COPY")))
             i += 1
+        elif s == IF_NEXT:
+            pattern, i = _take_until(symbols, i + 1, THEN)
+            then, i = _take_until(symbols, i, ELSE)
+            otherwise, i = _take_until(symbols, i, "[END]")
+            body.append(("if_next", pattern, then, otherwise))
         elif _op(s, "CMD") or _op(s, "META"):
             kind = "cmd" if _op(s, "CMD") else "meta"
             name = _op(s, "CMD") or _op(s, "META")
@@ -557,6 +571,43 @@ def _meta(name, arg):
     raise Unsupported("no Plover spelling for the meta %s" % name)
 
 
+def _if_next(pattern, then, otherwise):
+    r"""`{=pattern/then/else}`. Plover reads `\\` and `\/` as a backslash and a
+    slash in every field, and has no empty one."""
+    if not (pattern and then and otherwise):
+        raise Unsupported("an empty field in {=…}")
+    fields = [f.replace("\\", "\\\\").replace("/", "\\/")
+              for f in (pattern, then, otherwise)]
+    return "{=%s}" % "/".join(_escape(f) for f in fields)
+
+
+def _if_next_fields(arg, d):
+    """`stfst_core::translate::if_next`: an unescaped slash ends the pattern and
+    then `then`, and `else` is the rest. Plover drops an empty field and misreads
+    any other backslash before `else`, so neither is read here."""
+    fields, i = [""], 0
+    while i < len(arg):
+        c, last = arg[i], len(fields) == 3
+        if c == "\\":
+            nxt = arg[i + 1:i + 2]
+            if nxt in ("\\", "/"):
+                fields[-1] += nxt
+            elif last:
+                fields[-1] += c + nxt
+            else:
+                raise Unsupported("unsupported directive {%s}" % d)
+            i += 2
+            continue
+        if c == "/" and not last:
+            fields.append("")
+        else:
+            fields[-1] += c
+        i += 1
+    if len(fields) != 3 or not all(fields):
+        raise Unsupported("unsupported directive {%s}" % d)
+    return tuple(fields)
+
+
 def _translation(self):
     if self.state is not None:
         raise Unsupported("a carried state")
@@ -587,6 +638,10 @@ def _translation(self):
             # it from what came before, so it takes no join of its own and does
             # not count as one of the words the gap rules read.
             atoms.append([False, "{:stfst_copy:%d}" % item[1]])
+        elif kind == "if_next":
+            # A word, but one Plover spells as a meta, so like a bound word it
+            # takes the record's own spacing and no join of its own.
+            atoms.append([False, _if_next(*item[1:])])
         else:
             raise Unsupported("%s, which needs a window" % kind)
 
@@ -765,7 +820,7 @@ def _keystrokes(token, mods, out):
 def _writes_word(items):
     """Whether these items put a word on screen. A keystroke and a command do
     not, so they take no space beside them and decide no boundary."""
-    return any(i[0] in ("text", "copy", "glyph") for i in items)
+    return any(i[0] in ("text", "copy", "glyph", "if_next") for i in items)
 
 
 def _recase(text, case):
@@ -972,6 +1027,8 @@ def _core_items(d, core, record, join):
     # `{*($c)}`: the previous number as currency.
     if core.startswith("*(") and core.endswith(")"):
         return [("meta", "retro.currency", core[2:-1])]
+    if core.startswith("="):
+        return [("if_next",) + _if_next_fields(core[1:], d)]
     if core.startswith("&"):
         record.glue = True
         return [("text", core[1:])]
