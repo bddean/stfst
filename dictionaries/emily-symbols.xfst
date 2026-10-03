@@ -73,10 +73,11 @@ define DoSpace  [ [ "[ATTACH_L]" | "[ATTACH_R]" ] -> 0
 ! ---- numbers
 !
 ! `U` with the identifier writes a number, the left bank read as binary exactly as
-! `emily-modifiers` reads it in literal mode: `R W K S` are 1 2 4 8, `H P T ^` are
-! 16 32 64 128 and `#` is 256. `O` appends a zero, so `SROUTZ` is 90 and `OUTZ`,
-! with no bits, is 0. Glued, as Plover glues a translation that is all digits.
-define Bits     [ ?+ .o. LitNum ] ;
+! `emily-modifiers` reads it in literal mode: `R W K S` are 1 2 4 8 and `H P T ^`
+! are 16 32 64 128. `O` appends a zero, so `SROUTZ` is 90 and `OUTZ`, with no
+! bits, is 0. Glued, as Plover glues a translation that is all digits. The table
+! has `#` as 256, and `#` is phrasing's, so that bit is not read.
+define Bits     [ [ \"#" ]+ .o. LitNum ] ;
 define Number   [ [ Bits ([ {O} .x. {0} ]) | [ {O} .x. {0} ] ]
                   [ {Utz} .x. "[GLUE]" ] ] ;
 

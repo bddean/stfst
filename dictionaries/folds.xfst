@@ -52,7 +52,8 @@ define AndH       [ Stroke & [ S K P H ?* ] ] ;
 define And(C, Add) Rule(C, [ "[FOLD]" {and} "[STRIP]" S K P Add "[END]" ]) ;
 define PutT       [ "[ADD]" T ] ;
 
-define Folds [ Stroke
+! `#` is phrasing's, so no fold reads a stroke that holds it.
+define Folds [ [ Stroke - $["#"] ]
   .o. And(AndH, PutT)
   .o. And(AndStroke, 0)
   .o. And([ AndStroke - AndH ], PutT)

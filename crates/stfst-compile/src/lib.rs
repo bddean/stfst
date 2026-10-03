@@ -60,7 +60,8 @@ pub fn compile_recipe(recipe_path: &Path, out: &Path, work: &Path, which: &Which
             .map(|s| recipe::resolve(&base, s))
             .collect();
         inputs.push(system_path.clone());
-        let stamp = stamp(&recipe.system, dict)?;
+        let reserved = recipe.reserved(dict);
+        let stamp = stamp(&recipe.system, dict, &reserved)?;
         if !which.force && fresh(&artifact, &stamp, &inputs) {
             eprintln!("  {}: up to date", dict.name);
             continue;
@@ -73,7 +74,8 @@ pub fn compile_recipe(recipe_path: &Path, out: &Path, work: &Path, which: &Which
         match source {
             recipe::Source::Xfst(srcs) => {
                 let srcs: Vec<_> = srcs.iter().map(|s| recipe::resolve(&base, s)).collect();
-                let checks = pipeline::compile_xfst(&system, &srcs, &work_dir, &forward, &reverse)?;
+                let checks =
+                    pipeline::compile_xfst(&system, &srcs, &reserved, &work_dir, &forward, &reverse)?;
                 if !checks.passed() {
                     bail!("{} failed its checks:\n{}", dict.name, checks.report());
                 }
@@ -86,6 +88,11 @@ pub fn compile_recipe(recipe_path: &Path, out: &Path, work: &Path, which: &Which
                         let lines: Vec<String> = errors.iter().map(|e| format!("  {e}")).collect();
                         anyhow::anyhow!("{}:\n{}", src.display(), lines.join("\n"))
                     })?;
+                if let Some((tape, _)) =
+                    compiled.golden.iter().find(|(t, _)| t.contains(|c| reserved.contains(c)))
+                {
+                    bail!("{}: {tape} holds a key another dictionary owns ({reserved})", src.display());
+                }
                 eprintln!("  {}: {} entries", dict.name, compiled.entries);
                 let lexc_path = work_dir.join("plain.lexc");
                 std::fs::write(&lexc_path, &compiled.lexc)?;
@@ -93,7 +100,7 @@ pub fn compile_recipe(recipe_path: &Path, out: &Path, work: &Path, which: &Which
             }
             recipe::Source::Json(src) => {
                 let src = recipe::resolve(&base, src);
-                let imported = json::import_file(&src, &system, lexc::Align::Pairwise)?;
+                let imported = json::import_file(&src, &system, lexc::Align::Pairwise, &reserved)?;
                 eprintln!("  {}: {}", dict.name, imported.report.summary());
                 let lexc_path = work_dir.join("import.lexc");
                 std::fs::write(&lexc_path, &imported.lexc)?;
@@ -124,11 +131,11 @@ pub(crate) const STAMP: &str = "stamp";
 /// its own recipe entry that reach the artifact, and the compiler's source. Not
 /// the rest of the recipe, so adding a dictionary rebuilds that dictionary and
 /// nothing else.
-fn stamp(system: &Path, dict: &recipe::Dict) -> Result<String> {
+fn stamp(system: &Path, dict: &recipe::Dict, reserved: &str) -> Result<String> {
     let files: Vec<String> = dict.source()?.files().iter().map(|f| f.display().to_string()).collect();
     Ok(format!(
         "compiler = {:?}\nsystem = {:?}\nname = {:?}\npriority = {}\nversion = {:?}\n\
-         sources = {files:?}\nshown = {:?}\nstrokes = {:?}\n",
+         sources = {files:?}\nshown = {:?}\nstrokes = {:?}\nreserved = {reserved:?}\n",
         env!("STFST_COMPILER_HASH"),
         system.display().to_string(),
         dict.name,
@@ -177,17 +184,17 @@ mod tests {
         // Built after its source, but by no recorded entry: stale.
         std::thread::sleep(std::time::Duration::from_millis(10));
         std::fs::write(artifact.join("forward.hfstol"), "").unwrap();
-        assert!(!fresh(&artifact, &stamp(system, &a).unwrap(), std::slice::from_ref(&source)));
+        assert!(!fresh(&artifact, &stamp(system, &a, "").unwrap(), std::slice::from_ref(&source)));
 
-        std::fs::write(artifact.join(STAMP), stamp(system, &a).unwrap()).unwrap();
-        assert!(fresh(&artifact, &stamp(system, &a).unwrap(), std::slice::from_ref(&source)));
+        std::fs::write(artifact.join(STAMP), stamp(system, &a, "").unwrap()).unwrap();
+        assert!(fresh(&artifact, &stamp(system, &a, "").unwrap(), std::slice::from_ref(&source)));
         // Its own entry changed.
         let moved = dict("name = \"a\"\npriority = 2\njson = \"a.json\"\n");
-        assert!(!fresh(&artifact, &stamp(system, &moved).unwrap(), std::slice::from_ref(&source)));
+        assert!(!fresh(&artifact, &stamp(system, &moved, "").unwrap(), std::slice::from_ref(&source)));
         // A source newer than the artifact.
         std::thread::sleep(std::time::Duration::from_millis(10));
         std::fs::write(&source, "{ }").unwrap();
-        assert!(!fresh(&artifact, &stamp(system, &a).unwrap(), &[source]));
+        assert!(!fresh(&artifact, &stamp(system, &a, "").unwrap(), &[source]));
         std::fs::remove_dir_all(&dir).unwrap();
     }
 }

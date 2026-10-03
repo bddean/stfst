@@ -57,6 +57,7 @@ xfst = ["dictionaries/emily-symbols-tables.xfst", "dictionaries/emily-modifiers-
 [[dict]]
 name = "phrasing-tag"
 priority = 96
+owns = "#"
 # `#^`, the question tag. Its own artifact so that only a tagged clause carries
 # the tag's features: see the file's header.
 xfst = [
@@ -66,9 +67,12 @@ xfst = [
     "dictionaries/phrasing-tag.xfst",
 ]
 
+# `#` is the phrasing gate, and no other dictionary has an outline with it: see
+# `owns` in docs/phrasing.md.
 [[dict]]
 name = "phrasing"
 priority = 95
+owns = "#"
 xfst = [
     "dictionaries/phrasing-subjects.xfst",
     "dictionaries/phrasing-lexicon.xfst",

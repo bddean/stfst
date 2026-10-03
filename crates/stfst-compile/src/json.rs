@@ -20,16 +20,20 @@ pub struct ImportReport {
     pub bad_outlines: Vec<(String, String)>,
     /// Translations with no record equivalent, with the reason.
     pub bad_translations: Vec<(String, String, String)>,
+    /// Entries left out because an outline holds a key another dictionary owns.
+    pub reserved: usize,
 }
 
 impl ImportReport {
     pub fn summary(&self) -> String {
         format!(
-            "{} of {} entries imported; {} outlines unparseable, {} translations unsupported",
+            "{} of {} entries imported; {} outlines unparseable, {} translations unsupported, \
+             {} on keys another dictionary owns",
             self.imported,
             self.entries,
             self.bad_outlines.len(),
-            self.bad_translations.len()
+            self.bad_translations.len(),
+            self.reserved
         )
     }
 }
@@ -50,13 +54,21 @@ pub fn import_file(
     path: impl AsRef<Path>,
     system: &System,
     align: Align,
+    reserved: &str,
 ) -> anyhow::Result<Import> {
     let text = std::fs::read_to_string(path.as_ref())?;
     let raw: BTreeMap<String, String> = serde_json::from_str(&text)?;
-    Ok(import(&raw, system, align))
+    Ok(import(&raw, system, align, reserved))
 }
 
-pub fn import(raw: &BTreeMap<String, String>, system: &System, align: Align) -> Import {
+/// `reserved` is the keys another dictionary owns: an entry whose outline holds
+/// one is left out and counted.
+pub fn import(
+    raw: &BTreeMap<String, String>,
+    system: &System,
+    align: Align,
+    reserved: &str,
+) -> Import {
     let mut report = ImportReport {
         entries: raw.len(),
         ..Default::default()
@@ -109,6 +121,10 @@ pub fn import(raw: &BTreeMap<String, String>, system: &System, align: Align) -> 
             continue;
         }
         let tape = system.to_tape(&parsed);
+        if tape.contains(|c| reserved.contains(c)) {
+            report.reserved += 1;
+            continue;
+        }
         let plain = record.to_string();
         if plain.contains('[') || report.imported % stride == 0 {
             golden.push((tape.clone(), plain));

@@ -11,116 +11,113 @@
 
 ! ---- the verb hole, `-RG`, over the corners of the clause
 !buffer
-+T-RG
+#TP-RG
 RUPB
 !buffer
-+T-RGD
+#TP-RGD
 RUPB
 !buffer
-+TERG
+#TPERG
 RUPB
 !buffer
-+TURG
+#TPURG
 RUPB
 
 ! A modal takes the base form, so the hole asks for nothing at all and the word
 ! stands as it was written.
 !buffer
-+TARG
+#TPARG
 RUPB
 
-! The passive, the negative and the question, which are the same corners a verb
+! No subject, the negative and the question, which are the same corners a verb
 ! of its own would take.
 !buffer
-+PH-RG
+#E-RG
 RUPB
 !buffer
-+K*RG
+#T*RG
 RUPB
 !buffer
-#+T-RG
+#+TP-RG
 RUPB
 
 ! An irregular, which is why the tail is a lexicon and not a rule.
 !buffer
-+T-RGD
+#TP-RGD
 TKPW
 !buffer
-+TURG
+#TPURG
 TKPW
 
 ! ---- a held clause, `🦐`: it waits before its verb for the next stroke
 ! The gap sits after the finite word, so the stroke lands where an adverb goes,
 ! and whatever it writes lands there: a stroke, not a word.
 !buffer
-🦐+K-R
+🦐#T-R
 ^OEFPB
 !buffer
-🦐+KUR
+🦐#TUR
 ^TPHEFR
 !buffer
-🦐+K*R
+🦐#T*R
 AULS
 !buffer
-🦐#+T-R
+🦐#+TP-R
 ^OEFPB
 !buffer
-🦐+HR-R
+🦐#TWH-R
 ^RAUL
 !buffer
-🦐+PH-B
+🦐#TRO-B
 ^OEFPB
 !buffer
-🦐+K-FPTS
+🦐#T-FPTS
 ^RAUL
 
 ! With nothing after the gap there is no tail, so the stroke just follows.
 !buffer
-🦐+K
+🦐#T
 ^OEFPB
 
 ! ---- what the hole displaced
 !buffer
-+T-RGT
+#TP-RGT
 !buffer
-+T-RPGT
+#TP-RPGT
 !buffer
-+T-RGTZ
+#TP-RGTZ
 
-! ---- the other hole: a determiner subject holds the noun
+! ---- the other hole: a held subject holds the noun
 ! The clause after the determiner is the tail, so the noun lands in the middle
-! of it. `S` pluralizes and the agreement follows the determiner, not the noun.
+! of it.
 !buffer
-+PR-B
+#WH-B
 KAT
 !buffer
-+SPR-B
+#WH-B
 KATS
-!buffer
-+KP-B
-KAT
 
 ! Question inversion needs nothing of its own: the subject is still followed by
 ! the space the finite word left.
 !buffer
-#+PR-B
+#+WH-B
 KAT
 
 ! A hole with nothing after it holds nothing, because there is no tail to wait
 ! with, so the noun follows as ordinary text.
 !buffer
-#+PR
+#+WH
 KAT
 
-! ---- the question tag, `#^`: a clause with no verb waits for its complement
+! ---- the question tag, `^+`: a clause with no verb waits for its complement
 !buffer
-#^+T
+#^+TP
 TPHAOEUS
 !buffer
-#^+K
+#^+T
 HRAEUT
 !buffer
-#^+K-GZ
+#^+T-GZ
 SKAOL
 !buffer
-#^+T-B
+#^+TP-B

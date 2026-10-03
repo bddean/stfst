@@ -41,6 +41,10 @@ enum Command {
         /// US (0x1f). What an encoding experiment reads.
         #[arg(long)]
         pairs: Option<PathBuf>,
+        /// Keys another dictionary owns: entries that hold one are left out,
+        /// as `compile` leaves them out.
+        #[arg(long, default_value = "")]
+        without: String,
     },
     /// Read a flat dictionary written in the record language, to lexc.
     Plain {
@@ -215,6 +219,7 @@ fn main() -> Result<()> {
             align,
             golden: golden_out,
             pairs,
+            without,
         } => {
             let sys = System::load(&system)?;
             let align = match align.as_str() {
@@ -222,7 +227,7 @@ fn main() -> Result<()> {
                 "delayed" => Align::Delayed,
                 other => anyhow::bail!("unknown alignment {other:?}"),
             };
-            let imported = stfst_compile::json::import_file(&json, &sys, align)
+            let imported = stfst_compile::json::import_file(&json, &sys, align, &without)
                 .with_context(|| format!("importing {}", json.display()))?;
             eprintln!("{}", imported.report.summary());
             if let Some(path) = report {

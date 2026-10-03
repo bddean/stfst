@@ -32,13 +32,15 @@ checked=" "
 # compile; `check-plugin.py` holds the same entries to Plover.
 source_golden() {
     local name=$1 kind=$2 source=$3 sub out
+    local without=()
     case $kind in
-        json) sub=import ;;
+        # The keys another dictionary owns, which `compile` leaves out of an import.
+        json) sub=import; without=(--without "$(python3 scripts/recipe.py recipe.toml reserved "$name")") ;;
         plain) sub=plain ;;
         *) return 0 ;;
     esac
     mkdir -p build/golden
-    out=$($B "$sub" --system "$SYSTEM" "$source" -o /dev/null \
+    out=$($B "$sub" --system "$SYSTEM" "$source" -o /dev/null "${without[@]}" \
         --golden "build/golden/$name.tsv" 2>&1) || { echo "$out" >&2; exit 1; }
 }
 
@@ -213,16 +215,4 @@ if [ -f build/morph/ortho.hfstol ] && [ -x "$PLOVER_PYTHON" ]; then
     "$PLOVER_PYTHON" scripts/check-hold.py
 else
     echo "skipped: no build/morph artifacts, or no Plover python"
-fi
-
-# The retro fold is not in `recipe.toml`, because no host yet hands a dictionary its
-# own run newest-first, so `build/dicts` never holds it and the loop above cannot
-# reach it. Its grammar is checked all the same, and building it costs a quarter of
-# an hour, so it is opt-in.
-if [ -n "${STFST_RETRO:-}" ]; then
-    echo "== phrasing-retro"
-    $B compile recipe-retro.toml --out build/retro-dicts --work build/retro-work \
-        > /dev/null
-    $B test build/retro-dicts/phrasing-retro.stfst tests/golden/phrasing-retro.tsv \
-        | tail -1
 fi

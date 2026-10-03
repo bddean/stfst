@@ -104,11 +104,8 @@ define StarVowel  [ Caret (Starters)     VowelStar  (Enders)     ] ;
 define StarStart  [ Caret StartersStar   VowelPass  (Enders)     ] ;
 define Syllable   PU(Plain, PU(StarEnder, PU(StarVowel, StarStart))) ;
 
-! `#` on a syllable capitalises it. A record has no case operator that reaches
-! inside the body, and it does not need one: compose the case change onto the
-! syllable while the syllable is still its own relation, so `.#.` is its first
-! letter and not the record's.
-define UpFirst    [ a -> A , b -> B , c -> C , d -> D , e -> E , f -> F , g -> G , h -> H , i -> I , j -> J , k -> K , l -> L , m -> M , n -> N , o -> O , p -> P , q -> Q , r -> R , s -> S , t -> T , u -> U , v -> V , w -> W , x -> X , y -> Y , z -> Z || .#. _ ] ;
+! The Python's `#` capitalises a syllable. `#` is phrasing's here, so a capital
+! comes from a case stroke before the word instead.
 ! `[e]`, `[y]` and `[s]` are Shrimple's orthography notes, and they are not the
 ! same shape. `[e]` *moves*: a vowel carrying it lands its `e` after the ender,
 ! so `AOEU` plus `-F` is "ife" and not "ief". The other two only mark a suffix
@@ -142,14 +139,13 @@ define Body       [ Syllable .o. MoveE ] ;
 ! mark has already left.
 define Filled     [ [ ?+ - Exit ] .o. Body ] ;
 define Free       [ ?+ .o. Body ] ;
-define Cell(F)    [ [ [ "#" .x. 0 ] [ F .o. UpFirst ] ] | F ] ;
 
 
 ! A bare symbol is the identity pair, so the entry stroke and the separators
 ! reach the record unless they are deleted. The record language cannot catch it:
 ! `^` and `/` are legal text.
 define Join       [ Sep .x. 0 ] ;
-define Word       [ Cell(Filled) [ Join Cell(Filled) ]* ] ;
+define Word       [ Filled [ Join Filled ]* ] ;
 
 ! The entry stroke alone announces the mode and writes nothing. `{Shrimple}` is
 ! what the Python answers, and Plover knows no meta of that name, so it writes
@@ -162,7 +158,7 @@ define Enter      [ "^" .x. 0 ] ;
 ! The key leads the tape, so the mark is a prefix of the cell rather than a
 ! thing to thread through the syllable.
 define Mark       [ "🦐" .x. 0 ] ;
-define Marked     [ Mark Cell(Free) ] ;
+define Marked     [ Mark Free ] ;
 define MarkedWord [ Marked [ Join Marked ]* ] ;
 
 define Grammar    Canon([ [ Enter

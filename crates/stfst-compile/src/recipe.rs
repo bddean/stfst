@@ -89,6 +89,11 @@ pub struct Dict {
     /// the artifact: the generator resolves it into the source.
     #[serde(default)]
     pub pipeline: Vec<String>,
+    /// Keys no other dictionary in the recipe may hold: `#` is phrasing's. An
+    /// imported entry with one is dropped, and a grammar or a flat dictionary
+    /// with one fails, because its source is ours to change.
+    #[serde(default)]
+    pub owns: String,
 }
 
 fn default_version() -> String {
@@ -151,6 +156,19 @@ impl Recipe {
         }
     }
 
+    /// The keys another dictionary owns, which `dict` may not hold.
+    pub fn reserved(&self, dict: &Dict) -> String {
+        let mut keys: Vec<char> = self
+            .dict
+            .iter()
+            .flat_map(|d| d.owns.chars())
+            .filter(|k| !dict.owns.contains(*k))
+            .collect();
+        keys.sort();
+        keys.dedup();
+        keys.into_iter().collect()
+    }
+
     pub fn load(path: &Path) -> Result<(Recipe, PathBuf)> {
         let text = std::fs::read_to_string(path)
             .with_context(|| format!("reading {}", path.display()))?;
@@ -181,6 +199,20 @@ pub fn resolve(base: &Path, path: &Path) -> PathBuf {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn a_key_is_reserved_from_every_dictionary_that_does_not_own_it() {
+        let recipe: Recipe = toml::from_str(
+            "system = \"s.toml\"\n\
+             [[dict]]\nname = \"a\"\npriority = 2\nxfst = [\"a.xfst\"]\nowns = \"#\"\n\
+             [[dict]]\nname = \"b\"\npriority = 2\nxfst = [\"b.xfst\"]\nowns = \"#\"\n\
+             [[dict]]\nname = \"c\"\npriority = 1\njson = \"c.json\"\n",
+        )
+        .unwrap();
+        assert_eq!(recipe.reserved(&recipe.dict[0]), "");
+        assert_eq!(recipe.reserved(&recipe.dict[1]), "");
+        assert_eq!(recipe.reserved(&recipe.dict[2]), "#");
+    }
 
     #[test]
     fn a_stage_has_one_source() {

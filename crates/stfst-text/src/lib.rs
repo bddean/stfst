@@ -233,10 +233,11 @@ impl Text {
     fn scratch(&self) -> Text {
         Text {
             cells: self.cells.clone(),
-            // A pending capital belongs to the word that lands, not to the close
-            // that is waiting for it.
+            // A pending capital and a waiting choice belong to the word that
+            // lands, not to the close that is waiting for it.
             tail: Tail {
                 case: None,
+                undecided: None,
                 ..self.tail.clone()
             },
             mode: self.mode.clone(),

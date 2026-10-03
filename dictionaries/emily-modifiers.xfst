@@ -3,8 +3,11 @@
 ! One left key opens the namespace and the rest of the board is a payload, so a
 ! stroke is read as five fields:
 !
-!   #    @    ^    STKPWHR    AO    *    EU    fplt d    z
-!   16   id   128  payload    var   lit  mode  mods      lit
+!   @    ^    STKPWHR    AO    *    EU    fplt d    z
+!   id   128  payload    var   lit  mode  mods      lit
+!
+! The Python reads `#` too, as 16 on a digit or an F-key and 256 on a literal
+! number. `#` is phrasing's here, so those are gone.
 !
 ! Five layers, dispatched by the mode field exactly as the Python's if-chain is:
 !
@@ -33,10 +36,6 @@ define Pat      [ (S) (T) (K) (P) (W) (H) (R) ] ;
 define Some     [ Pat - 0 ] ;
 define Variant  [ 0 .x. V0 ] | [ {A} .x. V1 ] | [ {O} .x. V2 ] | [ {AO} .x. V3 ] ;
 define Vowels   [ (A) (O) ] ;
-! `#` is the F-key bit and the 256 bit of a literal number. Every other layer
-! reads it and ignores it, which is what the Python's unused `hashmark` does.
-define Hash     [ Kill("#") | 0 ] ;
-
 ! The four modifier keys and `-D`, which reach the host only where it can
 ! synthesise `fn`. In literal mode the top row is off modifier duty, so the same
 ! keys read as attachment and case instead.
@@ -69,22 +68,21 @@ define Press(Name, Char)
 
 ! `@E` and a consonant chord: a symbol keysym, which composes with modifiers
 ! where a glyph would not.
-define Sym      [ [ Hash Kill("@") Some Variant Kill(E) Mod ]
+define Sym      [ [ Kill("@") Some Variant Kill(E) Mod ]
                   .o. Press(SymName, SymChar) ] ;
 
 ! `@U` and payload bits: a digit, or an F-key when the chord holds both T and P.
-! `#` adds 16 there, so it reaches the table rather than the rules.
-define Num      [ [ ("#") Kill("@") Pat Vowels Kill(U) Mod ] .o. Press(NumName, NumChar) ] ;
+define Num      [ [ Kill("@") Pat Vowels Kill(U) Mod ] .o. Press(NumName, NumChar) ] ;
 
 ! Literal mode: the glyph itself instead of the keysym that types it, and the top
 ! row attaches and capitalises instead of holding modifiers.
-define SymLit   [ [ Hash Kill("@") Some Variant Lit([ Kill(E) LitFlag ]) ]
+define SymLit   [ [ Kill("@") Some Variant Lit([ Kill(E) LitFlag ]) ]
                   .o. [ GlyphPair Flag* ] .o. OneCase ] ;
 
-! A literal number: the payload read as binary, `^` the 128 bit and `#` the 256.
+! A literal number: the payload read as binary, and `^` the 128 bit.
 ! Modifiers have nothing to modify here, and the Python ignores them. Glued, as
 ! Plover glues a translation that is all digits.
-define NumLit   [ [ ("#") Kill("@") ("^") Pat (Kill(A)) (Kill(O))
+define NumLit   [ [ Kill("@") ("^") Pat (Kill(A)) (Kill(O))
                     Lit([ Kill(U) NoMod ]) ] .o. [ LitNum Say("[GLUE]") ] ] ;
 
 ! Fingerspelling, which is what a chord means when no mode key claims it. The
@@ -94,7 +92,7 @@ define Chord    [ (S) (T) (K) (P) (W) (H) (R) (A) (O) ("*") (E) (U) ] ;
 ! rather than falling through, so those strokes never reach the letters.
 define NumberMode  [ $[U] & ~$[E] & [ $["*"] | $[{z}] ] ] ;
 ! A letter is always printable, so the two shapes read the one table.
-define Letter   [ ~NumberMode .o. [ Hash Kill("@") Chord Mod (Kill({z})) ]
+define Letter   [ ~NumberMode .o. [ Kill("@") Chord Mod (Kill({z})) ]
                   .o. Press(Spell, Spell) ] ;
 
 define Grammar  Canon([ Sym | Num | SymLit | NumLit | Letter ]) ;

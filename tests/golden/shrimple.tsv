@@ -921,14 +921,13 @@
 ! multi-stroke words
 ^/TAp/KAt	tapkat
 ^/TPH/AO/bg	nook
-! # capitalises the syllable
-^/#TAp	Tap
-^/TAp/#KAt	tapKat
+! `#` is phrasing's, so it capitalises nothing here
+^/#TAp
 ^/SKWRAOEU/TPHAOf/PWA	jienoofba
 ! The 🦐 fold: the same syllables, marked per stroke, with no entry stroke
 ! to spend and no exit to declare.
 🦐TAp	tap
-🦐#TAp	Tap
+🦐#TAp
 🦐TAp/🦐KAt	tapkat
 🦐TPH/🦐AO/🦐bg	nook
 ! The word is the run of strokes carrying the mark, so a half-marked pair is not one.

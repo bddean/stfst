@@ -23,6 +23,8 @@ pub struct Checks {
     pub bad_records: Vec<String>,
     /// Inputs that are not canonical outlines, if any.
     pub bad_outlines: Vec<String>,
+    /// Inputs holding a key another dictionary owns, if any.
+    pub reserved: Vec<String>,
     /// Multichar symbols that are neither record tags nor keys, which means an
     /// internal feature tag survived into the artifact.
     pub leaked_symbols: Vec<String>,
@@ -35,6 +37,7 @@ impl Checks {
         !self.empty
             && self.bad_records.is_empty()
             && self.bad_outlines.is_empty()
+            && self.reserved.is_empty()
             && self.leaked_symbols.is_empty()
     }
 
@@ -48,6 +51,9 @@ impl Checks {
         }
         for o in &self.bad_outlines {
             out.push_str(&format!("  input is not a canonical outline: {o}\n"));
+        }
+        for o in &self.reserved {
+            out.push_str(&format!("  input holds a key another dictionary owns: {o}\n"));
         }
         for s in &self.leaked_symbols {
             out.push_str(&format!("  internal symbol reached the artifact: {s}\n"));
@@ -120,6 +126,7 @@ pub fn spawn_error(program: &str, e: std::io::Error) -> anyhow::Error {
 pub fn compile_xfst(
     system: &System,
     sources: &[PathBuf],
+    reserved: &str,
     work: &Path,
     out_fst: &Path,
     out_reverse: &Path,
@@ -165,6 +172,14 @@ pub fn compile_xfst(
     // Bound the counterexamples: the difference can be an infinite language.
     s.push_str("echo STFST-CHECK-RECORD\nregex Grammar.l - Emission ;\nprint random-words 3\n");
     s.push_str("echo STFST-CHECK-OUTLINE\nregex Grammar.u - Outline ;\nprint random-words 3\n");
+    // A key another dictionary owns, which this grammar's source has to leave out.
+    if !reserved.is_empty() {
+        let keys: Vec<String> = reserved.chars().map(|k| format!("\"{k}\"")).collect();
+        s.push_str(&format!(
+            "echo STFST-CHECK-RESERVED\nregex Grammar.u & $[ {} ] ;\nprint random-words 3\n",
+            keys.join(" | ")
+        ));
+    }
     // An undefined identifier is a *symbol* in xfst, not an error, so a typo in a
     // grammar composes with nothing and the result is empty. Nothing else notices:
     // every other check passes trivially over no paths.
@@ -319,6 +334,7 @@ fn parse_checks(log: &str, system: &System) -> Checks {
     let mut checks = Checks {
         bad_records: Vec::new(),
         bad_outlines: Vec::new(),
+        reserved: Vec::new(),
         leaked_symbols: Vec::new(),
         empty: true,
     };
@@ -330,6 +346,7 @@ fn parse_checks(log: &str, system: &System) -> Checks {
             section = match name {
                 "RECORD" => "record",
                 "OUTLINE" => "outline",
+                "RESERVED" => "reserved",
                 "EMPTY" => "empty",
                 "SIGMA" => "sigma",
                 _ => "",
@@ -344,6 +361,7 @@ fn parse_checks(log: &str, system: &System) -> Checks {
             "empty" => checks.empty = line.starts_with('1'),
             "record" => checks.bad_records.push(line.to_string()),
             "outline" => checks.bad_outlines.push(line.to_string()),
+            "reserved" => checks.reserved.push(line.to_string()),
             "sigma" => {
                 for sym in line.split_whitespace() {
                     let known = tags.iter().any(|t| t == sym)

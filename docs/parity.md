@@ -263,19 +263,9 @@ One divergence is deliberate and asserted rather than ignored, and it is a bug
 fixed: an adverb launchpad with no auxiliary drops negation, the question and
 emphasis in the Python, and do-support is what English does there.
 
-The retro modifier layer is written and checked: 492,480 runs, 490,720 exact, and
-the rest is the launchpad divergence above. What it needed was not more grammar but
-the run in the other order. Chronologically the modifier is read after the clause it
-changes and the text is written before it, so a transducer has to guess the delta,
-and one stroke has 3,072 distinct effects: 1.4M states for one modifier, and a
-window over the written text passed 6.8GB and lost 4.8% of its answers because text
-does not determine a bundle. Newest-first the delta is known first, the deltas
-compose so the run length stops mattering, and the whole fold is 362,491 states with
-no longest key declared.
-
-What is left is a host that hands a dictionary its own run newest-first, which is one
-manifest bit and the harvest path the window already uses. Until then
-`phrasing-retro.xfst` is out of `recipe.toml`. See `docs/phrasing.md`.
+The retro modifier layer was written and checked against it, then retired: its
+modifier keys are the left bank's now, and the redesign replaces it with a
+different mechanism. See `docs/phrasing.md`.
 
 **A dynamic stack.** *Done for enable, disable and solo.* Which dictionaries are
 answering is part of the frame, like the context and the carried state, so a stroke

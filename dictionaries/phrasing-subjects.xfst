@@ -1,141 +1,53 @@
 ! The nominal sublanguage: left keys to a subject and its agreement.
 !
-! Hand-written, and the source. `PHRASING-DESIGN.md` §4.1 gives this as a
-! sublanguage with growth, coordination, politeness order and a type shift, but
-! every one of those is a finite map over subsets of five keys, so it precomputes
-! away and the map is what the design *is*. Change the design here.
+! Hand-written, and the source. Change the left bank here.
+!
+! The subject is a function of four keys, `T P W H`, and all sixteen sets mean
+! something. `S` and `K` are the clausal conjunctions and `R` is modality, so
+! none of them is read here. `phrasing.xfst` reads `K` before `T`, so the
+! subject keys arrive together and each row below is in tape order.
 !
 ! `[C]` marks a subject the reduced surface may cliticize onto ("it's", "I'm").
-! `[AND]` is the clausal conjunction (§4.1a): it precedes the whole clause rather
-! than the subject, so an inverted question is "and am I", not "am and I".
-! `T` before another referent is that `[AND]`, and `S` with it still does what `S`
-! does alone: `+TK` is "and I", `+SK` "we", so `+STK` is "and we". `+ST` is "and
-! it", because `T` cannot say both.
-! `[INF]` is the nonfinite "to" clause (§4.1b), which has no subject word.
-! `[HOLD]` marks the hole a determiner subject leaves: the noun is the word
-! written next, so everything after the determiner waits for it (§4.1f).
-! `[PASS]` is the passive (§4.1d) and `[IMP]`/`[LETS]` the imperative (§4.1e).
-! None of the three names a subject, and each takes a left-key set the coordinate
-! subjects left free.
+! `[INF]` is the nonfinite "to" clause, which has no subject word.
 !
 ! The rules that read this map are in `phrasing.xfst`; the mined verb lexicon is
 ! in `phrasing-lexicon.xfst`.
 
-! Left keys to a subject and its agreement: 88 of the 128 sets have an entry
-! here. 6 more are the determiner subjects in `Determiners` below, and 2 head a
-! clause only when a verb follows, in `NoSubject`. The remaining 32 name nothing,
-! and a stroke that reaches one has no translation. They held the coordinate
-! subjects, "you and I" through "and you and he and she and I", which nobody
-! wrote. Left free rather than refilled: an empty chord is visible and a wrong
-! one is not.
+! Twelve of the sixteen sets. Two more are the held subjects in `Determiners`
+! below, and two head a clause only when a verb follows, in `NoSubject`.
 define Subjects [
-    [ [ "T" ] .x. [ "[SUBJ]" {it} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "K" ] .x. [ "[SUBJ]" {I} "[/SUBJ]" "[C]" "[1sg]" ] ] |
+    [ [ "T" ] .x. [ "[SUBJ]" {I} "[/SUBJ]" "[C]" "[1sg]" ] ] |
     [ [ "P" ] .x. [ "[SUBJ]" {you} "[/SUBJ]" "[C]" "[pl]" ] ] |
-    [ [ "W" ] .x. [ "[SUBJ]" {there} "[/SUBJ]" "[C]" "[3sg]" ] ] |
     [ [ "H" ] .x. [ "[SUBJ]" {he} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "R" ] .x. [ "[SUBJ]" {she} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "S" "T" ] .x. [ "[AND]" "[SUBJ]" {it} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "S" "K" ] .x. [ "[SUBJ]" {we} "[/SUBJ]" "[C]" "[pl]" ] ] |
-    [ [ "S" "P" ] .x. [ "[SUBJ]" {you} "[/SUBJ]" "[C]" "[pl]" ] ] |
-    [ [ "S" "W" ] .x. [ "[SUBJ]" {there} "[/SUBJ]" "[C]" "[pl]" ] ] |
-    [ [ "S" "H" ] .x. [ "[SUBJ]" {they} "[/SUBJ]" "[C]" "[pl]" ] ] |
-    [ [ "S" "R" ] .x. [ "[SUBJ]" {one} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "T" "K" ] .x. [ "[AND]" "[SUBJ]" {I} "[/SUBJ]" "[C]" "[1sg]" ] ] |
-    [ [ "T" "P" ] .x. [ "[AND]" "[SUBJ]" {you} "[/SUBJ]" "[C]" "[pl]" ] ] |
-    [ [ "T" "W" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "T" "H" ] .x. [ "[AND]" "[SUBJ]" {he} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "T" "R" ] .x. [ "[AND]" "[SUBJ]" {she} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "K" "W" ] .x. [ "[SUBJ]" {this} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "K" "H" ] .x. [ "[IMP]" "[pl]" ] ] |
-    [ [ "P" "W" ] .x. [ "[SUBJ]" {that} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "P" "H" ] .x. [ "[PASS]" "[3sg]" ] ] |
-    [ [ "W" "H" ] .x. [ "[SUBJ]" {who} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "W" "R" ] .x. [ "[SUBJ]" {which} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "H" "R" ] .x. [ "[INF]" "[3sg]" ] ] |
-    [ [ "S" "T" "K" ] .x. [ "[AND]" "[SUBJ]" {we} "[/SUBJ]" "[C]" "[pl]" ] ] |
-    [ [ "S" "T" "P" ] .x. [ "[AND]" "[SUBJ]" {you} "[/SUBJ]" "[C]" "[pl]" ] ] |
-    [ [ "S" "T" "W" ] .x. [ "[SUBJ]" {whatever} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "S" "T" "H" ] .x. [ "[AND]" "[SUBJ]" {they} "[/SUBJ]" "[C]" "[pl]" ] ] |
-    [ [ "S" "T" "R" ] .x. [ "[AND]" "[SUBJ]" {one} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "S" "K" "W" ] .x. [ "[SUBJ]" {these} "[/SUBJ]" "[pl]" ] ] |
-    [ [ "S" "K" "H" ] .x. [ "[LETS]" "[pl]" ] ] |
-    [ [ "S" "P" "W" ] .x. [ "[SUBJ]" {those} "[/SUBJ]" "[pl]" ] ] |
-    [ [ "S" "P" "H" ] .x. [ "[PASS]" "[pl]" ] ] |
-    [ [ "S" "W" "H" ] .x. [ "[SUBJ]" {whoever} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "S" "W" "R" ] .x. [ "[SUBJ]" {whichever} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "T" "K" "W" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "T" "P" "W" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "T" "W" "H" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "T" "W" "R" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "T" "H" "R" ] .x. [ "[AND]" "[INF]" "[3sg]" ] ] |
-    [ [ "K" "P" "W" ] .x. [ "[SUBJ]" {this} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "K" "W" "H" ] .x. [ "[SUBJ]" {this} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "K" "W" "R" ] .x. [ "[SUBJ]" {this} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "P" "W" "H" ] .x. [ "[SUBJ]" {that} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "P" "W" "R" ] .x. [ "[SUBJ]" {that} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "W" "H" "R" ] .x. [ "[SUBJ]" {who} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "S" "T" "K" "W" ] .x. [ "[SUBJ]" {whatever} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "S" "T" "P" "W" ] .x. [ "[SUBJ]" {whatever} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "S" "T" "W" "H" ] .x. [ "[SUBJ]" {whatever} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "S" "T" "W" "R" ] .x. [ "[SUBJ]" {whatever} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "S" "K" "P" "W" ] .x. [ "[SUBJ]" {these} "[/SUBJ]" "[pl]" ] ] |
-    [ [ "S" "K" "W" "H" ] .x. [ "[SUBJ]" {these} "[/SUBJ]" "[pl]" ] ] |
-    [ [ "S" "K" "W" "R" ] .x. [ "[SUBJ]" {these} "[/SUBJ]" "[pl]" ] ] |
-    [ [ "S" "P" "W" "H" ] .x. [ "[SUBJ]" {those} "[/SUBJ]" "[pl]" ] ] |
-    [ [ "S" "P" "W" "R" ] .x. [ "[SUBJ]" {those} "[/SUBJ]" "[pl]" ] ] |
-    [ [ "S" "W" "H" "R" ] .x. [ "[SUBJ]" {whoever} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "T" "K" "P" "W" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "T" "K" "W" "H" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "T" "K" "W" "R" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "T" "P" "W" "H" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "T" "P" "W" "R" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "T" "W" "H" "R" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "K" "P" "W" "H" ] .x. [ "[SUBJ]" {this} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "K" "P" "W" "R" ] .x. [ "[SUBJ]" {this} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "K" "W" "H" "R" ] .x. [ "[SUBJ]" {this} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "P" "W" "H" "R" ] .x. [ "[SUBJ]" {that} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "S" "T" "K" "P" "W" ] .x. [ "[SUBJ]" {whatever} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "S" "T" "K" "W" "H" ] .x. [ "[SUBJ]" {whatever} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "S" "T" "K" "W" "R" ] .x. [ "[SUBJ]" {whatever} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "S" "T" "P" "W" "H" ] .x. [ "[SUBJ]" {whatever} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "S" "T" "P" "W" "R" ] .x. [ "[SUBJ]" {whatever} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "S" "T" "W" "H" "R" ] .x. [ "[SUBJ]" {whatever} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "S" "K" "P" "W" "H" ] .x. [ "[SUBJ]" {these} "[/SUBJ]" "[pl]" ] ] |
-    [ [ "S" "K" "P" "W" "R" ] .x. [ "[SUBJ]" {these} "[/SUBJ]" "[pl]" ] ] |
-    [ [ "S" "K" "W" "H" "R" ] .x. [ "[SUBJ]" {these} "[/SUBJ]" "[pl]" ] ] |
-    [ [ "S" "P" "W" "H" "R" ] .x. [ "[SUBJ]" {those} "[/SUBJ]" "[pl]" ] ] |
-    [ [ "T" "K" "P" "W" "H" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "T" "K" "P" "W" "R" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "T" "K" "W" "H" "R" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "T" "P" "W" "H" "R" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "K" "P" "W" "H" "R" ] .x. [ "[SUBJ]" {this} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "S" "T" "K" "P" "W" "H" ] .x. [ "[SUBJ]" {whatever} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "S" "T" "K" "P" "W" "R" ] .x. [ "[SUBJ]" {whatever} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "S" "T" "K" "W" "H" "R" ] .x. [ "[SUBJ]" {whatever} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "S" "T" "P" "W" "H" "R" ] .x. [ "[SUBJ]" {whatever} "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "S" "K" "P" "W" "H" "R" ] .x. [ "[SUBJ]" {these} "[/SUBJ]" "[pl]" ] ] |
-    [ [ "T" "K" "P" "W" "H" "R" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "S" "T" "K" "P" "W" "H" "R" ] .x. [ "[SUBJ]" {whatever} "[/SUBJ]" "[3sg]" ] ] ] ;
+    [ [ "P" "H" ] .x. [ "[SUBJ]" {she} "[/SUBJ]" "[C]" "[3sg]" ] ] |
+    [ [ "T" "P" ] .x. [ "[SUBJ]" {it} "[/SUBJ]" "[C]" "[3sg]" ] ] |
+    [ [ "T" "H" ] .x. [ "[SUBJ]" {we} "[/SUBJ]" "[C]" "[pl]" ] ] |
+    [ [ "T" "P" "H" ] .x. [ "[SUBJ]" {they} "[/SUBJ]" "[C]" "[pl]" ] ] |
+    [ [ "T" "W" ] .x. [ "[SUBJ]" {that} "[/SUBJ]" "[C]" "[3sg]" ] ] |
+    [ [ "P" "W" ] .x. [ "[SUBJ]" {this} "[/SUBJ]" "[3sg]" ] ] |
+    [ [ "P" "W" "H" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |
+    [ [ "T" "W" "H" ] .x. [ "[INF]" "[3sg]" ] ] |
+    [ [ "T" "P" "W" "H" ] .x. [ "[SUBJ]" {there} "[/SUBJ]" "[C]" "[3sg]" ] ] ] ;
 
+! No subject: the clause is its verb, so a verb is required. `W` is the plural
+! agreement: `#-B` is "adds" and `#W-B` "add".
 define NoSubject [
-    [ [ 0 ] .x. [ "[pl]" ] ] |
-    [ [ "S" ] .x. [ "[pl]" ] ] ] ;
+    [ [ 0 ] .x. [ "[3sg]" ] ] |
+    [ [ "W" ] .x. [ "[pl]" ] ] ] ;
 
-! A determiner subject: the noun is the word you write next.
-!
-! `+PR` writes "the" and holds the rest of the clause, so `+PR-B` then "dog" is
-! "the dog is adding". `[HOLD]` is where the noun goes, and `phrasing.xfst` turns
-! it into the record's `[AFTER]`.
-!
-! `a` and `an` are separate chords rather than one entry, because the body writes
-! before the noun arrives and so cannot see which one the noun wants. `S`
-! pluralizes, and the plural indefinite is "some" either way: the a/an split is
-! spelling, and "some" has none.
+! "a" or "an", chosen by the word after it: the pattern `AEU` in `user.json`
+! uses, which is Plover's.
+define AOrAn [ "[IF_NEXT]"
+    {[AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|}
+    {hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|}
+    {nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|}
+    {b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|}
+    {1[18](?:[^0-9]|$)}
+    "[THEN]" {an} "[ELSE]" {a} "[END]" ] ;
+
+! A held subject: the determiner, and the noun is the word you write next.
+! `[HOLD]` is where it goes, and `phrasing.xfst` turns it into the record's
+! `[AFTER]`, so `#WH-B` then "dog" is "the dog adds".
 define Determiners [
-    [ [ "K" "P" ] .x. [ "[SUBJ]" {a} "[HOLD]" "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "K" "R" ] .x. [ "[SUBJ]" {an} "[HOLD]" "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "P" "R" ] .x. [ "[SUBJ]" {the} "[HOLD]" "[/SUBJ]" "[3sg]" ] ] |
-    [ [ "S" "K" "P" ] .x. [ "[SUBJ]" {some} "[HOLD]" "[/SUBJ]" "[pl]" ] ] |
-    [ [ "S" "K" "R" ] .x. [ "[SUBJ]" {some} "[HOLD]" "[/SUBJ]" "[pl]" ] ] |
-    [ [ "S" "P" "R" ] .x. [ "[SUBJ]" {the} "[HOLD]" "[/SUBJ]" "[pl]" ] ] ] ;
+    [ [ "W" "H" ] .x. [ "[SUBJ]" {the} "[HOLD]" "[/SUBJ]" "[3sg]" ] ] |
+    [ [ "T" "P" "W" ] .x. [ "[SUBJ]" AOrAn "[HOLD]" "[/SUBJ]" "[3sg]" ] ] ] ;

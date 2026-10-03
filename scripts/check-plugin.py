@@ -46,11 +46,26 @@ SOURCES = {
 }
 
 
+def reserved_keys(name):
+    """The Plover keys another dictionary owns, which `compile` leaves out of NAME."""
+    import tomllib
+    import recipe
+    root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
+    with open(os.path.join(root, "recipe.toml"), "rb") as f:
+        r = tomllib.load(f)
+    with open(os.path.join(root, r["system"]), "rb") as f:
+        keys = tomllib.load(f)["keys"]
+    return {keys[k] for k in recipe.reserved(r, name)}
+
+
 def check(dictionary, name, render):
-    from plover.steno import normalize_steno
+    from plover.steno import Stroke, normalize_steno
     from plover_stfst.record import Record, Unsupported
 
     raw = json.load(open(os.path.expanduser("~/.config/plover/" + SOURCES[name])))
+    reserved = reserved_keys(name)
+    raw = {o: t for o, t in raw.items()
+           if not any(reserved & set(Stroke.from_steno(s).keys()) for s in normalize_steno(o))}
     # The longest key, which is the one thing Plover needs that a cursor makes
     # unnecessary here. The compiler reads it off the automaton and the manifest
     # carries it, so the source is the oracle.

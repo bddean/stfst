@@ -629,6 +629,11 @@ mod tests {
         // rather than the tail joining the body: "ands" would be a lie.
         assert_eq!(preview("and[AFTER]s[ORTHO_L][END]"), "and -s");
         assert_eq!(preview("by[AFTER][META=infl]ing[END][END]"), "by -ing");
+        // A choice reads the word that lands, not the tail waiting for it.
+        assert_eq!(
+            preview("[IF_NEXT](?i)[aeiou][THEN]an[ELSE]a[END][AFTER]is adding[END]"),
+            "a is adding"
+        );
     }
 
     #[test]

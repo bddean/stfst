@@ -38,8 +38,8 @@ sits below everything else so it cannot shadow a working entry.
 | Dictionary | Source |
 |---|---|
 | emily-symbols | xfst over a shared glyph table |
-| phrasing-tag | xfst, `#^`: the clause with a question tag |
-| phrasing | xfst, a clause grammar over 21.9M chords |
+| phrasing-tag | xfst, `^+`: the clause with a question tag |
+| phrasing | xfst, a clause grammar over 20.7M chords, all on `#` |
 | shrimple | xfst over a generated table |
 | user | JSON, read as itself where a host can write |
 | phrases | JSON, imported |
@@ -115,10 +115,10 @@ keys and the word lands inside it: `STPR*T` writes "from to", and "here" makes i
 reads: `^PW*EU` writes "by -ing", and "run" makes it "by running".
 
 Phrasing's `-RG` says the verb of a whole clause is the word coming next, so
-`+TERG` then "run" is "it's running" with every other key of the clause still
+`#TPERG` then "run" is "it's running" with every other key of the clause still
 meaning what it meant. A held clause waits the same way before its verb:
-`🦐+K-R` writes "I work", and "often" makes it "I often work". A determiner
-subject holds the noun: `+PR-B` writes "the is adding", and "dog" makes it "the
+`🦐#T-R` writes "I work", and "often" makes it "I often work". A held subject
+waits for its noun: `#WHE-B` writes "the is adding", and "dog" makes it "the
 dog is adding".
 
 `semantic-retro.json` is absent: its entries are clause rewrites over a part-of-speech
@@ -305,7 +305,7 @@ either file is stale.
 | `docs/encoding.md` | What the artifact costs, why delayed alignment would cost more, and the exact size model. |
 | `docs/modifiers.md` | The `@` keysym namespace, and why a keystroke's modifiers are tags inside the item. |
 | `docs/motor.md` | What a thumb motion costs: one synthesised speed profile read three ways, for judging layouts before building them. |
-| `docs/phrasing.md` | The §7 clause grammar: what is a rule and what is a table, and why the retro modifier layer needs a different mechanism. |
+| `docs/phrasing.md` | The §7 clause grammar: the keys, what is a rule and what is a table, and why `#` is phrasing's alone. |
 | `docs/parity.md` | Plover's translation language operator by operator, what the record language says instead, and what it still cannot say. |
 | `docs/plover.md` | The Plover plugin: what a second host found, what a second *stack* found after it, why Plover needs a longest key when a cursor does not, and what reading an artifact costs in Python. |
 | `docs/retro.md` | Rewriting text already written: why the window comes after the keys, why the tape carries character classes and not characters, and what is left in the host. |
@@ -341,7 +341,7 @@ key instead, in steno order, with the right bank in lowercase so every key is a
 distinct single character:
 
 ```
-"+" "T"                  ->  +T
+"#" "T"                  ->  #T
 "^" "S" "E" "b" "l"      ->  ^SEbl        (assemble)
 "T" "K" "E" "U" "/" "s"  ->  TKEU/s       (two strokes)
 ```
@@ -394,6 +394,11 @@ cases:
 - no output escapes the record language, and tags are in canonical order
 - no input escapes steno order
 - no internal feature tag reaches the artifact
+
+and one about the stack: no input holds a key another dictionary `owns`. `owns =
+"#"` on `phrasing` is what keeps the number bar out of every other dictionary. A
+flat dictionary is held to it too, and a JSON import leaves such an entry out
+and counts it, because its source is not ours to edit.
 
 A failure prints a counterexample. Add the dictionary to `recipe.toml` with a
 priority; higher shadows lower, as `plover.cfg` file order does today. A

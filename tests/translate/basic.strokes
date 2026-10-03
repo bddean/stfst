@@ -4,8 +4,6 @@
 TP-PL
 TAP
 TR-TZ
-1
-5
 *T
 !undo
 *T
@@ -15,8 +13,8 @@ PWOERD
 TAP
 KAT
 ! phrasing, which no other dictionary in the stack can reach
-+T
-^+T*
+#TP
+#^TP*
 ! the @ namespace: a letter as text, then the same key with ctrl held
 @KR
 @KR-F

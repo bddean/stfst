@@ -3,6 +3,7 @@
 
     scripts/recipe.py RECIPE system   the system file
     scripts/recipe.py RECIPE dicts    name, kind, source, generators, goldens
+    scripts/recipe.py RECIPE reserved NAME   the keys other dictionaries own
 
 One tab-separated row per dictionary in recipe order. A source is expanded, and
 several files are separated by spaces, as are goldens. The generators are those
@@ -25,7 +26,13 @@ def rows(recipe, base):
                " ".join(map(at, d.get("golden", []))) or "-")
 
 
-def main(path, what):
+def reserved(recipe, name):
+    """`Recipe::reserved`: the keys another dictionary owns, which NAME may not hold."""
+    own = next(d for d in recipe["dict"] if d["name"] == name).get("owns", "")
+    return "".join(sorted({k for d in recipe["dict"] for k in d.get("owns", "")} - set(own)))
+
+
+def main(path, what, name=None):
     with open(path, "rb") as f:
         recipe = tomllib.load(f)
     if what == "system":
@@ -33,9 +40,11 @@ def main(path, what):
     elif what == "dicts":
         for row in rows(recipe, os.path.dirname(path)):
             print("\t".join(row))
+    elif what == "reserved":
+        print(reserved(recipe, name))
     else:
         sys.exit(__doc__)
 
 
 if __name__ == "__main__":
-    main(*sys.argv[1:3])
+    main(*sys.argv[1:4])
