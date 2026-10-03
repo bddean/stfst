@@ -103,6 +103,10 @@ exactly the action's text, and `stfst_drop` takes back that text when the word
 arrives. A frame previews nothing, because a frame reads the text it waits for
 and has no answer until it has it.
 
+A `{=…}` just before the marker is decided by the word that lands, not by the
+preview. Plover decides one on the next action's text, so the preview goes on
+the end of both of its answers rather than into an action after it.
+
 **The extension has to be enabled in Plover's configuration**, like any other,
 and `pip install -e` again after a change to the entry points.
 

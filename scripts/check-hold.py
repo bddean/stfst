@@ -33,6 +33,7 @@ DEFAULT = [
     "tests/ahead/ahead.strokes",
     "tests/folds/folds.strokes",
     "tests/frames/frames.strokes",
+    "tests/hole/article.strokes",
     "tests/hole/hole.strokes",
     "tests/repeat-word/repeat-word.strokes",
     "tests/retro-words/ops.strokes",

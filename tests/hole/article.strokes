@@ -1,10 +1,8 @@
 ! The held "a(n)": the determiner is chosen by the noun, which arrives after the
 ! rest of the clause is already shown. Until then it is "a", because the tail
 ! waiting for the noun is not the text the choice reads.
-!
-! Not in `hole.strokes`, because `scripts/check-hold.py` replays that through
-! Plover and Plover gets this wrong: its `{=…}` reads the next action, and the
-! tail's preview is that action, so the noun never reaches it ("a egg adds").
+!buffer
+#TPW-B
 !buffer
 #TPW-B
 KAT
@@ -14,6 +12,11 @@ EG
 !buffer
 #TPWE-B
 EG
+!buffer
+#TPW-B
+EG
+!undo
+KAT
 !buffer
 #+TPW-B
 EG

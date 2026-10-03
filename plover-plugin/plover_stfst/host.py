@@ -63,7 +63,9 @@ where the formatter has not run yet and by taking the word back and writing it
 again where it has. So one `*` undoes the word and what waited for it together,
 as it does in `stfst-board`.
 """
-from plover.formatting import ATOM_RE
+import copy
+
+from plover.formatting import ATOM_RE, _LookAheadAction
 from plover.translation import Translation
 
 from .record import Record, Unsupported
@@ -239,25 +241,48 @@ def stfst_hold(ctx, arg):
     # The gap goes inside the text, and the action attaches: then what is on
     # screen is exactly this action's text, which is what `stfst_drop` takes back.
     action.prev_attach = True
-    action.text = _preview(_unescape(rest), action.next_attach)
-    action.stfst_preview = bool(action.text)
+    text = _preview(_unescape(rest), action.next_attach)
+    choice = _choice_before(ctx)
+    if choice is None or not text:
+        action.text = action.stfst_preview = text
+        return action
+    # Plover decides a `{=…}` on the next action's text, and the preview is not
+    # what decides it: the word that lands is. So the preview goes on the end of
+    # both answers, and the drop finds it there.
+    for name in ("action1", "action2"):
+        shown = copy.copy(getattr(choice, name))
+        shown.text += text
+        setattr(choice, name, shown)
+    choice.update("")
+    choice.stfst_preview = text
+    action.text = ""
     return action
+
+
+def _choice_before(ctx):
+    """The `{=…}` this translation wrote last, if no text has followed it."""
+    for previous in reversed(ctx.translated_actions):
+        if isinstance(previous, _LookAheadAction):
+            return previous
+        if previous.text:
+            return None
+    return None
 
 
 def stfst_drop(ctx, arg):
     """Take a waiting tail's preview back, now that the word it waited for is here.
 
-    The preview is found rather than named: `stfst_hold` marks the action it
-    wrote, so what comes back is exactly what went on screen, and a unit that
-    wrote nothing in between cannot be mistaken for it. Text that no preview
-    wrote ends the search, so a preview that has already landed cannot be taken
-    back twice.
+    The preview is found rather than named: `stfst_hold` marks the action that
+    ends with it, so what comes back is exactly what went on screen, and a unit
+    that wrote nothing in between cannot be mistaken for it. Text that no
+    preview wrote ends the search, so a preview that has already landed cannot
+    be taken back twice.
     """
     action = ctx.copy_last_action()
     action.text = ""
     for previous in ctx.iter_last_actions():
-        if getattr(previous, "stfst_preview", False):
-            action.prev_replace = previous.text
+        if getattr(previous, "stfst_preview", ""):
+            action.prev_replace = previous.stfst_preview
             action.prev_attach = True
             break
         if previous.text:

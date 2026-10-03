@@ -372,10 +372,10 @@ noun goes in the middle:
 next word": `[IF_NEXT]pattern[THEN]an[ELSE]a[END]`, Plover's `{=…}`, with the
 pattern `AEU` in `user.json` uses. The host decides it when the noun writes.
 Until then it shows "a", because the tail waiting for the noun is not the text
-the choice reads. Plover gets that wrong today: its `{=…}` reads the next
-action, which is the tail's preview, so it writes "a egg adds".
-`tests/hole/article.strokes` holds those cases apart from the ones
-`scripts/check-hold.py` replays through Plover.
+the choice reads. Plover's `{=…}` reads the next action, and the tail's preview
+is that action, so the plugin puts the preview on the end of both answers rather
+than after them. `tests/hole/article.strokes` holds the cases, and
+`scripts/check-hold.py` replays them through Plover.
 
 The mechanism is the tail, and the subject map is where it is stated: the
 subject is `[SUBJ]the[HOLD][/SUBJ]` with no `[C]`, because "the cat's" reads as a
