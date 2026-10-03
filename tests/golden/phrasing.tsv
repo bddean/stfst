@@ -6,7 +6,7 @@
 ! The expectations are this grammar's own answers. A line that changes here is
 ! a change to what a clause writes: read it, then update it.
 !
-! A line with no tab claims the stroke has no entry. 260 do: a clause with
+! A line with no tab claims the stroke has no entry. 262 do: a clause with
 ! no subject and no verb, "if" with a question, an infinitive or no subject,
 ! `@`, and a held subject under a second hole.
 #
@@ -4784,3 +4784,42 @@ Tb
 🦐#TRAOb	I'm[AFTER]going to add[END]
 🦐#TAUb	I can[AFTER]have added[END]
 🦐#Trg
+
+! ---- the infinitive and the "to" clauses under each aspect: a verb, the empty
+! slot, a copula chord, `-RG`, `*` and `🦐`.
+#TWHfpts	to be a
+#TWHrg	to
+#TWHUg	to have gone
+#TWHU	to have been
+#TWHUfpts	to have been a
+#TWHUrg	to have[AFTER][META=infl]en[END][END]
+#TWHEg	to be going
+#TWHE	to be being
+#TWHEfpts	to be being a
+#TWHErg	to be[AFTER][META=infl]ing[END][END]
+#TWHEUg	to have been going
+#TWHEU	to have been being
+#TWHEUfpts	to have been being a
+#TWHEUrg	to have been[AFTER][META=infl]ing[END][END]
+#TWH*g	not to go
+🦐#TWHg	to[AFTER]go[END]
+#TWH*Ug	not to have gone
+🦐#TWHUg	to[AFTER]have gone[END]
+#TWH*Eg	not to be going
+🦐#TWHEg	to[AFTER]be going[END]
+#TWH*EUg	not to have been going
+🦐#TWHEUg	to[AFTER]have been going[END]
+🦐#TWHrg
+🦐#TWHUrg
+#^TWHUg	in order to have gone
+#STWHUg	and to have gone
+#+TWHUg	to have gone
+#TROfpts	I have to be a
+#TROrg	I have to
+#TRO*EUg	I haven't been having to go
+#TRAOfpts	I'm going to be a
+#TRAOrg	I'm going to
+#TRAO*EUg	I'm not going to have been going
+#TRAfptsd	I used to be a
+#TRArgd	I used to
+#TRA*EUgd	I didn't use to have been going
