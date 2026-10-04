@@ -41,6 +41,7 @@ SOURCES = {
     "phrases": "phrases.json",
     "repeat-idioms": "repeat-idioms.json",
     "two-syllable": "two-syllable.json",
+    "two-word": "two-word.json",
     "typey-type": "typey-type-full.json",
     "vowel-briefs": "vowel-briefs.json",
 }

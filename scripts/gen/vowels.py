@@ -825,7 +825,7 @@ def vowel_briefs(typey, out, result):
     before, after = outlines_of(typey.upstream), outlines_of(out)
     wanted = {o: w for w in result.rules if typey.words[w].z > BRIEF and after[w]
               for o in before[w] if o not in out and keys(o) < min(map(keys, after[w]))}
-    held = Stack(out, skip="vowel-briefs").ask(wanted)
+    held = Stack(out, skip=("vowel-briefs",)).ask(wanted)
     return {o: w for o, w in sorted(wanted.items()) if not held[o]}
 
 

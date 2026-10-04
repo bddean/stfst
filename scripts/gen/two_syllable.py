@@ -40,7 +40,6 @@ for the pipeline: run it in the dev shell):
     $PY scripts/gen-two-syllable.py --check    # fail if the committed JSON is stale
 """
 import argparse
-import importlib.util
 import json
 import os
 import re
@@ -49,7 +48,7 @@ import sys
 from . import PLOVER
 from . import vowels as g
 from .resolve import candidates, compile_pipeline, resolve, typey_gives_way
-from .stack import Stack
+from .stack import Stack, retro_words
 
 OUTPUT = os.path.join(PLOVER, "two-syllable.json")
 NAME = "two-syllable"
@@ -121,16 +120,17 @@ def bare(out, typey):
     return found
 
 
-# --- The stack -------------------------------------------------------------------
-
-def reserved():
-    """Strokes `retro-words.py` claims. Its artifact rewrites text and answers no
-    lookup, so the stack cannot say."""
-    path = os.path.join(PLOVER, "retro-words.py")
-    spec = importlib.util.spec_from_file_location("retro_words", path)
-    m = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(m)
-    return set(m._ENTRIES)
+def bare_entries(name, out, typey, stack, held, gives_way):
+    """({stroke: word}, {stroke: (word, (dictionary, translation))}): the bare
+    strokes of `out`, a dictionary's {stroke: word}, that it writes, and those
+    something else keeps. `held` is {stroke: (dictionary, translation)} for what
+    keeps a stroke the stack does not answer for."""
+    plain = bare(out, typey)
+    taken = {s: (plain[s], theirs[0]) for s, theirs in stack.ask(plain).items()
+             if theirs and theirs[0][1] != plain[s] and not gives_way(s, plain[s], theirs[0])}
+    taken.update((s, (w, (name, out[s]))) for s, w in plain.items() if s in out)
+    taken.update((s, (w, held[s])) for s, w in plain.items() if s in held)
+    return {s: w for s, w in plain.items() if s not in taken}, taken
 
 
 def build(typey, rule):
@@ -144,11 +144,11 @@ def build(typey, rule):
         z[b] = max(z[b], z[w])
     strokes = {w: s for w, s in sorted(strokes.items())
                if z[w] >= MIN_ZIPF and (w in base or not inflection(w, typey.known))}
-    stack = Stack(g.written())
-    others = {s: theirs[0] for s, found in stack.ask(strokes.values()).items()
-              if (theirs := [(n, t) for n, t in found if n != NAME])}
-    retro = reserved()
-    others.update((s, ("retro-words", "")) for s in strokes.values() if s in retro)
+    # two-word.json gives way to this dictionary, so it is not asked.
+    stack = Stack(g.written(), skip=(NAME, "two-word"))
+    others = {s: found[0] for s, found in stack.ask(strokes.values()).items() if found}
+    retro = {s: ("retro-words", "") for s in retro_words()}
+    others.update((s, retro[s]) for s in strokes.values() if s in retro)
     # An inflection ranks as its base, so the base that wins a stroke also
     # wins the stroke its suffix key folds to: agrees goes with agree. A Typey
     # Type entry gives way unless it is an affix or a hundred times as
@@ -161,20 +161,15 @@ def build(typey, rule):
     # A bare stroke takes a Typey Type one as a `^` stroke does, and also when
     # this dictionary writes that word: only keeps `^OEUPBL`, so omen is
     # `OEPBL`. The rest are reported.
-    plain = bare(out, typey)
-    gives_way = typey_gives_way(typey.reserved)
+    typey_way = typey_gives_way(typey.reserved)
     ours = set(out.values())
-    taken = {s: (plain[s], theirs[0]) for s, found in stack.ask(plain).items()
-             if (theirs := [(n, t) for n, t in found if n != NAME])
-             and theirs[0][1] != plain[s] and not gives_way(s, plain[s], theirs[0])
-             and not (theirs[0][0] == "typey-type" and theirs[0][1] in ours)}
-    taken.update((s, (w, (NAME, out[s]))) for s, w in plain.items() if s in out)
-    taken.update((s, (w, ("retro-words", ""))) for s, w in plain.items() if s in retro)
-    out.update((s, w) for s, w in plain.items() if s not in taken)
+    plain, taken = bare_entries(NAME, out, typey, stack, retro,
+                                lambda s, w, other: typey_way(s, w, other)
+                                or (other[0] == "typey-type" and other[1] in ours))
+    out.update(plain)
     return dict(sorted(out.items())), dict(strokes=strokes, base=base, folded=folded,
                                           lost=lost, left=left, stack=stack,
-                                          bare={s: w for s, w in plain.items() if s not in taken},
-                                          bare_taken=taken)
+                                          bare=plain, bare_taken=taken)
 
 
 def write_json(d, path):

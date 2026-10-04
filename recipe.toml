@@ -23,6 +23,19 @@ generator = "scripts/gen-lexicon.py"
 name = "contract"
 xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/contract.xfst"]
 
+# Two words of one syllable, often written together: scripts/gen-two-word.py
+# writes each pair as two of the lexicon's entries, the stressed one marked.
+[[stage]]
+name = "pairs"
+lexc = "dictionaries/pairs.lexc"
+generator = "scripts/gen-two-word.py"
+
+# Two words contracted to one syllable, marked as two syllables are.
+[[stage]]
+name = "contract-pair"
+xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/contract.xfst",
+        "dictionaries/contract-pair.xfst"]
+
 # A syllable's stroke by the vowel theory.
 [[stage]]
 name = "theory"
@@ -122,6 +135,13 @@ priority = 35
 json = "~/.config/plover/two-syllable.json"
 generator = "scripts/gen-two-syllable.py"
 pipeline = ["lexicon", "contract", "theory", "caret"]
+
+[[dict]]
+name = "two-word"
+priority = 34
+json = "~/.config/plover/two-word.json"
+generator = "scripts/gen-two-word.py"
+pipeline = ["pairs", "contract-pair", "theory", "caret"]
 
 [[dict]]
 name = "affixes"

@@ -38,9 +38,6 @@ shell):
 """
 import argparse
 import collections
-import glob
-import hashlib
-import json
 import os
 import re
 import sys
@@ -48,7 +45,7 @@ import tomllib
 
 import plover_tape
 
-from . import PLOVER, ROOT
+from . import ROOT, corpora
 from . import vowels as g
 from .lexicon import align, lexc
 from .resolve import candidates, compile_pipeline, resolve, typey_gives_way
@@ -60,7 +57,6 @@ TABLE = os.path.join(ROOT, "dictionaries", "affixes.toml")
 LEXICON = os.path.join(ROOT, "dictionaries", "affixes-lexicon.xfst")
 STEMS = os.path.join(ROOT, "dictionaries", "affixes-stems.lexc")
 GOLDEN = os.path.join(ROOT, "tests", "golden", "affixes.tsv")
-NGRAMS = os.path.join(ROOT, "build", "cache", "affix-ngrams.json")
 NAME = "affixes"
 MIN_ZIPF = 3.0
 
@@ -205,43 +201,6 @@ def plain_text(translation, before=()):
     return tuple(re.findall(r"[a-z']+", re.sub(r"[{}^]", " ", text).lower())) or None
 
 
-def count_ngrams(wanted):
-    """{ngram: count} over the phrasing corpora, for the n-grams in `wanted`.
-
-    Held in `build/cache` against the n-grams and the corpora's sizes and times,
-    since a pass over the corpora is most of what a run costs.
-    """
-    paths = sorted(glob.glob(os.path.join(PLOVER, "phrasing", "corpora", "*", "*-sentences.txt")))
-    key = hashlib.sha256(json.dumps([sorted(wanted), [(p, os.stat(p).st_size, os.stat(p).st_mtime_ns)
-                                                     for p in paths]]).encode()).hexdigest()
-    try:
-        with open(NGRAMS) as f:
-            cached = json.load(f)
-        if cached["key"] == key:
-            return collections.Counter({tuple(gram.split(" ")): n for gram, n in cached["counts"].items()})
-    except (OSError, ValueError, KeyError):
-        pass
-    counts = collections.Counter()
-    # Only an n-gram's first word can start one, so most positions cost a lookup.
-    lengths = collections.defaultdict(set)
-    for gram in wanted:
-        lengths[gram[0]].add(len(gram))
-    word = re.compile(r"[a-z']+")
-    for path in paths:
-        with open(path, encoding="utf-8", errors="ignore") as f:
-            for line in f:
-                toks = word.findall(line.split("\t", 1)[-1].lower())
-                for i, tok in enumerate(toks):
-                    for n in lengths.get(tok, ()):
-                        gram = tuple(toks[i:i + n])
-                        if len(gram) == n and gram in wanted:
-                            counts[gram] += 1
-    os.makedirs(os.path.dirname(NGRAMS), exist_ok=True)
-    with open(NGRAMS, "w") as f:
-        json.dump({"key": key, "counts": {" ".join(gram): n for gram, n in counts.items()}}, f)
-    return counts
-
-
 # --- Build ---------------------------------------------------------------------
 
 def build(typey, parsed, strokes):
@@ -251,7 +210,7 @@ def build(typey, parsed, strokes):
     outlines = {w: o for w, (o, _) in found.items()}
     plurals = {w: (pl, o + "Z") for w, (o, (_, _, s)) in found.items() if (pl := plural(w, s))}
 
-    stack = Stack(g.written(), skip=NAME)
+    stack = Stack(g.written(), skip=(NAME,))
     singles = {s for o in outlines.values() for s in o.split("/")}
     answers = stack.ask(list(outlines.values()) + [o for _, o in plurals.values()] + sorted(singles))
     said = {s: answers[s][0][1] for s in singles if answers.get(s)}
@@ -264,7 +223,7 @@ def build(typey, parsed, strokes):
             a = plain_text(said[stem])
             b = plain_text(said[affix], a or ())
             risk[w] = "command" if is_command(said[affix]) else (a + b if a and b else None)
-    counts = count_ngrams({r for r in risk.values() if isinstance(r, tuple)})
+    counts = corpora.ngrams("affix-ngrams", {r for r in risk.values() if isinstance(r, tuple)})
     misread = {w: r for w, r in risk.items() if r == "command" or (r and counts[r] >= MISREAD)}
 
     taken = {o: theirs[0] for o, found in answers.items()

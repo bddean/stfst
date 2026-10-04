@@ -47,6 +47,7 @@ sits below everything else so it cannot shadow a working entry.
 | emily-modifiers | xfst over generated tables |
 | folds | xfst: what a stroke nothing matched folds to |
 | two-syllable | JSON, generated |
+| two-word | JSON, generated |
 | affixes | xfst over a generated lexicon, and the orthography rules |
 | typey-type | JSON, generated from Typey Type |
 | vowel-briefs | JSON, generated beside typey-type |
@@ -280,6 +281,15 @@ enough. It reads the compiled stack to leave
 a stroke another dictionary writes to it, so run it after a compile. `check.sh`
 fails if its JSON is stale.
 
+`scripts/gen-two-word.py` writes `two-word.json` by the same rule across a word
+boundary: two words of one syllable, 500 times in a row or more in the phrasing
+corpora, as one `^` stroke (at all is `^TUL`, make it `^PHABGT`). The content
+word has the stress, or the second of two alike. Its pipeline is the pairs it
+writes as `dictionaries/pairs.lexc`, then `dictionaries/contract-pair.xfst`,
+which is `contract.xfst`'s rule with a word boundary in it, then the same theory
+and caret stages. A stroke a fold reads is left to the fold. It gives way to
+`two-syllable.json`, and `affixes` reads it, so run it between the two.
+
 `affixes` is a grammar and not JSON, because Stenotype Extended is the only
 system that loads it. A word with a prefix and a suffix is the stem's stroke,
 then one vowelless stroke with the prefix on the left bank and the suffix on the
@@ -292,7 +302,7 @@ outline to a more frequent word or to another dictionary, or whose two strokes,
 read apart, are text someone writes, which it counts in
 `~/.config/plover/phrasing/corpora`. It also writes `tests/golden/affixes.tsv`,
 every entry at the outline it computes, so the script and the grammar are held to
-one rule. Run it after `gen-two-syllable.py` and a compile; `check.sh` fails if
+one rule. Run it after `gen-two-word.py` and a compile; `check.sh` fails if
 either file is stale.
 
 ## Measurements and decisions
@@ -319,7 +329,7 @@ either file is stale.
 | `dictionaries/` | Hand-written dictionary source, in xfst. A `-tables.xfst` file is transcribed data with an upstream owner; the grammar over it is authored. `typey-vowels.toml` is the vowel theory's table, which a script applies to JSON, and `affixes.toml` the affix stroke's. |
 | `morphology/` | `ortho.xfst`, Plover's 38 orthography rules. Not a dictionary: nothing here is over the key tape, though a grammar may include it to spell a join, as `affixes` does. The two lexicons beside it are generated, not committed. |
 | `recipe.toml` | The dictionary stack: what to compile, and at what priority. |
-| `scripts/gen/` | The generators that share the vowel theory, as a package: `vowels`, `two_syllable`, `affixes`, and `stack`, which reads what the rest of the stack writes in Plover's syntax. `scripts/gen-*.py` run them. |
+| `scripts/gen/` | The generators that share the vowel theory, as a package: `vowels`, `two_syllable`, `two_word`, `affixes`, `stack`, which reads what the rest of the stack writes in Plover's syntax, and `corpora`, which counts the phrasing corpora. `scripts/gen-*.py` run them. |
 | `tests/golden/` | Host-independent golden tests for the grammars: a tape, a tab, the expected records. An imported source's is written into `build/golden/` by `check.sh`. |
 | `tests/vowels.tsv` | The same, for what the vowel table writes, checked against typey-type. |
 | `tests/translate/` | Stroke streams and what the stack makes of them, where the answer depends on the history. |
