@@ -125,20 +125,20 @@ already determined:
 
 "may" and "must" are modals like "can": they take aspect, need no `do`, and
 take no subject clitic. Only "mustn't" contracts, so "may not" and "might not"
-are two words. "must" has no past, so `RA-D` holds "used to", and `RA-U` is
+are two words. "must" has no past, so `RAD` holds "used to", and `RAU` is
 "must have" and reduces to "must've" the way "might've" and "could've" do.
 
 "going to" is a modal whose finite word is `be`: `Modal` gives it `[F:be]` and
 a `[M:going]` mid, so it agrees and inverts with nothing new ("am I going to
-go", "isn't going to"). Aspect goes to the main verb: `#TRAOU-G` is "I'm going
+go", "isn't going to"). Aspect goes to the main verb: `#TRAOUG` is "I'm going
 to have gone".
 
 "have to" and "used to" are verbs, and `Semi` says so before `Chain` sees them:
 `[HAVETO]` becomes `have` with a `[TO]` clause after it, and `[MUST]` in the past
 becomes `use`. So agreement and do-support are the lexical verb's: "she has to
 go", "doesn't have to go", "do I have to go", "didn't use to go". "have to"
-takes the aspect itself, `#TROU-G` "I've had to go"; "used to" passes it to the
-main verb, `#TRAE-GD` "I used to be going". The clause after "to" is the
+takes the aspect itself, `#TROUG` "I've had to go"; "used to" passes it to the
+main verb, `#TRAEGD` "I used to be going". The clause after "to" is the
 infinitive's, so an empty slot there is "be": `#TRO` is "I have to be".
 
 The semi-modals are still in the verb bank as well. Freeing them is the right
@@ -195,7 +195,7 @@ unit writes, so the clause is stroked first and the word after it:
 #TPURG  TKPW   ->   it's gone
 #TP*RG  RUPB   ->   it doesn't run
 #+TP-RG RUPB   ->   does it run
-#E-RG   RUPB   ->   is running
+#ERG   RUPB   ->   is running
 ```
 
 Nothing in `Chain` or `Arrange` knows about it, and that is the point of putting
@@ -242,7 +242,7 @@ sends it, so holding the chord is holding the clause.
 🦐#T*R     AULS      ->   I don't always work
 🦐#+TP-R   OFPB      ->   does it often work
 🦐#TWH-R   HRAOERL   ->   to really work
-🦐#TRO-B   OFPB      ->   I often have to add
+🦐#TROB   OFPB      ->   I often have to add
 ```
 
 The gap is after the finite word and before the rest of the chain, and where
@@ -276,11 +276,11 @@ no auxiliary has no full form to undo, so `^` gives it one: `do`, which is what
 #^T-G     ->   I do go
 #^T-GD    ->   I did go
 #^-B      ->   does add
-#^TRO-G   ->   I do have to go
-#^TA-G    ->   so I can go
-#^STA-G   ->   and so I can go
+#^TROG   ->   I do have to go
+#^TAG    ->   so I can go
+#^STAG   ->   and so I can go
 #^TWH-G   ->   in order to go
-#^TWH*-G  ->   in order not to go
+#^TWH*G  ->   in order not to go
 ```
 
 `Chain` reads `[FULL]` as a reason for do-support, as it reads a question. "have
@@ -292,7 +292,7 @@ reduced mode prefers to the full form, so a clause outside its domain reads the
 same in both modes, and `SoMark` gives a `[SO]` there to a statement whose
 subject is a word of its own. "so" before a question, after "if", or before
 "what" or a held noun is not what `^` asked for, so those keep the no-op:
-`#^TKA-G` is "if I can go", and `#^PWHA-G` "what can go". So do "was" and
+`#^TKAG` is "if I can go", and `#^PWHAG` "what can go". So do "was" and
 "were", which have no clitic and are not modal. An infinitive is always the same
 in both modes, and its full form is "in order to".
 ## `^+` is a question tag
@@ -303,9 +303,9 @@ in both modes, and its full form is "in order to".
 ```
 #^+TP-B   ->   it adds, doesn't it
 #^+TP*B   ->   it doesn't add, does it
-#^+TE-G   ->   I'm going, aren't I
-#^+TRO-G  ->   I have to go, don't I
-#^+TRA-GD ->   I used to go, didn't I
+#^+TEG   ->   I'm going, aren't I
+#^+TROG  ->   I have to go, don't I
+#^+TRAGD ->   I used to go, didn't I
 #^+TP     TPHAOEUS  ->   it's nice, isn't it
 #^+T-GZ   SKAOL     ->   I go to school, don't I
 ```
@@ -350,7 +350,7 @@ article after it. They are one family, `F-TS` with the middle key saying which:
 
 `-D` is the past, as it is on the slot alone: `#T-FPTSD` is "I was a". Under an
 auxiliary the copula has to surface, because the article needs something to
-follow: `#TU-FPTS` is "I've been a" where `#TU` alone is "I've". `Cls` takes the
+follow: `#TUFPTS` is "I've been a" where `#TU` alone is "I've". `Cls` takes the
 form of `be` each corner gives a verb for that. The chords live in
 `phrasing_table.json` as `copula`, so the pipeline keeps them out of the verbs'
 way and stenodrill sees them.
@@ -364,7 +364,7 @@ noun goes in the middle:
 #WH-B     KAT   ->   the cat adds
 #TPW-B    KAT   ->   a cat adds
 #TPW-B    EG    ->   an egg adds
-#WHE-B    KAT   ->   the cat is adding
+#WHEB    KAT   ->   the cat is adding
 #+WH-B    KAT   ->   does the cat add
 ```
 
