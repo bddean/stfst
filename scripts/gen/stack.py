@@ -1,6 +1,7 @@
 """What the rest of the Stenotype Extended stack writes, in Plover's syntax."""
 import collections
 import configparser
+import copy
 import importlib.util
 import json
 import os
@@ -27,8 +28,9 @@ class Stack:
         cfg = configparser.RawConfigParser()
         cfg.read(os.path.join(PLOVER, "plover.cfg"))
         with open(RECIPE, "rb") as f:
-            sources = {d["name"]: os.path.expanduser(d["json"])
-                       for d in tomllib.load(f)["dict"] if "json" in d}
+            dicts = tomllib.load(f)["dict"]
+        sources = {d["name"]: os.path.expanduser(d["json"]) for d in dicts if "json" in d}
+        self.priority = {d["name"]: d["priority"] for d in dicts}
         self.layers = []
         for e in json.loads(cfg["System: Stenotype Extended"]["dictionaries"]):
             if not e["enabled"]:
@@ -46,6 +48,15 @@ class Stack:
             elif path.endswith(".stfst") and os.path.exists(path):
                 self.layers.append((name, ol.Automaton.open(os.path.join(path, "forward.hfstol"))))
 
+    def with_layer(self, name, entries):
+        """This stack with `entries`, {outline: translation}, as the dictionary
+        `name`, at its priority in the recipe."""
+        out = copy.copy(self)
+        at = next((i for i, (n, _) in enumerate(self.layers)
+                   if self.priority.get(n, float("inf")) < self.priority[name]), len(self.layers))
+        out.layers = self.layers[:at] + [(name, entries)] + self.layers[at:]
+        return out
+
     def ask(self, outlines):
         """{outline: [(dictionary, translation)]}, highest first."""
         outlines = sorted(set(outlines))
@@ -61,8 +72,9 @@ class Stack:
         return found
 
     def folds(self, outlines):
-        """{outline: translation} for each of `outlines` a fold would write if
-        no entry held it: the first alternative whose base the stack writes."""
+        """{outline: (translation, base)} for each of `outlines` a fold would
+        write if no entry held it: the first alternative whose base the stack
+        writes, and what the stack writes for that base."""
         out = {}
         for o in sorted(set(outlines)):
             tape = _SYSTEM.tape(o)
@@ -72,7 +84,7 @@ class Stack:
                     continue
                 base = _SYSTEM.outline("".join(sorted(base, key=_SYSTEM.order.index)))
                 if (found := self.ask([base]).get(base)):
-                    out[o] = " ".join(x for x in (alt.before, found[0][1], alt.after) if x)
+                    out[o] = (" ".join(x for x in (alt.before, found[0][1], alt.after) if x), found[0][1])
                     break
         return out
 

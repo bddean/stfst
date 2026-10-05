@@ -18,8 +18,11 @@ one word. What this script decides is the rest, which is not a rule:
 - Which word has the stress: the content word, and between two of a kind the
   second, as English phrases are stressed. FUNCTION lists the function words.
 - Which pair keeps a stroke. Two pairs on one go to the more frequent. A stroke
-  any other dictionary writes is left to it, and so is one a fold reads: the
-  most would be `^TPHOEFT`, which is naive `^TPHOEF` and -T, "naive the".
+  any other dictionary writes is left to it. A stroke a fold reads as the pair
+  needs no entry: `folds.xfst` reads "a" before a word and "of", "is" and "to"
+  after one, so `^TPOU` is a few with no entry. A stroke a fold reads as
+  something else goes to the pair if the pair is the more frequent text: the
+  most is `^TPHOEFT`, which the -T fold reads as "naive the".
 - A stroke with a vowel whose onset or coda no one-syllable word's own stroke has
   is also written without `^`, as two-syllable.json does.
 
@@ -35,6 +38,7 @@ import argparse
 import collections
 import json
 import os
+import re
 import sys
 
 from . import PLOVER, ROOT, corpora
@@ -49,9 +53,10 @@ PAIRS = os.path.join(ROOT, "dictionaries", "pairs.lexc")
 NAME = "two-word"
 
 # How often two words must occur in a row in the corpora (17M tokens), about
-# thirty times a million words: under a thousand entries. The corpora are
-# written prose, so "go home" (114) and "my way" (111) are below it.
-MIN_COUNT = 500
+# nine times a million words. Below it, the share of pairs that lose their
+# stroke climbs: 20% of those over 500, 24% over 150, 29% over 50. The corpora
+# are written prose, so "go home" (114) and "my way" (111) are below it.
+MIN_COUNT = 150
 
 # Words a fold writes beside another: "and" before (S-K-P-), "the" after (-T).
 FOLDED_BEFORE = {"and"}
@@ -104,21 +109,70 @@ def pairs_lexc(found):
                     [(p, e, None) for p, e in sorted(found.items())])
 
 
+# Pairs that take their stroke from a fold whatever it reads, where the reading
+# is counted wrong: "a {^<^}" counts as "a".
+OVER_FOLD = {"not as"}
+
+# What an inflection may append, as `{:infl:…}` names it.
+ENDINGS = {"ed": ("ed", "d"), "ing": ("ing",), "ofs": ("s", "es"), "ofz": ("s", "es")}
+
+
+def spellings(translation):
+    """The ways a translation may be written, as the corpora spell words: an
+    inflection joined to the word before it, and an affix's letters. None for a
+    translation that names any other operation, which no text spells."""
+    out = [()]
+    for word, meta in re.findall(r"([^\s{}]+)|\{([^}]*)\}", translation):
+        if word:
+            out = [o + tuple(corpora.WORD.findall(word.lower())) for o in out]
+        elif m := re.fullmatch(r":infl:(\w+)", meta):
+            stems = lambda w: {w, w[:-1], w + w[-1:], w[:-1] + "i"}
+            out = [o[:-1] + (stem + end,) for o in out if o
+                   for stem in stems(o[-1]) for end in ENDINGS.get(m[1], ())]
+        elif meta.startswith(":"):
+            return None
+        else:
+            out = [o + tuple(corpora.WORD.findall(re.sub("[&<>^]", " ", meta).lower())) for o in out]
+    return out
+
+
 def build(typey, rule, counts):
     """(entries, report data), from `rule`, {pair: outline}."""
     count = lambda p: counts[tuple(p.split(" "))]
     never = lambda outline, word, other: False
     stack = Stack(g.written(), skip=(NAME,))
     strokes = set(rule.values())
+    folds = stack.folds(strokes | {s[1:] for s in strokes})
     held = {s: ("retro-words", "") for s in retro_words()}
-    held.update((s, ("folds", t)) for s, t in stack.folds(strokes | {s[1:] for s in strokes}).items())
-    others = {s: found[0] for s, found in stack.ask(strokes).items() if found}
-    others.update((s, held[s]) for s in strokes if s in held)
-    out, lost, left = resolve(rule, lambda p: (-count(p), p), others, never)
+    held.update((s, ("folds", t)) for s, (t, _) in folds.items())
+    # A fold reads a stroke only where no entry does.
+    others = {s: held[s] for s in strokes if s in held and held[s][0] == "folds"}
+    others.update((s, found[0]) for s, found in stack.ask(strokes).items() if found)
+    others.update((s, held[s]) for s in strokes if s in held and held[s][0] != "folds")
+    # A pair takes a stroke from a fold that reads it as something else when
+    # the pair is more common than what the fold writes.
+    readings = {s: spellings(t) or [] for s, (t, _) in folds.items()}
+    reading_counts = corpora.ngrams("two-word-fold-readings", {w for ws in readings.values() for w in ws if w})
+    over_fold = lambda outline, pair, other: (
+        other[0] == "folds" and (pair in OVER_FOLD
+                                 or count(pair) > max((reading_counts[w] for w in readings[outline]), default=0)))
+    out, lost, left = resolve(rule, lambda p: (-count(p), p), others, over_fold)
     plain, taken = bare_entries(NAME, out, typey, stack, held, never)
+    # A pair a fold writes needs no entry. A fold's base may be one of this
+    # dictionary's entries, which changes what it reads, so ask again with them.
+    folded = {s: p for s, p in out.items() if others.get(s) == ("folds", p)}
+    while True:
+        kept = {s: p for s, p in out.items() if s not in folded}
+        now = stack.with_layer(NAME, kept).folds(folded)
+        still = {s: p for s, p in folded.items() if now.get(s, ("",))[0] == p}
+        if still == folded:
+            break
+        folded = still
+    for s in folded:
+        del out[s]
     out.update(plain)
     return dict(sorted(out.items())), dict(rule=rule, count=count, lost=lost, left=left,
-                                          bare=plain, bare_taken=taken)
+                                          folded=folded, bare=plain, bare_taken=taken)
 
 
 def report(found, out, r):
@@ -128,6 +182,9 @@ def report(found, out, r):
     caret = sum(1 for o in out if o.startswith("^"))
     print(f"{len(found)} pairs in scope, {len(rule)} with a stroke; {len(out)} entries, "
           f"{caret} with ^ and {len(out) - caret} without")
+    print(f"{len(r['folded'])} a fold writes, so they need no entry")
+    collide = len(r["lost"]) + len(r["left"])
+    print(f"{collide} of {len(rule)} with a stroke ({collide / len(rule):.1%}) lose it to a pair or a dictionary")
     print(f"{len(unwritten)} the rule writes no stroke for:")
     print(wrap([f"{p.replace(' ', '_')}" for p in unwritten[:80]]))
     lost = sorted(r["lost"], key=lambda x: -count(x[0]))

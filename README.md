@@ -58,7 +58,8 @@ sits below everything else so it cannot shadow a working entry.
 | ahead | flat source in the record language |
 
 A fold is a stroke nothing matched, read as another stroke with something
-written around it: `KAOEPT` is "keep" then "the", `SKPAD` is "and" then "add".
+written around it: `KAOEPT` is "keep" then "the", `SKPAD` is "and" then "add",
+`^TPOU` is "a" then "few" (`TPAOU`).
 `dictionaries/folds.xfst` says which keys come off and what they write, as a
 record of ordered alternatives, and the host looks the base up across the whole
 stack and takes the first that translates. So a fold is a rule in a dictionary
@@ -273,8 +274,9 @@ file against the typey-type artifact and fails if the JSON is stale.
 same tagger and table. A word of two syllables is one stroke marked with `^`.
 Its vowel chord is the stressed vowel's XOR the other vowel's letter. An
 r-coloured other vowel adds no vowel key and is written as its R (report is
-`^PROERT`, happy `^HAEUP`, mother `^PHO*RT`). If a bank no one-syllable word
-has already says two syllables, the word is also written without `^` (withdraw
+`^PROERT`, happy `^HAEUP`, mother `^PHO*RT`). A long vowel of one letter
+before one consonant is long as a silent e makes it, so super is `^SAOURP`.
+If a bank no one-syllable word has already says two syllables, the word is also written without `^` (withdraw
 is `^TKWHRAE` and `TKWHRAE`). A prefix spelled with a cluster no English onset
 has takes that cluster instead of `^` (display is `STKPHRAEU`). `gen-typey-vowels.py` then supersedes the
 Typey Type outlines of the words it writes. Run the two in turn until both pass
@@ -283,13 +285,20 @@ dictionary that writes it, which it learns from the compiled stack, so run it
 after a compile. `check.sh` fails if its JSON is stale.
 
 `scripts/gen-two-word.py` writes `two-word.json` by the same rule across a word
-boundary: two words of one syllable, 500 times in a row or more in the phrasing
+boundary: two words of one syllable, 150 times in a row or more in the phrasing
 corpora, as one `^` stroke (at all is `^TUL`, make it `^PHABGT`). The content
 word has the stress, or the second of two alike. Its pipeline is the pairs it
 writes as `dictionaries/pairs.lexc`, then `dictionaries/contract-pair.xfst`,
 which is `contract.xfst`'s rule with a word boundary in it, then the same theory
-and caret stages. A stroke a fold reads is left to the fold. It gives way to
-`two-syllable.json`, and `affixes` reads it, so run it between the two.
+and caret stages. It gives way to `two-syllable.json`, and `affixes` reads it,
+so run it between the two.
+
+The same rule, read backwards, is a fold for four function words: "a" before a
+word, and "of", "is" and "to" after one (one of is `^WOUFPB`, up to `^OUPT`).
+So those pairs need no entry, at any frequency. A pair the folds read as
+something else takes the stroke when the pair is the more frequent text, and a
+stroke a fold reads as the pair gets no entry. Of the pairs in scope that the
+rule gives a stroke, 23% lose it to a more frequent pair or another dictionary.
 
 `affixes` is a grammar and not JSON, because Stenotype Extended is the only
 system that loads it. A word with a prefix and a suffix is the stem's stroke,

@@ -52,7 +52,40 @@ define AndH       [ Stroke & [ S K P H ?* ] ] ;
 define And(C, Add) Rule(C, [ "[FOLD]" {and} "[STRIP]" S K P Add "[END]" ]) ;
 define PutT       [ "[ADD]" T ] ;
 
-! `#` is phrasing's, so no fold reads a stroke that holds it.
+! A function word beside a word is two-word.json's rule read back: the
+! word's stroke with `^`, the function word's consonants on the word's side,
+! and the keys of its vowel's letter toggled. Where the word already holds the
+! consonants they stay, which is the second alternative.
+!
+!   ^TPOU     ^ off, A on: TPAOU is "few"              a few
+!   ^WOUFPB   ^ O -F off: WUPB is "one"                one of
+!   ^THEUZ    ^ E U -Z off: TH is "this"               this is
+!   ^OUPT     ^ O -T off: UP is "up"                   up to
+!
+! Which words is measured. Most strokes have some base that translates, so
+! each rule misreads strokes meant for the rules after it. These four write 74%
+! of the pairs the phrasing corpora hold five times or more. "to" or "the"
+! before a word would lower that by six points each, so two-word.json keeps
+! those pairs.
+define Caret      [ Stroke & $["^"] ] ;
+
+! Toggle one key K, and take Off off too.
+define Toggle(W, K, Off, Bf, Af)
+    [ Rule([ W & $[K] ], [ "[FOLD]" Bf "[STRIP]" "^" K Off "[END]" Af ])
+  .o. Rule([ W - $[K] ], [ "[FOLD]" Bf "[STRIP]" "^" Off "[ADD]" K "[END]" Af ]) ] ;
+
+! Toggle E and U, the letter i.
+define ToggleI(W, Off, Bf, Af)
+    [ Rule([ W & $[E] & $[U] ], [ "[FOLD]" Bf "[STRIP]" "^" E U Off "[END]" Af ])
+  .o. Rule([ [ W & $[E] ] - $[U] ], [ "[FOLD]" Bf "[STRIP]" "^" E Off "[ADD]" U "[END]" Af ])
+  .o. Rule([ [ W & $[U] ] - $[E] ], [ "[FOLD]" Bf "[STRIP]" "^" U Off "[ADD]" E "[END]" Af ])
+  .o. Rule([ W - $[E] - $[U] ], [ "[FOLD]" Bf "[STRIP]" "^" Off "[ADD]" E U "[END]" Af ]) ] ;
+
+define After(K, C, Af)  [ Toggle([ Caret & $[C] ], K, C, 0, Af) .o. Toggle([ Caret & $[C] ], K, 0, 0, Af) ] ;
+define AfterI(C, Af)    [ ToggleI([ Caret & $[C] ], C, 0, Af) .o. ToggleI([ Caret & $[C] ], 0, 0, Af) ] ;
+
+! `#` is phrasing's, so no fold reads a stroke that holds it. A suffix comes
+! before a word, so a two-syllable word's `^` stroke keeps its inflections.
 define Folds [ [ Stroke - $["#"] ]
   .o. And(AndH, PutT)
   .o. And(AndStroke, 0)
@@ -62,6 +95,10 @@ define Folds [ [ Stroke - $["#"] ]
   .o. Suffix(s, Infl({ofs}))
   .o. Suffix(g, Infl({ing}))
   .o. Suffix(t, {the})
+  .o. Toggle(Caret, A, 0, {a}, 0)
+  .o. After(O, f, {of})
+  .o. AfterI(z, {is})
+  .o. After(O, t, {to})
   .o. [ [ Stroke .x. 0 ] Alts ] ] ;
 
 define Grammar [ Bare | Folds ] ;

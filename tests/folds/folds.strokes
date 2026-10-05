@@ -35,3 +35,15 @@ PWABGS
 !buffer
 SEFRB
 SKPAD
+! ---- a word beside a `^` stroke: "a" before it, "of", "is" and "to" after it
+!buffer
+^TPOU
+!buffer
+^WOUFPB
+!buffer
+^THEUZ
+!buffer
+^OUPT
+! ---- -T as "the" comes first, but ^PWAOBG writes nothing, so it is "back to"
+!buffer
+^PWAOBGT

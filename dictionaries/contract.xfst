@@ -13,8 +13,8 @@
 !
 ! The onset's letters are the stressed syllable's own, and so are the coda's
 ! when it is the last syllable. When the first vowel has the stress, the coda
-! spans the second and its letters say nothing: they are `-`. Z spelled s is
-! S at the start.
+! spans the second and its letters say nothing: they are `-`, or `_e` where the
+! first syllable is open. Z spelled s is S at the start.
 !
 ! A prefix spelled with a cluster no English onset has marks the syllable with
 ! the cluster's keys instead, and the rest of the word is the syllable: display
@@ -52,9 +52,17 @@ define FirstShape [ ~[ Rank Gap ConsSeg Gap Vowel Eq Letter Gap Phones Eq Gap ?*
     & ~[ ?* "_" u e ] ] ;
 ! The stressed vowel and the consonants on either side of it.
 define Front(C) [ Bare(C) Eq Letter* Gap Stressed Eq Letter+ ( Tail ) Gap Bare(Cons) Del(Eq Letter* Gap) ] ;
-define Close    [ Bare(Cons) Del(Eq Letter* ( Tail )) Ins(Eq "-") ] ;
-define First(T, C) [ Rank Gap Ins("^" T Gap) Front(C) Del([ Vowel - RVowel ] Eq T Letter* ( Tail ) Gap) Close ] ;
-define FirstR(C) [ Rank Gap Ins("^" Gap) Front(C) Del(RVowel Eq Written Letter* ( Tail ) Gap) Ins(R) Close ] ;
+define Close(E) [ Bare(Cons) Del(Eq Letter* ( Tail )) Ins(Eq E) ] ;
+define First(T, C, E) [ Rank Gap Ins("^" T Gap) Front(C) Del([ Vowel - RVowel ] Eq T Letter* ( Tail ) Gap) Close(E) ] ;
+define FirstR(C, E) [ Rank Gap Ins("^" Gap) Front(C) Del(RVowel Eq Written Letter* ( Tail ) Gap) Ins(R) Close(E) ] ;
+define FirstAny(C, E) [ First(a, C, E) | First(e, C, E) | First(i, C, E) | First(o, C, E) | First(u, C, E)
+                      | First(y, C, E) | FirstR(C, E) ] ;
+
+! A long vowel of one letter before one consonant is an open syllable, and is
+! long as a silent e makes it: super is su-per, so its coda is `_e`, as supe's.
+define Long     [ EY1 | IY1 | AY1 | OW1 | UW1 ] ;
+define OneCons  [ [ Letter - Written - x ] | {th} | {ph} | {ch} | {sh} ] ;
+define Open     [ Rank Gap ConsSeg Gap Long Eq Written Gap Phones Eq OneCons Gap ?* ] ;
 
 ! The syllable's letters read as a word of their own: gu before a vowel is a
 ! hard g (guile).
@@ -67,8 +75,8 @@ define Glide    [ Rank Gap [ ? - Gap ]* Gap [ [ Cons+ Del(Y) ] | [ Cons* - [ Con
 
 define Tints(C) [ [ [ Second(a, C) | Second(e, C) | Second(i, C) | Second(o, C) | Second(u, C)
                     | Second(y, C) | SecondR(C) ] .o. Glide .o. Gu ]
-                | [ FirstShape .o. [ First(a, C) | First(e, C) | First(i, C) | First(o, C) | First(u, C)
-                                   | First(y, C) | FirstR(C) ] .o. Glide ] ] ;
+                | [ FirstShape .o. [ [ Open .o. FirstAny(C, {_e}) ] | [ ~Open .o. FirstAny(C, "-") ] ]
+                    .o. Glide ] ] ;
 define Stress   [ [ ~$[z] .o. Tints(NoZ) ] | [ $[z] .o. Tints(Cons) ] ] ;
 
 ! A prefix, as its letters and phonemes before the vowel, its vowel's letters,
