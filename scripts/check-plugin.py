@@ -35,16 +35,15 @@ from plover_render import renderer
 # Which source each artifact was imported from. Only an imported dictionary has
 # an oracle here: a generated one has no Plover translation to compare against,
 # and its own checker covers it.
-SOURCES = {
-    "commands": "commands.json",
-    "user": "user.json",
-    "phrases": "phrases.json",
-    "repeat-idioms": "repeat-idioms.json",
-    "two-syllable": "two-syllable.json",
-    "two-word": "two-word.json",
-    "typey-type": "typey-type-full.json",
-    "vowel-briefs": "vowel-briefs.json",
-}
+def _sources():
+    import tomllib
+    root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
+    with open(os.path.join(root, "recipe.toml"), "rb") as f:
+        return {d["name"]: os.path.join(root, d["json"])
+                for d in tomllib.load(f)["dict"] if "json" in d and not d.get("editable")}
+
+
+SOURCES = _sources()
 
 
 def reserved_keys(name):
@@ -63,7 +62,7 @@ def check(dictionary, name, render):
     from plover.steno import Stroke, normalize_steno
     from plover_stfst.record import Record, Unsupported
 
-    raw = json.load(open(os.path.expanduser("~/.config/plover/" + SOURCES[name])))
+    raw = json.load(open(SOURCES[name]))
     reserved = reserved_keys(name)
     raw = {o: t for o, t in raw.items()
            if not any(reserved & set(Stroke.from_steno(s).keys()) for s in normalize_steno(o))}

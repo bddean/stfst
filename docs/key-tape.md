@@ -47,7 +47,7 @@ define FoldG  {g} -> "[SUF=ing]" || _ .#. ;
 decided it. `emily-symbols` is seven independent fields in steno order, and with
 keys as symbols each field is a small relation and the cross-product is the
 compiler's problem. 39 rows of table data and about 30 lines of rules replace
-5,248 enumerated strokes. `~/.config/plover/*.py` is not a build input.
+5,248 enumerated strokes. `emily-symbols.py` is not a build input.
 
 **The error model becomes possible at all.** Over atomic chords, `"STKPW"` and
 `"STKPR"` are two unrelated symbols, exactly as far apart as `"STKPW"` and

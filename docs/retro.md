@@ -106,7 +106,7 @@ would declare 1 and cost proportionally less.
 | `retro-words` | The `^A` namespace: 114 strokes over four verbs and two menus. An xfst grammar over a generated dispatch. |
 | `repeat-word` | 16 stems, `and [COPY1]`. A flat source in the record language, and the meta disappears: `[COPY1]` is the host's bound word. |
 | `repeat-idioms` | 607 entries, imported. Overrides the trigrams whose third word is not the first, and wins by being a longer match. |
-| `semantic-retro` | 19 entries, imported. `{:retro:past}` becomes `[META]retro[ARG]past[END]`; nothing implements that meta yet, and phrasing's own fold is the alternative to it. |
+| `semantic-retro` | 19 entries, read as its file rather than imported, since the record language has no meaning for a tagger. Plover's `{:retro:…}` meta runs them; phrasing's own fold is the alternative. |
 
 `repeat-word` is where the register half of item 5 earns its place. The Python
 needs a meta because Plover cannot say "the last word"; the record language can,

@@ -28,7 +28,7 @@ BINARY = "./target/release/stfst"
 
 
 def words(limit):
-    raw = json.load(open(os.path.expanduser("~/.config/plover/typey-type-full.json")))
+    raw = json.load(open(os.path.join(os.path.dirname(__file__), "..", "dictionaries", "typey-type-full.json")))
     seen = []
     for value in raw.values():
         if value.isalpha() and value.islower() and len(value) > 2:

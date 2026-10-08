@@ -1,0 +1,21 @@
+{
+"+-D": "{:retro:past}",
+"+-G": "{:retro:prog}",
+"+E": "{:retro:prog}",
+"+U": "{:retro:perf}",
+"+EU": "{:retro:perfprog}",
+"+UD": "{:retro:perf}{:retro:past}",
+"+-S": "{:retro:plural}",
+"+-Z": "{:retro:plural}",
+"+*": "{:retro:negate}",
+"#+": "{:retro:question}",
+"@+": "{:retro:emph}",
+"^+": "{:retro:full}",
+"+": "{:retro:clitic}",
+"+A": "{:retro:modal:can}",
+"+O": "{:retro:modal:shall}",
+"+AO": "{:retro:modal:will}",
+"+AD": "{:retro:modal:could}",
+"+OD": "{:retro:modal:should}",
+"+AOD": "{:retro:modal:would}"
+}

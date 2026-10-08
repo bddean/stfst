@@ -19,4 +19,4 @@ AEU	1	user	[IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|
 EG	1	typey-type	egg	"an egg a dog an hour an umbrella a one. An owl an FBI an egg"
 !undo	EG	"an egg a dog an hour an umbrella a one. An owl an FBI a"
 TKOG	1	typey-type	dog	"an egg a dog an hour an umbrella a one. An owl an FBI a dog"
-! 19 strokes, 10 candidates at the widest
+! 19 strokes, 9 candidates at the widest

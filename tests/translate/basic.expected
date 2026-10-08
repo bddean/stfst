@@ -29,7 +29,7 @@ TAPG	1	typey-type	tapping	". Tapth bored tapkat it's it is notcmore and-Notcmore
 TAPGS	1	typey-type+_ [META=infl]ofs[END]	tapping	". Tapth bored tapkat it's it is notcmore and-Notcmore elephant in the room running RUN keep keep the tapping tappings"
 SKPAD	1	typey-type+and _	add	". Tapth bored tapkat it's it is notcmore and-Notcmore elephant in the room running RUN keep keep the tapping tappings and add"
 SKPHA	1	typey-type+and _	that	". Tapth bored tapkat it's it is notcmore and-Notcmore elephant in the room running RUN keep keep the tapping tappings and add and that"
-SKAEBG	stack.solo	"+kak.py,+suppress_untranslates.py"
+SKAEBG	stack.solo	"+~/src/me/stfst/dictionaries/kak.py,+~/src/me/stfst/dictionaries/suppress_untranslates.py"
 TAP	-	". Tapth bored tapkat it's it is notcmore and-Notcmore elephant in the room running RUN keep keep the tapping tappings and add and that"
 !undo	TAP	". Tapth bored tapkat it's it is notcmore and-Notcmore elephant in the room running RUN keep keep the tapping tappings and add and that"
 !undo	SKAEBG	". Tapth bored tapkat it's it is notcmore and-Notcmore elephant in the room running RUN keep keep the tapping tappings and add and that"
@@ -45,4 +45,4 @@ PART	1	typey-type	part	". Tapth bored tapkat it's it is notcmore and-Notcmore el
 TK-PLTS	2	affixes+_ [META=infl]ofs[END]	department	". Tapth bored tapkat it's it is notcmore and-Notcmore elephant in the room running RUN keep keep the tapping tappings and add and that tap ran childrenmore departments"
 SEFRB	1	typey-type	serve	". Tapth bored tapkat it's it is notcmore and-Notcmore elephant in the room running RUN keep keep the tapping tappings and add and that tap ran childrenmore departments serve"
 R-GTS	2	affixes+_ the	reservation	". Tapth bored tapkat it's it is notcmore and-Notcmore elephant in the room running RUN keep keep the tapping tappings and add and that tap ran childrenmore departments reservation the"
-! 41 strokes, 11 candidates at the widest
+! 41 strokes, 10 candidates at the widest

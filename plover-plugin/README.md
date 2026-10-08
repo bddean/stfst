@@ -51,7 +51,11 @@ that the artifact moved.
 
 ## What loads
 
-Every dictionary in `recipe.toml`. What is left to refuse is a carried state and
+Every dictionary in `recipe.toml`. An editable one is a manifest naming a JSON
+file, and the plugin serves that file as Plover's own `JsonDictionary` would and
+saves back to it, so Add Translation can write there. `stfst_reload` also moves an
+editable artifact's mtime when its file changes outside Plover, which is what
+Plover reloads by. What is left to refuse is a carried state and
 the `W1` context slot, and no dictionary in the stack asks for either; the
 fixture that does is refused by what it asked for rather than by a version:
 

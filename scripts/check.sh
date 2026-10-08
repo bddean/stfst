@@ -50,8 +50,14 @@ source_golden() {
 # `tests/retro-words`. A dictionary with a pipeline has a golden file per stage
 # under `tests/golden/NAME/`, which `scripts/stages.sh NAME --update` rewrites.
 check_dict() {
-    local name=$1 generators=$2 goldens=$3 artifact=build/dicts/$1.stfst golden generator
+    local name=$1 kind=$2 generators=$3 goldens=$4 artifact=build/dicts/$1.stfst golden generator
     echo "== $name"
+    # Its entries are its file's, read as they stand, so there is no automaton
+    # to hold to them. The stroke fixtures load it with the rest of the stack.
+    if [ "$kind" = editable ]; then
+        echo "read as its file"
+        return
+    fi
     [ "$generators" = - ] && generators=
     for generator in $generators; do
         [ "${checked#* "$generator" }" = "$checked" ] || continue
@@ -106,7 +112,7 @@ if [ $# -gt 0 ]; then
         for want in "$@"; do
             if [ "$name" = "$want" ]; then
                 source_golden "$name" "$kind" "$source"
-                check_dict "$name" "$generator" "$goldens"
+                check_dict "$name" "$kind" "$generator" "$goldens"
             fi
         done
     done <<< "$dicts"
@@ -130,7 +136,7 @@ import json, os, sys
 sys.path.insert(0, "scripts")
 import plover_tape
 system = plover_tape.System.load("systems/stenotype-extended.toml")
-raw = json.load(open(os.path.expanduser("~/.config/plover/typey-type-full.json")))
+raw = json.load(open("dictionaries/typey-type-full.json"))
 print("\n".join("%s\t%s" % (o, system.tape(o)) for o in raw))
 EOF
 cut -f1 /tmp/stfst-tapes-py.tsv \
@@ -168,15 +174,15 @@ scripts/crosscheck-py.sh build/dicts/typey-type.stfst "$SYSTEM" | tail -1
 # A walk of the automaton lists what the source lists. One imported dictionary
 # is enough, because the walk does not depend on what the entries say.
 echo "== dump"
-python3 -c 'import json, os; print("\n".join(json.load(open(os.path.expanduser("~/.config/plover/two-syllable.json")))))' \
+python3 -c 'import json, os; print("\n".join(json.load(open("dictionaries/two-syllable.json"))))' \
     | $B tape --system "$SYSTEM" | cut -f3 | sort > /tmp/stfst-dump-source.txt
 $B dump build/dicts/two-syllable.stfst --system "$SYSTEM" | sort > /tmp/stfst-dump.txt
 diff -q /tmp/stfst-dump-source.txt /tmp/stfst-dump.txt \
     && echo "$(wc -l < /tmp/stfst-dump.txt) outlines agree"
 
 # Every dictionary in the recipe, so adding one cannot skip its tests.
-while IFS=$'\t' read -r name _ _ generator goldens; do
-    check_dict "$name" "$generator" "$goldens"
+while IFS=$'\t' read -r name kind _ generator goldens; do
+    check_dict "$name" "$kind" "$generator" "$goldens"
 done <<< "$dicts"
 
 # The fixtures no one dictionary owns: the host contract items no dictionary in

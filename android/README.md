@@ -469,7 +469,7 @@ the directory holds and where each file sits in the stack is `editable.toml`,
 which rides in the APK.
 
 `make install` syncs them: it pushes `user.json` in the APK's assets and pulls
-`stfst-user.json` off the phone, unions it with `~/.config/plover/stfst-user.json`
+`stfst-user.json` off the phone, unions it with `dictionaries/stfst-user.json`
 and pushes the result back, so a definition made on the phone reaches Plover and
 the other way round. `android/sync-user.sh` is that step on its own, and a
 network sync can replace it without anything else changing.

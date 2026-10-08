@@ -58,6 +58,11 @@ pub struct Dict {
     /// A Plover JSON dictionary to import.
     #[serde(default)]
     pub json: Option<PathBuf>,
+    /// Read as its `json` file when a host loads the stack, not imported, so the
+    /// host can add an entry to it. The artifact names the file and holds nothing
+    /// else.
+    #[serde(default)]
+    pub editable: bool,
     /// A flat dictionary written in the record language. See `plain`.
     #[serde(default)]
     pub plain: Option<PathBuf>,
@@ -123,6 +128,9 @@ impl Dict {
         }
         if let Some(p) = &self.plain {
             found.push(Source::Plain(p));
+        }
+        if self.editable && self.json.is_none() {
+            bail!("{}: only a `json` dictionary can be editable", self.name);
         }
         match found.len() {
             1 => Ok(found.remove(0)),

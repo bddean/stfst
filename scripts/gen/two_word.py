@@ -1,4 +1,4 @@
-"""Write `~/.config/plover/two-word.json`: two words of one syllable, often written
+"""Write `dictionaries/two-word.json`: two words of one syllable, often written
 together, as one stroke.
 
 It is two-syllable.json's rule across a word boundary. `^` says the stroke holds
@@ -41,14 +41,14 @@ import os
 import re
 import sys
 
-from . import PLOVER, ROOT, corpora
+from . import DICTS, ROOT, corpora
 from . import lexicon as lex
 from . import vowels as g
 from .resolve import candidates, compile_pipeline, resolve
 from .stack import Stack, retro_words
 from .two_syllable import bare_entries, write_json
 
-OUTPUT = os.path.join(PLOVER, "two-word.json")
+OUTPUT = os.path.join(DICTS, "two-word.json")
 PAIRS = os.path.join(ROOT, "dictionaries", "pairs.lexc")
 NAME = "two-word"
 
@@ -196,7 +196,7 @@ def report(found, out, r):
     print(wrap([f"{w.replace(' ', '_')}={s}({n}:{t})" for w, s, (n, t) in left[:80]]))
     print(f"{len(r['bare'])} are also written without ^, and {len(r['bare_taken'])} could be "
           f"but that stroke is taken")
-    with open(os.path.join(PLOVER, "stfst-user.json")) as f:
+    with open(os.path.join(DICTS, "stfst-user.json")) as f:
         user = json.load(f)
     by_pair = {p: s for s, p in out.items() if s.startswith("^")}
     theirs = sorted((p, s) for s, p in user.items() if p in found)

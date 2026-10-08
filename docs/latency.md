@@ -198,7 +198,7 @@ read it correctly is agreement with `hfst-optimized-lookup`:
 
 ```
 scripts/crosscheck-ol.sh build/dicts/typey-type.stfst systems/stenotype-extended.toml \
-    ~/.config/plover/typey-type-full.json
+    dictionaries/typey-type-full.json
 ```
 
 179,004 distinct tapes for `typey-type` and 36,377 for `emily-symbols`, both in

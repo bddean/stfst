@@ -4,7 +4,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-JSON=${1:-$HOME/.config/plover/typey-type-full.json}
+JSON=${1:-$(dirname "$0")/../dictionaries/typey-type-full.json}
 SYS=systems/stenotype-extended.toml
 B=./target/release/stfst
 mkdir -p build

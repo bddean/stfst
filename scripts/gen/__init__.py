@@ -10,6 +10,7 @@ import sys
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 PLOVER = os.path.expanduser("~/.config/plover")
+DICTS = os.path.join(ROOT, "dictionaries")
 SYSTEM = os.path.join(ROOT, "systems", "stenotype-extended.toml")
 RECIPE = os.path.join(ROOT, "recipe.toml")
 

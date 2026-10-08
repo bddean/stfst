@@ -13,9 +13,12 @@ reload every configuration change ends in.
 What is watched is the artifact directory's mtime, which `write_artifact` moves
 by renaming the manifest into place. So this notices a build and not a write:
 `stfst compile` is what makes a dictionary live, and it is also what refuses to
-write an artifact whose checks failed.
+write an artifact whose checks failed. An editable artifact is the exception:
+its file is written without a build, so a file newer than what Plover read moves
+the artifact's mtime, and Plover's answer is then the same.
 """
 
+import os
 import threading
 
 from plover import log
@@ -73,6 +76,10 @@ class Reload:
                 continue
             try:
                 built = resource_timestamp(path)
+                file = getattr(dictionary, "file", None)
+                if file and resource_timestamp(file) > dictionary.timestamp:
+                    os.utime(path)
+                    built = resource_timestamp(path)
             except OSError:
                 # Gone, or half written. The next look is a second away.
                 continue

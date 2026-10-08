@@ -40,7 +40,9 @@ operation nobody had written, `semantic-retro.json` was refused at load rather t
 loading and quietly doing nothing. The operation is now out of the table too, so
 those entries do not import at all and `stfst import --report` names each of the
 nineteen. That is the stronger statement: not "this host cannot", but "this format
-has no meaning for it".
+has no meaning for it". The dictionary is editable in the recipe now, so a host
+reads it as its file: Plover's own meta runs each entry, and the Rust host skips
+each one.
 
 ## Measured against Plover's formatter, not against our own last answer
 

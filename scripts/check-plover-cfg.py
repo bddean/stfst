@@ -4,8 +4,7 @@
 Plover's Stenotype Extended list loads what the recipe builds, and its order is
 priority there as `priority` is here. So each dictionary the recipe builds is in
 that list, and the enabled ones come in the recipe's priority order. An entry the
-recipe does not build (`stfst-user.json`, `semantic-retro.json`) is Plover's own
-and is not compared.
+recipe does not build is not compared.
 
 Usage: scripts/check-plover-cfg.py [recipe.toml] [plover.cfg]
 """

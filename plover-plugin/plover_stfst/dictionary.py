@@ -18,7 +18,9 @@ import tomllib
 
 import plover.system
 from plover import log
+from plover.dictionary.json_dict import JsonDictionary
 from plover.registry import registry
+from plover.resource import resource_timestamp, resource_update
 from plover.steno import Stroke
 from plover.steno_dictionary import StenoDictionary
 
@@ -64,6 +66,13 @@ REVERSE_BUDGET = 512
 
 class StfstDictionary(StenoDictionary):
     readonly = True
+
+    @classmethod
+    def load(cls, resource):
+        editable = _manifest(resource).get("editable")
+        if editable:
+            return EditableDictionary.open(resource, editable["file"])
+        return super().load(resource)
 
     def __init__(self):
         super().__init__()
@@ -433,6 +442,42 @@ class StfstDictionary(StenoDictionary):
                 return None
             strokes.append(Stroke(keys).rtfcre)
         return tuple(strokes)
+
+
+class EditableDictionary(JsonDictionary):
+    """An editable artifact: the JSON file its manifest names, read and saved as
+    Plover reads and saves one, so Add Translation has somewhere to write.
+
+    Plover knows it by the artifact's path and reloads it when that path is newer
+    than `timestamp`. A save moves the file and not the artifact, so the
+    timestamp is the later of the two, and `plover_stfst.reload` moves the
+    artifact when the file changes outside Plover.
+    """
+
+    @classmethod
+    def open(cls, artifact, file):
+        d = cls()
+        if os.path.exists(file):
+            d._load(file)
+        d.path = artifact
+        d.file = file
+        d.timestamp = d.read_at()
+        if not os.access(file if os.path.exists(file) else os.path.dirname(file), os.W_OK):
+            d.readonly = True
+        return d
+
+    def read_at(self):
+        """When what this holds was last true of the artifact and its file."""
+        stamps = [resource_timestamp(self.path)]
+        if os.path.exists(self.file):
+            stamps.append(resource_timestamp(self.file))
+        return max(stamps)
+
+    def save(self):
+        assert not self.readonly
+        with resource_update(self.file) as tmp:
+            self._save(tmp)
+        self.timestamp = self.read_at()
 
 
 def _manifest(path):

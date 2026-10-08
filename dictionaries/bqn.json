@@ -1,0 +1,90 @@
+{
+"KW-6",: "+"
+"KW-67",: "-"
+"KW-7",: "×"
+"KW-78",: "÷"	Reciprocal	Divide
+"KW-8",: "⋆"	Exponential	Power
+"KW-89",: "√"	Square Root	Root
+"KW-9",: "|"	Absolute Value	Modulus Root
+
+"KW-69",: "⌊"	Floor	Minimum
+"KW-78",: "⌈"	Ceiling	Maximum
+
+"#KW-6B",: "⍋"	Grade Up	Bins Up
+"#KW-6BG",: "⍒"	Grade Down	Bins Down
+"#KW-B",: "∧"	Sort Up	And*
+"#KW-BG",: "∨"	Sort Down	Or*
+"#KW-R",: "¬"	Not*	Span*
+
+"#KW-RS",: "≤"		Less Than or Equal to
+"#KW-6RS",: "<"	Enclose	Less Than
+"#KW-RG",: ">"	Merge*	Greater Than
+"#KW-6RG",: "≥"		Greater Than or Equal to
+"#KW-6R",: "="	Rank*	Equals
+"#KW-7B",: "≠"	Length	Not Equals
+"#KW-8G",: "≡"	Depth*	Match
+"#KW-9S",: "≢"	Shape	Not Match
+
+"KW-R7G",: "⊣"	Identity	Left
+"KW-6B8",: "⊢"	Identity	Right
+
+"#KW-S",: "⥊"	Deshape	Reshape*
+"#KW-RS",: "∾"	Join*	Join to
+"#KW-BS",: "≍"	Solo*	Couple*
+"#KW-GS",: "↑"	Prefixes*	Take
+"#KW-RGS",: "↓"	Suffixes*	Drop
+"#KW-BGS",: "↕"	Range	Windows*
+
+"#KW-6R",: "»"	Nudge*	Shift Before*
+"#KW-9S",: "«"	Nudge Back*	Shift After*
+"#KW-D",: "⌽"	Reverse	Rotate
+"#KW-Z",: "⍉"	Transpose*	Reorder axes*
+
+"KW-R78S",: "⊏"	First Cell*	Select*
+"KW-R7S",: "⊑"	First	Pick*
+"KW-R8S",: "⊐"	Classify*	Index of
+"KW-R7G",: "⊒"	Occurrence Count*	Progressive Index of*
+
+"KW-6789",: "/"	Indices	Replicate
+"KW-789D",: "∊"	Mark Firsts	Member of
+"#KW-RBGS",: "⍷"	Deduplicate	Find
+"#KW-BGSZ",: "⊔"	Group Indices*	Group*
+"KW*678",: "!"	Assert*	Assert with Message*
+
+  "W" = ("insertText:", "𝕎");
+  "w" = ("insertText:", "𝕨");
+  "R" = ("insertText:", "𝕣");
+  "f" = ("insertText:", "𝕗");
+  "g" = ("insertText:", "𝕘");
+
+  "S" = ("insertText:", "𝕊");
+  "F" = ("insertText:", "𝔽");
+  "G" = ("insertText:", "𝔾");
+  "'" = ("insertText:", "↩");
+  ";" = ("insertText:", "⋄");
+  "K" = ("insertText:", "⌾");
+  "K" = ("insertText:", "⌾");
+  "h" = ("insertText:", "⊸");
+  "j" = ("insertText:", "∘");
+  "k" = ("insertText:", "○");
+  "l" = ("insertText:", "⟜");
+
+
+  "0" = ("insertText:", "•");
+
+  "`" = ("insertText:", "˜");
+  "1" = ("insertText:", "˘");
+  "2" = ("insertText:", "¨");
+  "3" = ("insertText:", "⁼");
+  "4" = ("insertText:", "⌜");
+  "5" = ("insertText:", "´");
+         "'" = ("insertText:", "˙");
+       ";" = ("insertText:", "·");
+       "1" = ("insertText:", "⎉"); /* ! */
+       "2" = ("insertText:", "⚇"); /* @ */
+       "3" = ("insertText:", "⍟"); /* # */
+       "4" = ("insertText:", "◶"); /* $ */
+       "5" = ("insertText:", "⊘"); /* % */
+       "6" = ("insertText:", "⎊"); /* ^ */"6" = ("insertText:", "˝");
+       "/" = ("insertText:", "⇐"); /* | */
+}

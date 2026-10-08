@@ -32,8 +32,9 @@ artifact, so `lookup`, `test` and `bench` need nothing on `PATH`;
 
 `recipe.toml` is `plover.cfg`'s enabled list, in its order, so priority here means
 what file order means there, and `scripts/check-plover-cfg.py` fails where the
-two disagree. `main.json` is disabled there and absent here. The retro family
-sits below everything else so it cannot shadow a working entry.
+two disagree. `plover.cfg` names nothing else, so every dictionary Plover loads in
+that system goes through here. The retro family sits below everything else so it
+cannot shadow a working entry.
 
 | Dictionary | Source |
 |---|---|
@@ -41,11 +42,13 @@ sits below everything else so it cannot shadow a working entry.
 | phrasing-tag | xfst, `^+`: the clause with a question tag |
 | phrasing | xfst, a clause grammar over 20.7M chords, all on `#` |
 | shrimple | xfst over a generated table |
-| user | JSON, read as itself where a host can write |
+| user | JSON, editable: read as its file, and Add Translation writes it |
+| stfst-user | JSON, editable: what the Android keyboard defines |
 | phrases | JSON, imported |
 | commands | JSON, imported |
 | emily-modifiers | xfst over generated tables |
 | folds | xfst: what a stroke nothing matched folds to |
+| semantic-retro | JSON, editable: clause rewrites over a tagger |
 | two-syllable | JSON, generated |
 | two-word | JSON, generated |
 | affixes | xfst over a generated lexicon, and the orthography rules |
@@ -84,9 +87,9 @@ meant. A held clause waits the same way before its verb: `🦐#T-R` writes "I
 work", and "often" makes it "I often work". A held subject waits for its noun:
 `#WHE-B` writes "the is adding", and "dog" makes it "the dog is adding".
 
-`semantic-retro.json` is absent. Its entries are clause rewrites over a
-part-of-speech tagger, which this format deliberately cannot hold. See
-`docs/parity.md`.
+`semantic-retro` is read as its file, because its entries are clause rewrites
+over a part-of-speech tagger, which this format deliberately cannot hold. Plover's
+own meta runs them, and the Rust host skips them. See `docs/parity.md`.
 
 A few dozen entries in the whole set do not import, and `stfst import --report`
 names each. All are brace atoms naming no operation (`{pgh}`, `{--}`, `{...}`, a
@@ -116,14 +119,17 @@ already built.
 
 ## A dictionary a host can write to
 
-Every dictionary in the stack is compiled once and only read, except
-`user.json`, which is read as JSON. On the desktop Plover reads the file, so the Add Translation
-dialog has somewhere to put an entry, and the phone reads it the same way rather
-than as `user.stfst`. Beside it sits `stfst-user.json`, which the Android
+Every dictionary in the stack is compiled once and only read, except those the
+recipe marks `editable = true`. Such a dictionary is a JSON file read when the
+stack loads, and its artifact is a manifest naming the file and nothing else, so
+an edit to the file needs no build. `Stack::open` reads the file, and the Plover
+plugin serves it as Plover's own JSON dictionary and saves back to it, so the Add
+Translation dialog has somewhere to put an entry. `user.json` is the one Plover
+writes, being the first. Beside it sits `stfst-user.json`, which the Android
 keyboard writes its definitions to.
 
 On the phone `stfst-user.json` outranks `user.json`, because an outline
-redefined there has to beat what it used to write. In `plover.cfg` it sits the
+redefined there has to beat what it used to write. In the recipe it sits the
 other way up, so `user.json` stays the dictionary Plover writes to.
 
 `stfst_dict::Editable` is that dictionary: a map from outline to record, built
@@ -132,10 +138,12 @@ stack like any other. It has no window, no carried state and no context slot, an
 that is the deal. A compiled dictionary is a relation over tapes and can say
 things a map cannot; a map can be edited on a phone with no HFST.
 
-A directory of them carries an `editable.toml` saying what each file is called
-and where it sits, because a JSON dictionary says nothing about priority and a
-host that guessed would be a second place that decides it. `android/editable.toml`
-is the one the keyboard ships; `--editable DIR` gives `stfst translate` the same
+The keyboard cannot use the artifacts, which name files on this machine, so
+`android/sync-assets.sh` leaves them out and ships the files instead. A directory
+of them carries an `editable.toml` saying what each file is called and where it
+sits, because a JSON dictionary says nothing about priority and a host that
+guessed would be a second place that decides it. `android/editable.toml` is the
+one the keyboard ships; `--editable DIR` gives `stfst translate` the same
 thing, and `!define OUTLINE translation` in a stroke stream is what the keyboard's
 panel does, which is how `tests/editable` checks it.
 
@@ -243,7 +251,7 @@ one.
 
 ## The vowel theory, which writes JSON
 
-`typey-type` is imported from `~/.config/plover/typey-type-full.json`, and that
+`typey-type` is imported from `dictionaries/typey-type-full.json`, and that
 file is itself generated: `scripts/gen-typey-vowels.py` rewrites Typey Type's
 vowels by the rules in `dictionaries/typey-vowels.toml`, reading
 `typey-type-upstream.json` beside it. The output is JSON because Plover's
@@ -337,7 +345,7 @@ either file is stale.
 | | |
 |---|---|
 | `systems/` | Steno systems. Which tape symbol each key writes is configuration, not a convention baked into the tools. |
-| `dictionaries/` | Hand-written dictionary source, in xfst. A `-tables.xfst` file is transcribed data with an upstream owner; the grammar over it is authored. `typey-vowels.toml` is the vowel theory's table, which a script applies to JSON, and `affixes.toml` the affix stroke's. |
+| `dictionaries/` | Every dictionary source. Grammars in xfst and lexc: a `-tables.xfst` file is transcribed data with an upstream owner, and the grammar over it is authored. Flat `.dict` files in the record language. Plover's JSON and Python dictionaries, which `plover.cfg` names here and `dictionaries/README.md` describes. `typey-vowels.toml` is the vowel theory's table, which a script applies to JSON, and `affixes.toml` the affix stroke's. |
 | `morphology/` | `ortho.xfst`, Plover's 38 orthography rules. Not a dictionary: nothing here is over the key tape, though a grammar may include it to spell a join, as `affixes` does. The two lexicons beside it are generated, not committed. |
 | `recipe.toml` | The dictionary stack: what to compile, and at what priority. |
 | `scripts/gen/` | The generators that share the vowel theory, as a package: `vowels`, `two_syllable`, `two_word`, `affixes`, `stack`, which reads what the rest of the stack writes in Plover's syntax, and `corpora`, which counts the phrasing corpora. `scripts/gen-*.py` run them. |
@@ -391,7 +399,9 @@ know the other.
 
 Three source forms. Hand-written xfst for anything with rules in it, a flat
 `.dict` file for a list of entries in the record language, and JSON for anything
-imported from Plover.
+imported from Plover. A JSON dictionary a host has to write to, or whose entries
+the record language cannot hold, is `editable = true` instead of imported: see
+"A dictionary a host can write to".
 
 ```
 ! dictionaries/repeat-word.dict: an outline, a tab, a record

@@ -1,4 +1,4 @@
-"""Write `~/.config/plover/two-syllable.json`: a word of two syllables as one stroke.
+"""Write `dictionaries/two-syllable.json`: a word of two syllables as one stroke.
 
 `^` says the stroke holds two syllables. Either may carry the stress:
 
@@ -45,12 +45,12 @@ import os
 import re
 import sys
 
-from . import PLOVER
+from . import DICTS
 from . import vowels as g
 from .resolve import candidates, compile_pipeline, resolve, typey_gives_way
 from .stack import Stack, retro_words
 
-OUTPUT = os.path.join(PLOVER, "two-syllable.json")
+OUTPUT = os.path.join(DICTS, "two-syllable.json")
 NAME = "two-syllable"
 
 # A word below this is not worth a stroke.
@@ -199,7 +199,7 @@ def report(out, r):
     print(wrap([f"{w}={s}" for s, w in b]))
     print(wrap([f"{w}={s}({n}:{t})" for s, (w, (n, t)) in r["bare_taken"].items()]))
 
-    with open(os.path.join(PLOVER, "user.json")) as f:
+    with open(os.path.join(DICTS, "user.json")) as f:
         user = json.load(f)
     same = sorted(s for s, t in user.items() if out.get(s) == t)
     print(f"{len(same)} user.json entries the rule reproduces:", " ".join(f"{s}={user[s]}" for s in same))

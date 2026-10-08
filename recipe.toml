@@ -1,6 +1,5 @@
 # The dictionary stack. Priority mirrors plover.cfg order: higher shadows lower,
-# and the list here is that file's list, top to bottom. `main.json` is disabled
-# there, so it is absent here.
+# and the list here is that file's list, top to bottom.
 #
 # `generator` names the script that writes a dictionary's source, and `golden`
 # the golden files beside `tests/golden/NAME.tsv`. The compiler reads neither:
@@ -100,20 +99,30 @@ priority = 90
 strokes = 40
 xfst = ["dictionaries/shrimple-tables.xfst", "dictionaries/shrimple.xfst"]
 
+# The editable dictionaries are read as their files when the stack loads, so a
+# host has somewhere to put a new entry: `user` is what Plover's Add Translation
+# writes, being the first, and `stfst-user` what the Android keyboard defines.
 [[dict]]
 name = "user"
 priority = 80
-json = "~/.config/plover/user.json"
+json = "dictionaries/user.json"
+editable = true
+
+[[dict]]
+name = "stfst-user"
+priority = 75
+json = "dictionaries/stfst-user.json"
+editable = true
 
 [[dict]]
 name = "phrases"
 priority = 70
-json = "~/.config/plover/phrases.json"
+json = "dictionaries/phrases.json"
 
 [[dict]]
 name = "commands"
 priority = 60
-json = "~/.config/plover/commands.json"
+json = "dictionaries/commands.json"
 
 [[dict]]
 name = "emily-modifiers"
@@ -129,17 +138,27 @@ name = "folds"
 priority = 40
 xfst = ["dictionaries/folds.xfst"]
 
+# Clause rewrites over a part-of-speech tagger, which is a statistical model
+# rather than a function of its input, so the record language has no meaning for
+# one. Read as its file, Plover's `{:retro:…}` meta does the work; a host without
+# it skips each entry. Phrasing's own fold is the alternative: see docs/parity.md.
+[[dict]]
+name = "semantic-retro"
+priority = 38
+json = "dictionaries/semantic-retro.json"
+editable = true
+
 [[dict]]
 name = "two-syllable"
 priority = 35
-json = "~/.config/plover/two-syllable.json"
+json = "dictionaries/two-syllable.json"
 generator = "scripts/gen-two-syllable.py"
 pipeline = ["lexicon", "contract", "theory", "caret"]
 
 [[dict]]
 name = "two-word"
 priority = 34
-json = "~/.config/plover/two-word.json"
+json = "dictionaries/two-word.json"
 generator = "scripts/gen-two-word.py"
 pipeline = ["pairs", "contract-pair", "theory", "caret"]
 
@@ -153,7 +172,7 @@ pipeline = ["affix-stems", "stem", "theory", "caret"]
 [[dict]]
 name = "typey-type"
 priority = 30
-json = "~/.config/plover/typey-type-full.json"
+json = "dictionaries/typey-type-full.json"
 # What the vowel table writes, read back.
 generator = "scripts/gen-typey-vowels.py"
 golden = ["tests/vowels.tsv"]
@@ -163,7 +182,7 @@ name = "vowel-briefs"
 priority = 25
 # Written by scripts/gen-typey-vowels.py beside typey-type: only strokes no
 # other entry writes, so its place below typey-type shadows nothing.
-json = "~/.config/plover/vowel-briefs.json"
+json = "dictionaries/vowel-briefs.json"
 generator = "scripts/gen-typey-vowels.py"
 
 # The retro family sits below everything else, so it cannot shadow a working
@@ -205,16 +224,10 @@ xfst = [
 [[dict]]
 name = "repeat-idioms"
 priority = 8
-json = "~/.config/plover/repeat-idioms.json"
+json = "dictionaries/repeat-idioms.json"
 
 [[dict]]
 name = "repeat-word"
 priority = 7
 plain = "dictionaries/repeat-word.dict"
 
-# semantic-retro is absent, and the absence is the design working. Its nineteen
-# entries ask for a clause rewrite over a part-of-speech tagger, and a tagger is a
-# statistical model rather than a function of its input, so this format has no
-# meaning for one and the importer says so entry by entry. Not a lexicon problem:
-# `morphology/` supplies one, and `{:infl:…}` uses it. Phrasing's own fold is the
-# alternative. See docs/parity.md.

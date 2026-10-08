@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Write `~/.config/plover/typey-composed.json`: the Typey Type entries whose text
+"""Write `dictionaries/typey-composed.json`: the Typey Type entries whose text
 the rest of the stack writes stroke by stroke without them.
 
 `STAR/-D` is starred and `RAOE/HROEBGTS` relocates, but so are star then `-D` and
@@ -43,8 +43,8 @@ sys.path.insert(0, os.path.join(ROOT, "plover-plugin"))
 PLOVER = os.path.expanduser("~/.config/plover")
 # Where Plover installs a user plugin: the Python dictionary loader is one.
 sys.path.append(os.path.join(PLOVER, "plugins/mac/lib/python/site-packages"))
-FULL = os.path.join(PLOVER, "typey-type-full.json")
-COMPOSED = os.path.join(PLOVER, "typey-composed.json")
+FULL = os.path.join(ROOT, "dictionaries", "typey-type-full.json")
+COMPOSED = os.path.join(ROOT, "dictionaries", "typey-composed.json")
 SYSTEMS = ("English Stenotype", "Stenotype Extended")
 
 # What each stroke is written after. Enough to show an attachment, a pending
@@ -96,10 +96,10 @@ def outlines_listed():
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     import plover_tape
     system = plover_tape.System.load(os.path.join(ROOT, "systems/stenotype-extended.toml"))
-    paths = {p for s in SYSTEMS for _, p in stack(s) if p.endswith(".json")}
+    paths = {os.path.abspath(p) for s in SYSTEMS for _, p in stack(s) if p.endswith(".json")}
     with open(os.path.join(ROOT, "recipe.toml"), "rb") as f:
         recipe = tomllib.load(f)
-    paths |= {os.path.expanduser(d["json"]) for d in recipe["dict"] if "json" in d}
+    paths |= {os.path.abspath(os.path.join(ROOT, d["json"])) for d in recipe["dict"] if "json" in d}
     outlines = set(typey())
     for p in paths:
         with open(p) as f:

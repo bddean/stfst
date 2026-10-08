@@ -337,6 +337,31 @@ mod tests {
     }
 
     #[test]
+    fn a_stack_opens_an_editable_artifact_as_the_file_it_names() {
+        let dir = temp("artifact");
+        let file = dir.join("user.json");
+        std::fs::write(&file, r#"{"TKUPT": "dupt"}"#).unwrap();
+        let artifact = dir.join("user.stfst");
+        std::fs::create_dir_all(&artifact).unwrap();
+        std::fs::write(
+            artifact.join("manifest.toml"),
+            format!(
+                "[dict]\nname = \"user\"\nversion = \"0\"\nsystem = \"stenotype-extended\"\n\
+                 priority = 80\n\n[editable]\nfile = {:?}\n",
+                file.display().to_string()
+            ),
+        )
+        .unwrap();
+        let stack = crate::Stack::open(&[artifact.clone()], &sys(), &stfst_core::Capabilities::all()).unwrap();
+        let user = stack.editable("user").unwrap();
+        assert_eq!(user.translation("TKUPT").as_deref(), Some("dupt"));
+        assert!(matches!(
+            crate::Dict::open(&artifact, &sys(), &stfst_core::Capabilities::all()),
+            Err(DictError::NotCompiled(name)) if name == "user"
+        ));
+    }
+
+    #[test]
     fn a_translation_no_record_can_hold_is_refused_before_it_is_saved() {
         let dir = temp("refused");
         let dict = open(&dir);

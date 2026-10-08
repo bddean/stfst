@@ -54,16 +54,26 @@ pub fn compile_recipe(recipe_path: &Path, out: &Path, work: &Path, which: &Which
         }
         let source = dict.source()?;
         let artifact = out.join(format!("{}.stfst", dict.name));
-        let mut inputs: Vec<PathBuf> = source
+        let files: Vec<PathBuf> = source
             .files()
             .iter()
             .map(|s| recipe::resolve(&base, s))
             .collect();
+        // An editable dictionary's file is read at load, so an edit to it is not a
+        // reason to build.
+        let mut inputs = if dict.editable { Vec::new() } else { files.clone() };
         inputs.push(system_path.clone());
         let reserved = recipe.reserved(dict);
         let stamp = stamp(&recipe.system, dict, &reserved)?;
         if !which.force && fresh(&artifact, &stamp, &inputs) {
             eprintln!("  {}: up to date", dict.name);
+            continue;
+        }
+        if dict.editable {
+            let file = std::path::absolute(&files[0])?;
+            pipeline::write_editable(&artifact, dict, &system, &file)?;
+            std::fs::write(artifact.join(STAMP), &stamp)?;
+            eprintln!("  {} -> {} (reads {})", dict.name, artifact.display(), file.display());
             continue;
         }
         let work_dir = work.join(&dict.name);
@@ -135,12 +145,13 @@ fn stamp(system: &Path, dict: &recipe::Dict, reserved: &str) -> Result<String> {
     let files: Vec<String> = dict.source()?.files().iter().map(|f| f.display().to_string()).collect();
     Ok(format!(
         "compiler = {:?}\nsystem = {:?}\nname = {:?}\npriority = {}\nversion = {:?}\n\
-         sources = {files:?}\nshown = {:?}\nstrokes = {:?}\nreserved = {reserved:?}\n",
+         sources = {files:?}\neditable = {}\nshown = {:?}\nstrokes = {:?}\nreserved = {reserved:?}\n",
         env!("STFST_COMPILER_HASH"),
         system.display().to_string(),
         dict.name,
         dict.priority,
         dict.version,
+        dict.editable,
         dict.shown()?,
         dict.strokes,
     ))

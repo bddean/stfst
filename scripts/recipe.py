@@ -3,6 +3,9 @@
 
     scripts/recipe.py RECIPE system   the system file
     scripts/recipe.py RECIPE dicts    name, kind, source, generators, goldens
+
+A kind is `xfst`, `json`, `plain`, or `editable` for a JSON dictionary read as
+its file when the stack loads.
     scripts/recipe.py RECIPE reserved NAME   the keys other dictionaries own
 
 One tab-separated row per dictionary in recipe order. A source is expanded, and
@@ -20,6 +23,8 @@ def rows(recipe, base):
     for d in recipe["dict"]:
         kind = next(k for k in ("xfst", "json", "plain") if k in d)
         files = d[kind] if isinstance(d[kind], list) else [d[kind]]
+        if d.get("editable"):
+            kind = "editable"
         generators = [stages[s].get("generator") for s in d.get("pipeline", [])] + [d.get("generator")]
         generators = list(dict.fromkeys(at(g) for g in generators if g))
         yield (d["name"], kind, " ".join(map(at, files)), " ".join(generators) or "-",

@@ -1,7 +1,7 @@
 //! One compiled dictionary, and what it promises the host.
 
 use std::num::NonZeroU8;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 use serde::Deserialize;
 use stfst_core::context;
@@ -23,6 +23,34 @@ pub struct Manifest {
     pub dict: Meta,
     pub requires: Requires,
     pub input: Input,
+}
+
+/// What every artifact's manifest says, compiled or not: which dictionary it
+/// is, and the file it names if it is read as one.
+#[derive(Debug, Deserialize)]
+pub struct Head {
+    pub dict: Meta,
+    #[serde(default)]
+    pub editable: Option<EditableFile>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct EditableFile {
+    pub file: PathBuf,
+}
+
+impl Head {
+    pub fn read(dir: &Path) -> Result<Head, DictError> {
+        let path = dir.join("manifest.toml");
+        let text = std::fs::read_to_string(&path).map_err(|source| DictError::Io {
+            path: path.display().to_string(),
+            source,
+        })?;
+        toml::from_str(&text).map_err(|source| DictError::Manifest {
+            path: path.display().to_string(),
+            source,
+        })
+    }
 }
 
 #[derive(Debug, Deserialize)]
@@ -125,6 +153,10 @@ impl Dict {
     /// load-time error and not a runtime surprise. It is also cheap, because
     /// every tag a dictionary can emit is a symbol in its alphabet.
     pub fn open(dir: &Path, system: &System, host: &Capabilities) -> Result<Dict, DictError> {
+        let head = Head::read(dir)?;
+        if head.editable.is_some() {
+            return Err(DictError::NotCompiled(head.dict.name));
+        }
         let path = dir.join("manifest.toml");
         let text = std::fs::read_to_string(&path).map_err(|source| DictError::Io {
             path: path.display().to_string(),

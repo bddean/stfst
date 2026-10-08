@@ -493,6 +493,34 @@ pub fn declare(forward: &Path, system: &System, dict: &recipe::Dict) -> Result<D
 
 /// Write the artifact directory: the automaton plus what a host needs to refuse
 /// a dictionary it cannot interpret.
+/// An editable dictionary's artifact: a manifest naming the file a host reads,
+/// and no automaton. What a compiled build left there goes, so a host cannot
+/// mistake the directory for one.
+pub fn write_editable(dir: &Path, dict: &recipe::Dict, system: &System, file: &Path) -> Result<()> {
+    std::fs::create_dir_all(dir)?;
+    for stale in ["forward.hfstol", "reverse.hfstol", "tags.txt"] {
+        let _ = std::fs::remove_file(dir.join(stale));
+    }
+    let manifest = format!(
+        "[dict]\n\
+             name = {:?}\n\
+             version = {:?}\n\
+             system = {:?}\n\
+             priority = {}\n\
+             \n[editable]\n\
+             file = {:?}\n",
+        dict.name,
+        dict.version,
+        system.name,
+        dict.priority,
+        file.display().to_string(),
+    );
+    let staged = dir.join("manifest.toml.new");
+    std::fs::write(&staged, manifest)?;
+    std::fs::rename(&staged, dir.join("manifest.toml"))?;
+    Ok(())
+}
+
 pub fn write_artifact(
     dir: &Path,
     dict: &recipe::Dict,

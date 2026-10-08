@@ -11,7 +11,7 @@ import plover_tape
 from plover_stfst import ol
 from plover_stfst.record import FOLD, Record, Unsupported, parse_fold
 
-from . import PLOVER, RECIPE, SYSTEM
+from . import DICTS, PLOVER, RECIPE, ROOT, SYSTEM
 
 _SYSTEM = plover_tape.System.load(SYSTEM)
 # A fold names keys by tape symbol, and so does this module.
@@ -29,7 +29,7 @@ class Stack:
         cfg.read(os.path.join(PLOVER, "plover.cfg"))
         with open(RECIPE, "rb") as f:
             dicts = tomllib.load(f)["dict"]
-        sources = {d["name"]: os.path.expanduser(d["json"]) for d in dicts if "json" in d}
+        sources = {d["name"]: os.path.join(ROOT, d["json"]) for d in dicts if "json" in d}
         self.priority = {d["name"]: d["priority"] for d in dicts}
         self.layers = []
         for e in json.loads(cfg["System: Stenotype Extended"]["dictionaries"]):
@@ -103,7 +103,7 @@ class Stack:
 def retro_words():
     """Strokes `retro-words.py` claims. Its artifact rewrites text and answers no
     lookup, so the stack cannot say."""
-    path = os.path.join(PLOVER, "retro-words.py")
+    path = os.path.join(DICTS, "retro-words.py")
     spec = importlib.util.spec_from_file_location("retro_words", path)
     m = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(m)

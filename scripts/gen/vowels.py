@@ -5,8 +5,8 @@ homophones one pair at a time: `sea` takes AE because `see` exists, `sail` takes
 AEU* because `sale` does. The table replaces that with a rule over the word's own
 spelling, so a word's outline follows from how it is written and needs no twin.
 
-Input is `~/.config/plover/typey-type-upstream.json`, Typey Type as it was
-imported. Output is `~/.config/plover/typey-type-full.json`, which both Plover
+Input is `dictionaries/typey-type-upstream.json`, Typey Type as it was
+imported. Output is `dictionaries/typey-type-full.json`, which both Plover
 systems read, so the result is a JSON dictionary and not a transducer.
 
 What is rewritten:
@@ -26,7 +26,7 @@ stroke from any other entry unless that entry is an affix or a hundred times as
 frequent, and the report names every word left with no outline in the stack.
 
 A word of zipf > 5 whose shortest outline the theory lengthened keeps its shorter
-upstream strokes in `~/.config/plover/vowel-briefs.json`, where no entry in the
+upstream strokes in `dictionaries/vowel-briefs.json`, where no entry in the
 stack writes them: `PWEU` stays "by".
 
 Usage (needs cmudict and wordfreq, which the phrasing venv has):
@@ -49,15 +49,15 @@ import cmudict
 import plover_tape
 from wordfreq import zipf_frequency
 
-from . import PLOVER, ROOT, SYSTEM
+from . import DICTS, ROOT, SYSTEM
 from .stack import Stack
 
-UPSTREAM = os.path.join(PLOVER, "typey-type-upstream.json")
-OUTPUT = os.path.join(PLOVER, "typey-type-full.json")
-BRIEFS = os.path.join(PLOVER, "vowel-briefs.json")
-TWO = os.path.join(PLOVER, "two-syllable.json")
-SUPERSEDED = os.path.join(PLOVER, "typey-superseded.json")
-COMPOSED = os.path.join(PLOVER, "typey-composed.json")
+UPSTREAM = os.path.join(DICTS, "typey-type-upstream.json")
+OUTPUT = os.path.join(DICTS, "typey-type-full.json")
+BRIEFS = os.path.join(DICTS, "vowel-briefs.json")
+TWO = os.path.join(DICTS, "two-syllable.json")
+SUPERSEDED = os.path.join(DICTS, "typey-superseded.json")
+COMPOSED = os.path.join(DICTS, "typey-composed.json")
 TABLE = os.path.join(ROOT, "dictionaries", "typey-vowels.toml")
 GOLDEN = os.path.join(ROOT, "tests", "vowels.tsv")
 AFFIXES = os.path.join(ROOT, "tests", "golden", "affixes.tsv")

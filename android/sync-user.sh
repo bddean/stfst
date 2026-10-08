@@ -14,7 +14,7 @@ cd "$(dirname "$0")/.."
 ADB=${ADB:-$(command -v adb || echo "$HOME/Library/Android/sdk/platform-tools/adb")}
 REMOTE_DIR=/sdcard/Android/data/cx.yeet.stfst/files/dicts
 REMOTE=$REMOTE_DIR/stfst-user.json
-LOCAL=${STFST_USER:-$HOME/.config/plover/stfst-user.json}
+LOCAL=${STFST_USER:-dictionaries/stfst-user.json}
 
 # The keyboard makes this directory, and nothing here may make it first: a
 # directory adb created belongs to the shell user, and then the app cannot write

@@ -8,7 +8,7 @@ mod dict;
 mod editable;
 mod session;
 
-pub use dict::{Dict, Input, Manifest, Meta, Outlines, Requires, HOST_VERSION};
+pub use dict::{Dict, EditableFile, Head, Input, Manifest, Meta, Outlines, Requires, HOST_VERSION};
 pub use editable::{listed, Editable};
 pub use session::{Held, Match, Session};
 
@@ -76,6 +76,8 @@ pub enum DictError {
     },
     #[error("{0} is not a dictionary this host can write to")]
     NotEditable(String),
+    #[error("{0} is read as its file when a stack loads, and has no automaton to open")]
+    NotCompiled(String),
 }
 
 /// One dictionary of a stack. Compiled is the ordinary case: a relation over
@@ -173,15 +175,18 @@ impl Stack {
     ) -> Result<Stack, DictError> {
         let mut dicts = Vec::with_capacity(dirs.len() + editable.len());
         for dir in dirs {
-            let dict = Dict::open(dir, system, host)?;
-            if dict.manifest.dict.system != system.name {
+            let head = dict::Head::read(dir)?;
+            if head.dict.system != system.name {
                 return Err(DictError::WrongSystem {
-                    name: dict.name().to_string(),
-                    wants: dict.manifest.dict.system.clone(),
+                    name: head.dict.name,
+                    wants: head.dict.system,
                     have: system.name.clone(),
                 });
             }
-            dicts.push(Slot::Compiled(dict));
+            dicts.push(match head.editable {
+                Some(e) => Slot::Editable(Editable::open(&e.file, &head.dict.name, head.dict.priority, system)?),
+                None => Slot::Compiled(Dict::open(dir, system, host)?),
+            });
         }
         for (path, name, priority) in editable {
             dicts.push(Slot::Editable(Editable::open(path, name, *priority, system)?));

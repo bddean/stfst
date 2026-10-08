@@ -65,7 +65,7 @@ def main(paths):
 
     translations = []
     for path in paths:
-        raw = json.load(open(os.path.expanduser("~/.config/plover/" + path)))
+        raw = json.load(open(os.path.join(os.path.dirname(__file__), "..", "dictionaries", path)))
         translations.extend(raw.values())
     # One line each, so a translation holding a newline cannot be compared this way.
     # Those are exactly the entries the escape convention added, and they are checked
