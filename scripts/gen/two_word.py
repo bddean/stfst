@@ -25,6 +25,9 @@ one word. What this script decides is the rest, which is not a rule:
   most is `^TPHOEFT`, which the -T fold reads as "naive the".
 - A stroke with a vowel whose onset or coda no one-syllable word's own stroke has
   is also written without `^`, as two-syllable.json does.
+- A pair's stroke with a suffix key, which a fold reads as the last word
+  inflected, is an entry where the stressed word inflected, on either side, is
+  the more common text: `^TKPW-G` is "going to".
 
 Usage (needs cmudict and wordfreq, which the phrasing venv has, the corpora under
 ~/.config/plover/phrasing/corpora, a compiled stack, and HFST: run it in the dev
@@ -46,7 +49,7 @@ from . import lexicon as lex
 from . import vowels as g
 from .resolve import candidates, compile_pipeline, resolve, unwritten_briefs
 from .stack import Stack, retro_words
-from .two_syllable import bare_entries, write_json
+from .two_syllable import bare_entries, coda, with_coda, write_json
 
 OUTPUT = os.path.join(DICTS, "two-word.json")
 PAIRS = os.path.join(ROOT, "dictionaries", "pairs.lexc")
@@ -136,6 +139,46 @@ def spellings(translation):
     return out
 
 
+# A suffix key on a pair's stroke, and the endings of the word it inflects.
+INFLECTIONS = {"G": "ing", "D": "d", "S": "s"}
+
+
+def inflections(word, kind):
+    if kind == "ing":
+        return {word + "ing", word[:-1] + "ing", word + word[-1] + "ing"}
+    return g.regular_forms(word, kind)
+
+
+def inflected(out, stack):
+    """{stroke: text} for a pair's stroke with a suffix key, where the stressed
+    word inflected reads more often on the other side of its partner than the
+    fold's reading, which inflects the last word: `^TKPW-G` is "going to", not
+    "to going". Only a stroke no entry holds."""
+    wanted, readings = {}, {}
+    folds = stack.with_layer(NAME, out).folds(
+        with_coda(s, coda(s) + k) for s in out for k in INFLECTIONS if k not in coda(s))
+    for s, pair in out.items():
+        a, b = pair.split(" ")
+        word, other = (a, b) if stressed(a, b) == 0 else (b, a)
+        if word in FUNCTION:
+            continue
+        for k, kind in INFLECTIONS.items():
+            f = with_coda(s, coda(s) + k)
+            if f in folds:
+                readings[f] = spellings(folds[f][0]) or []
+                wanted[f] = [gram for form in inflections(word, kind) for gram in ((form, other), (other, form))]
+    counts = corpora.ngrams("two-word-inflected", {gram for gs in wanted.values() for gram in gs}
+                            | {r for rs in readings.values() for r in rs})
+    held = stack.ask(wanted)
+    found = {}
+    for f, grams in wanted.items():
+        best = max(grams, key=lambda gram: (counts[gram], gram))
+        read = max((counts[r] for r in readings[f]), default=0)
+        if not held[f] and best not in readings[f] and counts[best] >= MIN_COUNT and counts[best] > read:
+            found[f] = " ".join(best)
+    return found
+
+
 def build(typey, rule, counts):
     """(entries, report data), from `rule`, {pair: {outline: cost}}."""
     count = lambda p: counts[tuple(p.split(" "))]
@@ -171,8 +214,10 @@ def build(typey, rule, counts):
     for s in folded:
         del out[s]
     out.update(plain)
+    reordered = {s: t for s, t in inflected(out, stack).items() if s not in out}
+    out.update(reordered)
     return dict(sorted(out.items())), dict(rule=rule, count=count, lost=lost, left=left,
-                                          folded=folded, bare=plain, bare_taken=taken)
+                                          folded=folded, bare=plain, bare_taken=taken, reordered=reordered)
 
 
 def report(found, out, r):
@@ -183,6 +228,8 @@ def report(found, out, r):
     print(f"{len(found)} pairs in scope, {len(rule)} with a stroke; {len(out)} entries, "
           f"{caret} with ^ and {len(out) - caret} without")
     print(f"{len(r['folded'])} a fold writes, so they need no entry")
+    print(f"{len(r['reordered'])} with a suffix key read better with the stressed word inflected:",
+          " ".join(f"{s}={t.replace(' ', '_')}" for s, t in r["reordered"].items()))
     collide = len(r["lost"]) + len(r["left"])
     print(f"{collide} of {len(rule)} with a stroke ({collide / len(rule):.1%}) lose it to a pair or a dictionary")
     print(f"{len(unwritten)} the rule writes no stroke for:")
