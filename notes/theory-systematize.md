@@ -235,3 +235,80 @@ The `^` briefs that the rule writes differently (yours / the rule's):
   improvement `^PROFPLT` suggests -ment.
 - The stage golden files for two-syllable are now 17 MB, because each rewrite
   stage lists the whole lexicon.
+
+## Phase 3: one contraction over two strokes
+
+Stopped early: usage credits ran out. check.sh was not run.
+
+### Done (3 commits)
+
+- `join.xfst` makes a two-word pair one written-out word of two syllables,
+  so `contract-pair.xfst` is gone and pairs go through the same split,
+  theory and contract stages as words. contract.xfst no longer drops a word
+  for a final e or a vowel-vowel run (the lexicon aligns those), and says a
+  consonant on both sides of the dropped vowel once. two-syllable: 6106 to
+  6230 words, coverage 128.5 to 130.4 (maybe, idea, science, quiet, poem).
+  two-word: 3775 pairs with a stroke, up from 3723, none lost.
+- The pipeline is now `... middle, split, theory, contract, caret`.
+  `split.xfst` splits around the stressed vowel and heads each syllable with
+  `1:` or `0<operand>:`. `theory.xfst` writes each syllable as a stroke.
+  `contract.xfst` works on keys: it unions the two strokes' banks, moves keys
+  between the strokes across banks by their sound (-PB is TPH, TK is -D), and
+  carries the operand to the mark. A cluster no longer needs keys as a whole.
+  Also: an H after a consonant in an onset is no key (upheld `^PELD`), W and H
+  in a coda are none (hallway `^HUL`), and an H, W after P/K, or KWR at the
+  start of the stressed stroke is dropped after keys the other stroke brought
+  (perhaps `^PRAEPS`, do you). two-syllable: 7212 words, coverage 141.9;
+  two-word 4060 pairs.
+- A word's Typey Type outline of two strokes (typey-type-full, composed and
+  superseded) is a lexicon entry, stress from CMU (`stressed_stroke` in
+  gen/lexicon.py), and the source of its ^ stroke: pirouette is `^PWRUT`.
+  14947 words have one. Their CMU entries are flagged `@` and taken only
+  where a rewrite shortened them, so REUFR river and the prefix clusters stay.
+- Rewrites flag what they did in the rank (`!` a dropped syllable, `&` an
+  affix chord). split.xfst takes a form with at most one dropped syllable.
+- Result: two-syllable.json 8825 words, coverage 164.4 (from 128.5 at the
+  start of the phase). 414 words lose their stroke, mostly to a more frequent
+  word: although, available, damage, responsible.
+- kindly, disable, disappoint, update went back from tests/briefs to
+  user.json: the rule now writes them otherwise (disappoint's outline
+  TKEUS/POEUPBT has no prefix rewrite, so it is `^STKPOEPBT`).
+
+### Not measured separately
+
+The cap on dropped syllables and the outline source landed in one run.
+Toggle `Taken` in split.xfst (drop the `~$[ Dropped ?* Dropped ]` term) and
+rerun gen-two-syllable to measure the cap alone (6 minutes).
+
+### Half done, not committed
+
+- Two-word order (task 2). Cause found: `^TKPW` is "to go", and the -G fold
+  inflects the last word, so `^TKPWG` is "to going". The fix drafted: for each
+  pair stroke and suffix key, compare the corpus counts of the stressed word
+  inflected on either side of the other word against the fold's reading, and
+  write an entry where the reordered text wins (`^TKPWG` "going to"). It is a
+  function `inflected(out, taken)` in gen/two_word.py, called after the
+  folded pairs are removed. Reverted unrun.
+- S- "is" and ST- "it's" (task 3) as folds: two `Rule`s in folds.xfst after
+  the "and" rules, `Before([ S T ?+ ], {it's}, S T)` then `Before([ S ?+ ],
+  {is}, S)`, with `Before(C, Text, Keys) Rule([ [ Stroke & C ] - Caret ],
+  [ "[FOLD]" Text "[STRIP]" Keys "[END]" ])` defined after `Caret`. Reverted
+  unmeasured. The measure: over ("is"|"it's", w) bigrams, add S/ST to w's
+  one-stroke outlines, skip strokes an entry holds, and count what
+  `Stack.folds` writes; compare the order of the two rules and placing them
+  before or after the suffix folds.
+
+### Next step, exactly
+
+1. Regenerate two-word and affixes (the stage files changed), then
+   gen-typey-vowels and gen-two-syllable in turn until `--check` passes, then
+   `scripts/stages.sh NAME --update` for the three, and run check.sh. The
+   fixtures under tests/translate, tests/editable and tests/hole will need
+   their candidate counts and strokes updated, as phase 2's did.
+2. Read the outline-derived strokes for junk: Typey briefs as outlines give
+   odd contractions (control `^TKPHRAOEL`, actually `^TAOEL`). A filter on
+   which outlines count as written out (both strokes the word's own
+   syllables, as `vowels.align` checks) is the likely fix.
+3. Prefix rewrites over outline strokes (TKEUS/... as STK) so disappoint is
+   STKPOEUPBT again.
+4. Tasks 2 and 3 above, then the -ment/-ness/-ful/-less suffix chords.
