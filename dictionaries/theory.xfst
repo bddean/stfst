@@ -4,7 +4,9 @@
 ! coda: `R.P=p AO1=o R.T=rt`. Whatever comes before it is kept, and the
 ! syllable becomes its stroke, `PROrt`.
 !
-! - The onset is its phonemes' keys by theory-tables.xfst's `Left`.
+! - The onset is its keys by theory-tables.xfst: by sound and spelling where
+!   one-syllable words write a letter the sounds do not (wr is WR), else each
+!   phoneme's by `Left`.
 ! - The vowel is the chord theory-tables.xfst's vowel table gives its sound and
 !   spelling, and the onset's last letters (a after w). The sound is CMU's
 !   vowel with R when an r follows it, and a vowel letter before a silent e is
@@ -51,7 +53,8 @@ define Norm     [ ConsSeg Gap [ Spelled .o. Coloured ] ] ;
 
 define Chord    [ Phones Eq VowelRules Gap ?* ] ;
 
-define Onset    [ [ ( Left [ Del(Dot) Left ]* ) Del(Eq Letter* Gap) ] .o. LeftBank ] ;
+define Sounded  [ ( Left [ Del(Dot) Left ]* ) Del(Eq Letter*) ] ;
+define Onset    [ [ PU(OnsetSpelled, Sounded) Del(Gap) ] .o. LeftBank ] ;
 
 define Coda     [ Del(Gap) [ PU(CodaSpelled, [ CodaSounded | CodaSplit ] Del(Eq [ Letter* | "-" ]))
                            | Del(Eq [ Letter* | "-" ]) ] ] ;

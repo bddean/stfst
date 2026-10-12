@@ -2,6 +2,8 @@
 writes a syllable's stroke by.
 
 - `Left`, each onset phoneme's keys: the first way `vowels.LEFT` writes it.
+- `OnsetSpelled`, an onset whose letters one-syllable words write beyond its
+  sounds, as most of them do, at least `HABIT` words: wr is WR, wh WH.
 
 - `VowelRules`, the vowel table of `dictionaries/typey-vowels.toml`: the onset's
   letters, a space, then the vowel's sound and spelling, to its chord. The first
@@ -28,18 +30,43 @@ from . import vowels as g
 
 TABLES = os.path.join(ROOT, "dictionaries", "theory-tables.xfst")
 RIGHT = "FRPBLGTSDZ"
+HABIT = 3
+
+
+def theory_strokes(typey, result):
+    """(word, stroke) for each stroke the vowel theory gave a one-syllable word."""
+    for stroke, word in result.owner.items():
+        if word not in result.kept:
+            yield typey.words[word], g.Stroke.parse(stroke)
+
+
+class Onset:
+    """How the vowel theory's one-syllable words write each onset, counted."""
+
+    def __init__(self, strokes):
+        self.by = collections.defaultdict(collections.Counter)
+        for w, s in strokes:
+            for onset, _ in w.phones:
+                self.by[(tuple(onset), w.spelling.onset)][s.onset] += 1
+
+    def spelled(self):
+        """{(phonemes, letters): keys} where most words write more keys than
+        the sounds have."""
+        out = {}
+        for (p, l), c in self.by.items():
+            keys, n = c.most_common(1)[0]
+            sounded = {k for x in p for k in g.LEFT[x][0]}
+            if n >= HABIT and 2 * n > c.total() and set(keys) > sounded:
+                out[(p, l)] = keys
+        return out
 
 
 class Coda:
     """How the vowel theory's one-syllable words write each coda, counted."""
 
-    def __init__(self, typey, result):
+    def __init__(self, strokes):
         self.by = collections.defaultdict(collections.Counter)
-        for stroke, word in result.owner.items():
-            if word in result.kept:
-                continue
-            w = typey.words[word]
-            s = g.Stroke.parse(stroke)
+        for w, s in strokes:
             star = s.star and w.consonant_star
             for _, coda in w.phones:
                 self.by[(tuple(coda), w.letters_after)][(s.coda, star)] += 1
@@ -125,14 +152,17 @@ def table(name, comment, entries, size=64):
         [f"{name}{n}" for n in range(1, len(groups) + 1)]) + " ;"])
 
 
-def tables(rules, coda):
+def tables(rules, onset, coda):
     spelled, sounded, splits = coda.spelled(), coda.sounded(), coda.splits()
+    onsets = onset.spelled()
     rel = os.path.relpath(g.TABLE, ROOT)
     entry = lambda upper, v: f"[ [ {upper} ] .x. [ {keys(*v)} ] ]"
     return "\n\n".join([
         f"! Written by scripts/gen-theory.py from {rel} and the vowel theory's strokes.\n"
         "! Do not edit: see scripts/gen/theory.py for what these are.",
         "define Left " + either([f"[ {p} .x. {letters(ways[0])} ]" for p, ways in g.LEFT.items()]) + " ;",
+        table("OnsetSpelled", f"{len(onsets)} onsets by sound and spelling.",
+              [f"[ [ {phones(p)} Eq {letters(l)} ] .x. [ {letters(k)} ] ]" for (p, l), k in sorted(onsets.items())]),
         vowel_rules(rules),
         table("CodaSpelled", f"{len(spelled)} codas by sound and spelling.",
               [entry(f"{phones(p)} Eq {letters(l)}", v) for (p, l), v in sorted(spelled.items()) if p]),
@@ -144,10 +174,12 @@ def tables(rules, coda):
 
 
 def load():
-    """(the vowel table, the Coda of the vowel theory as it resolves today)."""
+    """(the vowel table, the Onset and the Coda of the vowel theory as it
+    resolves today)."""
     typey = g.Typey.load()
     table, _ = g.load_table()
-    return table, Coda(typey, g.resolve(typey, table))
+    strokes = list(theory_strokes(typey, g.resolve(typey, table)))
+    return table, Onset(strokes), Coda(strokes)
 
 
 def main():
