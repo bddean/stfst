@@ -307,8 +307,8 @@ boundary: two words of one syllable, 150 times in a row or more in the phrasing
 corpora, as one `^` stroke (at all is `^TUL`, make it `^PHABGT`). The content
 word has the stress, or the second of two alike. Its pipeline is the pairs it
 writes as `dictionaries/pairs.lexc`, written out by `written.xfst`, then
-`dictionaries/contract-pair.xfst`, which is `contract.xfst`'s rule with a word
-boundary in it, then the same theory and caret stages. It gives way to `two-syllable.json`, and `affixes` reads it,
+`dictionaries/join.xfst`, which joins the two words into one of two syllables,
+then the same contract, theory and caret stages as a word's. It gives way to `two-syllable.json`, and `affixes` reads it,
 so run it between the two.
 
 The same rule, read backwards, is a fold for four function words: "a" before a

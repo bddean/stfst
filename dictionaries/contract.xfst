@@ -54,19 +54,15 @@ define Caret    [ [ 0 | Del("^" Gap) | LeftKey+ Del(Gap) ] Ins("^" Gap) ] ;
 define Single(C) [ Rank Gap [ Ins("-" Gap) | Ins("^" Gap) | Lead Gap ]
                    Bare(C) Eq Letter* Gap Del(Level ( r ) ":" Letter+ Eq) VowelKeys Tail1 ] ;
 
-! The second vowel has the stress. The first's letters are one of a run that
-! is two vowels (react) exactly when nothing comes between the two, and then a
-! y after them is the onset's (cayenne).
+! The second vowel has the stress. When nothing comes between the two (react),
+! a y after them is the onset's (cayenne).
 define Weak(L)  [ [ [ "0" | "2" ] ?* ] .o. Other(L) ] ;
 define Second(C) [ Rank Gap Caret Bare(C) Del(Eq Letter* Gap)
-    [ Weak(Letter) Del(Gap) Eq Gap Keys1(Letter+ - [ y VowelLetter ?* ])
+    [ Weak(Letter+) Del(Gap) Eq Gap Keys1(Letter+ - [ y VowelLetter ?* ])
     | Weak(Letter+) Del(Gap) Bare1(C) Eq Letter* Gap Keys1(Letter+) ] Tail1 ] ;
 
-! The first vowel has the stress. A final e is a vowel only in -le and -re
-! (little, acre), and a run of letters that is two vowels is one vowel group.
-define FirstShape [ ~[ Rank Gap ( Lead Gap ) ConsSeg Gap "1" ( r ) ":" Letter Eq VowelKeys Gap Phones Eq Gap ?* ]
-    & ~[ ?* Gap Phones Eq [ Letter* - [ Letter* [ l | r ] ] ] Gap [ "0" | "2" ] ( r ) ":" e Eq VowelKeys Gap Phones Eq ( Gap Suffix ) ]
-    & ~[ ?* "_" u e ?* ] ] ;
+! The first vowel has the stress.
+define FirstShape ~[ ?* "_" u e ?* ] ;
 define First(C) [ Rank Gap Caret Bare(C) Eq Letter* Gap Keys1(Letter+) Gap
     Bare(Cons) Del(Eq Letter* Gap) Other(Letter+) Del(Gap) Bare(Cons) Del(Eq Letter* ( Tail )) Ins(Eq "-")
     ( Gap Suffix ) ] ;
@@ -81,6 +77,14 @@ define Untrace  [ Carry(U) .o. Carry(E) .o. Carry(O) .o. Carry(A) .o. [ "~" -> 0
 define Glide    [ Rank Gap [ ? - Gap ]* Gap [ [ Cons+ Del(Y) ] | [ Cons* - [ Cons+ Y ] ] ] Eq ?* ] ;
 
 define Shapes(C) [ Single(C) | Second(C) | [ FirstShape .o. First(C) ] ] ;
-define Contract [ Written .o. [ [ ~$[z] .o. Shapes(NoZ) ] | [ $[z] .o. Shapes(Cons) ] ] .o. Untrace .o. Glide .o. Dots ] ;
+! A consonant on both sides of the other vowel, or of two words, is said once.
+define Once(X)  [ [ X X ] -> X ] ;
+define Degeminate [ Once(B) .o. Once(CH) .o. Once(D) .o. Once(DH) .o. Once(F) .o. Once(G) .o. Once(HH)
+                  .o. Once(JH) .o. Once(K) .o. Once(L) .o. Once(M) .o. Once(N) .o. Once(NG) .o. Once(P)
+                  .o. Once(R) .o. Once(S) .o. Once(SH) .o. Once(T) .o. Once(TH) .o. Once(V) .o. Once(W)
+                  .o. Once(Y) .o. Once(Z) .o. Once(ZH) ] ;
+
+define Contract [ Written .o. [ [ ~$[z] .o. Shapes(NoZ) ] | [ $[z] .o. Shapes(Cons) ] ] .o. Untrace .o. Glide
+                  .o. Degeminate .o. Dots ] ;
 
 define Stage    Contract ;

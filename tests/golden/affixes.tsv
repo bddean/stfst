@@ -1154,6 +1154,7 @@ WAEUr/^pbs	awareness
 ^Arpblg/KPgs	exaggeration
 ^Arpblg/KPgsz	exaggerations
 ^AUrg/TPHl	inaugural
+^Et/SPWf	intuitive
 ^EUfr/PR*l	peripheral
 ^Hbt/TPHr	inhibitor
 ^Hrpbt/TPHl	inherently
@@ -1178,6 +1179,7 @@ WAEUr/^pbs	awareness
 ^HREUfr/TKpbsz	deliverances
 ^HREUrb/TKgs	deliberation
 ^HREUrb/TKgsz	deliberations
+^HROEUb/Rl	reliably
 ^HRUfbgt/KHRl	collectively
 ^HRUft/TPH*bg	unrealistic
 ^HUrt/TPHpbs	inheritance
@@ -1275,6 +1277,7 @@ WAEUr/^pbs	awareness
 ^PRAOUrb/^f	appreciative
 ^PRAOUrb/^gs	appreciation
 ^PRAOUrb/^gsz	appreciations
+^PRAOUt/PRr	proprietor
 ^PROEUfz/TPHgs	improvisation
 ^PROEUfz/TPHgsz	improvisations
 ^PROEUpblgs/^gs	approximation
@@ -1383,6 +1386,7 @@ WAEUr/^pbs	awareness
 ^SRr/PR*pbsz	perseverances
 ^SRAEl/SPWrl	intracellular
 ^SRAEpb/SPWs	intravenous
+^SRAEs/PR*l	previously
 ^SRAEUrpb/TPHplt	environment
 ^SRAOEUd/TPH*bl	unavoidable
 ^SROEpl/TKplt	development

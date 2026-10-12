@@ -18,7 +18,8 @@ lexc = "dictionaries/lexicon.lexc"
 generator = "scripts/gen-lexicon.py"
 
 # Two words of one syllable, often written together: scripts/gen-two-word.py
-# writes each pair as two of the lexicon's entries, the stressed one marked.
+# writes each pair as one word of two syllables, the stressed word's vowel the
+# stressed one.
 [[stage]]
 name = "pairs"
 lexc = "dictionaries/pairs.lexc"
@@ -58,16 +59,15 @@ xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/sy
 name = "middle"
 xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/middle.xfst"]
 
+# Two words written out, as one word of two syllables.
+[[stage]]
+name = "join"
+xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/join.xfst"]
+
 # The written-out form as one syllable, marked with what the stroke adds.
 [[stage]]
 name = "contract"
 xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/contract.xfst"]
-
-# Two words contracted to one syllable, marked as two syllables are.
-[[stage]]
-name = "contract-pair"
-xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/contract.xfst",
-        "dictionaries/contract-pair.xfst"]
 
 # A syllable's stroke by the vowel theory, around its chord.
 [[stage]]
@@ -189,7 +189,7 @@ name = "two-word"
 priority = 34
 json = "dictionaries/two-word.json"
 generator = "scripts/gen-two-word.py"
-pipeline = ["pairs", "written", "contract-pair", "theory", "caret"]
+pipeline = ["pairs", "written", "join", "contract", "theory", "caret"]
 
 [[dict]]
 name = "affixes"

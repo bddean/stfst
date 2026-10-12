@@ -1,5 +1,5 @@
 1 = AA1=a R.M=rm AH0=a =	1 ^A = A R.M=-
-1 = AA1=a R.M=rm AH0=a M=m	1 ^A = A R.M.M=-
+1 = AA1=a R.M=rm AH0=a M=m	1 ^A = A R.M=-
 1 = AA1=o K.S=x AH0=i K=c	1 ^EU = O K.S.K=-
 1 = AA1=o L=l ER0=e =r	1 ^ = O L.R=-
 1 = AA1=o S=ss	1 - = O S=ss
@@ -196,6 +196,7 @@
 1 = UW0=u = IH1=i =	1 ^U = EU =
 1 = UW1=u =	1 - = U =
 1 = UW1=u =	1 ^ = U =
+1 = UW1=u = AH0=i T=t	1 ^EU = U T=-
 1 = UW1=u Z=s	1 - = U Z=s
 1 = UW1=u Z=s	1 ^ = U Z=s
 1 =c AH1=e L=ll	1 - =c E L=ll
@@ -275,7 +276,7 @@
 1 B=b AE1=a NG.K.M=nkm	1 ^ B=b A NG.K.M=nkm
 1 B=b AE1=a NG.K=nk	1 - B=b A NG.K=nk
 1 B=b AE1=a NG.K=nk	1 ^ B=b A NG.K=nk
-1 B=b AH0=a B=b IH1=i L=l	1 ^A B.B=b EU L=l
+1 B=b AH0=a B=b IH1=i L=l	1 ^A B=b EU L=l
 1 B=b AH0=e L=l IY1=ie V=v	1 ^E B.L=l AOE V=v
 1 B=b AH0=i N=n EY1=a =	1 ^EU B.N=n A =
 1 B=b AH0=o L=l IH1=i =	1 ^O B.L=l EU =
@@ -809,6 +810,7 @@
 1 L=l AO1=aw =	1 ^ L=l AU =
 1 L=l AY1=i =	1 - L=l AOEU =
 1 L=l AY1=i =	1 ^ L=l AOEU =
+1 L=l AY1=i = AH0=a B=b	1 ^A L=l AOEU B=-
 1 L=l AY1=i K=k_e	1 - L=l AOEU K=k_e
 1 L=l AY1=i K=k_e	1 ^ L=l AOEU K=k_e
 1 L=l AY1=i N.M=gnm	1 - L=l AOEU N.M=gnm
@@ -884,14 +886,14 @@
 1 M=m AH0=o N.S.T.R=nstr EY1=a =	1 ^O M.N.S.T.R=nstr A =
 1 M=m AH1=a N=n	1 - M=m A N=n
 1 M=m AH1=a N=n	1 ^ M=m A N=n
-1 M=m AH1=a N=n AH0=e N.T=nt	1 ^E M=m A N.N.T=-
+1 M=m AH1=a N=n AH0=e N.T=nt	1 ^E M=m A N.T=-
 1 M=m AH1=e N.D=nd	1 - M=m E N.D=nd
 1 M=m AH1=e N.D=nd	1 ^ M=m E N.D=nd
 1 M=m AH1=i G.R=gr	1 - M=m EU G.R=gr
 1 M=m AH1=i G.R=gr	1 ^ M=m EU G.R=gr
 1 M=m AH1=i N=n	1 - M=m EU N=n
 1 M=m AH1=i N=n	1 ^ M=m EU N=n
-1 M=m AH1=i N=n AH0=e N.T=nt	1 ^E M=m EU N.N.T=-
+1 M=m AH1=i N=n AH0=e N.T=nt	1 ^E M=m EU N.T=-
 1 M=m AH1=o L=l	1 - M=m O L=l
 1 M=m AH1=o L=l	1 ^ M=m O L=l
 1 M=m AH1=o N.S.T.R=nstr	1 - M=m O N.S.T.R=nstr
@@ -966,7 +968,7 @@
 1 N=n AH0=e S.TH=sth EH1=e T=t	1 ^E N.S.TH=sth E T=t
 1 N=n AH0=i M=m AA1=o S=s	1 ^EU N.M=m O S=s
 1 N=n AH0=i M=m EY1=a =	1 ^EU N.M=m A =
-1 N=n AH0=o N=n IH1=y M=m	1 ^O N.N=n EU M=m
+1 N=n AH0=o N=n IH1=y M=m	1 ^O N=n EU M=m
 1 N=n AH0=o V=v EY1=a =	1 ^O N.V=v A =
 1 N=n AH0=o V=v EY1=a T=t	1 ^O N.V=v A T=t
 1 N=n AH1=a =l	1 - N=n A =l
@@ -1103,6 +1105,7 @@
 1 P.R=pr AH1=o M=m	1 ^ P.R=pr O M=m
 1 P.R=pr AH1=o V=v	1 - P.R=pr O V=v
 1 P.R=pr AH1=o V=v	1 ^ P.R=pr O V=v
+1 P.R=pr AY1=i = AH0=e T=t	1 ^E P.R=pr AOEU T=-
 1 P.R=pr EH1=e =s	1 - P.R=pr E =s
 1 P.R=pr EH1=e =s	1 ^ P.R=pr E =s
 1 P.R=pr EH1=e S=ss	1 - P.R=pr E S=ss
@@ -1215,8 +1218,8 @@
 1 P=p EH1=e R=r AH0=a T=t	1 ^A P=p E R.T=-
 1 P=p EH1=e R=r AH0=i =	1 ^EU P=p E R=-
 1 P=p EH1=e R=r AH0=i M=m	1 ^EU P=p E R.M=-
-1 P=p EH1=e T=t AH0=i T=t	1 ^EU P=p E T.T=-
-1 P=p EH1=e T=t IH0=i T=t	1 ^EU P=p E T.T=-
+1 P=p EH1=e T=t AH0=i T=t	1 ^EU P=p E T=-
+1 P=p EH1=e T=t IH0=i T=t	1 ^EU P=p E T=-
 1 P=p ER0=a =r EY1=a =	1 ^ P.R=r A =
 1 P=p ER0=e =r EY1=a =	1 ^ P.R=r A =
 1 P=p ER0=i =r EY1=a =	1 ^ P.R=r A =
@@ -1368,7 +1371,7 @@
 1 S.T=st AH0=e L=ll EY1=a =	1 ^E S.T.L=ll A =
 1 S.T=st AH0=i N=n EY1=a =	1 ^EU S.T.N=n A =
 1 S.T=st AH0=i P=p EY1=a =	1 ^EU S.T.P=p A =
-1 S.T=st AH0=i T=t UW1=u =	1 ^EU S.T.T=t U =
+1 S.T=st AH0=i T=t UW1=u =	1 ^EU S.T=t U =
 1 S.T=st AH1=a L=ll	1 - S.T=st A L=ll
 1 S.T=st AH1=a L=ll	1 ^ S.T=st A L=ll
 1 S.T=st AH1=a N.T=nt	1 - S.T=st A N.T=nt
@@ -1387,7 +1390,7 @@
 1 S.T=st ER1=o =r	1 - S.T=st O R=r
 1 S.T=st ER1=o =r	1 ^ S.T=st O R=r
 1 S.T=st IH0=i N=n EY1=a =	1 ^EU S.T.N=n A =
-1 S.T=st IH0=i T=t UW1=u =	1 ^EU S.T.T=t U =
+1 S.T=st IH0=i T=t UW1=u =	1 ^EU S.T=t U =
 1 S.T=st IH1=i CH=t UW0=u =	1 ^U S.T=st EU CH=-
 1 S.T=st IH1=i N=n	1 - S.T=st EU N=n
 1 S.T=st IH1=i N=n	1 ^ S.T=st EU N=n
@@ -1407,7 +1410,7 @@
 1 S=c AH1=i D=d	1 ^ S=c EU D=d
 1 S=c AH1=i M=m	1 - S=c EU M=m
 1 S=c AH1=i M=m	1 ^ S=c EU M=m
-1 S=c AY1=i D=d AH0=e D=d	1 ^E S=c AOEU D.D=-
+1 S=c AY1=i D=d AH0=e D=d	1 ^E S=c AOEU D=-
 1 S=c AY1=i F=ph	1 - S=c AOEU F=ph
 1 S=c AY1=i F=ph	1 ^ S=c AOEU F=ph
 1 S=c AY1=i S=s	1 - S=c AOEU S=s
@@ -1756,6 +1759,7 @@
 1 T=t UW0=u = IH1=i =	1 ^U T= EU =
 1 T=t UW1=u =	1 - T=t U =
 1 T=t UW1=u =	1 ^ T=t U =
+1 T=t UW1=u = AH0=i T=t	1 ^EU T=t U T=-
 1 T=tt AE1=a CH.M=chm	1 - T=tt A CH.M=chm
 1 T=tt AE1=a CH.M=chm	1 ^ T=tt A CH.M=chm
 1 T=tt AE1=a CH=ch	1 - T=tt A CH=ch
@@ -1814,7 +1818,7 @@
 1 V=v EH1=e N.SH=nt AH0=io N=n	1 ^EU V=v E N.SH.N=-
 1 V=v EH1=e N.T=nt	1 - V=v E N.T=nt
 1 V=v EH1=e N.T=nt	1 ^ V=v E N.T=nt
-1 V=v EH1=e N.T=nt AH0=a T=t	1 ^A V=v E N.T.T=-
+1 V=v EH1=e N.T=nt AH0=a T=t	1 ^A V=v E N.T=-
 1 V=v EH1=e N=n	1 - V=v E N=n
 1 V=v EH1=e N=n	1 ^ V=v E N=n
 1 V=v EH1=e N=nt	1 - V=v E N=nt
@@ -1865,6 +1869,7 @@
 1 V=v IY1=e N.Y=n AH0=ie N.T=nt	1 ^EU V=v AOE N.Y.N.T=-
 1 V=v IY1=i =	1 - V=v AOE =
 1 V=v IY1=i =	1 ^ V=v AOE =
+1 V=v IY1=i = AH0=ou S=s	1 ^O V=v AOE S=-
 1 V=v OW1=o =	1 - V=v O =
 1 V=v OW1=o =	1 ^ V=v O =
 1 V=v OW1=o SH=t AH0=io N=n	1 ^EU V=v OE SH.N=-

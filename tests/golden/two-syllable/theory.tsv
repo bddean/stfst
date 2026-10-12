@@ -9,6 +9,7 @@ abandon	1' ^ PWApb
 abandon	1' ^A PWApbd
 abandon	1' ^O PWApbd
 abandon	1'' ^A PWApb
+abandoning	1' ^EU PWApbg
 abandons	1 ^ PWApbdz
 abandons	1' ^ PWApbz
 abandons	1' ^A PWApbdz
@@ -49,6 +50,7 @@ abet	1 ^ PWEt
 abet	1' ^A PWEt
 abetted	1 ^E PWEtd
 abetting	1 ^EU PWEpbgt
+abeyance	1 ^EU PWEpbs
 abhor	1 ^ PWHOr
 abhor	1' ^A PWHOr
 abhorrence	1 ^ PWHOrpbs
@@ -131,6 +133,7 @@ abruptness	1 ^E PWRUpbts
 abruptness	1' ^E PWRUpbs
 abs	2 - Abs
 abs	2 ^ Abs
+abscess	1 ^E Abs
 abscond	1 ^ SKPWOpbd
 abscond	1' ^A SKPWOpbd
 absconds	1 ^ SKPWOpbdz
@@ -282,12 +285,15 @@ accounts	1'' ^A KOUpbts
 accreted	1 ^E KRAOEtd
 accretion	1 ^ KRAOEgs
 accretion	1' ^A KRAOEgs
+accrual	1 ^A KRUl
+accruals	1 ^A KRUlz
 accrue	1 ^ KRAO*U
 accrue	1' ^A KRAO*U
 accrued	1 ^ KRAO*Ud
 accrued	1' ^A KRAO*Ud
 accrues	1 ^ KRAO*Us
 accrues	1' ^A KRAO*Us
+accruing	1 ^EU KRUpbg
 accuse	1 ^ KAOUs
 accuse	1' ^A KAOUs
 accuser	1 ^ KAOUrz
@@ -323,6 +329,8 @@ acidic	1 ^EU SEUbgd
 ack	1 - Abg
 ack	1 ^ Abg
 acknowledge	1 ^E TKPHOUlg
+acme	1 ^E Apblg
+acne	1 ^E Apbg
 acolyte	1 ^EU Ablgt
 acorn	1 - AEUrpbg
 acorn	1 ^ AEUrpbg
@@ -335,6 +343,7 @@ acquaintance	1 ^ KWA*EUpbts
 acquaintance	1' ^ KWA*EUpbs
 acquaintance	1' ^A KWA*EUpbts
 acquaintance	1'' ^A KWA*EUpbs
+acquaintances	1' ^E KWA*EUpbsz
 acquainted	1 ^E KWA*EUpbtd
 acquainted	2 ^E KWA*EUpbd
 acquire	1 ^ KWAOEUr
@@ -351,6 +360,7 @@ acquitting	1 ^EU KWEUpbgt
 acre	1 - AEUrbg
 acre	1 ^ AEUrbg
 acre	1' ^ AEUrbg
+acreage	1 ^E AEUrpblg
 acreage	2 ^E AEUrpblg
 acrid	1 ^EU Arbgd
 across	1 ^ KROs
@@ -444,6 +454,7 @@ addressing	1 ^EU TKREpbgs
 adds	1 - Adz
 adds	1 ^ Adz
 adduct	1 ^U Abgtd
+adenine	1 ^EU Apbd
 adenoid	1 ^O Apbd
 adept	1 ^ TKEpt
 adept	1' ^A TKEpt
@@ -503,6 +514,7 @@ admirer	1 ^ TKPHAOEUr
 admirer	1' ^ TKPHAOEUr
 admirer	1' ^A TKPHAOEUr
 admirers	1 ^ TKPHAOEUrs
+admirers	1' ^ TKPHAOEUrz
 admirers	1' ^A TKPHAOEUrs
 admiring	1 ^EU TKPHAOEUrpbg
 admission	1 ^ TKPHEUgs
@@ -527,6 +539,7 @@ admitting	2 ^EU TKPHEUpbgt
 admonish	1 ^EU TKPHOrpb
 ado	1 ^ TKO
 ado	1' ^A TKO
+adobe	1 ^E TKOEb
 adopt	1 ^ TKOpt
 adopt	1' ^A TKOpt
 adopted	1 ^E TKOptd
@@ -756,8 +769,10 @@ agonize	1 ^EU Apbgz
 agony	1 ^EU Apbg
 agree	1 ^ TKPWRAOE
 agree	1' ^A TKPWRAOE
+agreeable	1 ^E TKPWREbl
 agreed	1 ^ TKPWRAOEd
 agreed	1' ^A TKPWRAOEd
+agreeing	1 ^E TKPWREpbg
 agreement	1 ^ TKPWRAOEpblt
 agreement	1' ^A TKPWRAOEpblt
 agreement	1' ^E TKPWRAOEpblt
@@ -779,6 +794,7 @@ ahoy	1 ^ HOEU
 ahoy	1' ^A HOEU
 ai	1 - A*EU
 ai	1 ^ A*EU
+ai	2 ^EU A
 aid	1 - A*EUd
 aid	1 ^ A*EUd
 aide	1 - A*EUd
@@ -858,6 +874,7 @@ alarms	1' ^A HRArpls
 alas	1 ^ HRAs
 alas	1' ^A HRAs
 alba	1 ^A Abl
+albeit	1 ^EU PWHREt
 albino	1 ^O PWHRAOEUpb
 album	1 - Apbl
 album	1 ^ Apbl
@@ -921,6 +938,7 @@ allergic	1 ^EU HRErpblg
 allergy	1 ^EU Arpblg
 alley	1 ^E Al
 alleys	1 ^E Alz
+alliance	1 ^A HRAOEUpbs
 allied	1 ^ HRAO*EUd
 allied	1' ^A HRAO*EUd
 allied	2 ^EU Ald
@@ -1022,6 +1040,7 @@ alumna	1 ^A HRUpbl
 alumnae	1 ^A HRUpbl
 alumni	1 ^EU HRUpbl
 alumnus	1 ^U HRUpbls
+alveolar	1 ^O SHRErl
 am	1 - Apl
 am	1 ^ Apl
 amaretto	1' ^O REt
@@ -1112,10 +1131,12 @@ anal	1 - AEUpbl
 anal	1 ^ AEUpbl
 anal	1' ^A AEUpbl
 analyst	1 ^EU Afpblt
+analysts	1' ^EU Apbls
 anaphora	1 ^A TPHAfr
 anarchy	1 ^EU Arpbg
 anathema	1 ^A TPHA*plt
 anatomy	1 ^EU TPHAplt
+ancestor	1' ^E Arpbs
 ancestral	1 ^ SEfrlt
 ancestral	1' ^ SErls
 ancestral	1' ^A SEfrlt
@@ -1139,11 +1160,13 @@ and	1 - Apbd
 and	1 ^ Apbd
 and	2 - Apbd
 and	2 ^ Apbd
+andante	1 ^E TKAUpbt
 androgynous	1 ^O TKROpblgs
 androgyny	1 ^EU TKROpblg
 android	1 ^O Arpbd
 android	1' ^O Arpbd
 anemic	1 ^EU TPHAOEpblg
+anemone	2 ^E TPHEpbl
 anew	1 ^ TPHAOU
 anew	1' ^A TPHAOU
 anew	2 ^ KWRAOU
@@ -1193,8 +1216,10 @@ announces	1 ^E TPHOUpbsz
 announcing	1 ^EU TPHOUpbgs
 annoy	1 ^ TPHOEU
 annoy	1' ^A TPHOEU
+annoyance	1 ^EU TPHOpbs
 annoyed	1 ^ TPHOEUd
 annoyed	1' ^A TPHOEUd
+annoying	1 ^EU TPHOpbg
 annoys	1 ^ TPHOEUs
 annoys	1' ^A TPHOEUs
 annul	1 - Apbl
@@ -1224,7 +1249,9 @@ answer	1' ^ Arpbs
 ant	1 - Apbt
 ant	1 ^ Apbt
 antacid	1 ^EU TAsd
+antagonists	1' ^EU TApbgs
 antagonize	1 ^EU TApbgz
+ante	1 ^E Apbt
 antelope	1 ^O Apblt
 antelope	1' ^O Apbl
 antemortem	1 ^E TPHOrplt
@@ -1339,12 +1366,15 @@ applause	1' ^A PHRAUs
 apple	1 - Apl
 apple	1 ^ Apl
 apple	1' ^E Apl
+applesauce	1 ^A Apls
+appliance	1 ^A PHRAOEUpbs
 applied	1 ^ PHRAO*EUd
 applied	1' ^A PHRAO*EUd
 applies	1 ^ PHRAO*EUs
 applies	1' ^A PHRAO*EUs
 apply	1 ^ PHRAOEU
 apply	1' ^A PHRAOEU
+applying	1 ^EU PHRAOEUpbg
 appoint	1 ^ POEUpbt
 appoint	1' ^A POEUpbt
 appointed	1 ^E POEUpbtd
@@ -1421,6 +1451,7 @@ arcade	1' ^A KRAEUd
 arcane	1 ^A KRAEUpb
 arch	1 - Afrpb
 arch	1 ^ Afrpb
+archaic	1 ^EU KRAbg
 archangel	1 ^A KRApblg
 archer	1 - Afrpb
 archer	1 ^ Afrpb
@@ -1539,6 +1570,7 @@ arrow	1 ^O Ar
 arrow	2 ^O Ar
 arrows	1 ^O Arz
 arrows	2 ^O Arz
+arroyo	1 ^EU RO
 arse	1 - Ars
 arse	1 ^ Ars
 arsenic	1 ^EU A*rpbgs
@@ -1547,6 +1579,7 @@ arson	1 ^ Arpbs
 arson	1' ^O Arpbs
 art	1 - Art
 art	1 ^ Art
+arteries	1' ^EU Arz
 artery	1 ^EU Art
 artery	1' ^EU Ar
 artesian	1 ^A TRAOEgs
@@ -1613,6 +1646,7 @@ ashtray	1' ^A Arb
 ashy	1 ^EU Arb
 aside	1 ^ SAOEUd
 aside	1' ^A SAOEUd
+asinine	1 ^EU Apbs
 ask	1 - Afbg
 ask	1 ^ Afbg
 askance	1 ^ SKApbs
@@ -1744,6 +1778,7 @@ asteroid	1 ^O Afrtd
 asteroid	1' ^O Arsd
 asthma	1 ^A Aplz
 asthmatic	1 ^EU SPHAbgt
+astilbe	1 ^E STEUb
 astonish	1 ^EU STOrpb
 astor	1 - Afrt
 astor	1 ^ Afrt
@@ -1796,6 +1831,8 @@ asunder	1'' ^A SUrpb
 asylum	1 ^ SAO*EUpl
 asylum	1' ^A SAO*EUpl
 asylum	1' ^U SAO*EUpl
+asymptote	1 ^O Aplts
+asymptote	2 ^O Aplts
 at	1 - At
 at	1 ^ At
 ate	1 - AEUt
@@ -2160,6 +2197,7 @@ baggie	1 ^EU PWAg
 bagginess	1 ^E PWApbgs
 bagging	1 ^EU PWApbg
 baggy	1 ^EU PWAg
+bagpipe	1 ^EU PWApg
 bags	1 - PWAgs
 bags	1 ^ PWAgs
 baguette	1 ^A TKPWEt
@@ -2195,6 +2233,7 @@ baking	1 ^EU PWAEUpbg
 balance	1 - PWApbls
 balance	1 ^ PWApbls
 balance	1' ^A PWApbls
+balboa	1' ^A PWHRO
 balconies	1 ^EU PWA*pblgz
 balcony	1 ^EU PWA*pblg
 bald	1 - PWAUld
@@ -2231,6 +2270,7 @@ balloons	1' ^ HRAOpbs
 ballot	1 ^O PWAlt
 ballots	1 ^O PWAlts
 ballpark	1 ^A PWAUrpblg
+ballplayers	1' ^ PHRArz
 ballpoint	1 - PWAUpblt
 ballpoint	1 ^ PWAUpblt
 ballpoint	1' ^O PWAUpblt
@@ -2435,6 +2475,7 @@ barter	1 ^ PWArt
 barter	1' - PWAr
 barter	1' ^ PWAr
 barter	1' ^ PWArt
+bartering	1' ^EU PWArpbg
 basal	1 - PWAEUls
 basal	1 ^ PWAEUls
 basal	1' ^A PWAEUls
@@ -2476,7 +2517,7 @@ bass	1 - PWAs
 bass	1 ^ PWAs
 bass	2 - PWAs
 bass	2 ^ PWAs
-bassist	1 ^EU PWAfts
+bassist	1 ^EU PWAft
 basso	1 ^O PWAs
 bassoon	1 ^A SPWAOpb
 bassoon	1' ^ SAOpb
@@ -2548,6 +2589,7 @@ bay	1 - PWAEU
 bay	1 ^ PWAEU
 bayed	1 - PWAEUd
 bayed	1 ^ PWAEUd
+bayou	1 ^EU PWA
 bays	1 - PWAEUs
 bays	1 ^ PWAEUs
 bazooka	1' ^A STKPWAObg
@@ -2607,6 +2649,7 @@ bearer	1 ^ PWAEr
 bearer	1' ^ PWAEr
 bearers	1 - PWAErs
 bearers	1 ^ PWAErs
+bearers	1' ^ PWAErz
 bearing	1 ^EU PWAErpbg
 bears	1 - PWAErs
 bears	1 ^ PWAErs
@@ -2790,6 +2833,8 @@ beige	1 - PWA*Epblg
 beige	1 ^ PWA*Epblg
 bein	1 - PWA*Epb
 bein	1 ^ PWA*Epb
+being	1 ^EU PWEpbg
+beings	1 ^EU PWEpbgz
 bel	1 - PWEl
 bel	1 ^ PWEl
 belabor	1 ^E PWHRAEUrb
@@ -2844,6 +2889,7 @@ belly	1 ^ PWEl
 belong	1 ^E PWHROpbg
 belong	1' ^ HROpbg
 belonging	1' ^EU HROpbg
+belongings	1' ^EU HROpbgz
 belongs	1 ^E PWHROpbgs
 belongs	1' ^ HROpbgs
 beloved	2' ^E HROfd
@@ -2877,6 +2923,7 @@ bends	1 - PWEpbdz
 bends	1 ^ PWEpbdz
 bends	1' - PWEpbdz
 bends	1' ^ PWEpbdz
+bene	1 ^E PWEpb
 beneath	1 ^E TPWHA*Et
 beneath	1' ^ TPHA*Et
 benighted	1' ^E TPHAO*EUtd
@@ -2943,8 +2990,10 @@ betide	1' ^ TAOEUd
 betook	1 ^O PWEbgt
 betray	1 ^E TPWRAEU
 betray	1' ^ TRAEU
+betrayal	1' ^EU TRAl
 betrayed	1 ^E TPWRAEUd
 betrayed	1' ^ TRAEUd
+betraying	1' ^EU TRApbg
 betrays	1 ^E TPWRAEUs
 betrays	1' ^ TRAEUs
 bets	1 - PWEts
@@ -2977,6 +3026,7 @@ bewilder	1'' ^ WEUrld
 bialy	1 ^EU PWAUl
 bialy	1' ^ AUl
 bianco	1' ^O A*Upbg
+bias	1 ^A PWAOEUs
 bib	1 - PWEUb
 bib	1 ^ PWEUb
 bible	1 - PWAOEUbl
@@ -3079,6 +3129,7 @@ bingo	1 ^O PWEUpbg
 bins	1 - PWEUpbs
 bins	1 ^ PWEUpbs
 bio	1 ^EU PWO
+biome	1 ^O PWAOEUpl
 bipartisan	2' ^EU PArpbts
 bipolar	1 ^EU PWOErl
 bipolar	1' ^ POErl
@@ -3428,6 +3479,7 @@ bluegrass	1 ^A PWHRAO*Urgs
 blueprint	1 ^EU PWHRAO*Urpbt
 blues	1 - PWHRAO*Us
 blues	1 ^ PWHRAO*Us
+bluest	1 ^E PWHRUft
 bluestone	1 ^O PWHRAO*Ufpbt
 bluesy	1 ^EU PWHRAO*Uz
 bluff	1 - PWHRUf
@@ -3438,6 +3490,7 @@ bluffer	1' ^ PWHRUfr
 bluffing	1 ^EU PWHRUfpbg
 bluffs	1 - PWHRUfs
 bluffs	1 ^ PWHRUfs
+bluish	1 ^EU PWHRUrb
 blunder	1 - PWHRUrpbd
 blunder	1 ^ PWHRUrpbd
 blunder	1' - PWHRUrpb
@@ -3480,6 +3533,7 @@ bluster	1' ^ PWHRUfrt
 bluster	1' ^ PWHRUrs
 blustery	1 ^EU PWHRUfrt
 blustery	1' ^EU PWHRUrs
+boa	1 ^A PWO
 boar	1 - PWO*Er
 boar	1 ^ PWO*Er
 board	1 - PWO*Erd
@@ -3522,6 +3576,8 @@ bobble	1 - PWObl
 bobble	1 ^ PWObl
 bobble	1' ^E PWObl
 bobcat	1 ^A PWObgt
+bocce	1 ^E PWOfp
+bocce	2 ^E PWObg
 bock	1 - PWObg
 bock	1 ^ PWObg
 bode	1 - PWOEd
@@ -3731,6 +3787,8 @@ border	1 ^ PWOrd
 border	1' - PWOr
 border	1' ^ PWOr
 border	1' ^ PWOrd
+bordering	1' ^EU PWOrpbg
+borderline	1' ^EU PWOrpbl
 borders	1' - PWOrs
 borders	1' ^ PWOrs
 bore	1 - PWOEr
@@ -3883,6 +3941,7 @@ boy	1 - PWOEU
 boy	1 ^ PWOEU
 boycott	1 ^O PWOEUbgt
 boyfriends	1' ^EU PWOEUfrpb
+boyish	1 ^EU PWOrb
 boys	1 - PWOEUs
 boys	1 ^ PWOEUs
 bra	1 - PWRAU
@@ -4113,6 +4172,7 @@ brings	1 ^ PWREUpbgs
 brink	1 - PWR*EUpbg
 brink	1 ^ PWR*EUpbg
 brioche	1 ^EU PWROErb
+brioche	2 ^O PWRAOErb
 brisk	1 - PWREUfbg
 brisk	1 ^ PWREUfbg
 brisker	1 - PWREUfrbg
@@ -4138,6 +4198,7 @@ broach	1 ^ PWRO*Efp
 broad	1 - PWRO*Ed
 broad	1 ^ PWRO*Ed
 broadcast	1 ^A PWRO*Ebgsd
+broadcasts	1' ^A PWRO*Ebgsd
 broaden	1 - PWRO*Epbd
 broaden	1 ^ PWRO*Epbd
 broaden	1' ^E PWRO*Epbd
@@ -4221,6 +4282,7 @@ browser	1 - PWROUrz
 browser	1 ^ PWROUrz
 browser	1' ^ PWROUrz
 browsing	1 ^EU PWROUpbgz
+bruins	1 ^EU PWRUpbz
 bruise	1 - PWRAOUs
 bruise	1 ^ PWRAOUs
 bruises	1 ^E PWRAOUz
@@ -4317,6 +4379,7 @@ bugle	1 ^ PWAOUlg
 bugle	1' ^E PWAOUlg
 bugs	1 - PWUgs
 bugs	1 ^ PWUgs
+buick	1 ^EU PWUbg
 build	1 - PWEUld
 build	1 ^ PWEUld
 builder	1 - PWEUrld
@@ -4423,6 +4486,9 @@ buns	1 ^ PWUpbs
 bunt	1 - PWUpbt
 bunt	1 ^ PWUpbt
 bunting	1 ^EU PWUpbgt
+buoy	1 ^O PWU
+buoyant	1 ^O PWUpbt
+buoys	1 ^O PWUz
 burble	1 - PWUrbl
 burble	1 ^ PWUrbl
 burble	1' ^E PWUrbl
@@ -4563,6 +4629,9 @@ buy	1 - PWAO*EU
 buy	1 ^ PWAO*EU
 buyer	1 - PWAO*EUr
 buyer	1 ^ PWAO*EUr
+buyers	1 ^ PWUrz
+buying	1 ^EU PWUpbg
+buyout	1 ^EU PWUt
 buys	1 - PWAO*EUs
 buys	1 ^ PWAO*EUs
 buzz	1 - PWUz
@@ -4614,6 +4683,7 @@ caboose	1 ^A KPWAOs
 caboose	1' ^ PWAOs
 cabs	1 - KAbs
 cabs	1 ^ KAbs
+cacao	1' ^O KA
 cache	1 - KArb
 cache	1 ^ KArb
 cache	2 ^A SKHE
@@ -4779,12 +4849,15 @@ cancer	1' ^ KArpbs
 cancerous	1 ^O KArpbs
 candid	1 ^EU KApbd
 candid	2 ^EU KApbd
+candidly	1 ^EU KApbld
 candies	1 ^EU KApbdz
 candle	1 - KApbld
 candle	1 ^ KApbld
 candle	1' - KApbl
 candle	1' ^ KApbl
 candle	1' ^E KApbld
+candlelight	1 ^EU KApbltd
+candlelight	1' ^EU KApblt
 candor	1 - KArpbd
 candor	1 ^ KArpbd
 candor	1' - KArpb
@@ -5110,6 +5183,8 @@ cat	1 - KAt
 cat	1 ^ KAt
 catalyst	1 ^EU KAflt
 catalyst	2 ^EU KAflt
+catalysts	1' ^EU KAlts
+catalysts	2' ^EU KAlts
 catch	1 - KAfp
 catch	1 ^ KAfp
 catchall	1 ^A KAfpl
@@ -5378,6 +5453,7 @@ chants	1 - KHApbts
 chants	1 ^ KHApbts
 chants	1' - KHApbts
 chants	1' ^ KHApbts
+chaos	1 ^O KHAs
 chaotic	1' ^EU Obgt
 chap	1 - KHAp
 chap	1 ^ KHAp
@@ -5431,6 +5507,7 @@ charter	1 ^ KHArt
 charter	1' - KHAr
 charter	1' ^ KHAr
 charter	1' ^ KHArt
+chartering	1' ^EU KHArpbg
 charters	1' - KHArs
 charters	1' ^ KHArs
 charting	1 ^EU KHArpbgt
@@ -5556,6 +5633,8 @@ chem	1 ^ KHEpl
 chemise	1 ^E SPHAOEs
 chemise	1' ^ PHAOEs
 chemist	1 ^EU KHEfplt
+chemists	1' ^EU KHEpls
+chemists	2' ^EU KHEpls
 chemo	1 ^O KHAOEpl
 cheque	1 - KHEbg
 cheque	1 ^ KHEbg
@@ -5704,7 +5783,7 @@ choicer	1 ^ KHOEUrs
 choicer	1' ^ KHOEUrs
 choices	1 ^E KHOEUsz
 choices	2 ^E KHOEUsz
-choicest	1 ^E KHOEUfts
+choicest	1 ^E KHOEUft
 choir	1 - KWOEUr
 choir	1 ^ KWOEUr
 choke	1 - KHOEbg
@@ -5907,6 +5986,8 @@ claimants	1'' ^A KHRA*EUpbls
 claiming	1 ^EU KHRA*EUpblg
 claims	1 - KHRA*EUpls
 claims	1 ^ KHRA*EUpls
+clairvoyance	1' ^EU SROpbs
+clairvoyant	1' ^EU SROpbt
 clam	1 - KHRApl
 clam	1 ^ KHRApl
 clammy	1 ^EU KHRApl
@@ -5977,6 +6058,7 @@ claws	1 - KHRAUs
 claws	1 ^ KHRAUs
 clay	1 - KHRAEU
 clay	1 ^ KHRAEU
+clayey	1 ^EU KHRA
 clean	1 - KHRAEpb
 clean	1 ^ KHRAEpb
 cleaner	1 - KHRAErpb
@@ -6043,6 +6125,7 @@ clerks	1 ^ KHRErbgs
 clever	1 - KHREfr
 clever	1 ^ KHREfr
 clever	1' ^ KHREfr
+cleverer	1 ^ KHREfr
 cleverly	1 - KHREfrl
 cleverly	1 ^ KHREfrl
 cleverly	1' ^ KHREfrl
@@ -6054,6 +6137,9 @@ click	1 ^ KHREUbg
 clicking	1 ^EU KHREUpbg
 clicks	1 - KHREUbgs
 clicks	1 ^ KHREUbgs
+client	1 ^E KHRAOEUpbt
+clients	1 ^E KHRAOEUpbts
+clients	1' ^E KHRAOEUpbs
 cliff	1 - KHREUf
 cliff	1 ^ KHREUf
 cliffs	1 - KHREUfs
@@ -6141,7 +6227,7 @@ closer	2 - KHROErz
 closer	2 ^ KHROErz
 closer	2' ^ KHROErz
 closes	1 ^E KHROEz
-closest	1 ^E KHROEfts
+closest	1 ^E KHROEft
 closet	1 ^E KHROtz
 closets	1 ^E KHROtsz
 closeup	1 ^E KHROEfp
@@ -6306,8 +6392,10 @@ coder	1 - KOErd
 coder	1 ^ KOErd
 coder	1' ^ KOErd
 coding	1 ^EU KOEpbgd
+coed	1 ^E KOd
 coed	2 - KO*Ed
 coed	2 ^ KO*Ed
+coeds	1 ^E KOdz
 coerce	1 ^ Ers
 coerce	1' ^O KErs
 coerced	1' ^ Efrt
@@ -6381,6 +6469,7 @@ colds	1 - KOldz
 colds	1 ^ KOldz
 colds	1' - KOlz
 colds	1' ^ KOlz
+coline	1 ^E HRAOEpb
 collaborate	1 ^A HRArbt
 collage	1 ^ HRAUpblg
 collage	1' ^O KHRAUpblg
@@ -6437,10 +6526,12 @@ collusive	1 ^EU HRAOUfs
 colo	1 ^O KOEl
 cologne	1 ^ HROEpb
 cologne	1' ^O KHROEpb
+colombe	1 ^E HROpbl
 colon	1 - KOEpbl
 colon	1 ^ KOEpbl
 colon	1' ^O KOEpbl
 colonies	1 ^EU KOpblz
+colonists	1' ^EU KOpbls
 colonize	1 ^EU KOpblz
 colony	1 ^EU KOpbl
 color	1 - KOrl
@@ -6652,6 +6743,8 @@ competition	1' KPH TEUgs
 competitions	1 KPH^E TPEUrpbz
 competitions	1' KPH TEUrpbz
 competitions	1'' KPH^EU TEUrpbz
+competitor	1 KPH^EU PErt
+competitor	2 KPH^EU PErt
 compilation	1 KPH^EU PHRAEUgs
 compilation	1' KPH HRAEUgs
 compile	1 KPH PAOEUl
@@ -6665,6 +6758,7 @@ complain	1 KPH PHRA*EUpb
 complainant	1 KPH PHRA*EUpbt
 complainant	1' KPH^A PHRA*EUpbt
 complainants	1' KPH PHRA*EUpbs
+complainants	1' KPH^A PHRA*EUpbts
 complainants	1'' KPH^A PHRA*EUpbs
 complainer	1 KPH PHRA*EUrpb
 complainer	1' KPH^ PHRA*EUrpb
@@ -6687,6 +6781,8 @@ complex	1 KPH PHREbgs
 complex	2 KPH PHREbgs
 complexes	1' KPH SKEs
 complexion	1 KPH PHREbgs
+compliance	1 KPH^A PHRAOEUpbs
+compliant	1 KPH^A PHRAOEUpbt
 complicate	1' KPH KAEUt
 complication	1 KPH^EU KPHRAEUgs
 complication	1' KPH KAEUgs
@@ -6702,10 +6798,12 @@ complimentary	1'' KPH^EU PHErpb
 compliments	1' KPH PHEpbts
 compliments	1'' KPH PHEpbts
 comply	1 KPH PHRAOEU
+complying	1 KPH^EU PHRAOEUpbg
 compo	1 KPH PO
 component	1 KPH POEpbt
 component	1' KPH^E POEpbt
 components	1' KPH POEpbs
+components	1' KPH^E POEpbts
 components	1'' KPH^E POEpbs
 comport	1 KPH POrt
 compose	1 KPH POEs
@@ -6970,6 +7068,7 @@ conflicts	1' ^O TKPHREUbgts
 conflicts	1'' ^O TKPHREUbgts
 conflicts	3 ^ TPHREUbgts
 conflicts	3' ^O TKPHREUbgts
+confluent	1 ^E TPHRUpbt
 conform	1 ^ TPOrpl
 conform	1' ^O TKPHOrpl
 conformance	1 ^ TPOrpbls
@@ -7235,6 +7334,7 @@ contains	1' ^O TKPHA*EUpbs
 contaminate	1 ^A TApblt
 conte	1 - KOpbt
 conte	1 ^ KOpbt
+conte	2 ^E KOpbt
 contempt	1 ^ TEplt
 contempt	1' ^O TKPHEplt
 contend	1 ^ TEpbd
@@ -7283,6 +7383,7 @@ contestants	1'' ^A TEfpbts
 contestants	1'' ^O TKPHEpbs
 contested	1 ^E TEftd
 contesting	1 ^EU TEfpbgt
+contests	1' ^E KOpbts
 contests	2 ^ TEfts
 contests	2' ^ TEs
 contests	2' ^O TKPHEfts
@@ -7291,6 +7392,7 @@ contests	3 ^E KOpbts
 contests	4 ^ TEs
 contests	4' ^O TKPHEs
 context	1 ^E KOpbgts
+contexts	1' ^E KOpbgts
 contingency	1 ^EU TEUpbgs
 contingent	1 ^ TEUpbgt
 contingent	1' ^E TEUpbgt
@@ -7319,6 +7421,8 @@ contracts	2'' ^O TKPHRAbgts
 contraption	1 ^ TRApgs
 contraption	1' ^O TKPHRApgs
 contraption	1'' ^O TKPHRApgs
+contrary	1 ^EU KOrpbt
+contrary	1' ^EU KOrpb
 contrary	2 ^EU TRAr
 contrast	1 ^A KOfrpbt
 contrast	1' ^A KOfrpbt
@@ -7327,6 +7431,7 @@ contrast	2' ^O TKPHRAft
 contrast	2'' ^O TKPHRAft
 contrasted	1 ^E TRAftd
 contrasting	1 ^EU TRAfpbgt
+contrasts	1' ^A KOrpbs
 contrasts	2 ^ TRAfts
 contrasts	2' ^ TRAs
 contrasts	2' ^O TKPHRAfts
@@ -7408,10 +7513,12 @@ convex	1 ^ SREbgs
 convex	1' ^O STKPHREbgs
 convey	1 ^ SRA*EU
 convey	1' ^O STKPHRA*EU
+conveyance	1 ^EU SREpbs
 conveyed	1 ^ SRAO*EUd
 conveyed	1' ^O STKPHRAO*EUd
 conveyer	1 ^ SRAO*EUr
 conveyer	1' ^O STKPHRAO*EUr
+conveying	1 ^EU SREpbg
 conveys	1 ^ SRA*EUs
 conveys	1' ^O STKPHRA*EUs
 convict	2 ^ SREUbgt
@@ -7745,6 +7852,7 @@ court	1 ^ KOUrt
 courting	1 ^EU KOUrpbgt
 courtroom	1 ^O KOUrplt
 courtroom	1' ^O KOUrpl
+courtrooms	1' ^O KOUrplz
 courts	1 - KOUrts
 courts	1 ^ KOUrts
 courts	1' - KOUrs
@@ -7800,6 +7908,7 @@ coy	1 - KOEU
 coy	1 ^ KOEU
 coyer	1 - KOEUr
 coyer	1 ^ KOEUr
+coyote	2 ^EU KOt
 coz	1 - KOz
 coz	1 ^ KOz
 coziness	1 ^E KOEpbsz
@@ -7889,6 +7998,8 @@ crawling	1 ^EU KRAUpblg
 crawls	1 - KRAUls
 crawls	1 ^ KRAUls
 crayfish	1 ^EU KRAEUfrb
+crayon	1 ^EU KRApb
+crayons	1 ^EU KRApbz
 craze	1 - KRAEUz
 craze	1 ^ KRAEUz
 crazily	1 - KRAEUlz
@@ -8116,6 +8227,7 @@ crud	1 ^ KRUd
 cruddy	1 ^EU KRUd
 crude	1 - KRAOUd
 crude	1 ^ KRAOUd
+cruel	1 ^E KRUl
 cruel	2 - KRAO*Ul
 cruel	2 ^ KRAO*Ul
 cruelly	1 - KRAO*Ul
@@ -8170,6 +8282,7 @@ crux	1 - KRUbgs
 crux	1 ^ KRUbgs
 cry	1 - KRAOEU
 cry	1 ^ KRAOEU
+crying	1 ^EU KRAOEUpbg
 crypt	1 - KREUpt
 crypt	1 ^ KREUpt
 cryptic	1 ^EU KREUpbgt
@@ -8203,6 +8316,7 @@ cuff	1 - KUf
 cuff	1 ^ KUf
 cuffs	1 - KUfs
 cuffs	1 ^ KUfs
+cuing	1 ^EU KUpbg
 cuisinart	2 ^A KWAOUpbtz
 cuisine	1 ^U SKWAOEpb
 cuisine	1' ^ SAOEpb
@@ -8242,6 +8356,7 @@ cup	1 ^ KUp
 cupboard	1 - KUrbd
 cupboard	1 ^ KUrbd
 cupboard	1' ^ KUrbd
+cupcake	1 ^A KUpbg
 cupid	1 ^EU KAOUpd
 cupola	1' ^A POEl
 cups	1 - KUps
@@ -8395,6 +8510,7 @@ cycled	1 ^ SAO*EUblgd
 cycled	1' ^E SAO*EUblgd
 cyclic	1 ^EU SAO*EUblg
 cyclist	2 ^EU SAO*EUfblgt
+cyclists	2' ^EU SAO*EUblgs
 cyclists	4 ^EU SAO*EUblgs
 cyclone	1 ^EU SKHROEpb
 cyclone	1' ^ KHROEpb
@@ -8709,6 +8825,7 @@ decay	1 ^E TKAEU
 decay	1' ^ KAEU
 decayed	1 ^E TKAEUd
 decayed	1' ^ KAEUd
+decaying	1' ^EU KApbg
 decays	1 ^E TKAEUs
 decays	1' ^ KAEUs
 decease	1 STK AEs
@@ -8731,6 +8848,7 @@ decibel	1 STK PWEl
 decibels	1 STK PWEls
 decide	1 STK AOEUd
 decided	1 STK^E AOEUd
+decidedly	1 STK^E AOEUld
 deciding	1 STK^EU AOEUpbgd
 decimal	1 STK PHAl
 decimals	1 STK PHAls
@@ -8798,6 +8916,7 @@ decreed	1' ^ KRAOEd
 decrees	1 ^E TKRAOEs
 decrees	1' ^ KRAOEs
 decrepit	1' ^EU KREpt
+decrying	1' ^EU KRAOEUpbg
 deduce	1 ^E TKAOUs
 deduce	1' ^ TKAOUs
 deduct	1 ^E TKUbgt
@@ -8917,6 +9036,10 @@ deferral	1'' ^A TPErl
 deferring	1' ^EU TPErpbg
 defers	1 ^E TKPErs
 defers	1' ^ TPErs
+defiance	1' ^A TPAOEUpbs
+defiant	1' ^A TPAOEUpbt
+defiantly	1' ^A TPAOEUpblt
+defiantly	1'' ^A TPAOEUpbl
 deficiency	1' ^EU TPEUrpbs
 deficient	1 ^E TKPEUrpbt
 deficient	1' ^ TPEUrpbt
@@ -8953,6 +9076,7 @@ defunct	1 ^E TKP*Upbgt
 defunct	1' ^ TP*Upbgt
 defy	1 ^E TKPAOEU
 defy	1' ^ TPAOEU
+defying	1' ^EU TPAOEUpbg
 degenerate	1' ^A SKWRErpbt
 degenerate	2' ^A SKWRErpbt
 degrade	1 ^E TKPWRAEUd
@@ -8974,6 +9098,7 @@ delay	1 ^E TKHRAEU
 delay	1' ^ HRAEU
 delayed	1 ^E TKHRAEUd
 delayed	1' ^ HRAEUd
+delaying	1' ^EU HRApbg
 delays	1 ^E TKHRAEUs
 delays	1' ^ HRAEUs
 delete	1 ^E TKHRAOEt
@@ -9060,6 +9185,8 @@ den	1 ^ TKEpb
 dendritic	1' ^EU TKREUbgt
 dengue	1 - TKEpbg
 dengue	1 ^ TKEpbg
+denial	1' ^A TPHAOEUl
+denials	1' ^A TPHAOEUlz
 denied	1 ^E TKPHAO*EUd
 denied	1' ^ TPHAO*EUd
 denies	1 ^E TKPHAO*EUs
@@ -9084,7 +9211,7 @@ dense	1 ^ TKEpbs
 denser	1 - TKErpbs
 denser	1 ^ TKErpbs
 denser	1' ^ TKErpbs
-densest	1 ^E TKEfpbts
+densest	1 ^E TKEfpbt
 dent	1 - TKEpbt
 dent	1 ^ TKEpbt
 dental	1 - TKEpblt
@@ -9100,6 +9227,8 @@ denting	1 ^EU TKEpbgt
 dentist	1 ^EU TKEfpbt
 dentist	2 ^EU TKEfpbt
 dentist	3 ^EU TKEfpbt
+dentists	1' ^EU TKEpbts
+dentists	2' ^EU TKEpbts
 dentition	1 ^E TKPHEUgs
 dentition	1' ^ TEUgs
 dents	1 - TKEpbts
@@ -9111,6 +9240,7 @@ denture	1 ^ TKEfrpb
 denture	1' ^ TKEfrpb
 deny	1 ^E TKPHAOEU
 deny	1' ^ TPHAOEU
+denying	1' ^EU TPHAOEUpbg
 deodorant	1 ^E TKOErpbtd
 deodorant	1' ^ OErpbtd
 depart	1 ^E TKPArt
@@ -9143,6 +9273,7 @@ dependence	1' ^ PEpbsd
 dependence	1' ^E TKPEpbs
 dependence	1'' ^ PEpbs
 dependence	1'' ^E PEpbsd
+dependencies	1'' ^EU PEpbsz
 dependency	1' ^EU PEpbsd
 dependency	1'' ^EU PEpbs
 dependent	1 ^E TKPEpbtd
@@ -9184,6 +9315,7 @@ deploy	1 ^E TKPHROEU
 deploy	1' ^ PHROEU
 deployed	1 ^E TKPHROEUd
 deployed	1' ^ PHROEUd
+deploying	1' ^EU PHROpbg
 deployment	1 ^E TKPHROEUpblt
 deployment	1' ^ PHROEUpblt
 deployment	1'' ^E PHROEUpblt
@@ -9269,6 +9401,7 @@ descendant	1' STK^A Epbtd
 descendants	1' STK Epbs
 descendants	1'' STK^A Epbsd
 descendants	2' STK Epbs
+descendants	2' STK^A Epbts
 descendants	2'' STK^A Epbs
 descended	1 STK^E Epbd
 descended	2 STK^E Epbd
@@ -9279,6 +9412,7 @@ descending	1 STK^EU Epbgd
 descends	1 STK Epbdz
 descends	1' STK Epbdz
 descent	1 STK Epbt
+describable	1 STK^A KRAOEUbl
 describe	1 STK KRAOEUb
 describing	1 STK^EU KRAOEUpbg
 description	1 STK KREUpgs
@@ -9375,6 +9509,8 @@ destitution	1' STK TUgs
 destroy	1 STK TROEU
 destroyed	1 STK TROEUd
 destroyer	1 STK TROEUr
+destroyers	1 STK^ TROrz
+destroying	1 STK^EU TROpbg
 destroys	1 STK TROEUs
 destruct	1 STK TRUbgt
 destruction	1 STK TRUbgs
@@ -9499,6 +9635,7 @@ devotion	1' ^ SROEgs
 devour	1 ^E STKROUr
 devour	1' ^ SROUr
 devoured	1' ^ SROUrd
+devours	1' ^ SROrz
 devout	1 ^E STKROUt
 devout	1' ^ SROUt
 dew	1 - TKAOU
@@ -9516,6 +9653,8 @@ di	1 - TKAOE
 di	1 ^ TKAOE
 di	2 - TKAOEU
 di	2 ^ TKAOEU
+dial	1 ^A TKAOEUl
+dials	1 ^A TKAOEUlz
 diameter	1' ^E Arplt
 diaphanous	1' ^O Afpbs
 diaspora	1' ^A Afrp
@@ -9528,6 +9667,7 @@ dice	1 - TKAOEUs
 dice	1 ^ TKAOEUs
 dicey	1 ^E TKAOEUs
 dichotomy	1' ^EU KHOplt
+dichroic	1' ^EU KRObg
 dick	1 - TKEUbg
 dick	1 ^ TKEUbg
 dicks	1 - TKEUbgs
@@ -9542,6 +9682,7 @@ dictation	1' ^ TKAEUgs
 dictator	1 ^EU TKAEUrt
 dictator	1' ^ TKAEUrt
 dictator	1'' ^ TKAEUrt
+dictator	2 ^A TKEUrbgt
 diction	1 - TKEUbgs
 diction	1 ^ TKEUbgs
 dictum	1 - TKEUpblgt
@@ -9568,9 +9709,11 @@ diesel	1' ^E TKAOEls
 diesel	2 - TKAOElz
 diesel	2 ^ TKAOElz
 diesel	2' ^E TKAOElz
+diet	1 ^E TKAOEUt
 dieter	1 - TKAOErt
 dieter	1 ^ TKAOErt
 dieter	1' ^ TKAOErt
+diets	1 ^E TKAOEUts
 diff	1 - TKEUf
 diff	1 ^ TKEUf
 differ	1 - TKEUfr
@@ -9597,6 +9740,7 @@ digestion	1' ^ SKWREfgts
 digestive	1' ^EU SKWREft
 digests	1 ^EU STKWREfts
 digests	1' ^EU STKWREs
+digests	2' ^E TKAOEUpblgs
 digger	1 - TKEUrg
 digger	1 ^ TKEUrg
 digger	1' ^ TKEUrg
@@ -9687,6 +9831,8 @@ dinner	1 ^ TKEUrpb
 dinner	1' ^ TKEUrpb
 dint	1 - TKEUpbt
 dint	1 ^ TKEUpbt
+diocesan	1' ^E Opbs
+diode	1 ^O TKAOEUd
 dioxide	1' ^EU Obgsd
 dioxin	1 ^EU TKOpbgs
 dip	1 - TKEUp
@@ -9809,8 +9955,10 @@ disadvantage	1 STK^A STKRApblgt
 disadvantage	2 STK^A STKRApbg
 disagree	1 STK TKPWRAOE
 disagree	1' STK^A TKPWRAOE
+disagreeable	1 STK^E TKPWREbl
 disagreed	1 STK TKPWRAOEd
 disagreed	1' STK^A TKPWRAOEd
+disagreeing	1 STK^E TKPWREpbg
 disagreement	1 STK TKPWRAOEpblt
 disagreement	1' STK^A TKPWRAOEpblt
 disagreement	1' STK^E TKPWRAOEpblt
@@ -10012,6 +10160,7 @@ dislocate	1' STK KAEUt
 dislocation	1 STK^A HROEbgs
 dislodge	1 STK HROpblg
 dislodging	1 STK^EU HROpblg
+disloyal	1 STK^EU HROl
 dismal	1 STK PHAl
 dismally	1 STK PHAl
 dismantle	1 STK PHApblt
@@ -10038,6 +10187,7 @@ disobey	1 STK PWA*EU
 disobey	1' STK^O PWA*EU
 disobeyed	1 STK PWAO*EUd
 disobeyed	1' STK^O PWAO*EUd
+disobeying	1 STK^EU PWEpbg
 disorder	1 STK Ord
 disorder	1' STK Or
 disorder	1' STK^ Ord
@@ -10075,6 +10225,7 @@ displaces	1 STK^E PHRAEUsz
 displacing	1 STK^EU PHRAEUpbgs
 display	1 STK PHRAEU
 displayed	1 STK PHRAEUd
+displaying	1 STK^EU PHRApbg
 displays	1 STK PHRAEUs
 displease	1 STK PHRAEs
 displeasure	1 STK PHRAErpblg
@@ -10093,6 +10244,7 @@ dispute	1 STK PAOUt
 disputed	1 STK^E PAOUtd
 disputed	2 STK^E PAOUtd
 disputing	1 STK^EU PAOUpbgt
+disquiet	1 STK^E KWAOEUt
 disregard	1 STK^E TKPWRArd
 disregard	1' STK TKPWArd
 disregarded	1' STK^E TKPWArd
@@ -10293,6 +10445,7 @@ dizziness	1 ^E TKEUpbsz
 dizzy	1 ^EU TKEUz
 do	1 - TKO
 do	1 ^ TKO
+doable	1 ^A TKObl
 doc	1 - TKO*bg
 doc	1 ^ TKO*bg
 docile	1 - TKOls
@@ -10368,6 +10521,8 @@ dogs	2 ^ TKOgs
 doilies	1 ^EU TKOEUlz
 doily	1 - TKOEUl
 doily	1 ^ TKOEUl
+doing	1 ^EU TKOpbg
+dolce	1 ^E TKOlg
 doldrum	1 - TKOrpld
 doldrum	1 ^ TKOrpld
 doldrum	1' - TKOrpl
@@ -10679,6 +10834,7 @@ drier	1 - TKRAO*EUr
 drier	1 ^ TKRAO*EUr
 dries	1 - TKRAO*EUs
 dries	1 ^ TKRAO*EUs
+driest	1 ^E TKRAOEUft
 drift	1 - TKREUft
 drift	1 ^ TKREUft
 drifted	1 ^E TKREUftd
@@ -10780,8 +10936,11 @@ drug	1 - TKRUg
 drug	1 ^ TKRUg
 druggie	1 ^EU TKRUg
 druggist	1 ^EU TKRUfgt
+druggists	1' ^EU TKRUgs
+druggists	2' ^EU TKRUgs
 drugs	1 - TKRUgs
 drugs	1 ^ TKRUgs
+druid	1 ^EU TKRUd
 drum	1 - TKRUpl
 drum	1 ^ TKRUpl
 drummer	1 - TKRUrpl
@@ -10798,15 +10957,19 @@ drunkard	1' ^ TKR*Urpbgd
 drunken	1 - TKR*Upbg
 drunken	1 ^ TKR*Upbg
 drunken	1' ^E TKR*Upbg
+drunkenness	1 ^E TKR*Upbgs
 drupe	1 - TKRAOUp
 drupe	1 ^ TKRAOUp
 dry	1 - TKRAOEU
 dry	1 ^ TKRAOEU
 dryer	1 - TKRAO*EUr
 dryer	1 ^ TKRAO*EUr
+dryers	1 ^ TKRAOEUrz
+drying	1 ^EU TKRAOEUpbg
 dryly	1 - TKRAO*EUl
 dryly	1 ^ TKRAO*EUl
 dryness	1 ^E TKRAO*EUpbs
+dual	1 ^A TKUl
 dub	1 - TKUb
 dub	1 ^ TKUb
 dubs	1 - TKUbs
@@ -10842,6 +11005,7 @@ due	1 - TKAO*U
 due	1 ^ TKAO*U
 due	2 - TKAO*U
 due	2 ^ TKAO*U
+duel	1 ^E TKUl
 dues	1 - TKAO*Us
 dues	1 ^ TKAO*Us
 duet	1 - TKWEt
@@ -10880,6 +11044,7 @@ dumbest	1 ^E TKUfplt
 dumbfound	1 - TK*Ufpbld
 dumbfound	1 ^ TK*Ufpbld
 dumbfound	1' ^O TK*Ufpbld
+dumbfounded	1 ^E TK*Ufpbld
 dumbfounds	1' - TK*Ufpblz
 dumbfounds	1' ^ TK*Ufpblz
 dumbfounds	1'' ^O TK*Ufpblz
@@ -10912,6 +11077,7 @@ dunks	1 - TK*Upbgs
 dunks	1 ^ TK*Upbgs
 dunno	1 ^U TKPHO
 dunno	1' ^ TPHO
+duo	1 ^O TKU
 dupe	1 - TKAOUp
 dupe	1 ^ TKAOUp
 duper	1 - TKAOUrp
@@ -10972,14 +11138,17 @@ dwindled	1 ^ TKWEUpbld
 dwindled	1' - TKWEUpbld
 dwindled	1' ^ TKWEUpbld
 dwindled	1' ^E TKWEUpbld
+dyad	1 ^A TKAOEUd
 dye	1 - TKAO*EU
 dye	1 ^ TKAO*EU
 dyed	1 - TKAO*EUd
 dyed	1 ^ TKAO*EUd
+dyeing	1 ^E TKAOEUpbg
 dyer	1 - TKAO*EUr
 dyer	1 ^ TKAO*EUr
 dyes	1 - TKAO*EUs
 dyes	1 ^ TKAO*EUs
+dying	1 ^EU TKAOEUpbg
 dyke	1 - TKAO*EUbg
 dyke	1 ^ TKAO*EUbg
 dynamic	1' ^EU TPHApblg
@@ -10992,6 +11161,7 @@ dyslexic	1 STK^EU HREbgs
 dyspeptic	1 STK^EU PEpbgt
 dysphoric	1 STK^EU TPOrbg
 dysplasia	1 STK^EU PHRAEUpblg
+dyspnea	1 STK^A TPHE
 dystrophin	1' STK TPEUpb
 dystrophy	1' STK TPEU
 each	1 - AEfp
@@ -11425,10 +11595,19 @@ empirical	1 KPW^EU EUrblg
 empirically	1 KPW^EU EUrblg
 employ	1 KPW HROEU
 employ	2 KPW HROEU
+employable	1 KPW^EU HRObl
 employed	1 KPW HROEUd
 employed	2 KPW HROEUd
+employee	1 KPW^EU HRO
+employee	2 KPW^EU HRO
+employees	1 KPW^EU HROz
+employees	2 KPW^EU HROz
 employer	1 KPW HROEUr
 employer	2 KPW HROEUr
+employers	1 KPW^ HROrz
+employers	2 KPW^ HROrz
+employing	1 KPW^EU HROpbg
+employing	2 KPW^EU HROpbg
 employment	1 KPW HROEUpblt
 employment	1' KPW^E HROEUpblt
 employment	2 KPW HROEUpblt
@@ -11607,6 +11786,7 @@ enjoy	2' ^E STKPWHROEU
 enjoyed	1 ^E STKPWHROEUd
 enjoyed	2 ^ SKWROEUd
 enjoyed	2' ^E STKPWHROEUd
+enjoying	2 ^EU SKWROpbg
 enjoyment	1 ^E STKPWHROEUpblt
 enjoyment	2 ^ SKWROEUpblt
 enjoyment	2' ^E SKWROEUpblt
@@ -11640,6 +11820,7 @@ enmesh	1 ^ PHErb
 enmesh	1' ^E TPHErb
 ennobled	1 ^ TPHOEbld
 ennobled	1' ^E TPHOEbld
+ennui	1 ^EU TPHU
 enormous	1 ^O TPHOrpls
 enormous	2 ^O TPHOrpls
 enormous	3 ^O TPHOrpls
@@ -11731,6 +11912,7 @@ entitled	1' SPW^E AOEUltd
 entity	1 SPW TEU
 entity	2 SPW TEU
 entomb	1 SPW Opl
+entombment	1' SPW^E Opblt
 entourage	1 SPW RAUpblg
 entourage	1' SPW^O RAUpblg
 entourage	2 SPW RAUpblg
@@ -11767,6 +11949,9 @@ envoy	1 ^O Efpb
 envoy	2 ^O Efpb
 envy	1 ^EU Efpb
 enzyme	1 ^EU Epblz
+eon	1 ^O Epb
+eon	2 ^O Epb
+eos	1 ^O Es
 ephedrine	1 ^ TPErpbd
 ephedrine	1' ^E TPErpbd
 ephedrine	1' ^EU TPErpbd
@@ -11777,6 +11962,7 @@ epics	1 ^EU Epbgs
 epiphany	1 ^EU PEUfpb
 epistle	1 ^ PEUls
 epistle	1' ^E PEUls
+epitome	1 ^E PEUplt
 epoch	1 ^O Epbg
 epoch	2 ^O AOEpbg
 epoxy	1 ^EU PObgs
@@ -11868,6 +12054,7 @@ error	1 ^ Er
 error	1' ^ Er
 errors	1 - Ers
 errors	1 ^ Ers
+errors	1' ^ Erz
 ersatz	1 ^A Efrts
 erupt	1 ^ RUpt
 erupt	1' ^E RUpt
@@ -12006,6 +12193,7 @@ evasive	2 ^EU SRAEUfz
 even	1 - AOEfpb
 even	1 ^ AOEfpb
 even	1' ^E AOEfpb
+evenness	1 ^E AOEfpbs
 evens	1 - AOEfpbz
 evens	1 ^ AOEfpbz
 evens	1' ^E AOEfpbz
@@ -12308,6 +12496,7 @@ explore	1 KP PHROEr
 explorer	1 KP PHROr
 explorer	1' KP^ PHROr
 explorers	1 KP PHROrs
+explorers	1' KP^ PHROrz
 exploring	1 KP^EU PHROrpbg
 explosion	1 KP PHROEgs
 explosions	1 KP PHROEpblgz
@@ -12393,6 +12582,8 @@ extras	1 KP TRAs
 extrasensory	1' KP^EU SErpbs
 extreme	1 KP TRAOEpl
 extremist	1 KP^EU TRAOEfplt
+extremists	1' KP^EU TRAOEpls
+extremists	2' KP^EU TRAOEpls
 extricate	1' KP KAEUt
 extrication	1 KP^EU TKRAEUgs
 extrication	1' KP KAEUgs
@@ -12413,6 +12604,7 @@ eyecare	1 ^A AO*EUrbg
 eyed	1 - AO*EUd
 eyed	1 ^ AO*EUd
 eyeglass	1 ^A AO*EUlgs
+eyeing	1 ^EU Epbg
 eyelash	1 ^A AO*EUrbl
 eyelet	1 ^E AO*EUlt
 eyelid	1 ^EU AO*EUld
@@ -12783,6 +12975,7 @@ felony	1 ^EU TPEpbl
 felt	1 - TPElt
 felt	1 ^ TPElt
 female	1 ^A TPAOEpl
+feminists	1' ^EU TPEpbls
 femme	1 - TPEpl
 femme	1 ^ TPEpl
 femoral	1 ^ TPErpl
@@ -12893,8 +13086,10 @@ few	1 ^ TPAOU
 fewest	1 ^E TPEft
 fez	1 - TPEz
 fez	1 ^ TPEz
+fiance	1' ^E AUpbs
 fiancee	1' ^E Apbs
 fiasco	1' ^O Afbg
+fiat	1 ^A TPAOEUt
 fib	1 - TPEUb
 fib	1 ^ TPEUb
 fiber	1 - TPAOEUrb
@@ -12949,7 +13144,7 @@ fierce	1 ^ TPAOErs
 fiercer	1 - TPAOErs
 fiercer	1 ^ TPAOErs
 fiercer	1' ^ TPAOErs
-fiercest	1 ^E TPAOEfrts
+fiercest	1 ^E TPAOEfrt
 fiesta	1' ^A Eft
 fife	1 - TPAOEUf
 fife	1 ^ TPAOEUf
@@ -13032,6 +13227,7 @@ final	1 ^ TPAOEUpbl
 final	1' ^A TPAOEUpbl
 finale	1' ^E TPHAl
 finalist	1 ^EU TPAOEUfpblt
+finalists	1' ^EU TPAOEUpbls
 finally	1 - TPAOEUpbl
 finally	1 ^ TPAOEUpbl
 finally	1' ^A TPAOEUpbl
@@ -13061,6 +13257,7 @@ finds	1' - TPAOEUpbdz
 finds	1' ^ TPAOEUpbdz
 fine	1 - TPAOEUpb
 fine	1 ^ TPAOEUpb
+fine	2 ^E TPEUpb
 finer	1 - TPAOEUrpb
 finer	1 ^ TPAOEUrpb
 finer	1' ^ TPAOEUrpb
@@ -13085,6 +13282,7 @@ fir	1 ^ TPEUr
 fire	1 - TPAOEUr
 fire	1 ^ TPAOEUr
 firearm	2 ^E TPAOEUrpl
+firearms	2 ^E TPAOEUrplz
 fired	1 ^ TPAOEUrd
 fires	1 ^ TPAOEUrz
 firing	1 ^EU TPAOEUrpbg
@@ -13198,6 +13396,8 @@ flake	1 - TPHRAEUbg
 flake	1 ^ TPHRAEUbg
 flaking	1 ^EU TPHRAEUpbg
 flaky	1 ^EU TPHRAEUbg
+flamboyance	1' ^EU PWOpbs
+flamboyant	1' ^EU PWOpbt
 flame	1 - TPHRAEUpl
 flame	1 ^ TPHRAEUpl
 flamenco	1' ^O PH*Epbg
@@ -13292,6 +13492,7 @@ flee	1 ^ TPHRAOE
 fleece	1 - TPHRAOEs
 fleece	1 ^ TPHRAOEs
 fleecy	1 ^EU TPHRAOEs
+fleeing	1 ^E TPHREpbg
 fleet	1 - TPHRAOEt
 fleet	1 ^ TPHRAOEt
 fleeting	1 ^EU TPHRAOEpbgt
@@ -13320,6 +13521,7 @@ flied	1 - TPHRAO*EUd
 flied	1 ^ TPHRAO*EUd
 flier	1 - TPHRAO*EUr
 flier	1 ^ TPHRAO*EUr
+fliers	1 ^ TPHRAOEUrz
 flies	1 - TPHRAO*EUs
 flies	1 ^ TPHRAO*EUs
 flight	1 - TPHRAO*EUt
@@ -13442,9 +13644,14 @@ fluctuation	1 ^U TKPWHRAEUgs
 fluctuations	1 ^U TKPWHRAEUrpbz
 flue	1 - TPHRAO*U
 flue	1 ^ TPHRAO*U
+fluent	1 ^E TPHRUpbt
 fluff	1 - TPHRUf
 fluff	1 ^ TPHRUf
 fluffy	1 ^EU TPHRUf
+fluid	1 ^EU TPHRUd
+fluid	2 ^EU TPHRUd
+fluids	1 ^EU TPHRUdz
+fluids	2 ^EU TPHRUdz
 fluke	1 - TPHRAOUbg
 fluke	1 ^ TPHRAOUbg
 flume	1 - TPHRAOUpl
@@ -13485,6 +13692,8 @@ fly	1 - TPHRAOEU
 fly	1 ^ TPHRAOEU
 flyer	1 - TPHRAO*EUr
 flyer	1 ^ TPHRAO*EUr
+flyers	1 ^ TPHRAOEUrz
+flying	1 ^EU TPHRAOEUpbg
 flytrap	1 ^A TPHRAO*EUrpt
 foal	1 - TPO*El
 foal	1 ^ TPO*El
@@ -13766,6 +13975,7 @@ forsook	1 ^O STPRAObg
 forsook	1' ^ SRAObg
 fort	1 - TPOrt
 fort	1 ^ TPOrt
+forte	1 ^E TPOrt
 forte	2 - TPOErt
 forte	2 ^ TPOErt
 forth	1 - TPO*rt
@@ -13947,6 +14157,7 @@ freed	1 ^ TPRAOEd
 freedom	1 - TPRAOEpld
 freedom	1 ^ TPRAOEpld
 freedom	1' ^O TPRAOEpld
+freeing	1 ^E TPREpbg
 freelance	1 ^A TPRAOEpbls
 freely	1 - TPRAOEl
 freely	1 ^ TPRAOEl
@@ -13957,6 +14168,7 @@ freer	1 - TPRAOEr
 freer	1 ^ TPRAOEr
 frees	1 - TPRAOEs
 frees	1 ^ TPRAOEs
+freest	1 ^E TPREft
 freestyle	1 ^EU TPRAOEflt
 freeze	1 - TPRAOEz
 freeze	1 ^ TPRAOEz
@@ -13972,6 +14184,7 @@ freighter	1 ^ TPRA*Ert
 freighter	1' ^ TPRA*Ert
 frenetic	1' ^EU TPHEbgt
 frenzy	1 ^EU TPREpbz
+freon	1 ^O TPREpb
 fresco	1 ^O TPREfbg
 fresh	1 - TPRErb
 fresh	1 ^ TPRErb
@@ -14100,6 +14313,7 @@ frugal	1 ^ TPRAOUlg
 frugal	1' ^A TPRAOUlg
 fruit	1 - TPRAOUt
 fruit	1 ^ TPRAOUt
+fruitcake	1 ^A TPRAOUbgt
 fruition	1 - TPWREUgs
 fruition	1 ^ TPWREUgs
 fruition	1' ^ EUgs
@@ -14125,17 +14339,20 @@ fry	1 - TPRAOEU
 fry	1 ^ TPRAOEU
 fryer	1 - TPRAO*EUr
 fryer	1 ^ TPRAO*EUr
+frying	1 ^EU TPRAOEUpbg
 fuck	1 - TPUbg
 fuck	1 ^ TPUbg
 fucking	1 ^EU TPUpbg
 fudge	1 - TPUpblg
 fudge	1 ^ TPUpblg
 fudgy	1 ^EU TPUpblg
+fuel	1 ^E TPUl
 fuel	2 - TPAO*Ul
 fuel	2 ^ TPAO*Ul
 fueled	1 ^E TPAO*Uld
 fueling	1 ^EU TPAO*Upblg
 fuelled	1 ^E TPAO*Uld
+fuels	1 ^E TPUlz
 fugue	1 - TPAOUg
 fugue	1 ^ TPAOUg
 fulcrum	1 - TP*Urplg
@@ -14548,6 +14765,7 @@ gently	1' ^ SKWREpbl
 gentry	1 ^EU SKWRErpbt
 gentry	1' ^EU SKWRErpb
 genus	1 ^U SKWRAOEpbs
+geo	1 ^O SKWRE
 gerbil	1 - SKWRErbl
 gerbil	1 ^ SKWRErbl
 gerbil	1' ^EU SKWRErbl
@@ -14604,6 +14822,9 @@ ghosts	1' ^ TKPWOs
 ghoul	1 - TKPWAOUl
 ghoul	1 ^ TKPWAOUl
 ghoulish	1 ^EU TKPWAOUrbl
+giant	1 ^A SKWRAOEUpbt
+giants	1 ^A SKWRAOEUpbts
+giants	1' ^A SKWRAOEUpbs
 gibberish	1 ^EU TKPW*EUrb
 gibbon	1 - TKPWEUpb
 gibbon	1 ^ TKPWEUpb
@@ -14647,6 +14868,7 @@ gills	1 ^ TKPWEUls
 gilt	1 - TKPWEUlt
 gilt	1 ^ TKPWEUlt
 gimlet	1 ^E TKPWEUplt
+gimme	1 ^E TKPWEUpl
 gimmick	1 ^EU TKPWEUpblg
 gimmicky	1' ^EU PHEUbg
 gin	1 - SKWREUpb
@@ -14906,6 +15128,7 @@ gobs	1 - TKPWObs
 gobs	1 ^ TKPWObs
 god	1 - TKPWOd
 god	1 ^ TKPWOd
+goddamn	1 ^A TKPWOpld
 goddess	1 ^E TKPWOsd
 godless	1 ^E TKPWOlsd
 godly	1 - TKPWOld
@@ -14917,6 +15140,8 @@ goes	1 ^ TKPWO*Es
 goggle	1 - TKPWOlg
 goggle	1 ^ TKPWOlg
 goggle	1' ^E TKPWOlg
+going	1 ^EU TKPWOpbg
+going	2 ^EU TKPWOpb
 goiter	1 - TKPWOEUrt
 goiter	1 ^ TKPWOEUrt
 goiter	1' ^ TKPWOEUrt
@@ -15230,6 +15455,7 @@ gravest	1 ^E TKPWRAft
 gravy	1 ^EU TKPWRAEUf
 gray	1 - TKPWRAEU
 gray	1 ^ TKPWRAEU
+grayish	1 ^EU TKPWRArb
 graze	1 - TKPWRAEUz
 graze	1 ^ TKPWRAEUz
 grazer	1 - TKPWRAEUrz
@@ -15446,6 +15672,7 @@ grubby	1 ^EU TKPWRUb
 grudge	1 - TKPWRUpblg
 grudge	1 ^ TKPWRUpblg
 grudges	1 ^E TKPWRUpblgz
+gruel	1 ^E TKPWRUl
 gruesome	1 - TKPWRAO*Upls
 gruesome	1 ^ TKPWRAO*Upls
 gruesome	1' ^O TKPWRAO*Upls
@@ -15475,6 +15702,7 @@ guarded	2 ^E TKPWArd
 guarding	1 ^EU TKPWArpbgd
 guardrail	1 ^A TKPWArld
 guardrail	1' ^A TKPWArl
+guardrails	1' ^A TKPWArlz
 guards	1 - TKPWArdz
 guards	1 ^ TKPWArdz
 guards	1' - TKPWArz
@@ -15677,6 +15905,7 @@ hair	1 ^ HA*EUr
 haircut	1 ^U HA*EUrbgt
 haircuts	1 ^U HA*EUrbgts
 hairdo	1 ^O HA*EUrd
+hairdresser	1' ^E HA*EUrs
 hairiness	1 ^E HA*EUrpbs
 hairline	1 ^EU HA*EUrpbl
 hairs	1 - HA*EUrs
@@ -16044,6 +16273,7 @@ heard	1 - HAErd
 heard	1 ^ HAErd
 hearers	1 - HAErs
 hearers	1 ^ HAErs
+hearers	1' ^ HAErz
 hearing	1 ^EU HAErpbg
 hears	1 - HAErs
 hears	1 ^ HAErs
@@ -16272,6 +16502,7 @@ hero	1 ^O HEr
 hero	2 ^O HAOEr
 heroes	1 ^O HErz
 heroes	2 ^O HAOErz
+heroic	1' ^EU RObg
 heron	1 - HErpb
 heron	1 ^ HErpb
 heron	1' ^O HErpb
@@ -16379,6 +16610,7 @@ hinder	1 ^ HEUrpbd
 hinder	1' - HEUrpb
 hinder	1' ^ HEUrpb
 hinder	1' ^ HEUrpbd
+hindquarter	2' ^A HAO*EUrpbg
 hindsight	1 ^EU HAOEUfpbtd
 hindsight	1' ^EU HAOEUfpbt
 hindsight	2 ^EU HAOEUfpbt
@@ -16648,6 +16880,7 @@ horror	1 ^ HOr
 horror	1' ^ HOr
 horrors	1 - HOrs
 horrors	1 ^ HOrs
+horrors	1' ^ HOrz
 horse	1 - HOErs
 horse	1 ^ HOErs
 horses	1 ^E HOrsz
@@ -16705,6 +16938,7 @@ hour	1 - HOUr
 hour	1 ^ HOUr
 hourly	1 - HOUrl
 hourly	1 ^ HOUrl
+hours	1 ^ HOrz
 hours	2 - HOUrs
 hours	2 ^ HOUrs
 house	1 - HOUs
@@ -16985,6 +17219,7 @@ icons	1 ^O AOEUpbgz
 icy	1 ^EU AOEUs
 id	1 - EUd
 id	1 ^ EUd
+idea	1 ^A TKE
 ideal	1 ^ TKAEl
 ideal	1' ^EU TKAEl
 idealist	1 ^EU TKAEflt
@@ -16993,6 +17228,7 @@ ideally	1 ^ TKAEl
 ideally	1' ^EU TKAEl
 ideals	1 ^ TKAEls
 ideals	1' ^EU TKAEls
+ideas	1 ^A TKEz
 idle	1 - AOEUld
 idle	1 ^ AOEUld
 idle	1' ^E AOEUld
@@ -17116,6 +17352,7 @@ impetus	1 KPW TUs
 impinge	1 KPW EUpbg
 impinges	1 KPW^E EUpbgz
 impinging	1 KPW^EU EUpbg
+impious	1 KPW^O AOEUs
 impish	1 KPW EUrb
 implant	1 KPW HRApbt
 implant	2 KPW HRApbt
@@ -17146,6 +17383,7 @@ implore	1 KPW HROEr
 imploring	1 KPW^EU HROrpbg
 implosion	1 KPW HROEgs
 imply	1 KPW HRAOEU
+implying	1 KPW^EU HRAOEUpbg
 impolitic	1 KPW^EU HREUbgt
 import	1 KPW Ort
 import	2 KPW Ort
@@ -17206,6 +17444,8 @@ imprison	1 KPW REUpbz
 imprison	1' KPW^O REUpbz
 imprisons	1 KPW REUpbz
 imprisons	1' KPW^O REUpbz
+improbable	1 KPW^A RObl
+improbably	1 KPW^A RObl
 impromptu	1 KPW^U ROplt
 improper	1 KPW ROrp
 improper	1' KPW^ ROrp
@@ -17245,7 +17485,7 @@ incense	1 ^EU STPHEpbs
 incense	2 ^E EUpbs
 inception	1 ^EU STPHEpgs
 incessant	1 ^EU STPHEpbts
-incest	1 ^E EUfpbts
+incest	1 ^E EUfpbt
 inch	1 - EUfrpb
 inch	1 ^ EUfrpb
 inches	1 ^E EUfrpbz
@@ -17716,8 +17956,10 @@ intruder	1' SPW^ RAOUrd
 intruding	1 SPW^EU RAOUpbgd
 intrusion	1 SPW RAOUgs
 intrusive	1 SPW^EU RAOUfs
+intuit	1 SPW^EU Ut
 intuition	1 SPW EUgs
 intuition	1' SPW WEUgs
+inundate	1 ^A EUpbtd
 inure	1 ^EU TPHAOUr
 invade	1 ^EU STPHRAEUd
 invader	1 ^EU STPHRAEUrd
@@ -17740,6 +17982,10 @@ invests	1' ^EU STPHREs
 invite	1 ^EU STPHRAOEUt
 invoke	1 ^EU STPHROEbg
 involve	1 ^EU STPHROfl
+ion	1 ^O AOEUpb
+ion	2 ^O AOEUpb
+ions	1 ^O AOEUpbz
+ions	2 ^O AOEUpbz
 irate	1 ^ RAEUt
 irate	1' ^EU RAEUt
 ire	1 - AOEUr
@@ -17897,6 +18143,7 @@ jerks	1 - SKWRErbgs
 jerks	1 ^ SKWRErbgs
 jerky	1 ^EU SKWRErbg
 jersey	1 ^E SKWRErz
+jerseys	1 ^E SKWRErz
 jest	1 - SKWREft
 jest	1 ^ SKWREft
 jester	1 - SKWREfrt
@@ -18016,6 +18263,8 @@ journal	1 ^ SKWROUrpbl
 journal	1' ^A SKWROUrpbl
 journalist	1 ^EU SKWROUfrpblt
 journalist	2 ^EU SKWROUfrpblt
+journalists	1' ^EU SKWROUrpbls
+journalists	2' ^EU SKWROUrpbls
 journey	1 ^E SKWROUrpb
 journeyed	1 ^E SKWROUrpbd
 journeys	1 ^E SKWROUrpb
@@ -18032,6 +18281,7 @@ joyful	1' ^U SKWROEUfl
 joyfully	1 - SKWROEUfl
 joyfully	1 ^ SKWROEUfl
 joyfully	1' ^U SKWROEUfl
+joyous	1 ^EU SKWROs
 joyride	1 ^EU SKWROEUrd
 joys	1 - SKWROEUs
 joys	1 ^ SKWROEUs
@@ -18114,6 +18364,7 @@ juror	1 ^ SKWRUr
 juror	1' ^ SKWRUr
 jurors	1 - SKWRUrs
 jurors	1 ^ SKWRUrs
+jurors	1' ^ SKWRUrz
 jury	1 ^EU SKWRUr
 just	1 - SKWRUft
 just	1 ^ SKWRUft
@@ -18132,10 +18383,13 @@ jute	1 ^ SKWRAOUt
 kabbalah	1' ^A PWAUl
 kale	1 - KAEUl
 kale	1 ^ KAEUl
+kaolin	2 ^O KApbl
 kappa	1 ^A KAp
 karat	1 ^A KArt
+karate	1' ^E RAUt
 karma	1 ^A KArpl
 kasha	1 ^A KAUrb
+kayak	1 ^EU KAbg
 kebab	1 ^E KPWAUb
 kebab	1' ^ PWAUb
 keel	1 - KAOEl
@@ -18157,6 +18411,8 @@ keg	1 - KEg
 keg	1 ^ KEg
 kegs	1 - KEgs
 kegs	1 ^ KEgs
+keister	1 ^EU KEfrt
+keister	1' ^EU KErs
 kelp	1 - KEpl
 kelp	1 ^ KEpl
 kennel	1 - KEpbl
@@ -18193,6 +18449,7 @@ key	1 ^ KAOE
 keyboard	1 ^O KAOErbd
 keyed	1 - KAO*EUd
 keyed	1 ^ KAO*EUd
+keying	1 ^EU KEpbg
 keynote	1 ^O KAOEpbt
 keypad	1 ^A KAOEpd
 keys	1 - KAOEs
@@ -18305,6 +18562,8 @@ kings	1 ^ KEUpbgs
 kinks	1 - K*EUpbgs
 kinks	1 ^ K*EUpbgs
 kinky	1 ^EU K*EUpbg
+kiosk	1 ^O KAOEfbg
+kiosks	1 ^O KAOEbgs
 kip	1 - KEUp
 kip	1 ^ KEUp
 kismet	1 ^E KEUpltz
@@ -18417,6 +18676,7 @@ knuckled	1 - TPHUblgd
 knuckled	1 ^ TPHUblgd
 knuckled	1' ^E TPHUblgd
 koala	1' ^A AUl
+kobe	1 ^E KOEb
 kona	1 ^A KOEpb
 kook	1 - KAObg
 kook	1 ^ KAObg
@@ -18437,6 +18697,7 @@ kristin	1' - KREUpbs
 kristin	1' ^ KREUpbs
 kristin	1' ^EU KREUfpbt
 krona	1 ^A KROEpb
+krone	1 ^E KROEpb
 kroner	1 - KROErpb
 kroner	1 ^ KROErpb
 kroner	1' ^ KROErpb
@@ -18709,6 +18970,7 @@ lathe	1 - HRA*EUt
 lathe	1 ^ HRA*EUt
 latrine	1 ^A THRAOEpb
 latrine	1' ^ TRAOEpb
+latte	1 ^E HRAUt
 latter	1 - HRArt
 latter	1 ^ HRArt
 latter	1' ^ HRArt
@@ -18777,12 +19039,18 @@ lay	1 ^ HRAEU
 layer	1 - HRAEUr
 layer	1 ^ HRAEUr
 layered	1 ^ HRAEUrd
+layers	1 ^ HRArz
+laying	1 ^EU HRApbg
 layman	1 - HRAEUpbl
 layman	1 ^ HRAEUpbl
 layman	1' ^A HRAEUpbl
 laymen	1 - HRAEUpbl
 laymen	1 ^ HRAEUpbl
 laymen	1' ^E HRAEUpbl
+layoff	1 ^EU HRAf
+layoffs	1 ^EU HRAfs
+layout	1 ^EU HRAt
+layouts	1 ^EU HRAts
 layperson	1 ^A PHRErpbs
 layperson	1' ^ PErpbs
 layperson	1'' ^O PErpbs
@@ -18837,6 +19105,7 @@ leanest	1 ^E HRAEfpbt
 leaning	1 ^EU HRAEpbg
 leans	1 - HRAEpbs
 leans	1 ^ HRAEpbs
+leant	1 ^A HREpbt
 leap	1 - HRAEp
 leap	1 ^ HRAEp
 leaping	1 ^EU HRAEpbg
@@ -18909,6 +19178,7 @@ left	1 - HREft
 left	1 ^ HREft
 lefties	1 ^EU HREftz
 leftist	1 ^EU HREft
+leftists	1' ^EU HREfts
 lefty	1 ^EU HREft
 leg	1 - HREg
 leg	1 ^ HREg
@@ -19073,6 +19343,7 @@ lever	2 ^ HRAOEfr
 lever	2' ^ HRAOEfr
 leverage	1 ^A HREfrpblg
 leverage	3 ^A HRAOEfrpblg
+leviathan	1' ^A SRAO*EUpbt
 levied	1 ^EU HREfd
 levies	1 ^EU HREfz
 levy	1 ^EU HREf
@@ -19083,8 +19354,10 @@ lex	1 - HREbgs
 lex	1 ^ HREbgs
 li	1 - HRAOE
 li	1 ^ HRAOE
+liable	1 ^A HRAOEUbl
 liaison	1' ^O A*EUpbz
 liaisons	1' ^O A*EUpbsz
+liars	1 ^ HRAOEUrz
 lib	1 - HREUb
 lib	1 ^ HREUb
 libel	1 - HRAOEUbl
@@ -19095,6 +19368,7 @@ liberal	1 ^ HREUrbl
 liberty	1 ^EU HREUrbt
 libido	1' ^O PWAOEd
 libra	1 ^A HRAOErb
+library	1 ^EU HRAOEUrb
 librettist	1' ^EU PWREft
 libretto	1' ^O PWREt
 libretto	2' ^O PWREt
@@ -19137,6 +19411,7 @@ lieutenant	1' ^ TEpbt
 lieutenant	1'' ^A TEpbt
 lieutenants	1' ^EU THREpbs
 lieutenants	1'' ^ TEpbs
+lieutenants	1'' ^A TEpbts
 lieutenants	1''' ^A TEpbs
 life	1 - HRAOEUf
 life	1 ^ HRAOEUf
@@ -19237,6 +19512,7 @@ linger	2 - HREUrpbg
 linger	2 ^ HREUrpbg
 linger	2' ^ HREUrpbg
 lingo	1 ^O HREUpbg
+linguine	1' ^E TKPWAOEpb
 linguistic	1' ^EU TKPWEUfbgt
 linguistics	1' ^EU TKPWEUfbgts
 lining	1 ^EU HRAOEUpbg
@@ -19257,6 +19533,8 @@ lintel	1 ^ HREUpblt
 lintel	1' - HREUpbl
 lintel	1' ^ HREUpbl
 lintel	1' ^E HREUpblt
+lion	1 ^O HRAOEUpb
+lions	1 ^O HRAOEUpbz
 lip	1 - HREUp
 lip	1 ^ HREUp
 lipid	1 ^EU HRAOEUpd
@@ -19559,6 +19837,7 @@ lousy	1 ^EU HROUz
 lout	1 - HROUt
 lout	1 ^ HROUt
 louvre	1 ^E HRAOUfr
+lovastatin	1' ^A SRAfpbt
 love	1 - HROf
 love	1 ^ HROf
 lover	1 - HROfr
@@ -19578,9 +19857,11 @@ lox	1 - HRObgs
 lox	1 ^ HRObgs
 lox	2 - HRObgs
 lox	2 ^ HRObgs
+loyal	1 ^EU HROl
 lozenge	1 - HROpbgz
 lozenge	1 ^ HROpbgz
 lozenge	1' ^E HROpbgz
+luau	1 ^A HRU
 lube	1 - HRAOUb
 lube	1 ^ HRAOUb
 lubricious	1' ^EU PWREUrbs
@@ -19683,6 +19964,7 @@ lute	1 - HRAOUt
 lute	1 ^ HRAOUt
 lye	1 - HRAO*EU
 lye	1 ^ HRAO*EU
+lying	1 ^EU HRAOEUpbg
 lymph	1 - HR*EUfpl
 lymph	1 ^ HR*EUfpl
 lymphoid	1 ^O HR*EUfpld
@@ -19714,6 +19996,8 @@ macaw	1 ^A KPHAU
 macaw	1' ^ KAU
 mace	1 - PHAEUs
 mace	1 ^ PHAEUs
+machete	1' ^E SHEt
+machete	2' ^E KHEt
 machine	1 ^A SPHAOEpb
 machine	1' ^ SHAOEpb
 machinery	1' ^EU SHAOErpb
@@ -19724,6 +20008,7 @@ machismo	2' ^O KHEUplz
 macho	1 ^O PHAUfp
 mackerel	1 - PHArblg
 mackerel	1 ^ PHArblg
+macrame	1 ^E PHArpblg
 macro	1 ^O PHArbg
 mad	1 - PHAd
 mad	1 ^ PHAd
@@ -19828,6 +20113,8 @@ malice	2 ^EU PHAls
 malicious	1' ^EU HREUrbs
 malign	1 ^A PHRAOEUpb
 malign	1' ^ HRAOEUpb
+malignancy	1' ^EU HREUpbgs
+malignant	1'' ^A HREUpbgt
 mall	1 - PHAUl
 mall	1 ^ PHAUl
 mallard	1 - PHArld
@@ -19894,6 +20181,7 @@ mangled	1 ^ PHApblgd
 mangled	1' ^E PHApblgd
 mango	1 ^O PHApbg
 mangy	1 ^EU PHApbg
+maniacal	1' ^A TPHAOEUblg
 manic	1 ^EU PHA*pbg
 manila	1' ^A TPHEUl
 mankind	1 ^EU PHA*pbgd
@@ -20188,6 +20476,10 @@ maxim	1' ^EU PHApblgs
 maxima	1 ^A PHApblgs
 may	1 - PHAEU
 may	1 ^ PHAEU
+maybe	1 ^E PHAEUb
+mayo	1 ^EU PHA
+mayoral	1 ^ PHArl
+mayors	1 ^ PHArz
 maze	1 - PHAEUz
 maze	1 ^ PHAEUz
 me	1 - PHE
@@ -20423,6 +20715,7 @@ metal	1' ^A PHElt
 metallic	1' ^EU TA*lg
 mete	1 - PHAOEt
 mete	1 ^ PHAOEt
+mete	2 ^E PHEt
 meter	1 - PHAOErt
 meter	1 ^ PHAOErt
 meter	1' ^ PHAOErt
@@ -20447,6 +20740,7 @@ mettle	1 ^ PHElt
 mettle	1' ^E PHElt
 mew	1 - PHAOU
 mew	1 ^ PHAOU
+mezzanine	1 ^EU PHEpbz
 mezzo	1 ^O PHEz
 miasma	1' ^A Aplz
 miasma	2' ^A Aplz
@@ -20491,6 +20785,7 @@ mightily	1 - PHAO*EUlt
 mightily	1 ^ PHAO*EUlt
 mightily	1' ^EU PHAO*EUlt
 mighty	1 ^EU PHAO*EUt
+mignon	1' ^O PHEUpbg
 migraine	1 ^A PHAOEUrpbg
 migrant	1 - PHAOEUrpbgt
 migrant	1 ^ PHAOEUrpbgt
@@ -20541,6 +20836,8 @@ mill	1 - PHEUl
 mill	1 ^ PHEUl
 millet	1 ^E PHEUlt
 milli	1 ^EU PHEUl
+milliliter	1 ^EU PHEUrlt
+millilitre	1 ^EU PHEUrlt
 milling	1 ^EU PHEUpblg
 mills	1 - PHEUls
 mills	1 ^ PHEUls
@@ -20626,8 +20923,10 @@ mire	1 ^ PHAOEUr
 mirror	1 - PHEUr
 mirror	1 ^ PHEUr
 mirror	1' ^ PHEUr
+mirroring	1 ^EU PHEUrpbg
 mirrors	1 - PHEUrs
 mirrors	1 ^ PHEUrs
+mirrors	1' ^ PHEUrz
 mirth	1 - PH*EUrt
 mirth	1 ^ PH*EUrt
 miscarriage	1' ^EU SKArpblg
@@ -20635,6 +20934,7 @@ misconception	1' ^O STKPHEpgs
 misconduct	1' ^U SKOpbgtd
 misconstrue	1' ^O STKPHRAO*U
 misconstrue	1'' ^O STKPHRAO*U
+misdeed	1 ^E PHEUsd
 miser	1 - PHAOEUrz
 miser	1 ^ PHAOEUrz
 miser	1' ^ PHAOEUrz
@@ -21072,6 +21372,8 @@ mortgage	2 ^A PHOrpblg
 mortician	1 ^O TPHREUgs
 mortician	1' ^ TREUgs
 mortis	1 ^EU PHOrts
+mosaic	1' ^EU SAbg
+mosaics	1' ^EU SAbgs
 mosey	1 ^E PHOEz
 mosh	1 - PHOrb
 mosh	1 ^ PHOrb
@@ -21126,6 +21428,8 @@ motor	1 - PHOErt
 motor	1 ^ PHOErt
 motor	1' ^ PHOErt
 motorist	1 ^EU PHOEfrt
+motorists	1' ^EU PHOErts
+motorists	2' ^EU PHOErts
 mottled	1 - PHOltd
 mottled	1 ^ PHOltd
 mottled	1' ^E PHOltd
@@ -21158,6 +21462,8 @@ mountains	1 ^ PHOUpbtz
 mountains	1' - PHOUpbz
 mountains	1' ^ PHOUpbz
 mountains	1' ^A PHOUpbtz
+mountainside	1' ^EU PHOUpbsd
+mountaintop	1' ^O PHOUpbt
 mounted	1 ^E PHOUpbtd
 mounted	2 ^E PHOUpbtd
 mounted	3 ^E PHOUpbd
@@ -21262,6 +21568,7 @@ mulling	1 ^EU PHUpblg
 mulls	1 - PHUls
 mulls	1 ^ PHUls
 multi	1 ^EU PHUlt
+multiline	1' ^EU PHUpbl
 mum	1 - PHUpl
 mum	1 ^ PHUpl
 mummy	1 ^EU PHUpl
@@ -21293,6 +21600,7 @@ murder	1 ^ PHUrd
 murder	1' - PHUr
 murder	1' ^ PHUr
 murder	1' ^ PHUrd
+murdering	1' ^EU PHUrpbg
 murderous	1 ^O PHUrsd
 murderous	1' ^O PHUrs
 murders	1' - PHUrs
@@ -21316,6 +21624,8 @@ muse	1 - PHAOUs
 muse	1 ^ PHAOUs
 muses	1 ^E PHAOUz
 muses	2 ^E PHAOUz
+museum	1' ^U SEpl
+museums	1' ^U SEplz
 mush	1 - PHUrb
 mush	1 ^ PHUrb
 mushroom	1 - PHUrpbl
@@ -21385,8 +21695,10 @@ muzzled	1 ^ PHUldz
 muzzled	1' ^E PHUldz
 my	1 - PHAOEU
 my	1 ^ PHAOEU
+myelin	1 ^E PHAOEUpbl
 mylar	1 ^A PHAO*EUrl
 myopic	1' ^EU Opbg
+myosin	1 ^O PHAOEUpbs
 myrrh	1 - PHEUr
 myrrh	1 ^ PHEUr
 myrtle	1 - PHEUrlt
@@ -21599,6 +21911,7 @@ nel	1 - TPHEl
 nel	1 ^ TPHEl
 nelly	1 - TPHEl
 nelly	1 ^ TPHEl
+neon	1 ^O TPHEpb
 nephron	1 - TPHEfrpb
 nephron	1 ^ TPHEfrpb
 nephron	1' ^O TPHEfrpb
@@ -21702,6 +22015,8 @@ next	1 ^ TPHEbgs
 next	2 - TPHEbgs
 next	2 ^ TPHEbgs
 nexus	1 ^U TPHEbgs
+niacin	1 ^A TPHAOEUpbs
+niacin	2 ^A TPHAOEUpbs
 nib	1 - TPHEUb
 nib	1 ^ TPHEUb
 nibble	1 - TPHEUbl
@@ -21717,7 +22032,7 @@ nice	2 ^ TPHAOEs
 nicer	1 - TPHAOEUrs
 nicer	1 ^ TPHAOEUrs
 nicer	1' ^ TPHAOEUrs
-nicest	1 ^E TPHAOEUfts
+nicest	1 ^E TPHAOEUft
 niche	1 - TPHEUfp
 niche	1 ^ TPHEUfp
 niches	1 ^E TPHEUfpz
@@ -21748,8 +22063,10 @@ nightly	1 ^ TPHAO*EUlt
 nights	1 - TPHAO*EUts
 nights	1 ^ TPHAO*EUts
 nightshirt	1 ^ TPHAO*EUfrpt
+nighttime	1 ^EU TPHAO*EUplt
 nil	1 - TPHEUl
 nil	1 ^ TPHEUl
+nincompoop	1 ^O TPH*EUfrpbg
 nine	1 - TPHAOEUpb
 nine	1 ^ TPHAOEUpb
 ninja	1 ^A TPHEUpbg
@@ -21835,6 +22152,7 @@ nonsense	1 ^ TPHOpbs
 nonsense	1' ^E TPHOpbs
 nonstop	1 ^O STPHOp
 nontoxic	1' ^EU TObgs
+nonviolent	1' ^O SRAOEUpblt
 nonvolatile	1' ^A SROlt
 noodle	1 - TPHAOld
 noodle	1 ^ TPHAOld
@@ -21925,6 +22243,7 @@ novel	1 - TPHOfl
 novel	1 ^ TPHOfl
 novel	1' ^E TPHOfl
 novelist	1 ^EU TPHOflt
+novelists	1' ^EU TPHOfls
 novella	1' ^A SREl
 novelty	1 ^EU TPHOflt
 novice	1 ^EU TPHOfs
@@ -21935,8 +22254,10 @@ nozzle	1 ^ TPHOlz
 nozzle	1' ^E TPHOlz
 nu	1 - TPHU
 nu	1 ^ TPHU
+nuance	1 ^A TPHUpbs
 nub	1 - TPHUb
 nub	1 ^ TPHUb
+nucleic	1' ^EU KHREbg
 nude	1 - TPHAOUd
 nude	1 ^ TPHAOUd
 nudge	1 - TPHUpblg
@@ -22022,6 +22343,7 @@ obey	1 ^ PWA*EU
 obey	1' ^O PWA*EU
 obeyed	1 ^ PWAO*EUd
 obeyed	1' ^O PWAO*EUd
+obeying	1 ^EU PWEpbg
 object	2 ^ SKPWREbgt
 object	2' ^O SKPWREbgt
 objected	1 ^E SKPWREbgtd
@@ -22346,6 +22668,7 @@ opaque	1' ^O PAEUbg
 open	1 - OEpb
 open	1 ^ OEpb
 open	1' ^E OEpb
+openness	1 ^E OEpbs
 openness	2 ^E OEpbs
 opens	1 - OEpbz
 opens	1 ^ OEpbz
@@ -22365,6 +22688,7 @@ opponent	1 ^ POEpbt
 opponent	1' ^E POEpbt
 opponent	1' ^O POEpbt
 opponents	1' ^ POEpbs
+opponents	1' ^E POEpbts
 opponents	1'' ^E POEpbs
 opponents	1'' ^O POEpbs
 oppose	1 ^ POEs
@@ -22441,6 +22765,8 @@ order	1 ^ Ord
 order	1' - Or
 order	1' ^ Or
 order	1' ^ Ord
+ordering	1' ^EU Orpbg
+orderliness	1' ^E Orpbls
 orderly	1 - Orld
 orderly	1 ^ Orld
 orderly	1' - Orl
@@ -22452,6 +22778,7 @@ ordinance	1' - Orpbs
 ordinance	1' ^ Orpbs
 ordnance	1' - Orpbs
 ordnance	1' ^ Orpbs
+ordnance	1' ^A Orpbsd
 ordnance	1'' ^A Orpbs
 ore	1 - OEr
 ore	1 ^ OEr
@@ -22508,6 +22835,7 @@ our	1 - OUr
 our	1 ^ OUr
 our	3 - OUr
 our	3 ^ OUr
+ours	1 ^ Orz
 ours	2 - OUrs
 ours	2 ^ OUrs
 ours	3 - OUrs
@@ -22578,6 +22906,8 @@ over	1 ^ OEfr
 over	1' ^ OEfr
 overall	1 ^A OEfrl
 overdo	1 ^O OEfrd
+overdraw	1' ^A OEfr
+overdrive	1' ^EU OEfrb
 overdue	1 ^U OEfrd
 overhung	1 ^ SHRUpbg
 overhung	1' ^ HRUpbg
@@ -22587,9 +22917,13 @@ overly	1 - OEfrl
 overly	1 ^ OEfrl
 overly	1' ^ OEfrl
 overnight	1 ^EU OEfrpbt
+override	1 ^EU OEfrd
+overrule	1 ^U OEfrl
+overrun	1 ^U OEfrpb
 oversaw	1 ^A OEfrs
 oversee	1 ^E OEfrs
 oversight	1 ^EU OEfrt
+overstate	1 ^A OEfrt
 overt	1 ^ SRErt
 overt	1' ^O SRErt
 overt	2 - OEfrt
@@ -22677,6 +23011,7 @@ padlock	1 ^O PA*lgd
 padre	1 ^E PArd
 pads	1 - PAdz
 pads	1 ^ PAdz
+paean	1 ^E PApb
 pagan	1 - PAEUpbg
 pagan	1 ^ PAEUpbg
 pagan	1' ^A PAEUpbg
@@ -22799,6 +23134,8 @@ panther	1 ^ PA*rpbt
 panther	1' ^ PA*rpbt
 panties	1 ^EU PApbtz
 panting	1 ^EU PApbgt
+pantomime	1 ^EU PApblt
+pantomime	1' ^EU PApbl
 pantry	1 ^EU PArpbt
 pantry	1' ^EU PArpb
 pants	1 - PApbts
@@ -22813,6 +23150,7 @@ pap	1 ^ PAp
 papal	1 - PAEUpl
 papal	1 ^ PAEUpl
 papal	1' ^A PAEUpl
+papaya	1' ^EU PA
 paper	1 - PAEUrp
 paper	1 ^ PAEUrp
 paper	1' ^ PAEUrp
@@ -22829,6 +23167,7 @@ parade	1' ^ RAEUd
 paraffin	1 ^A PA*frpb
 parallax	1 ^A PArblgs
 parallel	1 ^E PArl
+parallels	1 ^E PArlz
 paralyze	1 ^EU PArlz
 parameter	1' ^E RArplt
 paramount	1 ^O PArpblt
@@ -22870,6 +23209,8 @@ parents	1' ^ PArpbs
 parents	1' ^E PArpbts
 parents	1'' ^E PArpbs
 parfait	1 ^A TPRA*EU
+pariah	1' ^A RAOEU
+parietal	1' ^E RAOEUlt
 paring	1 ^EU PArpbg
 parish	1 ^EU PA*rb
 parish	2 ^EU PA*rb
@@ -22917,6 +23258,7 @@ partake	1 ^A TPRAEUbg
 partake	1' ^ TRAEUbg
 parte	1 - PArt
 parte	1 ^ PArt
+parte	2 ^E PArt
 parted	1 ^E PArtd
 partial	1 - PA*rbl
 partial	1 ^ PA*rbl
@@ -23110,11 +23452,14 @@ pax	1 - PAbgs
 pax	1 ^ PAbgs
 pay	1 - PAEU
 pay	1 ^ PAEU
+payable	1 ^EU PAbl
 paycheck	1 ^E PAEUfpbg
 paychecks	1 ^E PAEUfpbgs
 payday	1 ^A PAEUd
 payer	1 - PAEUr
 payer	1 ^ PAEUr
+payers	1 ^ PArz
+paying	1 ^EU PApbg
 payload	1 ^O PAEUld
 payloads	1 ^O PAEUldz
 payment	1 - PAEUpblt
@@ -23123,6 +23468,8 @@ payment	1' ^E PAEUpblt
 payments	1' - PAEUpbls
 payments	1' ^ PAEUpbls
 payments	1'' ^E PAEUpbls
+payoff	1 ^EU PAf
+payoffs	1 ^EU PAfs
 payroll	1 ^O PAEUrl
 pays	1 - PAEUs
 pays	1 ^ PAEUs
@@ -23216,6 +23563,7 @@ pee	1 - PAOE
 pee	1 ^ PAOE
 peed	1 - PAOEd
 peed	1 ^ PAOEd
+peeing	1 ^E PEpbg
 peek	1 - PAOEbg
 peek	1 ^ PAOEbg
 peeking	1 ^EU PAOEpbg
@@ -23306,6 +23654,7 @@ pent	1 ^ PEpbt
 pentane	1 ^A PEpbt
 penultimate	1' ^A TPHUplt
 penultimate	1'' ^A TPHUplt
+peon	1 ^O PEpb
 pep	1 - PEp
 pep	1 ^ PEp
 pepper	1 - PErp
@@ -23565,6 +23914,7 @@ phenol	2 - TPEpbl
 phenol	2 ^ TPEpbl
 phenol	2' ^O TPEpbl
 phenomena	1' ^A TPHOpbl
+phenomenon	1' ^O TPHOpbl
 pheromone	1 ^O TPErpbl
 phew	1 - TPAOU
 phew	1 ^ TPAOU
@@ -23618,6 +23968,7 @@ physique	1 ^EU STPAOEbg
 physique	1' ^ SAOEbg
 pi	1 - PAOEU
 pi	1 ^ PAOEU
+pia	1 ^A PAOE
 pianist	1' ^EU Afpbt
 pianist	2' ^EU AUfpbt
 piano	1' ^O Apb
@@ -23755,6 +24106,7 @@ pints	1 - PAOEUpbts
 pints	1 ^ PAOEUpbts
 pints	1' - PAOEUpbts
 pints	1' ^ PAOEUpbts
+pious	1 ^O PAOEUs
 pip	1 - PEUp
 pip	1 ^ PEUp
 pipe	1 - PAOEUp
@@ -23939,13 +24291,17 @@ played	1 - PHRAEUd
 played	1 ^ PHRAEUd
 player	1 - PHRAEUr
 player	1 ^ PHRAEUr
+players	1 ^ PHRArz
 playful	1 - PHRAEUfl
 playful	1 ^ PHRAEUfl
 playful	1' ^U PHRAEUfl
 playground	2 ^O PHRAEUrpbg
 playgrounds	1' ^O PHRAEUrpbg
 playgrounds	2 ^O PHRAEUrpbg
+playing	1 ^EU PHRApbg
 playlist	1 ^EU PHRAEUflt
+playoff	1 ^EU PHRAf
+playoffs	1 ^EU PHRAfs
 playpen	1 ^E PHRAEUpb
 plays	1 - PHRAEUs
 plays	1 ^ PHRAEUs
@@ -23977,6 +24333,7 @@ pleasure	1 ^ PHRAErpblg
 pleasure	1' ^ PHRAErpblg
 pleat	1 - PHRAEt
 pleat	1 ^ PHRAEt
+plebeian	1' ^EU PWEpb
 pled	1 - PHREd
 pled	1 ^ PHREd
 pledge	1 - PHREpblg
@@ -23998,10 +24355,13 @@ pleural	1' ^A PHRAOUrl
 plex	1 - PHREbgs
 plex	1 ^ PHREbgs
 plexus	1 ^U PHREbgs
+pliable	1 ^A PHRAOEUbl
+pliant	1 ^A PHRAOEUpbt
 plied	1 - PHRAO*EUd
 plied	1 ^ PHRAO*EUd
 plier	1 - PHRAO*EUr
 plier	1 ^ PHRAO*EUr
+pliers	1 ^ PHRAOEUrz
 plies	1 - PHRAO*EUs
 plies	1 ^ PHRAO*EUs
 plight	1 - PHRAO*EUt
@@ -24096,6 +24456,7 @@ plush	1 - PHRUrb
 plush	1 ^ PHRUrb
 ply	1 - PHRAOEU
 ply	1 ^ PHRAOEU
+plying	1 ^EU PHRAOEUpbg
 pneumatic	1' ^EU PHAbgt
 pneumo	1 ^O TPHAOUpl
 pneumonic	1' ^EU PHO*pbg
@@ -24116,7 +24477,11 @@ podge	1 - POpblg
 podge	1 ^ POpblg
 pods	1 - POdz
 pods	1 ^ POdz
+poem	1 ^E POpl
+poems	1 ^E POplz
+poet	1 ^E POt
 poetic	1' ^EU Ebgt
+poets	1 ^E POts
 pogo	1 ^O POEg
 pogrom	1 ^O TKPWROpl
 pogrom	1' ^ TKPWROpl
@@ -24349,10 +24714,14 @@ portray	1 ^O TPRAEU
 portray	1' ^ TRAEU
 portray	1' ^O PRAEU
 portray	1'' ^ RAEU
+portrayal	1' ^EU TRAl
+portrayal	1'' ^EU RAl
 portrayed	1 ^O TPRAEUd
 portrayed	1' ^ TRAEUd
 portrayed	1' ^O PRAEUd
 portrayed	1'' ^ RAEUd
+portraying	1' ^EU TRApbg
+portraying	1'' ^EU RApbg
 portrays	1 ^O TPRAEUs
 portrays	1' ^ TRAEUs
 portrays	1' ^O PRAEUs
@@ -24376,6 +24745,7 @@ position	1' ^ SEUgs
 positions	1 ^O SPEUrpbz
 positions	1' ^ SEUrpbz
 positions	1'' ^EU SEUrpbz
+posse	1 ^E POs
 possess	1 ^O SPEs
 possess	1' ^ SEs
 possesses	1' ^E SEsz
@@ -24431,7 +24801,9 @@ posts	1 ^ POfts
 posts	1' - POs
 posts	1' ^ POs
 postscripts	1' ^EU POfrpbgs
+postscripts	2' ^EU POfrpbgs
 postscripts	3 ^EU POfrpbgs
+postscripts	4' ^EU POfrpbgs
 pot	1 - POt
 pot	1 ^ POt
 potash	1 ^A POrbt
@@ -24441,6 +24813,7 @@ potency	1 ^EU POEpbts
 potent	1 - POEpbt
 potent	1 ^ POEpbt
 potent	1' ^E POEpbt
+potentate	1 ^A POEpbt
 potion	1 - POEgs
 potion	1 ^ POEgs
 pots	1 - POts
@@ -24538,6 +24911,8 @@ prayer	2 - PRAEUr
 prayer	2 ^ PRAEUr
 prayers	1 - PRAEUrs
 prayers	1 ^ PRAEUrs
+prayers	2 ^ PRArz
+praying	1 ^EU PRApbg
 prays	1 - PRAEUs
 prays	1 ^ PRAEUs
 preach	1 - PRAEfp
@@ -24623,6 +24998,7 @@ predicts	4 ^E TKPREUbgts
 predicts	4' ^ TKEUbgts
 predominate	1' ^A TKOpblt
 predominate	2' ^A TKOpblt
+preempt	1 ^E PREplt
 preempted	1' ^E Epltd
 preemption	1 ^E PREfrpgs
 preemptive	1' ^EU Efplt
@@ -24650,6 +25026,8 @@ prefrontal	1' ^ TPROpblt
 prefrontal	1' ^E TPROpbl
 prefrontal	1'' ^ TPROpbl
 prefrontal	1'' ^A TPROpblt
+pregnancy	1 ^EU PREpbgs
+pregnant	1' ^A PREpbgt
 prelim	1 ^E PHREUpl
 prelim	1' ^ HREUpl
 prelim	2 ^E PHREUpl
@@ -24684,6 +25062,7 @@ preparing	1' ^EU PArpbg
 preparing	2' ^EU PRArpbg
 prepay	1 ^E PRAEU
 prepay	1' ^ PAEU
+prepaying	1' ^EU PApbg
 prepayment	1 ^E PRAEUpblt
 prepayment	1' ^ PAEUpblt
 prepayment	1'' ^E PAEUpblt
@@ -24807,6 +25186,7 @@ pretenses	1' ^E TEpbsz
 pretension	1 ^E TPREpbgs
 pretension	1' ^ TEpbgs
 pretext	1 ^E PRAOEbgts
+pretrial	1' ^A TRAOEUl
 pretty	1 ^EU PREt
 prevail	1 ^E SPRA*EUl
 prevail	1' ^ SRA*EUl
@@ -24850,6 +25230,7 @@ preyed	1 - PRAO*EUd
 preyed	1 ^ PRAO*EUd
 preyer	1 - PRAO*EUr
 preyer	1 ^ PRAO*EUr
+preying	1 ^EU PREpbg
 preys	1 - PRA*EUs
 preys	1 ^ PRA*EUs
 price	1 - PRAOEUs
@@ -24934,6 +25315,7 @@ prints	1' - PREUpbts
 prints	1' ^ PREUpbts
 priori	1' ^EU Or
 priori	2' ^EU Or
+priors	1 ^ PRAOEUrz
 prismatic	1' ^EU SPHAbgt
 prison	1 - PREUpbz
 prison	1 ^ PREUpbz
@@ -24947,6 +25329,7 @@ pristine	1 ^ PREUfpbt
 pristine	1' - PREUpbs
 pristine	1' ^ PREUpbs
 pristine	1' ^EU PREUfpbt
+prius	1 ^U PRAOEUs
 private	1 ^A PRAOEUft
 privation	1 ^EU SPRAEUgs
 privation	1' ^ SRAEUgs
@@ -24959,6 +25342,7 @@ prizes	1 ^E PRAOEUz
 prizes	2 ^E PRAOEUz
 pro	1 - PRO
 pro	1 ^ PRO
+probable	1 ^A PRObl
 probate	1 ^A PROEbt
 probation	1 ^O PWRAEUgs
 probation	1' ^ PWAEUgs
@@ -25000,6 +25384,7 @@ procession	1 ^O SPREgs
 procession	1' ^ SEgs
 procession	2 ^O SPREgs
 procession	2' ^ SEgs
+processor	1 ^E PROrs
 proclaim	1 ^O KPHRA*EUpl
 proclaim	1' ^ KHRA*EUpl
 proclaiming	1' ^EU KHRA*EUpblg
@@ -25235,6 +25620,7 @@ proponent	1' ^ POEpbt
 proponent	1'' ^E POEpbt
 proponents	1' ^O PROEpbs
 proponents	1'' ^ POEpbs
+proponents	1'' ^E POEpbts
 proponents	1''' ^E POEpbs
 proportion	1 ^O PROrgs
 proportion	1' ^ POrgs
@@ -25253,6 +25639,7 @@ propound	1 ^O PROUpbd
 propound	1' ^ POUpbd
 propounded	1' ^E POUpbd
 propping	1 ^EU PROpbg
+proprietor	1' ^E PRAOEUrt
 props	1 - PROps
 props	1 ^ PROps
 propulsion	1 ^O PRUlgs
@@ -25262,6 +25649,7 @@ prorate	1 ^A PROrt
 proration	1 ^O PRAEUgs
 pros	1 - PROs
 pros	1 ^ PROs
+prosaic	1' ^EU SAbg
 proscribe	1 ^O SKPRAOEUb
 proscribe	1' ^ SKRAOEUb
 proscription	1 ^O SKPREUpgs
@@ -25292,6 +25680,8 @@ prostration	1 ^O STPRAEUgs
 prostration	1' ^ STRAEUgs
 prostration	1' ^O SPRAEUgs
 prostration	1'' ^ SRAEUgs
+protagonists	1'' ^EU TApbgs
+protean	1' ^A TEpb
 protect	1 ^O TPREbgt
 protect	1' ^ TEbgt
 protected	1' ^E TEbgtd
@@ -25407,6 +25797,7 @@ pruner	1' ^ PRAOUrpb
 pruning	1 ^EU PRAOUpbg
 pry	1 - PRAOEU
 pry	1 ^ PRAOEU
+prying	1 ^EU PRAOEUpbg
 psalm	1 - SAUpl
 psalm	1 ^ SAUpl
 psalm	2 - SAUpl
@@ -25420,6 +25811,7 @@ psi	1 - SAOEU
 psi	1 ^ SAOEU
 psych	1 - SAO*EUbg
 psych	1 ^ SAO*EUbg
+psyche	1 ^E SAO*EUbg
 psychic	1 ^EU SAO*EUbg
 psycho	1 ^O SAO*EUbg
 psychosis	1' ^EU KHOEs
@@ -25495,6 +25887,7 @@ punch	1 ^ PUfrpb
 punches	1 ^E PUfrpbz
 punching	1 ^EU PUfrpbg
 punchy	1 ^EU PUfrpb
+punctate	1 ^A PUpbgt
 pundit	1 ^EU PUpbtd
 pundits	1 ^EU PUpbtsd
 pungent	1 - PUpbgt
@@ -25569,12 +25962,14 @@ purser	1 - PUrs
 purser	1 ^ PUrs
 purser	1' ^ PUrs
 purses	1 ^E PUrsz
+pursuant	1' ^A SRUpbt
 pursue	1 ^ SPRAO*U
 pursue	1' ^ SRAO*U
 pursued	1 ^ SPRAO*Ud
 pursued	1' ^ SRAO*Ud
 pursues	1 ^ SPRAO*Us
 pursues	1' ^ SRAO*Us
+pursuing	1' ^EU SRUpbg
 pursuit	1 ^ SPRAOUt
 pursuit	1' ^ SRAOUt
 pursuits	1 ^ SPRAOUts
@@ -25698,6 +26093,8 @@ quarter	1 ^ KWArt
 quarter	1' - KWAr
 quarter	1' ^ KWAr
 quarter	1' ^ KWArt
+quarterback	1' ^A KWArbg
+quarterbacks	1' ^A KWArbgs
 quarterly	1 - KWArlt
 quarterly	1 ^ KWArlt
 quarterly	1' - KWArl
@@ -25765,6 +26162,7 @@ quests	1 - KWEfts
 quests	1 ^ KWEfts
 quests	1' - KWEs
 quests	1' ^ KWEs
+queuing	1 ^U KEpbg
 quibble	1 - KWEUbl
 quibble	1 ^ KWEUbl
 quibble	1' ^E KWEUbl
@@ -25788,6 +26186,9 @@ quid	1 ^ KWEUd
 quiescent	1 ^EU KWEpbts
 quiescent	1' ^ Epbts
 quiescent	1'' ^E Epbts
+quiet	1 ^E KWAOEUt
+quieter	1 ^E KWAOEUrt
+quietly	1 ^E KWAOEUlt
 quill	1 - KWEUl
 quill	1 ^ KWEUl
 quilt	1 - KWEUlt
@@ -25880,7 +26281,9 @@ racially	1 ^ RAEUrbl
 racially	1' ^EU RAEUrbl
 raciness	1 ^E RAEUpbs
 racing	1 ^EU RAEUpbgs
-racist	1 ^EU RAEUfts
+racist	1 ^EU RAEUft
+racists	1 ^EU RAEUfts
+racists	1' ^EU RAEUs
 rack	1 - RAbg
 rack	1 ^ RAbg
 racket	1 ^E RAbgt
@@ -26136,6 +26539,7 @@ raw	1 - RAU
 raw	1 ^ RAU
 ray	1 - RAEU
 ray	1 ^ RAEU
+rayon	1 ^EU RApb
 rays	1 - RAEUs
 rays	1 ^ RAEUs
 raz	1 - RAz
@@ -26202,6 +26606,8 @@ realm	1 - RAEpl
 realm	1 ^ RAEpl
 realms	1 - RAEpls
 realms	1 ^ RAEpls
+realtor	1 ^A RErlt
+realtor	1' ^A RErl
 realtor	2 - RAErlt
 realtor	2 ^ RAErlt
 realtor	2' - RAErl
@@ -26221,6 +26627,7 @@ reaping	1 ^EU RAEpbg
 rear	1 - RAEr
 rear	1 ^ RAEr
 rearing	1 ^EU RAErpbg
+rearm	1 ^A RErpl
 rears	1 - RAErs
 rears	1 ^ RAErs
 reason	1 - RAEpbz
@@ -26542,6 +26949,7 @@ redneck	1 ^E R*Epbgd
 redness	1 ^E REpbsd
 redo	1 ^E TKRO
 redo	1' ^ TKO
+redoing	1' ^EU TKOpbg
 redone	1 ^E TKROpb
 redone	1' ^ TKOpb
 redouble	1 ^E TKRUbl
@@ -26698,6 +27106,7 @@ refreshing	1' ^EU TPRErpbg
 refrigerant	1 ^E TPREUrpblgt
 refrigerant	1' ^ TPREUrpblgt
 refrigerate	1' ^A TPREUrpblgt
+refuel	1' ^E TPUl
 refueled	1' ^E TPAO*Uld
 refund	1 ^E TPRUpbd
 refund	1' ^ TPUpbd
@@ -26901,6 +27310,14 @@ relentless	1' ^E HREpblts
 relentless	1'' ^E HREpbls
 relevance	1 ^E REfpbls
 relevant	1 ^E REfpblt
+reliable	1' ^A HRAOEUbl
+reliable	2' ^A HRAOEUbl
+reliably	1' ^A HRAOEUbl
+reliably	2' ^A HRAOEUbl
+reliance	1' ^A HRAOEUpbs
+reliance	2' ^A HRAOEUpbs
+reliant	1' ^A HRAOEUpbt
+reliant	2' ^A HRAOEUpbt
 relic	1 ^EU R*Elg
 relics	1 ^EU REblgs
 relied	1 ^E HRAO*EUd
@@ -26964,6 +27381,7 @@ rely	1 ^E HRAOEU
 rely	1' ^ HRAOEU
 rely	2 ^E HRAOEU
 rely	2' ^ HRAOEU
+relying	1' ^EU HRAOEUpbg
 remade	1 ^E PHRAEUd
 remade	1' ^ PHAEUd
 remain	1 ^E PHRA*EUpb
@@ -27029,6 +27447,8 @@ remittance	2 ^E PHREUpbts
 remittance	2' ^ PHEUpbts
 remittance	2'' ^A PHEUpbts
 remitted	1' ^E PHEUtd
+remnant	1' ^A REpblt
+remnants	1'' ^A REpbls
 remodel	1 ^E PHROld
 remodel	1' ^ PHOld
 remodel	1'' ^E PHOld
@@ -27132,6 +27552,7 @@ repairs	2 ^E PRA*EUrs
 repairs	2' ^ PA*EUrs
 repay	1 ^E PRAEU
 repay	1' ^ PAEU
+repaying	1' ^EU PApbg
 repayment	1 ^E PRAEUpblt
 repayment	1' ^ PAEUpblt
 repayment	1'' ^E PAEUpblt
@@ -27191,6 +27612,7 @@ replay	1 ^E PHRAEU
 replay	1' ^ PHRAEU
 replayed	1 ^E PHRAEUd
 replayed	1' ^ PHRAEUd
+replaying	1' ^EU PHRApbg
 replays	1 ^E PHRAEUs
 replays	1' ^ PHRAEUs
 replenish	1' ^EU PHRErpb
@@ -27208,6 +27630,8 @@ reply	1 ^E PHRAOEU
 reply	1' ^ PHRAOEU
 reply	2 ^E PHRAOEU
 reply	2' ^ PHRAOEU
+replying	1' ^EU PHRAOEUpbg
+replying	2' ^EU PHRAOEUpbg
 repo	1 ^O RAOEp
 report	1 ^E PROrt
 report	1' ^ POrt
@@ -27268,6 +27692,8 @@ reptile	1' ^ REpl
 reptile	1' ^EU REplt
 republic	1' ^EU P*Ublg
 republic	2' ^EU P*Ublg
+repugnant	1'' ^A PUpbgt
+repugnant	2'' ^A PUpbgt
 repulsive	1' ^EU PUfls
 repute	1 ^E PRAOUt
 repute	1' ^ PAOUt
@@ -27656,6 +28082,7 @@ resume	1 ^E SRAOUpl
 resume	1' ^ SAOUpl
 resume	2 ^E SRAOUpl
 resume	2' ^ SAOUpl
+resume	3 ^E REplz
 resuming	1' ^EU SAOUpblg
 resuming	2' ^EU SAOUpblg
 resumption	1 ^E SRUfrpgs
@@ -27765,6 +28192,7 @@ retreated	2' ^E TRAEtd
 retreating	1' ^EU TRAEpbgt
 retreats	1 ^E TRAEts
 retreats	1' ^ TRAEts
+retrial	1' ^A TRAOEUl
 retried	1 ^E TRAO*EUd
 retried	1' ^ TRAO*EUd
 retrieval	1 ^E TRAOEfl
@@ -27784,6 +28212,7 @@ retrieving	1' ^EU TRAOEfpbg
 retro	1 ^O RErt
 retry	1 ^E TRAOEU
 retry	1' ^ TRAOEU
+retrying	1' ^EU TRAOEUpbg
 return	1 ^E TRUrpb
 return	1' ^ TUrpb
 return	2 ^E TRUrpb
@@ -27943,6 +28372,7 @@ rewritten	1'' ^E REUpbt
 rewrote	1 ^E ROEt
 rewrote	1' ^ ROEt
 rezoning	1' ^EU STKPWOEpbg
+rhea	1 ^A RE
 rhesus	1 ^U RAOEs
 rhetoric	1 ^EU RErbgt
 rhetorical	1' ^EU TOrblg
@@ -27959,6 +28389,7 @@ rhodopsin	1'' ^EU TKOpbs
 rhubarb	1 ^A RAOUrb
 rhyme	1 - RAO*EUpl
 rhyme	1 ^ RAO*EUpl
+rial	1 ^A RAOEUl
 rib	1 - REUb
 rib	1 ^ REUb
 riba	1 ^A RAOEb
@@ -28083,6 +28514,9 @@ rinks	1 ^ R*EUpbgs
 rinse	1 - REUpbs
 rinse	1 ^ REUpbs
 rinsing	1 ^EU REUpbgs
+riot	1 ^O RAOEUt
+rioter	1 ^O RAOEUrt
+riots	1 ^O RAOEUts
 rip	1 - REUp
 rip	1 ^ REUp
 ripe	1 - RAOEUp
@@ -28415,7 +28849,10 @@ rowdy	1 ^EU ROUd
 rowing	1 ^EU ROEpbg
 rows	1 - RO*Es
 rows	1 ^ RO*Es
+royal	1 ^EU ROl
 royale	1' ^ El
+royally	1 ^EU ROl
+royals	1 ^EU ROlz
 rub	1 - RUb
 rub	1 ^ RUb
 rubber	1 - RUrb
@@ -28468,8 +28905,12 @@ rugby	1 ^EU RUbg
 rugged	1 ^E RUgd
 rugs	1 - RUgs
 rugs	1 ^ RUgs
+ruin	1 ^EU RUpb
+ruin	2 ^EU RUpb
 ruined	1 ^E RAOUpbd
 ruined	2 ^E RAOUpbd
+ruins	1 ^EU RUpbz
+ruins	2 ^EU RUpbz
 rule	1 - RAOUl
 rule	1 ^ RAOUl
 ruler	1 - RAOUrl
@@ -28515,6 +28956,7 @@ runs	1 - RUpbs
 runs	1 ^ RUpbs
 rupee	1 ^U PRAOE
 rupee	1' ^ PAOE
+rupiah	1' ^A PAOEU
 rural	1 - RUrl
 rural	1 ^ RUrl
 rural	1' ^A RUrl
@@ -28841,6 +29283,8 @@ say	1 - SAEU
 say	1 ^ SAEU
 sayer	1 - SAEUr
 sayer	1 ^ SAEUr
+saying	1 ^EU SApbg
+sayings	1 ^EU SApbgz
 says	1 - SAEUs
 says	1 ^ SAEUs
 says	2 - SAEUs
@@ -29013,8 +29457,11 @@ schooner	1 ^ SKAOrpb
 schooner	1' ^ SKAOrpb
 schtick	1 - STHEUbg
 schtick	1 ^ STHEUbg
+science	1 ^E SAOEUpbs
+scientists	2' ^EU SAO*EUpbts
 scientists	3 ^EU SAO*EUpbts
 scintilla	1' ^A TEUl
+scion	1 ^O SAOEUpb
 scissor	1 - SEUrz
 scissor	1 ^ SEUrz
 scissor	1' ^ SEUrz
@@ -29057,6 +29504,7 @@ scorer	1 ^ SKOr
 scorer	1' ^ SKOr
 scorers	1 - SKOrs
 scorers	1 ^ SKOrs
+scorers	1' ^ SKOrz
 scoring	1 ^EU SKOrpbg
 scorn	1 - SKOrpb
 scorn	1 ^ SKOrpb
@@ -29244,6 +29692,7 @@ seamen	1' ^E SAEpbl
 seamless	1 ^E SAEpls
 seams	1 - SAEpls
 seams	1 ^ SAEpls
+seance	1 ^A SEpbs
 sear	1 - SAEr
 sear	1 ^ SAEr
 search	1 - SAEfrpb
@@ -29286,6 +29735,7 @@ seclusion	1' ^ KHRAOUgs
 second	1 - SEpbgd
 second	1 ^ SEpbgd
 second	1' ^O SEpbgd
+seconded	1 ^E SEpbgd
 seconds	1' - SEpbgz
 seconds	1' ^ SEpbgz
 seconds	1'' ^O SEpbgz
@@ -29357,6 +29807,7 @@ seeding	1 ^EU SAOEpbgd
 seeds	1 - SAOEdz
 seeds	1 ^ SAOEdz
 seedy	1 ^EU SAOEd
+seeing	1 ^E SEpbg
 seek	1 - SAOEbg
 seek	1 ^ SAOEbg
 seeker	1 - SAOErbg
@@ -29488,6 +29939,9 @@ sentence	1 ^ SEpbts
 sentence	1' - SEpbs
 sentence	1' ^ SEpbs
 sentence	1' ^E SEpbts
+sentences	1' ^E SEpbsz
+sentences	2' ^E SEpbsz
+sentencing	1' ^EU SEpbgs
 sentry	1 ^EU SErpbt
 sentry	1' ^EU SErpb
 separate	1 ^A SErpt
@@ -29500,6 +29954,7 @@ sequester	1' ^ KWEfrt
 sequester	1' ^E SKWErs
 sequester	1'' ^ KWEfrt
 sequester	1'' ^ KWErs
+sequoia	1' ^EU KWO
 serene	1 ^ SRAOEpb
 serene	1' ^ RAOEpb
 serf	1 - S*Efr
@@ -29549,6 +30004,7 @@ servile	1 ^ SEfrbl
 servile	1' ^EU SEfrbl
 serving	1 ^EU SEfrpbg
 servo	1 ^O SEfrb
+sesame	1 ^E SEpls
 session	1 - SEgs
 session	1 ^ SEgs
 sessions	1 - SErpbz
@@ -29600,7 +30056,7 @@ sex	1 ^ SEbgs
 sexes	1 ^E SEbgsz
 sexes	2 ^E SEbgsz
 sexiness	1 ^E SEpbgs
-sexist	1 ^EU SEfbgts
+sexist	1 ^EU SEbgs
 sextet	1 ^E STKEt
 sexton	1 - SEpbgs
 sexton	1 ^ SEpbgs
@@ -29926,6 +30382,7 @@ short	1 - SHOrt
 short	1 ^ SHOrt
 shortage	1 ^A SHOrpblgt
 shortage	2 ^A SHOrpblgt
+shortcake	1 ^A SHOrbgt
 shortcake	1' ^A SHOrbg
 shortchange	1 ^O STKHRAEUpbg
 shortchange	1' ^O SKHRAEUpbg
@@ -30168,6 +30625,7 @@ signer	1 ^ SAOEUrpb
 signer	1' ^ SAOEUrpb
 signet	1 ^E SEUpbgt
 signing	1 ^EU SAOEUpbg
+signposts	1' ^O SAOEUpbs
 signs	1 - SAOEUpbs
 signs	1 ^ SAOEUpbs
 silence	1 - SAOEUpbls
@@ -30352,10 +30810,12 @@ skier	1 - SKAO*EUr
 skier	1 ^ SKAO*EUr
 skier	2 - SKAOEr
 skier	2 ^ SKAOEr
+skiers	1 ^ SKAOErz
 skies	1 - SKAO*EUs
 skies	1 ^ SKAO*EUs
 skiff	1 - SKEUf
 skiff	1 ^ SKEUf
+skiing	1 ^EU SKAOEpbg
 skill	1 - SKEUl
 skill	1 ^ SKEUl
 skillet	1 ^E SKEUlt
@@ -30503,6 +30963,7 @@ slay	1 - SHRAEU
 slay	1 ^ SHRAEU
 slayer	1 - SHRAEUr
 slayer	1 ^ SHRAEUr
+slaying	1 ^EU SHRApbg
 sleaze	1 - SHRAEz
 sleaze	1 ^ SHRAEz
 sleazy	1 ^EU SHRAEz
@@ -31012,10 +31473,13 @@ social	1 ^ SOErbl
 social	1' ^EU SOErbl
 socialist	1 ^EU SOEfrblt
 socialist	2 ^EU SOEfrblt
+socialists	1' ^EU SOErbls
+socialists	2' ^EU SOErbls
 socialite	1 ^EU SOErblt
 socially	1 - SOErbl
 socially	1 ^ SOErbl
 socially	1' ^EU SOErbl
+societal	1' ^E SAOEUlt
 sock	1 - SObg
 sock	1 ^ SObg
 socket	1 ^E SObgt
@@ -31239,6 +31703,7 @@ source	1 ^ SOUrs
 sources	1 ^E SOUrsz
 sourcing	1 ^EU SOUrpbgs
 soured	1 ^ SOUrd
+sours	1 ^ SOrz
 sours	2 - SOUrs
 sours	2 ^ SOUrs
 south	1 - SO*Ut
@@ -31367,6 +31832,8 @@ special	1 ^ SPErbl
 special	1' ^EU SPErbl
 specialist	1 ^EU SPEfrblt
 specialist	2 ^EU SPEfrblt
+specialists	1' ^EU SPErbls
+specialists	2' ^EU SPErbls
 specially	1 - SPErbl
 specially	1 ^ SPErbl
 specially	1' ^EU SPErbl
@@ -31385,6 +31852,7 @@ speckle	1' ^E SPEblg
 speckled	1 - SPEblgd
 speckled	1 ^ SPEblgd
 speckled	1' ^E SPEblgd
+spectator	1 ^A SPErbgt
 specter	1 - SPErbgt
 specter	1 ^ SPErbgt
 specter	1' - SPErbg
@@ -31564,6 +32032,7 @@ splatter	1' ^ SPHRArt
 spleen	1 - SPHRAOEpb
 spleen	1 ^ SPHRAOEpb
 splendid	1 ^EU SPHREpbd
+splendidly	1 ^EU SPHREpbld
 splendor	1 - SPHRErpbd
 splendor	1 ^ SPHRErpbd
 splendor	1' - SPHRErpb
@@ -31683,6 +32152,7 @@ sprayed	1 - SPRAEUd
 sprayed	1 ^ SPRAEUd
 sprayer	1 - SPRAEUr
 sprayer	1 ^ SPRAEUr
+spraying	1 ^EU SPRApbg
 sprays	1 - SPRAEUs
 sprays	1 ^ SPRAEUs
 spread	1 - SPRAEd
@@ -31767,6 +32237,7 @@ sputum	1 ^ SPAOUplt
 sputum	1' ^U SPAOUplt
 spy	1 - SPAOEU
 spy	1 ^ SPAOEU
+spying	1 ^EU SPAOEUpbg
 squabble	1 - SKWAbl
 squabble	1 ^ SKWAbl
 squabble	1' ^E SKWAbl
@@ -31894,6 +32365,7 @@ stagger	1 - STArg
 stagger	1 ^ STArg
 stagger	1' ^ STArg
 staging	1 ^EU STAEUpblg
+stagnant	1' ^A STApbgt
 stagnate	1 ^A STApbgt
 stagnation	1 ^A STKPWHAEUgs
 stagnation	1' ^ TKPWHAEUgs
@@ -32086,6 +32558,7 @@ stay	1 - STAEU
 stay	1 ^ STAEU
 stayed	1 - STAEUd
 stayed	1 ^ STAEUd
+staying	1 ^EU STApbg
 stays	1 - STAEUs
 stays	1 ^ STAEUs
 stead	1 - STAEd
@@ -32165,9 +32638,11 @@ stent	1 - STEpbt
 stent	1 ^ STEpbt
 step	1 - STEp
 step	1 ^ STEp
+stepmom	1 ^O STEpl
 stepping	1 ^EU STEpbg
 steps	1 - STEps
 steps	1 ^ STEps
+stepsister	1' ^EU STErps
 stepson	1 ^O STEpbs
 sterile	1 - STErl
 sterile	1 ^ STErl
@@ -32279,6 +32754,7 @@ stocks	1 - STObgs
 stocks	1 ^ STObgs
 stocky	1 ^EU STObg
 stodgy	1 ^EU STOpblg
+stoic	1 ^EU STObg
 stoically	1 ^A STOEUblg
 stoke	1 - STOEbg
 stoke	1 ^ STOEbg
@@ -32468,6 +32944,8 @@ strayed	1 - STRAEUd
 strayed	1 ^ STRAEUd
 strayed	1' - SRAEUd
 strayed	1' ^ SRAEUd
+straying	1 ^EU STRApbg
+straying	1' ^EU SRApbg
 strays	1 - STRAEUs
 strays	1 ^ STRAEUs
 strays	1' - SRAEUs
@@ -32784,6 +33262,8 @@ struts	1 - STRUts
 struts	1 ^ STRUts
 struts	1' - SRUts
 struts	1' ^ SRUts
+strychnine	1 ^EU STREUpbg
+strychnine	1' ^EU SREUpbg
 stub	1 - STUb
 stub	1 ^ STUb
 stubble	1 - STUbl
@@ -33035,6 +33515,7 @@ suction	1 ^ SUbgs
 sudden	1 - SUpbd
 sudden	1 ^ SUpbd
 sudden	1' ^E SUpbd
+suddenness	1 ^E SUpbsd
 suds	1 - SUdz
 suds	1 ^ SUdz
 sue	1 - SAO*U
@@ -33073,6 +33554,7 @@ suggests	1' ^ SKWREfts
 suggests	1' ^U SKWREs
 suggests	1'' ^ SKWREs
 suicidal	1 ^EU SWAOEUld
+suing	1 ^EU SUpbg
 suit	1 - SAOUt
 suit	1 ^ SAOUt
 suitcase	1 ^A SAOUbgts
@@ -33199,10 +33681,12 @@ supplied	1 ^U SPHRAO*EUd
 supplied	1' ^ PHRAO*EUd
 supplier	1 ^U SPHRAO*EUr
 supplier	1' ^ PHRAO*EUr
+suppliers	1' ^ PHRAOEUrz
 supplies	1 ^U SPHRAO*EUs
 supplies	1' ^ PHRAO*EUs
 supply	1 ^U SPHRAOEU
 supply	1' ^ PHRAOEU
+supplying	1' ^EU PHRAOEUpbg
 support	1 ^U SPOrt
 support	1' ^ POrt
 supported	1' ^E POrtd
@@ -33336,6 +33820,8 @@ survey	2 ^E SUfrb
 surveyed	1 ^ SRAO*EUd
 surveyed	1' ^ SRAO*EUd
 surveyed	2 ^E SUfrbd
+surveying	1' ^EU SREpbg
+surveyors	1' ^ SRErz
 surveys	1 ^ SRA*EUs
 surveys	1' ^ SRA*EUs
 surveys	2 ^E SUfrbz
@@ -33455,6 +33941,7 @@ sway	1 - SWAEU
 sway	1 ^ SWAEU
 swayed	1 - SWAEUd
 swayed	1 ^ SWAEUd
+swaying	1 ^EU SWApbg
 sways	1 - SWAEUs
 sways	1 ^ SWAEUs
 swear	1 - SWAEr
@@ -33618,6 +34105,7 @@ syndrome	1 ^O SEUrpbld
 syndrome	1' ^O SEUrpbl
 synergy	1 ^EU SEUrpblg
 synod	1 ^O SEUpbd
+synonym	1 ^EU SEUpbl
 synopsis	1' ^EU TPHOps
 synoptic	1' ^EU TPHOpbgt
 syntax	1 ^A SEUpbgts
@@ -34094,10 +34582,12 @@ tenant	1 ^ TEpbt
 tenant	1' ^A TEpbt
 tenants	1' - TEpbs
 tenants	1' ^ TEpbs
+tenants	1' ^A TEpbts
 tenants	1'' ^A TEpbs
 tend	1 - TEpbd
 tend	1 ^ TEpbd
 tended	1 ^E TEpbd
+tendencies	1' ^EU TEpbsz
 tendency	1 ^EU TEpbsd
 tendency	1' ^EU TEpbs
 tender	1 - TErpbd
@@ -34180,6 +34670,11 @@ terror	1 - TEr
 terror	1 ^ TEr
 terror	1' ^ TEr
 terrorist	1 ^EU TEfrt
+terrorists	1 ^EU TEfrts
+terrorists	1' ^EU TErs
+terrorists	2 ^EU TEfrts
+terrorists	2' ^EU TErs
+terrorize	1 ^EU TErz
 terse	1 - TErs
 terse	1 ^ TErs
 tertiary	1 ^EU T*Erb
@@ -34242,6 +34737,8 @@ the	2 - THE
 the	2 ^ THE
 the	3 - THE
 the	3 ^ THE
+theater	1 ^A THErt
+theatre	1 ^A THErt
 theatric	1 ^EU THAErbgt
 thee	1 - THAOE
 thee	1 ^ THAOE
@@ -34481,6 +34978,7 @@ throttled	1 ^ THROltd
 throttled	1' ^E THROltd
 through	1 - THRU
 through	1 ^ THRU
+throughout	1 ^O THROUt
 throughout	1' ^ OUt
 throughput	1 ^U THRUpt
 throw	1 - THRO*E
@@ -34608,6 +35106,7 @@ tights	1 ^ TAO*EUts
 tigon	1 - TEUpbg
 tigon	1 ^ TEUpbg
 tigon	1' ^O TEUpbg
+tilde	1 ^E TEUld
 tile	1 - TAOEUl
 tile	1 ^ TAOEUl
 till	1 - TEUl
@@ -35014,6 +35513,7 @@ toy	1 - TOEU
 toy	1 ^ TOEU
 toyed	1 - TOEUd
 toyed	1 ^ TOEUd
+toying	1 ^EU TOpbg
 toys	1 - TOEUs
 toys	1 ^ TOEUs
 trace	1 - TRAEUs
@@ -35382,8 +35882,15 @@ tresses	1 ^E TREsz
 trestle	1 - TREls
 trestle	1 ^ TREls
 trestle	1' ^E TREls
+tretinoin	1 ^O TREpbt
 trey	1 - TRA*EU
 trey	1 ^ TRA*EU
+triad	1 ^A TRAOEUd
+triads	1 ^A TRAOEUdz
+triage	1 ^A TRAOEUpblg
+trial	1 ^A TRAOEUl
+trials	1 ^A TRAOEUlz
+triangle	1 ^A TRAOEUpblg
 trib	1 - TREUb
 trib	1 ^ TREUb
 tribal	1 - TRAOEUbl
@@ -35450,6 +35957,7 @@ trims	1 - TREUpls
 trims	1 ^ TREUpls
 trinket	1 ^E TR*EUpbgt
 trinkets	1 ^E TR*EUpbgts
+trio	1 ^O TRAOE
 trip	1 - TREUp
 trip	1 ^ TREUp
 tripartite	1' ^EU PArt
@@ -35473,12 +35981,14 @@ trips	1 ^ TREUps
 triptych	1 ^EU TREUpbgt
 trite	1 - TRAOEUt
 trite	1 ^ TRAOEUt
+triumph	1 ^U TRAO*EUfpl
 triumphal	1 ^EU TR*Ufpl
 triumphal	1' ^ *Ufpl
 triumphal	1'' ^A *Ufpl
 triumphant	1 ^EU TR*Ufpblt
 triumphant	1' ^ *Ufpblt
 triumphant	1'' ^A *Ufpblt
+triumphs	1 ^U TRAO*EUfpls
 trod	1 - TROd
 trod	1 ^ TROd
 trodden	1 - TROpbd
@@ -35539,6 +36049,7 @@ trout	1 - TROUt
 trout	1 ^ TROUt
 trove	1 - TROEf
 trove	1 ^ TROEf
+truant	1 ^A TRUpbt
 truce	1 - TRAOUs
 truce	1 ^ TRAOUs
 truck	1 - TRUbg
@@ -35555,6 +36066,7 @@ trudge	1 ^ TRUpblg
 trudging	1 ^EU TRUpblg
 true	1 - TRAO*U
 true	1 ^ TRAO*U
+truest	1 ^E TRUft
 truffle	1 - TRUfl
 truffle	1 ^ TRUfl
 truffle	1' ^E TRUfl
@@ -35601,6 +36113,8 @@ truths	1 - TR*Uts
 truths	1 ^ TR*Uts
 try	1 - TRAOEU
 try	1 ^ TRAOEU
+trying	1 ^EU TRAOEUpbg
+tryout	1 ^O TRAOEUt
 tryst	1 - TREUft
 tryst	1 ^ TREUft
 tryst	2 - TRAOEUft
@@ -35826,6 +36340,7 @@ ty	1 - TAOEU
 ty	1 ^ TAOEU
 tycoon	1 ^EU TKAOpb
 tycoon	1' ^ KAOpb
+tying	1 ^EU TAOEUpbg
 tyke	1 - TAO*EUbg
 tyke	1 ^ TAO*EUbg
 tympanic	1' ^EU PA*pbg
@@ -35937,9 +36452,14 @@ underage	1 ^A Urpblgd
 underage	1' ^A Urpblg
 underpass	1 ^A Urpbsd
 underpass	1' ^A Urpbs
+understate	1 ^A Ufrpbtd
+understate	1' ^A Ufrpbt
+underwrite	1 ^EU Urpbtd
+underwrite	1' ^EU Urpbt
 undid	1 ^U TKPHEUd
 undo	1 ^ TKO
 undo	1' ^U TKPHO
+undoing	1 ^EU TKOpbg
 undone	1 ^ TKOpb
 undone	1' ^U TKPHOpb
 undoubted	1 ^E TKOUtd
@@ -36081,6 +36601,7 @@ unpaid	1' ^U TPHA*EUd
 unpleasant	1 ^ PHRAEpbtz
 unpleasant	1' ^A PHRAEpbtz
 unpleasant	1' ^U TPHRAEpbtz
+unpleasantness	1' ^E PHRAEpbsz
 unplug	1 ^ PHRUg
 unplug	1' ^U TPHRUg
 unravel	1 ^ RAfl
@@ -36237,6 +36758,7 @@ upright	1' ^U PRAO*EUt
 upright	2 ^EU Urpt
 uprights	1 ^EU Urpts
 uprising	1 ^EU PRAOEUpbgz
+uproar	1 ^O Urp
 uproot	1 ^ PRAOt
 uproot	1' ^U PRAOt
 ups	1 - Ups
@@ -36268,6 +36790,7 @@ urbanize	1 ^EU Urpbz
 urchin	1 - Ufrpb
 urchin	1 ^ Ufrpb
 urchin	1' ^EU Ufrpb
+urea	1' ^A RE
 urge	1 - Urpblg
 urge	1 ^ Urpblg
 urgency	1 ^EU Urpblgs
@@ -36563,6 +37086,7 @@ verdant	1 ^ SRErpbtd
 verdant	1' - SRErpbt
 verdant	1' ^ SRErpbt
 verdant	1' ^A SRErpbtd
+verde	1 ^E SRErd
 verdict	1 ^EU SRErbgtd
 verdicts	1' ^EU SRErbgsd
 verge	1 - SRErpblg
@@ -36576,6 +37100,8 @@ vernal	1 - SRErpbl
 vernal	1 ^ SRErpbl
 vernal	1' ^A SRErpbl
 versa	1 ^A SRErs
+versace	1' ^E SRAUfp
+versace	2' ^E SRAUfp
 versatile	1 ^A SREfrlt
 versatile	2' ^A STRAOEUl
 verse	1 - SRErs
@@ -36631,6 +37157,11 @@ vi	1 - SRAOEU
 vi	1 ^ SRAOEU
 vi	2 - SRAOE
 vi	2 ^ SRAOE
+via	1 ^A SRAOEU
+via	2 ^A SRAOE
+viable	1 ^A SRAOEUbl
+vial	1 ^A SRAOEUl
+vials	1 ^A SRAOEUlz
 vibe	1 - SRAOEUb
 vibe	1 ^ SRAOEUb
 vibrant	1 - SRAOEUrpbt
@@ -36712,6 +37243,7 @@ vine	1 - SRAOEUpb
 vine	1 ^ SRAOEUpb
 vinegar	1 ^E SREUrpbg
 vintage	1 ^A SREUpblgt
+vintner	1'' ^ SREUrpb
 vinyl	1 - SRAOEUpbl
 vinyl	1 ^ SRAOEUpbl
 vinyl	1' ^EU SRAOEUpbl
@@ -36719,6 +37251,8 @@ viola	1' ^A OEl
 viola	2' ^A OEl
 violation	1' ^O HRAEUgs
 violations	1' ^O HRAEUrpbz
+violence	1 ^O SRAOEUpbls
+violent	1 ^O SRAOEUpblt
 violin	1' ^O HREUpb
 viper	1 - SRAOEUrp
 viper	1 ^ SRAOEUrp
@@ -36860,6 +37394,10 @@ vows	1 - SROUs
 vows	1 ^ SROUs
 vox	1 - SRObgs
 vox	1 ^ SRObgs
+voyage	1 ^EU SROpblg
+voyage	2 ^EU SROpblg
+voyager	1 ^EU SROrpblg
+voyager	2 ^EU SROrpblg
 vulcan	1 - SR*Upblg
 vulcan	1 ^ SR*Upblg
 vulcan	1' ^A SR*Upblg
@@ -36867,6 +37405,7 @@ vulture	1 - SRUrlg
 vulture	1 ^ SRUrlg
 vulture	1' ^ SRUrlg
 vulva	1 ^A SRUfl
+vying	1 ^EU SRAOEUpbg
 wack	1 - WAbg
 wack	1 ^ WAbg
 wacky	1 ^EU WAbg
@@ -36958,6 +37497,7 @@ wallets	1 ^E WAUlts
 walleye	1 ^E WAUl
 wallop	1 ^O WApl
 wallow	1 ^O WAl
+wallpaper	1 ^A WAUrpl
 walls	1 - WAUls
 walls	1 ^ WAUls
 walnut	1 ^U WAUpblt
@@ -37143,6 +37683,7 @@ watching	1 ^EU WAfpbg
 water	1 - WAUrt
 water	1 ^ WAUrt
 water	1' ^ WAUrt
+watertight	1 ^EU WAUrt
 watery	1 ^EU WAUrt
 watt	1 - WAt
 watt	1 ^ WAt
@@ -37954,6 +38495,7 @@ witty	1 ^EU WEUt
 wizard	1 - WEUrdz
 wizard	1 ^ WEUrdz
 wizard	1' ^ WEUrdz
+wizardry	1' ^EU WEUrz
 wobble	1 - WObl
 wobble	1 ^ WObl
 wobble	1' ^E WObl
@@ -38009,6 +38551,7 @@ woo	1 - WAO
 woo	1 ^ WAO
 wood	1 - WAOd
 wood	1 ^ WAOd
+woodcock	1 ^O WAObgd
 wooded	1 ^E WAOd
 wooden	1 - WAOpbd
 wooden	1 ^ WAOpbd
@@ -38064,6 +38607,7 @@ works	1 ^ WOrbgs
 workstation	1 ^A WOfrbgts
 world	1 - WOrld
 world	1 ^ WOrld
+worldliness	1' ^E WOrpbls
 worldly	1 - WOrld
 worldly	1 ^ WOrld
 worldly	1' - WOrl
@@ -38208,6 +38752,7 @@ written	1 ^ WREUpbt
 written	1' ^E WREUpbt
 wrong	1 - WROpbg
 wrong	1 ^ WROpbg
+wrongdoings	1' ^EU TKOpbgz
 wrongly	1 - WROpblg
 wrongly	1 ^ WROpblg
 wrongs	1 - WROpbgs

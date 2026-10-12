@@ -190,6 +190,7 @@
 1 = UW0=u = IH1=i =	1 ^E
 1 = UW1=u =	1 U
 1 = UW1=u =	1 ^U
+1 = UW1=u = AH0=i T=t	1 ^Et
 1 = UW1=u Z=s	1 Us
 1 = UW1=u Z=s	1 ^Us
 1 =c AH1=e L=ll	1 El
@@ -794,6 +795,7 @@
 1 L=l AO1=aw =	1 ^HRAU
 1 L=l AY1=i =	1 HRAOEU
 1 L=l AY1=i =	1 ^HRAOEU
+1 L=l AY1=i = AH0=a B=b	1 ^HROEUb
 1 L=l AY1=i K=k_e	1 HRAOEUbg
 1 L=l AY1=i K=k_e	1 ^HRAOEUbg
 1 L=l AY1=i N.M=gnm	1 HRAOEUpbl
@@ -1078,6 +1080,7 @@
 1 P.R=pr AH1=o M=m	1 ^PROpl
 1 P.R=pr AH1=o V=v	1 PROf
 1 P.R=pr AH1=o V=v	1 ^PROf
+1 P.R=pr AY1=i = AH0=e T=t	1 ^PRAOUt
 1 P.R=pr EH1=e =s	1 PRE
 1 P.R=pr EH1=e =s	1 ^PRE
 1 P.R=pr EH1=e S=ss	1 PREs
@@ -1712,6 +1715,7 @@
 1 T=t UW0=u = IH1=i =	1 ^TE
 1 T=t UW1=u =	1 TU
 1 T=t UW1=u =	1 ^TU
+1 T=t UW1=u = AH0=i T=t	1 ^TEt
 1 T=tt AE1=a CH.M=chm	1 TAfpl
 1 T=tt AE1=a CH.M=chm	1 ^TAfpl
 1 T=tt AE1=a CH=ch	1 TAfp
@@ -1819,6 +1823,7 @@
 1 V=v IY0=i = EY1=a =	1 ^SRAEU
 1 V=v IY1=i =	1 SRAOE
 1 V=v IY1=i =	1 ^SRAOE
+1 V=v IY1=i = AH0=ou S=s	1 ^SRAEs
 1 V=v OW1=o =	1 SRO
 1 V=v OW1=o =	1 ^SRO
 1 V=v OW1=o SH=t AH0=io N=n	1 ^SROUrpb

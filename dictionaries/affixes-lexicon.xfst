@@ -79,7 +79,7 @@ define AffixCountable [ {ation}
     | {ist}
     | {ism} ] ;
 
-! 1164 words: the stem's stroke, then prefix, stem and suffix.
+! 1168 words: the stem's stroke, then prefix, stem and suffix.
 define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | "^" {PWRAOUf} "|" {a} "|" {bbrevi} "|" {ation}
     | {PWEUl} "|" {a} "|" {bil} "|" {ity}
@@ -898,6 +898,7 @@ define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | {RU} "|" {int} "|" {ru} "|" {sion}
     | {RUs} "|" {int} "|" {rus} "|" {ive}
     | {U} "|" {int} "|" {u} "|" {ition}
+    | "^" {Et} "|" {int} "|" {uit} "|" {ive}
     | {SRA} "|" {in} "|" {va} "|" {sion}
     | {SRAs} "|" {in} "|" {vas} "|" {ive}
     | {SREpb} "|" {in} "|" {ven} "|" {tion}
@@ -984,6 +985,7 @@ define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | {SREpb} "|" {pre} "|" {ven} "|" {tion}
     | {SREpb} "|" {pre} "|" {vent} "|" {ive}
     | {SRAOE} "|" {pre} "|" {vi} "|" {ous}
+    | "^" {SRAEs} "|" {pre} "|" {vious} "|" {ly}
     | {Abgt} "|" {pro} "|" {act} "|" {ive}
     | "^" {PWAEUl} "|" {pro} "|" {babil} "|" {ity}
     | {PWAb} "|" {pro} "|" {bab} "|" {ly}
@@ -1031,6 +1033,7 @@ define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | {POr} "|" {pro} "|" {por} "|" {tional}
     | {POs} "|" {pro} "|" {pos} "|" {al}
     | {POs} "|" {pro} "|" {pos} "|" {ition}
+    | "^" {PRAOUt} "|" {pro} "|" {priet} "|" {or}
     | {PUl} "|" {pro} "|" {pul} "|" {sion}
     | "^" {SKEU} "|" {pro} "|" {secu} "|" {tion}
     | "^" {SKEUt} "|" {pro} "|" {secut} "|" {or}
@@ -1111,6 +1114,7 @@ define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | {HREf} "|" {re} "|" {lev} "|" {ance}
     | {HREf} "|" {re} "|" {lev} "|" {ant}
     | {HRAOEU} "|" {re} "|" {li} "|" {able}
+    | "^" {HROEUb} "|" {re} "|" {liab} "|" {ly}
     | {HRAOEU} "|" {re} "|" {li} "|" {ance}
     | {HRAOEU} "|" {re} "|" {li} "|" {ant}
     | "^" {HRpblgs} "|" {re} "|" {ligious} "|" {ly}

@@ -1,0 +1,17 @@
+! Two words written out, as one word of two syllables, after written.xfst:
+! the first word's last consonants and the second's first are one cluster.
+! contract.xfst contracts it as it does a word.
+!
+!     go home   1 G=g 0:o=O = + HH=h 1:o=OE M=m_e  ->  1 G=g 0:o=O HH=h 1:o=OE M=m_e
+!     make it   1 M=m 1:a=AEU K=k_e + 0:i=EU T=t   ->  1 M=m 1:a=AEU K=k 0:i=EU T=t
+!
+! The cluster's letters are the second word's, or the first's where the second
+! spells none.
+
+define Cut      Del(Eq Letter* ( Tail ) Plus) ;
+define Join     [ More Cut Ins(Dot) More Eq Letter*
+                | Cut [ More Eq Letter* | Phones Eq Letter+ ]
+                | More Cut Eq Letter+
+                | Phones Eq Letter* Del(( Tail ) Plus Eq) ] ;
+
+define Stage    [ WrittenPair .o. [ ?* Gap Join Gap ?* ] ] ;
