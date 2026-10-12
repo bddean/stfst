@@ -93,3 +93,145 @@ strokes get it for free.
 - Lower case plurals of names still get through, because lemminflect knows
   "smith": smiths. A frequency floor or a case check on the stem would stop it.
 - affixes still uses Typey Type's words as its scope, not the lexicon.
+
+## Phase 2: the ^ contraction reads the written-out strokes
+
+### What the pipeline is now
+
+`lexicon, written, prefix, suffix, lead, glide, syncope, middle, contract,
+theory, caret`. `written.xfst` gives each syllable its chord, with CMU's
+stress. Each rewrite is its own stage and file, so a rule can be dropped from
+the recipe and measured:
+
+| stage | rule | first or second choice |
+|---|---|---|
+| prefix | dis/des/de+c STK, int SPW, ex KP, comb/em/im KPW, com KPH | only |
+| suffix | -tion and kin as -GS, -ly as its L | only |
+| lead | a leading unstressed syllable dropped for `^`; a closing nasal goes with it (un, in, con) | first when it has no onset or is con/com, else second |
+| glide | unstressed u, ou, oo before a vowel is w | only |
+| syncope | unstressed vowel after the stress, between a consonant and l, m, n, r | first |
+| middle | t or d inside a cluster | second |
+
+One syllable left is a plain stroke, or the same keys with `^` where the
+plain stroke is taken (mare is mayor's PHAEUR; matter is `^PHART`). Two are
+`^` and the XOR. river is REUFR, stable STAEUBL, memory `^PHURPL`, disappoint
+STKPOEUPBT, nation `^TPHAEUGS`.
+
+Also changed:
+
+- The resolver works in rounds by cost. A word's cost is the number of
+  rewrites it has another outline without, less the cost all its outlines
+  share. An outline goes to the word that wants it at the least cost, then to
+  the more frequent. Without the "less", throughout lost its only outline to
+  outta.
+- A plain stroke never takes a Typey Type outline, including one that
+  typey-superseded.json holds. Without that, the two-syllable and vowels
+  generators traded about 40 strokes every round and never reached a fixed
+  point (ankle and ankles, sadly and salad).
+- A long vowel before a consonant plus l or r is open: table is TAEUBL, not
+  TABL.
+- The lexicon splits ou and oo said u as one vowel, so pirouette's ou is the
+  glide's. CMU has no t in pirouette, so its stroke is `^PWRU`, and the word
+  is below the zipf floor anyway.
+
+two-syllable.json goes from 4854 entries (4049 words) to 7184 (6106 words).
+Of the words that had an entry, 88 have none now. Most of these lose their
+outline to a more frequent word (courage to encourage, magic to imagine).
+
+### Measurements
+
+Each row is one change from the chosen pipeline. "Words" is the words with an
+entry. "Coverage" is the sum of 10^zipf over those words, divided by 10^6, out
+of about 157. "Lose" is the words in scope that get no outline because a
+higher word took it.
+
+| variant | words | coverage | lose | user.json briefs reproduced |
+|---|---|---|---|---|
+| chosen | 6097 | 128.3 | 392 | 42 |
+| -ly XORs y (old rule) | 6072 | 128.0 | 407 | 38 |
+| digraph XORs its chord, not its first letter | 6081 | 127.9 | 396 | 38 |
+| -tion by its sounds, not -GS | 5947 | 125.4 | 411 | 34 |
+| syncope only before l and r | 5790 | 125.0 | 447 | 37 |
+| lead drop as second choice only | 6063 | 128.0 | 402 | 37 |
+| prefix cluster kept apart from the onset | 5820 | 124.2 | 389 | 34 |
+
+The rows after the -ly row each change that row's pipeline, not "chosen".
+
+Decisions:
+
+- XOR operand: first letter, as decided. The chord gains 9 words, loses 0.1
+  coverage, and writes money `^PHAEPB` where the first letter writes
+  `^PHOEPB`. `DigraphOp` in contract.xfst is the one-line switch.
+- -tion: the affix chord. Sounds lose 125 words and 2.6 coverage, and your
+  briefs use -GS (vision, revision, attention, addition, deception).
+- -ly: its L, which uses the syllable as -er's R does. sadly is `^SALD`
+  (SALD is salad), kindly KAOEUPBLD. This is better on every count. -ing stays
+  the runtime -G fold.
+- Syncope before m and n stays. Without it, the pipeline loses 282 words and
+  3 coverage. The cost: written is WREUPBT, not your `^WRUPBT`.
+- Leading syllable. As a first choice for every syllable, it wrote director
+  `^RERBGT` and hotel `^TEL`. So it is narrowed: it is first only with no
+  onset or for con/com, and a second choice for the rest. As first or second
+  for the narrowed set, the numbers are a draw. Your briefs drop it (append,
+  another, anoint, container), so it is first.
+- A prefix cluster that merges with the onset (company KPH+P is TKPHEU) stays.
+  Keeping them apart loses 252 words.
+
+Collisions by rule. For each rule: the words in scope it rewrites, how many of
+them lose their outline, and how many take another word's outline. The
+generator's report prints this table.
+
+| rule | rewrites | lose | take |
+|---|---|---|---|
+| prefix | 678 | 32 | 28 |
+| suffix | 590 | 22 | 13 |
+| lead | 2577 | 164 | 133 |
+| glide | 15 | 2 | 0 |
+| syncope | 3208 | 71 | 74 |
+| middle | 1001 | 14 | 25 |
+
+lead has the most collisions, at 6%. Most of the words that lose had no
+outline before the rule (unhappy to happy, unsure to ensure). No rule's
+collision rate is more than 6%, so none was dropped.
+
+### user.json
+
+- 44 briefs that the rules now write left user.json for
+  `tests/briefs/two-syllable.tsv` (40) and `tests/briefs/two-word.tsv` (4).
+  `--check` fails if a rule stops writing one.
+- 4 stay because the rule writes them only while your entry is there:
+  PAEURPBT patient (Typey Type's parent), STKORD discord (the rule gives it to
+  disorder), `^AOUFL` all of, `^TPOUFL` full of.
+- I deleted no entry as an obvious error.
+- No new Plover entries were uncommitted at the start of this phase.
+
+The `^` briefs that the rule writes differently (yours / the rule's):
+
+- Leading syllable not dropped: addition `^TKAEUGS`/`^TKEUGS` and attention
+  `^TAEPBGS`/`^TEPBGS`. You XOR the a here, but drop it in append and
+  another.
+- The vowel table's chord: container `^TAEURPB`/`^TA*EURPB`, encourage
+  `^KOURPBLG`/`^KAOURPBLG`, public `^PEBLG`/`^P*EBLG`.
+- Syncope: written `^WRUPBT`/WREUPBT, paper `^PAEURP`/PAEURP, water
+  `^WART`/WAURT, modern `^PHOERPBD`/PHORPBD, happiness
+  `^HAEUPBS`/`^HAEPBS`.
+- Syllabification around the stress (decided): epic `^PUBG`/`^UPBG`, isolate
+  `^SHRAT`/`^OEULTS`.
+- Other rules or drops the pipeline does not make: advantage, disadvantage,
+  rematch, rely, very (`^SRU`, R dropped), implicit, unpleasant, unfortunate,
+  uncertain, regardless, frustrate, reduced, semantics, revision `^SREUGS`
+  (the rule writes `^SRUGS`, which you also have), access, accessory,
+  enormous, empty (`TKPWEU`, the em prefix merged with t), around, await,
+  another.
+- STK and SPW briefs that the rule does not write: decline, disgust (you
+  drop the g), disposal, discovery, internet (`STPWHRET`), intelligence,
+  integrate, beside, and the phrases (so good, do something).
+
+### Left for later
+
+- A Typey Type two-stroke outline as input to `^` (PEUR/WET) is not done. The
+  pipeline reaches pirouette from CMU, through the glide.
+- -ment, -ness, -ful and -less could be suffix chords, as -tion is. Your
+  improvement `^PROFPLT` suggests -ment.
+- The stage golden files for two-syllable are now 17 MB, because each rewrite
+  stage lists the whole lexicon.
