@@ -600,9 +600,11 @@ def align(word, letters, strokes, suffix=None):
     return None
 
 
-def rewrite_long(typey, result, table, word, outline):
+def rewrite_long(typey, result, table, word, outline, written):
     """The outline with the table's vowel on each stroke it is sure of, or None
-    when the outline does not align. Equal to `outline` when nothing changes."""
+    when the outline does not align. Equal to `outline` when nothing changes.
+    A stroke that `written`, {stroke: word}, gives a word this one contains
+    stays that word's: nightmare is night's TPHAOEUT and then mare."""
     parts = outline.split("/")
     suffix = parts.pop() if parts[-1] in SUFFIX_STROKES else None
     strokes = [Stroke.parse(p) for p in parts]
@@ -623,7 +625,9 @@ def rewrite_long(typey, result, table, word, outline):
     out = []
     for s, (spelling, sound, stress) in zip(strokes, parts):
         rule = rule_for(table, spelling, sound)
-        if stress != "0" and len(spelling.vowel) > 1 and rule and (rule.star or not s.star):
+        alone = written.get(str(s))
+        if (stress != "0" and len(spelling.vowel) > 1 and rule and (rule.star or not s.star)
+                and not (alone and alone in word)):
             s = Stroke(s.onset, rule.keys, rule.star, s.coda)
         out.append(str(s))
     return "/".join(out + [suffix] if suffix else out)
@@ -639,7 +643,7 @@ def resolve_long(typey, result, table, taken):
         if "/" not in outline or not re.fullmatch("[a-z]+", word) or word not in CMU:
             continue
         counts["candidates"] += 1
-        new = rewrite_long(typey, result, table, word, outline)
+        new = rewrite_long(typey, result, table, word, outline, taken)
         if new is None:
             continue
         counts["aligned"] += 1
@@ -783,15 +787,18 @@ def ruled():
 def supersede(out):
     """(out, superseded): the outlines of a word a rule writes, by entry or by -s
     or -ed fold, that are as long as the rule's, move to a dictionary of their
-    own, so a stack that has the rule suggests only its outline. A shorter one is
-    a brief and stays. A stack without the rules loads both."""
+    own, so a stack that has the rule suggests only its outline. A shorter one,
+    in strokes or in keys with `^` aside, is a brief and stays: about keeps PW
+    beside `^PWAOUT`. A stack without the rules loads both."""
     rules = ruled()
-    strokes = lambda o: o.count("/") + 1
-    length = {}
+    length = lambda o, fold=0: (o.count("/") + 1, keys(o.replace("^", "")) + fold)
+    shortest = {}
     for o, w in rules.items():
-        for f in {w} | {f for kind in "sd" for f in regular_forms(w, kind)}:
-            length[f] = min(length.get(f, strokes(o)), strokes(o))
-    moved = {o: t for o, t in out.items() if length.get(t) == strokes(o) and o not in rules}
+        for f, fold in [(w, 0)] + [(f, 1) for kind in "sd" for f in regular_forms(w, kind)]:
+            shortest[f] = min(shortest.get(f, length(o, fold)), length(o, fold))
+    moved = {o: t for o, t in out.items()
+             if t in shortest and length(o)[0] == shortest[t][0] and length(o) >= shortest[t]
+             and o not in rules}
     return {o: t for o, t in out.items() if o not in moved}, moved
 
 
