@@ -68,8 +68,8 @@ def align(word, pron, rank=1):
     letters and vowels do not line up.
 
     Two vowels with no consonant between them (react) may be one run of
-    letters, split after its first letter; an r-coloured first vowel has its r
-    between (around). A final e or ue after q or g is silent where the vowels
+    letters, split after its first letter, or after ou or oo said u
+    (pirouette); an r-coloured first vowel has its r between (around). A final e or ue after q or g is silent where the vowels
     line up without it (fire, create), and in -le and -re only where they do
     not line up with it (acre, but agile)."""
     vowels = [i for i, p in enumerate(pron) if p[-1].isdigit()]
@@ -106,7 +106,8 @@ def vowel_spans(word, runs, pron, vowels):
         short = (len(vowels) - k) - (len(runs) - n)
         meet = k + 1 < len(vowels) and vowels[k + 1] == vowels[k] + 1 and pron[vowels[k]][:-1] != "ER"
         if short > 0 and meet and j - i > 1:
-            spans += [(i, i + 1, word[i]), (i + 1, j, word[i + 1:j])]
+            m = i + (2 if j - i > 2 and word[i:i + 2] in ("ou", "oo") and pron[vowels[k]][:2] in ("UW", "UH") else 1)
+            spans += [(i, m, word[i:m]), (m, j, word[m:j])]
             k += 2
         else:
             spans.append((i, j, v))

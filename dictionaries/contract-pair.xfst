@@ -1,43 +1,28 @@
 ! Two words of one syllable contracted to one stroke, the rule of the two-word
 ! dictionary: contract.xfst's rule, with the word boundary where a word's
-! syllables meet.
+! syllables meet. After written.xfst and contract.xfst, whose pieces it shares.
 !
-! An entry is two of the lexicon's one-syllable entries joined by `+`, the
-! stressed word's vowel 1 and the other's 0. The stressed word's vowel is the
-! syllable's and the other's is the mark, as in contract.xfst, and the other
-! word's consonants join the side of the syllable they are on.
+! An entry is two written-out words joined by `+`, the stressed word's vowel 1
+! and the other's 0. The stressed word's vowel is the syllable's and the other's
+! is the mark, as in contract.xfst, and the other word's consonants join the
+! side of the syllable they are on.
 !
-!     go home   1 G=g OW0=o = + HH=h OW1=o M=m_e  ->  ^o G.HH=h OW1=o M=m_e
-!     what it   1 W=wh AH1=a T=t + IH0=i T=t       ->  ^i W=wh AH1=a T=-
-!     make it   1 M=m EY1=a K=k_e + IH0=i T=t      ->  ^i M=m EY1=a K.T=_e
+!     go home   1 G=g 0:o=O = + HH=h 1:o=OE M=m_e  ->  1 ^O G.HH=h OE M=m_e
+!     what it   1 W=wh 1:a=A T=t + 0:i=EU T=t      ->  1 ^EU W=wh A T=-
+!     make it   1 M=m 1:a=AEU K=k_e + 0:i=EU T=t   ->  1 ^EU M=m AEU K.T=-
 !
 ! The onset's letters are the stressed word's own. A coda that spans the
-! boundary is read by sound, keeping the first word's silent e, so make keeps
-! its a_e. A consonant on both sides of the boundary is said once.
-
-define Plus     [ Gap "+" Gap ] ;
-define Word     [ ConsSeg Gap VowelSeg Gap LastSeg ] ;
-define PairEntry [ Rank Gap Word Plus Word ] ;
-
-! The other word's vowel: its first letter, or an r-coloured vowel's R.
-define Mark(T)  [ [ Weak - RVowel ] Eq T Letter* ( Tail ) ] ;
-define MarkR    [ [ Weak & RVowel ] Eq Written Letter* ( Tail ) ] ;
+! boundary is read by sound. A consonant on both sides of the boundary is said
+! once.
 
 ! The second word has the stress, and the first word's consonants open it.
-define PairSecond(T, M, R, C) [ Rank Gap Ins("^" T Gap) Bare(C) Del(Eq Letter* Gap M Gap) R
-    Bare(C) Del(Eq Letter* ( Tail ) Plus) Bare(C) Eq Letter* Gap Stressed Eq Letter+ ( Tail ) Gap LastSeg ] ;
+define PairSecond(C) [ Rank Gap Caret Bare(C) Del(Eq Letter* Gap) Other(Letter+) Del(Gap)
+    Bare(C) Del(Eq Letter* ( Tail ) Plus) Bare(C) Eq Letter* Gap Keys1(Letter+) Tail1 ] ;
 
 ! The first word has the stress, and the second word's consonants close it.
-define After(M, R) [ Del(Plus) Bare(Cons) Del(Eq Letter* Gap M Gap) R Bare(Cons) Del(Eq Letter* ( Tail )) ] ;
-define PairFirst(T, M, R, C) [ Rank Gap Ins("^" T Gap) Bare(C) Eq Letter* Gap Stressed Eq Letter+ ( Tail ) Gap
-    Bare(Cons) Del(Eq Letter*) [ Del(Tail) After(M, R) Ins(Eq "_" e) | After(M, R) Ins(Eq "-") ] ] ;
-
-define PairTints(C) [ [ [ PairSecond(a, Mark(a), 0, C) | PairSecond(e, Mark(e), 0, C) | PairSecond(i, Mark(i), 0, C)
-                        | PairSecond(o, Mark(o), 0, C) | PairSecond(u, Mark(u), 0, C) | PairSecond(y, Mark(y), 0, C)
-                        | PairSecond(0, MarkR, Ins(R), C) ] .o. Glide .o. Gu ]
-                    | [ [ PairFirst(a, Mark(a), 0, C) | PairFirst(e, Mark(e), 0, C) | PairFirst(i, Mark(i), 0, C)
-                        | PairFirst(o, Mark(o), 0, C) | PairFirst(u, Mark(u), 0, C) | PairFirst(y, Mark(y), 0, C)
-                        | PairFirst(0, MarkR, Ins(R), C) ] .o. Glide ] ] ;
+define PairFirst(C) [ Rank Gap Caret Bare(C) Eq Letter* Gap Keys1(Letter+) Gap
+    Bare(Cons) Del(Eq Letter* ( Tail ) Plus) Bare(Cons) Del(Eq Letter* Gap) Other(Letter+) Del(Gap)
+    Bare(Cons) Del(Eq Letter* ( Tail )) Ins(Eq "-") ] ;
 
 define Once(X)  [ [ X X ] -> X ] ;
 define Degeminate [ Once(B) .o. Once(CH) .o. Once(D) .o. Once(DH) .o. Once(F) .o. Once(G) .o. Once(HH)
@@ -45,7 +30,8 @@ define Degeminate [ Once(B) .o. Once(CH) .o. Once(D) .o. Once(DH) .o. Once(F) .o
                   .o. Once(R) .o. Once(S) .o. Once(SH) .o. Once(T) .o. Once(TH) .o. Once(V) .o. Once(W)
                   .o. Once(Y) .o. Once(Z) .o. Once(ZH) ] ;
 
-define ContractPair [ PairEntry .o. [ [ ~$[z] .o. PairTints(NoZ) ] | [ $[z] .o. PairTints(Cons) ] ]
-                      .o. Degeminate .o. Dots ] ;
+define PairShapes(C) [ PairSecond(C) | PairFirst(C) ] ;
+define ContractPair [ WrittenPair .o. [ [ ~$[z] .o. PairShapes(NoZ) ] | [ $[z] .o. PairShapes(Cons) ] ]
+                      .o. Untrace .o. Glide .o. Degeminate .o. Dots ] ;
 
 define Stage    ContractPair ;

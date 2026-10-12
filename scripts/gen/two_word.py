@@ -44,7 +44,7 @@ import sys
 from . import DICTS, ROOT, corpora
 from . import lexicon as lex
 from . import vowels as g
-from .resolve import candidates, compile_pipeline, resolve
+from .resolve import candidates, compile_pipeline, resolve, unwritten_briefs
 from .stack import Stack, retro_words
 from .two_syllable import bare_entries, write_json
 
@@ -137,11 +137,11 @@ def spellings(translation):
 
 
 def build(typey, rule, counts):
-    """(entries, report data), from `rule`, {pair: outline}."""
+    """(entries, report data), from `rule`, {pair: {outline: cost}}."""
     count = lambda p: counts[tuple(p.split(" "))]
     never = lambda outline, word, other: False
     stack = Stack(g.written(), skip=(NAME,))
-    strokes = set(rule.values())
+    strokes = {o for cs in rule.values() for o in cs}
     folds = stack.folds(strokes | {s[1:] for s in strokes})
     held = {s: ("retro-words", "") for s in retro_words()}
     held.update((s, ("folds", t)) for s, (t, _) in folds.items())
@@ -157,7 +157,7 @@ def build(typey, rule, counts):
         other[0] == "folds" and (pair in OVER_FOLD
                                  or count(pair) > max((reading_counts[w] for w in readings[outline]), default=0)))
     out, lost, left = resolve(rule, lambda p: (-count(p), p), others, over_fold)
-    plain, taken = bare_entries(NAME, out, typey, stack, held, never)
+    plain, taken = bare_entries(NAME, out, typey, rule, stack, held, never)
     # A pair a fold writes needs no entry. A fold's base may be one of this
     # dictionary's entries, which changes what it reads, so ask again with them.
     folded = {s: p for s, p in out.items() if others.get(s) == ("folds", p)}
@@ -201,7 +201,7 @@ def report(found, out, r):
     by_pair = {p: s for s, p in out.items() if s.startswith("^")}
     theirs = sorted((p, s) for s, p in user.items() if p in found)
     print(f"{len(theirs)} user.json entries for pairs in scope:",
-          " ".join(f"{p.replace(' ', '_')}={s}/{by_pair.get(p, rule.get(p, '-'))}" for p, s in theirs))
+          " ".join(f"{p.replace(' ', '_')}={s}/{by_pair.get(p, next(iter(rule.get(p, ['-']))))}" for p, s in theirs))
 
 
 def main():
@@ -226,6 +226,8 @@ def main():
         with open(OUTPUT) as f:
             if json.load(f) != out:
                 sys.exit(f"{OUTPUT} is stale: run {sys.argv[0]}")
-        return
-    write_json(out, OUTPUT)
-    report(found, out, r)
+    else:
+        write_json(out, OUTPUT)
+        report(found, out, r)
+    if (missing := unwritten_briefs(NAME, out)):
+        sys.exit(f"tests/briefs/{NAME}.tsv: the rule no longer writes " + " ".join(f"{o}={t}" for o, t in missing))

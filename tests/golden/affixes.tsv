@@ -190,16 +190,6 @@ KOrd/^pbsz	accordances
 KOUpb/TPHr	encounter
 KOUpb/^bl	accountable
 KOUpbt/^pbt	accountant
-KPEpbs/TPHf	inexpensive
-KPHEpbd/Rgs	recommendation
-KPHEpbd/Rgsz	recommendations
-KPHEt/TPHpbs	incompetence
-KPHEt/TPHpbsz	incompetences
-KPHEt/TPHpbt	incompetent
-KPHREUs/TPHbl	inexplicable
-KPWHROEU/TPH*plt	unemployment
-KPWOrt/TPH*pbt	unimportant
-KPWUrs/Rplt	reimbursement
 KRAOEt/STKl	discreetly
 KRAOUt/Rplt	recruitment
 KRE/Rgs	recreation
@@ -315,7 +305,6 @@ PEUl/KPHgsz	compilations
 PEUr/KPgs	expiration
 PEUr/KPgsz	expirations
 PEUr/TPHblg	empirical
-PHA*EUpbd/Rr	remainder
 PHAEpb/TKr	demeanor
 PHAEUz/^plt	amazement
 PHApb/PR*pbt	permanent
@@ -695,7 +684,6 @@ SPEUr/^gsz	aspirations
 SPOpbd/Rpbt	respondent
 SPOpbs/Rbl	responsible
 SPOpbs/Rf	responsive
-SPWEpb/TPH*lgs	unintentional
 SR*Ebg/Kgs	convection
 SR*Ebg/Kgsz	convections
 SR*EUbg/Kgs	conviction
@@ -784,8 +772,6 @@ STEl/Kgs	constellation
 STEl/Kgsz	constellations
 STEUp/Kgs	constipation
 STEUp/Kgsz	constipations
-STKAOEUr/TPH*bl	undesirable
-STKPEpbs/TPHbl	indispensable
 STOp/TPH*bl	unstoppable
 STOr/Rgs	restoration
 STOr/Rgsz	restorations
@@ -935,7 +921,6 @@ TKOr/^bl	adorable
 TKOr/^gs	adoration
 TKOr/^gsz	adorations
 TKOU/TPHplt	endowment
-TKPHOrt/TPH*bl	uncomfortable
 TKPWAEUpblg/TPHplt	engagement
 TKPWArd/Rls	regardless
 TKPWRAd/TKgs	degradation
@@ -1210,6 +1195,12 @@ WAEUr/^pbs	awareness
 ^KHRAOEfs/KPl	exclusively
 ^KHRO*Ebg/Rgs	recollection
 ^KHRO*Ebg/Rgsz	recollections
+^KO*frplt/TPH*bl	uncomfortable
+^KOEpbld/Rgs	recommendation
+^KOEpbld/Rgsz	recommendations
+^KOEplt/TPHpbs	incompetence
+^KOEplt/TPHpbsz	incompetences
+^KOEplt/TPHpbt	incompetent
 ^KOEUrpbgd/^l	accordingly
 ^KOrp/TPHgs	incorporation
 ^KOrp/TPHgsz	incorporations
@@ -1243,10 +1234,10 @@ WAEUr/^pbs	awareness
 ^PAErd/PR*pbs	preparedness
 ^PAErpbt/^l	apparently
 ^PAErt/STKl	desperately
-^PAEUrt/Rgs	repatriation
-^PAEUrt/Rgsz	repatriations
 ^PAOEUpbt/STKplt	disappointment
 ^PAOrpbt/TPHl	importantly
+^PArt/Rgs	repatriation
+^PArt/Rgsz	repatriations
 ^PAtd/Rl	repeatedly
 ^PEr/STKpbs	disappearance
 ^PEr/STKpbsz	disappearances
@@ -1258,6 +1249,7 @@ WAEUr/^pbs	awareness
 ^PHErpl/KPHf	commemorative
 ^PHErpl/KPHgs	commemoration
 ^PHErpl/KPHgsz	commemorations
+^PHOEUrt/TPH*pbt	unimportant
 ^PHRft/KPl	explicitly
 ^PHRft/TPHl	implicitly
 ^PHRpb/KPHgs	comprehension
@@ -1268,6 +1260,7 @@ WAEUr/^pbs	awareness
 ^PHRpblt/TPHgsz	implementations
 ^PHRpbs/KPHf	comprehensive
 ^PHRpbs/^f	apprehensive
+^PHROU/TPH*plt	unemployment
 ^PHUpbt/PRl	prominently
 ^PHUpbt/SPWl	intermittently
 ^POEfrt/PR*s	preposterous
@@ -1287,9 +1280,9 @@ WAEUr/^pbs	awareness
 ^PROEUpblgs/^gs	approximation
 ^PROEUpblgs/^gsz	approximations
 ^PROEUpbz/TPHplt	imprisonment
-^PROEUrp/^gs	appropriation
-^PROEUrp/^gsz	appropriations
 ^PROrp/TPHl	improperly
+^PROUrp/^gs	appropriation
+^PROUrp/^gsz	appropriations
 ^PUd/TPHplt	impediment
 ^PUfpbd/KPr	expenditure
 ^PUr/KPpbs	experience
@@ -1305,6 +1298,7 @@ WAEUr/^pbs	awareness
 ^PWAEUl/TPHt	inability
 ^PWAOpbd/^plt	abandonment
 ^PWAUpbtd/^l	abundantly
+^PWHErs/Rplt	reimbursement
 ^PWHRAEt/PRbg	problematic
 ^PWHRAOf/TPH*bl	unbelievable
 ^PWOEUd/TPHplt	embodiment
@@ -1354,6 +1348,8 @@ WAEUr/^pbs	awareness
 ^SKEUs/TPH*fl	unsuccessful
 ^SKEUt/PRr	prosecutor
 ^SKHREf/KPt	exclusivity
+^SKPpbs/TPHf	inexpensive
+^SKPHRUs/TPHbl	inexplicable
 ^SKWpbt/Kl	consequently
 ^SKWRErpb/TKf	degenerative
 ^SKWRErpb/TKgs	degeneration
@@ -1407,12 +1403,14 @@ WAEUr/^pbs	awareness
 ^STE/TPHlgs	institutional
 ^STEfp/Kpbt	constituent
 ^STKs/PR*r	predecessor
+^STKAOUr/TPH*bl	undesirable
 ^STKPHAO*Ef/TPHbl	inconceivable
 ^STKPHOEUd/Rr	reconsider
 ^STKPHOEUft/TPHpbt	inconsistent
 ^STKPHRO*Ubg/Rgs	reconstruction
 ^STKPHRO*Ubg/Rgsz	reconstructions
 ^STKPHROEpb/TPH*lgs	unconventional
+^STKPUpbs/TPHbl	indispensable
 ^STKPWHREU/TPHt	ingenuity
 ^STKRApbd/TPH*bl	understandable
 ^STKUpbt/TPHl	incidental
@@ -1532,6 +1530,7 @@ WAEUr/^pbs	awareness
 ^TPHRAEUt/^blg	analytical
 ^TPHRUpb/TKl	detrimental
 ^TPHUpb/Kl	continental
+^TPHUpb/TPH*lgs	unintentional
 ^TPRAEt/PR*r	perpetrator
 ^TPREUl/TPHt	infertility
 ^TPREUrpblg/Rgs	refrigeration

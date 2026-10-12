@@ -5,8 +5,11 @@ define Ins(X)   [ 0 .x. X ] ;
 
 define LeftKey  [ S | T | K | P | W | H | R ] ;
 define RightKey [ f | r | p | b | l | g | t | s | d | z ] ;
+define VowelKeys [ (A) (O) ("*") (E) (U) ] ;
 
-! Left-bank keys in any order and repeated, to the stroke's: each is moved to
+! A bank's keys in any order and repeated, to the stroke's: each is moved to
 ! the end once, in steno order.
 define Last(K)  [ [ ? - K ]* | [ ? - K ]* Del(K) [ [ ? - K ] | Del(K) ]* Ins(K) ] ;
 define LeftBank [ Last(S) .o. Last(T) .o. Last(K) .o. Last(P) .o. Last(W) .o. Last(H) .o. Last(R) ] ;
+define RightBank [ Last(f) .o. Last(r) .o. Last(p) .o. Last(b) .o. Last(l) .o. Last(g) .o. Last(t) .o. Last(s)
+                 .o. Last(d) .o. Last(z) ] ;

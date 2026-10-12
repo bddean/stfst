@@ -1,0 +1,30 @@
+! A prefix spelled with a cluster no English onset has, written as the
+! cluster's keys in place of its syllable, after written.xfst. The cluster
+! leads, and says a syllable came first:
+!
+!     display  1 D=d 0:i=EU S.P.L=spl 1:ay=AEU =  ->  1 STK P.L=pl 1:ay=AEU =
+
+! A prefix, as its letters and phonemes before the vowel, its vowel's letters,
+! and its letters and phonemes after it; then its keys. A y-glide spelled with
+! no y is the vowel's: commute is KPH and ute.
+define Rest(P, L) [ Del(P) [ Del(Dot) [ More - [ Y ?* ] ] Eq Del(L) Letter*
+                           | Eq Del(L) Letter*
+                           | Del(Dot) [ Y ( Dot More ) ] Eq Del(L) [ y Letter* ]
+                           | Del(Dot Y) [ 0 | Del(Dot) More ] Eq Del(L) [ Letter* - [ y ?* ] ] ] ] ;
+define Pre(OnP, OnL, VL, CoP, CoL, K) [ Rank Gap Ins(K Gap) Del(OnP Eq OnL Gap Level ( r ) ":" VL Eq VowelKeys Gap)
+                                        Rest(CoP, CoL) Gap ?* ] ;
+
+! dis, des, and de before a c said s (decide).
+define Dis  [ Pre(D, d, [ i | e | y ], [ S | Z ], s, {STK}) | Pre(D, d, e, S, c, {STK}) ] ;
+define Int  [ Pre(0, 0, [ i | e ], N Dot T, {nt}, {SPW}) ] ;
+define Ex   [ Pre(0, 0, e, [ K | G ] Dot [ S | Z ], x, {KP}) ] ;
+define Comb [ Pre(K, c, o, M Dot B, {mb}, {KPW}) ] ;
+define Emb  [ Pre(0, 0, [ e | i ], M Dot B, {mb}, {KPW}) | Pre(0, 0, [ e | i ], M Dot P, {mp}, {KPW}) ] ;
+! com and not comm: the first spelling in the row that the word starts with
+! is the one it is read by.
+define Comm [ Pre(K, c, o, M, {mm}, {KPH})
+            | [ ~[ Rank Gap K Eq c Gap Level ( r ) ":" o Eq VowelKeys Gap Phones Eq m m ?* ]
+                .o. Pre(K, c, o, M, m, {KPH}) ] ] ;
+define Prefixed PU(Dis, PU(Int, PU(Ex, PU(Comb, PU(Emb, Comm))))) ;
+
+define Stage [ Written .o. Instead(Prefixed) ] ;

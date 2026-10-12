@@ -24,13 +24,52 @@ name = "pairs"
 lexc = "dictionaries/pairs.lexc"
 generator = "scripts/gen-two-word.py"
 
+# Each vowel as its syllable's chord by the vowel theory: the word written out.
+[[stage]]
+name = "written"
+xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/theory-tables.xfst",
+        "dictionaries/written.xfst"]
+
+# Rewrites of the written-out form, each a shorter one, which the two-syllable
+# pipeline runs in this order. A rewrite that drops a syllable leaves a mark
+# for it, and one that is a second choice puts the word one rewrite later:
+# lexicon.lexc's language, in aligned.xfst, says how.
+[[stage]]
+name = "prefix"
+xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/prefix.xfst"]
+
+[[stage]]
+name = "suffix"
+xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/suffix.xfst"]
+
+[[stage]]
+name = "lead"
+xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/lead.xfst"]
+
+[[stage]]
+name = "glide"
+xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/glide.xfst"]
+
+[[stage]]
+name = "syncope"
+xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/syncope.xfst"]
+
+[[stage]]
+name = "middle"
+xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/middle.xfst"]
+
+# The written-out form as one syllable, marked with what the stroke adds.
+[[stage]]
+name = "contract"
+xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/contract.xfst"]
+
 # Two words contracted to one syllable, marked as two syllables are.
 [[stage]]
 name = "contract-pair"
 xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/contract.xfst",
         "dictionaries/contract-pair.xfst"]
 
-# A syllable's stroke by the vowel theory.
+# A syllable's stroke by the vowel theory, around its chord.
 [[stage]]
 name = "theory"
 xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/theory-tables.xfst",
@@ -43,12 +82,6 @@ generator = "scripts/gen-theory.py"
 name = "affix-stems"
 lexc = "dictionaries/affixes-stems.lexc"
 generator = "scripts/gen-affixes.py"
-
-# A syllable as it is, or two contracted to one, marked with what the stroke adds.
-[[stage]]
-name = "stem"
-xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/contract.xfst",
-        "dictionaries/one.xfst"]
 
 # The marks applied: `^` and the other vowel's letter, or a prefix's cluster.
 [[stage]]
@@ -148,21 +181,22 @@ name = "two-syllable"
 priority = 35
 json = "dictionaries/two-syllable.json"
 generator = "scripts/gen-two-syllable.py"
-pipeline = ["lexicon", "stem", "theory", "caret"]
+pipeline = ["lexicon", "written", "prefix", "suffix", "lead", "glide", "syncope", "middle", "contract", "theory",
+            "caret"]
 
 [[dict]]
 name = "two-word"
 priority = 34
 json = "dictionaries/two-word.json"
 generator = "scripts/gen-two-word.py"
-pipeline = ["pairs", "contract-pair", "theory", "caret"]
+pipeline = ["pairs", "written", "contract-pair", "theory", "caret"]
 
 [[dict]]
 name = "affixes"
 priority = 33
 xfst = ["morphology/ortho.xfst", "dictionaries/affixes-lexicon.xfst", "dictionaries/affixes.xfst"]
 generator = "scripts/gen-affixes.py"
-pipeline = ["affix-stems", "stem", "theory", "caret"]
+pipeline = ["affix-stems", "written", "contract", "theory", "caret"]
 
 [[dict]]
 name = "typey-type"

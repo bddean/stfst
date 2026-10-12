@@ -1,0 +1,76 @@
+! An entry written out: each vowel as the theory one-syllable words are written
+! in writes its syllable's chord. After theory-tables.xfst, whose vowel table
+! this reads, and with the language aligned.xfst names `Written`.
+!
+!     report  1 R=r IY0=e P=p AO1=o R.T=rt  ->  1 R=r 0:e=E P=p 1:o=O R.T=rt
+!
+! A vowel's chord is the vowel table's for its sound, its letters and the
+! letters before it (a after w). Its sound is CMU's vowel with R where an r
+! follows it, and ER is a vowel and an R, which goes to the consonants after it.
+! One vowel letter is long, spelled with `_e`, before a silent e (make), and
+! when it is stressed and long and one consonant letter, or one before l or r,
+! opens the next syllable (super is su-per, as supe, and table ta-ble).
+!
+! gu before a vowel is a hard g, so its u is the onset's (guile). An entry the
+! vowel table has no rule for, at any vowel, is not written.
+
+define Snd(A, B, C, D)  [ [ A | B | C ] .x. D ] ;
+define Sound    [ Snd(AA0, AA1, AA2, AA) | Snd(AE0, AE1, AE2, AE) | Snd(AH0, AH1, AH2, AH)
+                | Snd(AO0, AO1, AO2, AO) | Snd(AW0, AW1, AW2, AW) | Snd(AY0, AY1, AY2, AY)
+                | Snd(EH0, EH1, EH2, EH) | Snd(EY0, EY1, EY2, EY) | Snd(IH0, IH1, IH2, IH)
+                | Snd(IY0, IY1, IY2, IY) | Snd(OW0, OW1, OW2, OW) | Snd(OY0, OY1, OY2, OY)
+                | Snd(UH0, UH1, UH2, UH) | Snd(UW0, UW1, UW2, UW) ] ;
+define SoundR   [ Snd(AA0, AA1, AA2, AAR) | Snd(AE0, AE1, AE2, AER) | Snd(AH0, AH1, AH2, AHR)
+                | Snd(AO0, AO1, AO2, AOR) | Snd(AW0, AW1, AW2, AWR) | Snd(AY0, AY1, AY2, AYR)
+                | Snd(EH0, EH1, EH2, EHR) | Snd(EY0, EY1, EY2, EYR) | Snd(IH0, IH1, IH2, IHR)
+                | Snd(IY0, IY1, IY2, IYR) | Snd(OW0, OW1, OW2, OWR) | Snd(OY0, OY1, OY2, OYR)
+                | Snd(UH0, UH1, UH2, UHR) | Snd(UW0, UW1, UW2, UWR) ] ;
+
+define Gu       [ [ [..] -> u || g _ Gap Vowel Eq u VowelLetter ] .o. [ u -> 0 || g u Gap Vowel Eq _ VowelLetter ] ] ;
+
+! --- A vowel and the consonants after it ------------------------------------------
+
+! The vowel as its sound, its stress after its letters.
+define WithR    [ R ( Dot Cons [ Dot Cons ]* ) ] ;
+define Info     [ Eq Level ( r ) ] ;
+define Hear(V, D) [ Gap [ [ V - RVowel ] .o. Sound ] Eq Letter+ ( Tail ) Ins(Eq D) Gap [ Phones - WithR ] Eq
+                  | Gap [ [ V - RVowel ] .o. SoundR ] Eq Letter+ ( Tail ) Ins(Eq D) Gap WithR Eq
+                  | Gap [ [ V & RVowel ] .x. ER ] Eq Letter+ ( Tail ) Ins(Eq D r) Gap
+                    Ins(R) [ 0 | Ins(Dot) Cons [ Dot Cons ]* ] Eq ] ;
+define Heard    [ [ Hear(Unstressed, "0") | Hear(Stressed, "1") | Hear(Secondary, "2") ] Letter* ( Tail ) ] ;
+
+! The vowel's letters as the table reads them. A silent e after the last
+! consonant makes one letter long; after more, nothing, and nor does aye's.
+define SpellLast [ Gap ? Eq [ Letter Ins({_e}) Info Gap Phones Eq Letter* Tail
+                            | Letter Letter+ Info Gap Phones Eq Letter* Tail
+                            | Letter+ ( Del(Tail) ) Info Gap Phones Eq Letter* ] ] ;
+define Long     [ EY | IY | AY | OW | UW | EYR | IYR | AYR | OWR | UWR ] ;
+define OneCons  [ [ Letter - VowelLetter - x ] | {th} | {ph} | {ch} | {sh} | [ b | c | d | f | g | k | p | t ] [ l | r ] ] ;
+define SpellMid PU([ Gap Long Eq VowelLetter Ins({_e}) Eq "1" Gap Phones Eq OneCons ],
+                   [ Gap ? Eq Letter+ ( Del(Tail) ) Info Gap ConsSeg ]) ;
+
+define Units    [ ConsSeg [ [ Gap VowelSeg Gap ConsSeg ] .o. Heard .o. SpellMid ]*
+                  [ [ Gap VowelSeg Gap LastSeg ] .o. Heard .o. SpellLast ] ] ;
+
+! --- The chord ------------------------------------------------------------------------
+
+! A vowel, the letters before it, and its keys a key at a time: the key X where
+! the vowel's chord has X. Then its stress before its letters, which the table
+! read and the written-out form keeps. An unstressed vowel the table has no
+! rule for is its first letter's keys, as ^ XORs it (a in nation's io).
+define Letters(L, K) [ L Letter* ( {_e} ) .x. K ] ;
+define ByLetter [ Letter* Gap ? Eq [ Letters(a, A) | Letters(e, E) | Letters(i, E U) | Letters(o, O)
+                                   | Letters(u, U) | Letters(y, E U) ] ] ;
+define Rules    PU([ VowelRules Info ], [ ByLetter Eq [ "0" | "2" ] ( r ) ]) ;
+define Table    Rules.u ;
+define Has(X)   [ Rules .o. [ ?* X ?* ] ].u ;
+define Key(X)   [ [ Has(X) Eq VowelKeys Ins(X) ] | [ [ Table - Has(X) ] Eq VowelKeys ] ] ;
+define Move(D)  [ Ins(D ":") Letter+ ( Del({_e}) ) Del(Eq D) ] ;
+define Tidy     [ Letter* Gap Del(? Eq) [ Move("0") | Move("1") | Move("2") | Move(["0" r]) | Move(["1" r])
+                                        | Move(["2" r]) ] Eq VowelKeys ] ;
+define Chord    [ [ Table Ins(Eq) ] .o. Key(A) .o. Key(O) .o. Key("*") .o. Key(E) .o. Key(U) .o. Tidy ] ;
+
+define Chords   [ Phones Eq [ Chord Gap Phones Eq ]* Letter* ( Tail ) ] ;
+
+! A word, or two words of pairs.lexc, each written out.
+define Stage    [ [ Entry | PairEntry ] .o. Gu .o. [ Rank Gap [ Units .o. Chords ] ( Plus [ Units .o. Chords ] ) ] ] ;

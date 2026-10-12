@@ -1,0 +1,15 @@
+! An unstressed vowel after the stressed one, between a consonant other than a
+! glide and l, m, n or r, dropped, after glide.xfst. The word as it was is one
+! rewrite later. The joined cluster has the second's letters:
+!
+!     river    1 R=r 1:i=EU V=v 0r:e=E R=r  ->  1 R=r 1:i=EU V.R=r
+!     stable   1 S.T=st 1:a=AEU B=bl 0:e=E L=  ->  1 S.T=st 1:a=AEU B.L=
+
+define Unstressed0 [ "0" ( r ) ":" Letter+ Eq VowelKeys ] ;
+define Stressed1 [ ?* Gap "1" ( r ) ":" ?* ] ;
+define Sonorant [ L | M | N | R ] ;
+define Weak     [ Eq Letter* Gap Unstressed0 Gap ] ;
+define Syncope  [ [ Stressed1 [ Cons - W - Y ] Weak Sonorant ?* ]
+                  .o. [ Weak -> Dot || Stressed1 [ Cons - W - Y ] _ Sonorant ] ] ;
+
+define Stage    [ Written .o. Before(Syncope) ] ;

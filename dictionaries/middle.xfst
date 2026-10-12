@@ -1,0 +1,7 @@
+! A t or d between two consonants of a cluster, dropped, one rewrite later,
+! after syncope.xfst: the outline a word falls back to when its cluster has no
+! keys or is taken (exactly is exacly).
+
+define Middle   [ $[ Cons Dot [ T | D ] Dot Cons ] .o. [ [ Dot [ T | D ] ] -> 0 || Cons _ Dot Cons ] ] ;
+
+define Stage    [ Written .o. After(Middle) ] ;

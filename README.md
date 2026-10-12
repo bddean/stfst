@@ -280,16 +280,23 @@ each rule's examples at the stroke the theory gave them. `check.sh` tests that
 file against the typey-type artifact and fails if the JSON is stale.
 
 `scripts/gen-two-syllable.py` writes `two-syllable.json` the same way, from the
-same tagger and table. A word of two syllables is one stroke marked with `^`.
-Its vowel chord is the stressed vowel's XOR the other vowel's letter. An
-r-coloured other vowel adds no vowel key and is written as its R (report is
-`^PROERT`, happy `^HAEUP`, mother `^PHO*RT`). A long vowel of one letter
-before one consonant is long as a silent e makes it, so super is `^SAOURP`.
-If a bank no one-syllable word has already says two syllables, the word is also written without `^` (withdraw
-is `^TKWHRAE` and `TKWHRAE`). A common word of one syllable that
-Typey Type does not write is its stroke by the same theory, with no `^` (sheikh
-is `SHA*EBG`); the lexicon has such words where lemminflect knows them. A prefix spelled with a cluster no English onset
-has takes that cluster instead of `^` (display is `STKPHRAEU`). `gen-typey-vowels.py` then supersedes the
+same tagger and table. Its pipeline writes a word out, a stroke per syllable,
+and then rewrites that form shorter: a prefix's cluster (display is
+`STKPHRAEU`), -tion as -GS and -ly as L, a leading unstressed syllable dropped
+for `^` (append is `^PEPBD`), an unstressed u before a vowel as w, an unstressed
+vowel between a consonant and l, m, n or r dropped (river is `REUFR`), and a
+middle t or d dropped as a last resort. One syllable left is a plain stroke, or
+the same keys with `^` where that is taken (matter is `^PHART`). Two are one
+stroke marked `^`, whose chord is the stressed vowel's XOR the other vowel's
+first letter; an r-coloured other vowel adds no vowel key and is written as its
+R (report is `^PROERT`, happy `^HAEUP`, mother `^PHO*RT`). A long vowel of one
+letter before one consonant, or one before l or r, is long as a silent e makes
+it, so super is `^SAOURP` and table `TAEUBL`. If a bank no one-syllable word has
+already says two syllables, the word is also written without `^` (withdraw is
+`^TKWHRAE` and `TKWHRAE`). A common word of one syllable that Typey Type does
+not write is its plain stroke (sheikh is `SHA*EBG`); the lexicon has such words
+where lemminflect knows them. `tests/briefs/` holds the user's briefs the rules
+came to write, which `--check` holds them to. `gen-typey-vowels.py` then supersedes the
 Typey Type outlines of the words it writes. Run the two in turn until both pass
 `--check`; one round is usually enough. The script leaves a stroke to any other
 dictionary that writes it, which it learns from the compiled stack, so run it
@@ -299,9 +306,9 @@ after a compile. `check.sh` fails if its JSON is stale.
 boundary: two words of one syllable, 150 times in a row or more in the phrasing
 corpora, as one `^` stroke (at all is `^TUL`, make it `^PHABGT`). The content
 word has the stress, or the second of two alike. Its pipeline is the pairs it
-writes as `dictionaries/pairs.lexc`, then `dictionaries/contract-pair.xfst`,
-which is `contract.xfst`'s rule with a word boundary in it, then the same theory
-and caret stages. It gives way to `two-syllable.json`, and `affixes` reads it,
+writes as `dictionaries/pairs.lexc`, written out by `written.xfst`, then
+`dictionaries/contract-pair.xfst`, which is `contract.xfst`'s rule with a word
+boundary in it, then the same theory and caret stages. It gives way to `two-syllable.json`, and `affixes` reads it,
 so run it between the two.
 
 The same rule, read backwards, is a fold for four function words: "a" before a

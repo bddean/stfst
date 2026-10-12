@@ -162,7 +162,7 @@ def outline_for(parsed, strokes):
     in…ation, not in…tion."""
     best = None
     for e, pkeys, p, letters, skeys, s in parsed:
-        if (stroke := strokes.get(e)):
+        if (stroke := next(iter(strokes.get(e, {None: 0})))):
             cand = (len(letters), f"{stroke}/{affix_keys(pkeys, skeys)}", (p, letters, s))
             best = min(best or cand, cand)
     return best and best[1:]
@@ -227,7 +227,7 @@ def build(typey, parsed, strokes):
 
     taken = {o: theirs[0] for o, found in answers.items()
              if (theirs := [(n, tr) for n, tr in found if n != NAME])}
-    out, lost, left = resolve({w: o for w, o in outlines.items() if w not in misread},
+    out, lost, left = resolve({w: {o: 0} for w, o in outlines.items() if w not in misread},
                               lambda w: (-g.zipf(w), w), taken, typey_gives_way())
     lexicon = {w: (o.split("/")[0], *found[w][1]) for o, w in out.items()}
     # A plural is the grammar's, so it follows its singular. One another

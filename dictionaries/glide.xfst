@@ -1,0 +1,11 @@
+! A u, ou or oo with no stress or a secondary one, before a vowel, is its
+! glide w, after lead.xfst. It joins the consonants before it, and the joined
+! cluster has the second's letters:
+!
+!     pirouette  1 P=p 2:i=EU R=r 0:ou=AOU = 1:e=E =tt_e  ->  1 P=p 2:i=EU R.W= 1:e=E =tt_e
+
+define UVowel   [ [ "0" | "2" ] ":" [ u | o u | o o ] Eq VowelKeys ] ;
+define Glide    [ [ [ Eq Letter* Gap UVowel Gap ] -> [ Dot W ] || Cons _ Eq Gap Level ]
+                .o. [ [ Eq Gap UVowel Gap ] -> W || Gap _ Eq Gap Level ] ] ;
+
+define Stage    [ Written .o. Glide ] ;

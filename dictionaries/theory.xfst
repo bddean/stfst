@@ -1,69 +1,35 @@
 ! A syllable's stroke, by the theory one-syllable words are written in.
 !
-! The input ends in a syllable of the lexicon's language, its onset, vowel and
-! coda: `R.P=p AO1=o R.T=rt`. Whatever comes before it is kept, and the
-! syllable becomes its stroke, `PROrt`.
+! The input is contract.xfst's: a mark, then a syllable's onset, chord and
+! coda, `^E R.P=p O R.T=rt`. The mark is kept, and the syllable becomes its
+! stroke, `^E PROrt`.
 !
 ! - The onset is its keys by theory-tables.xfst: by sound and spelling where
 !   one-syllable words write a letter the sounds do not (wr is WR), else each
 !   phoneme's by `Left`.
-! - The vowel is the chord theory-tables.xfst's vowel table gives its sound and
-!   spelling, and the onset's last letters (a after w). The sound is CMU's
-!   vowel with R when an r follows it, and a vowel letter before a silent e is
-!   spelled with `_e` (make is a_e).
+! - The chord is written.xfst's.
 ! - The coda is its keys by theory-tables.xfst: by sound and spelling, else by
 !   sound, else as two codas words have. A coda whose letters are `-` is
-!   looked up by sound alone. Its star, if it has one, joins the chord's.
+!   looked up by sound alone. A final h or gh is no key. Its star, if it has
+!   one, joins the chord's, and a suffix's keys join its own.
 !
-! A syllable with no rule for its vowel, no keys for its coda, or an onset
-! phoneme the left bank cannot write, has no stroke.
-
-! --- The sound and the spelling ----------------------------------------------------
-
-define Snd(A, B, C, D)  [ [ A | B | C ] .x. D ] ;
-define Sound    [ Snd(AA0, AA1, AA2, AA) | Snd(AE0, AE1, AE2, AE) | Snd(AH0, AH1, AH2, AH)
-                | Snd(AO0, AO1, AO2, AO) | Snd(AW0, AW1, AW2, AW) | Snd(AY0, AY1, AY2, AY)
-                | Snd(EH0, EH1, EH2, EH) | Snd(EY0, EY1, EY2, EY) | Snd(IH0, IH1, IH2, IH)
-                | Snd(IY0, IY1, IY2, IY) | Snd(OW0, OW1, OW2, OW) | Snd(OY0, OY1, OY2, OY)
-                | Snd(UH0, UH1, UH2, UH) | Snd(UW0, UW1, UW2, UW) ] ;
-define SoundR   [ Snd(AA0, AA1, AA2, AAR) | Snd(AE0, AE1, AE2, AER) | Snd(AH0, AH1, AH2, AHR)
-                | Snd(AO0, AO1, AO2, AOR) | Snd(AW0, AW1, AW2, AWR) | Snd(AY0, AY1, AY2, AYR)
-                | Snd(EH0, EH1, EH2, EHR) | Snd(EY0, EY1, EY2, EYR) | Snd(IH0, IH1, IH2, IHR)
-                | Snd(IY0, IY1, IY2, IYR) | Snd(OW0, OW1, OW2, OWR) | Snd(OY0, OY1, OY2, OYR)
-                | Snd(UH0, UH1, UH2, UHR) | Snd(UW0, UW1, UW2, UWR) ] ;
-
-! The vowel's sound, and the coda's phonemes: an r after the vowel colours it,
-! and ER is a vowel and an R.
-define WithR    [ R ( Dot Cons [ Dot Cons ]* ) ] ;
-define Colour(V, C) [ V Eq [ Letter | "_" ]+ Gap C Eq [ Letter* | "-" ] ] ;
-define Coloured [ Colour(Sound, Phones - WithR) | Colour(SoundR, WithR)
-                | Colour(Snd(ER0, ER1, ER2, ER), Ins(R) [ 0 | Ins(Dot) Cons [ Dot Cons ]* ]) ] ;
-
-! The coda's letters less a final h or gh, which no key writes: th is t.
-define Strip    [ [ Letter* - [ Letter* h ] ] | [ Letter* Del({gh}) ] | [ [ Letter* - [ Letter* g ] ] Del(h) ] ] ;
-! A silent e after one vowel letter makes it long (a_e); after more, nothing,
-! and nor does aye's.
-define Spelled  [ Vowel Eq [ Letter Ins({_e}) Gap Phones Eq Strip Del(Tail)
-                           | Letter Letter+ Gap Phones Eq Strip Del(Tail)
-                           | Letter+ ( Del(Tail) ) Gap Phones Eq [ Strip | "-" ] ] ] ;
-
-define Norm     [ ConsSeg Gap [ Spelled .o. Coloured ] ] ;
-
-! --- Keys ---------------------------------------------------------------------------
-
-define Chord    [ Phones Eq VowelRules Gap ?* ] ;
+! A syllable with no keys for its coda, or an onset phoneme the left bank
+! cannot write, has no stroke.
 
 define Sounded  [ ( Left [ Del(Dot) Left ]* ) Del(Eq Letter*) ] ;
 define Onset    [ [ PU(OnsetSpelled, Sounded) Del(Gap) ] .o. LeftBank ] ;
 
-define Coda     [ Del(Gap) [ PU(CodaSpelled, [ CodaSounded | CodaSplit ] Del(Eq [ Letter* | "-" ]))
-                           | Del(Eq [ Letter* | "-" ]) ] ] ;
+! The coda's letters less a final h or gh, and less a silent e: th is t.
+define Strip    [ [ Letter* - [ Letter* h ] ] | [ Letter* Del({gh}) ] | [ [ Letter* - [ Letter* g ] ] Del(h) ] ] ;
+define Letters  [ Phones Eq [ Strip ( Del(Tail) ) | "-" ] ] ;
+define Coda     [ Del(Gap) [ Letters .o. [ PU(CodaSpelled, [ CodaSounded | CodaSplit ] Del(Eq [ Letter* | "-" ]))
+                                         | Del(Eq [ Letter* | "-" ]) ] ] ] ;
 
-define Keys     [ Onset (A) (O) ("*") (E) (U) Coda ] ;
+define Keys     [ Onset VowelKeys Coda ( Del(Gap "-") RightKey+ ) ] ;
 
 ! The coda's star joins the chord's.
 define Star     [ LeftKey* (A) (O) [ "*" (E) (U) (Del("*")) | (E) (U) | Ins("*") (E) (U) Del("*") ] RightKey* ] ;
 
-define Syllable [ Norm .o. Chord .o. Keys .o. Star ] ;
+define Syllable [ Keys .o. Star .o. [ LeftKey* VowelKeys [ RightKey* .o. RightBank ] ] ] ;
 
-define Stage    [ ?* Gap Syllable ] ;
+define Stage    [ Rank Gap [ ? - Gap ]* Gap Syllable ] ;

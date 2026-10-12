@@ -9,6 +9,7 @@ define Gap      " " ;
 define Eq       "=" ;
 define Dot      "." ;
 
+define VowelLetter [ a | e | i | o | u | y ] ;
 define Letter   [ a | b | c | d | e | f | g | h | i | j | k | l | m
                 | n | o | p | q | r | s | t | u | v | w | x | y | z ] ;
 define Cons     [ B | CH | D | DH | F | G | HH | JH | K | L | M | N | NG
@@ -22,8 +23,9 @@ define Secondary [ AA2 | AE2 | AH2 | AO2 | AW2 | AY2 | EH2 | ER2 | EY2
 define Vowel    [ Unstressed | Stressed | Secondary ] ;
 define RVowel   [ ER0 | ER1 | ER2 ] ;
 
-! A consonant cluster's phonemes, none or several.
-define Phones   [ ( Cons [ Dot Cons ]* ) ] ;
+! A consonant cluster's phonemes: `More` has at least one.
+define More     [ Cons [ Dot Cons ]* ] ;
+define Phones   [ ( More ) ] ;
 ! Letters after a segment's that spell nothing: a final e or ue, aye's e.
 define Tail     [ "_" Letter+ ] ;
 
@@ -31,7 +33,43 @@ define ConsSeg  [ Phones Eq Letter* ] ;
 define VowelSeg [ Vowel Eq Letter+ ( Tail ) ] ;
 define LastSeg  [ Phones Eq Letter* ( Tail ) ] ;
 
-! The pronunciation's place in CMU's order.
-define Rank     [ 1 | 2 | 3 | 4 ] ;
+! The pronunciation's place in CMU's order, then a `'` for each rewrite the
+! word has another outline without: the resolver takes the outline only where
+! those are taken.
+define Cost     "'" ;
+define Rank     [ [ 1 | 2 | 3 | 4 ] Cost* ] ;
 
-define Entry    [ Rank Gap ConsSeg [ Gap VowelSeg Gap ConsSeg ]* Gap VowelSeg Gap LastSeg ] ;
+define Word     [ ConsSeg [ Gap VowelSeg Gap ConsSeg ]* Gap VowelSeg Gap LastSeg ] ;
+define Entry    [ Rank Gap Word ] ;
+
+! Two words, which pairs.lexc writes: go home is `1 G=g OW0=o = + HH=h OW1=o M=m_e`.
+define Plus     [ Gap "+" Gap ] ;
+define PairEntry [ Rank Gap Word Plus Word ] ;
+
+! The written-out form: an entry as written.xfst writes it, which the rewrites
+! before the contraction read and write. Each vowel is its syllable's chord as
+! the vowel table writes it, after its stress (0, 1, or 2 for secondary), r if
+! it is r-coloured, and its letters. The consonants stay as the entry has them
+! until the contraction puts them on a bank.
+!
+!     report  1 R=r 0:e=E P=p 1:o=O R.T=rt
+!     river   1 R=r 1:i=EU V=v 0r:e=E R=r
+!
+! A rewrite that drops a syllable writes before the onset what stands for it: a
+! prefix's cluster, or `^`. One that writes a suffix as its keys puts them after
+! the coda, with a `-`.
+define Level    [ "0" | "1" | "2" ] ;
+define Chorded  [ Level ( r ) ":" Letter+ Eq VowelKeys ] ;
+define Lead     [ "^" | LeftKey+ ] ;
+define Suffix   [ "-" RightKey+ ] ;
+define WrittenWord [ ConsSeg [ Gap Chorded Gap ConsSeg ]* Gap Chorded Gap LastSeg ] ;
+define Written  [ Rank Gap ( Lead Gap ) WrittenWord ( Gap Suffix ) ] ;
+define WrittenPair [ Rank Gap WrittenWord Plus WrittenWord ] ;
+
+! A rewrite R, defined only where it applies, and the word as it was:
+! `Instead` takes the rewrite only, `Before` puts the word as it was one
+! rewrite later, and `After` puts the rewrite later.
+define Later    [ [ 1 | 2 | 3 | 4 ] Cost* Ins(Cost) ?* ] ;
+define Instead(R) PU(R, ?*) ;
+define Before(R) [ R | [ R.u .o. Later ] | ~R.u ] ;
+define After(R) [ [ R .o. Later ] | ?* ] ;

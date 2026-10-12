@@ -1,0 +1,14 @@
+! A suffix written as its keys in place of its syllable, as one-syllable words
+! fold it, after written.xfst. The keys go after the coda, with a `-`.
+!
+! -tion and its kin are -GS (action): the last syllable SH, ZH or CH, an
+! unstressed io or ia, and n. -ly is the L before it, as -er is its R.
+!
+!     nation   1 N=n 1:a=AEU SH=t 0:io=EU N=n  ->  1 N=n 1:a=AEU =t -gs
+!     sadly    1 S=s 1:a=A D.L=dl 0:y=EU =    ->  1 S=s 1:a=A D.L=dl
+
+define Tion [ ?* Gap [ Phones Del(Dot) | 0 ] Del([ SH | ZH | CH ]) Eq Letter*
+              Del(Gap "0" ":" i [ o | a ] Eq VowelKeys Gap N Eq n) Ins(Gap "-" g s) ] ;
+define Ly   [ [ Gap "0" ":" y Eq VowelKeys Gap Eq ] -> 0 || L Eq Letter* _ .#. ] ;
+
+define Stage [ Written .o. Instead(Tion) .o. Ly ] ;
