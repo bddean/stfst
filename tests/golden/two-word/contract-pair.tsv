@@ -698,6 +698,7 @@ death and	1 ^a D=d EH1=ea TH.N.D=-
 death in	1 ^i D=d EH1=ea TH.N=-
 death of	1 ^o D=d EH1=ea TH.V=-
 death toll	1 ^e D.TH.T=t OW1=o L=ll
+deaths in	1 ^i D=d EH1=ea TH.S.N=-
 depth of	1 ^o D=d EH1=e P.TH.V=-
 did a	1 ^i D= AH1=a =
 did in	1 ^i D= IH1=i N=n
@@ -2789,6 +2790,7 @@ the days	1 ^e DH.D=d EY1=ay Z=s
 the dead	1 ^e DH.D=d EH1=ea D=d
 the deal	1 ^e DH.D=d IY1=ea L=l
 the death	1 ^e DH.D=d EH1=ea TH=th
+the deaths	1 ^e DH.D=d EH1=ea TH.S=ths
 the deep	1 ^e DH.D=d IY1=ee P=p
 the dog	1 ^e DH.D=d AO1=o G=g
 the door	1 ^e DH.D=d AO1=oo R=r

@@ -263,10 +263,11 @@ typey-type: the shorter upstream strokes of the frequent words the theory
 lengthened, kept only where no entry in the stack writes them.
 
 It also leaves out what a rule writes. If `two-syllable.json` or `affixes`
-writes a word, a Typey Type outline for it that is as long as the rule's moves
-to `typey-superseded.json`, which Stenotype Extended does not load. If the stack
-writes an entry's strokes the same without it, the entry moves to
-`typey-composed.json`, which neither system loads. `RAOE/HROEBGTS` is one:
+writes a word, a Typey Type outline for it that is as long as the rule's, in
+strokes and in keys with `^` aside, moves to `typey-superseded.json`, which
+Stenotype Extended does not load. A shorter one is a brief and stays: about
+keeps `PW`. If the stack writes an entry's strokes the same without it, the
+entry moves to `typey-composed.json`, which neither system loads. `RAOE/HROEBGTS` is one:
 `{re^}` then "locates" already writes "relocates". Only Plover can say which
 entries those are, because `plover-semantic-suffixes` decides what `{:infl:…}`
 writes. So `scripts/find-typey-composed.py` runs under Plover's python and asks
@@ -285,7 +286,9 @@ r-coloured other vowel adds no vowel key and is written as its R (report is
 `^PROERT`, happy `^HAEUP`, mother `^PHO*RT`). A long vowel of one letter
 before one consonant is long as a silent e makes it, so super is `^SAOURP`.
 If a bank no one-syllable word has already says two syllables, the word is also written without `^` (withdraw
-is `^TKWHRAE` and `TKWHRAE`). A prefix spelled with a cluster no English onset
+is `^TKWHRAE` and `TKWHRAE`). A common word of one syllable that
+Typey Type does not write is its stroke by the same theory, with no `^` (sheikh
+is `SHA*EBG`); the lexicon has such words where lemminflect knows them. A prefix spelled with a cluster no English onset
 has takes that cluster instead of `^` (display is `STKPHRAEU`). `gen-typey-vowels.py` then supersedes the
 Typey Type outlines of the words it writes. Run the two in turn until both pass
 `--check`; one round is usually enough. The script leaves a stroke to any other

@@ -22,8 +22,6 @@ Al/Rfpl	realism
 Al/Rft	realist
 Al/Rt	reality
 Al/Rz	realize
-Al/TPHgs	inhalation
-Al/TPHgsz	inhalations
 AOEUpb/STKr	designer
 AOEUr/STKbl	desirable
 AOEUt/KPgs	excitation
@@ -31,9 +29,6 @@ AOEUt/KPgsz	excitations
 AOEUt/KPplt	excitement
 Apbg/SPWbl	intangible
 As/PR*f	pervasive
-AUft/KPf	exhaustive
-AUs/KPgs	exhaustion
-AUs/KPgsz	exhaustions
 Efr/PR*bl	preferable
 Efr/PR*pbs	preference
 Efr/PR*pbsz	preferences
@@ -68,12 +63,6 @@ Ers/KPz	exercise
 Es/KPf	excessive
 EU/TPHgs	emission
 EU/TPHgsz	emissions
-EUb/KPgs	exhibition
-EUb/KPgsz	exhibitions
-EUb/PRgs	prohibition
-EUb/PRgsz	prohibitions
-EUb/TPHgs	inhibition
-EUb/TPHgsz	inhibitions
 EUf/TKf	derivative
 EUft/KPpbs	existence
 EUft/KPpbsz	existences
@@ -88,10 +77,21 @@ EUrg/TPHgsz	emigrations
 EUt/TPHgs	imitation
 EUt/TPHgsz	imitations
 HAErs/Rl	rehearsal
+HAl/TPHgs	inhalation
+HAl/TPHgsz	inhalations
 HAOEUrd/TKgs	dehydration
 HAOEUrd/TKgsz	dehydrations
 HApbs/TPHplt	enhancement
+HAUft/KPf	exhaustive
+HAUs/KPgs	exhaustion
+HAUs/KPgsz	exhaustions
 HEr/TPHpbt	inherent
+HEUb/KPgs	exhibition
+HEUb/KPgsz	exhibitions
+HEUb/PRgs	prohibition
+HEUb/PRgsz	prohibitions
+HEUb/TPHgs	inhibition
+HEUb/TPHgsz	inhibitions
 HR*Ebg/KHRgs	collection
 HR*Ebg/KHRgsz	collections
 HRA/Rgs	relation
@@ -239,8 +239,6 @@ KWEUs/^gsz	acquisitions
 KWEUt/^l	acquittal
 KWRUl/TPHgs	emulation
 KWRUl/TPHgsz	emulations
-O/TPHgs	emotion
-O/TPHgsz	emotions
 O/TPHlgs	emotional
 Og/PR*f	prerogative
 Ol/STKgs	desolation
@@ -328,7 +326,6 @@ PHEpbd/KPHbl	commendable
 PHEpbd/KPHgs	commendation
 PHEpbd/KPHgsz	commendations
 PHEpbd/^plt	amendment
-PHEpbl/Rr	remember
 PHEpbs/KPHplt	commencement
 PHEpbs/TPHl	immensely
 PHEr/TPHgs	immersion
@@ -511,7 +508,6 @@ PWUpbd/^pbsz	abundances
 PWUpbd/^pbt	abundant
 PWUs/KPHgs	combustion
 PWUs/KPHgsz	combustions
-PWUt/Rl	rebuttal
 REl/KRgs	correlation
 REl/KRgsz	correlations
 REUd/KRr	corridor
@@ -777,7 +773,6 @@ SRO/TKgsz	devotions
 SRO/TKlgs	devotional
 SROEUd/^pbs	avoidance
 SROEUd/^pbsz	avoidances
-SROfl/Rr	revolver
 SROfl/TPHplt	involvement
 ST*EUpbgt/TPHf	instinctive
 STAl/TPHgs	installation

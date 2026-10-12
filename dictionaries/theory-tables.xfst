@@ -3,6 +3,13 @@
 
 define Left [ [ B .x. {PW} ] | [ CH .x. {KH} ] | [ D .x. {TK} ] | [ DH .x. {TH} ] | [ F .x. {TP} ] | [ G .x. {TKPW} ] | [ HH .x. {H} ] | [ JH .x. {SKWR} ] | [ K .x. {K} ] | [ L .x. {HR} ] | [ M .x. {PH} ] | [ N .x. {TPH} ] | [ P .x. {P} ] | [ R .x. {R} ] | [ S .x. {S} ] | [ SH .x. {SH} ] | [ T .x. {T} ] | [ TH .x. {TH} ] | [ V .x. {SR} ] | [ W .x. {W} ] | [ Y .x. {KWR} ] | [ Z .x. {STKPW} ] | [ ZH .x. {SH} ] ] ;
 
+! 5 onsets by sound and spelling.
+define OnsetSpelled [ [ [ 0 Eq {h} ] .x. [ {H} ] ]
+    | [ [ HH Eq {wh} ] .x. [ {WH} ] ]
+    | [ [ K Eq {ch} ] .x. [ {KH} ] ]
+    | [ [ R Eq {wr} ] .x. [ {WR} ] ]
+    | [ [ W Eq {wh} ] .x. [ {WH} ] ] ] ;
+
 ! a after w or qu
 define VowelRule1 [ [ Letter* [ {w} | {qu} ] ] Gap [ [ [ AA | AH | AAR | AOR ] Eq [ {a} ] ] .x. [ A ] ] ] ;
 ! a as aw or ah
