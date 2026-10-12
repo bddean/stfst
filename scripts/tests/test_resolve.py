@@ -16,20 +16,25 @@ RANK = {"the": 0, "they": 1, "then": 2}
 @unittest.skipIf(resolve is None, "no cmudict or wordfreq")
 class Resolution(unittest.TestCase):
     def test_the_first_by_rank_keeps_the_outline(self):
-        out, lost, left = resolve({"then": "TH", "the": "TH", "they": "THE"}, RANK.get, {})
+        out, lost, left = resolve({"then": {"TH": 0}, "the": {"TH": 0}, "they": {"THE": 0}}, RANK.get, {})
         self.assertEqual(out, {"TH": "the", "THE": "they"})
         self.assertEqual(lost, [("then", "the", "TH")])
         self.assertEqual(left, [])
 
+    def test_a_second_choice_yields_to_a_first(self):
+        taken = {"TH": ("user", "thus")}
+        out, _, left = resolve({"the": {"TH": 0, "THE": 1}, "they": {"THE": 0}}, RANK.get, taken)
+        self.assertEqual((out, left), ({"THE": "they"}, [("the", "TH", ("user", "thus"))]))
+
     def test_the_stack_keeps_its_outline_unless_it_gives_way(self):
         taken = {"TH": ("user", "thus")}
-        out, _, left = resolve({"the": "TH"}, RANK.get, taken)
+        out, _, left = resolve({"the": {"TH": 0}}, RANK.get, taken)
         self.assertEqual((out, left), ({}, [("the", "TH", ("user", "thus"))]))
-        out, _, _ = resolve({"the": "TH"}, RANK.get, taken, lambda o, w, other: other[0] == "user")
+        out, _, _ = resolve({"the": {"TH": 0}}, RANK.get, taken, lambda o, w, other: other[0] == "user")
         self.assertEqual(out, {"TH": "the"})
 
     def test_the_stack_writing_the_same_word_is_no_conflict(self):
-        out, _, left = resolve({"the": "TH"}, RANK.get, {"TH": ("typey-type", "the")})
+        out, _, left = resolve({"the": {"TH": 0}}, RANK.get, {"TH": ("typey-type", "the")})
         self.assertEqual((out, left), ({"TH": "the"}, []))
 
 
