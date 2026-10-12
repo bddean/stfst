@@ -87,8 +87,10 @@ define KeyStroke [ LeftKey* Head VowelKeys RightKey* ] ;
 define Strokes  [ Rank Gap ( Lead Gap ) KeyStroke ( "/" KeyStroke ) ] ;
 
 ! An outline in lexicon.lexc: two strokes, the stressed one's head `1:` and
-! the other's `0:`.
-define Outlined [ Rank Gap LeftKey* [ "0" | "1" ] ":" VowelKeys RightKey* "/" LeftKey* [ "0" | "1" ] ":" VowelKeys RightKey* ] ;
+! the other's `0:`. After prefix.xfst, it can be a prefix's cluster and the
+! stressed stroke.
+define Outlined [ Rank Gap [ LeftKey* [ "0" | "1" ] ":" VowelKeys RightKey* "/" | LeftKey+ Gap ]
+                  LeftKey* [ "0" | "1" ] ":" VowelKeys RightKey* ] ;
 
 ! A rewrite R, defined only where it applies, and the word as it was:
 ! `Instead` takes the rewrite only, `Before` puts the word as it was one

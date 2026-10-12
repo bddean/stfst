@@ -17,7 +17,9 @@ A word with a Typey Type outline of two strokes (after the vowel theory) also
 has that outline as an entry, each chord headed with its stress, `1:` or `0:`:
 pirouette is `1 P0:EUr/W1:Et`. The outline is the word written out, so its CMU
 entries are flagged `@`, and the pipeline takes them only where a rewrite made
-them shorter.
+them shorter. An outline whose chords are not the word's vowels is a brief and
+is left out (actually's TAOUL/HREU), and Typey Type's KWR, SKWR or W before a
+vowel is dropped where the word has no such sound (makeup's PHAEUBG/SKWRUP).
 
 Each entry starts with the pronunciation's place in CMU's order and a space, so
 a rule can prefer the first. The pronunciations are CMU's as steno hears them
@@ -160,15 +162,16 @@ FIRST_KEYS = {"a": "A", "e": "E", "i": "EU", "o": "O", "u": "U", "y": "EU"}
 
 
 def typey_outlines():
-    """{word: [outline]} of Typey Type after the vowel theory, in its order, the
-    outlines it gave up to the rules included."""
+    """{word: [outline]} of Typey Type after the vowel theory, the outlines it
+    gave up to the rules included, fewest keys first. Not the files' order,
+    which moves as the rules take outlines."""
     out = {}
     for path in (g.OUTPUT, g.COMPOSED, g.SUPERSEDED):
         if os.path.exists(path):
             with open(path) as f:
                 for o, w in json.load(f).items():
                     out.setdefault(w, []).append(o)
-    return out
+    return {w: sorted(os, key=lambda o: (g.keys(o), o)) for w, os in out.items()}
 
 
 def stressed_stroke(entry, strokes):
@@ -187,23 +190,71 @@ def stressed_stroke(entry, strokes):
     return found[0] if len(found) == 1 else None
 
 
+LONG_KEYS = {"a": "AEU", "e": "AOE", "i": "AOEU", "o": "OE", "u": "AOU", "y": "AOEU"}
+# The vowel letter a chord spells, as split.xfst's `ChordLetter` reads it.
+CHORD_LETTER = {"A": "a", "O": "o", "E": "e", "U": "u", "EU": "i", "AE": "e", "AO": "o", "AU": "a",
+                "OE": "o", "OU": "o", "AOE": "e", "AEU": "a", "AOU": "u", "OEU": "o", "AOEU": "i"}
+
+
+def spells(chord, entry, k, table):
+    """Whether a chord can be the entry's k-th vowel as written out: its first
+    letter's short or long chord, the vowel table's, or a chord that spells
+    one of its letters. A brief's chord is none of these: actually's
+    TAOUL/HREU."""
+    on, v, co = entry.segments[2 * k:2 * k + 3]
+    letter = v.letters[:1].replace("y", "i")
+    sound = v.phones[0][:-1] + ("R" if co.phones[:1] == ("R",) else "")
+    rule = g.rule_for(table, g.Spelling(on.letters, v.letters, co.letters), sound)
+    chord = chord.replace("*", "")
+    return (chord in (FIRST_KEYS.get(letter), LONG_KEYS.get(letter), rule and rule.keys)
+            or CHORD_LETTER.get(chord, "-") in v.letters.replace("y", "i"))
+
+
+# Typey Type's keys before a vowel-initial stroke, which spell no sound unless
+# the word has it: makeup is PHAEUBG/SKWRUP. W is one only after an o or u.
+FILLERS = {"SKWR": "JH", "KWR": "Y", "W": "W"}
+
+
+def unfilled(strokes, entry):
+    """The strokes without Typey Type's fillers where the word has no sound
+    for them."""
+    phones = {p for seg in entry.segments[0::2] for p in seg.phones}
+    after = lambda i: CHORD_LETTER.get(strokes[i - 1][1].replace("*", "")) if i else None
+    filler = lambda i, on: (on in FILLERS and FILLERS[on] not in phones
+                            and (on != "W" or after(i) in ("o", "u")))
+    return [("" if filler(i, on) else on, chord, co) for i, (on, chord, co) in enumerate(strokes)]
+
+
+def written_out(entry, strokes, stressed, table):
+    """Whether two strokes are the word's own syllables, as far as their chords
+    say: the stressed one spells the stressed vowel, the other another vowel."""
+    vowels = entry.segments[1::2]
+    k = next(i for i, v in enumerate(vowels) if v.phones[0][-1] == "1")
+    return (spells(strokes[stressed][1], entry, k, table)
+            and any(spells(strokes[1 - stressed][1], entry, i, table) for i in range(len(vowels)) if i != k))
+
+
 def outline_entries(words, lex):
-    """{word: [entry text]}: each word's two-stroke outlines, the stressed
-    stroke's chord headed `1:` and the other's `0:`, in Typey Type's order."""
+    """{word: [entry text]}: each word's two-stroke outlines that are written
+    out, the stressed stroke's chord headed `1:` and the other's `0:`, and
+    Typey Type's fillers dropped."""
     system = plover_tape.System.load(SYSTEM)
+    table, _ = g.load_table()
     out = {}
     for w, outlines in typey_outlines().items():
         if w not in lex or w not in words:
             continue
         texts = []
+        entry = lex[w][1][0]
         for o in outlines:
             tapes = system.tape(o).split("/")
             strokes = [m.groups() for t in tapes if (m := STROKE.fullmatch(t))]
             if len(tapes) != 2 or len(strokes) != 2:
                 continue
-            k = stressed_stroke(lex[w][1][0], strokes)
-            if k is None:
+            k = stressed_stroke(entry, strokes)
+            if k is None or not written_out(entry, strokes, k, table):
                 continue
+            strokes = unfilled(strokes, entry)
             text = "/".join(f"{on}{'1' if i == k else '0'}:{chord}{co}" for i, (on, chord, co) in enumerate(strokes))
             if text not in texts:
                 texts.append(text)

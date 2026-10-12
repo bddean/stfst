@@ -14,9 +14,10 @@
 ! syllable stays in front: a rewrite's `^` or a prefix's cluster.
 !
 ! An outline from the lexicon is two strokes already, and its other stroke
-! gets its operand:
+! gets its operand, or a prefix's cluster and one stroke:
 !
-!     pirouette  1 P0:EUr/W1:Et  ->  1 P0EU:EUr/W1:Et
+!     pirouette   1 P0:EUr/W1:Et      ->  1 P0EU:EUr/W1:Et
+!     disappoint  1& STK P1:OEUpbt    ->  1 STK P1:OEUpbt
 
 ! The other vowel's operand, its head's keys: its first letter's (a A, e E, i
 ! and y EU, o O, u U), and none for an r-coloured vowel, whose R is in the coda
@@ -77,6 +78,7 @@ define FromWritten [ Written .o. Taken .o. [ Flag -> 0 ] .o. [ [ ~$[z] .o. Shape
 
 define OtherStroke [ LeftKey* "0" Del(":") OutlineOp RightKey* ] ;
 define StressedStroke [ LeftKey* "1" ":" VowelKeys RightKey* ] ;
-define FromOutline [ Outlined .o. [ Rank Gap [ OtherStroke "/" StressedStroke | StressedStroke "/" OtherStroke ] ] ] ;
+define FromOutline [ Outlined .o. [ Flag -> 0 ] .o. [ Rank Gap [ OtherStroke "/" StressedStroke | StressedStroke "/" OtherStroke
+                                                       | LeftKey+ Gap StressedStroke ] ] ] ;
 
 define Stage    [ FromWritten | FromOutline ] ;

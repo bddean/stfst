@@ -2,11 +2,14 @@
 
 The rule is the pipeline recipe.toml names. `written.xfst` writes each
 syllable's vowel as its chord, and the rewrites after it make the written-out
-form shorter: a prefix's cluster (display is `STKPHRAEU`), -tion as -GS and -ly
-as its L, a leading unstressed syllable dropped (append is `^PEPBD`), a u
-before a vowel as w, an unstressed vowel between a consonant and l, m, n or r
-dropped (river is `REUFR`), and a middle t or d dropped. What is left is one
-stroke:
+form shorter: a prefix's cluster (display is `STKPHRAEU`), -tion as -GS,
+-ment, -ness, -ful and -less as their chords and -ly as its L, a leading
+unstressed vowel dropped (append is `^PEPBD`), a u before a vowel as w, an
+unstressed vowel between a consonant and l, m, n or r dropped (river is
+`REUFR`), an r-coloured vowel right after the stressed one in its syllable
+(iron is `AOEURPB`), and a middle t or d dropped. A Typey Type outline of two
+strokes gets the prefix's cluster too (disappoint is `STKPOEUPBT`). What is
+left is one stroke:
 
 - One syllable is a plain stroke (river), or the same keys with `^` where the
   plain stroke is taken: matter is `^PHART`, since mart is `PHART`.
@@ -26,7 +29,8 @@ the stroke. What this script decides is the rest, which is not a rule:
   entry, since the key folds (allowed is `^HRAOU` + `-D`). Nor is a regular -s,
   -ed or -ing form of any other word Typey Type writes (talking is `TAUBG` +
   `-G`).
-- An outline goes to the word that wants it soonest, then to the more frequent.
+- An outline goes to the word that wants it soonest, then to the more frequent,
+  and a word then keeps every other outline of its own no word took.
   A stroke another dictionary in the stack writes is left to it, and a plain
   stroke takes none, not even one Typey Type gives up to the rules.
 - A stroke with a vowel whose onset or coda no one-syllable word's own stroke
@@ -43,6 +47,7 @@ for the pipeline: run it in the dev shell):
     $PY scripts/gen-two-syllable.py --check    # fail if the committed JSON is stale
 """
 import argparse
+import collections
 import json
 import os
 import sys
@@ -178,8 +183,10 @@ def build(typey, rule, vocabulary):
     out, lost, left = resolve(strokes, lambda w: (-g.zipf(stem(w)), -g.zipf(w), w), others,
                               lambda s, w, other: "^" + s not in strokes[w] and syllables(stem(w)) > 1
                               and typey_way(s, w, other))
-    written = {w: o for o, w in out.items()}
-    folded = {s: w for s, w in out.items() if w in base and base[w][1][s] == written.get(base[w][0])}
+    written = {}
+    for o, w in out.items():
+        written.setdefault(w, o)
+    folded = {s: w for s, w in out.items() if w in base and out.get(base[w][1][s]) == base[w][0]}
     for s in folded:
         del out[s]
     # A bare stroke takes a Typey Type one as a `^` stroke does, and also when
@@ -206,6 +213,9 @@ def report(out, r):
     strokes, lost, left = r["strokes"], r["lost"], r["left"]
     print(f"{len(strokes)} words in scope; {len(out)} entries, and {len(r['folded'])} "
           f"inflections the suffix keys fold")
+    have = set(out.values()) | set(r["folded"].values())
+    print(f"{len(have)} words have a stroke; coverage {sum(10 ** z(w) for w in have) / 1e6:.1f} "
+          f"(the sum of their frequencies per million words)")
     lost.sort(key=lambda x: (-z(x[0]), x))
     infl = r["base"]
     words = [x for x in lost if x[0] not in infl]
@@ -239,8 +249,11 @@ def report(out, r):
     same = sorted(s for s, t in user.items() if out.get(s) == t)
     print(f"{len(same)} user.json entries the rule reproduces:", " ".join(f"{s}={user[s]}" for s in same))
     theirs = {t: s for s, t in user.items() if s.startswith("^")}
+    every = collections.defaultdict(set)
+    for o, w in out.items():
+        every[w].add(o)
     ours = lambda w: r["written"].get(w, next(iter(strokes[w])))
-    other = sorted((w, theirs[w], ours(w)) for w in strokes if w in theirs and theirs[w] != ours(w))
+    other = sorted((w, theirs[w], ours(w)) for w in strokes if w in theirs and theirs[w] not in every[w])
     print(f"{len(other)} user.json ^ entries the rule writes differently:",
           " ".join(f"{w}={a}/{b}" for w, a, b in other))
 

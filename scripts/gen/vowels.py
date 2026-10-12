@@ -786,19 +786,21 @@ def ruled():
 
 def supersede(out):
     """(out, superseded): the outlines of a word a rule writes, by entry or by -s
-    or -ed fold, that are as long as the rule's, move to a dictionary of their
-    own, so a stack that has the rule suggests only its outline. A shorter one,
-    in strokes or in keys with `^` aside, is a brief and stays: about keeps PW
-    beside `^PWAOUT`. A stack without the rules loads both."""
+    or -ed fold, that are as long as each of the rule's outlines of as many
+    strokes, move to a dictionary of their own, so a stack that has the rule suggests only its
+    outlines. A shorter one, in strokes or in keys with `^` aside, is a brief
+    and stays: about keeps PW beside `^PWAOUT`, and after AFT beside `^AFR`
+    and `^AFRT`. A stack without the rules loads both."""
     rules = ruled()
     length = lambda o, fold=0: (o.count("/") + 1, keys(o.replace("^", "")) + fold)
-    shortest = {}
+    # The fewest strokes, and the most keys among the outlines of that many.
+    bound = {}
     for o, w in rules.items():
         for f, fold in [(w, 0)] + [(f, 1) for kind in "sd" for f in regular_forms(w, kind)]:
-            shortest[f] = min(shortest.get(f, length(o, fold)), length(o, fold))
+            n, k = length(o, fold)
+            bound[f] = min(bound.get(f, (n, -k)), (n, -k))
     moved = {o: t for o, t in out.items()
-             if t in shortest and length(o)[0] == shortest[t][0] and length(o) >= shortest[t]
-             and o not in rules}
+             if t in bound and length(o)[0] == bound[t][0] and length(o)[1] >= -bound[t][1] and o not in rules}
     return {o: t for o, t in out.items() if o not in moved}, moved
 
 

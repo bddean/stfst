@@ -12,4 +12,11 @@ define Tion [ ?* Gap [ Phones Del(Dot) | 0 ] Del([ SH | ZH | CH ]) Eq Letter*
 define LyEnd [ ?* L Eq Letter* Gap "0" ":" y Eq VowelKeys Gap Eq ] ;
 define Ly   [ [ LyEnd .o. [ [ Gap "0" ":" y Eq VowelKeys Gap Eq ] -> 0 || _ .#. ] .o. Flagged(Affixed) ] | ~LyEnd ] ;
 
-define Stage [ [ Written .o. Instead(Tion .o. Flagged(Affixed)) .o. Ly ] | Outlined ] ;
+! -ment, -ness, -ful and -less are their chords, -PLT, -PBS, -FL and -LS: the
+! consonant before the vowel, the unstressed vowel and the coda.
+define Chord(C, V, Co, K) [ ?* Gap [ Phones Del(Dot) | 0 ] Del(C) Eq Letter*
+                            Del(Gap "0" ":" V Eq VowelKeys Gap Co Eq Letter*) Ins(Gap "-" K) ] ;
+define Chords [ Chord(M, e, N Dot T, {plt}) | Chord(N, e, S, {pbs}) | Chord(F, u, L, {fl})
+              | Chord(L, e, S, {ls}) ] ;
+
+define Stage [ [ Written .o. Instead([ Tion | Chords ] .o. Flagged(Affixed)) .o. Ly ] | Outlined ] ;

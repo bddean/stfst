@@ -79,7 +79,7 @@ define AffixCountable [ {ation}
     | {ist}
     | {ism} ] ;
 
-! 1178 words: the stem's stroke, then prefix, stem and suffix.
+! 1176 words: the stem's stroke, then prefix, stem and suffix.
 define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | "^" {PWRAOUf} "|" {a} "|" {bbrevi} "|" {ation}
     | {PWEUl} "|" {a} "|" {bil} "|" {ity}
@@ -399,7 +399,6 @@ define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | "^" {SRpbgs} "|" {con} "|" {vincing} "|" {ly}
     | {Opb} "|" {cor} "|" {on} "|" {er}
     | {POr} "|" {cor} "|" {por} "|" {al}
-    | {POr} "|" {cor} "|" {por} "|" {ation}
     | {REl} "|" {cor} "|" {rel} "|" {ation}
     | "^" {SPROEpbd} "|" {cor} "|" {respond} "|" {ence}
     | "^" {SPROEpbd} "|" {cor} "|" {respond} "|" {ent}
@@ -824,7 +823,6 @@ define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | {KWEUs} "|" {in} "|" {quis} "|" {ition}
     | {SApb} "|" {in} "|" {san} "|" {ity}
     | {SKREUp} "|" {in} "|" {scrip} "|" {tion}
-    | "^" {SKEUr} "|" {in} "|" {secur} "|" {ity}
     | "^" {SUpbts} "|" {in} "|" {sensit} "|" {ive}
     | "^" {SErp} "|" {in} "|" {separ} "|" {able}
     | {SEr} "|" {in} "|" {ser} "|" {tion}

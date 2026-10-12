@@ -84,24 +84,32 @@ def resolve(outlines, rank, taken, gives_way=lambda outline, word, other: False)
 
     An outline goes to the word that wants it at the least cost, and among
     those to the first by `rank`, a sort key; a word takes the first of its
-    outlines it can. `taken` is {outline: (dictionary, translation)}, what the
-    rest of the stack writes there, and the outline is left to it unless it
-    writes the same word or `gives_way(outline, word, (dictionary,
-    translation))`. Returns {outline: word}, and for each word with no
+    outlines it can, and then every other one no word took. `taken` is
+    {outline: (dictionary, translation)}, what the rest of the stack writes
+    there, and the outline is left to it unless it writes the same word or
+    `gives_way(outline, word, (dictionary, translation))`. Returns {outline: word}, and for each word with no
     outline, why its first had to go: [(loser, winner, outline)] and [(word,
     outline, (dictionary, translation))]."""
     order = sorted(outlines, key=rank)
     out, placed = {}, set()
+
+    def free(o, w):
+        other = taken.get(o)
+        return o not in out and not (other and other[1] != w and not gives_way(o, w, other))
+
     for cost in sorted({c for cs in outlines.values() for c in cs.values()}):
         for w in order:
             if w in placed:
                 continue
             for o, c in outlines[w].items():
-                other = taken.get(o)
-                if c == cost and o not in out and not (other and other[1] != w and not gives_way(o, w, other)):
+                if c == cost and free(o, w):
                     out[o] = w
                     placed.add(w)
                     break
+    for w in order:
+        for o in outlines[w] if w in placed else ():
+            if free(o, w):
+                out[o] = w
     lost, left = [], []
     for w in order:
         if w not in placed:

@@ -1,22 +1,30 @@
-! The unstressed syllable a word starts with, dropped, after suffix.xfst. `^`
+! The unstressed vowel a word starts with, dropped, after suffix.xfst. `^`
 ! stands for it, so the rest is never a plain stroke, and after a prefix's
-! cluster the cluster stands for both (disappoint). A nasal that closes the
-! syllable goes with it (un, in, con).
+! cluster the cluster stands for both (disappoint).
 !
-! A syllable with no onset, or con or com, is dropped first, and the word as
-! it was is one rewrite later. Any other is dropped one rewrite later.
+! In a word of three syllables or more, a prefix's counted, a syllable with no
+! onset, or con or com, is dropped whole, with a nasal that closes it (un, in,
+! con), and the word as it was is one rewrite later. Any other keeps its
+! onset, which joins the consonants after it, one rewrite later. A word of two
+! syllables is contracted whole first, and loses an onsetless syllable, or con
+! or com, one rewrite later: attempt is `^TAEPLT`, then `^TEPLT`.
 !
 !     append     1 = 0:a=A P=pp 1:e=E N.D=nd           ->  1 ^ P=pp 1:e=E N.D=nd
 !     container  1 K=c 0:o=O N.T=nt 1:ai=A*EU N=n ...  ->  1 ^ T=t 1:ai=A*EU N=n ...
-!     police     1 P=p 0:o=O L=l 1:i=AOE S=c_e         ->  1' ^ L=l 1:i=AOE S=c_e
+!     creative   1 K.R=cr 0:e=E = 1:a=AEU T=t ...      ->  1' ^ K.R=cr 1:a=AEU T=t ...
 
 define Mark     [ Ins("^" Gap) | Lead Gap ] ;
 define Nasal    [ [ M | N | NG ] .x. 0 ] ;
 define Opening  PU([ Nasal Del(Dot) More Eq Del([ m | n ]+) Letter* ], ConsSeg) ;
+define Long     [ $[ ":" ?* ":" ?* ":" ] | [ Rank Gap Lead Gap ?* ":" ?* ":" ?* ] ] ;
 define Drop(On, V) [ [ Rank Gap Mark Del(On Gap "0" ( r ) ":" V Eq VowelKeys Gap) Opening Gap ?* ] .o. Written
                      .o. Flagged(Dropped) ] ;
 
-define Light    [ Drop(Eq, Letter+) | Drop(K Eq c, o) ] ;
-define Heavy    [ ~Light.u .o. Drop(More Eq Letter*, Letter+) ] ;
+define Whole    [ Drop(Eq, Letter+) | Drop(K Eq c, o) ] ;
+define Light    [ Long .o. Whole ] ;
+define Short    [ ~Long .o. Whole ] ;
+define Shed     [ Gap "0" ( r ) ":" Letter+ Eq VowelKeys Gap ] ;
+define Kept     [ More [ Del(Eq Letter* Shed) Ins(Dot) More Eq Letter* | Eq Letter* Del(Shed Eq) Letter* ] ] ;
+define Heavy    [ ~Light.u .o. [ [ Long .o. Rank Gap Mark Kept Gap ?* ] .o. Written .o. Flagged(Dropped) ] ] ;
 
-define Stage    [ [ Written .o. Before(Light) .o. After(Heavy) ] | Outlined ] ;
+define Stage    [ [ Written .o. Before(Light) .o. After(Short) .o. After(Heavy) ] | Outlined ] ;

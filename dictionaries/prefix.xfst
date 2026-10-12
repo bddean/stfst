@@ -27,4 +27,17 @@ define Comm [ Pre(K, c, o, M, {mm}, {KPH})
                 .o. Pre(K, c, o, M, m, {KPH}) ] ] ;
 define Prefixed PU(Dis, PU(Int, PU(Ex, PU(Comb, PU(Emb, Comm))))) ;
 
-define Stage [ [ Written .o. Instead(Prefixed .o. Flagged(Affixed)) ] | Outlined ] ;
+! The same prefixes in an outline, as its unstressed first stroke, and the
+! onset keys of the second that the cluster has:
+!
+!     disappoint  1 TK0:EUs/P1:OEUpbt  ->  1& STK P1:OEUpbt
+define OutPre(First, Keys, Next) [ Rank Gap Del(First "/") Ins(Keys Gap) Del(Next) LeftKey* "1" ":" VowelKeys RightKey* ] ;
+define OutPrefixed [ OutPre(T K "0" ":" [ E U | E ] s, {STK}, 0)
+                   | OutPre("0" ":" E U p b t, {SPW}, 0)
+                   | OutPre("0" ":" E b g s, {KP}, 0)
+                   | OutPre(K "0" ":" O p l, {KPW}, P W)
+                   | [ ~[ ?* "/" P W ?* ] .o. OutPre(K "0" ":" O p l, {KPH}, 0) ]
+                   | OutPre("0" ":" [ E | E U ] p l, {KPW}, [ P W | P ]) ] ;
+
+define Stage [ [ Written .o. Instead(Prefixed .o. Flagged(Affixed)) ]
+             | [ Outlined .o. Instead(OutPrefixed .o. Flagged(Affixed)) ] ] ;

@@ -12,4 +12,12 @@ define Weak     [ Eq Letter* Gap Unstressed0 Gap ] ;
 define Syncope  [ [ Stressed1 [ Cons - W - Y ] Weak Sonorant ?* ]
                   .o. [ Weak -> Dot || Stressed1 [ Cons - W - Y ] _ Sonorant ] .o. Flagged(Dropped) ] ;
 
-define Stage    [ [ Written .o. Before(Syncope) ] | Outlined ] ;
+! An r-coloured unstressed vowel right after the stressed one is in its
+! syllable, and only that:
+!
+!     iron     1 = 1:i=AOEU =r 0r:o=O R.N=n  ->  1 = 1:i=AOEU R.N=n
+define StrongChord [ "1" ( r ) ":" Letter+ Eq VowelKeys ] ;
+define RRun     [ Gap Eq Letter* Gap "0" r ":" Letter+ Eq VowelKeys ] ;
+define Fused    [ $[ StrongChord RRun Gap ] .o. [ RRun -> 0 || StrongChord _ Gap ] .o. Flagged(Dropped) ] ;
+
+define Stage    [ [ Written .o. Before(Syncope) .o. Instead(Fused) ] | Outlined ] ;

@@ -263,8 +263,8 @@ typey-type: the shorter upstream strokes of the frequent words the theory
 lengthened, kept only where no entry in the stack writes them.
 
 It also leaves out what a rule writes. If `two-syllable.json` or `affixes`
-writes a word, a Typey Type outline for it that is as long as the rule's, in
-strokes and in keys with `^` aside, moves to `typey-superseded.json`, which
+writes a word, a Typey Type outline for it that is as long as each of the rule's
+outlines of as many strokes, in keys with `^` aside, moves to `typey-superseded.json`, which
 Stenotype Extended does not load. A shorter one is a brief and stays: about
 keeps `PW`. If the stack writes an entry's strokes the same without it, the
 entry moves to `typey-composed.json`, which neither system loads. `RAOE/HROEBGTS` is one:
@@ -282,10 +282,16 @@ file against the typey-type artifact and fails if the JSON is stale.
 `scripts/gen-two-syllable.py` writes `two-syllable.json` the same way, from the
 same tagger and table. Its pipeline writes a word out, a stroke per syllable,
 and then rewrites that form shorter: a prefix's cluster (display is
-`STKPHRAEU`), -tion as -GS and -ly as L, a leading unstressed syllable dropped
-for `^` (append is `^PEPBD`), an unstressed u before a vowel as w, an unstressed
-vowel between a consonant and l, m, n or r dropped (river is `REUFR`), and a
-middle t or d dropped as a last resort. What is left is split around the
+`STKPHRAEU`), -tion as -GS, -ment, -ness, -ful and -less as their chords and
+-ly as L, a leading unstressed vowel dropped for `^` (append is `^PEPBD`; in a
+word of two syllables only after the whole contraction, so anoint is
+`^TPHAOEUPBT` and `^TPHOEUPBT`), an unstressed u before a vowel as w, an unstressed vowel between
+a consonant and l, m, n or r dropped (river is `REUFR`), an r-coloured vowel
+right after the stressed one joining its syllable (iron is `AOEURPB`), and a
+middle t or d dropped as a last resort. A word's Typey Type outline of two
+strokes is its written-out form where its chords are the word's vowels; Typey
+Type's KWR, SKWR or W before a vowel is dropped where the word has no such
+sound, and a prefix's stroke is its cluster (disappoint is `STKPOEUPBT`). What is left is split around the
 stressed vowel, every consonant between the two vowels going to it, and each
 syllable is written as a stroke (`split.xfst`, `theory.xfst`). One stroke is
 itself, or the same keys with `^` where that is taken (matter is `^PHART`). Two
@@ -298,7 +304,8 @@ it, so super is `^SAOURP` and table `TAEUBL`. If a bank no one-syllable word has
 already says two syllables, the word is also written without `^` (withdraw is
 `^TKWHRAE` and `TKWHRAE`). A common word of one syllable that Typey Type does
 not write is its plain stroke (sheikh is `SHA*EBG`); the lexicon has such words
-where lemminflect knows them. `tests/briefs/` holds the user's briefs the rules
+where lemminflect knows them. A word keeps each of its outlines no other word
+takes, not only its first. `tests/briefs/` holds the user's briefs the rules
 came to write, which `--check` holds them to. `gen-typey-vowels.py` then supersedes the
 Typey Type outlines of the words it writes. Run the two in turn until both pass
 `--check`; one round is usually enough. The script leaves a stroke to any other

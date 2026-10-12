@@ -405,8 +405,6 @@ POpb/KPHpbt	component
 POpb/PRpbt	proponent
 POpblg/KPr	exposure
 POpblg/KPHr	composure
-POr/KRgs	corporation
-POr/KRgsz	corporations
 POr/KRl	corporal
 POr/PRgs	proportion
 POr/PRgsz	proportions
@@ -1357,7 +1355,6 @@ WAEUr/^pbs	awareness
 ^SKEU/PR*gsz	persecutions
 ^SKEU/PRgs	prosecution
 ^SKEU/PRgsz	prosecutions
-^SKEUr/TPHt	insecurity
 ^SKEUs/TPH*fl	unsuccessful
 ^SKEUt/PRr	prosecutor
 ^SKHREf/KPt	exclusivity
