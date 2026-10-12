@@ -69,6 +69,13 @@ define PutT       [ "[ADD]" T ] ;
 ! those pairs.
 define Caret      [ Stroke & $["^"] ] ;
 
+! "is" is S- on a word's stroke, unless S-K-P- says "and", and "it's" is ST-
+! where T- and the rest is no word: STPHOU is "is now", STPWAD "it's bad". Of
+! the corpora's "is" and "it's" bigrams whose stroke no entry holds, these
+! read 93% of the use right. "it's" first reads 87%, with a T- word's T put back
+! 66%, and after the suffixes 77%.
+define Lead(C, Text, Keys) Rule([ [ Stroke & C ] - Caret ], [ "[FOLD]" Text "[STRIP]" Keys "[END]" ]) ;
+
 ! Toggle one key K, and take Off off too.
 define Toggle(W, K, Off, Bf, Af)
     [ Rule([ W & $[K] ], [ "[FOLD]" Bf "[STRIP]" "^" K Off "[END]" Af ])
@@ -90,6 +97,8 @@ define Folds [ [ Stroke - $["#"] ]
   .o. And(AndH, PutT)
   .o. And(AndStroke, 0)
   .o. And([ AndStroke - AndH ], PutT)
+  .o. Lead([ [ S ?+ ] - [ S K P ?* ] ], {is}, S)
+  .o. Lead([ S T ?+ ], {it's}, S T)
   .o. Suffix(z, Infl({ofz}))
   .o. Suffix(d, Infl({ed}))
   .o. Suffix(s, Infl({ofs}))

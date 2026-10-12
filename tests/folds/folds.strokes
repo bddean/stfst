@@ -28,6 +28,11 @@ SKPHAPBG
 ! SKPAOEP is "and keep" in user.json, then "the"
 !buffer
 SKPAOEPT
+! ---- "is" before the base, S-, and "it's", ST-, where T- and the rest is no word
+!buffer
+STPHOU
+!buffer
+STPWAD
 ! ---- a real entry is never folded
 !buffer
 PWABGS
