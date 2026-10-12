@@ -73,4 +73,4 @@ define Chord    [ [ Table Ins(Eq) ] .o. Key(A) .o. Key(O) .o. Key("*") .o. Key(E
 define Chords   [ Phones Eq [ Chord Gap Phones Eq ]* Letter* ( Tail ) ] ;
 
 ! A word, or two words of pairs.lexc, each written out.
-define Stage    [ [ Entry | PairEntry ] .o. Gu .o. [ Rank Gap [ Units .o. Chords ] ( Plus [ Units .o. Chords ] ) ] ] ;
+define Stage    [ [ [ Entry | PairEntry ] .o. Gu .o. [ Rank Gap [ Units .o. Chords ] ( Plus [ Units .o. Chords ] ) ] ] | Outlined ] ;

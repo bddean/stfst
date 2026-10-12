@@ -1,0 +1,77 @@
+! The written-out form as one syllable or two, each with its head (aligned.xfst's
+! `Strokes`), which theory.xfst writes as keys. After written.xfst and the
+! rewrites.
+!
+! Two syllables are split around the stressed vowel: every consonant between
+! the two is its. The other syllable's head has its operand, the keys `^` XORs
+! into the chord (`Operand`).
+!
+!     report   1 R=r 0:e=E P=p 1:o=O R.T=rt  ->  1 R=r 0E:E =/P=p 1:O R.T=rt
+!     happy    1 HH=h 1:a=A P=pp 0:y=EU =    ->  1 HH=h 1:A P=pp/= 0EU:EU =
+!     mother   1 M=m 1:o=O DH=th 0r:e=E R=r  ->  1 M=m 1:O DH=th/= 0:E R=r
+!
+! One vowel is one syllable, whatever its stress. What stands for a dropped
+! syllable stays in front: a rewrite's `^` or a prefix's cluster.
+!
+! An outline from the lexicon is two strokes already, and its other stroke
+! gets its operand:
+!
+!     pirouette  1 P0:EUr/W1:Et  ->  1 P0EU:EUr/W1:Et
+
+! The other vowel's operand, its head's keys: its first letter's (a A, e E, i
+! and y EU, o O, u U), and none for an r-coloured vowel, whose R is in the coda
+! already. `DigraphOp` is a vowel of two letters or more as its chord instead;
+! the corpus did not favour it (notes/theory-systematize.md). An outline's
+! operand is its chord's first letter as the vowel table spells it: EU is i,
+! AOE ee.
+define Starred(V) [ [ VowelKeys .o. [ "*" -> 0 ] ] .o. V ].u ;
+define Spelled(V, K) [ Ins(K ":") Starred(V) ] ;
+define ChordCopy [ Spelled(A, A) | Spelled(O, O) | Spelled(E, E) | Spelled(U, U) | Spelled({EU}, {EU})
+                 | Spelled({AE}, {AE}) | Spelled({AO}, {AO}) | Spelled({AU}, {AU}) | Spelled({OE}, {OE})
+                 | Spelled({OU}, {OU}) | Spelled({AOE}, {AOE}) | Spelled({AEU}, {AEU}) | Spelled({AOU}, {AOU})
+                 | Spelled({OEU}, {OEU}) | Spelled({AOEU}, {AOEU}) ] ;
+define ChordLetter [ Spelled(A, A) | Spelled(O, O) | Spelled(E, E) | Spelled(U, U) | Spelled({EU}, {EU})
+                   | Spelled({AE}, E) | Spelled({AO}, O) | Spelled({AU}, A) | Spelled({OE}, O)
+                   | Spelled({OU}, O) | Spelled({AOE}, E) | Spelled({AEU}, A) | Spelled({AOU}, U)
+                   | Spelled({OEU}, O) | Spelled({AOEU}, {EU}) ] ;
+
+define FirstLetter [ a:A | e:E | [ i .x. [ E U ] ] | o:O | u:U | [ y .x. [ E U ] ] ] ;
+define RColoured [ Del(r ":" Letter+ Eq) Ins(":") VowelKeys ] ;
+define LetterOp [ RColoured | Del(":") FirstLetter Del(Letter* Eq) Ins(":") VowelKeys ] ;
+define ChordOp  [ RColoured | Del(":" Letter+ Eq) ChordCopy ] ;
+define DigraphOp [ [ [ r ?* | ":" Letter Letter+ ?* ] .o. ChordOp ] | [ [ ":" Letter Eq ?* ] .o. LetterOp ] ] ;
+define Operand  LetterOp ;
+define OutlineOp ChordLetter ;
+
+! A vowel's head and keys.
+define Strong   [ [ Level ( r ) ":" Letter+ Eq VowelKeys ] .o. [ Ins("1" ":") Del(Level ( r ) ":" Letter+ Eq) VowelKeys ] ] ;
+define Weak     [ [ [ "0" | "2" ] ( r ) ":" Letter+ Eq VowelKeys ] .o. [ [ "0" | "2":"0" ] Operand ] ] ;
+
+! An onset's phonemes: Z is S at the start when the word has no z, and the
+! last Y of two phonemes or more is the vowel's glide (accuse).
+define NoZ      [ [ Cons - Z ] | Z:S ] ;
+define Glide    [ ~[ ?* Dot Y ] | [ ?* Cons Del(Dot Y) ] ] ;
+define OnsetOf(C) [ [ ( C [ Dot C ]* ) .o. Glide ] Eq Letter* ] ;
+
+define Mark     ( Lead Gap ) ;
+define End      [ Gap LastSeg ( Gap Suffix ) ] ;
+
+define Single(C) [ Rank Gap Mark OnsetOf(C) Gap Strong End ] ;
+
+! The second vowel has the stress. When nothing comes between the two (react),
+! a y after them is the onset's (cayenne).
+define NotY     [ Level ( r ) ":" [ Letter+ - [ y VowelLetter ?* ] ] Eq VowelKeys ] ;
+define Second(C) [ Rank Gap Mark OnsetOf(C) Gap Weak Gap Ins(Eq "/")
+    [ Eq Gap [ NotY .o. Strong ] | [ [ Phones - 0 ] Eq Letter* .o. OnsetOf(C) ] Gap Strong ] End ] ;
+
+! The first vowel has the stress: the consonants between are its coda.
+define First(C) [ ~$[ "_" u e ] .o. [ Rank Gap Mark OnsetOf(C) Gap Strong Gap ConsSeg Ins("/" Eq) Gap Weak End ] ] ;
+
+define Shapes(C) [ Single(C) | Second(C) | First(C) ] ;
+define FromWritten [ Written .o. [ [ ~$[z] .o. Shapes(NoZ) ] | [ $[z] .o. Shapes(Cons) ] ] ] ;
+
+define OtherStroke [ LeftKey* "0" Del(":") OutlineOp RightKey* ] ;
+define StressedStroke [ LeftKey* "1" ":" VowelKeys RightKey* ] ;
+define FromOutline [ Outlined .o. [ Rank Gap [ OtherStroke "/" StressedStroke | StressedStroke "/" OtherStroke ] ] ] ;
+
+define Stage    [ FromWritten | FromOutline ] ;

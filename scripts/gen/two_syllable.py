@@ -226,7 +226,7 @@ def report(out, r):
           "another word, and take another's:")
     stages = pipeline(NAME)
     names = [s for s, _ in stages]
-    rewrites = stages[names.index("written"):names.index("contract")]
+    rewrites = stages[names.index("written"):names.index("split")]
     losers, winners = {w for w, _, _ in lost}, {w for _, w, _ in lost}
     rels = [relation(path) for _, path in rewrites]
     for (stage, _), before, after in zip(rewrites[1:], rels, rels[1:]):

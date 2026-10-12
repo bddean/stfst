@@ -285,11 +285,14 @@ and then rewrites that form shorter: a prefix's cluster (display is
 `STKPHRAEU`), -tion as -GS and -ly as L, a leading unstressed syllable dropped
 for `^` (append is `^PEPBD`), an unstressed u before a vowel as w, an unstressed
 vowel between a consonant and l, m, n or r dropped (river is `REUFR`), and a
-middle t or d dropped as a last resort. One syllable left is a plain stroke, or
-the same keys with `^` where that is taken (matter is `^PHART`). Two are one
-stroke marked `^`, whose chord is the stressed vowel's XOR the other vowel's
-first letter; an r-coloured other vowel adds no vowel key and is written as its
-R (report is `^PROERT`, happy `^HAEUP`, mother `^PHO*RT`). A long vowel of one
+middle t or d dropped as a last resort. What is left is split around the
+stressed vowel, every consonant between the two vowels going to it, and each
+syllable is written as a stroke (`split.xfst`, `theory.xfst`). One stroke is
+itself, or the same keys with `^` where that is taken (matter is `^PHART`). Two
+are contracted to one marked `^` (`contract.xfst`): the stressed stroke, the
+other's consonants on the side they are on, and its chord XOR the other
+vowel's first letter; an r-coloured other vowel adds no vowel key and is
+written as its R (report is `^PROERT`, happy `^HAEUP`, mother `^PHO*RT`). A long vowel of one
 letter before one consonant, or one before l or r, is long as a silent e makes
 it, so super is `^SAOURP` and table `TAEUBL`. If a bank no one-syllable word has
 already says two syllables, the word is also written without `^` (withdraw is

@@ -12,4 +12,4 @@ define Weak     [ Eq Letter* Gap Unstressed0 Gap ] ;
 define Syncope  [ [ Stressed1 [ Cons - W - Y ] Weak Sonorant ?* ]
                   .o. [ Weak -> Dot || Stressed1 [ Cons - W - Y ] _ Sonorant ] ] ;
 
-define Stage    [ Written .o. Before(Syncope) ] ;
+define Stage    [ [ Written .o. Before(Syncope) ] | Outlined ] ;

@@ -1,90 +1,61 @@
-! The written-out form as one stroke's syllable: a mark, then the onset, the
-! chord and the coda, which theory.xfst writes as keys and caret.xfst marks.
-! After written.xfst and whatever rewrites it.
+! Strokes contracted to one, marked with what caret.xfst does to it. After
+! theory.xfst, or an outline's strokes.
 !
-! One vowel is the syllable as it is, marked `-`, or the same keys marked `^`,
-! which as the longer the resolver takes only where the plain stroke is taken:
-! mare is mayor's `PHAEUR`, so it is `^PHAEUR`.
+! One stroke is the stroke, marked `-`, or the same keys marked `^`, which as
+! the longer the resolver takes only where the plain stroke is taken: mare is
+! mayor's `PHAEUR`, so it is `^PHAEUR`.
 !
-! Two vowels are one syllable around the stressed one, marked `^` and the keys
-! the other vowel's operand gives (`Operand`), which caret.xfst XORs into the
-! chord. Every consonant before the stressed vowel is the onset and every one
-! after it the coda.
+! Two strokes are the stressed one's, marked `^` and the other's operand,
+! which caret.xfst XORs into the chord. The other stroke's consonants join the
+! side of the stroke they are on, and those between the two cross to the
+! stressed stroke's side, read by the key's sound (-PB is TPH, TK is -D).
 !
-!     report   1 R=r 0:e=E P=p 1:o=O R.T=rt     ->  1 ^E R.P=p O R.T=rt
-!     happy    1 HH=h 1:a=A P=pp 0:y=EU =       ->  1 ^EU HH=h A P=-
-!     mother   1 M=m 1:o=O DH=th 0r:e=E R=r     ->  1 ^ M=m O DH.R=-
-!
-! The onset's letters are the stressed syllable's own, and so are the coda's
-! when it is the last syllable. When the first vowel has the stress, the coda
-! spans the second and its letters are `-`: it is read by sound. Z spelled s
-! is S at the start.
+!     report     1 R0E:E/P1:Ort    ->  1 ^E PROrt
+!     happy      1 H1:Ap/0EU:EU    ->  1 ^EU HAp
+!     pirouette  1 P0EU:EUr/W1:Et  ->  1 ^EU PWREt
 !
 ! What stands for a dropped syllable is kept: a rewrite's `^`, which leaves no
-! plain stroke, or a prefix's cluster, which takes the place of `^` (display is
-! `STK P.L=pl EY A =`).
+! plain stroke, or a prefix's cluster, which takes the place of `^`.
 
-! A cluster's phonemes with the dots dropped, each read through C, and one of
-! at least one phoneme. `Dots` puts them back once the syllable is written.
-define Bare(C)  [ ( C [ Del(Dot) C ]* ) ] ;
-define Bare1(C) [ C [ Del(Dot) C ]* ] ;
-define Dots     [ [..] -> Dot || .#. Rank Gap [ ? - Gap ]* Gap ?* Cons _ Cons ] ;
+! Keys crossing to the other bank, by their sound.
+define ToLeft   [ {pblg} -> {SKWR} ] .o. [ {fp} -> {KH} ] .o. [ {rb} -> {SH} ] .o. [ {pb} -> {TPH} ]
+            .o. [ {pl} -> {PH} ] .o. [ {bg} -> K ] .o. [ f -> {TP} ] .o. [ r -> R ] .o. [ p -> P ]
+            .o. [ b -> {PW} ] .o. [ l -> {HR} ] .o. [ g -> {TKPW} ] .o. [ t -> T ] .o. [ s -> S ]
+            .o. [ d -> {TK} ] .o. [ z -> S ] ;
+define ToRight  [ {STKPW} -> z ] .o. [ {TKPW} -> g ] .o. [ {SKWR} -> {pblg} ] .o. [ {KWR} -> 0 ]
+            .o. [ {TPH} -> {pb} ] .o. [ {PH} -> {pl} ] .o. [ {PW} -> b ] .o. [ {TK} -> d ] .o. [ {TP} -> f ]
+            .o. [ {SR} -> f ] .o. [ {HR} -> l ] .o. [ {KH} -> {fp} ] .o. [ {SH} -> {rb} ] .o. [ {TH} -> t ]
+            .o. [ K -> {bg} ] .o. [ S -> s ] .o. [ T -> t ] .o. [ P -> p ] .o. [ R -> r ] .o. [ W -> 0 ]
+            .o. [ H -> 0 ] ;
+define Crossed(Keys, To) [ Keys .o. To ] ;
 
-define NoZ      [ [ Cons - Z ] | Z:S ] ;
-
-! The keys the other vowel XORs: its first letter's (a A, e E, i and y EU, o O,
-! u U), and none for an r-coloured vowel, whose R is on a bank already.
-! `DigraphOp` XORs a vowel of two letters or more as its chord instead; the
-! corpus did not favour it (notes/theory-systematize.md).
-define FirstLetter [ a:A | e:E | [ i .x. [ E U ] ] | o:O | u:U | [ y .x. [ E U ] ] ] ;
-define LetterOp [ Del(Level) [ Del(r ":" Letter+ Eq VowelKeys) | Del(":") FirstLetter Del(Letter* Eq VowelKeys) ] ] ;
-define ChordOp  [ Del(Level) [ Del(r ":" Letter+ Eq VowelKeys) | Del(":" Letter+ Eq) (A) (O) (Del("*")) (E) (U) ] ] ;
-define DigraphOp [ [ [ ?* ":" Letter Letter+ Eq ?* ] .o. ChordOp ] | [ [ ?* ":" Letter Eq ?* ] .o. LetterOp ] ] ;
-define Operand  LetterOp ;
-
-! The stressed vowel as its keys, and the other one as a trace, `~` and its
-! operand, which `Carry` moves to the mark.
-define Keys1(L) [ [ "1" ( r ) ":" L Eq VowelKeys ] .o. [ Del([ ? - Eq ]* Eq) VowelKeys ] ] ;
-define Other(L) [ [ Level ( r ) ":" L Eq VowelKeys ] .o. [ Ins("~") Operand ] ] ;
-define Tail1    [ Gap LastSeg ( Gap Suffix ) ] ;
+! The other stroke: `~` and its operand, a trace that `Carry` moves to the
+! mark, and its chord gone.
+define Trace    [ "0":"~" (A) (O) (E) (U) ":":"~" Del(VowelKeys) ] ;
+define Seam     "|" ;
 
 ! The mark: `^`, after a prefix's cluster if there is one.
 define Caret    [ [ 0 | Del("^" Gap) | LeftKey+ Del(Gap) ] Ins("^" Gap) ] ;
 
-define Single(C) [ Rank Gap [ Ins("-" Gap) | Ins("^" Gap) | Lead Gap ]
-                   Bare(C) Eq Letter* Gap Del(Level ( r ) ":" Letter+ Eq) VowelKeys Tail1 ] ;
-
-! The second vowel has the stress. When nothing comes between the two (react),
-! a y after them is the onset's (cayenne).
-define Weak(L)  [ [ [ "0" | "2" ] ?* ] .o. Other(L) ] ;
-define Second(C) [ Rank Gap Caret Bare(C) Del(Eq Letter* Gap)
-    [ Weak(Letter+) Del(Gap) Eq Gap Keys1(Letter+ - [ y VowelLetter ?* ])
-    | Weak(Letter+) Del(Gap) Bare1(C) Eq Letter* Gap Keys1(Letter+) ] Tail1 ] ;
-
-! The first vowel has the stress.
-define FirstShape ~[ ?* "_" u e ?* ] ;
-define First(C) [ Rank Gap Caret Bare(C) Eq Letter* Gap Keys1(Letter+) Gap
-    Bare(Cons) Del(Eq Letter* Gap) Other(Letter+) Del(Gap) Bare(Cons) Del(Eq Letter* ( Tail )) Ins(Eq "-")
-    ( Gap Suffix ) ] ;
+define Single   [ Rank Gap [ Ins("-" Gap) | Ins("^" Gap) | Lead Gap ] LeftKey* Del("1" ":") VowelKeys RightKey* ] ;
+define Second   [ Rank Gap Caret LeftKey* Trace Crossed(RightKey*, ToLeft) Del("/") Ins(Seam)
+                  LeftKey* Del("1" ":") VowelKeys RightKey* ] ;
+define First    [ Rank Gap Caret LeftKey* Del("1" ":") VowelKeys RightKey* Del("/") Ins(Seam)
+                  Crossed(LeftKey*, ToRight) Trace RightKey* ] ;
 
 ! The trace's keys to the mark, the last first, so they land in steno order.
 define TraceKey [ A | O | E | U ] ;
-define Carry(K) [ [ ?* "^" Ins(K) [ ? - "~" ]* "~" [ TraceKey - K ]* Del(K) [ 0 | [ ? - TraceKey ] ?* ] ]
-                | ~$[ "~" TraceKey* K ] ] ;
+define Carry(K) [ [ ?* "^" Ins(K) [ ? - "~" ]* "~" [ TraceKey - K ]* Del(K) ?* ]
+                | ~$[ "~" [ TraceKey - K ]* K ] ] ;
 define Untrace  [ Carry(U) .o. Carry(E) .o. Carry(O) .o. Carry(A) .o. [ "~" -> 0 ] ] ;
 
-! The last onset Y of two phonemes or more is the vowel's glide (accuse).
-define Glide    [ Rank Gap [ ? - Gap ]* Gap [ [ Cons+ Del(Y) ] | [ Cons* - [ Cons+ Y ] ] ] Eq ?* ] ;
+! After keys the other stroke brought, the stressed stroke's onset loses an H
+! or W that would make another chord with them (perhaps is not pl), and a y,
+! which is the vowel's glide (do you).
+define Alone    [ ? - LeftKey ] ;
+define Combine  [ [ [ Seam H ] -> Seam || LeftKey _ Alone ] .o. [ [ Seam W ] -> Seam || [ P | K ] _ Alone ]
+                .o. [ [ Seam {KWR} ] -> Seam || LeftKey _ Alone ] .o. [ Seam -> 0 ] ] ;
 
-define Shapes(C) [ Single(C) | Second(C) | [ FirstShape .o. First(C) ] ] ;
-! A consonant on both sides of the other vowel, or of two words, is said once.
-define Once(X)  [ [ X X ] -> X ] ;
-define Degeminate [ Once(B) .o. Once(CH) .o. Once(D) .o. Once(DH) .o. Once(F) .o. Once(G) .o. Once(HH)
-                  .o. Once(JH) .o. Once(K) .o. Once(L) .o. Once(M) .o. Once(N) .o. Once(NG) .o. Once(P)
-                  .o. Once(R) .o. Once(S) .o. Once(SH) .o. Once(T) .o. Once(TH) .o. Once(V) .o. Once(W)
-                  .o. Once(Y) .o. Once(Z) .o. Once(ZH) ] ;
+define Banks    [ Rank Gap [ ? - Gap ]* Gap [ LeftKey* .o. LeftBank ] VowelKeys [ RightKey* .o. RightBank ] ] ;
 
-define Contract [ Written .o. [ [ ~$[z] .o. Shapes(NoZ) ] | [ $[z] .o. Shapes(Cons) ] ] .o. Untrace .o. Glide
-                  .o. Degeminate .o. Dots ] ;
-
-define Stage    Contract ;
+define Stage    [ Strokes .o. [ Single | Second | First ] .o. Untrace .o. Combine .o. Banks ] ;

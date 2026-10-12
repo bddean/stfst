@@ -18,4 +18,4 @@ define Drop(On, V) [ [ Rank Gap Mark Del(On Gap "0" ( r ) ":" V Eq VowelKeys Gap
 define Light    [ Drop(Eq, Letter+) | Drop(K Eq c, o) ] ;
 define Heavy    [ ~Light.u .o. Drop(More Eq Letter*, Letter+) ] ;
 
-define Stage    [ Written .o. Before(Light) .o. After(Heavy) ] ;
+define Stage    [ [ Written .o. Before(Light) .o. After(Heavy) ] | Outlined ] ;

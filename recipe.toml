@@ -64,12 +64,17 @@ xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/mi
 name = "join"
 xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/join.xfst"]
 
-# The written-out form as one syllable, marked with what the stroke adds.
+# The written-out form as one syllable or two, around the stressed vowel.
+[[stage]]
+name = "split"
+xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/split.xfst"]
+
+# Two strokes as one, marked with what the stroke adds.
 [[stage]]
 name = "contract"
 xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/contract.xfst"]
 
-# A syllable's stroke by the vowel theory, around its chord.
+# Each syllable's stroke by the vowel theory, around its chord.
 [[stage]]
 name = "theory"
 xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/theory-tables.xfst",
@@ -181,22 +186,22 @@ name = "two-syllable"
 priority = 35
 json = "dictionaries/two-syllable.json"
 generator = "scripts/gen-two-syllable.py"
-pipeline = ["lexicon", "written", "prefix", "suffix", "lead", "glide", "syncope", "middle", "contract", "theory",
-            "caret"]
+pipeline = ["lexicon", "written", "prefix", "suffix", "lead", "glide", "syncope", "middle", "split", "theory",
+            "contract", "caret"]
 
 [[dict]]
 name = "two-word"
 priority = 34
 json = "dictionaries/two-word.json"
 generator = "scripts/gen-two-word.py"
-pipeline = ["pairs", "written", "join", "contract", "theory", "caret"]
+pipeline = ["pairs", "written", "join", "split", "theory", "contract", "caret"]
 
 [[dict]]
 name = "affixes"
 priority = 33
 xfst = ["morphology/ortho.xfst", "dictionaries/affixes-lexicon.xfst", "dictionaries/affixes.xfst"]
 generator = "scripts/gen-affixes.py"
-pipeline = ["affix-stems", "written", "contract", "theory", "caret"]
+pipeline = ["affix-stems", "written", "split", "theory", "contract", "caret"]
 
 [[dict]]
 name = "typey-type"

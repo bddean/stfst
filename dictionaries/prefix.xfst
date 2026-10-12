@@ -27,4 +27,4 @@ define Comm [ Pre(K, c, o, M, {mm}, {KPH})
                 .o. Pre(K, c, o, M, m, {KPH}) ] ] ;
 define Prefixed PU(Dis, PU(Int, PU(Ex, PU(Comb, PU(Emb, Comm))))) ;
 
-define Stage [ Written .o. Instead(Prefixed) ] ;
+define Stage [ [ Written .o. Instead(Prefixed) ] | Outlined ] ;

@@ -1,35 +1,38 @@
 ! A syllable's stroke, by the theory one-syllable words are written in.
 !
-! The input is contract.xfst's: a mark, then a syllable's onset, chord and
-! coda, `^E R.P=p O R.T=rt`. The mark is kept, and the syllable becomes its
-! stroke, `^E PROrt`.
+! The input is split.xfst's: syllables, each its onset, its head and chord,
+! and its coda, `R=r 0E:E =/P=p 1:O R.T=rt`. Each becomes its stroke,
+! `R0E:E/P1:Ort`, and a stroke from an outline stays as it is.
 !
 ! - The onset is its keys by theory-tables.xfst: by sound and spelling where
 !   one-syllable words write a letter the sounds do not (wr is WR), else each
-!   phoneme's by `Left`.
+!   phoneme's by `Left`. An H after another consonant is no key, as it would
+!   make another chord with it (upheld is not m).
 ! - The chord is written.xfst's.
 ! - The coda is its keys by theory-tables.xfst: by sound and spelling, else by
-!   sound, else as two codas words have. A coda whose letters are `-` is
-!   looked up by sound alone. A final h or gh is no key. Its star, if it has
-!   one, joins the chord's, and a suffix's keys join its own.
+!   sound, else as two codas words have. W and H are no key there, and nor is
+!   a final h or gh. Its star, if it has one, joins the chord's, and a
+!   suffix's keys join its own.
 !
 ! A syllable with no keys for its coda, or an onset phoneme the left bank
 ! cannot write, has no stroke.
 
-define Sounded  [ ( Left [ Del(Dot) Left ]* ) Del(Eq Letter*) ] ;
+define Sounded  [ ( Left [ Del(Dot) [ [ [ Cons - HH ] .o. Left ] | Del(HH) ] ]* ) Del(Eq Letter*) ] ;
 define Onset    [ [ PU(OnsetSpelled, Sounded) Del(Gap) ] .o. LeftBank ] ;
 
 ! The coda's letters less a final h or gh, and less a silent e: th is t.
 define Strip    [ [ Letter* - [ Letter* h ] ] | [ Letter* Del({gh}) ] | [ [ Letter* - [ Letter* g ] ] Del(h) ] ] ;
-define Letters  [ Phones Eq [ Strip ( Del(Tail) ) | "-" ] ] ;
+define Silent   [ W | HH ] ;
+define Unsaid   [ [ [ Dot Silent ] -> 0 ] .o. [ [ Silent Dot ] -> 0 || .#. _ ] .o. [ Silent -> 0 || .#. _ .#. ] ] ;
+define Letters  [ [ Phones .o. Unsaid ] Eq [ Strip ( Del(Tail) ) | "-" ] ] ;
 define Coda     [ Del(Gap) [ Letters .o. [ PU(CodaSpelled, [ CodaSounded | CodaSplit ] Del(Eq [ Letter* | "-" ]))
                                          | Del(Eq [ Letter* | "-" ]) ] ] ] ;
 
-define Keys     [ Onset VowelKeys Coda ( Del(Gap "-") RightKey+ ) ] ;
+define Keys     [ Onset Head VowelKeys Coda ( Del(Gap "-") RightKey+ ) ] ;
 
 ! The coda's star joins the chord's.
-define Star     [ LeftKey* (A) (O) [ "*" (E) (U) (Del("*")) | (E) (U) | Ins("*") (E) (U) Del("*") ] RightKey* ] ;
+define Star     [ LeftKey* Head (A) (O) [ "*" (E) (U) (Del("*")) | (E) (U) | Ins("*") (E) (U) Del("*") ] RightKey* ] ;
 
-define Syllable [ Keys .o. Star .o. [ LeftKey* VowelKeys [ RightKey* .o. RightBank ] ] ] ;
+define Syllable [ [ Keys .o. Star .o. [ LeftKey* Head VowelKeys [ RightKey* .o. RightBank ] ] ] | KeyStroke ] ;
 
-define Stage    [ Rank Gap [ ? - Gap ]* Gap Syllable ] ;
+define Stage    [ Rank Gap ( Lead Gap ) Syllable ( "/" Syllable ) ] ;

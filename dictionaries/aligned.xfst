@@ -66,6 +66,21 @@ define WrittenWord [ ConsSeg [ Gap Chorded Gap ConsSeg ]* Gap Chorded Gap LastSe
 define Written  [ Rank Gap ( Lead Gap ) WrittenWord ( Gap Suffix ) ] ;
 define WrittenPair [ Rank Gap WrittenWord Plus WrittenWord ] ;
 
+! Strokes: split.xfst's syllables as theory.xfst writes them, or a word's
+! outline from the lexicon, which is strokes already. Each stroke's chord has
+! its head before it: `1:` where it has the stress, else `0`, the keys its
+! operand gives, and `:`. contract.xfst contracts two strokes into one.
+!
+!     report     1 R0E:E/P1:Ort
+!     pirouette  1 P0EU:EUr/W1:Et
+define Head     [ "1" ":" | "0" (A) (O) (E) (U) ":" ] ;
+define KeyStroke [ LeftKey* Head VowelKeys RightKey* ] ;
+define Strokes  [ Rank Gap ( Lead Gap ) KeyStroke ( "/" KeyStroke ) ] ;
+
+! An outline in lexicon.lexc: two strokes, the stressed one's head `1:` and
+! the other's `0:`.
+define Outlined [ Rank Gap LeftKey* [ "0" | "1" ] ":" VowelKeys RightKey* "/" LeftKey* [ "0" | "1" ] ":" VowelKeys RightKey* ] ;
+
 ! A rewrite R, defined only where it applies, and the word as it was:
 ! `Instead` takes the rewrite only, `Before` puts the word as it was one
 ! rewrite later, and `After` puts the rewrite later.

@@ -4,4 +4,4 @@
 
 define Middle   [ $[ Cons Dot [ T | D ] Dot Cons ] .o. [ [ Dot [ T | D ] ] -> 0 || Cons _ Dot Cons ] ] ;
 
-define Stage    [ Written .o. After(Middle) ] ;
+define Stage    [ [ Written .o. After(Middle) ] | Outlined ] ;

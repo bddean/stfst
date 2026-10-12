@@ -8,4 +8,4 @@ define UVowel   [ [ "0" | "2" ] ":" [ u | o u | o o ] Eq VowelKeys ] ;
 define Glide    [ [ [ Eq Letter* Gap UVowel Gap ] -> [ Dot W ] || Cons _ Eq Gap Level ]
                 .o. [ [ Eq Gap UVowel Gap ] -> W || Gap _ Eq Gap Level ] ] ;
 
-define Stage    [ Written .o. Glide ] ;
+define Stage    [ [ Written .o. Glide ] | Outlined ] ;

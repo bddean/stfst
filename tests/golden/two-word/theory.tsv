@@ -1,3775 +1,4060 @@
-a and	1 ^A Apbd
-a bad	1 ^A PWAd
-a big	1 ^A PWEUg
-a bill	1 ^A PWEUl
-a bit	1 ^A PWEUt
-a black	1 ^A PWHRAbg
-a book	1 ^A PWAObg
-a box	1 ^A PWObgs
-a boy	1 ^A PWOEU
-a brand	1 ^A PWRApbd
-a break	1 ^A PWRAEbg
-a brief	1 ^A PWRAOEf
-a broad	1 ^A PWRO*Ed
-a bunch	1 ^A PWUfrpb
-a buy	1 ^A PWAO*EU
-a call	1 ^A KAUl
-a car	1 ^A KAr
-a case	1 ^A KAEUs
-a chance	1 ^A KHApbs
-a change	1 ^A KHAEUpbg
-a child	1 ^A KHAOEUld
-a choice	1 ^A KHOEUs
-a class	1 ^A KHRAs
-a clear	1 ^A KHRAEr
-a close	1 ^A KHROEs
-a cold	1 ^A KOld
-a court	1 ^A KOUrt
-a crime	1 ^A KRAOEUpl
-a dark	1 ^A TKArbg
-a day	1 ^A TKAEU
-a deal	1 ^A TKAEl
-a deep	1 ^A TKAOEp
-a dog	1 ^A TKOg
-a dream	1 ^A TKRAEpl
-a drop	1 ^A TKROp
-a face	1 ^A TPAEUs
-a fair	1 ^A TPA*EUr
-a fan	1 ^A TPApb
-a far	1 ^A TPAr
-a fast	1 ^A TPAft
-a few	1 ^A TPAOU
-a field	1 ^A TPAOEld
-a fight	1 ^A TPAO*EUt
-a film	1 ^A TPEUpl
-a fine	1 ^A TPAOEUpb
-a fire	1 ^A TPAOEUr
-a first	1 ^A TPEUfrt
-a five	1 ^A TPAOEUf
-a flat	1 ^A TPHRAt
-a form	1 ^A TPOrpl
-a four	1 ^A TPOUr
-a fourth	1 ^A TPO*Urt
-a free	1 ^A TPRAOE
-a fresh	1 ^A TPRErb
-a friend	1 ^A TPREpbd
-a full	1 ^A TPUl
-a fun	1 ^A TPUpb
-a game	1 ^A TKPWAEUpl
-a gift	1 ^A TKPWEUft
-a girl	1 ^A TKPWEUrl
-a goal	1 ^A TKPWO*El
-a good	1 ^A TKPWAOd
-a great	1 ^A TKPWRAEt
-a group	1 ^A TKPWRAOUp
-a gun	1 ^A TKPWUpb
-a guy	1 ^A TKPWAOEU
-a half	1 ^A HAf
-a hand	1 ^A HApbd
-a hard	1 ^A HArd
-a head	1 ^A HAEd
-a heart	1 ^A HAErt
-a high	1 ^A HAO*EU
-a hit	1 ^A HEUt
-a hold	1 ^A HOld
-a home	1 ^A HOEpl
-a host	1 ^A HOft
-a hot	1 ^A HOt
-a house	1 ^A HOUs
-a huge	1 ^A HAOUpblg
-a in	1 ^A EUpb
-a is	1 ^A EUs
-a job	1 ^A SKWROb
-a joint	1 ^A SKWROEUpbt
-a key	1 ^A KAOE
-a kid	1 ^A KEUd
-a kind	1 ^A KAOEUpbd
-a lack	1 ^A HRAbg
-a large	1 ^A HRArpblg
-a law	1 ^A HRAU
-a lead	1 ^A HRAEd
-a less	1 ^A HREs
-a life	1 ^A HRAOEUf
-a light	1 ^A HRAO*EUt
-a line	1 ^A HRAOEUpb
-a link	1 ^A HR*EUpbg
-a list	1 ^A HREUft
-a live	1 ^A HRAOEUf
-a long	1 ^A HROpbg
-a look	1 ^A HRAObg
-a loss	1 ^A HROs
-a lot	1 ^A HROt
-a low	1 ^A HRO*E
-a man	1 ^A PHApb
-a mask	1 ^A PHAfbg
-a means	1 ^A PHAEpbs
-a mix	1 ^A PHEUbgs
-a month	1 ^A PHO*pbt
-a more	1 ^A PHOEr
-a move	1 ^A PHOf
-a much	1 ^A PHUfp
-a must	1 ^A PHUft
-a name	1 ^A TPHAEUpl
-a need	1 ^A TPHAOEd
-a net	1 ^A TPHEt
-a new	1 ^A TPHAOU
-a news	1 ^A TPHAOUs
-a nice	1 ^A TPHAOEUs
-a night	1 ^A TPHAO*EUt
-a no	1 ^A TPHO
-a non	1 ^A TPHOpb
-a note	1 ^A TPHOEt
-a one	1 ^A WOpb
-a page	1 ^A PAEUpblg
-a pair	1 ^A PA*EUr
-a part	1 ^A PArt
-a per	1 ^A PEr
-a phone	1 ^A TPOEpb
-a piece	1 ^A PAOEs
-a place	1 ^A PHRAEUs
-a plan	1 ^A PHRApb
-a player	1 ^A PHRAEUr
-a point	1 ^A POEUpbt
-a post	1 ^A POft
-a press	1 ^A PREs
-a price	1 ^A PRAOEUs
-a quick	1 ^A KWEUbg
-a range	1 ^A RAEUpbg
-a rare	1 ^A RAEUr
-a real	1 ^A RAEl
-a red	1 ^A REd
-a rich	1 ^A REUfp
-a right	1 ^A RAO*EUt
-a risk	1 ^A REUfbg
-a role	1 ^A ROEl
-a room	1 ^A RAOpl
-a row	1 ^A RO*E
-a run	1 ^A RUpb
-a safe	1 ^A SAEUf
-a scene	1 ^A SAOEpb
-a school	1 ^A SKAOl
-a self	1 ^A SEfl
-a sense	1 ^A SEpbs
-a set	1 ^A SEt
-a sharp	1 ^A SHArp
-a short	1 ^A SHOrt
-a shot	1 ^A SHOt
-a show	1 ^A SHO*E
-a side	1 ^A SAOEUd
-a sign	1 ^A SAOEUpb
-a six	1 ^A SEUbgs
-a slight	1 ^A SHRAO*EUt
-a slow	1 ^A SHRO*E
-a small	1 ^A SPHAUl
-a song	1 ^A SOpbg
-a source	1 ^A SOUrs
-a space	1 ^A SPAEUs
-a star	1 ^A STAr
-a state	1 ^A STAEUt
-a step	1 ^A STEp
-a string	1 ^A STREUpbg
-a strong	1 ^A STROpbg
-a team	1 ^A TAEpl
-a test	1 ^A TEft
-a thing	1 ^A THEUpbg
-a third	1 ^A THEUrd
-a threat	1 ^A THRAEt
-a three	1 ^A THRAOE
-a time	1 ^A TAOEUpl
-a to	1 ^A TO
-a ton	1 ^A TOpb
-a tool	1 ^A TAOl
-a top	1 ^A TOp
-a tough	1 ^A TUf
-a tree	1 ^A TRAOE
-a trip	1 ^A TREUp
-a true	1 ^A TRAO*U
-a two	1 ^A TO
-a type	1 ^A TAO*EUp
-a us	1 ^A Us
-a vast	1 ^A SRAft
-a voice	1 ^A SROEUs
-a vote	1 ^A SROEt
-a war	1 ^A WAr
-a way	1 ^A WAEU
-a web	1 ^A WEb
-a week	1 ^A WAOEbg
-a well	1 ^A WEl
-a while	1 ^A WHAOEUl
-a white	1 ^A WHAOEUt
-a whole	1 ^A WHOEl
-a wide	1 ^A WAOEUd
-a win	1 ^A WEUpb
-a word	1 ^A WOrd
-a work	1 ^A WOrbg
-a world	1 ^A WOrld
-a yard	1 ^A KWRArd
-a year	1 ^A KWRAEr
-a young	1 ^A KWRUpbg
-act as	1 ^A Abgtz
-act of	1 ^O Afbgt
-add a	1 ^A Ad
-add to	1 ^O Atd
-age and	1 ^A AEUpblgd
-age of	1 ^O AEUfpblg
-air and	1 ^A A*EUrpbd
-air force	1 ^A TPROErs
-all and	1 ^A AUpbld
-all be	1 ^E AUbl
-all but	1 ^U AUblt
-all day	1 ^A TKHRAEU
-all four	1 ^A TPHROUr
-all in	1 ^EU AUpbl
-all it	1 ^EU AUlt
-all its	1 ^EU AUlts
-all kinds	1 ^A KHRAOEUpbdz
-all my	1 ^EU AUpl
-all new	1 ^A TPHRAOU
-all of	1 ^O AUfl
-all our	1 ^O AUrl
-all sorts	1 ^A SHROrts
-all star	1 ^A STHRAr
-all things	1 ^A THREUpbgs
-all three	1 ^A THRAOE
-all time	1 ^A THRAOEUpl
-all to	1 ^O AUlt
-am a	1 ^A PHA
-am not	1 ^A TPHOt
-an act	1 ^A TPHAbgt
-an all	1 ^A TPHAUl
-an end	1 ^A TPHEpbd
-an eye	1 ^A TPHAO*EU
-an hour	1 ^A TPHOUr
-an old	1 ^A TPHOld
-are a	1 ^A RA
-are all	1 ^A RAUl
-are an	1 ^A RApb
-are and	1 ^A RApbd
-are as	1 ^A RAs
-are at	1 ^A RAt
-are both	1 ^A PWRO*t
-are for	1 ^A TPROr
-are found	1 ^A TPROUpbd
-are from	1 ^A TPROpl
-are good	1 ^A TKPWRAOd
-are held	1 ^A HREld
-are in	1 ^A REUpb
-are just	1 ^A SKWRUft
-are known	1 ^A TPHRO*Epb
-are less	1 ^A HREs
-are made	1 ^A PHRAEUd
-are more	1 ^A PHROEr
-are most	1 ^A PHROft
-are much	1 ^A PHRUfp
-are no	1 ^A TPHRO
-are not	1 ^A TPHROt
-are now	1 ^A TPHROU
-are of	1 ^A ROf
-are on	1 ^A ROpb
-are one	1 ^A WROpb
-are part	1 ^A PRArt
-are set	1 ^A SREt
-are so	1 ^A SRO
-are some	1 ^A SROpl
-are still	1 ^A STREUl
-are then	1 ^A THREpb
-are there	1 ^A THREr
-are they	1 ^A THRA*EU
-are those	1 ^A THROEs
-are three	1 ^A THRAOE
-are to	1 ^A TRO
-are too	1 ^A TRAO
-are two	1 ^A TRO
-are we	1 ^A WRE
-are well	1 ^A WREl
-are you	1 ^A RAOU
-art and	1 ^A Arpbtd
-art of	1 ^O Afrt
-arts and	1 ^A Arpbtsd
-as a	1 ^A SA
-as an	1 ^A SApb
-as far	1 ^A STPAr
-as for	1 ^A STPOr
-as good	1 ^A STKPWAOd
-as he	1 ^A SHE
-as her	1 ^A SHEr
-as high	1 ^A SHAO*EU
-as his	1 ^A SHEUs
-as if	1 ^A SEUf
-as in	1 ^A SEUpb
-as is	1 ^A SEUs
-as it	1 ^A SEUt
-as its	1 ^A SEUts
-as long	1 ^A SHROpbg
-as more	1 ^A SPHOEr
-as much	1 ^A SPHUfp
-as my	1 ^A SPHAOEU
-as new	1 ^A STPHAOU
-as of	1 ^A SOf
-as one	1 ^A SWOpb
-as our	1 ^A SOUr
-as part	1 ^A SPArt
-as per	1 ^A SPEr
-as she	1 ^A SHE
-as some	1 ^A SOpl
-as soon	1 ^A SAOpb
-as such	1 ^A SUfp
-as that	1 ^A STHAt
-as their	1 ^A STHA*Er
-as there	1 ^A STHEr
-as these	1 ^A STHAOEs
-as they	1 ^A STHA*EU
-as this	1 ^A STHEUs
-as those	1 ^A STHOEs
-as though	1 ^A STHOE
-as to	1 ^A STO
-as was	1 ^A SWAs
-as we	1 ^A SWE
-as well	1 ^A SWEl
-as with	1 ^A SW*EUt
-as you	1 ^A SAOU
-as your	1 ^A SOUr
-at a	1 ^A TA
-at age	1 ^A TAEUpblg
-at all	1 ^A TAUl
-at am	1 ^A TApl
-at an	1 ^A TApb
-at and	1 ^A TApbd
-at each	1 ^A TAEfp
-at first	1 ^A TPEUfrt
-at her	1 ^A THEr
-at high	1 ^A THAO*EU
-at his	1 ^A THEUs
-at home	1 ^A THOEpl
-at how	1 ^A THOU
-at in	1 ^A TEUpb
-at it	1 ^A TEUt
-at its	1 ^A TEUts
-at large	1 ^A THRArpblg
-at least	1 ^A THRAEft
-at my	1 ^A TPHAOEU
-at night	1 ^A TPHAO*EUt
-at no	1 ^A TPHO
-at once	1 ^A TWOpbs
-at one	1 ^A TWOpb
-at or	1 ^A TOr
-at our	1 ^A TOUr
-at risk	1 ^A TREUfbg
-at sea	1 ^A STAE
-at some	1 ^A STOpl
-at that	1 ^A THAt
-at their	1 ^A THA*Er
-at this	1 ^A THEUs
-at what	1 ^A TWAt
-at which	1 ^A TWEUfp
-at work	1 ^A TWOrbg
-at your	1 ^A TOUr
-back and	1 ^A PWApbgd
-back at	1 ^A PWAbgt
-back home	1 ^A KPWHOEpl
-back in	1 ^EU PWApbg
-back of	1 ^O PWAfbg
-back on	1 ^O PWApbg
-back to	1 ^O PWAbgt
-back up	1 ^A KPWUp
-ban on	1 ^O PWApb
-bank of	1 ^O PWA*fpbg
-base of	1 ^O PWAEUfs
-be a	1 ^E PWA
-be an	1 ^E PWApb
-be as	1 ^E PWAs
-be at	1 ^E PWAt
-be back	1 ^E PWAbg
-be built	1 ^E PWEUlt
-be done	1 ^E TKPWOpb
-be for	1 ^E TPWOr
-be found	1 ^E TPWOUpbd
-be good	1 ^E TKPWAOd
-be hard	1 ^E PWHArd
-be heard	1 ^E PWHAErd
-be held	1 ^E PWHEld
-be in	1 ^E PWEUpb
-be just	1 ^E SKPWRUft
-be known	1 ^E TPWHO*Epb
-be left	1 ^E PWHREft
-be less	1 ^E PWHREs
-be like	1 ^E PWHRAOEUbg
-be made	1 ^E PWHAEUd
-be more	1 ^E PWHOEr
-be much	1 ^E PWHUfp
-be no	1 ^E TPWHO
-be of	1 ^E PWOf
-be on	1 ^E PWOpb
-be one	1 ^E PWOpb
-be paid	1 ^E PWA*EUd
-be part	1 ^E PWArt
-be played	1 ^E PWHRAEUd
-be put	1 ^E PWUt
-be quite	1 ^E KPWAOEUt
-be said	1 ^E SPWA*EUd
-be seen	1 ^E SPWAOEpb
-be sent	1 ^E SPWEpbt
-be set	1 ^E SPWEt
-be so	1 ^E SPWO
-be sure	1 ^E SPWHAOUr
-be that	1 ^E TPWHAt
-be there	1 ^E TPWHEr
-be to	1 ^E TPWO
-be too	1 ^E TPWAO
-be true	1 ^E TPWRAO*U
-be with	1 ^E PW*EUt
-been a	1 ^E TPWHA
-been an	1 ^E TPWHApb
-been at	1 ^E TPWHAt
-been done	1 ^E TKPWHOpb
-been found	1 ^E TPWHOUpbd
-been in	1 ^E TPWHEUpb
-been known	1 ^E TPWHO*Epb
-been made	1 ^E TPWHAEUd
-been more	1 ^E TPWHOEr
-been on	1 ^E TPWHOpb
-been one	1 ^E TPWHOpb
-been shown	1 ^E STPWHO*Epb
-been so	1 ^E STPWHO
-been to	1 ^E TPWHO
-best and	1 ^A PWEfpbtd
-best friend	1 ^E STPWREpbd
-best in	1 ^EU PWEfpbt
-best known	1 ^E STPWHO*Epb
-best of	1 ^O PWEft
-best to	1 ^O PWEft
-best way	1 ^E STPWAEU
-bid to	1 ^O PWEUtd
-birth of	1 ^O PW*EUfrt
-birth to	1 ^O PW*EUrt
-bit more	1 ^EU TPWHOEr
-bit of	1 ^O PWEUft
-black and	1 ^A PWHRApbgd
-block of	1 ^O PWHROfbg
-blue and	1 ^A PWHRAO*Upbd
-board and	1 ^A PWO*Erpbd
-board of	1 ^O PWO*Efrd
-book and	1 ^A PWAOpbgd
-book in	1 ^EU PWAOpbg
-book is	1 ^EU PWAObgz
-book of	1 ^O PWAOfbg
-book to	1 ^O PWAObgt
-books and	1 ^A PWAOpbgsd
-books are	1 ^A PWAOrbgs
-books in	1 ^EU PWAOpbgs
-born in	1 ^EU PWOrpb
-both a	1 ^A PWO*t
-both are	1 ^A PWO*rt
-both in	1 ^EU PWO*pbt
-both of	1 ^O PWO*ft
-bought a	1 ^A PWAUt
-bound to	1 ^O PWOUpbtd
-brand new	1 ^A TKPWHRAOU
-break down	1 ^E TKPWROUpb
-broke out	1 ^O KPWROUt
-brought in	1 ^EU PWRAUpbt
-brought to	1 ^O PWRAUt
-build a	1 ^A PWEUld
-built a	1 ^A PWEUlt
-built in	1 ^EU PWEUpblt
-built on	1 ^O PWEUpblt
-bulk of	1 ^O PW*Uflg
-bunch of	1 ^O PWUfrpb
-but a	1 ^U TPWA
-but all	1 ^U TPWAUl
-but are	1 ^U TPWAr
-but as	1 ^U TPWAs
-but at	1 ^U TPWAt
-but by	1 ^U TPWAOEU
-but can	1 ^U TKPWApb
-but did	1 ^U TKPWEUd
-but for	1 ^U TPWOr
-but had	1 ^U TPWHAd
-but has	1 ^U TPWHAs
-but have	1 ^U TPWHAf
-but he	1 ^U TPWHE
-but his	1 ^U TPWHEUs
-but how	1 ^U TPWHOU
-but if	1 ^U TPWEUf
-but in	1 ^U TPWEUpb
-but is	1 ^U TPWEUs
-but it	1 ^U TPWEUt
-but its	1 ^U TPWEUts
-but more	1 ^U TPWHOEr
-but most	1 ^U TPWHOft
-but my	1 ^U TPWHAOEU
-but no	1 ^U TPWHO
-but not	1 ^U TPWHOt
-but now	1 ^U TPWHOU
-but on	1 ^U TPWOpb
-but one	1 ^U TPWOpb
-but she	1 ^U STPWHE
-but some	1 ^U STPWOpl
-but still	1 ^U STPWEUl
-but that	1 ^U TPWHAt
-but their	1 ^U TPWHA*Er
-but then	1 ^U TPWHEpb
-but there	1 ^U TPWHEr
-but these	1 ^U TPWHAOEs
-but they	1 ^U TPWHA*EU
-but this	1 ^U TPWHEUs
-but those	1 ^U TPWHOEs
-but to	1 ^U TPWO
-but was	1 ^U TPWAs
-but we	1 ^U TPWE
-but were	1 ^U TPWEr
-but what	1 ^U TPWAt
-but when	1 ^U TPWEpb
-but will	1 ^U TPWEUl
-but with	1 ^U TPW*EUt
-but you	1 ^U TPWAOU
-buy a	1 ^A PWAO*EU
-by a	1 ^EU PWA
-by all	1 ^EU PWAUl
-by an	1 ^EU PWApb
-by and	1 ^EU PWApbd
-by both	1 ^EU PWO*t
-by far	1 ^EU TPWAr
-by her	1 ^EU PWHEr
-by his	1 ^EU PWHEUs
-by in	1 ^EU PWEUpb
-by it	1 ^EU PWEUt
-by its	1 ^EU PWEUts
-by law	1 ^EU PWHRAU
-by more	1 ^EU PWHOEr
-by now	1 ^EU TPWHOU
-by one	1 ^EU PWOpb
-by our	1 ^EU PWOUr
-by some	1 ^EU SPWOpl
-by that	1 ^EU TPWHAt
-by their	1 ^EU TPWHA*Er
-by then	1 ^EU TPWHEpb
-by this	1 ^EU TPWHEUs
-by two	1 ^EU TPWO
-by which	1 ^EU PWEUfp
-by your	1 ^EU PWOUr
-call for	1 ^O KAUfrl
-call it	1 ^EU KAUlt
-call to	1 ^O KAUlt
-came back	1 ^A KPWHAbg
-came from	1 ^O KA*EUfrpl
-came in	1 ^EU KAEUpbl
-came out	1 ^A KPHOUt
-came to	1 ^O KAEUplt
-came up	1 ^A KPHUp
-can and	1 ^A TKPHApbd
-can be	1 ^A TKPWHE
-can cause	1 ^A TKPHAUs
-can choose	1 ^A TKPHAOs
-can do	1 ^A TKPHO
-can find	1 ^A TKPHAOEUpbd
-can get	1 ^A TKPWHEt
-can give	1 ^A TKPWHEUf
-can go	1 ^A TKPWHO
-can have	1 ^A TKPHAf
-can help	1 ^A TKPHEpl
-can keep	1 ^A TKPHAOEp
-can lead	1 ^A TKPHRAEd
-can make	1 ^A TKPHAEUbg
-can not	1 ^A TKPHOt
-can now	1 ^A TKPHOU
-can say	1 ^A STKPHAEU
-can see	1 ^A STKPHAOE
-can still	1 ^A STKPHEUl
-can take	1 ^A TKPHAEUbg
-can tell	1 ^A TKPHEl
-can then	1 ^A TKPHEpb
-can to	1 ^A TKPHO
-can use	1 ^A TKPHAOUs
-can we	1 ^A TKPWHE
-can you	1 ^A TKPHAOU
-care and	1 ^A KAEUrpbd
-care for	1 ^O KA*EUfr
-care of	1 ^O KAEUfrb
-case and	1 ^A KAEUpbsd
-case in	1 ^EU KAEUpbs
-case is	1 ^EU KAEUsz
-case of	1 ^O KAEUfs
-caught up	1 ^A TKUp
-cause of	1 ^O KAUfz
-cent of	1 ^O SEfpbt
-chair of	1 ^O KHA*EUfrb
-chance of	1 ^O KHAfpbs
-chance to	1 ^O KHAfpbt
-change and	1 ^A KHAEUpbgd
-change in	1 ^EU KHAEUpbg
-change is	1 ^EU KHAEUpbgz
-change of	1 ^O KHAEUfpbg
-change to	1 ^O KHAEUpbgt
-charge of	1 ^O KHAfrpblg
-check out	1 ^E KHOUt
-chief of	1 ^O KHAOEf
-choice of	1 ^O KHOEUfs
-choose a	1 ^A KHAOz
-choose to	1 ^O KHAOtz
-chose to	1 ^O KHOEtz
-church and	1 ^A KHUfrpbd
-church in	1 ^EU KHUfrpb
-church of	1 ^O KHUfrpb
-claim to	1 ^O KHRA*EUplt
-class and	1 ^A KHRApbsd
-class of	1 ^O KHRAfs
-click on	1 ^O KHREUpbg
-close to	1 ^O KHROEft
-coast of	1 ^O KO*Eft
-code of	1 ^O KOEfd
-cold war	1 ^O TKWHRAr
-come and	1 ^A KOpbld
-come back	1 ^O KPWHAbg
-come from	1 ^O KO*frpl
-come in	1 ^EU KOpbl
-come out	1 ^O KPHOUt
-come to	1 ^O KOplt
-come up	1 ^O KPHUp
-cost of	1 ^O KOft
-could be	1 ^O TKPWE
-could do	1 ^O TKO
-could get	1 ^O TKPWEt
-could have	1 ^O TKHAf
-could help	1 ^O TKHEpl
-could make	1 ^O TKPHAEUbg
-could not	1 ^O TKPHOt
-could see	1 ^O STKAOE
-could use	1 ^O TKAOUs
-course of	1 ^O KOUfrs
-court and	1 ^A KOUrpbtd
-court in	1 ^EU KOUrpbt
-court of	1 ^O KOUfrt
-court to	1 ^O KOUrt
-cup of	1 ^O KUfp
-cut off	1 ^U TKOf
-date of	1 ^O TKAEUft
-day and	1 ^A TKAEUpbd
-day at	1 ^A TKAEUt
-day for	1 ^O TKAEUfr
-day in	1 ^EU TKAEUpb
-day is	1 ^EU TKAEUz
-day of	1 ^O TKAEUf
-day on	1 ^O TKAEUpb
-day to	1 ^O TKAEUt
-days and	1 ^A TKAEUpbdz
-days in	1 ^EU TKAEUpbz
-days of	1 ^O TKAEUfz
-days to	1 ^O TKAEUtz
-de la	1 ^E TKHRAU
-deal of	1 ^O TKAEfl
-death and	1 ^A TKA*Epbtd
-death in	1 ^EU TKA*Epbt
-death of	1 ^O TKA*Eft
-death toll	1 ^E TKHOl
-depth of	1 ^O TK*Efpt
-did a	1 ^EU TKA
-did in	1 ^EU TKEUpb
-did it	1 ^EU TKEUt
-did not	1 ^EU TKPHOt
-did you	1 ^EU TKAOU
-died at	1 ^A TKAO*EUtd
-died in	1 ^EU TKAO*EUpbd
-died of	1 ^O TKAO*EUfd
-died on	1 ^O TKAO*EUpbd
-do a	1 ^O TKA
-do and	1 ^O TKApbd
-do have	1 ^O TKHAf
-do in	1 ^O TKEUpb
-do is	1 ^O TKEUs
-do it	1 ^O TKEUt
-do more	1 ^O TKPHOEr
-do not	1 ^O TKPHOt
-do so	1 ^O STKO
-do that	1 ^O TKHAt
-do they	1 ^O TKHA*EU
-do this	1 ^O TKHEUs
-do to	1 ^O TKO
-do we	1 ^O TKWE
-do what	1 ^O TKWAt
-do with	1 ^O TKW*EUt
-do you	1 ^O TKAOU
-does a	1 ^O STKA
-does it	1 ^O STKEUt
-does not	1 ^O STKPHOt
-does this	1 ^O STKHEUs
-done by	1 ^EU TKOpb
-done in	1 ^EU TKOpb
-done to	1 ^O TKOpbt
-down a	1 ^A TKOUpb
-down and	1 ^A TKOUpbd
-down by	1 ^EU TKOUpb
-down in	1 ^EU TKOUpb
-down on	1 ^O TKOUpb
-down to	1 ^O TKOUpbt
-dream of	1 ^O TKRAEfpl
-drop in	1 ^EU TKROpb
-due to	1 ^O TKAO*Ut
-duke of	1 ^O TKAOUfbg
-each day	1 ^E TKHAEU
-each of	1 ^O AEfp
-each one	1 ^E KWHOpb
-each time	1 ^E TKHAOEUpl
-each year	1 ^E KHAEr
-earth and	1 ^A A*Erpbtd
-east and	1 ^A AEfpbtd
-east of	1 ^O AEft
-edge of	1 ^O Efpblg
-eight years	1 ^E TAErs
-end of	1 ^O Efpbd
-end to	1 ^O Epbtd
-end up	1 ^E TKPHUp
-ends up	1 ^E STKPHUp
-et al	1 ^E TAl
-eye on	1 ^O AO*EUpb
-eyes and	1 ^A AO*EUpbdz
-face and	1 ^A TPAEUpbsd
-face masks	1 ^A STPHAfbgs
-face of	1 ^O TPAEUfs
-face to	1 ^O TPAEUft
-fail to	1 ^O TPA*EUlt
-faith in	1 ^EU TPA*EUpbt
-fall in	1 ^EU TPAUpbl
-fall of	1 ^O TPAUfl
-fan of	1 ^O TPAfpb
-fans and	1 ^A TPApbdz
-fans of	1 ^O TPAfpbz
-far as	1 ^A TPArz
-far from	1 ^O TPA*frpl
-far more	1 ^A TPHROEr
-fast and	1 ^A TPAfpbtd
-fear of	1 ^O TPAEfrb
-feel like	1 ^E TPHRAOEUbg
-feels like	1 ^E STPHRAOEUbg
-fell in	1 ^EU TPEpbl
-fell to	1 ^O TPElt
-felt like	1 ^E TPHRAOEUbg
-few days	1 ^E TKPWRAEUs
-few months	1 ^E TKPWHRO*pbts
-few of	1 ^O TPAOUf
-few weeks	1 ^E TKPWRAOEbgs
-few years	1 ^E TKPWRAErs
-field and	1 ^A TPAOEpbld
-field of	1 ^O TPAOEfld
-film and	1 ^A TPEUpbld
-film is	1 ^EU TPEUplz
-find a	1 ^A TPAOEUpbd
-find it	1 ^EU TPAOEUpbtd
-find out	1 ^EU TKPHOUt
-fire and	1 ^A TPAOEUrpbd
-first and	1 ^A TPEUfrpbtd
-first book	1 ^ STPWRAObg
-first day	1 ^ STKPRAEU
-first half	1 ^ STPHRAf
-first in	1 ^EU TPEUfrpbt
-first of	1 ^O TPEUfrt
-first place	1 ^ STPHRAEUs
-first round	1 ^ STPROUpbd
-first step	1 ^ STPREp
-first three	1 ^ STPHRAOE
-first time	1 ^ STPRAOEUpl
-first to	1 ^O TPEUfrt
-first two	1 ^ STPRO
-first year	1 ^ STPRAEr
-fish and	1 ^A TPEUrpbd
-five days	1 ^EU STKPRAEUs
-five of	1 ^O TPAOEUf
-five year	1 ^EU STPRAEr
-five years	1 ^EU STPRAErs
-flow of	1 ^O TPHRO*Ef
-food and	1 ^A TPAOpbd
-food is	1 ^EU TPAOdz
-for a	1 ^O TPRA
-for all	1 ^O TPRAUl
-for an	1 ^O TPRApb
-for and	1 ^O TPRApbd
-for as	1 ^O TPRAs
-for at	1 ^O TPRAt
-for best	1 ^O TPWREft
-for both	1 ^O TPWRO*t
-for days	1 ^O TKPRAEUs
-for each	1 ^O TPRAEfp
-for five	1 ^O TPRAOEUf
-for food	1 ^O TPRAOd
-for four	1 ^O TPROUr
-for free	1 ^O TPRAOE
-for good	1 ^O TKPWRAOd
-for health	1 ^O TPHRA*Elt
-for help	1 ^O TPHREpl
-for her	1 ^O TPHREr
-for high	1 ^O TPHRAO*EU
-for him	1 ^O TPHREUpl
-for his	1 ^O TPHREUs
-for how	1 ^O TPHROU
-for in	1 ^O TPREUpb
-for it	1 ^O TPREUt
-for its	1 ^O TPREUts
-for just	1 ^O STKPWRUft
-for life	1 ^O TPHRAOEUf
-for long	1 ^O TPHROpbg
-for me	1 ^O TPHRE
-for months	1 ^O TPHRO*pbts
-for more	1 ^O TPHROEr
-for most	1 ^O TPHROft
-for much	1 ^O TPHRUfp
-for my	1 ^O TPHRAOEU
-for new	1 ^O TPHRAOU
-for non	1 ^O TPHROpb
-for not	1 ^O TPHROt
-for now	1 ^O TPHROU
-for of	1 ^O TPROf
-for one	1 ^O TPWROpb
-for our	1 ^O TPROUr
-for sale	1 ^O STPRAEUl
-for six	1 ^O STPREUbgs
-for small	1 ^O STPHRAUl
-for so	1 ^O STPRO
-for some	1 ^O STPROpl
-for such	1 ^O STPRUfp
-for sure	1 ^O STPHRAOUr
-for that	1 ^O TPHRAt
-for their	1 ^O TPHRA*Er
-for them	1 ^O TPHREpl
-for these	1 ^O TPHRAOEs
-for this	1 ^O TPHREUs
-for those	1 ^O TPHROEs
-for three	1 ^O TPHRAOE
-for to	1 ^O TPRO
-for two	1 ^O TPRO
-for up	1 ^O TPRUp
-for us	1 ^O TPRUs
-for use	1 ^O TPRAOUs
-for what	1 ^O TPWRAt
-for which	1 ^O TPWREUfp
-for yards	1 ^O TPRArdz
-for years	1 ^O TPRAErs
-for you	1 ^O TPRAOU
-for young	1 ^O TPRUpbg
-for your	1 ^O TPROUr
-force and	1 ^A TPOErpbsd
-force in	1 ^EU TPOErpbs
-force of	1 ^O TPOEfrs
-form a	1 ^A TPOrpl
-form and	1 ^A TPOrpbld
-form of	1 ^O TPOfrpl
-found a	1 ^A TPOUpbd
-found at	1 ^A TPOUpbtd
-found in	1 ^EU TPOUpbd
-found it	1 ^EU TPOUpbtd
-found on	1 ^O TPOUpbd
-found out	1 ^O TKPHOUt
-found to	1 ^O TPOUpbtd
-four days	1 ^O TKPRAEUs
-four months	1 ^O TPHRO*pbts
-four of	1 ^O TPOUfrb
-four year	1 ^O TPRAEr
-four years	1 ^O TPRAErs
-fox news	1 ^O STKPHAOUs
-free and	1 ^A TPRAOEpbd
-free of	1 ^O TPRAOEf
-free to	1 ^O TPRAOEt
-friend and	1 ^A TPREpbd
-friend of	1 ^O TPREfpbd
-from a	1 ^O TPHRA
-from all	1 ^O TPHRAUl
-from an	1 ^O TPHRApb
-from and	1 ^O TPHRApbd
-from both	1 ^O TPWHRO*t
-from each	1 ^O TPHRAEfp
-from her	1 ^O TPHREr
-from his	1 ^O TPHREUs
-from home	1 ^O TPHROEpl
-from in	1 ^O TPHREUpb
-from it	1 ^O TPHREUt
-from its	1 ^O TPHREUts
-from my	1 ^O TPHRAOEU
-from new	1 ^O TPHRAOU
-from one	1 ^O TPWHROpb
-from our	1 ^O TPHROUr
-from scratch	1 ^O STKPHRAfp
-from some	1 ^O STPHROpl
-from that	1 ^O TPHRAt
-from their	1 ^O TPHRA*Er
-from them	1 ^O TPHREpl
-from there	1 ^O TPHREr
-from these	1 ^O TPHRAOEs
-from this	1 ^O TPHREUs
-from those	1 ^O TPHROEs
-from time	1 ^O TPHRAOEUpl
-from to	1 ^O TPHRO
-from what	1 ^O TPWHRAt
-from which	1 ^O TPWHREUfp
-from your	1 ^O TPHROUr
-front and	1 ^A TPROpbtd
-front of	1 ^O TPROfpbt
-full of	1 ^O TPUfl
-full time	1 ^U TPHRAOEUpl
-fun and	1 ^A TPUpbd
-fun to	1 ^O TPUpbt
-game and	1 ^A TKPWAEUpbld
-game in	1 ^EU TKPWAEUpbl
-game is	1 ^EU TKPWAEUplz
-game of	1 ^O TKPWAEUfpl
-game to	1 ^O TKPWAEUplt
-gave a	1 ^A TKPWAEUf
-gave me	1 ^E TKPWAEUfpl
-gave up	1 ^A STKPWRUp
-get a	1 ^A TKPWEt
-get an	1 ^A TKPWEpbt
-get back	1 ^E TKPWAbg
-get in	1 ^EU TKPWEpbt
-get it	1 ^EU TKPWEt
-get more	1 ^E TKPWHOEr
-get on	1 ^O TKPWEpbt
-get out	1 ^E TKPWOUt
-get rid	1 ^E TKPWREUd
-get some	1 ^E STKPWOpl
-get through	1 ^O TKPW*Ergt
-get to	1 ^O TKPWEt
-gets a	1 ^A TKPWEts
-give a	1 ^A TKPWEUf
-give it	1 ^EU TKPWEUft
-give me	1 ^E TKPWEUfpl
-give up	1 ^EU STKPWRUp
-give us	1 ^U TKPWEUfs
-go and	1 ^A TKPWOpbd
-go back	1 ^O TKPWAbg
-go down	1 ^O TKPWOUpb
-go for	1 ^O TKPWOfr
-go in	1 ^EU TKPWOpb
-go on	1 ^O TKPWOpb
-go out	1 ^O TKPWOUt
-go through	1 ^O TKPWO*rt
-go to	1 ^O TKPWOt
-goal is	1 ^EU TKPWO*Elz
-goal of	1 ^O TKPWO*Efl
-god and	1 ^A TKPWOpbd
-god is	1 ^EU TKPWOdz
-goes on	1 ^O TKPWO*Epbz
-goes to	1 ^O TKPWO*Etz
-good and	1 ^A TKPWAOpbd
-good as	1 ^A TKPWAOdz
-good at	1 ^A TKPWAOtd
-good news	1 ^O TKPWHAOUs
-good thing	1 ^O TKPWHEUpbg
-good to	1 ^O TKPWAOtd
-got a	1 ^A TKPWOt
-got to	1 ^O TKPWOt
-great deal	1 ^E TKPWRAEl
-great to	1 ^O TKPWRAEt
-great way	1 ^E TKPWRAEU
-grew up	1 ^E TKPWRUp
-ground and	1 ^A TKPWROUpbd
-group and	1 ^A TKPWRAOUpbd
-group is	1 ^EU TKPWRAOUpz
-group of	1 ^O TKPWRAOUfp
-groups and	1 ^A TKPWRAOUpbsd
-groups of	1 ^O TKPWRAOUfps
-growth and	1 ^A TKPWRO*Epbtd
-growth in	1 ^EU TKPWRO*Epbt
-growth of	1 ^O TKPWRO*Eft
-guide to	1 ^O TKPWAOEUtd
-had a	1 ^A TKHA
-had an	1 ^A TKHApb
-had been	1 ^A TKPWHAOEpb
-had come	1 ^A TKHOpl
-had died	1 ^A TKHAO*EUd
-had done	1 ^A TKHOpb
-had in	1 ^A TKHEUpb
-had it	1 ^A TKHEUt
-had just	1 ^A STKWHRUft
-had left	1 ^A TKHREft
-had made	1 ^A TKPHAEUd
-had more	1 ^A TKPHOEr
-had no	1 ^A TKPHO
-had not	1 ^A TKPHOt
-had one	1 ^A TKWHOpb
-had some	1 ^A STKHOpl
-had their	1 ^A TKHA*Er
-had to	1 ^A TKHO
-had two	1 ^A TKHO
-hair and	1 ^A HA*EUrpbd
-half a	1 ^A HAf
-half of	1 ^O HAf
-hall of	1 ^O HAUfl
-hand and	1 ^A HApbd
-hand in	1 ^EU HApbd
-hand to	1 ^O HApbtd
-hard to	1 ^O HArtd
-hard work	1 ^A TKWHROrbg
-has a	1 ^A SHA
-has an	1 ^A SHApb
-has been	1 ^A SPWHAOEpb
-has come	1 ^A SKHOpl
-has done	1 ^A STKHOpb
-has found	1 ^A STPHOUpbd
-has gone	1 ^A STKPWHOpb
-has grown	1 ^A STKPWHRO*Epb
-has had	1 ^A SHAd
-has its	1 ^A SHEUts
-has just	1 ^A SKWHRUft
-has led	1 ^A SHREd
-has long	1 ^A SHROpbg
-has made	1 ^A SPHAEUd
-has more	1 ^A SPHOEr
-has no	1 ^A STPHO
-has not	1 ^A STPHOt
-has now	1 ^A STPHOU
-has one	1 ^A SWHOpb
-has said	1 ^A SHA*EUd
-has seen	1 ^A SHAOEpb
-has shown	1 ^A SHO*Epb
-has since	1 ^A SHEUpbs
-has some	1 ^A SHOpl
-has to	1 ^A STHO
-has two	1 ^A STHO
-has won	1 ^A SWHOpb
-has yet	1 ^A SHEt
-have a	1 ^A SHRA
-have all	1 ^A SHRAUl
-have an	1 ^A SHRApb
-have been	1 ^A SPWHRAOEpb
-have come	1 ^A SKHROpl
-have died	1 ^A STKHRAO*EUd
-have done	1 ^A STKHROpb
-have found	1 ^A STPHROUpbd
-have gone	1 ^A STKPWHROpb
-have had	1 ^A SHRAd
-have in	1 ^A SHREUpb
-have it	1 ^A SHREUt
-have long	1 ^A SHROpbg
-have lost	1 ^A SHROft
-have made	1 ^A SPHRAEUd
-have more	1 ^A SPHROEr
-have no	1 ^A STPHRO
-have not	1 ^A STPHROt
-have now	1 ^A STPHROU
-have on	1 ^A SHROpb
-have one	1 ^A SWHROpb
-have said	1 ^A SHRA*EUd
-have seen	1 ^A SHRAOEpb
-have shown	1 ^A SHRO*Epb
-have so	1 ^A SHRO
-have some	1 ^A SHROpl
-have that	1 ^A STHRAt
-have their	1 ^A STHRA*Er
-have this	1 ^A STHREUs
-have to	1 ^A STHRO
-have two	1 ^A STHRO
-have won	1 ^A SWHROpb
-have you	1 ^A SHRAOU
-have your	1 ^A SHROUr
-he and	1 ^E HApbd
-he came	1 ^E KHAEUpl
-he can	1 ^E KHApb
-he could	1 ^E KHOUld
-he did	1 ^E TKHEUd
-he died	1 ^E TKHAO*EUd
-he does	1 ^E TKHO*Es
-he felt	1 ^E TPHElt
-he found	1 ^E TPHOUpbd
-he gave	1 ^E TKPWHAEUf
-he got	1 ^E TKPWHOt
-he had	1 ^E HAd
-he has	1 ^E HAs
-he is	1 ^E HEUs
-he just	1 ^E SKWHRUft
-he knew	1 ^E TPHAOU
-he knows	1 ^E TPHO*Es
-he left	1 ^E HREft
-he made	1 ^E PHAEUd
-he may	1 ^E PHAEU
-he met	1 ^E PHEt
-he might	1 ^E PHAO*EUt
-he or	1 ^E HOr
-he said	1 ^E SHA*EUd
-he saw	1 ^E SHAU
-he says	1 ^E SHAEUs
-he should	1 ^E SHOUld
-he spent	1 ^E SPHEpbt
-he then	1 ^E THEpb
-he thought	1 ^E THAUt
-he told	1 ^E THOld
-he took	1 ^E THAObg
-he wants	1 ^E WHApbts
-he was	1 ^E WHAs
-he went	1 ^E WHEpbt
-he will	1 ^E WHEUl
-he won	1 ^E WHOpb
-he would	1 ^E WHOUld
-he wrote	1 ^E HROEt
-head and	1 ^A HAEpbd
-head coach	1 ^E TKHO*Efp
-head of	1 ^O HAEfd
-head to	1 ^O HAEtd
-health and	1 ^A HA*Epbltd
-health care	1 ^E TKHRAEUr
-health of	1 ^O HA*Eflt
-heard of	1 ^O HAEfrd
-heart and	1 ^A HAErpbtd
-heart of	1 ^O HAEfrt
-heat and	1 ^A HAEpbtd
-height of	1 ^O HAOEUft
-held a	1 ^A HEld
-held at	1 ^A HEltd
-held by	1 ^EU HEbld
-held in	1 ^EU HEpbld
-held on	1 ^O HEpbld
-help in	1 ^EU HEpbl
-help of	1 ^O HEfpl
-help to	1 ^O HEplt
-help us	1 ^U HEpls
-helps to	1 ^O HEfplt
-her a	1 ^ HRA
-her and	1 ^ HRApbd
-her as	1 ^ HRAs
-her death	1 ^ TKHRA*Et
-her first	1 ^ TPHREUfrt
-her home	1 ^ HROEpl
-her in	1 ^ HREUpb
-her life	1 ^ HRAOEUf
-her new	1 ^ TPHRAOU
-her own	1 ^ HRO*Epb
-her son	1 ^ SHROpb
-her that	1 ^ THRAt
-her to	1 ^ THRO
-her with	1 ^ WHR*EUt
-her work	1 ^ WHROrbg
-here and	1 ^A HAOErpbd
-here are	1 ^A HAOEr
-here at	1 ^A HAOErt
-here for	1 ^O HAO*Efr
-here in	1 ^EU HAOErpb
-here is	1 ^EU HAOErz
-here to	1 ^O HAOErt
-high and	1 ^A HAO*EUpbd
-high as	1 ^A HAO*EUz
-high court	1 ^EU KHOUrt
-high end	1 ^EU HEpbd
-high of	1 ^O HAO*EUf
-high risk	1 ^EU HREUfbg
-high school	1 ^EU SKHAOl
-high speed	1 ^EU SPHAOEd
-him a	1 ^EU PHA
-him and	1 ^EU PHApbd
-him as	1 ^EU PHAs
-him at	1 ^EU PHAt
-him for	1 ^EU TPHOr
-him from	1 ^EU TPHROpl
-him he	1 ^EU PHE
-him in	1 ^EU PHEUpb
-him on	1 ^EU PHOpb
-him out	1 ^EU PHOUt
-him that	1 ^EU TPHAt
-him to	1 ^EU TPHO
-him with	1 ^EU PWH*EUt
-hip hop	1 ^EU PHOp
-his best	1 ^EU SPWHEft
-his book	1 ^EU SPWHAObg
-his death	1 ^EU STKHA*Et
-his face	1 ^EU STPHAEUs
-his first	1 ^EU STPHEUfrt
-his friend	1 ^EU STPHREpbd
-his friends	1 ^EU STPHREpbdz
-his hand	1 ^EU SHApbd
-his head	1 ^EU SHAEd
-his home	1 ^EU SHOEpl
-his last	1 ^EU SHRAft
-his life	1 ^EU SHRAOEUf
-his mind	1 ^EU SPHAOEUpbd
-his most	1 ^EU SPHOft
-his name	1 ^EU STPHAEUpl
-his new	1 ^EU STPHAOU
-his or	1 ^EU SHOr
-his own	1 ^EU SHO*Epb
-his role	1 ^EU SHROEl
-his son	1 ^EU SHOpb
-his team	1 ^EU STHAEpl
-his time	1 ^EU STHAOEUpl
-his way	1 ^EU SWHAEU
-his wife	1 ^EU SWHAOEUf
-his work	1 ^EU SWHOrbg
-hit a	1 ^A HEUt
-hit by	1 ^EU HEUbt
-hold a	1 ^A HOld
-holds a	1 ^A HOldz
-home and	1 ^A HOEpbld
-home for	1 ^O HO*Efrpl
-home in	1 ^EU HOEpbl
-home of	1 ^O HOEfpl
-home to	1 ^O HOEplt
-hope to	1 ^O HOEpt
-host of	1 ^O HOft
-house and	1 ^A HOUpbsd
-house in	1 ^EU HOUpbs
-house of	1 ^O HOUfs
-how a	1 ^A HOU
-how can	1 ^A HOUpbg
-how did	1 ^EU HOUd
-how do	1 ^O HOUd
-how does	1 ^O HOUdz
-how it	1 ^EU HOUt
-how long	1 ^O HROpbg
-how much	1 ^O PHUfp
-how she	1 ^E HOUrb
-how they	1 ^E HO*Ut
-how this	1 ^EU HO*Uts
-how to	1 ^O HOUt
-how well	1 ^O WHEl
-ice cream	1 ^EU SKRAEpl
-if a	1 ^EU TPA
-if an	1 ^EU TPApb
-if he	1 ^EU TPHE
-if it	1 ^EU TPEUt
-if not	1 ^EU TPHOt
-if one	1 ^EU TPWOpb
-if she	1 ^EU STPHE
-if so	1 ^EU STPO
-if that	1 ^EU TPHAt
-if there	1 ^EU TPHEr
-if they	1 ^EU TPHA*EU
-if this	1 ^EU TPHEUs
-if we	1 ^EU TPWE
-if you	1 ^EU TPAOU
-if your	1 ^EU TPOUr
-in a	1 ^EU TPHA
-in all	1 ^EU TPHAUl
-in an	1 ^EU TPHApb
-in and	1 ^EU TPHApbd
-in as	1 ^EU TPHAs
-in at	1 ^EU TPHAt
-in black	1 ^EU TPWHRAbg
-in both	1 ^EU TPWHO*t
-in but	1 ^EU TPWHUt
-in by	1 ^EU TPWHAOEU
-in case	1 ^EU TKPHAEUs
-in charge	1 ^EU TKPHArpblg
-in court	1 ^EU TKPHOUrt
-in depth	1 ^EU TKPH*Ept
-in each	1 ^EU TPHAEfp
-in east	1 ^EU TPHAEft
-in fact	1 ^EU TPHAbgt
-in five	1 ^EU TPHAOEUf
-in for	1 ^EU TPHOr
-in four	1 ^EU TPHOUr
-in from	1 ^EU TPHROpl
-in front	1 ^EU TPHROpbt
-in full	1 ^EU TPHUl
-in game	1 ^EU TKPWHAEUpl
-in good	1 ^EU TKPWHAOd
-in hand	1 ^EU TPHApbd
-in he	1 ^EU TPHE
-in her	1 ^EU TPHEr
-in high	1 ^EU TPHAO*EU
-in his	1 ^EU TPHEUs
-in house	1 ^EU TPHOUs
-in how	1 ^EU TPHOU
-in is	1 ^EU TPHEUs
-in it	1 ^EU TPHEUt
-in its	1 ^EU TPHEUts
-in just	1 ^EU STKPWHRUft
-in large	1 ^EU TPHRArpblg
-in late	1 ^EU TPHRAEUt
-in law	1 ^EU TPHRAU
-in less	1 ^EU TPHREs
-in life	1 ^EU TPHRAOEUf
-in light	1 ^EU TPHRAO*EUt
-in line	1 ^EU TPHRAOEUpb
-in love	1 ^EU TPHROf
-in march	1 ^EU TPHAfrpb
-in may	1 ^EU TPHAEU
-in mid	1 ^EU TPHEUd
-in mind	1 ^EU TPHAOEUpbd
-in more	1 ^EU TPHOEr
-in most	1 ^EU TPHOft
-in my	1 ^EU TPHAOEU
-in need	1 ^EU TPHAOEd
-in new	1 ^EU TPHAOU
-in no	1 ^EU TPHO
-in north	1 ^EU TPHO*rt
-in of	1 ^EU TPHOf
-in on	1 ^EU TPHOpb
-in one	1 ^EU TPWHOpb
-in or	1 ^EU TPHOr
-in our	1 ^EU TPHOUr
-in part	1 ^EU TPHArt
-in place	1 ^EU TPHRAEUs
-in real	1 ^EU TPHRAEl
-in school	1 ^EU STKPHAOl
-in search	1 ^EU STPHAEfrpb
-in she	1 ^EU STPHE
-in short	1 ^EU STPHOrt
-in size	1 ^EU STPHAOEUz
-in small	1 ^EU STPHAUl
-in so	1 ^EU STPHO
-in some	1 ^EU STPHOpl
-in south	1 ^EU STPHO*Ut
-in space	1 ^EU STPHAEUs
-in spite	1 ^EU STPHAOEUt
-in such	1 ^EU STPHUfp
-in terms	1 ^EU TPHErpls
-in that	1 ^EU TPHAt
-in their	1 ^EU TPHA*Er
-in them	1 ^EU TPHEpl
-in there	1 ^EU TPHEr
-in these	1 ^EU TPHAOEs
-in they	1 ^EU TPHA*EU
-in this	1 ^EU TPHEUs
-in those	1 ^EU TPHOEs
-in three	1 ^EU TPHRAOE
-in time	1 ^EU TPHAOEUpl
-in to	1 ^EU TPHO
-in touch	1 ^EU TPHUfp
-in town	1 ^EU TPHOUpb
-in turn	1 ^EU TPHUrpb
-in two	1 ^EU TPHO
-in use	1 ^EU TPHAOUs
-in was	1 ^EU TPWHAs
-in west	1 ^EU TPWHEft
-in what	1 ^EU TPWHAt
-in when	1 ^EU TPWHEpb
-in which	1 ^EU TPWHEUfp
-in with	1 ^EU TPWH*EUt
-in years	1 ^EU TPHAErs
-in your	1 ^EU TPHOUr
-is a	1 ^EU SA
-is all	1 ^EU SAUl
-is an	1 ^EU SApb
-is and	1 ^EU SApbd
-is as	1 ^EU SAs
-is at	1 ^EU SAt
-is back	1 ^EU SPWAbg
-is best	1 ^EU SPWEft
-is both	1 ^EU SPWO*t
-is by	1 ^EU SPWAOEU
-is clear	1 ^EU SKHRAEr
-is done	1 ^EU STKOpb
-is due	1 ^EU STKAO*U
-is far	1 ^EU STPAr
-is for	1 ^EU STPOr
-is found	1 ^EU STPOUpbd
-is free	1 ^EU STPRAOE
-is from	1 ^EU STPROpl
-is good	1 ^EU STKPWAOd
-is great	1 ^EU STKPWRAEt
-is hard	1 ^EU SHArd
-is he	1 ^EU SHE
-is held	1 ^EU SHEld
-is here	1 ^EU SHAOEr
-is his	1 ^EU SHEUs
-is home	1 ^EU SHOEpl
-is how	1 ^EU SHOU
-is in	1 ^EU SEUpb
-is it	1 ^EU SEUt
-is its	1 ^EU SEUts
-is just	1 ^EU SKWRUft
-is known	1 ^EU STPHO*Epb
-is less	1 ^EU SHREs
-is like	1 ^EU SHRAOEUbg
-is made	1 ^EU SPHAEUd
-is more	1 ^EU SPHOEr
-is most	1 ^EU SPHOft
-is much	1 ^EU SPHUfp
-is my	1 ^EU SPHAOEU
-is no	1 ^EU STPHO
-is not	1 ^EU STPHOt
-is now	1 ^EU STPHOU
-is of	1 ^EU SOf
-is on	1 ^EU SOpb
-is one	1 ^EU SWOpb
-is our	1 ^EU SOUr
-is out	1 ^EU SOUt
-is part	1 ^EU SPArt
-is quite	1 ^EU SKWAOEUt
-is right	1 ^EU SRAO*EUt
-is said	1 ^EU SA*EUd
-is seen	1 ^EU SAOEpb
-is set	1 ^EU SEt
-is shown	1 ^EU SHO*Epb
-is so	1 ^EU SO
-is some	1 ^EU SOpl
-is still	1 ^EU STEUl
-is such	1 ^EU SUfp
-is that	1 ^EU STHAt
-is then	1 ^EU STHEpb
-is there	1 ^EU STHEr
-is this	1 ^EU STHEUs
-is thought	1 ^EU STHAUt
-is to	1 ^EU STO
-is too	1 ^EU STAO
-is true	1 ^EU STRAO*U
-is up	1 ^EU SUp
-is well	1 ^EU SWEl
-is what	1 ^EU SWAt
-is when	1 ^EU SWEpb
-is where	1 ^EU SWEr
-is why	1 ^EU SWAOEU
-is with	1 ^EU SW*EUt
-is worth	1 ^EU SWO*rt
-is your	1 ^EU SOUr
-it a	1 ^EU TA
-it all	1 ^EU TAUl
-it an	1 ^EU TApb
-it and	1 ^EU TApbd
-it as	1 ^EU TAs
-it at	1 ^EU TAt
-it back	1 ^EU TPWAbg
-it be	1 ^EU TPWE
-it but	1 ^EU TPWUt
-it by	1 ^EU TPWAOEU
-it came	1 ^EU TKAEUpl
-it can	1 ^EU TKApb
-it clear	1 ^EU TKHRAEr
-it could	1 ^EU TKOUld
-it did	1 ^EU TKEUd
-it does	1 ^EU TKO*Es
-it down	1 ^EU TKOUpb
-it feels	1 ^EU TPAOEls
-it for	1 ^EU TPOr
-it from	1 ^EU TPROpl
-it gets	1 ^EU TKPWEts
-it goes	1 ^EU TKPWO*Es
-it had	1 ^EU THAd
-it has	1 ^EU THAs
-it he	1 ^EU THE
-it helps	1 ^EU THEpls
-it in	1 ^EU TEUpb
-it is	1 ^EU TEUs
-it just	1 ^EU STKWRUft
-it looks	1 ^EU THRAObgs
-it made	1 ^EU TPHAEUd
-it may	1 ^EU TPHAEU
-it means	1 ^EU TPHAEpbs
-it might	1 ^EU TPHAO*EUt
-it more	1 ^EU TPHOEr
-it must	1 ^EU TPHUft
-it needs	1 ^EU TPHAOEdz
-it now	1 ^EU TPHOU
-it off	1 ^EU TOf
-it on	1 ^EU TOpb
-it or	1 ^EU TOr
-it out	1 ^EU TOUt
-it right	1 ^EU TRAO*EUt
-it said	1 ^EU STA*EUd
-it says	1 ^EU STAEUs
-it seems	1 ^EU STAOEpls
-it should	1 ^EU STHOUld
-it shows	1 ^EU STHO*Es
-it so	1 ^EU STO
-it sounds	1 ^EU STOUpbdz
-it still	1 ^EU STEUl
-it that	1 ^EU THAt
-it through	1 ^EU THRU
-it to	1 ^EU TO
-it too	1 ^EU TAO
-it took	1 ^EU TAObg
-it turns	1 ^EU TUrpbs
-it up	1 ^EU TUp
-it was	1 ^EU TWAs
-it were	1 ^EU TWEr
-it when	1 ^EU TWEpb
-it will	1 ^EU TWEUl
-it with	1 ^EU TW*EUt
-it won	1 ^EU TWOpb
-it works	1 ^EU TWOrbgs
-it would	1 ^EU TWOUld
-its first	1 ^EU STPEUfrt
-its most	1 ^EU STPHOft
-its name	1 ^EU STPHAEUpl
-its new	1 ^EU STPHAOU
-its own	1 ^EU STO*Epb
-its use	1 ^EU STAOUs
-its way	1 ^EU STWAEU
-job and	1 ^A SKWROpbd
-job of	1 ^O SKWROfb
-just a	1 ^A SKWRUft
-just as	1 ^A SKWRUftz
-just be	1 ^E SKWRUfbt
-just how	1 ^U STKWHROU
-just in	1 ^EU SKWRUfpbt
-just like	1 ^U STKWHRAOEUbg
-just not	1 ^U STKPWHROt
-just one	1 ^U STKWROpb
-just so	1 ^O SKWRUfts
-just to	1 ^O SKWRUft
-just two	1 ^U STKWRO
-just want	1 ^U STKWRApbt
-keep a	1 ^A KAOEp
-keep in	1 ^EU KAOEpb
-keep it	1 ^EU KAOEpt
-keep up	1 ^E KPUp
-key to	1 ^O KAOEt
-kind of	1 ^O KAOEUfpbd
-king and	1 ^A KEUpbgd
-king of	1 ^O KEUfpbg
-knew that	1 ^A TPHAO*Ut
-know how	1 ^O TPHOU
-know if	1 ^EU TPHO*Ef
-know it	1 ^EU TPHO*Et
-know that	1 ^A TPHO*Et
-know this	1 ^EU TPHO*Ets
-know what	1 ^O TPWHAt
-know when	1 ^O TPWHEpb
-know where	1 ^O TPWHEr
-known as	1 ^A TPHO*Epbz
-known in	1 ^EU TPHO*Epb
-known to	1 ^O TPHO*Epbt
-lack of	1 ^O HRAfbg
-land and	1 ^A HRApbd
-land of	1 ^O HRAfpbd
-large and	1 ^A HRArpblgd
-large scale	1 ^A SKWHRAEUl
-last few	1 ^A STPHRAOU
-last month	1 ^A STPHRO*pbt
-last night	1 ^A STPHRAO*EUt
-last time	1 ^A STHRAOEUpl
-last two	1 ^A STHRO
-last week	1 ^A STWHRAOEbg
-last year	1 ^A STHRAEr
-last years	1 ^A STHRAErs
-late in	1 ^EU HRAEUpbt
-launch of	1 ^O HRAUfrpb
-law and	1 ^A HRAUpbd
-law of	1 ^O HRAUf
-laws and	1 ^A HRAUpbdz
-laws of	1 ^O HRAUfz
-layer of	1 ^O HRAEUfrb
-lead to	1 ^O HRAEtd
-learn how	1 ^ TPHROU
-learn more	1 ^ TPHROEr
-learn to	1 ^O HRAErpbt
-least a	1 ^A HRAEft
-least one	1 ^E STWHROpb
-least two	1 ^E STHRO
-led by	1 ^EU HREbd
-led to	1 ^O HREtd
-left and	1 ^A HREfpbtd
-left in	1 ^EU HREfpbt
-left to	1 ^O HREft
-length of	1 ^O HR*Efpbgt
-let it	1 ^EU HREt
-let me	1 ^E HREplt
-let us	1 ^U HREts
-life and	1 ^A HRAOEUfpbd
-life as	1 ^A HRAOEUfz
-life in	1 ^EU HRAOEUfpb
-life is	1 ^EU HRAOEUfz
-life of	1 ^O HRAOEUf
-life to	1 ^O HRAOEUft
-light and	1 ^A HRAO*EUpbtd
-light of	1 ^O HRAO*EUft
-light on	1 ^O HRAO*EUpbt
-like a	1 ^A HRAOEUbg
-like all	1 ^EU KHRAUl
-like an	1 ^A HRAOEUpbg
-like in	1 ^EU HRAOEUpbg
-like it	1 ^EU HRAOEUbgt
-like me	1 ^E HRAOEUpblg
-like they	1 ^E HRAO*EUbgt
-like to	1 ^O HRAOEUbgt
-line and	1 ^A HRAOEUpbd
-line of	1 ^O HRAOEUfpb
-line to	1 ^O HRAOEUpbt
-line up	1 ^EU TPHRUp
-link to	1 ^O HR*EUpbgt
-links to	1 ^O HR*EUpbgs
-list of	1 ^O HREUft
-live and	1 ^A HRAOEUfpbd
-live in	1 ^EU HRAOEUfpb
-live on	1 ^O HRAOEUfpb
-long and	1 ^A HROpbgd
-long as	1 ^A HROpbgz
-look at	1 ^A HRAObgt
-look like	1 ^O KHRAOEUbg
-look to	1 ^O HRAObgt
-looks like	1 ^O SKHRAOEUbg
-loss of	1 ^O HROfs
-lost in	1 ^EU HROfpbt
-lost to	1 ^O HROft
-lot more	1 ^O TPHROEr
-lot of	1 ^O HROft
-lot to	1 ^O HROt
-lots of	1 ^O HROfts
-love and	1 ^A HROfpbd
-love it	1 ^EU HROft
-love of	1 ^O HROf
-love to	1 ^O HROft
-low and	1 ^A HRO*Epbd
-low cost	1 ^O KHROft
-low of	1 ^O HRO*Ef
-made a	1 ^A PHAEUd
-made an	1 ^A PHAEUpbd
-made by	1 ^EU PHAEUbd
-made in	1 ^EU PHAEUpbd
-made it	1 ^EU PHAEUtd
-made me	1 ^E PHAEUpld
-made of	1 ^O PHAEUfd
-made to	1 ^O PHAEUtd
-made up	1 ^A TKPHUp
-mail in	1 ^EU PHA*EUpbl
-make a	1 ^A PHAEUbg
-make an	1 ^A PHAEUpbg
-make it	1 ^EU PHAEUbgt
-make me	1 ^E PHAEUpblg
-make sense	1 ^A SKPHEpbs
-make sure	1 ^A SKPHAOUr
-make up	1 ^A KPHUp
-man and	1 ^A PHApbd
-man in	1 ^EU PHApb
-man is	1 ^EU PHApbz
-man of	1 ^O PHAfpb
-march and	1 ^A PHAfrpbd
-mass of	1 ^O PHAfs
-may and	1 ^A PHApbd
-may be	1 ^A PWHE
-may have	1 ^A PHAf
-may need	1 ^A TPHAOEd
-may not	1 ^A TPHOt
-me a	1 ^E PHA
-me and	1 ^E PHApbd
-me as	1 ^E PHAs
-me for	1 ^E TPHOr
-me in	1 ^E PHEUpb
-me is	1 ^E PHEUs
-me it	1 ^E PHEUt
-me on	1 ^E PHOpb
-me that	1 ^E TPHAt
-me to	1 ^E TPHO
-me with	1 ^E PWH*EUt
-means of	1 ^O PHAEfpbz
-means to	1 ^O PHAEpbtz
-meant to	1 ^O PHAEpbt
-men and	1 ^A PHEpbd
-men in	1 ^EU PHEpb
-men to	1 ^O PHEpbt
-midst of	1 ^O PH*EUft
-might be	1 ^EU TPWHE
-might have	1 ^EU TPHAf
-might not	1 ^EU TPHOt
-mind and	1 ^A PHAOEUpbd
-mix of	1 ^O PHEUfbgs
-month and	1 ^A PHO*pbtd
-month of	1 ^O PHO*fpbt
-months to	1 ^O PHO*fpbt
-more and	1 ^A PHOErpbd
-more in	1 ^EU PHOErpb
-more like	1 ^O PHRAOEUbg
-more of	1 ^O PHOEfrb
-more on	1 ^O PHOErpb
-more or	1 ^O PHOEr
-more time	1 ^O TPHRAOEUpl
-more to	1 ^O PHOErt
-most of	1 ^O PHOft
-most part	1 ^O STPHArt
-move on	1 ^O PHOfpb
-move to	1 ^O PHOft
-much as	1 ^A PHUfpz
-much in	1 ^EU PHUfpb
-much less	1 ^U KPHREs
-much like	1 ^U KPHRAOEUbg
-much more	1 ^U KPHOEr
-much of	1 ^O PHUfp
-much time	1 ^U TKPHAOEUpl
-much to	1 ^O PHUfpt
-must be	1 ^U STPWHE
-must have	1 ^U STPHAf
-must not	1 ^U STPHOt
-my dad	1 ^EU TKPHAd
-my first	1 ^EU TPHEUfrt
-my friend	1 ^EU TPHREpbd
-my friends	1 ^EU TPHREpbdz
-my head	1 ^EU PHAEd
-my heart	1 ^EU PHAErt
-my kids	1 ^EU KPHEUdz
-my life	1 ^EU PHRAOEUf
-my mind	1 ^EU PHAOEUpbd
-my mom	1 ^EU PHOpl
-my own	1 ^EU PHO*Epb
-my son	1 ^EU SPHOpb
-my wife	1 ^EU PWHAOEUf
-name and	1 ^A TPHAEUpbld
-name for	1 ^O TPHA*EUfrpl
-name in	1 ^EU TPHAEUpbl
-name is	1 ^EU TPHAEUplz
-name of	1 ^O TPHAEUfpl
-name to	1 ^O TPHAEUplt
-need a	1 ^A TPHAOEd
-need it	1 ^EU TPHAOEtd
-need not	1 ^E TKPHOt
-need of	1 ^O TPHAOEfd
-need to	1 ^O TPHAOEtd
-needs a	1 ^A TPHAOEdz
-new and	1 ^A TPHAOUpbd
-new book	1 ^E TPWHAObg
-new to	1 ^O TPHAOUt
-new world	1 ^E TPWHOrld
-new year	1 ^E TPHAEr
-news and	1 ^A TPHAOUpbdz
-news of	1 ^O TPHAOUfz
-next day	1 ^E STKPHAEU
-next few	1 ^E STKPHAOU
-next month	1 ^E STKPHO*pbt
-next time	1 ^E STKPHAOEUpl
-next to	1 ^O TPHEbgs
-next two	1 ^E STKPHO
-next week	1 ^E STKPWHAOEbg
-next year	1 ^E STKPHAEr
-nice to	1 ^O TPHAOEUft
-night and	1 ^A TPHAO*EUpbtd
-night in	1 ^EU TPHAO*EUpbt
-night of	1 ^O TPHAO*EUft
-no doubt	1 ^O TKPHOUt
-no more	1 ^O TPHOEr
-no need	1 ^O TPHAOEd
-no one	1 ^O TPWHOpb
-no such	1 ^O STPHUfp
-no time	1 ^O TPHAOEUpl
-no way	1 ^O TPWHAEU
-none of	1 ^O TPHOfpb
-north and	1 ^A TPHO*rpbtd
-north of	1 ^O TPHO*frt
-not a	1 ^A TPHOt
-not all	1 ^O TPHAUl
-not an	1 ^A TPHOpbt
-not as	1 ^A TPHOtz
-not at	1 ^A TPHOt
-not be	1 ^E TPHObt
-not clear	1 ^O TKPHRAEr
-not get	1 ^O TKPWHEt
-not go	1 ^O TKPWHO
-not in	1 ^EU TPHOpbt
-not just	1 ^O STKPWHRUft
-not know	1 ^O TPHO*E
-not known	1 ^O TPHO*Epb
-not like	1 ^O TPHRAOEUbg
-not make	1 ^O TPHAEUbg
-not mean	1 ^O TPHAEpb
-not much	1 ^O TPHUfp
-not need	1 ^O TPHAOEd
-not on	1 ^O TPHOpbt
-not one	1 ^O TPWHOpb
-not see	1 ^O STPHAOE
-not so	1 ^O TPHOts
-not sure	1 ^O STPHAOUr
-not take	1 ^O TPHAEUbg
-not to	1 ^O TPHOt
-not too	1 ^O TPHAO
-not use	1 ^O TPHAOUs
-not want	1 ^O TPWHApbt
-not work	1 ^O TPWHOrbg
-not yet	1 ^O TPHEt
-note on	1 ^O TPHOEpbt
-now a	1 ^A TPHOU
-now and	1 ^A TPHOUpbd
-now be	1 ^E TPHOUb
-now been	1 ^E TPHOUpb
-now in	1 ^EU TPHOUpb
-now is	1 ^EU TPHOUz
-now it	1 ^EU TPHOUt
-now owns	1 ^O TPHO*Epbs
-now that	1 ^A TPHO*Ut
-now they	1 ^E TPHO*Ut
-now to	1 ^O TPHOUt
-of a	1 ^O SRA
-of age	1 ^O SRAEUpblg
-of air	1 ^O SRA*EUr
-of all	1 ^O SRAUl
-of an	1 ^O SRApb
-of and	1 ^O SRApbd
-of art	1 ^O SRArt
-of as	1 ^O SRAs
-of at	1 ^O SRAt
-of black	1 ^O SPWHRAbg
-of blood	1 ^O SPWHRAOd
-of books	1 ^O SPWRAObgs
-of both	1 ^O SPWRO*t
-of by	1 ^O SPWRAOEU
-of choice	1 ^O SKHROEUs
-of course	1 ^O SKROUrs
-of days	1 ^O STKRAEUs
-of death	1 ^O STKRA*Et
-of each	1 ^O SRAEfp
-of fame	1 ^O STPRAEUpl
-of five	1 ^O STPRAOEUf
-of food	1 ^O STPRAOd
-of for	1 ^O STPROr
-of four	1 ^O STPROUr
-of free	1 ^O STPRAOE
-of from	1 ^O STPROpl
-of fun	1 ^O STPRUpb
-of god	1 ^O STKPWROd
-of gold	1 ^O STKPWROld
-of good	1 ^O STKPWRAOd
-of great	1 ^O STKPWRAEt
-of health	1 ^O SHRA*Elt
-of her	1 ^O SHREr
-of high	1 ^O SHRAO*EU
-of him	1 ^O SHREUpl
-of his	1 ^O SHREUs
-of how	1 ^O SHROU
-of in	1 ^O SREUpb
-of is	1 ^O SREUs
-of it	1 ^O SREUt
-of its	1 ^O SREUts
-of just	1 ^O SKWRUft
-of land	1 ^O SHRApbd
-of large	1 ^O SHRArpblg
-of last	1 ^O SHRAft
-of law	1 ^O SHRAU
-of life	1 ^O SHRAOEUf
-of light	1 ^O SHRAO*EUt
-of long	1 ^O SHROpbg
-of love	1 ^O SHROf
-of march	1 ^O SPHRAfrpb
-of mass	1 ^O SPHRAs
-of may	1 ^O SPHRAEU
-of me	1 ^O SPHRE
-of men	1 ^O SPHREpb
-of mind	1 ^O SPHRAOEUpbd
-of mine	1 ^O SPHRAOEUpb
-of months	1 ^O SPHRO*pbts
-of more	1 ^O SPHROEr
-of most	1 ^O SPHROft
-of my	1 ^O SPHRAOEU
-of new	1 ^O STPHRAOU
-of no	1 ^O STPHRO
-of non	1 ^O STPHROpb
-of north	1 ^O STPHRO*rt
-of not	1 ^O STPHROt
-of old	1 ^O SROld
-of on	1 ^O SROpb
-of one	1 ^O SWROpb
-of or	1 ^O SROr
-of our	1 ^O SROUr
-of per	1 ^O SPREr
-of real	1 ^O SRAEl
-of school	1 ^O SKRAOl
-of self	1 ^O SREfl
-of six	1 ^O SREUbgs
-of small	1 ^O SPHRAUl
-of some	1 ^O SROpl
-of south	1 ^O SRO*Ut
-of space	1 ^O SPRAEUs
-of staff	1 ^O STRAf
-of state	1 ^O STRAEUt
-of such	1 ^O SRUfp
-of that	1 ^O STHRAt
-of their	1 ^O STHRA*Er
-of them	1 ^O STHREpl
-of these	1 ^O STHRAOEs
-of things	1 ^O STHREUpbgs
-of this	1 ^O STHREUs
-of those	1 ^O STHROEs
-of three	1 ^O STHRAOE
-of time	1 ^O STRAOEUpl
-of to	1 ^O STRO
-of two	1 ^O STRO
-of up	1 ^O SRUp
-of us	1 ^O SRUs
-of use	1 ^O SRAOUs
-of war	1 ^O SWRAr
-of ways	1 ^O SWRAEUs
-of weeks	1 ^O SWRAOEbgs
-of what	1 ^O SWRAt
-of when	1 ^O SWREpb
-of where	1 ^O SWREr
-of which	1 ^O SWREUfp
-of white	1 ^O SWRAOEUt
-of who	1 ^O SHRO
-of whom	1 ^O SHROpl
-of words	1 ^O SWROrdz
-of work	1 ^O SWROrbg
-of world	1 ^O SWROrld
-of year	1 ^O SRAEr
-of years	1 ^O SRAErs
-of you	1 ^O SRAOU
-of young	1 ^O SRUpbg
-of your	1 ^O SROUr
-off a	1 ^A Of
-off and	1 ^A Ofpbd
-off from	1 ^O Ofrpl
-off in	1 ^EU Ofpb
-off of	1 ^O Of
-off on	1 ^O Ofpb
-off to	1 ^O Oft
-oil and	1 ^A OEUpbld
-old and	1 ^A Opbld
-old man	1 ^O TKPHRApb
-on a	1 ^O TPHA
-on all	1 ^O TPHAUl
-on an	1 ^O TPHApb
-on and	1 ^O TPHApbd
-on board	1 ^O TPWHO*Erd
-on both	1 ^O TPWHO*t
-on each	1 ^O TPHAEfp
-on earth	1 ^O TPHA*Ert
-on for	1 ^O TPHOr
-on her	1 ^O TPHEr
-on him	1 ^O TPHEUpl
-on his	1 ^O TPHEUs
-on how	1 ^O TPHOU
-on in	1 ^O TPHEUpb
-on it	1 ^O TPHEUt
-on its	1 ^O TPHEUts
-on march	1 ^O TPHAfrpb
-on may	1 ^O TPHAEU
-on me	1 ^O TPHE
-on my	1 ^O TPHAOEU
-on new	1 ^O TPHAOU
-on one	1 ^O TPWHOpb
-on or	1 ^O TPHOr
-on our	1 ^O TPHOUr
-on screen	1 ^O STKPHRAOEpb
-on site	1 ^O STPHAOEUt
-on some	1 ^O STPHOpl
-on stage	1 ^O STPHAEUpblg
-on that	1 ^O TPHAt
-on their	1 ^O TPHA*Er
-on them	1 ^O TPHEpl
-on these	1 ^O TPHAOEs
-on this	1 ^O TPHEUs
-on those	1 ^O TPHOEs
-on time	1 ^O TPHAOEUpl
-on to	1 ^O TPHO
-on top	1 ^O TPHOp
-on track	1 ^O TPHRAbg
-on two	1 ^O TPHO
-on what	1 ^O TPWHAt
-on which	1 ^O TPWHEUfp
-on with	1 ^O TPWH*EUt
-on you	1 ^O TPHAOU
-on your	1 ^O TPHOUr
-once a	1 ^A WOpbs
-once in	1 ^EU WOpbs
-once they	1 ^E WO*pbts
-one and	1 ^A WOpbd
-one at	1 ^A WOpbt
-one can	1 ^A WO*pbg
-one day	1 ^O TKPWHAEU
-one hand	1 ^O TPWHApbd
-one in	1 ^EU WOpb
-one is	1 ^EU WOpbz
-one more	1 ^O TPWHOEr
-one of	1 ^O WOfpb
-one on	1 ^O WOpb
-one or	1 ^O WOrpb
-one point	1 ^O TPWHOEUpbt
-one side	1 ^O STPWHAOEUd
-one thing	1 ^O TPWHEUpbg
-one third	1 ^O TPWHEUrd
-one time	1 ^O TPWHAOEUpl
-one to	1 ^O WOpbt
-one way	1 ^O TPWHAEU
-one year	1 ^O TPWHAEr
-or a	1 ^O RA
-or an	1 ^O RApb
-or are	1 ^O RAr
-or as	1 ^O RAs
-or at	1 ^O RAt
-or both	1 ^O PWRO*t
-or by	1 ^O PWRAOEU
-or for	1 ^O TPROr
-or have	1 ^O HRAf
-or her	1 ^O HREr
-or if	1 ^O REUf
-or in	1 ^O REUpb
-or is	1 ^O REUs
-or just	1 ^O SKWRUft
-or less	1 ^O HREs
-or may	1 ^O PHRAEU
-or more	1 ^O PHROEr
-or no	1 ^O TPHRO
-or not	1 ^O TPHROt
-or on	1 ^O ROpb
-or she	1 ^O SHRE
-or so	1 ^O SRO
-or that	1 ^O THRAt
-or they	1 ^O THRA*EU
-or three	1 ^O THRAOE
-or to	1 ^O TRO
-or two	1 ^O TRO
-or what	1 ^O WRAt
-or with	1 ^O WR*EUt
-or you	1 ^O RAOU
-or your	1 ^O ROUr
-ought to	1 ^O AUt
-our first	1 ^O TPREUfrt
-our own	1 ^O RO*Epb
-our team	1 ^O TRAEpl
-out a	1 ^A OUt
-out and	1 ^A OUpbtd
-out as	1 ^A OUtz
-out at	1 ^A OUt
-out by	1 ^EU OUbt
-out how	1 ^O THOU
-out in	1 ^EU OUpbt
-out of	1 ^O OUft
-out on	1 ^O OUpbt
-out to	1 ^O OUt
-out what	1 ^O TWAt
-pain and	1 ^A PA*EUpbd
-pair of	1 ^O PA*EUfrb
-park and	1 ^A PArpbgd
-park in	1 ^EU PArpbg
-part in	1 ^EU PArpbt
-part of	1 ^O PAfrt
-part time	1 ^A TPRAOEUpl
-part to	1 ^O PArt
-parts of	1 ^O PAfrts
-past and	1 ^A PAfpbtd
-past few	1 ^A STPAOU
-past two	1 ^A STPO
-past years	1 ^A STPAErs
-path to	1 ^O PA*t
-pay a	1 ^A PAEU
-pay for	1 ^O PAEUfr
-peace and	1 ^A PAEpbsd
-per cent	1 ^ SPREpbt
-per day	1 ^ TKPRAEU
-per game	1 ^ TKPWRAEUpl
-per month	1 ^ PHRO*pbt
-per share	1 ^ SPHRAEUr
-per year	1 ^ PRAEr
-phase of	1 ^O TPAEUfz
-phone and	1 ^A TPOEpbd
-pick up	1 ^EU KPUp
-piece of	1 ^O PAOEfs
-place and	1 ^A PHRAEUpbsd
-place at	1 ^A PHRAEUft
-place in	1 ^EU PHRAEUpbs
-place of	1 ^O PHRAEUfs
-place on	1 ^O PHRAEUpbs
-place to	1 ^O PHRAEUft
-place where	1 ^A SPWHREr
-plan and	1 ^A PHRApbd
-plan to	1 ^O PHRApbt
-plans to	1 ^O PHRApbtz
-play a	1 ^A PHRAEU
-play and	1 ^A PHRAEUpbd
-play in	1 ^EU PHRAEUpb
-played a	1 ^A PHRAEUd
-played by	1 ^EU PHRAEUbd
-played in	1 ^EU PHRAEUpbd
-player to	1 ^O PHRAEUrt
-plays a	1 ^A PHRAEUz
-point and	1 ^A POEUpbtd
-point in	1 ^EU POEUpbt
-point is	1 ^EU POEUpbtz
-point of	1 ^O POEUfpbt
-point out	1 ^O TPHOUt
-point to	1 ^O POEUpbt
-point where	1 ^O TPWHEr
-points out	1 ^O STPHOUt
-points to	1 ^O POEUfpbt
-port of	1 ^O POfrt
-price is	1 ^EU PRAOEUsz
-price of	1 ^O PRAOEUfs
-prone to	1 ^O PROEpbt
-proof of	1 ^O PRAOf
-proud of	1 ^O PROUfd
-proud to	1 ^O PROUtd
-put a	1 ^A PUt
-put in	1 ^EU PUpbt
-put it	1 ^EU PUt
-put on	1 ^O PUpbt
-put out	1 ^U TPOUt
-put up	1 ^U TPUp
-quick to	1 ^O KWEUbgt
-quite a	1 ^A KWAOEUt
-range of	1 ^O RAEUfpbg
-rate and	1 ^A RAEUpbtd
-rate is	1 ^EU RAEUtz
-rate of	1 ^O RAEUft
-reach out	1 ^E KHROUt
-read a	1 ^A RAEd
-read and	1 ^A RAEpbd
-read it	1 ^EU RAEtd
-real life	1 ^E HRAOEUf
-real time	1 ^E THRAOEUpl
-real world	1 ^E WHROrld
-rest of	1 ^O REft
-rid of	1 ^O REUfd
-right and	1 ^A RAO*EUpbtd
-right hand	1 ^EU THRApbd
-right in	1 ^EU RAO*EUpbt
-right now	1 ^EU TPHROU
-right of	1 ^O RAO*EUft
-right thing	1 ^EU THREUpbg
-right to	1 ^O RAO*EUt
-right wing	1 ^EU TWREUpbg
-rights and	1 ^A RAO*EUpbtsd
-rights of	1 ^O RAO*EUfts
-rights to	1 ^O RAO*EUft
-rise in	1 ^EU RAOEUpbz
-rise of	1 ^O RAOEUfz
-rise to	1 ^O RAOEUtz
-risk of	1 ^O REUfbg
-road and	1 ^A RO*Epbd
-road to	1 ^O RO*Etd
-rock and	1 ^A ROpbgd
-role as	1 ^A ROElz
-role in	1 ^EU ROEpbl
-role of	1 ^O ROEfl
-room and	1 ^A RAOpbld
-room for	1 ^O RAO*frpl
-rose to	1 ^O ROEtz
-round of	1 ^O ROUfpbd
-route to	1 ^O RAOUt
-rule of	1 ^O RAOUfl
-run a	1 ^A RUpb
-run by	1 ^EU RUpb
-run in	1 ^EU RUpb
-run on	1 ^O RUpb
-safe and	1 ^A SAEUfpbd
-said a	1 ^A SA*EUd
-said and	1 ^A SA*EUpbd
-said at	1 ^A SA*EUtd
-said in	1 ^EU SA*EUpbd
-said it	1 ^EU SA*EUtd
-said of	1 ^O SA*EUfd
-said on	1 ^O SA*EUpbd
-said she	1 ^E SA*EUrbd
-said they	1 ^E SA*EUtd
-said to	1 ^O SA*EUtd
-sake of	1 ^O SAEUfbg
-sale of	1 ^O SAEUfl
-salt and	1 ^A SAUpbltd
-same as	1 ^A SAEUplz
-same day	1 ^A STKPHAEU
-same thing	1 ^A STPHEUpbg
-same time	1 ^A STPHAOEUpl
-same way	1 ^A SPWHAEU
-same year	1 ^A SPHAEr
-saw a	1 ^A SAU
-say it	1 ^EU SAEUt
-say that	1 ^A SA*EUt
-say they	1 ^E SA*EUt
-say this	1 ^EU SA*EUts
-says it	1 ^EU SAEUtz
-says she	1 ^E SAEUrbz
-school and	1 ^A SKAOpbld
-school in	1 ^EU SKAOpbl
-school of	1 ^O SKAOfl
-scope of	1 ^O SKOEfp
-search of	1 ^O SAEfrpb
-see a	1 ^A SAOE
-see how	1 ^E SHOU
-see if	1 ^EU SAOEf
-see in	1 ^EU SAOEpb
-see it	1 ^EU SAOEt
-see that	1 ^A SAO*Et
-see them	1 ^E SAO*Eplt
-see this	1 ^EU SAO*Ets
-see what	1 ^E SWAt
-seek to	1 ^O SAOEbgt
-seeks to	1 ^O SAOEbgs
-seem like	1 ^E SPHRAOEUbg
-seem to	1 ^O SAOEplt
-seems like	1 ^E SPHRAOEUbg
-seen a	1 ^A SAOEpb
-seen as	1 ^A SAOEpbz
-seen in	1 ^EU SAOEpb
-seen on	1 ^O SAOEpb
-send a	1 ^A SEpbd
-sense of	1 ^O SEfpbs
-sense to	1 ^O SEfpbt
-sent a	1 ^A SEpbt
-sent to	1 ^O SEpbt
-serve as	1 ^A SEfrbz
-set a	1 ^A SEt
-set in	1 ^EU SEpbt
-set of	1 ^O SEft
-set out	1 ^E STOUt
-set to	1 ^O SEt
-set up	1 ^E STUp
-sets of	1 ^O SEfts
-shall be	1 ^A SPWHRE
-shape of	1 ^O SHAEUfp
-share a	1 ^A SHAEUr
-share of	1 ^O SHAEUfrb
-she and	1 ^E SHApbd
-she can	1 ^E SKHApb
-she could	1 ^E SKHOUld
-she did	1 ^E STKHEUd
-she does	1 ^E STKHO*Es
-she had	1 ^E SHAd
-she has	1 ^E SHAs
-she is	1 ^E SHEUs
-she said	1 ^E SHA*EUd
-she says	1 ^E SHAEUs
-she told	1 ^E STHOld
-she was	1 ^E SWHAs
-she will	1 ^E SWHEUl
-she would	1 ^E SWHOUld
-she wrote	1 ^E SHROEt
-shift in	1 ^EU SHEUfpbt
-short of	1 ^O SHOfrt
-short term	1 ^O STHRErpl
-shot in	1 ^EU SHOpbt
-should be	1 ^O STKPWHE
-should have	1 ^O STKHAf
-should not	1 ^O STKPHOt
-show a	1 ^A SHO*E
-show and	1 ^A SHO*Epbd
-show in	1 ^EU SHO*Epb
-show that	1 ^A SHO*Et
-show up	1 ^O SHUp
-shown in	1 ^EU SHO*Epb
-shown to	1 ^O SHO*Epbt
-shows a	1 ^A SHO*Ez
-shut down	1 ^U STKHOUpb
-side and	1 ^A SAOEUpbd
-side of	1 ^O SAOEUfd
-sign of	1 ^O SAOEUfpb
-sign up	1 ^EU STPHUp
-signs of	1 ^O SAOEUfpbz
-since and	1 ^A SEUpbsd
-since it	1 ^EU SEUfpbt
-since its	1 ^EU SEUpbts
-since march	1 ^EU STPHAfrpb
-since then	1 ^EU STPHEpb
-since they	1 ^E S*EUpbts
-site and	1 ^A SAOEUpbtd
-site is	1 ^EU SAOEUtz
-site of	1 ^O SAOEUft
-six months	1 ^EU SKPHO*pbts
-six weeks	1 ^EU SKWAOEbgs
-six years	1 ^EU SKAErs
-size and	1 ^A SAOEUpbdz
-size of	1 ^O SAOEUfz
-small and	1 ^A SPHAUpbld
-small town	1 ^A STPHROUpb
-so a	1 ^O SA
-so as	1 ^O SAs
-so far	1 ^O STPAr
-so for	1 ^O STPOr
-so good	1 ^O STKPWAOd
-so he	1 ^O SHE
-so if	1 ^O SEUf
-so in	1 ^O SEUpb
-so is	1 ^O SEUs
-so it	1 ^O SEUt
-so long	1 ^O SHROpbg
-so much	1 ^O SPHUfp
-so on	1 ^O SOpb
-so she	1 ^O SHE
-so that	1 ^O STHAt
-so there	1 ^O STHEr
-so they	1 ^O STHA*EU
-so this	1 ^O STHEUs
-so to	1 ^O STO
-so we	1 ^O SWE
-so what	1 ^O SWAt
-so when	1 ^O SWEpb
-so why	1 ^O SWAOEU
-so you	1 ^O SAOU
-sold at	1 ^A SOltd
-sold in	1 ^EU SOpbld
-sold to	1 ^O SOltd
-some are	1 ^A SOrpl
-some kind	1 ^O SKPHAOEUpbd
-some more	1 ^O SPHOEr
-some of	1 ^O SOfpl
-some point	1 ^O SPHOEUpbt
-some sort	1 ^O SPHOrt
-some things	1 ^O STPHEUpbgs
-some time	1 ^O STPHAOEUpl
-son of	1 ^O SOfpb
-soon as	1 ^A SAOpbz
-sort of	1 ^O SOfrt
-sorts of	1 ^O SOfrts
-sought to	1 ^O SAUt
-sound of	1 ^O SOUfpbd
-sounds like	1 ^O STKPHRAOEUbg
-source of	1 ^O SOUfrs
-south and	1 ^A SO*Upbtd
-south of	1 ^O SO*Uft
-space and	1 ^A SPAEUpbsd
-space in	1 ^EU SPAEUpbs
-space is	1 ^EU SPAEUsz
-speak to	1 ^O SPAEbgt
-speed and	1 ^A SPAOEpbd
-speed of	1 ^O SPAOEfd
-spent a	1 ^A SPEpbt
-spite of	1 ^O SPAOEUft
-spoke to	1 ^O SPOEbgt
-spread of	1 ^O SPRAEfd
-staff and	1 ^A STAfpbd
-stage of	1 ^O STAEUfpblg
-stake in	1 ^EU STAEUpbg
-stand out	1 ^A STKPHOUt
-stand up	1 ^A STKPHUp
-star trek	1 ^A STREbg
-star wars	1 ^A STWRArs
-start a	1 ^A STArt
-start of	1 ^O STAfrt
-start to	1 ^O STArt
-state and	1 ^A STAEUpbtd
-state in	1 ^EU STAEUpbt
-state is	1 ^EU STAEUtz
-state of	1 ^O STAEUft
-state to	1 ^O STAEUt
-stay at	1 ^A STAEUt
-stay home	1 ^A STHOEpl
-stay in	1 ^EU STAEUpb
-stay on	1 ^O STAEUpb
-step in	1 ^EU STEpb
-steps to	1 ^O STEfpt
-stick to	1 ^O STEUbgt
-still a	1 ^A STEUl
-still be	1 ^E STEUbl
-still in	1 ^EU STEUpbl
-still not	1 ^EU STPHROt
-stock in	1 ^EU STOpbg
-stock worth	1 ^O STKWO*rt
-store and	1 ^A STOErpbd
-street and	1 ^A STRAOEpbtd
-street in	1 ^EU STRAOEpbt
-strength and	1 ^A STR*Epbgtd
-strength of	1 ^O STR*Efpbgt
-strong and	1 ^A STROpbgd
-stuck in	1 ^EU STUpbg
-style and	1 ^A STAO*EUpbld
-style of	1 ^O STAO*EUfl
-such a	1 ^A SUfp
-such an	1 ^A SUfpb
-such as	1 ^A SUfpz
-sum of	1 ^O SUfpl
-sure it	1 ^EU SHAOUrt
-sure they	1 ^E SHAO*Urt
-sure to	1 ^O SHAOUrt
-switch to	1 ^O SWEUfpt
-take a	1 ^A TAEUbg
-take care	1 ^A TKAEUr
-take it	1 ^EU TAEUbgt
-take on	1 ^O TAEUpbg
-take part	1 ^A TKPArt
-take place	1 ^A TKPHRAEUs
-take to	1 ^O TAEUbgt
-take up	1 ^A TKUp
-tale of	1 ^O TAEUfl
-talk to	1 ^O TAUbgt
-task force	1 ^A STKPOErs
-task of	1 ^O TAfbg
-taste of	1 ^O TAEUft
-team and	1 ^A TAEpbld
-team in	1 ^EU TAEpbl
-team is	1 ^EU TAEplz
-team of	1 ^O TAEfpl
-team to	1 ^O TAEplt
-tell me	1 ^E TEpl
-tell us	1 ^U TEls
-ten years	1 ^E TPHAErs
-tend to	1 ^O TEpbtd
-tens of	1 ^O TEfpbz
-test and	1 ^A TEfpbtd
-than a	1 ^A TPHA
-than an	1 ^A TPHApb
-than half	1 ^A TPHAf
-than in	1 ^A TPHEUpb
-than it	1 ^A TPHEUt
-than just	1 ^A STKPWHRUft
-than most	1 ^A TPHOft
-than of	1 ^A TPHOf
-than one	1 ^A TPWHOpb
-than that	1 ^A TPHAt
-than their	1 ^A TPHA*Er
-than they	1 ^A TPHA*EU
-than those	1 ^A TPHOEs
-than three	1 ^A TPHRAOE
-than to	1 ^A TPHO
-than two	1 ^A TPHO
-than we	1 ^A TPWHE
-than what	1 ^A TPWHAt
-than years	1 ^A TPHAErs
-than you	1 ^A TPHAOU
-thanks to	1 ^O THA*pbgs
-that a	1 ^A THA
-that all	1 ^A THAUl
-that an	1 ^A THApb
-that and	1 ^A THApbd
-that are	1 ^A THAr
-that as	1 ^A THAs
-that at	1 ^A THAt
-that both	1 ^A TPWHO*t
-that but	1 ^A TPWHUt
-that by	1 ^A TPWHAOEU
-that came	1 ^A TKHAEUpl
-that can	1 ^A TKHApb
-that could	1 ^A TKHOUld
-that day	1 ^A TKHAEU
-that did	1 ^A TKHEUd
-that do	1 ^A TKHO
-that does	1 ^A TKHO*Es
-that each	1 ^A THAEfp
-that for	1 ^A TPHOr
-that god	1 ^A TKPWHOd
-that had	1 ^A THAd
-that has	1 ^A THAs
-that have	1 ^A THAf
-that he	1 ^A THE
-that her	1 ^A THEr
-that his	1 ^A THEUs
-that if	1 ^A THEUf
-that in	1 ^A THEUpb
-that is	1 ^A THEUs
-that it	1 ^A THEUt
-that its	1 ^A THEUts
-that just	1 ^A STKWHRUft
-that kind	1 ^A TKHAOEUpbd
-that led	1 ^A THREd
-that made	1 ^A TPHAEUd
-that make	1 ^A TPHAEUbg
-that may	1 ^A TPHAEU
-that means	1 ^A TPHAEpbs
-that might	1 ^A TPHAO*EUt
-that more	1 ^A TPHOEr
-that most	1 ^A TPHOft
-that much	1 ^A TPHUfp
-that my	1 ^A TPHAOEU
-that need	1 ^A TPHAOEd
-that night	1 ^A TPHAO*EUt
-that no	1 ^A TPHO
-that not	1 ^A TPHOt
-that of	1 ^A THOf
-that on	1 ^A THOpb
-that one	1 ^A TWHOpb
-that our	1 ^A THOUr
-that point	1 ^A TPHOEUpbt
-that said	1 ^A STHA*EUd
-that same	1 ^A STHAEUpl
-that she	1 ^A STHE
-that should	1 ^A STHOUld
-that some	1 ^A STHOpl
-that such	1 ^A STHUfp
-that their	1 ^A THA*Er
-that there	1 ^A THEr
-that these	1 ^A THAOEs
-that they	1 ^A THA*EU
-that this	1 ^A THEUs
-that those	1 ^A THOEs
-that time	1 ^A THAOEUpl
-that to	1 ^A THO
-that trump	1 ^A THRUfrp
-that was	1 ^A TWHAs
-that way	1 ^A TWHAEU
-that we	1 ^A TWHE
-that were	1 ^A TWHEr
-that what	1 ^A TWHAt
-that when	1 ^A TWHEpb
-that while	1 ^A TWHAOEUl
-that will	1 ^A TWHEUl
-that with	1 ^A TWH*EUt
-that work	1 ^A TWHOrbg
-that would	1 ^A TWHOUld
-that year	1 ^A THAEr
-that you	1 ^A THAOU
-that your	1 ^A THOUr
-the a	1 ^E THA
-the act	1 ^E THAbgt
-the age	1 ^E THAEUpblg
-the aim	1 ^E THA*EUpl
-the air	1 ^E THA*EUr
-the all	1 ^E THAUl
-the and	1 ^E THApbd
-the app	1 ^E THAp
-the art	1 ^E THArt
-the arts	1 ^E THArts
-the back	1 ^E TPWHAbg
-the bad	1 ^E TPWHAd
-the ball	1 ^E TPWHAUl
-the ban	1 ^E TPWHApb
-the band	1 ^E TPWHApbd
-the bank	1 ^E TPWHA*pbg
-the bar	1 ^E TPWHAr
-the base	1 ^E TPWHAEUs
-the bay	1 ^E TPWHAEU
-the beach	1 ^E TPWHAEfp
-the best	1 ^E TPWHEft
-the big	1 ^E TPWHEUg
-the bill	1 ^E TPWHEUl
-the birth	1 ^E TPWH*EUrt
-the black	1 ^E TPWHRAbg
-the block	1 ^E TPWHRObg
-the blood	1 ^E TPWHRAOd
-the blue	1 ^E TPWHRAO*U
-the board	1 ^E TPWHO*Erd
-the boat	1 ^E TPWHO*Et
-the book	1 ^E TPWHAObg
-the books	1 ^E TPWHAObgs
-the box	1 ^E TPWHObgs
-the boy	1 ^E TPWHOEU
-the boys	1 ^E TPWHOEUs
-the brain	1 ^E TPWHRA*EUpb
-the brand	1 ^E TPWHRApbd
-the bridge	1 ^E TPWHREUpblg
-the bulk	1 ^E TPWH*Ulg
-the bus	1 ^E TPWHUs
-the call	1 ^E TKHAUl
-the car	1 ^E TKHAr
-the card	1 ^E TKHArd
-the case	1 ^E TKHAEUs
-the cast	1 ^E TKHAft
-the cause	1 ^E TKHAUs
-the cell	1 ^E STHEl
-the chance	1 ^E TKHApbs
-the change	1 ^E TKHAEUpbg
-the charge	1 ^E TKHArpblg
-the chief	1 ^E TKHAOEf
-the child	1 ^E TKHAOEUld
-the choice	1 ^E TKHOEUs
-the church	1 ^E TKHUfrpb
-the class	1 ^E TKHRAs
-the clock	1 ^E TKHRObg
-the cloud	1 ^E TKHROUd
-the club	1 ^E TKHRUb
-the coast	1 ^E TKHO*Eft
-the code	1 ^E TKHOEd
-the cold	1 ^E TKHOld
-the core	1 ^E TKHOEr
-the cost	1 ^E TKHOft
-the costs	1 ^E TKHOfts
-the course	1 ^E TKHOUrs
-the court	1 ^E TKHOUrt
-the courts	1 ^E TKHOUrts
-the crash	1 ^E TKHRArb
-the crew	1 ^E TKHRAOU
-the crime	1 ^E TKHRAOEUpl
-the cross	1 ^E TKHROs
-the crowd	1 ^E TKHROUd
-the crown	1 ^E TKHROUpb
-the dark	1 ^E TKHArbg
-the date	1 ^E TKHAEUt
-the day	1 ^E TKHAEU
-the days	1 ^E TKHAEUs
-the dead	1 ^E TKHAEd
-the deal	1 ^E TKHAEl
-the death	1 ^E TKHA*Et
-the deaths	1 ^E TKHA*Ets
-the deep	1 ^E TKHAOEp
-the dog	1 ^E TKHOg
-the door	1 ^E TKHAOr
-the draft	1 ^E TKHRAft
-the drive	1 ^E TKHRAOEUf
-the drug	1 ^E TKHRUg
-the duke	1 ^E TKHAOUbg
-the earth	1 ^E THA*Ert
-the east	1 ^E THAEft
-the edge	1 ^E THEpblg
-the eighth	1 ^E THA*Egt
-the end	1 ^E THEpbd
-the eye	1 ^E THAO*EU
-the eyes	1 ^E THAO*EUs
-the face	1 ^E TPHAEUs
-the fact	1 ^E TPHAbgt
-the facts	1 ^E TPHAbgts
-the fall	1 ^E TPHAUl
-the far	1 ^E TPHAr
-the farm	1 ^E TPHArpl
-the few	1 ^E TPHAOU
-the field	1 ^E TPHAOEld
-the fifth	1 ^E TPH*EUft
-the fight	1 ^E TPHAO*EUt
-the file	1 ^E TPHAOEUl
-the film	1 ^E TPHEUpl
-the fire	1 ^E TPHAOEUr
-the firm	1 ^E TPHEUrpl
-the first	1 ^E TPHEUfrt
-the five	1 ^E TPHAOEUf
-the flight	1 ^E TPHRAO*EUt
-the floor	1 ^E TPHRAOr
-the flow	1 ^E TPHRO*E
-the food	1 ^E TPHAOd
-the foot	1 ^E TPHAOt
-the force	1 ^E TPHOErs
-the form	1 ^E TPHOrpl
-the four	1 ^E TPHOUr
-the fourth	1 ^E TPHO*Urt
-the free	1 ^E TPHRAOE
-the front	1 ^E TPHROpbt
-the full	1 ^E TPHUl
-the fund	1 ^E TPHUpbd
-the game	1 ^E TKPWHAEUpl
-the gap	1 ^E TKPWHAp
-the gas	1 ^E TKPWHAs
-the girl	1 ^E TKPWHEUrl
-the girls	1 ^E TKPWHEUrls
-the globe	1 ^E TKPWHROEb
-the go	1 ^E TKPWHO
-the goal	1 ^E TKPWHO*El
-the gods	1 ^E TKPWHOdz
-the gold	1 ^E TKPWHOld
-the good	1 ^E TKPWHAOd
-the grand	1 ^E TKPWHRApbd
-the great	1 ^E TKPWHRAEt
-the green	1 ^E TKPWHRAOEpb
-the ground	1 ^E TKPWHROUpbd
-the group	1 ^E TKPWHRAOUp
-the growth	1 ^E TKPWHRO*Et
-the gulf	1 ^E TKPWHUfl
-the guy	1 ^E TKPWHAOEU
-the half	1 ^E THAf
-the hall	1 ^E THAUl
-the hand	1 ^E THApbd
-the hands	1 ^E THApbdz
-the hard	1 ^E THArd
-the head	1 ^E THAEd
-the health	1 ^E THA*Elt
-the heart	1 ^E THAErt
-the heat	1 ^E THAEt
-the height	1 ^E THAOEUt
-the help	1 ^E THEpl
-the high	1 ^E THAO*EU
-the home	1 ^E THOEpl
-the hope	1 ^E THOEp
-the host	1 ^E THOft
-the hot	1 ^E THOt
-the house	1 ^E THOUs
-the ice	1 ^E THAOEUs
-the in	1 ^E THEUpb
-the job	1 ^E STKWHROb
-the joint	1 ^E STKWHROEUpbt
-the judge	1 ^E STKWHRUpblg
-the key	1 ^E TKHAOE
-the kids	1 ^E TKHEUdz
-the kind	1 ^E TKHAOEUpbd
-the king	1 ^E TKHEUpbg
-the lack	1 ^E THRAbg
-the lake	1 ^E THRAEUbg
-the land	1 ^E THRApbd
-the large	1 ^E THRArpblg
-the last	1 ^E THRAft
-the late	1 ^E THRAEUt
-the launch	1 ^E THRAUfrpb
-the law	1 ^E THRAU
-the laws	1 ^E THRAUs
-the lead	1 ^E THRAEd
-the league	1 ^E THRAEg
-the least	1 ^E THRAEft
-the left	1 ^E THREft
-the length	1 ^E THR*Epbgt
-the less	1 ^E THREs
-the life	1 ^E THRAOEUf
-the light	1 ^E THRAO*EUt
-the line	1 ^E THRAOEUpb
-the link	1 ^E THR*EUpbg
-the list	1 ^E THREUft
-the live	1 ^E THRAOEUf
-the long	1 ^E THROpbg
-the look	1 ^E THRAObg
-the lord	1 ^E THROrd
-the loss	1 ^E THROs
-the love	1 ^E THROf
-the low	1 ^E THRO*E
-the main	1 ^E TPHA*EUpb
-the male	1 ^E TPHAEUl
-the man	1 ^E TPHApb
-the march	1 ^E TPHAfrpb
-the mass	1 ^E TPHAs
-the match	1 ^E TPHAfp
-the meat	1 ^E TPHAEt
-the men	1 ^E TPHEpb
-the mid	1 ^E TPHEUd
-the midst	1 ^E TPH*EUft
-the mind	1 ^E TPHAOEUpbd
-the month	1 ^E TPHO*pbt
-the moon	1 ^E TPHAOpb
-the more	1 ^E TPHOEr
-the most	1 ^E TPHOft
-the mouth	1 ^E TPHO*Ut
-the move	1 ^E TPHOf
-the name	1 ^E TPHAEUpl
-the near	1 ^E TPHAEr
-the need	1 ^E TPHAOEd
-the needs	1 ^E TPHAOEdz
-the net	1 ^E TPHEt
-the new	1 ^E TPHAOU
-the news	1 ^E TPHAOUs
-the next	1 ^E TPHEbgs
-the night	1 ^E TPHAO*EUt
-the no	1 ^E TPHO
-the non	1 ^E TPHOpb
-the north	1 ^E TPHO*rt
-the now	1 ^E TPHOU
-the oil	1 ^E THOEUl
-the old	1 ^E THOld
-the on	1 ^E THOpb
-the one	1 ^E TWHOpb
-the page	1 ^E TPHAEUpblg
-the pain	1 ^E TPHA*EUpb
-the pair	1 ^E TPHA*EUr
-the pan	1 ^E TPHApb
-the park	1 ^E TPHArbg
-the part	1 ^E TPHArt
-the past	1 ^E TPHAft
-the path	1 ^E TPHA*t
-the peace	1 ^E TPHAEs
-the peak	1 ^E TPHAEbg
-the phone	1 ^E TPHOEpb
-the phrase	1 ^E TPHRAEUs
-the piece	1 ^E TPHAOEs
-the place	1 ^E TPHRAEUs
-the plan	1 ^E TPHRApb
-the plane	1 ^E TPHRAEUpb
-the plant	1 ^E TPHRApbt
-the play	1 ^E TPHRAEU
-the player	1 ^E TPHRAEUr
-the plot	1 ^E TPHROt
-the point	1 ^E TPHOEUpbt
-the polls	1 ^E TPHOls
-the poor	1 ^E TPHAOr
-the pope	1 ^E TPHOEp
-the port	1 ^E TPHOrt
-the post	1 ^E TPHOft
-the press	1 ^E TPHREs
-the price	1 ^E TPHRAOEUs
-the prime	1 ^E TPHRAOEUpl
-the prince	1 ^E TPHREUpbs
-the pro	1 ^E TPHRO
-the queen	1 ^E TKWHAOEpb
-the race	1 ^E THRAEUs
-the range	1 ^E THRAEUpbg
-the rate	1 ^E THRAEUt
-the real	1 ^E THRAEl
-the rear	1 ^E THRAEr
-the red	1 ^E THREd
-the rest	1 ^E THREft
-the rich	1 ^E THREUfp
-the right	1 ^E THRAO*EUt
-the rights	1 ^E THRAO*EUts
-the ring	1 ^E THREUpbg
-the rise	1 ^E THRAOEUs
-the risk	1 ^E THREUfbg
-the road	1 ^E THRO*Ed
-the rock	1 ^E THRObg
-the role	1 ^E THROEl
-the roof	1 ^E THRAOf
-the room	1 ^E THRAOpl
-the root	1 ^E THRAOt
-the rule	1 ^E THRAOUl
-the run	1 ^E THRUpb
-the sake	1 ^E STHAEUbg
-the sale	1 ^E STHAEUl
-the same	1 ^E STHAEUpl
-the scale	1 ^E STKHAEUl
-the scene	1 ^E STHAOEpb
-the scheme	1 ^E STKHAOEpl
-the school	1 ^E STKHAOl
-the scope	1 ^E STKHOEp
-the screen	1 ^E STKHRAOEpb
-the script	1 ^E STKHREUpt
-the sea	1 ^E STHAE
-the search	1 ^E STHAEfrpb
-the seat	1 ^E STHAEt
-the self	1 ^E STHEfl
-the sense	1 ^E STHEpbs
-the set	1 ^E STHEt
-the shape	1 ^E STHAEUp
-the ship	1 ^E STHEUp
-the short	1 ^E STHOrt
-the show	1 ^E STHO*E
-the side	1 ^E STHAOEUd
-the site	1 ^E STHAOEUt
-the six	1 ^E STHEUbgs
-the sixth	1 ^E STH*EUbgs
-the size	1 ^E STHAOEUz
-the skin	1 ^E STKHEUpb
-the sky	1 ^E STKHAOEU
-the small	1 ^E STPHAUl
-the so	1 ^E STHO
-the soil	1 ^E STHOEUl
-the sole	1 ^E STHOEl
-the son	1 ^E STHOpb
-the song	1 ^E STHOpbg
-the soul	1 ^E STHOUl
-the sound	1 ^E STHOUpbd
-the source	1 ^E STHOUrs
-the south	1 ^E STHO*Ut
-the space	1 ^E STPHAEUs
-the speed	1 ^E STPHAOEd
-the sport	1 ^E STPHOrt
-the spot	1 ^E STPHOt
-the spread	1 ^E STPHRAEd
-the spring	1 ^E STPHREUpbg
-the square	1 ^E STKWHAEUr
-the staff	1 ^E STHAf
-the stage	1 ^E STHAEUpblg
-the star	1 ^E STHAr
-the stars	1 ^E STHArs
-the start	1 ^E STHArt
-the state	1 ^E STHAEUt
-the steps	1 ^E STHEps
-the stock	1 ^E STHObg
-the store	1 ^E STHOEr
-the storm	1 ^E STHOrpl
-the street	1 ^E STHRAOEt
-the streets	1 ^E STHRAOEts
-the strength	1 ^E STHR*Epbgt
-the strong	1 ^E STHROpbg
-the style	1 ^E STHAO*EUl
-the sum	1 ^E STHUpl
-the sun	1 ^E STHUpb
-the task	1 ^E THAfbg
-the tax	1 ^E THAbgs
-the team	1 ^E THAEpl
-the term	1 ^E THErpl
-the terms	1 ^E THErpls
-the test	1 ^E THEft
-the text	1 ^E THEbgs
-the theme	1 ^E THAOEpl
-the thing	1 ^E THEUpbg
-the things	1 ^E THEUpbgs
-the third	1 ^E THEUrd
-the threat	1 ^E THRAEt
-the three	1 ^E THRAOE
-the throne	1 ^E THROEpb
-the time	1 ^E THAOEUpl
-the to	1 ^E THO
-the tools	1 ^E THAOls
-the top	1 ^E THOp
-the tour	1 ^E THOUr
-the town	1 ^E THOUpb
-the track	1 ^E THRAbg
-the trade	1 ^E THRAEUd
-the train	1 ^E THRA*EUpb
-the tree	1 ^E THRAOE
-the trip	1 ^E THREUp
-the true	1 ^E THRAO*U
-the trump	1 ^E THRUfrp
-the truth	1 ^E THR*Ut
-the two	1 ^E THO
-the type	1 ^E THAO*EUp
-the us	1 ^E THUs
-the use	1 ^E THAOUs
-the vast	1 ^E STHRAft
-the voice	1 ^E STHROEUs
-the vote	1 ^E STHROEt
-the wake	1 ^E TWHAEUbg
-the wall	1 ^E TWHAUl
-the walls	1 ^E TWHAUls
-the war	1 ^E TWHAr
-the way	1 ^E TWHAEU
-the ways	1 ^E TWHAEUs
-the web	1 ^E TWHEb
-the week	1 ^E TWHAOEbg
-the weight	1 ^E TWHA*Et
-the well	1 ^E TWHEl
-the west	1 ^E TWHEft
-the white	1 ^E TWHAOEUt
-the whole	1 ^E THOEl
-the wild	1 ^E TWHAOEUld
-the will	1 ^E TWHEUl
-the wind	1 ^E TWHAOEUpbd
-the word	1 ^E TWHOrd
-the words	1 ^E TWHOrdz
-the work	1 ^E TWHOrbg
-the works	1 ^E TWHOrbgs
-the world	1 ^E TWHOrld
-the worst	1 ^E TWHOfrt
-the wrong	1 ^E THROpbg
-the year	1 ^E THAEr
-the years	1 ^E THAErs
-the young	1 ^E THUpbg
-their best	1 ^E TPWHREft
-their first	1 ^E TPHREUfrt
-their hands	1 ^E THRApbdz
-their home	1 ^E THROEpl
-their jobs	1 ^E STKWHRObs
-their new	1 ^E TPHRAOU
-their own	1 ^E THRO*Epb
-their price	1 ^E TPHRAOEUs
-their time	1 ^E THRAOEUpl
-their way	1 ^E TWHRAEU
-their work	1 ^E TWHROrbg
-them a	1 ^E TPHA
-them all	1 ^E TPHAUl
-them and	1 ^E TPHApbd
-them are	1 ^E TPHAr
-them as	1 ^E TPHAs
-them at	1 ^E TPHAt
-them but	1 ^E TPWHUt
-them by	1 ^E TPWHAOEU
-them for	1 ^E TPHOr
-them from	1 ^E TPHROpl
-them in	1 ^E TPHEUpb
-them is	1 ^E TPHEUs
-them on	1 ^E TPHOpb
-them out	1 ^E TPHOUt
-them that	1 ^E TPHAt
-them to	1 ^E TPHO
-them up	1 ^E TPHUp
-them were	1 ^E TPWHEr
-them with	1 ^E TPWH*EUt
-then a	1 ^A THEpb
-then be	1 ^E THEpb
-then in	1 ^EU THEpb
-then it	1 ^EU THEpbt
-then they	1 ^E TH*Epbt
-there a	1 ^E THRA
-there and	1 ^E THRApbd
-there are	1 ^E THRAr
-there for	1 ^E TPHROr
-there has	1 ^E THRAs
-there have	1 ^E THRAf
-there in	1 ^E THREUpb
-there is	1 ^E THREUs
-there may	1 ^E TPHRAEU
-there to	1 ^E THRO
-there was	1 ^E TWHRAs
-there were	1 ^E TWHREr
-there will	1 ^E TWHREUl
-there would	1 ^E TWHROUld
-these are	1 ^E STHAr
-these days	1 ^E STKHAEUs
-these new	1 ^E STPHAOU
-these things	1 ^E STHEUpbgs
-these three	1 ^E STHRAOE
-these two	1 ^E STHO
-these were	1 ^E STWHEr
-they all	1 ^E THAUl
-they are	1 ^E THAr
-they both	1 ^E TPWHO*t
-they came	1 ^E TKHAEUpl
-they can	1 ^E TKHApb
-they come	1 ^E TKHOpl
-they could	1 ^E TKHOUld
-they did	1 ^E TKHEUd
-they do	1 ^E TKHO
-they found	1 ^E TPHOUpbd
-they get	1 ^E TKPWHEt
-they go	1 ^E TKPWHO
-they got	1 ^E TKPWHOt
-they had	1 ^E THAd
-they have	1 ^E THAf
-they just	1 ^E STKWHRUft
-they know	1 ^E TPHO*E
-they made	1 ^E TPHAEUd
-they make	1 ^E TPHAEUbg
-they may	1 ^E TPHAEU
-they might	1 ^E TPHAO*EUt
-they must	1 ^E TPHUft
-they need	1 ^E TPHAOEd
-they said	1 ^E STHA*EUd
-they say	1 ^E STHAEU
-they see	1 ^E STHAOE
-they should	1 ^E STHOUld
-they use	1 ^E THAOUs
-they want	1 ^E TWHApbt
-they were	1 ^E TWHEr
-they will	1 ^E TWHEUl
-they would	1 ^E TWHOUld
-thing is	1 ^EU THEUpbgz
-thing to	1 ^O THEUpbgt
-think it	1 ^EU TH*EUpbgt
-think of	1 ^O TH*EUfpbg
-think they	1 ^E TH*EUpbgt
-third of	1 ^O THEUfrd
-this a	1 ^EU STHA
-this and	1 ^EU STHApbd
-this as	1 ^EU STHAs
-this book	1 ^EU STPWHAObg
-this can	1 ^EU STKHApb
-this case	1 ^EU STKHAEUs
-this could	1 ^EU STKHOUld
-this day	1 ^EU STKHAEU
-this does	1 ^EU STKHO*Es
-this fall	1 ^EU STPHAUl
-this for	1 ^EU STPHOr
-this game	1 ^EU STKPWHAEUpl
-this group	1 ^EU STKPWHRAOUp
-this has	1 ^EU STHAs
-this in	1 ^EU STHEUpb
-this is	1 ^EU STHEUs
-this kind	1 ^EU STKHAOEUpbd
-this led	1 ^EU STHREd
-this list	1 ^EU STHREUft
-this may	1 ^EU STPHAEU
-this means	1 ^EU STPHAEpbs
-this might	1 ^EU STPHAO*EUt
-this month	1 ^EU STPHO*pbt
-this new	1 ^EU STPHAOU
-this one	1 ^EU STWHOpb
-this past	1 ^EU STPHAft
-this point	1 ^EU STPHOEUpbt
-this post	1 ^EU STPHOft
-this site	1 ^EU STHAOEUt
-this time	1 ^EU STHAOEUpl
-this to	1 ^EU STHO
-this type	1 ^EU STHAO*EUp
-this was	1 ^EU STWHAs
-this way	1 ^EU STWHAEU
-this week	1 ^EU STWHAOEbg
-this will	1 ^EU STWHEUl
-this with	1 ^EU STWH*EUt
-this work	1 ^EU STWHOrbg
-this world	1 ^EU STWHOrld
-this would	1 ^EU STWHOUld
-this year	1 ^EU STHAEr
-those are	1 ^O STHAr
-those in	1 ^O STHEUpb
-those of	1 ^O STHOf
-those that	1 ^O STHAt
-those things	1 ^O STHEUpbgs
-those who	1 ^O STHO
-those with	1 ^O STWH*EUt
-though he	1 ^O THE
-though it	1 ^O THEUt
-though not	1 ^O TPHOt
-though there	1 ^O THEr
-though they	1 ^O THA*EU
-thought it	1 ^EU THAUt
-thought of	1 ^O THAUft
-thought to	1 ^O THAUt
-threat of	1 ^O THRAEft
-threat to	1 ^O THRAEt
-three days	1 ^E TKHRAEUs
-three months	1 ^E TPHRO*pbts
-three of	1 ^O THRAOEf
-three or	1 ^O THRAOEr
-three to	1 ^O THRAOEt
-three weeks	1 ^E TWHRAOEbgs
-three year	1 ^E THRAEr
-three years	1 ^E THRAErs
-through a	1 ^O THRA
-through an	1 ^O THRApb
-through his	1 ^O THREUs
-through it	1 ^O THREUt
-through its	1 ^O THREUts
-through their	1 ^O THRA*Er
-through this	1 ^O THREUs
-through to	1 ^O THRO
-tied to	1 ^O TAO*EUtd
-time a	1 ^A TAOEUpl
-time and	1 ^A TAOEUpbld
-time as	1 ^A TAOEUplz
-time at	1 ^A TAOEUplt
-time for	1 ^O TAO*EUfrpl
-time in	1 ^EU TAOEUpbl
-time is	1 ^EU TAOEUplz
-time it	1 ^EU TAOEUplt
-time of	1 ^O TAOEUfpl
-time on	1 ^O TAOEUpbl
-time or	1 ^O TAOEUrpl
-time she	1 ^E TAOEUrpbl
-time since	1 ^EU STPHEUpbs
-time they	1 ^E TAO*EUplt
-time to	1 ^O TAOEUplt
-time when	1 ^EU TPWHEpb
-to a	1 ^O TA
-to act	1 ^O TAbgt
-to add	1 ^O TAd
-to all	1 ^O TAUl
-to an	1 ^O TApb
-to and	1 ^O TApbd
-to as	1 ^O TAs
-to ask	1 ^O TAfbg
-to at	1 ^O TAt
-to back	1 ^O TPWAbg
-to be	1 ^O TPWE
-to beat	1 ^O TPWAEt
-to block	1 ^O TPWHRObg
-to boost	1 ^O TPWAOft
-to both	1 ^O TPWO*t
-to break	1 ^O TPWRAEbg
-to bring	1 ^O TPWREUpbg
-to build	1 ^O TPWEUld
-to buy	1 ^O TPWAO*EU
-to by	1 ^O TPWAOEU
-to call	1 ^O TKAUl
-to care	1 ^O TKAEUr
-to catch	1 ^O TKAfp
-to cause	1 ^O TKAUs
-to change	1 ^O TKHAEUpbg
-to check	1 ^O TKHEbg
-to choose	1 ^O TKHAOs
-to claim	1 ^O TKHRA*EUpl
-to clean	1 ^O TKHRAEpb
-to clear	1 ^O TKHRAEr
-to close	1 ^O TKHROEs
-to come	1 ^O TKOpl
-to cook	1 ^O TKAObg
-to cross	1 ^O TKROs
-to cut	1 ^O TKUt
-to date	1 ^O TKAEUt
-to day	1 ^O TKAEU
-to deal	1 ^O TKAEl
-to death	1 ^O TKA*Et
-to die	1 ^O TKAO*EU
-to do	1 ^O TKO
-to draw	1 ^O TKRAU
-to drive	1 ^O TKRAOEUf
-to drop	1 ^O TKROp
-to each	1 ^O TAEfp
-to earn	1 ^O TAErpb
-to earth	1 ^O TA*Ert
-to eat	1 ^O TAEt
-to end	1 ^O TEpbd
-to face	1 ^O TPAEUs
-to fall	1 ^O TPAUl
-to feed	1 ^O TPAOEd
-to feel	1 ^O TPAOEl
-to fight	1 ^O TPAO*EUt
-to fill	1 ^O TPEUl
-to find	1 ^O TPAOEUpbd
-to fit	1 ^O TPEUt
-to five	1 ^O TPAOEUf
-to fix	1 ^O TPEUbgs
-to fly	1 ^O TPHRAOEU
-to for	1 ^O TPOr
-to force	1 ^O TPOErs
-to form	1 ^O TPOrpl
-to four	1 ^O TPOUr
-to from	1 ^O TPROpl
-to gain	1 ^O TKPWA*EUpb
-to get	1 ^O TKPWEt
-to give	1 ^O TKPWEUf
-to go	1 ^O TKPWO
-to god	1 ^O TKPWOd
-to grow	1 ^O TKPWRO*E
-to have	1 ^O THAf
-to head	1 ^O THAEd
-to hear	1 ^O THAEr
-to help	1 ^O THEpl
-to her	1 ^O THEr
-to hide	1 ^O THAOEUd
-to high	1 ^O THAO*EU
-to him	1 ^O THEUpl
-to hire	1 ^O THAOEUr
-to his	1 ^O THEUs
-to hit	1 ^O THEUt
-to hold	1 ^O THOld
-to host	1 ^O THOft
-to how	1 ^O THOU
-to in	1 ^O TEUpb
-to it	1 ^O TEUt
-to its	1 ^O TEUts
-to join	1 ^O STKWROEUpb
-to just	1 ^O STKWRUft
-to keep	1 ^O TKAOEp
-to kill	1 ^O TKEUl
-to know	1 ^O TPHO*E
-to land	1 ^O THRApbd
-to last	1 ^O THRAft
-to launch	1 ^O THRAUfrpb
-to lead	1 ^O THRAEd
-to learn	1 ^O THRAErpb
-to leave	1 ^O THRAEf
-to let	1 ^O THREt
-to life	1 ^O THRAOEUf
-to light	1 ^O THRAO*EUt
-to live	1 ^O THRAOEUf
-to look	1 ^O THRAObg
-to lose	1 ^O THROs
-to love	1 ^O THROf
-to make	1 ^O TPHAEUbg
-to mark	1 ^O TPHArbg
-to match	1 ^O TPHAfp
-to me	1 ^O TPHE
-to meet	1 ^O TPHAOEt
-to more	1 ^O TPHOEr
-to most	1 ^O TPHOft
-to move	1 ^O TPHOf
-to my	1 ^O TPHAOEU
-to name	1 ^O TPHAEUpl
-to new	1 ^O TPHAOU
-to no	1 ^O TPHO
-to not	1 ^O TPHOt
-to note	1 ^O TPHOEt
-to of	1 ^O TOf
-to on	1 ^O TOpb
-to one	1 ^O TWOpb
-to or	1 ^O TOr
-to our	1 ^O TOUr
-to pass	1 ^O TPAs
-to pay	1 ^O TPAEU
-to per	1 ^O TPEr
-to pick	1 ^O TPEUbg
-to place	1 ^O TPHRAEUs
-to plan	1 ^O TPHRApb
-to play	1 ^O TPHRAEU
-to point	1 ^O TPOEUpbt
-to post	1 ^O TPOft
-to prove	1 ^O TPROf
-to pull	1 ^O TPUl
-to push	1 ^O TPUrb
-to put	1 ^O TPUt
-to raise	1 ^O TRA*EUs
-to reach	1 ^O TRAEfp
-to read	1 ^O TRAEd
-to rise	1 ^O TRAOEUs
-to run	1 ^O TRUpb
-to save	1 ^O STAEUf
-to say	1 ^O STAEU
-to school	1 ^O STKAOl
-to score	1 ^O STKOEr
-to search	1 ^O STAEfrpb
-to see	1 ^O STAOE
-to seek	1 ^O STAOEbg
-to self	1 ^O STEfl
-to sell	1 ^O STEl
-to send	1 ^O STEpbd
-to serve	1 ^O STEfrb
-to set	1 ^O STEt
-to share	1 ^O STHAEUr
-to shoot	1 ^O STHAOt
-to show	1 ^O STHO*E
-to sign	1 ^O STAOEUpb
-to sit	1 ^O STEUt
-to six	1 ^O STEUbgs
-to sleep	1 ^O STHRAOEp
-to slow	1 ^O STHRO*E
-to solve	1 ^O STOfl
-to some	1 ^O STOpl
-to south	1 ^O STO*Ut
-to speak	1 ^O STPAEbg
-to spend	1 ^O STPEpbd
-to spread	1 ^O STPRAEd
-to stand	1 ^O STApbd
-to start	1 ^O STArt
-to state	1 ^O STAEUt
-to stay	1 ^O STAEU
-to step	1 ^O STEp
-to stop	1 ^O STOp
-to store	1 ^O STOEr
-to such	1 ^O STUfp
-to switch	1 ^O STWEUfp
-to take	1 ^O TAEUbg
-to talk	1 ^O TAUbg
-to teach	1 ^O TAEfp
-to tell	1 ^O TEl
-to test	1 ^O TEft
-to thank	1 ^O THA*pbg
-to that	1 ^O THAt
-to their	1 ^O THA*Er
-to them	1 ^O THEpl
-to these	1 ^O THAOEs
-to think	1 ^O TH*EUpbg
-to this	1 ^O THEUs
-to those	1 ^O THOEs
-to three	1 ^O THRAOE
-to throw	1 ^O THRO*E
-to time	1 ^O TAOEUpl
-to track	1 ^O TRAbg
-to trade	1 ^O TRAEUd
-to train	1 ^O TRA*EUpb
-to treat	1 ^O TRAEt
-to try	1 ^O TRAOEU
-to turn	1 ^O TUrpb
-to two	1 ^O TO
-to us	1 ^O TUs
-to use	1 ^O TAOUs
-to vote	1 ^O STROEt
-to wait	1 ^O TWA*EUt
-to walk	1 ^O TWAUbg
-to watch	1 ^O TWAfp
-to wear	1 ^O TWAEr
-to what	1 ^O TWAt
-to which	1 ^O TWEUfp
-to win	1 ^O TWEUpb
-to work	1 ^O TWOrbg
-to write	1 ^O TRAOEUt
-to years	1 ^O TAErs
-to you	1 ^O TAOU
-to your	1 ^O TOUr
-told me	1 ^E TOpld
-ton of	1 ^O TOfpb
-tons of	1 ^O TOfpbz
-too late	1 ^O THRAEUt
-too long	1 ^O THROpbg
-too much	1 ^O TPHUfp
-took a	1 ^A TAObg
-took place	1 ^O TKPHRAEUs
-took to	1 ^O TAObgt
-tool for	1 ^O TAOfrl
-top of	1 ^O TOfp
-tour of	1 ^O TOUfrb
-town and	1 ^A TOUpbd
-town of	1 ^O TOUfpb
-track and	1 ^A TRApbgd
-trade and	1 ^A TRAEUpbd
-tried to	1 ^O TRAO*EUtd
-tries to	1 ^O TRAO*EUtz
-trip to	1 ^O TREUpt
-trump and	1 ^A TRUfrpbd
-trump is	1 ^EU TRUfrpz
-trump said	1 ^U STPHRA*EUd
-truth is	1 ^EU TR*Utz
-try and	1 ^A TRAOEUpbd
-try to	1 ^O TRAOEUt
-turn to	1 ^O TUrpbt
-turns out	1 ^ STPHROUt
-two and	1 ^A TOpbd
-two days	1 ^O TKAEUs
-two main	1 ^O TPHA*EUpb
-two men	1 ^O TPHEpb
-two months	1 ^O TPHO*pbts
-two more	1 ^O TPHOEr
-two of	1 ^O TOf
-two or	1 ^O TOr
-two thirds	1 ^O THEUrdz
-two to	1 ^O TOt
-two weeks	1 ^O TWAOEbgs
-two year	1 ^O TAEr
-two years	1 ^O TAErs
-type of	1 ^O TAO*EUfp
-up a	1 ^A Up
-up an	1 ^A Upb
-up and	1 ^A Upbd
-up as	1 ^A Upz
-up at	1 ^A Upt
-up by	1 ^EU Upb
-up in	1 ^EU Upb
-up of	1 ^O Ufp
-up on	1 ^O Upb
-up or	1 ^O Urp
-up to	1 ^O Upt
-us a	1 ^U SA
-us all	1 ^U SAUl
-us and	1 ^U SApbd
-us as	1 ^U SAs
-us in	1 ^U SEUpb
-us that	1 ^U STHAt
-us to	1 ^U STO
-us with	1 ^U SW*EUt
-use a	1 ^A KWRAOUs
-use and	1 ^A KWRAOUpbsd
-use as	1 ^A KWRAOUsz
-use in	1 ^EU KWRAOUpbs
-use it	1 ^EU KWRAOUft
-use of	1 ^O KWRAOUfs
-use to	1 ^O KWRAOUft
-voice of	1 ^O SROEUfs
-vote in	1 ^EU SROEpbt
-wait to	1 ^O WA*EUt
-wake of	1 ^O WAEUfbg
-wake up	1 ^A KWUp
-wall street	1 ^A STWHRAOEt
-want a	1 ^A WApbt
-want it	1 ^EU WApbt
-want to	1 ^O WApbt
-wants to	1 ^O WAfpbt
-war and	1 ^A WArpbd
-war in	1 ^EU WArpb
-was a	1 ^A SWA
-was all	1 ^A SWAUl
-was an	1 ^A SWApb
-was and	1 ^A SWApbd
-was as	1 ^A SWAs
-was at	1 ^A SWAt
-was born	1 ^A SPWOrpb
-was brought	1 ^A SPWRAUt
-was built	1 ^A SPWEUlt
-was done	1 ^A STKWOpb
-was due	1 ^A STKWAO*U
-was first	1 ^A STPWEUfrt
-was for	1 ^A STPWOr
-was found	1 ^A STPWOUpbd
-was held	1 ^A SWHEld
-was his	1 ^A SWHEUs
-was in	1 ^A SWEUpb
-was it	1 ^A SWEUt
-was just	1 ^A SKWRUft
-was known	1 ^A STPWHO*Epb
-was left	1 ^A SWHREft
-was like	1 ^A SWHRAOEUbg
-was made	1 ^A SPWHAEUd
-was more	1 ^A SPWHOEr
-was much	1 ^A SPWHUfp
-was my	1 ^A SPWHAOEU
-was no	1 ^A STPWHO
-was not	1 ^A STPWHOt
-was now	1 ^A STPWHOU
-was of	1 ^A SWOf
-was on	1 ^A SWOpb
-was once	1 ^A SWOpbs
-was one	1 ^A SWOpb
-was part	1 ^A SPWArt
-was put	1 ^A SPWUt
-was quite	1 ^A SKWAOEUt
-was said	1 ^A SWA*EUd
-was seen	1 ^A SWAOEpb
-was sent	1 ^A SWEpbt
-was set	1 ^A SWEt
-was shot	1 ^A SWHOt
-was so	1 ^A SWO
-was sold	1 ^A SWOld
-was still	1 ^A STWEUl
-was that	1 ^A STWHAt
-was then	1 ^A STWHEpb
-was there	1 ^A STWHEr
-was to	1 ^A STWO
-was told	1 ^A STWOld
-was too	1 ^A STWAO
-was up	1 ^A SWUp
-was well	1 ^A SWEl
-was when	1 ^A SWEpb
-was with	1 ^A SW*EUt
-was years	1 ^A SWAErs
-wave of	1 ^O WAEUf
-way and	1 ^A WAEUpbd
-way back	1 ^A PWAbg
-way for	1 ^O WAEUfr
-way in	1 ^EU WAEUpb
-way it	1 ^EU WAEUt
-way of	1 ^O WAEUf
-way out	1 ^A WOUt
-way that	1 ^A WA*EUt
-way they	1 ^E WA*EUt
-way through	1 ^O WA*EUrt
-way to	1 ^O WAEUt
-ways of	1 ^O WAEUfz
-ways to	1 ^O WAEUtz
-we all	1 ^E WAUl
-we are	1 ^E WAr
-we can	1 ^E KWApb
-we could	1 ^E KWOUld
-we did	1 ^E TKWEUd
-we do	1 ^E TKWO
-we find	1 ^E TPWAOEUpbd
-we found	1 ^E TPWOUpbd
-we get	1 ^E TKPWEt
-we go	1 ^E TKPWO
-we got	1 ^E TKPWOt
-we had	1 ^E WHAd
-we have	1 ^E WHAf
-we hope	1 ^E WHOEp
-we just	1 ^E SKWRUft
-we know	1 ^E TPWHO*E
-we live	1 ^E WHRAOEUf
-we look	1 ^E WHRAObg
-we love	1 ^E WHROf
-we make	1 ^E PWHAEUbg
-we may	1 ^E PWHAEU
-we might	1 ^E PWHAO*EUt
-we must	1 ^E PWHUft
-we need	1 ^E TPWHAOEd
-we saw	1 ^E SWAU
-we see	1 ^E SWAOE
-we should	1 ^E SWHOUld
-we still	1 ^E STWEUl
-we take	1 ^E TWAEUbg
-we think	1 ^E TWH*EUpbg
-we use	1 ^E WAOUs
-we want	1 ^E WApbt
-we went	1 ^E WEpbt
-we were	1 ^E WEr
-we will	1 ^E WEUl
-we would	1 ^E WOUld
-wear a	1 ^A WAEr
-week and	1 ^A WAOEpbgd
-week in	1 ^EU WAOEpbg
-week of	1 ^O WAOEfbg
-week to	1 ^O WAOEbgt
-weeks and	1 ^A WAOEpbgsd
-weeks of	1 ^O WAOEfbgs
-weight of	1 ^O WA*Eft
-well and	1 ^A WEpbld
-well as	1 ^A WElz
-well for	1 ^O WEfrl
-well in	1 ^EU WEpbl
-well known	1 ^E TPWHRO*Epb
-well to	1 ^O WElt
-went on	1 ^O WEpbt
-went out	1 ^E TPWHOUt
-went to	1 ^O WEpbt
-were a	1 ^ WRA
-were all	1 ^ WRAUl
-were at	1 ^ WRAt
-were both	1 ^ PWRO*t
-were built	1 ^ PWREUlt
-were found	1 ^ TPWROUpbd
-were held	1 ^ WHREld
-were in	1 ^ WREUpb
-were just	1 ^ SKWRUft
-were made	1 ^ PWHRAEUd
-were more	1 ^ PWHROEr
-were no	1 ^ TPWHRO
-were not	1 ^ TPWHROt
-were on	1 ^ WROpb
-were sent	1 ^ SWREpbt
-were so	1 ^ SWRO
-were still	1 ^ STWREUl
-were to	1 ^ TWRO
-west and	1 ^A WEfpbtd
-west coast	1 ^E STKWO*Eft
-west of	1 ^O WEft
-what a	1 ^A WHAt
-what are	1 ^A WHArt
-what do	1 ^O WHAtd
-what if	1 ^EU WHAft
-what is	1 ^EU WHAtz
-what it	1 ^EU WHAt
-what kind	1 ^A TKWAOEUpbd
-what she	1 ^E WHArbt
-what they	1 ^E WHA*t
-what to	1 ^O WHAt
-when a	1 ^A WHEpb
-when an	1 ^A WHEpb
-when in	1 ^EU WHEpb
-when it	1 ^EU WHEpbt
-when one	1 ^E TPWHOpb
-when she	1 ^E WHErpb
-when they	1 ^E WH*Epbt
-where a	1 ^A WHEr
-where is	1 ^EU WHErz
-where it	1 ^EU WHErt
-where she	1 ^E WH*Erb
-where they	1 ^E WH*Ert
-where to	1 ^O WHErt
-which a	1 ^EU KWHA
-which are	1 ^EU KWHAr
-which can	1 ^EU KWHApb
-which could	1 ^EU KWHOUld
-which had	1 ^EU KWHAd
-which has	1 ^EU KWHAs
-which have	1 ^EU KWHAf
-which he	1 ^EU KWHE
-which in	1 ^EU KWHEUpb
-which is	1 ^EU KWHEUs
-which it	1 ^EU KWHEUt
-which led	1 ^EU KWHREd
-which may	1 ^EU KPWHAEU
-which means	1 ^EU KPWHAEpbs
-which one	1 ^EU KWHOpb
-which she	1 ^EU SKWHE
-which they	1 ^EU TKWHA*EU
-which to	1 ^EU TKWHO
-which was	1 ^EU KWHAs
-which we	1 ^EU KWHE
-which were	1 ^EU KWHEr
-which will	1 ^EU KWHEUl
-which would	1 ^EU KWHOUld
-which you	1 ^EU KWHAOU
-while a	1 ^A WHAOEUl
-while in	1 ^EU WHAOEUpbl
-while it	1 ^EU WHAOEUlt
-while on	1 ^O WHAOEUpbl
-while she	1 ^E WHAOEUrbl
-while some	1 ^EU SWHROpl
-while still	1 ^EU STWHREUl
-while they	1 ^E WHAO*EUlt
-white and	1 ^A WHAOEUpbtd
-white house	1 ^EU TWHOUs
-who are	1 ^O HAr
-who came	1 ^O KHAEUpl
-who can	1 ^O KHApb
-who could	1 ^O KHOUld
-who did	1 ^O TKHEUd
-who died	1 ^O TKHAO*EUd
-who do	1 ^O TKHO
-who had	1 ^O HAd
-who has	1 ^O HAs
-who have	1 ^O HAf
-who is	1 ^O HEUs
-who knows	1 ^O TPHO*Es
-who live	1 ^O HRAOEUf
-who made	1 ^O PHAEUd
-who may	1 ^O PHAEU
-who said	1 ^O SHA*EUd
-who want	1 ^O WHApbt
-who was	1 ^O WHAs
-who were	1 ^O WHEr
-who will	1 ^O WHEUl
-who would	1 ^O WHOUld
-who you	1 ^O HAOU
-whom he	1 ^O PHE
-why do	1 ^O WHAOEUd
-why is	1 ^EU WHAOEUz
-why it	1 ^EU WHAOEUt
-why not	1 ^EU TPWHOt
-why they	1 ^E WHAO*EUt
-wide range	1 ^EU TKWRAEUpbg
-wife and	1 ^A WAOEUfpbd
-will be	1 ^EU PWHRE
-will bring	1 ^EU PWHREUpbg
-will change	1 ^EU KWHRAEUpbg
-will come	1 ^EU KWHROpl
-will do	1 ^EU TKWHRO
-will find	1 ^EU TPWHRAOEUpbd
-will get	1 ^EU TKPWHREt
-will give	1 ^EU TKPWHREUf
-will go	1 ^EU TKPWHRO
-will have	1 ^EU WHRAf
-will help	1 ^EU WHREpl
-will keep	1 ^EU KWHRAOEp
-will look	1 ^EU WHRAObg
-will make	1 ^EU PWHRAEUbg
-will need	1 ^EU TPWHRAOEd
-will not	1 ^EU TPWHROt
-will now	1 ^EU TPWHROU
-will see	1 ^EU SWHRAOE
-will soon	1 ^EU SWHRAOpb
-will start	1 ^EU STWHRArt
-will still	1 ^EU STWHREUl
-will take	1 ^EU TWHRAEUbg
-will then	1 ^EU TWHREpb
-will use	1 ^EU WHRAOUs
-will work	1 ^EU WHROrbg
-will you	1 ^EU WHRAOU
-win a	1 ^A WEUpb
-wish to	1 ^O WEUrbt
-with a	1 ^EU TWHA
-with all	1 ^EU TWHAUl
-with an	1 ^EU TWHApb
-with and	1 ^EU TWHApbd
-with both	1 ^EU TPWHO*t
-with each	1 ^EU TWHAEfp
-with four	1 ^EU TPWHOUr
-with friends	1 ^EU TPWHREpbdz
-with great	1 ^EU TKPWHRAEt
-with her	1 ^EU TWHEr
-with high	1 ^EU TWHAO*EU
-with him	1 ^EU TWHEUpl
-with his	1 ^EU TWHEUs
-with in	1 ^EU TWHEUpb
-with it	1 ^EU TWHEUt
-with its	1 ^EU TWHEUts
-with just	1 ^EU STKWHRUft
-with less	1 ^EU TWHREs
-with me	1 ^EU TPWHE
-with more	1 ^EU TPWHOEr
-with most	1 ^EU TPWHOft
-with my	1 ^EU TPWHAOEU
-with new	1 ^EU TPWHAOU
-with no	1 ^EU TPWHO
-with of	1 ^EU TWHOf
-with one	1 ^EU TWHOpb
-with or	1 ^EU TWHOr
-with our	1 ^EU TWHOUr
-with so	1 ^EU STWHO
-with some	1 ^EU STWHOpl
-with such	1 ^EU STWHUfp
-with that	1 ^EU TWHAt
-with their	1 ^EU TWHA*Er
-with them	1 ^EU TWHEpl
-with these	1 ^EU TWHAOEs
-with this	1 ^EU TWHEUs
-with those	1 ^EU TWHOEs
-with three	1 ^EU TWHRAOE
-with two	1 ^EU TWHO
-with us	1 ^EU TWHUs
-with what	1 ^EU TWHAt
-with which	1 ^EU TWHEUfp
-with whom	1 ^EU TWHOpl
-with you	1 ^EU TWHAOU
-with your	1 ^EU TWHOUr
-won a	1 ^A WOpb
-word of	1 ^O WOfrd
-work and	1 ^A WOrpbgd
-work as	1 ^A WOrbgz
-work at	1 ^A WOrbgt
-work in	1 ^EU WOrpbg
-work is	1 ^EU WOrbgz
-work of	1 ^O WOfrbg
-work on	1 ^O WOrpbg
-work out	1 ^ KWROUt
-work to	1 ^O WOrbgt
-world and	1 ^A WOrpbld
-world cup	1 ^ TKWHRUp
-world health	1 ^ TKWHRA*Elt
-world in	1 ^EU WOrpbld
-world is	1 ^EU WOrldz
-world of	1 ^O WOfrld
-world to	1 ^O WOrltd
-world war	1 ^ TKWHRAr
-world where	1 ^ TKWHREr
-worth it	1 ^EU WO*rt
-worth of	1 ^O WO*frt
-would be	1 ^O TKPWE
-would do	1 ^O TKWO
-would get	1 ^O TKPWEt
-would give	1 ^O TKPWEUf
-would go	1 ^O TKPWO
-would have	1 ^O TKWHAf
-would help	1 ^O TKWHEpl
-would like	1 ^O TKWHRAOEUbg
-would love	1 ^O TKWHROf
-would make	1 ^O TKPWHAEUbg
-would need	1 ^O TKPWHAOEd
-would not	1 ^O TKPWHOt
-would say	1 ^O STKWAEU
-would take	1 ^O TKWAEUbg
-would you	1 ^O TKWAOU
-write a	1 ^A WRAOEUt
-wrote a	1 ^A WROEt
-wrote in	1 ^EU WROEpbt
-wrote to	1 ^O WROEt
-year and	1 ^A KWRAErpbd
-year as	1 ^A KWRAErz
-year at	1 ^A KWRAErt
-year but	1 ^U KWRAErbt
-year for	1 ^O KWRA*Efr
-year in	1 ^EU KWRAErpb
-year is	1 ^EU KWRAErz
-year of	1 ^O KWRAEfrb
-year old	1 ^E KWROld
-year on	1 ^O KWRAErpb
-year round	1 ^E KWROUpbd
-year to	1 ^O KWRAErt
-years as	1 ^A KWRAErz
-years old	1 ^E SKWROld
-years since	1 ^E SKWREUpbs
-yet to	1 ^O KWREt
-you a	1 ^O KWRA
-you all	1 ^O KWRAUl
-you and	1 ^O KWRApbd
-you are	1 ^O KWRAr
-you as	1 ^O KWRAs
-you can	1 ^O KWRApb
-you choose	1 ^O KWHRAOs
-you could	1 ^O KWROUld
-you did	1 ^O TKWREUd
-you do	1 ^O TKWRO
-you feel	1 ^O TKPWRAOEl
-you find	1 ^O TKPWRAOEUpbd
-you for	1 ^O TKPWROr
-you get	1 ^O TKPWREt
-you go	1 ^O TKPWRO
-you guys	1 ^O TKPWRAOEUs
-you had	1 ^O KWHRAd
-you have	1 ^O KWHRAf
-you in	1 ^O KWREUpb
-you just	1 ^O SKWRUft
-you know	1 ^O TKPWHRO*E
-you like	1 ^O KWHRAOEUbg
-you look	1 ^O KWHRAObg
-you love	1 ^O KWHROf
-you make	1 ^O KPWHRAEUbg
-you may	1 ^O KPWHRAEU
-you might	1 ^O KPWHRAO*EUt
-you must	1 ^O KPWHRUft
-you need	1 ^O TKPWHRAOEd
-you on	1 ^O KWROpb
-you put	1 ^O KPWRUt
-you read	1 ^O KWRAEd
-you say	1 ^O SKWRAEU
-you see	1 ^O SKWRAOE
-you should	1 ^O SKWHROUld
-you so	1 ^O SKWRO
-you start	1 ^O STKWRArt
-you take	1 ^O TKWRAEUbg
-you that	1 ^O TKWHRAt
-you think	1 ^O TKWHR*EUpbg
-you to	1 ^O TKWRO
-you use	1 ^O KWRAOUs
-you want	1 ^O KWRApbt
-you were	1 ^O KWREr
-you will	1 ^O KWREUl
-you with	1 ^O KWR*EUt
-you won	1 ^O KWROpb
-you would	1 ^O KWROUld
-young and	1 ^A KWRUpbgd
-your app	1 ^O KWRAp
-your blog	1 ^O KPWHROg
-your child	1 ^O KWHRAOEUld
-your first	1 ^O TKPWREUfrt
-your hands	1 ^O KWHRApbdz
-your home	1 ^O KWHROEpl
-your life	1 ^O KWHRAOEUf
-your mind	1 ^O KPWHRAOEUpbd
-your new	1 ^O TKPWHRAOU
-your own	1 ^O KWRO*Epb
-your phone	1 ^O TKPWROEpb
-your site	1 ^O SKWRAOEUt
-your way	1 ^O KWRAEU
-your work	1 ^O KWROrbg
+a and	1 0A:A/1:Apbd
+a bad	1 0A:A/PW1:Ad
+a big	1 0A:A/PW1:EUg
+a bill	1 0A:A/PW1:EUl
+a bit	1 0A:A/PW1:EUt
+a black	1 0A:A/PWHR1:Abg
+a book	1 0A:A/PW1:AObg
+a box	1 0A:A/PW1:Obgs
+a boy	1 0A:A/PW1:OEU
+a brand	1 0A:A/PWR1:Apbd
+a break	1 0A:A/PWR1:AEbg
+a brief	1 0A:A/PWR1:AOEf
+a broad	1 0A:A/PWR1:O*Ed
+a bunch	1 0A:A/PW1:Ufrpb
+a buy	1 0A:A/PW1:AO*EU
+a call	1 0A:A/K1:AUl
+a car	1 0A:A/K1:Ar
+a case	1 0A:A/K1:AEUs
+a chance	1 0A:A/KH1:Apbs
+a change	1 0A:A/KH1:AEUpbg
+a child	1 0A:A/KH1:AOEUld
+a choice	1 0A:A/KH1:OEUs
+a class	1 0A:A/KHR1:As
+a clear	1 0A:A/KHR1:AEr
+a close	1 0A:A/KHR1:OEs
+a cold	1 0A:A/K1:Old
+a court	1 0A:A/K1:OUrt
+a crime	1 0A:A/KR1:AOEUpl
+a dark	1 0A:A/TK1:Arbg
+a day	1 0A:A/TK1:AEU
+a deal	1 0A:A/TK1:AEl
+a deep	1 0A:A/TK1:AOEp
+a dog	1 0A:A/TK1:Og
+a dream	1 0A:A/TKR1:AEpl
+a drop	1 0A:A/TKR1:Op
+a face	1 0A:A/TP1:AEUs
+a fair	1 0A:A/TP1:A*EUr
+a fan	1 0A:A/TP1:Apb
+a far	1 0A:A/TP1:Ar
+a fast	1 0A:A/TP1:Aft
+a few	1 0A:A/TP1:AOU
+a field	1 0A:A/TP1:AOEld
+a fight	1 0A:A/TP1:AO*EUt
+a film	1 0A:A/TP1:EUpl
+a fine	1 0A:A/TP1:AOEUpb
+a fire	1 0A:A/TP1:AOEUr
+a first	1 0A:A/TP1:EUfrt
+a five	1 0A:A/TP1:AOEUf
+a flat	1 0A:A/TPHR1:At
+a form	1 0A:A/TP1:Orpl
+a four	1 0A:A/TP1:OUr
+a fourth	1 0A:A/TP1:O*Urt
+a free	1 0A:A/TPR1:AOE
+a fresh	1 0A:A/TPR1:Erb
+a friend	1 0A:A/TPR1:Epbd
+a full	1 0A:A/TP1:Ul
+a fun	1 0A:A/TP1:Upb
+a game	1 0A:A/TKPW1:AEUpl
+a gift	1 0A:A/TKPW1:EUft
+a girl	1 0A:A/TKPW1:EUrl
+a goal	1 0A:A/TKPW1:O*El
+a good	1 0A:A/TKPW1:AOd
+a great	1 0A:A/TKPWR1:AEt
+a group	1 0A:A/TKPWR1:AOUp
+a gun	1 0A:A/TKPW1:Upb
+a guy	1 0A:A/TKPW1:AOEU
+a half	1 0A:A/H1:Af
+a hand	1 0A:A/H1:Apbd
+a hard	1 0A:A/H1:Ard
+a head	1 0A:A/H1:AEd
+a heart	1 0A:A/H1:AErt
+a high	1 0A:A/H1:AO*EU
+a hit	1 0A:A/H1:EUt
+a hold	1 0A:A/H1:Old
+a home	1 0A:A/H1:OEpl
+a host	1 0A:A/H1:Oft
+a hot	1 0A:A/H1:Ot
+a house	1 0A:A/H1:OUs
+a huge	1 0A:A/H1:AOUpblg
+a in	1 0A:A/1:EUpb
+a is	1 0A:A/1:EUs
+a job	1 0A:A/SKWR1:Ob
+a joint	1 0A:A/SKWR1:OEUpbt
+a key	1 0A:A/K1:AOE
+a kid	1 0A:A/K1:EUd
+a kind	1 0A:A/K1:AOEUpbd
+a lack	1 0A:A/HR1:Abg
+a large	1 0A:A/HR1:Arpblg
+a law	1 0A:A/HR1:AU
+a lead	1 0A:A/HR1:AEd
+a less	1 0A:A/HR1:Es
+a life	1 0A:A/HR1:AOEUf
+a light	1 0A:A/HR1:AO*EUt
+a line	1 0A:A/HR1:AOEUpb
+a link	1 0A:A/HR1:*EUpbg
+a list	1 0A:A/HR1:EUft
+a live	1 0A:A/HR1:AOEUf
+a long	1 0A:A/HR1:Opbg
+a look	1 0A:A/HR1:AObg
+a loss	1 0A:A/HR1:Os
+a lot	1 0A:A/HR1:Ot
+a low	1 0A:A/HR1:O*E
+a man	1 0A:A/PH1:Apb
+a mask	1 0A:A/PH1:Afbg
+a means	1 0A:A/PH1:AEpbs
+a mix	1 0A:A/PH1:EUbgs
+a month	1 0A:A/PH1:O*pbt
+a more	1 0A:A/PH1:OEr
+a move	1 0A:A/PH1:Of
+a much	1 0A:A/PH1:Ufp
+a must	1 0A:A/PH1:Uft
+a name	1 0A:A/TPH1:AEUpl
+a need	1 0A:A/TPH1:AOEd
+a net	1 0A:A/TPH1:Et
+a new	1 0A:A/TPH1:AOU
+a news	1 0A:A/TPH1:AOUs
+a nice	1 0A:A/TPH1:AOEUs
+a night	1 0A:A/TPH1:AO*EUt
+a no	1 0A:A/TPH1:O
+a non	1 0A:A/TPH1:Opb
+a note	1 0A:A/TPH1:OEt
+a one	1 0A:A/W1:Opb
+a page	1 0A:A/P1:AEUpblg
+a pair	1 0A:A/P1:A*EUr
+a part	1 0A:A/P1:Art
+a per	1 0A:A/P1:Er
+a phone	1 0A:A/TP1:OEpb
+a piece	1 0A:A/P1:AOEs
+a place	1 0A:A/PHR1:AEUs
+a plan	1 0A:A/PHR1:Apb
+a player	1 0A:A/PHR1:AEUr
+a point	1 0A:A/P1:OEUpbt
+a post	1 0A:A/P1:Oft
+a press	1 0A:A/PR1:Es
+a price	1 0A:A/PR1:AOEUs
+a quick	1 0A:A/KW1:EUbg
+a range	1 0A:A/R1:AEUpbg
+a rare	1 0A:A/R1:AEUr
+a real	1 0A:A/R1:AEl
+a red	1 0A:A/R1:Ed
+a rich	1 0A:A/R1:EUfp
+a right	1 0A:A/R1:AO*EUt
+a risk	1 0A:A/R1:EUfbg
+a role	1 0A:A/R1:OEl
+a room	1 0A:A/R1:AOpl
+a row	1 0A:A/R1:O*E
+a run	1 0A:A/R1:Upb
+a safe	1 0A:A/S1:AEUf
+a scene	1 0A:A/S1:AOEpb
+a school	1 0A:A/SK1:AOl
+a self	1 0A:A/S1:Efl
+a sense	1 0A:A/S1:Epbs
+a set	1 0A:A/S1:Et
+a sharp	1 0A:A/SH1:Arp
+a short	1 0A:A/SH1:Ort
+a shot	1 0A:A/SH1:Ot
+a show	1 0A:A/SH1:O*E
+a side	1 0A:A/S1:AOEUd
+a sign	1 0A:A/S1:AOEUpb
+a six	1 0A:A/S1:EUbgs
+a slight	1 0A:A/SHR1:AO*EUt
+a slow	1 0A:A/SHR1:O*E
+a small	1 0A:A/SPH1:AUl
+a song	1 0A:A/S1:Opbg
+a source	1 0A:A/S1:OUrs
+a space	1 0A:A/SP1:AEUs
+a star	1 0A:A/ST1:Ar
+a state	1 0A:A/ST1:AEUt
+a step	1 0A:A/ST1:Ep
+a string	1 0A:A/STR1:EUpbg
+a strong	1 0A:A/STR1:Opbg
+a team	1 0A:A/T1:AEpl
+a test	1 0A:A/T1:Eft
+a thing	1 0A:A/TH1:EUpbg
+a third	1 0A:A/TH1:EUrd
+a threat	1 0A:A/THR1:AEt
+a three	1 0A:A/THR1:AOE
+a time	1 0A:A/T1:AOEUpl
+a to	1 0A:A/T1:O
+a ton	1 0A:A/T1:Opb
+a tool	1 0A:A/T1:AOl
+a top	1 0A:A/T1:Op
+a tough	1 0A:A/T1:Uf
+a tree	1 0A:A/TR1:AOE
+a trip	1 0A:A/TR1:EUp
+a true	1 0A:A/TR1:AO*U
+a two	1 0A:A/T1:O
+a type	1 0A:A/T1:AO*EUp
+a us	1 0A:A/1:Us
+a vast	1 0A:A/SR1:Aft
+a voice	1 0A:A/SR1:OEUs
+a vote	1 0A:A/SR1:OEt
+a war	1 0A:A/W1:Ar
+a way	1 0A:A/W1:AEU
+a web	1 0A:A/W1:Eb
+a week	1 0A:A/W1:AOEbg
+a well	1 0A:A/W1:El
+a while	1 0A:A/WH1:AOEUl
+a white	1 0A:A/WH1:AOEUt
+a whole	1 0A:A/WH1:OEl
+a wide	1 0A:A/W1:AOEUd
+a win	1 0A:A/W1:EUpb
+a word	1 0A:A/W1:Ord
+a work	1 0A:A/W1:Orbg
+a world	1 0A:A/W1:Orld
+a yard	1 0A:A/KWR1:Ard
+a year	1 0A:A/KWR1:AEr
+a young	1 0A:A/KWR1:Upbg
+act as	1 1:Abgt/0A:As
+act of	1 1:Abgt/0O:Of
+acts as	1 1:Abgts/0A:As
+acts of	1 1:Abgts/0O:Of
+add a	1 1:Ad/0A:A
+add to	1 1:Atd/0O:O
+age and	1 1:AEUpblg/0A:Apbd
+age of	1 1:AEUpblg/0O:Of
+air and	1 1:A*EUr/0A:Apbd
+air force	1 0A:A*EU/TPR1:OErs
+all and	1 1:AUl/0A:Apbd
+all be	1 1:AUbl/0E:E
+all but	1 1:AUbl/0U:Ut
+all day	1 0A:AU/TKHR1:AEU
+all four	1 0A:AU/TPHR1:OUr
+all have	1 1:AUl/0A:Af
+all his	1 1:AUl/0EU:EUs
+all in	1 1:AUl/0EU:EUpb
+all it	1 1:AUl/0EU:EUt
+all its	1 1:AUl/0EU:EUts
+all kinds	1 0A:AU/KHR1:AOEUpbdz
+all my	1 1:AUpl/0EU:AOEU
+all new	1 0A:AU/TPHR1:AOU
+all of	1 1:AUl/0O:Of
+all our	1 1:AUl/0O:OUr
+all sorts	1 0A:AU/SHR1:Orts
+all star	1 0A:AU/STHR1:Ar
+all that	1 1:A*Ult/0A:At
+all their	1 1:A*Ult/0E:A*Er
+all these	1 1:A*Ult/0E:AOEs
+all things	1 0A:AU/THR1:EUpbgs
+all this	1 1:A*Ult/0EU:EUs
+all those	1 1:A*Ult/0O:OEs
+all three	1 0A:AU/THR1:AOE
+all time	1 0A:AU/THR1:AOEUpl
+all to	1 1:AUlt/0O:O
+am a	1 0A:A/PH1:A
+am not	1 0A:A/TPH1:Ot
+an act	1 0A:A/TPH1:Abgt
+an all	1 0A:A/TPH1:AUl
+an end	1 0A:A/TPH1:Epbd
+an eye	1 0A:A/TPH1:AO*EU
+an hour	1 0A:A/TPH1:OUr
+an old	1 0A:A/TPH1:Old
+are a	1 0A:A/R1:A
+are all	1 0A:A/R1:AUl
+are an	1 0A:A/R1:Apb
+are and	1 0A:A/R1:Apbd
+are as	1 0A:A/R1:As
+are at	1 0A:A/R1:At
+are both	1 0A:A/PWR1:O*t
+are for	1 0A:A/TPR1:Or
+are found	1 0A:A/TPR1:OUpbd
+are from	1 0A:A/TPR1:Opl
+are good	1 0A:A/TKPWR1:AOd
+are held	1 0A:A/R1:Eld
+are in	1 0A:A/R1:EUpb
+are just	1 0A:A/SKWR1:Uft
+are known	1 0A:A/TPHR1:O*Epb
+are less	1 0A:A/HR1:Es
+are made	1 0A:A/PHR1:AEUd
+are more	1 0A:A/PHR1:OEr
+are most	1 0A:A/PHR1:Oft
+are much	1 0A:A/PHR1:Ufp
+are no	1 0A:A/TPHR1:O
+are not	1 0A:A/TPHR1:Ot
+are now	1 0A:A/TPHR1:OU
+are of	1 0A:A/R1:Of
+are on	1 0A:A/R1:Opb
+are one	1 0A:A/WR1:Opb
+are part	1 0A:A/PR1:Art
+are set	1 0A:A/SR1:Et
+are so	1 0A:A/SR1:O
+are some	1 0A:A/SR1:Opl
+are still	1 0A:A/STR1:EUl
+are then	1 0A:A/THR1:Epb
+are there	1 0A:A/THR1:Er
+are they	1 0A:A/THR1:A*EU
+are those	1 0A:A/THR1:OEs
+are three	1 0A:A/THR1:AOE
+are to	1 0A:A/TR1:O
+are too	1 0A:A/TR1:AO
+are two	1 0A:A/TR1:O
+are we	1 0A:A/WR1:E
+are well	1 0A:A/WR1:El
+are you	1 0A:A/R1:AOU
+art and	1 1:Art/0A:Apbd
+art of	1 1:Art/0O:Of
+arts and	1 1:Arts/0A:Apbd
+as a	1 0A:A/S1:A
+as an	1 0A:A/S1:Apb
+as far	1 0A:A/STP1:Ar
+as for	1 0A:A/STP1:Or
+as good	1 0A:A/STKPW1:AOd
+as he	1 0A:A/S1:E
+as her	1 0A:A/S1:Er
+as high	1 0A:A/S1:AO*EU
+as his	1 0A:A/S1:EUs
+as if	1 0A:A/S1:EUf
+as in	1 0A:A/S1:EUpb
+as is	1 0A:A/S1:EUs
+as it	1 0A:A/S1:EUt
+as its	1 0A:A/S1:EUts
+as long	1 0A:A/SHR1:Opbg
+as more	1 0A:A/SPH1:OEr
+as much	1 0A:A/SPH1:Ufp
+as my	1 0A:A/SPH1:AOEU
+as new	1 0A:A/STPH1:AOU
+as of	1 0A:A/S1:Of
+as one	1 0A:A/SW1:Opb
+as our	1 0A:A/S1:OUr
+as part	1 0A:A/SP1:Art
+as per	1 0A:A/SP1:Er
+as she	1 0A:A/SH1:E
+as some	1 0A:A/S1:Opl
+as soon	1 0A:A/S1:AOpb
+as such	1 0A:A/S1:Ufp
+as that	1 0A:A/STH1:At
+as their	1 0A:A/STH1:A*Er
+as there	1 0A:A/STH1:Er
+as these	1 0A:A/STH1:AOEs
+as they	1 0A:A/STH1:A*EU
+as this	1 0A:A/STH1:EUs
+as those	1 0A:A/STH1:OEs
+as though	1 0A:A/STH1:OE
+as to	1 0A:A/ST1:O
+as was	1 0A:A/SW1:As
+as we	1 0A:A/SW1:E
+as well	1 0A:A/SW1:El
+as with	1 0A:A/SW1:*EUt
+as you	1 0A:A/S1:AOU
+as your	1 0A:A/S1:OUr
+ask for	1 1:Afbg/0O:Or
+at a	1 0A:A/T1:A
+at age	1 0A:A/T1:AEUpblg
+at all	1 0A:A/T1:AUl
+at am	1 0A:A/T1:Apl
+at an	1 0A:A/T1:Apb
+at and	1 0A:A/T1:Apbd
+at each	1 0A:A/T1:AEfp
+at first	1 0A:A/TP1:EUfrt
+at her	1 0A:A/T1:Er
+at high	1 0A:A/T1:AO*EU
+at his	1 0A:A/T1:EUs
+at home	1 0A:A/T1:OEpl
+at how	1 0A:A/T1:OU
+at in	1 0A:A/T1:EUpb
+at it	1 0A:A/T1:EUt
+at its	1 0A:A/T1:EUts
+at large	1 0A:A/THR1:Arpblg
+at least	1 0A:A/THR1:AEft
+at my	1 0A:A/TPH1:AOEU
+at night	1 0A:A/TPH1:AO*EUt
+at no	1 0A:A/TPH1:O
+at once	1 0A:A/TW1:Opbs
+at one	1 0A:A/TW1:Opb
+at or	1 0A:A/T1:Or
+at our	1 0A:A/T1:OUr
+at risk	1 0A:A/TR1:EUfbg
+at sea	1 0A:A/ST1:AE
+at some	1 0A:A/ST1:Opl
+at that	1 0A:A/TH1:At
+at their	1 0A:A/TH1:A*Er
+at this	1 0A:A/TH1:EUs
+at what	1 0A:A/TW1:At
+at which	1 0A:A/TW1:EUfp
+at work	1 0A:A/TW1:Orbg
+at your	1 0A:A/T1:OUr
+back and	1 PW1:Abg/0A:Apbd
+back at	1 PW1:Abg/0A:At
+back home	1 PW0A:A/K1:OEpl
+back in	1 PW1:Abg/0EU:EUpb
+back of	1 PW1:Abg/0O:Of
+back on	1 PW1:Abg/0O:Opb
+back to	1 PW1:Abgt/0O:O
+back up	1 PW0A:A/K1:Up
+back with	1 PW1:Abg/0EU:*EUt
+ban on	1 PW1:Apb/0O:Opb
+bank of	1 PW1:A*pbg/0O:Of
+bars and	1 PW1:Ars/0A:Apbd
+base of	1 PW1:AEUs/0O:Of
+be a	1 PW0E:E/1:A
+be an	1 PW0E:E/1:Apb
+be as	1 PW0E:E/1:As
+be at	1 PW0E:E/1:At
+be back	1 PW0E:E/PW1:Abg
+be built	1 PW0E:E/PW1:EUlt
+be done	1 PW0E:E/TK1:Opb
+be for	1 PW0E:E/TP1:Or
+be found	1 PW0E:E/TP1:OUpbd
+be good	1 PW0E:E/TKPW1:AOd
+be hard	1 PW0E:E/H1:Ard
+be heard	1 PW0E:E/H1:AErd
+be held	1 PW0E:E/H1:Eld
+be in	1 PW0E:E/1:EUpb
+be just	1 PW0E:E/SKWR1:Uft
+be known	1 PW0E:E/TPH1:O*Epb
+be left	1 PW0E:E/HR1:Eft
+be less	1 PW0E:E/HR1:Es
+be like	1 PW0E:E/HR1:AOEUbg
+be made	1 PW0E:E/PH1:AEUd
+be more	1 PW0E:E/PH1:OEr
+be much	1 PW0E:E/PH1:Ufp
+be no	1 PW0E:E/TPH1:O
+be of	1 PW0E:E/1:Of
+be on	1 PW0E:E/1:Opb
+be one	1 PW0E:E/W1:Opb
+be paid	1 PW0E:E/P1:A*EUd
+be part	1 PW0E:E/P1:Art
+be played	1 PW0E:E/PHR1:AEUd
+be put	1 PW0E:E/P1:Ut
+be quite	1 PW0E:E/KW1:AOEUt
+be said	1 PW0E:E/S1:A*EUd
+be seen	1 PW0E:E/S1:AOEpb
+be sent	1 PW0E:E/S1:Epbt
+be set	1 PW0E:E/S1:Et
+be so	1 PW0E:E/S1:O
+be sure	1 PW0E:E/SH1:AOUr
+be that	1 PW0E:E/TH1:At
+be there	1 PW0E:E/TH1:Er
+be to	1 PW0E:E/T1:O
+be too	1 PW0E:E/T1:AO
+be true	1 PW0E:E/TR1:AO*U
+be with	1 PW0E:E/W1:*EUt
+been a	1 PW0E:AOE/TPH1:A
+been an	1 PW0E:AOE/TPH1:Apb
+been at	1 PW0E:AOE/TPH1:At
+been done	1 PW0E:AOE/TKPH1:Opb
+been found	1 PW0E:AOE/TPH1:OUpbd
+been in	1 PW0E:AOE/TPH1:EUpb
+been known	1 PW0E:AOE/TPH1:O*Epb
+been made	1 PW0E:AOE/TPH1:AEUd
+been more	1 PW0E:AOE/TPH1:OEr
+been on	1 PW0E:AOE/TPH1:Opb
+been one	1 PW0E:AOE/TPWH1:Opb
+been shown	1 PW0E:AOE/STPH1:O*Epb
+been so	1 PW0E:AOE/STPH1:O
+been to	1 PW0E:AOE/TPH1:O
+best and	1 PW1:Eft/0A:Apbd
+best friend	1 PW0E:E/STPR1:Epbd
+best in	1 PW1:Eft/0EU:EUpb
+best known	1 PW0E:E/STPH1:O*Epb
+best of	1 PW1:Eft/0O:Of
+best to	1 PW1:Eft/0O:O
+best way	1 PW0E:E/STW1:AEU
+bid to	1 PW1:EUtd/0O:O
+birth of	1 PW1:*EUrt/0O:Of
+birth to	1 PW1:*EUrt/0O:O
+bit more	1 PW0EU:EU/TPH1:OEr
+bit of	1 PW1:EUt/0O:Of
+black and	1 PWHR1:Abg/0A:Apbd
+block of	1 PWHR1:Obg/0O:Of
+blue and	1 PWHR1:AO*U/0A:Apbd
+board and	1 PW1:O*Erd/0A:Apbd
+board of	1 PW1:O*Erd/0O:Of
+book and	1 PW1:AObg/0A:Apbd
+book in	1 PW1:AObg/0EU:EUpb
+book is	1 PW1:AObg/0EU:EUs
+book of	1 PW1:AObg/0O:Of
+book that	1 PW1:AO*bgt/0A:At
+book to	1 PW1:AObgt/0O:O
+book was	1 PW1:AObg/0A:As
+books and	1 PW1:AObgs/0A:Apbd
+books are	1 PW1:AObgs/0A:Ar
+books in	1 PW1:AObgs/0EU:EUpb
+books that	1 PW1:AO*bgts/0A:At
+born in	1 PW1:Orpb/0EU:EUpb
+both a	1 PW1:O*t/0A:A
+both are	1 PW1:O*t/0A:Ar
+both in	1 PW1:O*t/0EU:EUpb
+both of	1 PW1:O*t/0O:Of
+bought a	1 PW1:AUt/0A:A
+bound to	1 PW1:OUpbtd/0O:O
+brand new	1 PWR0A:A/TKPH1:AOU
+break down	1 PWR0E:AE/TK1:OUpb
+broke out	1 PWR0O:OE/K1:OUt
+brought in	1 PWR1:AUt/0EU:EUpb
+brought to	1 PWR1:AUt/0O:O
+build a	1 PW1:EUld/0A:A
+built a	1 PW1:EUlt/0A:A
+built in	1 PW1:EUlt/0EU:EUpb
+built on	1 PW1:EUlt/0O:Opb
+bulk of	1 PW1:*Ulg/0O:Of
+bunch of	1 PW1:Ufrpb/0O:Of
+but a	1 PW0U:U/T1:A
+but all	1 PW0U:U/T1:AUl
+but are	1 PW0U:U/T1:Ar
+but as	1 PW0U:U/T1:As
+but at	1 PW0U:U/T1:At
+but by	1 PW0U:U/TPW1:AOEU
+but can	1 PW0U:U/TK1:Apb
+but did	1 PW0U:U/TK1:EUd
+but for	1 PW0U:U/TP1:Or
+but had	1 PW0U:U/T1:Ad
+but has	1 PW0U:U/T1:As
+but have	1 PW0U:U/T1:Af
+but he	1 PW0U:U/T1:E
+but his	1 PW0U:U/T1:EUs
+but how	1 PW0U:U/T1:OU
+but if	1 PW0U:U/T1:EUf
+but in	1 PW0U:U/T1:EUpb
+but is	1 PW0U:U/T1:EUs
+but it	1 PW0U:U/T1:EUt
+but its	1 PW0U:U/T1:EUts
+but more	1 PW0U:U/TPH1:OEr
+but most	1 PW0U:U/TPH1:Oft
+but my	1 PW0U:U/TPH1:AOEU
+but no	1 PW0U:U/TPH1:O
+but not	1 PW0U:U/TPH1:Ot
+but now	1 PW0U:U/TPH1:OU
+but on	1 PW0U:U/T1:Opb
+but one	1 PW0U:U/TW1:Opb
+but she	1 PW0U:U/STH1:E
+but some	1 PW0U:U/ST1:Opl
+but still	1 PW0U:U/ST1:EUl
+but that	1 PW0U:U/TH1:At
+but their	1 PW0U:U/TH1:A*Er
+but then	1 PW0U:U/TH1:Epb
+but there	1 PW0U:U/TH1:Er
+but these	1 PW0U:U/TH1:AOEs
+but they	1 PW0U:U/TH1:A*EU
+but this	1 PW0U:U/TH1:EUs
+but those	1 PW0U:U/TH1:OEs
+but to	1 PW0U:U/T1:O
+but was	1 PW0U:U/TW1:As
+but we	1 PW0U:U/TW1:E
+but were	1 PW0U:U/TW1:Er
+but what	1 PW0U:U/TW1:At
+but when	1 PW0U:U/TW1:Epb
+but will	1 PW0U:U/TW1:EUl
+but with	1 PW0U:U/TW1:*EUt
+but you	1 PW0U:U/T1:AOU
+buy a	1 PW1:AO*EU/0A:A
+by a	1 PW0EU:AOEU/1:A
+by all	1 PW0EU:AOEU/1:AUl
+by an	1 PW0EU:AOEU/1:Apb
+by and	1 PW0EU:AOEU/1:Apbd
+by both	1 PW0EU:AOEU/PW1:O*t
+by far	1 PW0EU:AOEU/TP1:Ar
+by her	1 PW0EU:AOEU/H1:Er
+by his	1 PW0EU:AOEU/H1:EUs
+by in	1 PW0EU:AOEU/1:EUpb
+by it	1 PW0EU:AOEU/1:EUt
+by its	1 PW0EU:AOEU/1:EUts
+by law	1 PW0EU:AOEU/HR1:AU
+by more	1 PW0EU:AOEU/PH1:OEr
+by now	1 PW0EU:AOEU/TPH1:OU
+by one	1 PW0EU:AOEU/W1:Opb
+by our	1 PW0EU:AOEU/1:OUr
+by some	1 PW0EU:AOEU/S1:Opl
+by that	1 PW0EU:AOEU/TH1:At
+by their	1 PW0EU:AOEU/TH1:A*Er
+by then	1 PW0EU:AOEU/TH1:Epb
+by this	1 PW0EU:AOEU/TH1:EUs
+by two	1 PW0EU:AOEU/T1:O
+by which	1 PW0EU:AOEU/WH1:EUfp
+by your	1 PW0EU:AOEU/KWR1:OUr
+call for	1 K1:AUfl/0O:Or
+call it	1 K1:AUl/0EU:EUt
+call to	1 K1:AUlt/0O:O
+came back	1 K0A:AEU/PWH1:Abg
+came from	1 K1:A*EUfrpl/0O:Opl
+came in	1 K1:AEUpl/0EU:EUpb
+came out	1 K0A:AEU/PH1:OUt
+came to	1 K1:AEUplt/0O:O
+came up	1 K0A:AEU/PH1:Up
+can and	1 K0A:A/TPH1:Apbd
+can be	1 K0A:A/TPWH1:E
+can cause	1 K0A:A/TKPH1:AUs
+can choose	1 K0A:A/TKPH1:AOs
+can do	1 K0A:A/TKPH1:O
+can find	1 K0A:A/TPH1:AOEUpbd
+can get	1 K0A:A/TKPWH1:Et
+can give	1 K0A:A/TKPWH1:EUf
+can go	1 K0A:A/TKPWH1:O
+can have	1 K0A:A/TPH1:Af
+can help	1 K0A:A/TPH1:Epl
+can keep	1 K0A:A/TKPH1:AOEp
+can lead	1 K0A:A/TPHR1:AEd
+can make	1 K0A:A/TPH1:AEUbg
+can not	1 K0A:A/TPH1:Ot
+can now	1 K0A:A/TPH1:OU
+can say	1 K0A:A/STPH1:AEU
+can see	1 K0A:A/STPH1:AOE
+can still	1 K0A:A/STPH1:EUl
+can take	1 K0A:A/TPH1:AEUbg
+can tell	1 K0A:A/TPH1:El
+can then	1 K0A:A/TPH1:Epb
+can to	1 K0A:A/TPH1:O
+can use	1 K0A:A/TPH1:AOUs
+can we	1 K0A:A/TPWH1:E
+can you	1 K0A:A/TPH1:AOU
+care and	1 K1:AEUr/0A:Apbd
+care for	1 K1:A*EUfr/0O:Or
+care of	1 K1:AEUr/0O:Of
+cars and	1 K1:Ars/0A:Apbd
+case and	1 K1:AEUs/0A:Apbd
+case for	1 K1:AEUfs/0O:Or
+case in	1 K1:AEUs/0EU:EUpb
+case is	1 K1:AEUs/0EU:EUs
+case of	1 K1:AEUs/0O:Of
+caught up	1 K0A:AU/T1:Up
+cause of	1 K1:AUs/0O:Of
+cent of	1 S1:Epbt/0O:Of
+chair of	1 KH1:A*EUr/0O:Of
+chance of	1 KH1:Apbs/0O:Of
+chance to	1 KH1:Afpbt/0O:O
+change and	1 KH1:AEUpbg/0A:Apbd
+change in	1 KH1:AEUpbg/0EU:EUpb
+change is	1 KH1:AEUpbg/0EU:EUs
+change of	1 KH1:AEUpbg/0O:Of
+change to	1 KH1:AEUpbgt/0O:O
+charge of	1 KH1:Arpblg/0O:Of
+check out	1 KH0E:E/K1:OUt
+chief of	1 KH1:AOEf/0O:Of
+choice for	1 KH1:OEUfs/0O:Or
+choice of	1 KH1:OEUs/0O:Of
+choose a	1 KH1:AOs/0A:A
+choose to	1 KH1:AOtz/0O:O
+chose to	1 KH1:OEtz/0O:O
+church and	1 KH1:Ufrpb/0A:Apbd
+church in	1 KH1:Ufrpb/0EU:EUpb
+church of	1 KH1:Ufrpb/0O:Of
+claim that	1 KHR1:A*EUplt/0A:At
+claim to	1 KHR1:A*EUplt/0O:O
+class and	1 KHR1:As/0A:Apbd
+class of	1 KHR1:As/0O:Of
+clear that	1 KHR1:A*Ert/0A:At
+click on	1 KHR1:EUbg/0O:Opb
+close to	1 KHR1:OEft/0O:O
+coast of	1 K1:O*Eft/0O:Of
+code of	1 K1:OEd/0O:Of
+cold war	1 K0O:O/TKWHR1:Ar
+come and	1 K1:Opl/0A:Apbd
+come back	1 K0O:O/PWH1:Abg
+come from	1 K1:O*frpl/0O:Opl
+come in	1 K1:Opl/0EU:EUpb
+come out	1 K0O:O/PH1:OUt
+come to	1 K1:Oplt/0O:O
+come up	1 K0O:O/PH1:Up
+come with	1 K1:Opl/0EU:*EUt
+cost of	1 K1:Oft/0O:Of
+costs and	1 K1:Ofts/0A:Apbd
+costs of	1 K1:Ofts/0O:Of
+could be	1 K0O:OU/TKPW1:E
+could do	1 K0O:OU/TK1:O
+could get	1 K0O:OU/TKPW1:Et
+could have	1 K0O:OU/TK1:Af
+could help	1 K0O:OU/TK1:Epl
+could make	1 K0O:OU/TKPH1:AEUbg
+could not	1 K0O:OU/TKPH1:Ot
+could see	1 K0O:OU/STK1:AOE
+could use	1 K0O:OU/TK1:AOUs
+course of	1 K1:OUrs/0O:Of
+court and	1 K1:OUrt/0A:Apbd
+court in	1 K1:OUrt/0EU:EUpb
+court of	1 K1:OUrt/0O:Of
+court to	1 K1:OUrt/0O:O
+cup of	1 K1:Up/0O:Of
+cut off	1 K0U:U/T1:Of
+date of	1 TK1:AEUt/0O:Of
+day and	1 TK1:AEU/0A:Apbd
+day at	1 TK1:AEU/0A:At
+day for	1 TK1:AEUf/0O:Or
+day in	1 TK1:AEU/0EU:EUpb
+day is	1 TK1:AEU/0EU:EUs
+day of	1 TK1:AEU/0O:Of
+day on	1 TK1:AEU/0O:Opb
+day to	1 TK1:AEUt/0O:O
+day with	1 TK1:AEU/0EU:*EUt
+days and	1 TK1:AEUs/0A:Apbd
+days in	1 TK1:AEUs/0EU:EUpb
+days of	1 TK1:AEUs/0O:Of
+days to	1 TK1:AEUtz/0O:O
+de la	1 TK0E:E/HR1:AU
+deal of	1 TK1:AEl/0O:Of
+deal with	1 TK1:AEl/0EU:*EUt
+deals with	1 TK1:AElz/0EU:*EUt
+dealt with	1 TK1:AElt/0EU:*EUt
+death and	1 TK1:A*Et/0A:Apbd
+death in	1 TK1:A*Et/0EU:EUpb
+death of	1 TK1:A*Et/0O:Of
+death toll	1 TK0E:AE/TH1:Ol
+deaths in	1 TK1:A*Ets/0EU:EUpb
+depth of	1 TK1:*Ept/0O:Of
+did a	1 TK0EU:EU/TK1:A
+did in	1 TK0EU:EU/TK1:EUpb
+did it	1 TK0EU:EU/TK1:EUt
+did not	1 TK0EU:EU/TKPH1:Ot
+did you	1 TK0EU:EU/TK1:AOU
+died at	1 TK1:AO*EUd/0A:At
+died in	1 TK1:AO*EUd/0EU:EUpb
+died of	1 TK1:AO*EUd/0O:Of
+died on	1 TK1:AO*EUd/0O:Opb
+do a	1 TK0O:O/1:A
+do and	1 TK0O:O/1:Apbd
+do have	1 TK0O:O/H1:Af
+do in	1 TK0O:O/1:EUpb
+do is	1 TK0O:O/1:EUs
+do it	1 TK0O:O/1:EUt
+do more	1 TK0O:O/PH1:OEr
+do not	1 TK0O:O/TPH1:Ot
+do so	1 TK0O:O/S1:O
+do that	1 TK0O:O/TH1:At
+do they	1 TK0O:O/TH1:A*EU
+do this	1 TK0O:O/TH1:EUs
+do to	1 TK0O:O/T1:O
+do we	1 TK0O:O/W1:E
+do what	1 TK0O:O/WH1:At
+do with	1 TK0O:O/W1:*EUt
+do you	1 TK0O:O/KWR1:AOU
+does a	1 TK0O:O*E/S1:A
+does it	1 TK0O:O*E/S1:EUt
+does not	1 TK0O:O*E/STPH1:Ot
+does this	1 TK0O:O*E/STH1:EUs
+done by	1 TK1:Opb/0EU:AOEU
+done in	1 TK1:Opb/0EU:EUpb
+done to	1 TK1:Opbt/0O:O
+done with	1 TK1:Opb/0EU:*EUt
+down a	1 TK1:OUpb/0A:A
+down and	1 TK1:OUpb/0A:Apbd
+down by	1 TK1:OUpb/0EU:AOEU
+down for	1 TK1:OUfpb/0O:Or
+down in	1 TK1:OUpb/0EU:EUpb
+down on	1 TK1:OUpb/0O:Opb
+down to	1 TK1:OUpbt/0O:O
+down with	1 TK1:OUpb/0EU:*EUt
+dream of	1 TKR1:AEpl/0O:Of
+drop in	1 TKR1:Op/0EU:EUpb
+due to	1 TK1:AO*Ut/0O:O
+duke of	1 TK1:AOUbg/0O:Of
+each day	1 0E:AE/TKH1:AEU
+each of	1 1:AEfp/0O:Of
+each one	1 0E:AE/KWH1:Opb
+each time	1 0E:AE/TKH1:AOEUpl
+each year	1 0E:AE/KH1:AEr
+earth and	1 1:A*Ert/0A:Apbd
+east and	1 1:AEft/0A:Apbd
+east of	1 1:AEft/0O:Of
+edge of	1 1:Epblg/0O:Of
+eight years	1 0E:A*E/T1:AErs
+end of	1 1:Epbd/0O:Of
+end to	1 1:Epbtd/0O:O
+end up	1 0E:E/TKPH1:Up
+ends up	1 0E:E/STKPH1:Up
+et al	1 0E:E/T1:Al
+eye on	1 1:AO*EU/0O:Opb
+eyes and	1 1:AO*EUs/0A:Apbd
+face and	1 TP1:AEUs/0A:Apbd
+face masks	1 TP0A:AEU/SPH1:Afbgs
+face of	1 TP1:AEUs/0O:Of
+face to	1 TP1:AEUft/0O:O
+fact that	1 TP1:A*bgt/0A:At
+fail to	1 TP1:A*EUlt/0O:O
+faith in	1 TP1:A*EUt/0EU:EUpb
+fall in	1 TP1:AUl/0EU:EUpb
+fall of	1 TP1:AUl/0O:Of
+fan of	1 TP1:Apb/0O:Of
+fans and	1 TP1:Apbs/0A:Apbd
+fans of	1 TP1:Apbs/0O:Of
+far as	1 TP1:Ar/0A:As
+far from	1 TP1:A*fr/0O:Opl
+far more	1 TP0A:A/PHR1:OEr
+fast and	1 TP1:Aft/0A:Apbd
+fear of	1 TP1:AEr/0O:Of
+feel like	1 TP0E:AOE/HR1:AOEUbg
+feel that	1 TP1:AO*Elt/0A:At
+feels like	1 TP0E:AOE/SHR1:AOEUbg
+fell in	1 TP1:El/0EU:EUpb
+fell to	1 TP1:Elt/0O:O
+felt like	1 TP0E:E/THR1:AOEUbg
+felt that	1 TP1:*Elt/0A:At
+few days	1 TP0E:AOU/TK1:AEUs
+few months	1 TP0E:AOU/PH1:O*pbts
+few of	1 TP1:AOU/0O:Of
+few weeks	1 TP0E:AOU/W1:AOEbgs
+few years	1 TP0E:AOU/KWR1:AErs
+field and	1 TP1:AOEld/0A:Apbd
+field of	1 TP1:AOEld/0O:Of
+fight for	1 TP1:AO*EUft/0O:Or
+film and	1 TP1:EUpl/0A:Apbd
+film is	1 TP1:EUpl/0EU:EUs
+film was	1 TP1:EUpl/0A:As
+find a	1 TP1:AOEUpbd/0A:A
+find it	1 TP1:AOEUpbd/0EU:EUt
+find out	1 TP0EU:AOEU/TKPH1:OUt
+find that	1 TP1:AO*EUpbtd/0A:At
+fire and	1 TP1:AOEUr/0A:Apbd
+first and	1 TP1:EUfrt/0A:Apbd
+first book	1 TP0:EU/STPWR1:AObg
+first day	1 TP0:EU/STKR1:AEU
+first half	1 TP0:EU/STR1:Af
+first in	1 TP1:EUfrt/0EU:EUpb
+first of	1 TP1:EUfrt/0O:Of
+first place	1 TP0:EU/STPHR1:AEUs
+first round	1 TP0:EU/STR1:OUpbd
+first step	1 TP0:EU/STR1:Ep
+first three	1 TP0:EU/STHR1:AOE
+first time	1 TP0:EU/STR1:AOEUpl
+first to	1 TP1:EUfrt/0O:O
+first two	1 TP0:EU/STR1:O
+first year	1 TP0:EU/STR1:AEr
+fish and	1 TP1:EUrb/0A:Apbd
+five days	1 TP0EU:AOEU/STKR1:AEUs
+five of	1 TP1:AOEUf/0O:Of
+five year	1 TP0EU:AOEU/SR1:AEr
+five years	1 TP0EU:AOEU/SR1:AErs
+flow of	1 TPHR1:O*E/0O:Of
+food and	1 TP1:AOd/0A:Apbd
+food is	1 TP1:AOd/0EU:EUs
+for a	1 TP0O:O/R1:A
+for all	1 TP0O:O/R1:AUl
+for an	1 TP0O:O/R1:Apb
+for and	1 TP0O:O/R1:Apbd
+for as	1 TP0O:O/R1:As
+for at	1 TP0O:O/R1:At
+for best	1 TP0O:O/PWR1:Eft
+for both	1 TP0O:O/PWR1:O*t
+for days	1 TP0O:O/TKR1:AEUs
+for each	1 TP0O:O/R1:AEfp
+for five	1 TP0O:O/TPR1:AOEUf
+for food	1 TP0O:O/TPR1:AOd
+for four	1 TP0O:O/TPR1:OUr
+for free	1 TP0O:O/TPR1:AOE
+for good	1 TP0O:O/TKPWR1:AOd
+for health	1 TP0O:O/R1:A*Elt
+for help	1 TP0O:O/R1:Epl
+for her	1 TP0O:O/R1:Er
+for high	1 TP0O:O/R1:AO*EU
+for him	1 TP0O:O/R1:EUpl
+for his	1 TP0O:O/R1:EUs
+for how	1 TP0O:O/R1:OU
+for in	1 TP0O:O/R1:EUpb
+for it	1 TP0O:O/R1:EUt
+for its	1 TP0O:O/R1:EUts
+for just	1 TP0O:O/SKWR1:Uft
+for life	1 TP0O:O/HR1:AOEUf
+for long	1 TP0O:O/HR1:Opbg
+for me	1 TP0O:O/PHR1:E
+for months	1 TP0O:O/PHR1:O*pbts
+for more	1 TP0O:O/PHR1:OEr
+for most	1 TP0O:O/PHR1:Oft
+for much	1 TP0O:O/PHR1:Ufp
+for my	1 TP0O:O/PHR1:AOEU
+for new	1 TP0O:O/TPHR1:AOU
+for non	1 TP0O:O/TPHR1:Opb
+for not	1 TP0O:O/TPHR1:Ot
+for now	1 TP0O:O/TPHR1:OU
+for of	1 TP0O:O/R1:Of
+for one	1 TP0O:O/WR1:Opb
+for our	1 TP0O:O/R1:OUr
+for sale	1 TP0O:O/SR1:AEUl
+for six	1 TP0O:O/SR1:EUbgs
+for small	1 TP0O:O/SPHR1:AUl
+for so	1 TP0O:O/SR1:O
+for some	1 TP0O:O/SR1:Opl
+for such	1 TP0O:O/SR1:Ufp
+for sure	1 TP0O:O/SHR1:AOUr
+for that	1 TP0O:O/THR1:At
+for their	1 TP0O:O/THR1:A*Er
+for them	1 TP0O:O/THR1:Epl
+for these	1 TP0O:O/THR1:AOEs
+for this	1 TP0O:O/THR1:EUs
+for those	1 TP0O:O/THR1:OEs
+for three	1 TP0O:O/THR1:AOE
+for to	1 TP0O:O/TR1:O
+for two	1 TP0O:O/TR1:O
+for up	1 TP0O:O/R1:Up
+for us	1 TP0O:O/R1:Us
+for use	1 TP0O:O/R1:AOUs
+for what	1 TP0O:O/WR1:At
+for which	1 TP0O:O/WR1:EUfp
+for yards	1 TP0O:O/R1:Ardz
+for years	1 TP0O:O/R1:AErs
+for you	1 TP0O:O/R1:AOU
+for young	1 TP0O:O/R1:Upbg
+for your	1 TP0O:O/R1:OUr
+force and	1 TP1:OErs/0A:Apbd
+force in	1 TP1:OErs/0EU:EUpb
+force of	1 TP1:OErs/0O:Of
+form a	1 TP1:Orpl/0A:A
+form and	1 TP1:Orpl/0A:Apbd
+form of	1 TP1:Orpl/0O:Of
+forms of	1 TP1:Orpls/0O:Of
+found a	1 TP1:OUpbd/0A:A
+found at	1 TP1:OUpbd/0A:At
+found in	1 TP1:OUpbd/0EU:EUpb
+found it	1 TP1:OUpbd/0EU:EUt
+found on	1 TP1:OUpbd/0O:Opb
+found out	1 TP0O:OU/TKPH1:OUt
+found that	1 TP1:O*Upbtd/0A:At
+found to	1 TP1:OUpbtd/0O:O
+four days	1 TP0O:OU/TKR1:AEUs
+four months	1 TP0O:OU/PHR1:O*pbts
+four of	1 TP1:OUr/0O:Of
+four year	1 TP0O:OU/R1:AEr
+four years	1 TP0O:OU/R1:AErs
+fox news	1 TP0O:O/STKPH1:AOUs
+free and	1 TPR1:AOE/0A:Apbd
+free of	1 TPR1:AOE/0O:Of
+free to	1 TPR1:AOEt/0O:O
+friend and	1 TPR1:Epbd/0A:Apbd
+friend of	1 TPR1:Epbd/0O:Of
+friends and	1 TPR1:Epbdz/0A:Apbd
+from a	1 TPR0O:O/PH1:A
+from all	1 TPR0O:O/PH1:AUl
+from an	1 TPR0O:O/PH1:Apb
+from and	1 TPR0O:O/PH1:Apbd
+from both	1 TPR0O:O/PWH1:O*t
+from each	1 TPR0O:O/PH1:AEfp
+from her	1 TPR0O:O/PH1:Er
+from his	1 TPR0O:O/PH1:EUs
+from home	1 TPR0O:O/PH1:OEpl
+from in	1 TPR0O:O/PH1:EUpb
+from it	1 TPR0O:O/PH1:EUt
+from its	1 TPR0O:O/PH1:EUts
+from my	1 TPR0O:O/PH1:AOEU
+from new	1 TPR0O:O/TPH1:AOU
+from one	1 TPR0O:O/PWH1:Opb
+from our	1 TPR0O:O/PH1:OUr
+from scratch	1 TPR0O:O/SKPHR1:Afp
+from some	1 TPR0O:O/SPH1:Opl
+from that	1 TPR0O:O/TPH1:At
+from their	1 TPR0O:O/TPH1:A*Er
+from them	1 TPR0O:O/TPH1:Epl
+from there	1 TPR0O:O/TPH1:Er
+from these	1 TPR0O:O/TPH1:AOEs
+from this	1 TPR0O:O/TPH1:EUs
+from those	1 TPR0O:O/TPH1:OEs
+from time	1 TPR0O:O/TPH1:AOEUpl
+from to	1 TPR0O:O/TPH1:O
+from what	1 TPR0O:O/PWH1:At
+from which	1 TPR0O:O/PWH1:EUfp
+from your	1 TPR0O:O/PH1:OUr
+front and	1 TPR1:Opbt/0A:Apbd
+front of	1 TPR1:Opbt/0O:Of
+full of	1 TP1:Ul/0O:Of
+full time	1 TP0U:U/THR1:AOEUpl
+fun and	1 TP1:Upb/0A:Apbd
+fun to	1 TP1:Upbt/0O:O
+game and	1 TKPW1:AEUpl/0A:Apbd
+game in	1 TKPW1:AEUpl/0EU:EUpb
+game is	1 TKPW1:AEUpl/0EU:EUs
+game of	1 TKPW1:AEUpl/0O:Of
+game to	1 TKPW1:AEUplt/0O:O
+game was	1 TKPW1:AEUpl/0A:As
+game with	1 TKPW1:AEUpl/0EU:*EUt
+gave a	1 TKPW1:AEUf/0A:A
+gave him	1 TKPW1:AEUf/0EU:EUpl
+gave me	1 TKPW1:AEUfpl/0E:E
+gave up	1 TKPW0A:AEU/SR1:Up
+get a	1 TKPW1:Et/0A:A
+get an	1 TKPW1:Et/0A:Apb
+get back	1 TKPW0E:E/TPW1:Abg
+get in	1 TKPW1:Et/0EU:EUpb
+get it	1 TKPW1:Et/0EU:EUt
+get more	1 TKPW0E:E/TPH1:OEr
+get on	1 TKPW1:Et/0O:Opb
+get out	1 TKPW0E:E/T1:OUt
+get rid	1 TKPW0E:E/TR1:EUd
+get some	1 TKPW0E:E/ST1:Opl
+get that	1 TKPW1:*Et/0A:At
+get their	1 TKPW1:*Et/0E:A*Er
+get them	1 TKPW1:*Et/0E:Epl
+get through	1 TKPW1:*Ergt/0O:U
+get to	1 TKPW1:Et/0O:O
+gets a	1 TKPW1:Ets/0A:A
+give a	1 TKPW1:EUf/0A:A
+give him	1 TKPW1:EUf/0EU:EUpl
+give it	1 TKPW1:EUf/0EU:EUt
+give me	1 TKPW1:EUfpl/0E:E
+give them	1 TKPW1:*EUft/0E:Epl
+give up	1 TKPW0EU:EU/SR1:Up
+give us	1 TKPW1:EUf/0U:Us
+go and	1 TKPW1:O/0A:Apbd
+go back	1 TKPW0O:O/PW1:Abg
+go down	1 TKPW0O:O/TK1:OUpb
+go for	1 TKPW1:Of/0O:Or
+go in	1 TKPW1:O/0EU:EUpb
+go on	1 TKPW1:O/0O:Opb
+go out	1 TKPW0O:O/1:OUt
+go through	1 TKPW1:O*rt/0O:U
+go to	1 TKPW1:Ot/0O:O
+go with	1 TKPW1:O/0EU:*EUt
+goal is	1 TKPW1:O*El/0EU:EUs
+goal of	1 TKPW1:O*El/0O:Of
+goals and	1 TKPW1:O*Els/0A:Apbd
+god and	1 TKPW1:Od/0A:Apbd
+god is	1 TKPW1:Od/0EU:EUs
+goes on	1 TKPW1:O*Es/0O:Opb
+goes to	1 TKPW1:O*Etz/0O:O
+good and	1 TKPW1:AOd/0A:Apbd
+good as	1 TKPW1:AOd/0A:As
+good at	1 TKPW1:AOd/0A:At
+good for	1 TKPW1:AOfd/0O:Or
+good news	1 TKPW0O:AO/TKPH1:AOUs
+good thing	1 TKPW0O:AO/TKH1:EUpbg
+good to	1 TKPW1:AOtd/0O:O
+goods and	1 TKPW1:AOdz/0A:Apbd
+got a	1 TKPW1:Ot/0A:A
+got to	1 TKPW1:Ot/0O:O
+great deal	1 TKPWR0E:AE/TK1:AEl
+great for	1 TKPWR1:AEft/0O:Or
+great to	1 TKPWR1:AEt/0O:O
+great way	1 TKPWR0E:AE/TW1:AEU
+grew up	1 TKPWR0E:AOU/1:Up
+ground and	1 TKPWR1:OUpbd/0A:Apbd
+group and	1 TKPWR1:AOUp/0A:Apbd
+group is	1 TKPWR1:AOUp/0EU:EUs
+group of	1 TKPWR1:AOUp/0O:Of
+group that	1 TKPWR1:AO*Upt/0A:At
+groups and	1 TKPWR1:AOUps/0A:Apbd
+groups of	1 TKPWR1:AOUps/0O:Of
+growth and	1 TKPWR1:O*Et/0A:Apbd
+growth in	1 TKPWR1:O*Et/0EU:EUpb
+growth of	1 TKPWR1:O*Et/0O:Of
+guide to	1 TKPW1:AOEUtd/0O:O
+had a	1 H0A:A/TK1:A
+had an	1 H0A:A/TK1:Apb
+had been	1 H0A:A/TKPW1:AOEpb
+had come	1 H0A:A/TK1:Opl
+had died	1 H0A:A/TK1:AO*EUd
+had done	1 H0A:A/TK1:Opb
+had in	1 H0A:A/TK1:EUpb
+had it	1 H0A:A/TK1:EUt
+had just	1 H0A:A/STKWR1:Uft
+had left	1 H0A:A/TKHR1:Eft
+had made	1 H0A:A/TKPH1:AEUd
+had more	1 H0A:A/TKPH1:OEr
+had no	1 H0A:A/TKPH1:O
+had not	1 H0A:A/TKPH1:Ot
+had one	1 H0A:A/TKW1:Opb
+had some	1 H0A:A/STK1:Opl
+had their	1 H0A:A/TKH1:A*Er
+had to	1 H0A:A/TK1:O
+had two	1 H0A:A/TK1:O
+hair and	1 H1:A*EUr/0A:Apbd
+half a	1 H1:Af/0A:A
+half of	1 H1:Af/0O:Of
+hall of	1 H1:AUl/0O:Of
+hand and	1 H1:Apbd/0A:Apbd
+hand in	1 H1:Apbd/0EU:EUpb
+hand to	1 H1:Apbtd/0O:O
+hands and	1 H1:Apbdz/0A:Apbd
+hands of	1 H1:Apbdz/0O:Of
+hands on	1 H1:Apbdz/0O:Opb
+hard for	1 H1:Afrd/0O:Or
+hard to	1 H1:Artd/0O:O
+hard work	1 H0A:A/TKWR1:Orbg
+has a	1 H0A:A/S1:A
+has an	1 H0A:A/S1:Apb
+has been	1 H0A:A/SPW1:AOEpb
+has come	1 H0A:A/SK1:Opl
+has done	1 H0A:A/STK1:Opb
+has found	1 H0A:A/STP1:OUpbd
+has gone	1 H0A:A/STKPW1:Opb
+has grown	1 H0A:A/STKPWR1:O*Epb
+has had	1 H0A:A/S1:Ad
+has its	1 H0A:A/S1:EUts
+has just	1 H0A:A/SKWR1:Uft
+has led	1 H0A:A/SHR1:Ed
+has long	1 H0A:A/SHR1:Opbg
+has made	1 H0A:A/SPH1:AEUd
+has more	1 H0A:A/SPH1:OEr
+has no	1 H0A:A/STPH1:O
+has not	1 H0A:A/STPH1:Ot
+has now	1 H0A:A/STPH1:OU
+has one	1 H0A:A/SW1:Opb
+has said	1 H0A:A/S1:A*EUd
+has seen	1 H0A:A/S1:AOEpb
+has shown	1 H0A:A/SH1:O*Epb
+has since	1 H0A:A/S1:EUpbs
+has some	1 H0A:A/S1:Opl
+has to	1 H0A:A/ST1:O
+has two	1 H0A:A/ST1:O
+has won	1 H0A:A/SW1:Opb
+has yet	1 H0A:A/S1:Et
+have a	1 H0A:A/SR1:A
+have all	1 H0A:A/SR1:AUl
+have an	1 H0A:A/SR1:Apb
+have been	1 H0A:A/SPWR1:AOEpb
+have come	1 H0A:A/SKR1:Opl
+have died	1 H0A:A/STKR1:AO*EUd
+have done	1 H0A:A/STKR1:Opb
+have found	1 H0A:A/STPR1:OUpbd
+have gone	1 H0A:A/STKPWR1:Opb
+have had	1 H0A:A/SR1:Ad
+have in	1 H0A:A/SR1:EUpb
+have it	1 H0A:A/SR1:EUt
+have long	1 H0A:A/SHR1:Opbg
+have lost	1 H0A:A/SHR1:Oft
+have made	1 H0A:A/SPHR1:AEUd
+have more	1 H0A:A/SPHR1:OEr
+have no	1 H0A:A/STPHR1:O
+have not	1 H0A:A/STPHR1:Ot
+have now	1 H0A:A/STPHR1:OU
+have on	1 H0A:A/SR1:Opb
+have one	1 H0A:A/SWR1:Opb
+have said	1 H0A:A/SR1:A*EUd
+have seen	1 H0A:A/SR1:AOEpb
+have shown	1 H0A:A/SHR1:O*Epb
+have so	1 H0A:A/SR1:O
+have some	1 H0A:A/SR1:Opl
+have that	1 H0A:A/STHR1:At
+have their	1 H0A:A/STHR1:A*Er
+have this	1 H0A:A/STHR1:EUs
+have to	1 H0A:A/STR1:O
+have two	1 H0A:A/STR1:O
+have won	1 H0A:A/SWR1:Opb
+have you	1 H0A:A/SR1:AOU
+have your	1 H0A:A/SR1:OUr
+he and	1 H0E:E/1:Apbd
+he came	1 H0E:E/K1:AEUpl
+he can	1 H0E:E/K1:Apb
+he could	1 H0E:E/K1:OUld
+he did	1 H0E:E/TK1:EUd
+he died	1 H0E:E/TK1:AO*EUd
+he does	1 H0E:E/TK1:O*Es
+he felt	1 H0E:E/TP1:Elt
+he found	1 H0E:E/TP1:OUpbd
+he gave	1 H0E:E/TKPW1:AEUf
+he got	1 H0E:E/TKPW1:Ot
+he had	1 H0E:E/H1:Ad
+he has	1 H0E:E/H1:As
+he is	1 H0E:E/1:EUs
+he just	1 H0E:E/SKWR1:Uft
+he knew	1 H0E:E/TPH1:AOU
+he knows	1 H0E:E/TPH1:O*Es
+he left	1 H0E:E/HR1:Eft
+he made	1 H0E:E/PH1:AEUd
+he may	1 H0E:E/PH1:AEU
+he met	1 H0E:E/PH1:Et
+he might	1 H0E:E/PH1:AO*EUt
+he or	1 H0E:E/1:Or
+he said	1 H0E:E/S1:A*EUd
+he saw	1 H0E:E/S1:AU
+he says	1 H0E:E/S1:AEUs
+he should	1 H0E:E/SH1:OUld
+he spent	1 H0E:E/SP1:Epbt
+he then	1 H0E:E/TH1:Epb
+he thought	1 H0E:E/TH1:AUt
+he told	1 H0E:E/T1:Old
+he took	1 H0E:E/T1:AObg
+he wants	1 H0E:E/W1:Apbts
+he was	1 H0E:E/W1:As
+he went	1 H0E:E/W1:Epbt
+he will	1 H0E:E/W1:EUl
+he won	1 H0E:E/W1:Opb
+he would	1 H0E:E/W1:OUld
+he wrote	1 H0E:E/WR1:OEt
+head and	1 H1:AEd/0A:Apbd
+head coach	1 H0E:AE/TK1:O*Efp
+head of	1 H1:AEd/0O:Of
+head to	1 H1:AEtd/0O:O
+health and	1 H1:A*Elt/0A:Apbd
+health care	1 H0E:AE/TKHR1:AEUr
+health of	1 H1:A*Elt/0O:Of
+heard of	1 H1:AErd/0O:Of
+heart and	1 H1:AErt/0A:Apbd
+heart of	1 H1:AErt/0O:Of
+heat and	1 H1:AEt/0A:Apbd
+height of	1 H1:AOEUt/0O:Of
+held a	1 H1:Eld/0A:A
+held at	1 H1:Eld/0A:At
+held by	1 H1:Ebld/0EU:AOEU
+held in	1 H1:Eld/0EU:EUpb
+held on	1 H1:Eld/0O:Opb
+help in	1 H1:Epl/0EU:EUpb
+help of	1 H1:Epl/0O:Of
+help them	1 H1:*Eplt/0E:Epl
+help to	1 H1:Eplt/0O:O
+help us	1 H1:Epl/0U:Us
+help with	1 H1:Epl/0EU:*EUt
+helps to	1 H1:Efplt/0O:O
+her a	1 H0:E/R1:A
+her and	1 H0:E/R1:Apbd
+her as	1 H0:E/R1:As
+her death	1 H0:E/TKR1:A*Et
+her first	1 H0:E/TPR1:EUfrt
+her home	1 H0:E/R1:OEpl
+her in	1 H0:E/R1:EUpb
+her life	1 H0:E/HR1:AOEUf
+her new	1 H0:E/TPHR1:AOU
+her own	1 H0:E/R1:O*Epb
+her son	1 H0:E/SR1:Opb
+her that	1 H0:E/THR1:At
+her to	1 H0:E/TR1:O
+her with	1 H0:E/WR1:*EUt
+her work	1 H0:E/WR1:Orbg
+here and	1 H1:AOEr/0A:Apbd
+here are	1 H1:AOEr/0A:Ar
+here at	1 H1:AOEr/0A:At
+here for	1 H1:AO*Efr/0O:Or
+here in	1 H1:AOEr/0EU:EUpb
+here is	1 H1:AOEr/0EU:EUs
+here to	1 H1:AOErt/0O:O
+here we	1 H1:AOEr/0E:E
+high and	1 H1:AO*EU/0A:Apbd
+high as	1 H1:AO*EU/0A:As
+high court	1 H0EU:AO*EU/K1:OUrt
+high end	1 H0EU:AO*EU/1:Epbd
+high of	1 H1:AO*EU/0O:Of
+high risk	1 H0EU:AO*EU/R1:EUfbg
+high school	1 H0EU:AO*EU/SK1:AOl
+high speed	1 H0EU:AO*EU/SP1:AOEd
+him a	1 H0EU:EU/PH1:A
+him and	1 H0EU:EU/PH1:Apbd
+him as	1 H0EU:EU/PH1:As
+him at	1 H0EU:EU/PH1:At
+him for	1 H0EU:EU/TPH1:Or
+him from	1 H0EU:EU/TPHR1:Opl
+him he	1 H0EU:EU/PH1:E
+him in	1 H0EU:EU/PH1:EUpb
+him on	1 H0EU:EU/PH1:Opb
+him out	1 H0EU:EU/PH1:OUt
+him that	1 H0EU:EU/TPH1:At
+him to	1 H0EU:EU/TPH1:O
+him with	1 H0EU:EU/PWH1:*EUt
+hip hop	1 H0EU:EU/P1:Op
+his best	1 H0EU:EU/SPW1:Eft
+his book	1 H0EU:EU/SPW1:AObg
+his death	1 H0EU:EU/STK1:A*Et
+his face	1 H0EU:EU/STP1:AEUs
+his first	1 H0EU:EU/STP1:EUfrt
+his friend	1 H0EU:EU/STPR1:Epbd
+his friends	1 H0EU:EU/STPR1:Epbdz
+his hand	1 H0EU:EU/S1:Apbd
+his head	1 H0EU:EU/S1:AEd
+his home	1 H0EU:EU/S1:OEpl
+his last	1 H0EU:EU/SHR1:Aft
+his life	1 H0EU:EU/SHR1:AOEUf
+his mind	1 H0EU:EU/SPH1:AOEUpbd
+his most	1 H0EU:EU/SPH1:Oft
+his name	1 H0EU:EU/STPH1:AEUpl
+his new	1 H0EU:EU/STPH1:AOU
+his or	1 H0EU:EU/S1:Or
+his own	1 H0EU:EU/S1:O*Epb
+his role	1 H0EU:EU/SR1:OEl
+his son	1 H0EU:EU/S1:Opb
+his team	1 H0EU:EU/ST1:AEpl
+his time	1 H0EU:EU/ST1:AOEUpl
+his way	1 H0EU:EU/SW1:AEU
+his wife	1 H0EU:EU/SW1:AOEUf
+his work	1 H0EU:EU/SW1:Orbg
+hit a	1 H1:EUt/0A:A
+hit by	1 H1:EUbt/0EU:AOEU
+hold a	1 H1:Old/0A:A
+holds a	1 H1:Oldz/0A:A
+home and	1 H1:OEpl/0A:Apbd
+home for	1 H1:O*Efpl/0O:Or
+home in	1 H1:OEpl/0EU:EUpb
+home of	1 H1:OEpl/0O:Of
+home to	1 H1:OEplt/0O:O
+home with	1 H1:OEpl/0EU:*EUt
+hope for	1 H1:OEfp/0O:Or
+hope that	1 H1:O*Ept/0A:At
+hope to	1 H1:OEpt/0O:O
+host of	1 H1:Oft/0O:Of
+house and	1 H1:OUs/0A:Apbd
+house in	1 H1:OUs/0EU:EUpb
+house of	1 H1:OUs/0O:Of
+how a	1 H1:OU/0A:A
+how can	1 H1:O*Ubg/0A:Apb
+how did	1 H1:OUd/0EU:EUd
+how do	1 H1:OUd/0O:O
+how does	1 H1:OUd/0O:O*Es
+how he	1 H1:OU/0E:E
+how it	1 H1:OU/0EU:EUt
+how long	1 H0O:OU/HR1:Opbg
+how much	1 H0O:OU/PH1:Ufp
+how she	1 H1:OUrb/0E:E
+how they	1 H1:O*Ut/0E:A*EU
+how this	1 H1:O*Ut/0EU:EUs
+how to	1 H1:OUt/0O:O
+how we	1 H1:OU/0E:E
+how well	1 H0O:OU/W1:El
+ice cream	1 0EU:AOEU/SKR1:AEpl
+if a	1 0EU:EU/TP1:A
+if an	1 0EU:EU/TP1:Apb
+if he	1 0EU:EU/TP1:E
+if it	1 0EU:EU/TP1:EUt
+if not	1 0EU:EU/TPH1:Ot
+if one	1 0EU:EU/TPW1:Opb
+if she	1 0EU:EU/STPH1:E
+if so	1 0EU:EU/STP1:O
+if that	1 0EU:EU/TPH1:At
+if there	1 0EU:EU/TPH1:Er
+if they	1 0EU:EU/TPH1:A*EU
+if this	1 0EU:EU/TPH1:EUs
+if we	1 0EU:EU/TPW1:E
+if you	1 0EU:EU/TP1:AOU
+if your	1 0EU:EU/TP1:OUr
+in a	1 0EU:EU/TPH1:A
+in all	1 0EU:EU/TPH1:AUl
+in an	1 0EU:EU/TPH1:Apb
+in and	1 0EU:EU/TPH1:Apbd
+in as	1 0EU:EU/TPH1:As
+in at	1 0EU:EU/TPH1:At
+in black	1 0EU:EU/TPWHR1:Abg
+in both	1 0EU:EU/TPWH1:O*t
+in but	1 0EU:EU/TPWH1:Ut
+in by	1 0EU:EU/TPWH1:AOEU
+in case	1 0EU:EU/TKPH1:AEUs
+in charge	1 0EU:EU/TKPH1:Arpblg
+in court	1 0EU:EU/TKPH1:OUrt
+in depth	1 0EU:EU/TKPH1:*Ept
+in each	1 0EU:EU/TPH1:AEfp
+in east	1 0EU:EU/TPH1:AEft
+in fact	1 0EU:EU/TPH1:Abgt
+in five	1 0EU:EU/TPH1:AOEUf
+in for	1 0EU:EU/TPH1:Or
+in four	1 0EU:EU/TPH1:OUr
+in from	1 0EU:EU/TPHR1:Opl
+in front	1 0EU:EU/TPHR1:Opbt
+in full	1 0EU:EU/TPH1:Ul
+in game	1 0EU:EU/TKPWH1:AEUpl
+in good	1 0EU:EU/TKPWH1:AOd
+in hand	1 0EU:EU/TPH1:Apbd
+in he	1 0EU:EU/TPH1:E
+in her	1 0EU:EU/TPH1:Er
+in high	1 0EU:EU/TPH1:AO*EU
+in his	1 0EU:EU/TPH1:EUs
+in house	1 0EU:EU/TPH1:OUs
+in how	1 0EU:EU/TPH1:OU
+in is	1 0EU:EU/TPH1:EUs
+in it	1 0EU:EU/TPH1:EUt
+in its	1 0EU:EU/TPH1:EUts
+in just	1 0EU:EU/STKPWHR1:Uft
+in large	1 0EU:EU/TPHR1:Arpblg
+in late	1 0EU:EU/TPHR1:AEUt
+in law	1 0EU:EU/TPHR1:AU
+in less	1 0EU:EU/TPHR1:Es
+in life	1 0EU:EU/TPHR1:AOEUf
+in light	1 0EU:EU/TPHR1:AO*EUt
+in line	1 0EU:EU/TPHR1:AOEUpb
+in love	1 0EU:EU/TPHR1:Of
+in march	1 0EU:EU/TPH1:Afrpb
+in may	1 0EU:EU/TPH1:AEU
+in mid	1 0EU:EU/TPH1:EUd
+in mind	1 0EU:EU/TPH1:AOEUpbd
+in more	1 0EU:EU/TPH1:OEr
+in most	1 0EU:EU/TPH1:Oft
+in my	1 0EU:EU/TPH1:AOEU
+in need	1 0EU:EU/TPH1:AOEd
+in new	1 0EU:EU/TPH1:AOU
+in no	1 0EU:EU/TPH1:O
+in north	1 0EU:EU/TPH1:O*rt
+in of	1 0EU:EU/TPH1:Of
+in on	1 0EU:EU/TPH1:Opb
+in one	1 0EU:EU/TPWH1:Opb
+in or	1 0EU:EU/TPH1:Or
+in our	1 0EU:EU/TPH1:OUr
+in part	1 0EU:EU/TPH1:Art
+in place	1 0EU:EU/TPHR1:AEUs
+in real	1 0EU:EU/TPHR1:AEl
+in school	1 0EU:EU/STKPH1:AOl
+in search	1 0EU:EU/STPH1:AEfrpb
+in she	1 0EU:EU/STPH1:E
+in short	1 0EU:EU/STPH1:Ort
+in size	1 0EU:EU/STPH1:AOEUz
+in small	1 0EU:EU/STPH1:AUl
+in so	1 0EU:EU/STPH1:O
+in some	1 0EU:EU/STPH1:Opl
+in south	1 0EU:EU/STPH1:O*Ut
+in space	1 0EU:EU/STPH1:AEUs
+in spite	1 0EU:EU/STPH1:AOEUt
+in such	1 0EU:EU/STPH1:Ufp
+in terms	1 0EU:EU/TPH1:Erpls
+in that	1 0EU:EU/TPH1:At
+in their	1 0EU:EU/TPH1:A*Er
+in them	1 0EU:EU/TPH1:Epl
+in there	1 0EU:EU/TPH1:Er
+in these	1 0EU:EU/TPH1:AOEs
+in they	1 0EU:EU/TPH1:A*EU
+in this	1 0EU:EU/TPH1:EUs
+in those	1 0EU:EU/TPH1:OEs
+in three	1 0EU:EU/TPHR1:AOE
+in time	1 0EU:EU/TPH1:AOEUpl
+in to	1 0EU:EU/TPH1:O
+in touch	1 0EU:EU/TPH1:Ufp
+in town	1 0EU:EU/TPH1:OUpb
+in turn	1 0EU:EU/TPH1:Urpb
+in two	1 0EU:EU/TPH1:O
+in use	1 0EU:EU/TPH1:AOUs
+in was	1 0EU:EU/TPWH1:As
+in west	1 0EU:EU/TPWH1:Eft
+in what	1 0EU:EU/TPWH1:At
+in when	1 0EU:EU/TPWH1:Epb
+in which	1 0EU:EU/TPWH1:EUfp
+in with	1 0EU:EU/TPWH1:*EUt
+in years	1 0EU:EU/TPH1:AErs
+in your	1 0EU:EU/TPH1:OUr
+is a	1 0EU:EU/S1:A
+is all	1 0EU:EU/S1:AUl
+is an	1 0EU:EU/S1:Apb
+is and	1 0EU:EU/S1:Apbd
+is as	1 0EU:EU/S1:As
+is at	1 0EU:EU/S1:At
+is back	1 0EU:EU/SPW1:Abg
+is best	1 0EU:EU/SPW1:Eft
+is both	1 0EU:EU/SPW1:O*t
+is by	1 0EU:EU/SPW1:AOEU
+is clear	1 0EU:EU/SKHR1:AEr
+is done	1 0EU:EU/STK1:Opb
+is due	1 0EU:EU/STK1:AO*U
+is far	1 0EU:EU/STP1:Ar
+is for	1 0EU:EU/STP1:Or
+is found	1 0EU:EU/STP1:OUpbd
+is free	1 0EU:EU/STPR1:AOE
+is from	1 0EU:EU/STPR1:Opl
+is good	1 0EU:EU/STKPW1:AOd
+is great	1 0EU:EU/STKPWR1:AEt
+is hard	1 0EU:EU/S1:Ard
+is he	1 0EU:EU/S1:E
+is held	1 0EU:EU/S1:Eld
+is here	1 0EU:EU/S1:AOEr
+is his	1 0EU:EU/S1:EUs
+is home	1 0EU:EU/S1:OEpl
+is how	1 0EU:EU/S1:OU
+is in	1 0EU:EU/S1:EUpb
+is it	1 0EU:EU/S1:EUt
+is its	1 0EU:EU/S1:EUts
+is just	1 0EU:EU/SKWR1:Uft
+is known	1 0EU:EU/STPH1:O*Epb
+is less	1 0EU:EU/SHR1:Es
+is like	1 0EU:EU/SHR1:AOEUbg
+is made	1 0EU:EU/SPH1:AEUd
+is more	1 0EU:EU/SPH1:OEr
+is most	1 0EU:EU/SPH1:Oft
+is much	1 0EU:EU/SPH1:Ufp
+is my	1 0EU:EU/SPH1:AOEU
+is no	1 0EU:EU/STPH1:O
+is not	1 0EU:EU/STPH1:Ot
+is now	1 0EU:EU/STPH1:OU
+is of	1 0EU:EU/S1:Of
+is on	1 0EU:EU/S1:Opb
+is one	1 0EU:EU/SW1:Opb
+is our	1 0EU:EU/S1:OUr
+is out	1 0EU:EU/S1:OUt
+is part	1 0EU:EU/SP1:Art
+is quite	1 0EU:EU/SKW1:AOEUt
+is right	1 0EU:EU/SR1:AO*EUt
+is said	1 0EU:EU/S1:A*EUd
+is seen	1 0EU:EU/S1:AOEpb
+is set	1 0EU:EU/S1:Et
+is shown	1 0EU:EU/SH1:O*Epb
+is so	1 0EU:EU/S1:O
+is some	1 0EU:EU/S1:Opl
+is still	1 0EU:EU/ST1:EUl
+is such	1 0EU:EU/S1:Ufp
+is that	1 0EU:EU/STH1:At
+is then	1 0EU:EU/STH1:Epb
+is there	1 0EU:EU/STH1:Er
+is this	1 0EU:EU/STH1:EUs
+is thought	1 0EU:EU/STH1:AUt
+is to	1 0EU:EU/ST1:O
+is too	1 0EU:EU/ST1:AO
+is true	1 0EU:EU/STR1:AO*U
+is up	1 0EU:EU/S1:Up
+is well	1 0EU:EU/SW1:El
+is what	1 0EU:EU/SW1:At
+is when	1 0EU:EU/SW1:Epb
+is where	1 0EU:EU/SW1:Er
+is why	1 0EU:EU/SW1:AOEU
+is with	1 0EU:EU/SW1:*EUt
+is worth	1 0EU:EU/SW1:O*rt
+is your	1 0EU:EU/S1:OUr
+it a	1 0EU:EU/T1:A
+it all	1 0EU:EU/T1:AUl
+it an	1 0EU:EU/T1:Apb
+it and	1 0EU:EU/T1:Apbd
+it as	1 0EU:EU/T1:As
+it at	1 0EU:EU/T1:At
+it back	1 0EU:EU/TPW1:Abg
+it be	1 0EU:EU/TPW1:E
+it but	1 0EU:EU/TPW1:Ut
+it by	1 0EU:EU/TPW1:AOEU
+it came	1 0EU:EU/TK1:AEUpl
+it can	1 0EU:EU/TK1:Apb
+it clear	1 0EU:EU/TKHR1:AEr
+it could	1 0EU:EU/TK1:OUld
+it did	1 0EU:EU/TK1:EUd
+it does	1 0EU:EU/TK1:O*Es
+it down	1 0EU:EU/TK1:OUpb
+it feels	1 0EU:EU/TP1:AOEls
+it for	1 0EU:EU/TP1:Or
+it from	1 0EU:EU/TPR1:Opl
+it gets	1 0EU:EU/TKPW1:Ets
+it goes	1 0EU:EU/TKPW1:O*Es
+it had	1 0EU:EU/T1:Ad
+it has	1 0EU:EU/T1:As
+it he	1 0EU:EU/T1:E
+it helps	1 0EU:EU/T1:Epls
+it in	1 0EU:EU/T1:EUpb
+it is	1 0EU:EU/T1:EUs
+it just	1 0EU:EU/STKWR1:Uft
+it looks	1 0EU:EU/THR1:AObgs
+it made	1 0EU:EU/TPH1:AEUd
+it may	1 0EU:EU/TPH1:AEU
+it means	1 0EU:EU/TPH1:AEpbs
+it might	1 0EU:EU/TPH1:AO*EUt
+it more	1 0EU:EU/TPH1:OEr
+it must	1 0EU:EU/TPH1:Uft
+it needs	1 0EU:EU/TPH1:AOEdz
+it now	1 0EU:EU/TPH1:OU
+it off	1 0EU:EU/T1:Of
+it on	1 0EU:EU/T1:Opb
+it or	1 0EU:EU/T1:Or
+it out	1 0EU:EU/T1:OUt
+it right	1 0EU:EU/TR1:AO*EUt
+it said	1 0EU:EU/ST1:A*EUd
+it says	1 0EU:EU/ST1:AEUs
+it seems	1 0EU:EU/ST1:AOEpls
+it should	1 0EU:EU/STH1:OUld
+it shows	1 0EU:EU/STH1:O*Es
+it so	1 0EU:EU/ST1:O
+it sounds	1 0EU:EU/ST1:OUpbdz
+it still	1 0EU:EU/ST1:EUl
+it that	1 0EU:EU/TH1:At
+it through	1 0EU:EU/THR1:U
+it to	1 0EU:EU/T1:O
+it too	1 0EU:EU/T1:AO
+it took	1 0EU:EU/T1:AObg
+it turns	1 0EU:EU/T1:Urpbs
+it up	1 0EU:EU/T1:Up
+it was	1 0EU:EU/TW1:As
+it were	1 0EU:EU/TW1:Er
+it when	1 0EU:EU/TW1:Epb
+it will	1 0EU:EU/TW1:EUl
+it with	1 0EU:EU/TW1:*EUt
+it won	1 0EU:EU/TW1:Opb
+it works	1 0EU:EU/TW1:Orbgs
+it would	1 0EU:EU/TW1:OUld
+its first	1 0EU:EU/STP1:EUfrt
+its most	1 0EU:EU/STPH1:Oft
+its name	1 0EU:EU/STPH1:AEUpl
+its new	1 0EU:EU/STPH1:AOU
+its own	1 0EU:EU/ST1:O*Epb
+its use	1 0EU:EU/ST1:AOUs
+its way	1 0EU:EU/STW1:AEU
+job and	1 SKWR1:Ob/0A:Apbd
+job of	1 SKWR1:Ob/0O:Of
+jobs and	1 SKWR1:Obs/0A:Apbd
+jobs in	1 SKWR1:Obs/0EU:EUpb
+just a	1 SKWR1:Uft/0A:A
+just as	1 SKWR1:Uft/0A:As
+just be	1 SKWR1:Ufbt/0E:E
+just for	1 SKWR1:Uft/0O:Or
+just have	1 SKWR1:Uft/0A:Af
+just how	1 SKWR0U:U/ST1:OU
+just in	1 SKWR1:Uft/0EU:EUpb
+just like	1 SKWR0U:U/STHR1:AOEUbg
+just not	1 SKWR0U:U/STPH1:Ot
+just one	1 SKWR0U:U/STW1:Opb
+just so	1 SKWR1:Ufts/0O:O
+just that	1 SKWR1:*Uft/0A:At
+just to	1 SKWR1:Uft/0O:O
+just two	1 SKWR0U:U/ST1:O
+just want	1 SKWR0U:U/STW1:Apbt
+keep a	1 K1:AOEp/0A:A
+keep in	1 K1:AOEp/0EU:EUpb
+keep it	1 K1:AOEp/0EU:EUt
+keep their	1 K1:AO*Ept/0E:A*Er
+keep them	1 K1:AO*Ept/0E:Epl
+keep up	1 K0E:AOE/P1:Up
+key to	1 K1:AOEt/0O:O
+kids and	1 K1:EUdz/0A:Apbd
+kind of	1 K1:AOEUpbd/0O:Of
+kinds of	1 K1:AOEUpbdz/0O:Of
+king and	1 K1:EUpbg/0A:Apbd
+king of	1 K1:EUpbg/0O:Of
+knew that	1 TPH1:AO*Ut/0A:At
+know how	1 TPH0O:O*E/H1:OU
+know if	1 TPH1:O*E/0EU:EUf
+know it	1 TPH1:O*E/0EU:EUt
+know that	1 TPH1:O*Et/0A:At
+know this	1 TPH1:O*Et/0EU:EUs
+know what	1 TPH0O:O*E/WH1:At
+know when	1 TPH0O:O*E/WH1:Epb
+know where	1 TPH0O:O*E/WH1:Er
+know who	1 TPH1:O*E/0O:O
+known as	1 TPH1:O*Epb/0A:As
+known for	1 TPH1:O*Efpb/0O:Or
+known in	1 TPH1:O*Epb/0EU:EUpb
+known to	1 TPH1:O*Epbt/0O:O
+lack of	1 HR1:Abg/0O:Of
+land and	1 HR1:Apbd/0A:Apbd
+land of	1 HR1:Apbd/0O:Of
+large and	1 HR1:Arpblg/0A:Apbd
+large scale	1 HR0A:A/SKWR1:AEUl
+last few	1 HR0A:A/STP1:AOU
+last month	1 HR0A:A/STPH1:O*pbt
+last night	1 HR0A:A/STPH1:AO*EUt
+last time	1 HR0A:A/ST1:AOEUpl
+last two	1 HR0A:A/ST1:O
+last week	1 HR0A:A/STW1:AOEbg
+last year	1 HR0A:A/ST1:AEr
+last years	1 HR0A:A/ST1:AErs
+late in	1 HR1:AEUt/0EU:EUpb
+launch of	1 HR1:AUfrpb/0O:Of
+law and	1 HR1:AU/0A:Apbd
+law of	1 HR1:AU/0O:Of
+laws and	1 HR1:AUs/0A:Apbd
+laws of	1 HR1:AUs/0O:Of
+layer of	1 HR1:AEUr/0O:Of
+lead to	1 HR1:AEtd/0O:O
+learn how	1 HR0:AE/TPHR1:OU
+learn more	1 HR0:AE/TPHR1:OEr
+learn to	1 HR1:AErpbt/0O:O
+least a	1 HR1:AEft/0A:A
+least one	1 HR0E:AE/STW1:Opb
+least two	1 HR0E:AE/ST1:O
+led by	1 HR1:Ebd/0EU:AOEU
+led to	1 HR1:Etd/0O:O
+left and	1 HR1:Eft/0A:Apbd
+left in	1 HR1:Eft/0EU:EUpb
+left to	1 HR1:Eft/0O:O
+left with	1 HR1:Eft/0EU:*EUt
+length of	1 HR1:*Epbgt/0O:Of
+less than	1 HR1:*Ets/0A:Apb
+let it	1 HR1:Et/0EU:EUt
+let me	1 HR1:Eplt/0E:E
+let them	1 HR1:*Et/0E:Epl
+let us	1 HR1:Et/0U:Us
+life and	1 HR1:AOEUf/0A:Apbd
+life as	1 HR1:AOEUf/0A:As
+life in	1 HR1:AOEUf/0EU:EUpb
+life is	1 HR1:AOEUf/0EU:EUs
+life of	1 HR1:AOEUf/0O:Of
+life to	1 HR1:AOEUft/0O:O
+light and	1 HR1:AO*EUt/0A:Apbd
+light of	1 HR1:AO*EUt/0O:Of
+light on	1 HR1:AO*EUt/0O:Opb
+like a	1 HR1:AOEUbg/0A:A
+like all	1 HR0EU:AOEU/K1:AUl
+like an	1 HR1:AOEUbg/0A:Apb
+like in	1 HR1:AOEUbg/0EU:EUpb
+like it	1 HR1:AOEUbg/0EU:EUt
+like me	1 HR1:AOEUpblg/0E:E
+like that	1 HR1:AO*EUbgt/0A:At
+like they	1 HR1:AO*EUbgt/0E:A*EU
+like this	1 HR1:AO*EUbgt/0EU:EUs
+like to	1 HR1:AOEUbgt/0O:O
+like we	1 HR1:AOEUbg/0E:E
+line and	1 HR1:AOEUpb/0A:Apbd
+line of	1 HR1:AOEUpb/0O:Of
+line to	1 HR1:AOEUpbt/0O:O
+line up	1 HR0EU:AOEU/TPH1:Up
+line with	1 HR1:AOEUpb/0EU:*EUt
+link to	1 HR1:*EUpbgt/0O:O
+links to	1 HR1:*EUpbgs/0O:O
+list of	1 HR1:EUft/0O:Of
+live and	1 HR1:AOEUf/0A:Apbd
+live in	1 HR1:AOEUf/0EU:EUpb
+live on	1 HR1:AOEUf/0O:Opb
+live with	1 HR1:AOEUf/0EU:*EUt
+long and	1 HR1:Opbg/0A:Apbd
+long as	1 HR1:Opbg/0A:As
+long been	1 HR1:Opbg/0E:AOEpb
+look at	1 HR1:AObg/0A:At
+look for	1 HR1:AOfbg/0O:Or
+look like	1 HR0O:AO/KHR1:AOEUbg
+look to	1 HR1:AObgt/0O:O
+looks like	1 HR0O:AO/SKHR1:AOEUbg
+loss of	1 HR1:Os/0O:Of
+lost in	1 HR1:Oft/0EU:EUpb
+lost their	1 HR1:O*ft/0E:A*Er
+lost to	1 HR1:Oft/0O:O
+lot more	1 HR0O:O/TPH1:OEr
+lot of	1 HR1:Ot/0O:Of
+lot to	1 HR1:Ot/0O:O
+lots of	1 HR1:Ots/0O:Of
+love and	1 HR1:Of/0A:Apbd
+love for	1 HR1:Of/0O:Or
+love it	1 HR1:Of/0EU:EUt
+love of	1 HR1:Of/0O:Of
+love that	1 HR1:O*ft/0A:At
+love this	1 HR1:O*ft/0EU:EUs
+love to	1 HR1:Oft/0O:O
+love with	1 HR1:Of/0EU:*EUt
+low and	1 HR1:O*E/0A:Apbd
+low cost	1 HR0O:O*E/K1:Oft
+low of	1 HR1:O*E/0O:Of
+made a	1 PH1:AEUd/0A:A
+made an	1 PH1:AEUd/0A:Apb
+made by	1 PH1:AEUbd/0EU:AOEU
+made for	1 PH1:AEUfd/0O:Or
+made him	1 PH1:AEUd/0EU:EUpl
+made his	1 PH1:AEUd/0EU:EUs
+made in	1 PH1:AEUd/0EU:EUpb
+made it	1 PH1:AEUd/0EU:EUt
+made me	1 PH1:AEUpld/0E:E
+made of	1 PH1:AEUd/0O:Of
+made this	1 PH1:A*EUtd/0EU:EUs
+made to	1 PH1:AEUtd/0O:O
+made up	1 PH0A:AEU/TK1:Up
+made with	1 PH1:AEUd/0EU:*EUt
+mail in	1 PH1:A*EUl/0EU:EUpb
+make a	1 PH1:AEUbg/0A:A
+make an	1 PH1:AEUbg/0A:Apb
+make it	1 PH1:AEUbg/0EU:EUt
+make me	1 PH1:AEUpblg/0E:E
+make sense	1 PH0A:AEU/SK1:Epbs
+make sure	1 PH0A:AEU/SKH1:AOUr
+make that	1 PH1:A*EUbgt/0A:At
+make their	1 PH1:A*EUbgt/0E:A*Er
+make them	1 PH1:A*EUbgt/0E:Epl
+make this	1 PH1:A*EUbgt/0EU:EUs
+make up	1 PH0A:AEU/K1:Up
+man and	1 PH1:Apb/0A:Apbd
+man in	1 PH1:Apb/0EU:EUpb
+man is	1 PH1:Apb/0EU:EUs
+man of	1 PH1:Apb/0O:Of
+man was	1 PH1:Apb/0A:As
+man who	1 PH1:Apb/0O:O
+march and	1 PH1:Afrpb/0A:Apbd
+masks and	1 PH1:Afbgs/0A:Apbd
+mass of	1 PH1:As/0O:Of
+may and	1 PH0A:AEU/1:Apbd
+may be	1 PH0A:AEU/PW1:E
+may have	1 PH0A:AEU/H1:Af
+may need	1 PH0A:AEU/TPH1:AOEd
+may not	1 PH0A:AEU/TPH1:Ot
+me a	1 PH0E:E/1:A
+me and	1 PH0E:E/1:Apbd
+me as	1 PH0E:E/1:As
+me for	1 PH0E:E/TP1:Or
+me in	1 PH0E:E/1:EUpb
+me is	1 PH0E:E/1:EUs
+me it	1 PH0E:E/1:EUt
+me on	1 PH0E:E/1:Opb
+me that	1 PH0E:E/TH1:At
+me to	1 PH0E:E/T1:O
+me with	1 PH0E:E/W1:*EUt
+mean that	1 PH1:A*Epbt/0A:At
+means of	1 PH1:AEpbs/0O:Of
+means that	1 PH1:A*Epbtz/0A:At
+means to	1 PH1:AEpbtz/0O:O
+meant that	1 PH1:A*Epbt/0A:At
+meant to	1 PH1:AEpbt/0O:O
+meet with	1 PH1:AOEt/0EU:*EUt
+men and	1 PH1:Epb/0A:Apbd
+men in	1 PH1:Epb/0EU:EUpb
+men to	1 PH1:Epbt/0O:O
+men were	1 PH1:Epb/0:Er
+men who	1 PH1:Epb/0O:O
+met with	1 PH1:Et/0EU:*EUt
+midst of	1 PH1:*EUft/0O:Of
+might be	1 PH0EU:AO*EU/TPW1:E
+might have	1 PH0EU:AO*EU/T1:Af
+might not	1 PH0EU:AO*EU/TPH1:Ot
+mind and	1 PH1:AOEUpbd/0A:Apbd
+mind that	1 PH1:AO*EUpbtd/0A:At
+mix of	1 PH1:EUbgs/0O:Of
+month and	1 PH1:O*pbt/0A:Apbd
+month of	1 PH1:O*pbt/0O:Of
+months and	1 PH1:O*pbts/0A:Apbd
+months in	1 PH1:O*pbts/0EU:EUpb
+months of	1 PH1:O*pbts/0O:Of
+months to	1 PH1:O*fpbt/0O:O
+more and	1 PH1:OEr/0A:Apbd
+more in	1 PH1:OEr/0EU:EUpb
+more like	1 PH0O:OE/HR1:AOEUbg
+more of	1 PH1:OEr/0O:Of
+more on	1 PH1:OEr/0O:Opb
+more or	1 PH1:OEr/0O:Or
+more than	1 PH1:O*Ert/0A:Apb
+more time	1 PH0O:OE/TR1:AOEUpl
+more to	1 PH1:OErt/0O:O
+most of	1 PH1:Oft/0O:Of
+most part	1 PH0O:O/STP1:Art
+move on	1 PH1:Of/0O:Opb
+move to	1 PH1:Oft/0O:O
+much as	1 PH1:Ufp/0A:As
+much for	1 PH1:Ufp/0O:Or
+much in	1 PH1:Ufp/0EU:EUpb
+much less	1 PH0U:U/KHR1:Es
+much like	1 PH0U:U/KHR1:AOEUbg
+much more	1 PH0U:U/KPH1:OEr
+much of	1 PH1:Ufp/0O:Of
+much time	1 PH0U:U/TKH1:AOEUpl
+much to	1 PH1:Ufpt/0O:O
+must be	1 PH0U:U/STPW1:E
+must have	1 PH0U:U/ST1:Af
+must not	1 PH0U:U/STPH1:Ot
+my dad	1 PH0EU:AOEU/TK1:Ad
+my first	1 PH0EU:AOEU/TP1:EUfrt
+my friend	1 PH0EU:AOEU/TPR1:Epbd
+my friends	1 PH0EU:AOEU/TPR1:Epbdz
+my head	1 PH0EU:AOEU/H1:AEd
+my heart	1 PH0EU:AOEU/H1:AErt
+my kids	1 PH0EU:AOEU/K1:EUdz
+my life	1 PH0EU:AOEU/HR1:AOEUf
+my mind	1 PH0EU:AOEU/PH1:AOEUpbd
+my mom	1 PH0EU:AOEU/PH1:Opl
+my own	1 PH0EU:AOEU/1:O*Epb
+my son	1 PH0EU:AOEU/S1:Opb
+my wife	1 PH0EU:AOEU/W1:AOEUf
+name and	1 TPH1:AEUpl/0A:Apbd
+name for	1 TPH1:A*EUfpl/0O:Or
+name in	1 TPH1:AEUpl/0EU:EUpb
+name is	1 TPH1:AEUpl/0EU:EUs
+name of	1 TPH1:AEUpl/0O:Of
+name to	1 TPH1:AEUplt/0O:O
+name was	1 TPH1:AEUpl/0A:As
+need a	1 TPH1:AOEd/0A:A
+need for	1 TPH1:AOEfd/0O:Or
+need it	1 TPH1:AOEd/0EU:EUt
+need not	1 TPH0E:AOE/TKPH1:Ot
+need of	1 TPH1:AOEd/0O:Of
+need to	1 TPH1:AOEtd/0O:O
+needs a	1 TPH1:AOEdz/0A:A
+needs and	1 TPH1:AOEdz/0A:Apbd
+needs of	1 TPH1:AOEdz/0O:Of
+new and	1 TPH1:AOU/0A:Apbd
+new book	1 TPH0E:AOU/PW1:AObg
+new to	1 TPH1:AOUt/0O:O
+new world	1 TPH0E:AOU/W1:Orld
+new year	1 TPH0E:AOU/KWR1:AEr
+news and	1 TPH1:AOUs/0A:Apbd
+news of	1 TPH1:AOUs/0O:Of
+news that	1 TPH1:AO*Utz/0A:At
+next day	1 TPH0E:E/STK1:AEU
+next few	1 TPH0E:E/STKP1:AOU
+next month	1 TPH0E:E/STKPH1:O*pbt
+next time	1 TPH0E:E/STK1:AOEUpl
+next to	1 TPH1:Ebgts/0O:O
+next two	1 TPH0E:E/STK1:O
+next week	1 TPH0E:E/STKW1:AOEbg
+next year	1 TPH0E:E/STK1:AEr
+nice to	1 TPH1:AOEUft/0O:O
+night and	1 TPH1:AO*EUt/0A:Apbd
+night in	1 TPH1:AO*EUt/0EU:EUpb
+night of	1 TPH1:AO*EUt/0O:Of
+no doubt	1 TPH0O:O/TK1:OUt
+no more	1 TPH0O:O/PH1:OEr
+no need	1 TPH0O:O/TPH1:AOEd
+no one	1 TPH0O:O/W1:Opb
+no such	1 TPH0O:O/S1:Ufp
+no time	1 TPH0O:O/T1:AOEUpl
+no way	1 TPH0O:O/W1:AEU
+none of	1 TPH1:Opb/0O:Of
+north and	1 TPH1:O*rt/0A:Apbd
+north of	1 TPH1:O*rt/0O:Of
+not a	1 TPH1:Ot/0A:A
+not all	1 TPH0O:O/T1:AUl
+not an	1 TPH1:Ot/0A:Apb
+not as	1 TPH1:Ot/0A:As
+not at	1 TPH1:Ot/0A:At
+not be	1 TPH1:Obt/0E:E
+not been	1 TPH1:Obt/0E:AOEpb
+not clear	1 TPH0O:O/TKHR1:AEr
+not for	1 TPH1:Oft/0O:Or
+not get	1 TPH0O:O/TKPW1:Et
+not go	1 TPH0O:O/TKPW1:O
+not have	1 TPH1:Ot/0A:Af
+not in	1 TPH1:Ot/0EU:EUpb
+not just	1 TPH0O:O/STKWR1:Uft
+not know	1 TPH0O:O/TPH1:O*E
+not known	1 TPH0O:O/TPH1:O*Epb
+not like	1 TPH0O:O/THR1:AOEUbg
+not make	1 TPH0O:O/TPH1:AEUbg
+not mean	1 TPH0O:O/TPH1:AEpb
+not much	1 TPH0O:O/TPH1:Ufp
+not need	1 TPH0O:O/TPH1:AOEd
+not on	1 TPH1:Ot/0O:Opb
+not one	1 TPH0O:O/TW1:Opb
+not see	1 TPH0O:O/ST1:AOE
+not so	1 TPH1:Ots/0O:O
+not sure	1 TPH0O:O/STH1:AOUr
+not take	1 TPH0O:O/T1:AEUbg
+not that	1 TPH1:O*t/0A:At
+not to	1 TPH1:Ot/0O:O
+not too	1 TPH0O:O/T1:AO
+not use	1 TPH0O:O/T1:AOUs
+not want	1 TPH0O:O/TW1:Apbt
+not work	1 TPH0O:O/TW1:Orbg
+not yet	1 TPH0O:O/T1:Et
+note on	1 TPH1:OEt/0O:Opb
+note that	1 TPH1:O*Et/0A:At
+now a	1 TPH1:OU/0A:A
+now and	1 TPH1:OU/0A:Apbd
+now be	1 TPH1:OUb/0E:E
+now been	1 TPH1:OUb/0E:AOEpb
+now has	1 TPH1:OU/0A:As
+now have	1 TPH1:OU/0A:Af
+now he	1 TPH1:OU/0E:E
+now in	1 TPH1:OU/0EU:EUpb
+now is	1 TPH1:OU/0EU:EUs
+now it	1 TPH1:OU/0EU:EUt
+now owns	1 TPH0O:OU/1:O*Epbs
+now that	1 TPH1:O*Ut/0A:At
+now they	1 TPH1:O*Ut/0E:A*EU
+now to	1 TPH1:OUt/0O:O
+now we	1 TPH1:OU/0E:E
+of a	1 0O:O/SR1:A
+of age	1 0O:O/SR1:AEUpblg
+of air	1 0O:O/SR1:A*EUr
+of all	1 0O:O/SR1:AUl
+of an	1 0O:O/SR1:Apb
+of and	1 0O:O/SR1:Apbd
+of art	1 0O:O/SR1:Art
+of as	1 0O:O/SR1:As
+of at	1 0O:O/SR1:At
+of black	1 0O:O/SPWHR1:Abg
+of blood	1 0O:O/SPWHR1:AOd
+of books	1 0O:O/SPWR1:AObgs
+of both	1 0O:O/SPWR1:O*t
+of by	1 0O:O/SPWR1:AOEU
+of choice	1 0O:O/SKHR1:OEUs
+of course	1 0O:O/SKR1:OUrs
+of days	1 0O:O/STKR1:AEUs
+of death	1 0O:O/STKR1:A*Et
+of each	1 0O:O/SR1:AEfp
+of fame	1 0O:O/STPR1:AEUpl
+of five	1 0O:O/STPR1:AOEUf
+of food	1 0O:O/STPR1:AOd
+of for	1 0O:O/STPR1:Or
+of four	1 0O:O/STPR1:OUr
+of free	1 0O:O/STPR1:AOE
+of from	1 0O:O/STPR1:Opl
+of fun	1 0O:O/STPR1:Upb
+of god	1 0O:O/STKPWR1:Od
+of gold	1 0O:O/STKPWR1:Old
+of good	1 0O:O/STKPWR1:AOd
+of great	1 0O:O/STKPWR1:AEt
+of health	1 0O:O/SR1:A*Elt
+of her	1 0O:O/SR1:Er
+of high	1 0O:O/SR1:AO*EU
+of him	1 0O:O/SR1:EUpl
+of his	1 0O:O/SR1:EUs
+of how	1 0O:O/SR1:OU
+of in	1 0O:O/SR1:EUpb
+of is	1 0O:O/SR1:EUs
+of it	1 0O:O/SR1:EUt
+of its	1 0O:O/SR1:EUts
+of just	1 0O:O/SKWR1:Uft
+of land	1 0O:O/SHR1:Apbd
+of large	1 0O:O/SHR1:Arpblg
+of last	1 0O:O/SHR1:Aft
+of law	1 0O:O/SHR1:AU
+of life	1 0O:O/SHR1:AOEUf
+of light	1 0O:O/SHR1:AO*EUt
+of long	1 0O:O/SHR1:Opbg
+of love	1 0O:O/SHR1:Of
+of march	1 0O:O/SPHR1:Afrpb
+of mass	1 0O:O/SPHR1:As
+of may	1 0O:O/SPHR1:AEU
+of me	1 0O:O/SPHR1:E
+of men	1 0O:O/SPHR1:Epb
+of mind	1 0O:O/SPHR1:AOEUpbd
+of mine	1 0O:O/SPHR1:AOEUpb
+of months	1 0O:O/SPHR1:O*pbts
+of more	1 0O:O/SPHR1:OEr
+of most	1 0O:O/SPHR1:Oft
+of my	1 0O:O/SPHR1:AOEU
+of new	1 0O:O/STPHR1:AOU
+of no	1 0O:O/STPHR1:O
+of non	1 0O:O/STPHR1:Opb
+of north	1 0O:O/STPHR1:O*rt
+of not	1 0O:O/STPHR1:Ot
+of old	1 0O:O/SR1:Old
+of on	1 0O:O/SR1:Opb
+of one	1 0O:O/SWR1:Opb
+of or	1 0O:O/SR1:Or
+of our	1 0O:O/SR1:OUr
+of per	1 0O:O/SPR1:Er
+of real	1 0O:O/SR1:AEl
+of school	1 0O:O/SKR1:AOl
+of self	1 0O:O/SR1:Efl
+of six	1 0O:O/SR1:EUbgs
+of small	1 0O:O/SPHR1:AUl
+of some	1 0O:O/SR1:Opl
+of south	1 0O:O/SR1:O*Ut
+of space	1 0O:O/SPR1:AEUs
+of staff	1 0O:O/STR1:Af
+of state	1 0O:O/STR1:AEUt
+of such	1 0O:O/SR1:Ufp
+of that	1 0O:O/STHR1:At
+of their	1 0O:O/STHR1:A*Er
+of them	1 0O:O/STHR1:Epl
+of these	1 0O:O/STHR1:AOEs
+of things	1 0O:O/STHR1:EUpbgs
+of this	1 0O:O/STHR1:EUs
+of those	1 0O:O/STHR1:OEs
+of three	1 0O:O/STHR1:AOE
+of time	1 0O:O/STR1:AOEUpl
+of to	1 0O:O/STR1:O
+of two	1 0O:O/STR1:O
+of up	1 0O:O/SR1:Up
+of us	1 0O:O/SR1:Us
+of use	1 0O:O/SR1:AOUs
+of war	1 0O:O/SWR1:Ar
+of ways	1 0O:O/SWR1:AEUs
+of weeks	1 0O:O/SWR1:AOEbgs
+of what	1 0O:O/SWR1:At
+of when	1 0O:O/SWR1:Epb
+of where	1 0O:O/SWR1:Er
+of which	1 0O:O/SWR1:EUfp
+of white	1 0O:O/SWR1:AOEUt
+of who	1 0O:O/SR1:O
+of whom	1 0O:O/SR1:Opl
+of words	1 0O:O/SWR1:Ordz
+of work	1 0O:O/SWR1:Orbg
+of world	1 0O:O/SWR1:Orld
+of year	1 0O:O/SR1:AEr
+of years	1 0O:O/SR1:AErs
+of you	1 0O:O/SR1:AOU
+of young	1 0O:O/SR1:Upbg
+of your	1 0O:O/SR1:OUr
+off a	1 1:Of/0A:A
+off and	1 1:Of/0A:Apbd
+off in	1 1:Of/0EU:EUpb
+off of	1 1:Of/0O:Of
+off on	1 1:Of/0O:Opb
+off to	1 1:Oft/0O:O
+off with	1 1:Of/0EU:*EUt
+oil and	1 1:OEUl/0A:Apbd
+old and	1 1:Old/0A:Apbd
+old man	1 0O:O/TKPHR1:Apb
+on a	1 0O:O/TPH1:A
+on all	1 0O:O/TPH1:AUl
+on an	1 0O:O/TPH1:Apb
+on and	1 0O:O/TPH1:Apbd
+on board	1 0O:O/TPWH1:O*Erd
+on both	1 0O:O/TPWH1:O*t
+on each	1 0O:O/TPH1:AEfp
+on earth	1 0O:O/TPH1:A*Ert
+on for	1 0O:O/TPH1:Or
+on her	1 0O:O/TPH1:Er
+on him	1 0O:O/TPH1:EUpl
+on his	1 0O:O/TPH1:EUs
+on how	1 0O:O/TPH1:OU
+on in	1 0O:O/TPH1:EUpb
+on it	1 0O:O/TPH1:EUt
+on its	1 0O:O/TPH1:EUts
+on march	1 0O:O/TPH1:Afrpb
+on may	1 0O:O/TPH1:AEU
+on me	1 0O:O/TPH1:E
+on my	1 0O:O/TPH1:AOEU
+on new	1 0O:O/TPH1:AOU
+on one	1 0O:O/TPWH1:Opb
+on or	1 0O:O/TPH1:Or
+on our	1 0O:O/TPH1:OUr
+on screen	1 0O:O/STKPHR1:AOEpb
+on site	1 0O:O/STPH1:AOEUt
+on some	1 0O:O/STPH1:Opl
+on stage	1 0O:O/STPH1:AEUpblg
+on that	1 0O:O/TPH1:At
+on their	1 0O:O/TPH1:A*Er
+on them	1 0O:O/TPH1:Epl
+on these	1 0O:O/TPH1:AOEs
+on this	1 0O:O/TPH1:EUs
+on those	1 0O:O/TPH1:OEs
+on time	1 0O:O/TPH1:AOEUpl
+on to	1 0O:O/TPH1:O
+on top	1 0O:O/TPH1:Op
+on track	1 0O:O/TPHR1:Abg
+on two	1 0O:O/TPH1:O
+on what	1 0O:O/TPWH1:At
+on which	1 0O:O/TPWH1:EUfp
+on with	1 0O:O/TPWH1:*EUt
+on you	1 0O:O/TPH1:AOU
+on your	1 0O:O/TPH1:OUr
+once a	1 W1:Opbs/0A:A
+once in	1 W1:Opbs/0EU:EUpb
+once they	1 W1:O*pbts/0E:A*EU
+one and	1 W1:Opb/0A:Apbd
+one at	1 W1:Opb/0A:At
+one can	1 W1:O*pbg/0A:Apb
+one day	1 W0O:O/TKPH1:AEU
+one for	1 W1:Ofpb/0O:Or
+one hand	1 W0O:O/TPH1:Apbd
+one has	1 W1:Opb/0A:As
+one in	1 W1:Opb/0EU:EUpb
+one is	1 W1:Opb/0EU:EUs
+one more	1 W0O:O/TPH1:OEr
+one of	1 W1:Opb/0O:Of
+one on	1 W1:Opb/0O:Opb
+one or	1 W1:Opb/0O:Or
+one point	1 W0O:O/TPH1:OEUpbt
+one side	1 W0O:O/STPH1:AOEUd
+one that	1 W1:O*pbt/0A:At
+one thing	1 W0O:O/TPH1:EUpbg
+one third	1 W0O:O/TPH1:EUrd
+one time	1 W0O:O/TPH1:AOEUpl
+one to	1 W1:Opbt/0O:O
+one was	1 W1:Opb/0A:As
+one way	1 W0O:O/TPWH1:AEU
+one who	1 W1:Opb/0O:O
+one with	1 W1:Opb/0EU:*EUt
+one would	1 W1:Opb/0O:OUld
+one year	1 W0O:O/TPH1:AEr
+or a	1 0O:O/R1:A
+or an	1 0O:O/R1:Apb
+or are	1 0O:O/R1:Ar
+or as	1 0O:O/R1:As
+or at	1 0O:O/R1:At
+or both	1 0O:O/PWR1:O*t
+or by	1 0O:O/PWR1:AOEU
+or for	1 0O:O/TPR1:Or
+or have	1 0O:O/R1:Af
+or her	1 0O:O/R1:Er
+or if	1 0O:O/R1:EUf
+or in	1 0O:O/R1:EUpb
+or is	1 0O:O/R1:EUs
+or just	1 0O:O/SKWR1:Uft
+or less	1 0O:O/HR1:Es
+or may	1 0O:O/PHR1:AEU
+or more	1 0O:O/PHR1:OEr
+or no	1 0O:O/TPHR1:O
+or not	1 0O:O/TPHR1:Ot
+or on	1 0O:O/R1:Opb
+or she	1 0O:O/SHR1:E
+or so	1 0O:O/SR1:O
+or that	1 0O:O/THR1:At
+or they	1 0O:O/THR1:A*EU
+or three	1 0O:O/THR1:AOE
+or to	1 0O:O/TR1:O
+or two	1 0O:O/TR1:O
+or what	1 0O:O/WR1:At
+or with	1 0O:O/WR1:*EUt
+or you	1 0O:O/R1:AOU
+or your	1 0O:O/R1:OUr
+ought to	1 1:AUt/0O:O
+our first	1 0O:OU/TPR1:EUfrt
+our own	1 0O:OU/R1:O*Epb
+our team	1 0O:OU/TR1:AEpl
+out a	1 1:OUt/0A:A
+out and	1 1:OUt/0A:Apbd
+out as	1 1:OUt/0A:As
+out at	1 1:OUt/0A:At
+out by	1 1:OUbt/0EU:AOEU
+out for	1 1:OUft/0O:Or
+out his	1 1:OUt/0EU:EUs
+out how	1 0O:OU/T1:OU
+out in	1 1:OUt/0EU:EUpb
+out of	1 1:OUt/0O:Of
+out on	1 1:OUt/0O:Opb
+out that	1 1:O*Ut/0A:At
+out their	1 1:O*Ut/0E:A*Er
+out there	1 1:O*Ut/0E:Er
+out this	1 1:O*Ut/0EU:EUs
+out to	1 1:OUt/0O:O
+out what	1 0O:OU/TW1:At
+out with	1 1:OUt/0EU:*EUt
+paid for	1 P1:A*EUfd/0O:Or
+pain and	1 P1:A*EUpb/0A:Apbd
+pair of	1 P1:A*EUr/0O:Of
+park and	1 P1:Arbg/0A:Apbd
+park in	1 P1:Arbg/0EU:EUpb
+part in	1 P1:Art/0EU:EUpb
+part of	1 P1:Art/0O:Of
+part time	1 P0A:A/TR1:AOEUpl
+part to	1 P1:Art/0O:O
+parts of	1 P1:Arts/0O:Of
+past and	1 P1:Aft/0A:Apbd
+past few	1 P0A:A/STP1:AOU
+past two	1 P0A:A/ST1:O
+past years	1 P0A:A/ST1:AErs
+path to	1 P1:A*t/0O:O
+pay a	1 P1:AEU/0A:A
+pay for	1 P1:AEUf/0O:Or
+peace and	1 P1:AEs/0A:Apbd
+per cent	1 P0:E/SR1:Epbt
+per day	1 P0:E/TKR1:AEU
+per game	1 P0:E/TKPWR1:AEUpl
+per month	1 P0:E/PHR1:O*pbt
+per share	1 P0:E/SHR1:AEUr
+per year	1 P0:E/R1:AEr
+phase of	1 TP1:AEUs/0O:Of
+phone and	1 TP1:OEpb/0A:Apbd
+pick up	1 P0EU:EU/K1:Up
+piece of	1 P1:AOEs/0O:Of
+place and	1 PHR1:AEUs/0A:Apbd
+place at	1 PHR1:AEUs/0A:At
+place for	1 PHR1:AEUfs/0O:Or
+place in	1 PHR1:AEUs/0EU:EUpb
+place of	1 PHR1:AEUs/0O:Of
+place on	1 PHR1:AEUs/0O:Opb
+place to	1 PHR1:AEUft/0O:O
+place where	1 PHR0A:AEU/SW1:Er
+plan and	1 PHR1:Apb/0A:Apbd
+plan for	1 PHR1:Afpb/0O:Or
+plan to	1 PHR1:Apbt/0O:O
+plans for	1 PHR1:Afpbz/0O:Or
+plans to	1 PHR1:Apbtz/0O:O
+plants and	1 PHR1:Apbts/0A:Apbd
+play a	1 PHR1:AEU/0A:A
+play and	1 PHR1:AEU/0A:Apbd
+play in	1 PHR1:AEU/0EU:EUpb
+play with	1 PHR1:AEU/0EU:*EUt
+played a	1 PHR1:AEUd/0A:A
+played by	1 PHR1:AEUbd/0EU:AOEU
+played in	1 PHR1:AEUd/0EU:EUpb
+player to	1 PHR1:AEUrt/0O:O
+plays a	1 PHR1:AEUs/0A:A
+point and	1 P1:OEUpbt/0A:Apbd
+point for	1 P1:OEUfpbt/0O:Or
+point in	1 P1:OEUpbt/0EU:EUpb
+point is	1 P1:OEUpbt/0EU:EUs
+point of	1 P1:OEUpbt/0O:Of
+point out	1 P0O:OEU/TPH1:OUt
+point that	1 P1:O*EUpbt/0A:At
+point to	1 P1:OEUpbt/0O:O
+point where	1 P0O:OEU/TPWH1:Er
+points and	1 P1:OEUpbts/0A:Apbd
+points in	1 P1:OEUpbts/0EU:EUpb
+points of	1 P1:OEUpbts/0O:Of
+points out	1 P0O:OEU/STPH1:OUt
+points to	1 P1:OEUfpbt/0O:O
+port of	1 P1:Ort/0O:Of
+price is	1 PR1:AOEUs/0EU:EUs
+price of	1 PR1:AOEUs/0O:Of
+prone to	1 PR1:OEpbt/0O:O
+proof of	1 PR1:AOf/0O:Of
+proud of	1 PR1:OUd/0O:Of
+proud to	1 PR1:OUtd/0O:O
+put a	1 P1:Ut/0A:A
+put in	1 P1:Ut/0EU:EUpb
+put it	1 P1:Ut/0EU:EUt
+put on	1 P1:Ut/0O:Opb
+put out	1 P0U:U/T1:OUt
+put up	1 P0U:U/T1:Up
+quick to	1 KW1:EUbgt/0O:O
+quite a	1 KW1:AOEUt/0A:A
+range of	1 R1:AEUpbg/0O:Of
+rate and	1 R1:AEUt/0A:Apbd
+rate is	1 R1:AEUt/0EU:EUs
+rate of	1 R1:AEUt/0O:Of
+reach out	1 R0E:AE/KH1:OUt
+read a	1 R1:AEd/0A:A
+read and	1 R1:AEd/0A:Apbd
+read it	1 R1:AEd/0EU:EUt
+read this	1 R1:A*Etd/0EU:EUs
+real life	1 R0E:AE/HR1:AOEUf
+real time	1 R0E:AE/THR1:AOEUpl
+real world	1 R0E:AE/WHR1:Orld
+rest of	1 R1:Eft/0O:Of
+rid of	1 R1:EUd/0O:Of
+right and	1 R1:AO*EUt/0A:Apbd
+right hand	1 R0EU:AO*EU/T1:Apbd
+right in	1 R1:AO*EUt/0EU:EUpb
+right now	1 R0EU:AO*EU/TPH1:OU
+right of	1 R1:AO*EUt/0O:Of
+right thing	1 R0EU:AO*EU/TH1:EUpbg
+right to	1 R1:AO*EUt/0O:O
+right wing	1 R0EU:AO*EU/TW1:EUpbg
+rights and	1 R1:AO*EUts/0A:Apbd
+rights of	1 R1:AO*EUts/0O:Of
+rights to	1 R1:AO*EUft/0O:O
+rise in	1 R1:AOEUs/0EU:EUpb
+rise of	1 R1:AOEUs/0O:Of
+rise to	1 R1:AOEUtz/0O:O
+risk of	1 R1:EUfbg/0O:Of
+road and	1 R1:O*Ed/0A:Apbd
+road to	1 R1:O*Etd/0O:O
+rock and	1 R1:Obg/0A:Apbd
+role as	1 R1:OEl/0A:As
+role in	1 R1:OEl/0EU:EUpb
+role of	1 R1:OEl/0O:Of
+room and	1 R1:AOpl/0A:Apbd
+room for	1 R1:AO*fpl/0O:Or
+rose to	1 R1:OEtz/0O:O
+round of	1 R1:OUpbd/0O:Of
+route to	1 R1:AOUt/0O:O
+rule of	1 R1:AOUl/0O:Of
+run a	1 R1:Upb/0A:A
+run by	1 R1:Upb/0EU:AOEU
+run for	1 R1:Ufpb/0O:Or
+run in	1 R1:Upb/0EU:EUpb
+run on	1 R1:Upb/0O:Opb
+safe and	1 S1:AEUf/0A:Apbd
+said a	1 S1:A*EUd/0A:A
+said and	1 S1:A*EUd/0A:Apbd
+said at	1 S1:A*EUd/0A:At
+said he	1 S1:A*EUd/0E:E
+said his	1 S1:A*EUd/0EU:EUs
+said in	1 S1:A*EUd/0EU:EUpb
+said it	1 S1:A*EUd/0EU:EUt
+said of	1 S1:A*EUd/0O:Of
+said on	1 S1:A*EUd/0O:Opb
+said she	1 S1:A*EUrbd/0E:E
+said that	1 S1:A*EUtd/0A:At
+said there	1 S1:A*EUtd/0E:Er
+said they	1 S1:A*EUtd/0E:A*EU
+said this	1 S1:A*EUtd/0EU:EUs
+said to	1 S1:A*EUtd/0O:O
+said we	1 S1:A*EUd/0E:E
+sake of	1 S1:AEUbg/0O:Of
+sale of	1 S1:AEUl/0O:Of
+salt and	1 S1:AUlt/0A:Apbd
+same as	1 S1:AEUpl/0A:As
+same day	1 S0A:AEU/TKPH1:AEU
+same thing	1 S0A:AEU/TPH1:EUpbg
+same time	1 S0A:AEU/TPH1:AOEUpl
+same way	1 S0A:AEU/PWH1:AEU
+same year	1 S0A:AEU/PH1:AEr
+saw a	1 S1:AU/0A:A
+say it	1 S1:AEU/0EU:EUt
+say that	1 S1:A*EUt/0A:At
+say they	1 S1:A*EUt/0E:A*EU
+say this	1 S1:A*EUt/0EU:EUs
+says he	1 S1:AEUz/0E:E
+says it	1 S1:AEUs/0EU:EUt
+says she	1 S1:AEUrbz/0E:E
+says that	1 S1:A*EUtz/0A:At
+school and	1 SK1:AOl/0A:Apbd
+school in	1 SK1:AOl/0EU:EUpb
+school of	1 SK1:AOl/0O:Of
+schools and	1 SK1:AOls/0A:Apbd
+schools in	1 SK1:AOls/0EU:EUpb
+scope of	1 SK1:OEp/0O:Of
+search for	1 S1:AEfrpb/0O:Or
+search of	1 S1:AEfrpb/0O:Of
+see a	1 S1:AOE/0A:A
+see him	1 S1:AOE/0EU:EUpl
+see how	1 S0E:AOE/H1:OU
+see if	1 S1:AOE/0EU:EUf
+see in	1 S1:AOE/0EU:EUpb
+see it	1 S1:AOE/0EU:EUt
+see that	1 S1:AO*Et/0A:At
+see them	1 S1:AO*Et/0E:Epl
+see this	1 S1:AO*Et/0EU:EUs
+see what	1 S0E:AOE/WH1:At
+seek to	1 S1:AOEbgt/0O:O
+seeks to	1 S1:AOEbgs/0O:O
+seem like	1 S0E:AOE/PHR1:AOEUbg
+seem to	1 S1:AOEplt/0O:O
+seems like	1 S0E:AOE/SPHR1:AOEUbg
+seen a	1 S1:AOEpb/0A:A
+seen as	1 S1:AOEpb/0A:As
+seen in	1 S1:AOEpb/0EU:EUpb
+seen on	1 S1:AOEpb/0O:Opb
+send a	1 S1:Epbd/0A:A
+sense of	1 S1:Epbs/0O:Of
+sense that	1 S1:*Epbts/0A:At
+sense to	1 S1:Efpbt/0O:O
+sent a	1 S1:Epbt/0A:A
+sent to	1 S1:Epbt/0O:O
+serve as	1 S1:Efrb/0A:As
+set a	1 S1:Et/0A:A
+set for	1 S1:Eft/0O:Or
+set in	1 S1:Et/0EU:EUpb
+set of	1 S1:Et/0O:Of
+set out	1 S0E:E/T1:OUt
+set to	1 S1:Et/0O:O
+set up	1 S0E:E/T1:Up
+sets of	1 S1:Ets/0O:Of
+shall be	1 SH0A:A/PWHR1:E
+shape of	1 SH1:AEUp/0O:Of
+share a	1 SH1:AEUr/0A:A
+share of	1 SH1:AEUr/0O:Of
+share their	1 SH1:A*EUrt/0E:A*Er
+share with	1 SH1:AEUr/0EU:*EUt
+she and	1 SH0E:E/1:Apbd
+she can	1 SH0E:E/K1:Apb
+she could	1 SH0E:E/K1:OUld
+she did	1 SH0E:E/TK1:EUd
+she does	1 SH0E:E/TK1:O*Es
+she had	1 SH0E:E/H1:Ad
+she has	1 SH0E:E/H1:As
+she is	1 SH0E:E/1:EUs
+she said	1 SH0E:E/S1:A*EUd
+she says	1 SH0E:E/S1:AEUs
+she told	1 SH0E:E/T1:Old
+she was	1 SH0E:E/W1:As
+she will	1 SH0E:E/W1:EUl
+she would	1 SH0E:E/W1:OUld
+she wrote	1 SH0E:E/WR1:OEt
+shift in	1 SH1:EUft/0EU:EUpb
+short of	1 SH1:Ort/0O:Of
+short term	1 SH0O:O/TR1:Erpl
+shot in	1 SH1:Ot/0EU:EUpb
+should be	1 SH0O:OU/TKPW1:E
+should have	1 SH0O:OU/TK1:Af
+should not	1 SH0O:OU/TKPH1:Ot
+show a	1 SH1:O*E/0A:A
+show and	1 SH1:O*E/0A:Apbd
+show in	1 SH1:O*E/0EU:EUpb
+show that	1 SH1:O*Et/0A:At
+show up	1 SH0O:O*E/1:Up
+shown in	1 SH1:O*Epb/0EU:EUpb
+shown that	1 SH1:O*Epbt/0A:At
+shown to	1 SH1:O*Epbt/0O:O
+shows a	1 SH1:O*Es/0A:A
+shows that	1 SH1:O*Etz/0A:At
+shut down	1 SH0U:U/TK1:OUpb
+side and	1 S1:AOEUd/0A:Apbd
+side of	1 S1:AOEUd/0O:Of
+sign of	1 S1:AOEUpb/0O:Of
+sign up	1 S0EU:AOEU/TPH1:Up
+signs of	1 S1:AOEUpbs/0O:Of
+since and	1 S1:EUpbs/0A:Apbd
+since been	1 S1:EUpbs/0E:AOEpb
+since he	1 S1:EUpbs/0E:E
+since it	1 S1:EUpbs/0EU:EUt
+since its	1 S1:EUpbs/0EU:EUts
+since march	1 S0EU:EU/STPH1:Afrpb
+since then	1 S0EU:EU/STPH1:Epb
+since they	1 S1:*EUpbts/0E:A*EU
+site and	1 S1:AOEUt/0A:Apbd
+site is	1 S1:AOEUt/0EU:EUs
+site of	1 S1:AOEUt/0O:Of
+six months	1 S0EU:EU/SKPH1:O*pbts
+six weeks	1 S0EU:EU/SKW1:AOEbgs
+six years	1 S0EU:EU/SK1:AErs
+size and	1 S1:AOEUz/0A:Apbd
+size of	1 S1:AOEUz/0O:Of
+size was	1 S1:AOEUz/0A:As
+skills and	1 SK1:EUls/0A:Apbd
+small and	1 SPH1:AUl/0A:Apbd
+small town	1 SPH0A:AU/THR1:OUpb
+so a	1 S0O:O/1:A
+so as	1 S0O:O/1:As
+so far	1 S0O:O/TP1:Ar
+so for	1 S0O:O/TP1:Or
+so good	1 S0O:O/TKPW1:AOd
+so he	1 S0O:O/H1:E
+so if	1 S0O:O/1:EUf
+so in	1 S0O:O/1:EUpb
+so is	1 S0O:O/1:EUs
+so it	1 S0O:O/1:EUt
+so long	1 S0O:O/HR1:Opbg
+so much	1 S0O:O/PH1:Ufp
+so on	1 S0O:O/1:Opb
+so she	1 S0O:O/SH1:E
+so that	1 S0O:O/TH1:At
+so there	1 S0O:O/TH1:Er
+so they	1 S0O:O/TH1:A*EU
+so this	1 S0O:O/TH1:EUs
+so to	1 S0O:O/T1:O
+so we	1 S0O:O/W1:E
+so what	1 S0O:O/WH1:At
+so when	1 S0O:O/WH1:Epb
+so why	1 S0O:O/WH1:AOEU
+so you	1 S0O:O/KWR1:AOU
+sold at	1 S1:Old/0A:At
+sold in	1 S1:Old/0EU:EUpb
+sold to	1 S1:Oltd/0O:O
+some are	1 S1:Opl/0A:Ar
+some have	1 S1:Opl/0A:Af
+some kind	1 S0O:O/KPH1:AOEUpbd
+some more	1 S0O:O/PH1:OEr
+some of	1 S1:Opl/0O:Of
+some point	1 S0O:O/PH1:OEUpbt
+some sort	1 S0O:O/SPH1:Ort
+some things	1 S0O:O/TPH1:EUpbgs
+some time	1 S0O:O/TPH1:AOEUpl
+son of	1 S1:Opb/0O:Of
+soon as	1 S1:AOpb/0A:As
+sort of	1 S1:Ort/0O:Of
+sorts of	1 S1:Orts/0O:Of
+sought to	1 S1:AUt/0O:O
+sound of	1 S1:OUpbd/0O:Of
+sounds like	1 S0O:OU/STKPHR1:AOEUbg
+source of	1 S1:OUrs/0O:Of
+south and	1 S1:O*Ut/0A:Apbd
+south of	1 S1:O*Ut/0O:Of
+space and	1 SP1:AEUs/0A:Apbd
+space for	1 SP1:AEUfs/0O:Or
+space in	1 SP1:AEUs/0EU:EUpb
+space is	1 SP1:AEUs/0EU:EUs
+speak to	1 SP1:AEbgt/0O:O
+speed and	1 SP1:AOEd/0A:Apbd
+speed of	1 SP1:AOEd/0O:Of
+spent a	1 SP1:Epbt/0A:A
+spite of	1 SP1:AOEUt/0O:Of
+spoke to	1 SP1:OEbgt/0O:O
+spread of	1 SPR1:AEd/0O:Of
+staff and	1 ST1:Af/0A:Apbd
+stage of	1 ST1:AEUpblg/0O:Of
+stake in	1 ST1:AEUbg/0EU:EUpb
+stand out	1 ST0A:A/TKPH1:OUt
+stand up	1 ST0A:A/TKPH1:Up
+star trek	1 ST0A:A/TR1:Ebg
+star wars	1 ST0A:A/WR1:Ars
+start a	1 ST1:Art/0A:A
+start of	1 ST1:Art/0O:Of
+start to	1 ST1:Art/0O:O
+start with	1 ST1:Art/0EU:*EUt
+state and	1 ST1:AEUt/0A:Apbd
+state has	1 ST1:AEUt/0A:As
+state in	1 ST1:AEUt/0EU:EUpb
+state is	1 ST1:AEUt/0EU:EUs
+state of	1 ST1:AEUt/0O:Of
+state that	1 ST1:A*EUt/0A:At
+state to	1 ST1:AEUt/0O:O
+stay at	1 ST1:AEU/0A:At
+stay home	1 ST0A:AEU/H1:OEpl
+stay in	1 ST1:AEU/0EU:EUpb
+stay on	1 ST1:AEU/0O:Opb
+step in	1 ST1:Ep/0EU:EUpb
+steps to	1 ST1:Efpt/0O:O
+stick to	1 ST1:EUbgt/0O:O
+still a	1 ST1:EUl/0A:A
+still be	1 ST1:EUbl/0E:E
+still has	1 ST1:EUl/0A:As
+still have	1 ST1:EUl/0A:Af
+still in	1 ST1:EUl/0EU:EUpb
+still not	1 ST0EU:EU/TPHR1:Ot
+stock in	1 ST1:Obg/0EU:EUpb
+stock worth	1 ST0O:O/KW1:O*rt
+store and	1 ST1:OEr/0A:Apbd
+street and	1 STR1:AOEt/0A:Apbd
+street in	1 STR1:AOEt/0EU:EUpb
+strength and	1 STR1:*Epbgt/0A:Apbd
+strength of	1 STR1:*Epbgt/0O:Of
+strong and	1 STR1:Opbg/0A:Apbd
+stuck in	1 ST1:Ubg/0EU:EUpb
+style and	1 ST1:AO*EUl/0A:Apbd
+style of	1 ST1:AO*EUl/0O:Of
+such a	1 S1:Ufp/0A:A
+such an	1 S1:Ufp/0A:Apb
+such as	1 S1:Ufp/0A:As
+such that	1 S1:*Ufpt/0A:At
+sum of	1 S1:Upl/0O:Of
+sure it	1 SH1:AOUr/0EU:EUt
+sure that	1 SH1:AO*Urt/0A:At
+sure they	1 SH1:AO*Urt/0E:A*EU
+sure to	1 SH1:AOUrt/0O:O
+switch to	1 SW1:EUfpt/0O:O
+take a	1 T1:AEUbg/0A:A
+take care	1 T0A:AEU/K1:AEUr
+take it	1 T1:AEUbg/0EU:EUt
+take on	1 T1:AEUbg/0O:Opb
+take part	1 T0A:AEU/KP1:Art
+take place	1 T0A:AEU/KPHR1:AEUs
+take to	1 T1:AEUbgt/0O:O
+take up	1 T0A:AEU/K1:Up
+tale of	1 T1:AEUl/0O:Of
+talk to	1 T1:AUbgt/0O:O
+task force	1 T0A:A/STKP1:OErs
+task of	1 T1:Afbg/0O:Of
+taste of	1 T1:AEUft/0O:Of
+team and	1 T1:AEpl/0A:Apbd
+team has	1 T1:AEpl/0A:As
+team in	1 T1:AEpl/0EU:EUpb
+team is	1 T1:AEpl/0EU:EUs
+team of	1 T1:AEpl/0O:Of
+team that	1 T1:A*Eplt/0A:At
+team to	1 T1:AEplt/0O:O
+team was	1 T1:AEpl/0A:As
+tell me	1 T1:Epl/0E:E
+tell us	1 T1:El/0U:Us
+ten years	1 T0E:E/TPH1:AErs
+tend to	1 T1:Epbtd/0O:O
+tens of	1 T1:Epbs/0O:Of
+terms and	1 T1:Erpls/0A:Apbd
+terms of	1 T1:Erpls/0O:Of
+test and	1 T1:Eft/0A:Apbd
+than a	1 TH0A:A/TPH1:A
+than an	1 TH0A:A/TPH1:Apb
+than half	1 TH0A:A/TPH1:Af
+than in	1 TH0A:A/TPH1:EUpb
+than it	1 TH0A:A/TPH1:EUt
+than just	1 TH0A:A/STKPWHR1:Uft
+than most	1 TH0A:A/TPH1:Oft
+than of	1 TH0A:A/TPH1:Of
+than one	1 TH0A:A/TPWH1:Opb
+than that	1 TH0A:A/TPH1:At
+than their	1 TH0A:A/TPH1:A*Er
+than they	1 TH0A:A/TPH1:A*EU
+than those	1 TH0A:A/TPH1:OEs
+than three	1 TH0A:A/TPHR1:AOE
+than to	1 TH0A:A/TPH1:O
+than two	1 TH0A:A/TPH1:O
+than we	1 TH0A:A/TPWH1:E
+than what	1 TH0A:A/TPWH1:At
+than years	1 TH0A:A/TPH1:AErs
+than you	1 TH0A:A/TPH1:AOU
+thanks for	1 TH1:Afpbgs/0O:Or
+thanks to	1 TH1:A*pbgs/0O:O
+that a	1 TH0A:A/T1:A
+that all	1 TH0A:A/T1:AUl
+that an	1 TH0A:A/T1:Apb
+that and	1 TH0A:A/T1:Apbd
+that are	1 TH0A:A/T1:Ar
+that as	1 TH0A:A/T1:As
+that at	1 TH0A:A/T1:At
+that both	1 TH0A:A/TPW1:O*t
+that but	1 TH0A:A/TPW1:Ut
+that by	1 TH0A:A/TPW1:AOEU
+that came	1 TH0A:A/TK1:AEUpl
+that can	1 TH0A:A/TK1:Apb
+that could	1 TH0A:A/TK1:OUld
+that day	1 TH0A:A/TK1:AEU
+that did	1 TH0A:A/TK1:EUd
+that do	1 TH0A:A/TK1:O
+that does	1 TH0A:A/TK1:O*Es
+that each	1 TH0A:A/T1:AEfp
+that for	1 TH0A:A/TP1:Or
+that god	1 TH0A:A/TKPW1:Od
+that had	1 TH0A:A/T1:Ad
+that has	1 TH0A:A/T1:As
+that have	1 TH0A:A/T1:Af
+that he	1 TH0A:A/T1:E
+that her	1 TH0A:A/T1:Er
+that his	1 TH0A:A/T1:EUs
+that if	1 TH0A:A/T1:EUf
+that in	1 TH0A:A/T1:EUpb
+that is	1 TH0A:A/T1:EUs
+that it	1 TH0A:A/T1:EUt
+that its	1 TH0A:A/T1:EUts
+that just	1 TH0A:A/STKWR1:Uft
+that kind	1 TH0A:A/TK1:AOEUpbd
+that led	1 TH0A:A/THR1:Ed
+that made	1 TH0A:A/TPH1:AEUd
+that make	1 TH0A:A/TPH1:AEUbg
+that may	1 TH0A:A/TPH1:AEU
+that means	1 TH0A:A/TPH1:AEpbs
+that might	1 TH0A:A/TPH1:AO*EUt
+that more	1 TH0A:A/TPH1:OEr
+that most	1 TH0A:A/TPH1:Oft
+that much	1 TH0A:A/TPH1:Ufp
+that my	1 TH0A:A/TPH1:AOEU
+that need	1 TH0A:A/TPH1:AOEd
+that night	1 TH0A:A/TPH1:AO*EUt
+that no	1 TH0A:A/TPH1:O
+that not	1 TH0A:A/TPH1:Ot
+that of	1 TH0A:A/T1:Of
+that on	1 TH0A:A/T1:Opb
+that one	1 TH0A:A/TW1:Opb
+that our	1 TH0A:A/T1:OUr
+that point	1 TH0A:A/TP1:OEUpbt
+that said	1 TH0A:A/ST1:A*EUd
+that same	1 TH0A:A/ST1:AEUpl
+that she	1 TH0A:A/STH1:E
+that should	1 TH0A:A/STH1:OUld
+that some	1 TH0A:A/ST1:Opl
+that such	1 TH0A:A/ST1:Ufp
+that their	1 TH0A:A/TH1:A*Er
+that there	1 TH0A:A/TH1:Er
+that these	1 TH0A:A/TH1:AOEs
+that they	1 TH0A:A/TH1:A*EU
+that this	1 TH0A:A/TH1:EUs
+that those	1 TH0A:A/TH1:OEs
+that time	1 TH0A:A/T1:AOEUpl
+that to	1 TH0A:A/T1:O
+that trump	1 TH0A:A/TR1:Ufrp
+that was	1 TH0A:A/TW1:As
+that way	1 TH0A:A/TW1:AEU
+that we	1 TH0A:A/TW1:E
+that were	1 TH0A:A/TW1:Er
+that what	1 TH0A:A/TW1:At
+that when	1 TH0A:A/TW1:Epb
+that while	1 TH0A:A/TW1:AOEUl
+that will	1 TH0A:A/TW1:EUl
+that with	1 TH0A:A/TW1:*EUt
+that work	1 TH0A:A/TW1:Orbg
+that would	1 TH0A:A/TW1:OUld
+that year	1 TH0A:A/T1:AEr
+that you	1 TH0A:A/T1:AOU
+that your	1 TH0A:A/T1:OUr
+the a	1 TH0E:E/1:A
+the act	1 TH0E:E/1:Abgt
+the age	1 TH0E:E/1:AEUpblg
+the aim	1 TH0E:E/1:A*EUpl
+the air	1 TH0E:E/1:A*EUr
+the all	1 TH0E:E/1:AUl
+the and	1 TH0E:E/1:Apbd
+the app	1 TH0E:E/1:Ap
+the art	1 TH0E:E/1:Art
+the arts	1 TH0E:E/1:Arts
+the back	1 TH0E:E/PW1:Abg
+the bad	1 TH0E:E/PW1:Ad
+the ball	1 TH0E:E/PW1:AUl
+the ban	1 TH0E:E/PW1:Apb
+the band	1 TH0E:E/PW1:Apbd
+the bank	1 TH0E:E/PW1:A*pbg
+the bar	1 TH0E:E/PW1:Ar
+the base	1 TH0E:E/PW1:AEUs
+the bay	1 TH0E:E/PW1:AEU
+the beach	1 TH0E:E/PW1:AEfp
+the best	1 TH0E:E/PW1:Eft
+the big	1 TH0E:E/PW1:EUg
+the bill	1 TH0E:E/PW1:EUl
+the birth	1 TH0E:E/PW1:*EUrt
+the black	1 TH0E:E/PWHR1:Abg
+the block	1 TH0E:E/PWHR1:Obg
+the blood	1 TH0E:E/PWHR1:AOd
+the blue	1 TH0E:E/PWHR1:AO*U
+the board	1 TH0E:E/PW1:O*Erd
+the boat	1 TH0E:E/PW1:O*Et
+the book	1 TH0E:E/PW1:AObg
+the books	1 TH0E:E/PW1:AObgs
+the box	1 TH0E:E/PW1:Obgs
+the boy	1 TH0E:E/PW1:OEU
+the boys	1 TH0E:E/PW1:OEUs
+the brain	1 TH0E:E/PWR1:A*EUpb
+the brand	1 TH0E:E/PWR1:Apbd
+the bridge	1 TH0E:E/PWR1:EUpblg
+the bulk	1 TH0E:E/PW1:*Ulg
+the bus	1 TH0E:E/PW1:Us
+the call	1 TH0E:E/K1:AUl
+the car	1 TH0E:E/K1:Ar
+the card	1 TH0E:E/K1:Ard
+the case	1 TH0E:E/K1:AEUs
+the cast	1 TH0E:E/K1:Aft
+the cause	1 TH0E:E/K1:AUs
+the cell	1 TH0E:E/S1:El
+the chance	1 TH0E:E/KH1:Apbs
+the change	1 TH0E:E/KH1:AEUpbg
+the charge	1 TH0E:E/KH1:Arpblg
+the chief	1 TH0E:E/KH1:AOEf
+the child	1 TH0E:E/KH1:AOEUld
+the choice	1 TH0E:E/KH1:OEUs
+the church	1 TH0E:E/KH1:Ufrpb
+the class	1 TH0E:E/KHR1:As
+the clock	1 TH0E:E/KHR1:Obg
+the cloud	1 TH0E:E/KHR1:OUd
+the club	1 TH0E:E/KHR1:Ub
+the coast	1 TH0E:E/K1:O*Eft
+the code	1 TH0E:E/K1:OEd
+the cold	1 TH0E:E/K1:Old
+the core	1 TH0E:E/K1:OEr
+the cost	1 TH0E:E/K1:Oft
+the costs	1 TH0E:E/K1:Ofts
+the course	1 TH0E:E/K1:OUrs
+the court	1 TH0E:E/K1:OUrt
+the courts	1 TH0E:E/K1:OUrts
+the crash	1 TH0E:E/KR1:Arb
+the crew	1 TH0E:E/KR1:AOU
+the crime	1 TH0E:E/KR1:AOEUpl
+the cross	1 TH0E:E/KR1:Os
+the crowd	1 TH0E:E/KR1:OUd
+the crown	1 TH0E:E/KR1:OUpb
+the dark	1 TH0E:E/TK1:Arbg
+the date	1 TH0E:E/TK1:AEUt
+the day	1 TH0E:E/TK1:AEU
+the days	1 TH0E:E/TK1:AEUs
+the dead	1 TH0E:E/TK1:AEd
+the deal	1 TH0E:E/TK1:AEl
+the death	1 TH0E:E/TK1:A*Et
+the deaths	1 TH0E:E/TK1:A*Ets
+the deep	1 TH0E:E/TK1:AOEp
+the dog	1 TH0E:E/TK1:Og
+the door	1 TH0E:E/TK1:AOr
+the draft	1 TH0E:E/TKR1:Aft
+the drive	1 TH0E:E/TKR1:AOEUf
+the drug	1 TH0E:E/TKR1:Ug
+the duke	1 TH0E:E/TK1:AOUbg
+the earth	1 TH0E:E/1:A*Ert
+the east	1 TH0E:E/1:AEft
+the edge	1 TH0E:E/1:Epblg
+the eighth	1 TH0E:E/1:A*Egt
+the end	1 TH0E:E/1:Epbd
+the eye	1 TH0E:E/1:AO*EU
+the eyes	1 TH0E:E/1:AO*EUs
+the face	1 TH0E:E/TP1:AEUs
+the fact	1 TH0E:E/TP1:Abgt
+the facts	1 TH0E:E/TP1:Abgts
+the fall	1 TH0E:E/TP1:AUl
+the far	1 TH0E:E/TP1:Ar
+the farm	1 TH0E:E/TP1:Arpl
+the few	1 TH0E:E/TP1:AOU
+the field	1 TH0E:E/TP1:AOEld
+the fifth	1 TH0E:E/TP1:*EUft
+the fight	1 TH0E:E/TP1:AO*EUt
+the file	1 TH0E:E/TP1:AOEUl
+the film	1 TH0E:E/TP1:EUpl
+the fire	1 TH0E:E/TP1:AOEUr
+the firm	1 TH0E:E/TP1:EUrpl
+the first	1 TH0E:E/TP1:EUfrt
+the five	1 TH0E:E/TP1:AOEUf
+the flight	1 TH0E:E/TPHR1:AO*EUt
+the floor	1 TH0E:E/TPHR1:AOr
+the flow	1 TH0E:E/TPHR1:O*E
+the food	1 TH0E:E/TP1:AOd
+the foot	1 TH0E:E/TP1:AOt
+the force	1 TH0E:E/TP1:OErs
+the form	1 TH0E:E/TP1:Orpl
+the four	1 TH0E:E/TP1:OUr
+the fourth	1 TH0E:E/TP1:O*Urt
+the free	1 TH0E:E/TPR1:AOE
+the front	1 TH0E:E/TPR1:Opbt
+the full	1 TH0E:E/TP1:Ul
+the fund	1 TH0E:E/TP1:Upbd
+the game	1 TH0E:E/TKPW1:AEUpl
+the gap	1 TH0E:E/TKPW1:Ap
+the gas	1 TH0E:E/TKPW1:As
+the girl	1 TH0E:E/TKPW1:EUrl
+the girls	1 TH0E:E/TKPW1:EUrls
+the globe	1 TH0E:E/TKPWHR1:OEb
+the go	1 TH0E:E/TKPW1:O
+the goal	1 TH0E:E/TKPW1:O*El
+the gods	1 TH0E:E/TKPW1:Odz
+the gold	1 TH0E:E/TKPW1:Old
+the good	1 TH0E:E/TKPW1:AOd
+the grand	1 TH0E:E/TKPWR1:Apbd
+the great	1 TH0E:E/TKPWR1:AEt
+the green	1 TH0E:E/TKPWR1:AOEpb
+the ground	1 TH0E:E/TKPWR1:OUpbd
+the group	1 TH0E:E/TKPWR1:AOUp
+the growth	1 TH0E:E/TKPWR1:O*Et
+the gulf	1 TH0E:E/TKPW1:Ufl
+the guy	1 TH0E:E/TKPW1:AOEU
+the half	1 TH0E:E/H1:Af
+the hall	1 TH0E:E/H1:AUl
+the hand	1 TH0E:E/H1:Apbd
+the hands	1 TH0E:E/H1:Apbdz
+the hard	1 TH0E:E/H1:Ard
+the head	1 TH0E:E/H1:AEd
+the health	1 TH0E:E/H1:A*Elt
+the heart	1 TH0E:E/H1:AErt
+the heat	1 TH0E:E/H1:AEt
+the height	1 TH0E:E/H1:AOEUt
+the help	1 TH0E:E/H1:Epl
+the high	1 TH0E:E/H1:AO*EU
+the home	1 TH0E:E/H1:OEpl
+the hope	1 TH0E:E/H1:OEp
+the host	1 TH0E:E/H1:Oft
+the hot	1 TH0E:E/H1:Ot
+the house	1 TH0E:E/H1:OUs
+the ice	1 TH0E:E/1:AOEUs
+the in	1 TH0E:E/1:EUpb
+the job	1 TH0E:E/SKWR1:Ob
+the joint	1 TH0E:E/SKWR1:OEUpbt
+the judge	1 TH0E:E/SKWR1:Upblg
+the key	1 TH0E:E/K1:AOE
+the kids	1 TH0E:E/K1:EUdz
+the kind	1 TH0E:E/K1:AOEUpbd
+the king	1 TH0E:E/K1:EUpbg
+the lack	1 TH0E:E/HR1:Abg
+the lake	1 TH0E:E/HR1:AEUbg
+the land	1 TH0E:E/HR1:Apbd
+the large	1 TH0E:E/HR1:Arpblg
+the last	1 TH0E:E/HR1:Aft
+the late	1 TH0E:E/HR1:AEUt
+the launch	1 TH0E:E/HR1:AUfrpb
+the law	1 TH0E:E/HR1:AU
+the laws	1 TH0E:E/HR1:AUs
+the lead	1 TH0E:E/HR1:AEd
+the league	1 TH0E:E/HR1:AEg
+the least	1 TH0E:E/HR1:AEft
+the left	1 TH0E:E/HR1:Eft
+the length	1 TH0E:E/HR1:*Epbgt
+the less	1 TH0E:E/HR1:Es
+the life	1 TH0E:E/HR1:AOEUf
+the light	1 TH0E:E/HR1:AO*EUt
+the line	1 TH0E:E/HR1:AOEUpb
+the link	1 TH0E:E/HR1:*EUpbg
+the list	1 TH0E:E/HR1:EUft
+the live	1 TH0E:E/HR1:AOEUf
+the long	1 TH0E:E/HR1:Opbg
+the look	1 TH0E:E/HR1:AObg
+the lord	1 TH0E:E/HR1:Ord
+the loss	1 TH0E:E/HR1:Os
+the love	1 TH0E:E/HR1:Of
+the low	1 TH0E:E/HR1:O*E
+the main	1 TH0E:E/PH1:A*EUpb
+the male	1 TH0E:E/PH1:AEUl
+the man	1 TH0E:E/PH1:Apb
+the march	1 TH0E:E/PH1:Afrpb
+the mass	1 TH0E:E/PH1:As
+the match	1 TH0E:E/PH1:Afp
+the meat	1 TH0E:E/PH1:AEt
+the men	1 TH0E:E/PH1:Epb
+the mid	1 TH0E:E/PH1:EUd
+the midst	1 TH0E:E/PH1:*EUft
+the mind	1 TH0E:E/PH1:AOEUpbd
+the month	1 TH0E:E/PH1:O*pbt
+the moon	1 TH0E:E/PH1:AOpb
+the more	1 TH0E:E/PH1:OEr
+the most	1 TH0E:E/PH1:Oft
+the mouth	1 TH0E:E/PH1:O*Ut
+the move	1 TH0E:E/PH1:Of
+the name	1 TH0E:E/TPH1:AEUpl
+the near	1 TH0E:E/TPH1:AEr
+the need	1 TH0E:E/TPH1:AOEd
+the needs	1 TH0E:E/TPH1:AOEdz
+the net	1 TH0E:E/TPH1:Et
+the new	1 TH0E:E/TPH1:AOU
+the news	1 TH0E:E/TPH1:AOUs
+the next	1 TH0E:E/TPH1:Ebgs
+the night	1 TH0E:E/TPH1:AO*EUt
+the no	1 TH0E:E/TPH1:O
+the non	1 TH0E:E/TPH1:Opb
+the north	1 TH0E:E/TPH1:O*rt
+the now	1 TH0E:E/TPH1:OU
+the oil	1 TH0E:E/1:OEUl
+the old	1 TH0E:E/1:Old
+the on	1 TH0E:E/1:Opb
+the one	1 TH0E:E/W1:Opb
+the page	1 TH0E:E/P1:AEUpblg
+the pain	1 TH0E:E/P1:A*EUpb
+the pair	1 TH0E:E/P1:A*EUr
+the pan	1 TH0E:E/P1:Apb
+the park	1 TH0E:E/P1:Arbg
+the part	1 TH0E:E/P1:Art
+the past	1 TH0E:E/P1:Aft
+the path	1 TH0E:E/P1:A*t
+the peace	1 TH0E:E/P1:AEs
+the peak	1 TH0E:E/P1:AEbg
+the phone	1 TH0E:E/TP1:OEpb
+the phrase	1 TH0E:E/TPR1:AEUs
+the piece	1 TH0E:E/P1:AOEs
+the place	1 TH0E:E/PHR1:AEUs
+the plan	1 TH0E:E/PHR1:Apb
+the plane	1 TH0E:E/PHR1:AEUpb
+the plant	1 TH0E:E/PHR1:Apbt
+the play	1 TH0E:E/PHR1:AEU
+the player	1 TH0E:E/PHR1:AEUr
+the plot	1 TH0E:E/PHR1:Ot
+the point	1 TH0E:E/P1:OEUpbt
+the polls	1 TH0E:E/P1:Ols
+the poor	1 TH0E:E/P1:AOr
+the pope	1 TH0E:E/P1:OEp
+the port	1 TH0E:E/P1:Ort
+the post	1 TH0E:E/P1:Oft
+the press	1 TH0E:E/PR1:Es
+the price	1 TH0E:E/PR1:AOEUs
+the prime	1 TH0E:E/PR1:AOEUpl
+the prince	1 TH0E:E/PR1:EUpbs
+the pro	1 TH0E:E/PR1:O
+the queen	1 TH0E:E/KW1:AOEpb
+the race	1 TH0E:E/R1:AEUs
+the range	1 TH0E:E/R1:AEUpbg
+the rate	1 TH0E:E/R1:AEUt
+the real	1 TH0E:E/R1:AEl
+the rear	1 TH0E:E/R1:AEr
+the red	1 TH0E:E/R1:Ed
+the rest	1 TH0E:E/R1:Eft
+the rich	1 TH0E:E/R1:EUfp
+the right	1 TH0E:E/R1:AO*EUt
+the rights	1 TH0E:E/R1:AO*EUts
+the ring	1 TH0E:E/R1:EUpbg
+the rise	1 TH0E:E/R1:AOEUs
+the risk	1 TH0E:E/R1:EUfbg
+the road	1 TH0E:E/R1:O*Ed
+the rock	1 TH0E:E/R1:Obg
+the role	1 TH0E:E/R1:OEl
+the roof	1 TH0E:E/R1:AOf
+the room	1 TH0E:E/R1:AOpl
+the root	1 TH0E:E/R1:AOt
+the rule	1 TH0E:E/R1:AOUl
+the run	1 TH0E:E/R1:Upb
+the sake	1 TH0E:E/S1:AEUbg
+the sale	1 TH0E:E/S1:AEUl
+the same	1 TH0E:E/S1:AEUpl
+the scale	1 TH0E:E/SK1:AEUl
+the scene	1 TH0E:E/S1:AOEpb
+the scheme	1 TH0E:E/SK1:AOEpl
+the school	1 TH0E:E/SK1:AOl
+the scope	1 TH0E:E/SK1:OEp
+the screen	1 TH0E:E/SKR1:AOEpb
+the script	1 TH0E:E/SKR1:EUpt
+the sea	1 TH0E:E/S1:AE
+the search	1 TH0E:E/S1:AEfrpb
+the seat	1 TH0E:E/S1:AEt
+the self	1 TH0E:E/S1:Efl
+the sense	1 TH0E:E/S1:Epbs
+the set	1 TH0E:E/S1:Et
+the shape	1 TH0E:E/SH1:AEUp
+the ship	1 TH0E:E/SH1:EUp
+the short	1 TH0E:E/SH1:Ort
+the show	1 TH0E:E/SH1:O*E
+the side	1 TH0E:E/S1:AOEUd
+the site	1 TH0E:E/S1:AOEUt
+the six	1 TH0E:E/S1:EUbgs
+the sixth	1 TH0E:E/S1:*EUbgs
+the size	1 TH0E:E/S1:AOEUz
+the skin	1 TH0E:E/SK1:EUpb
+the sky	1 TH0E:E/SK1:AOEU
+the small	1 TH0E:E/SPH1:AUl
+the so	1 TH0E:E/S1:O
+the soil	1 TH0E:E/S1:OEUl
+the sole	1 TH0E:E/S1:OEl
+the son	1 TH0E:E/S1:Opb
+the song	1 TH0E:E/S1:Opbg
+the soul	1 TH0E:E/S1:OUl
+the sound	1 TH0E:E/S1:OUpbd
+the source	1 TH0E:E/S1:OUrs
+the south	1 TH0E:E/S1:O*Ut
+the space	1 TH0E:E/SP1:AEUs
+the speed	1 TH0E:E/SP1:AOEd
+the sport	1 TH0E:E/SP1:Ort
+the spot	1 TH0E:E/SP1:Ot
+the spread	1 TH0E:E/SPR1:AEd
+the spring	1 TH0E:E/SPR1:EUpbg
+the square	1 TH0E:E/SKW1:AEUr
+the staff	1 TH0E:E/ST1:Af
+the stage	1 TH0E:E/ST1:AEUpblg
+the star	1 TH0E:E/ST1:Ar
+the stars	1 TH0E:E/ST1:Ars
+the start	1 TH0E:E/ST1:Art
+the state	1 TH0E:E/ST1:AEUt
+the steps	1 TH0E:E/ST1:Eps
+the stock	1 TH0E:E/ST1:Obg
+the store	1 TH0E:E/ST1:OEr
+the storm	1 TH0E:E/ST1:Orpl
+the street	1 TH0E:E/STR1:AOEt
+the streets	1 TH0E:E/STR1:AOEts
+the strength	1 TH0E:E/STR1:*Epbgt
+the strong	1 TH0E:E/STR1:Opbg
+the style	1 TH0E:E/ST1:AO*EUl
+the sum	1 TH0E:E/S1:Upl
+the sun	1 TH0E:E/S1:Upb
+the task	1 TH0E:E/T1:Afbg
+the tax	1 TH0E:E/T1:Abgs
+the team	1 TH0E:E/T1:AEpl
+the term	1 TH0E:E/T1:Erpl
+the terms	1 TH0E:E/T1:Erpls
+the test	1 TH0E:E/T1:Eft
+the text	1 TH0E:E/T1:Ebgs
+the theme	1 TH0E:E/TH1:AOEpl
+the thing	1 TH0E:E/TH1:EUpbg
+the things	1 TH0E:E/TH1:EUpbgs
+the third	1 TH0E:E/TH1:EUrd
+the threat	1 TH0E:E/THR1:AEt
+the three	1 TH0E:E/THR1:AOE
+the throne	1 TH0E:E/THR1:OEpb
+the time	1 TH0E:E/T1:AOEUpl
+the to	1 TH0E:E/T1:O
+the tools	1 TH0E:E/T1:AOls
+the top	1 TH0E:E/T1:Op
+the tour	1 TH0E:E/T1:OUr
+the town	1 TH0E:E/T1:OUpb
+the track	1 TH0E:E/TR1:Abg
+the trade	1 TH0E:E/TR1:AEUd
+the train	1 TH0E:E/TR1:A*EUpb
+the tree	1 TH0E:E/TR1:AOE
+the trip	1 TH0E:E/TR1:EUp
+the true	1 TH0E:E/TR1:AO*U
+the trump	1 TH0E:E/TR1:Ufrp
+the truth	1 TH0E:E/TR1:*Ut
+the two	1 TH0E:E/T1:O
+the type	1 TH0E:E/T1:AO*EUp
+the us	1 TH0E:E/1:Us
+the use	1 TH0E:E/KWR1:AOUs
+the vast	1 TH0E:E/SR1:Aft
+the voice	1 TH0E:E/SR1:OEUs
+the vote	1 TH0E:E/SR1:OEt
+the wake	1 TH0E:E/W1:AEUbg
+the wall	1 TH0E:E/W1:AUl
+the walls	1 TH0E:E/W1:AUls
+the war	1 TH0E:E/W1:Ar
+the way	1 TH0E:E/W1:AEU
+the ways	1 TH0E:E/W1:AEUs
+the web	1 TH0E:E/W1:Eb
+the week	1 TH0E:E/W1:AOEbg
+the weight	1 TH0E:E/W1:A*Et
+the well	1 TH0E:E/W1:El
+the west	1 TH0E:E/W1:Eft
+the white	1 TH0E:E/WH1:AOEUt
+the whole	1 TH0E:E/WH1:OEl
+the wild	1 TH0E:E/W1:AOEUld
+the will	1 TH0E:E/W1:EUl
+the wind	1 TH0E:E/W1:AOEUpbd
+the word	1 TH0E:E/W1:Ord
+the words	1 TH0E:E/W1:Ordz
+the work	1 TH0E:E/W1:Orbg
+the works	1 TH0E:E/W1:Orbgs
+the world	1 TH0E:E/W1:Orld
+the worst	1 TH0E:E/W1:Ofrt
+the wrong	1 TH0E:E/WR1:Opbg
+the year	1 TH0E:E/KWR1:AEr
+the years	1 TH0E:E/KWR1:AErs
+the young	1 TH0E:E/KWR1:Upbg
+their best	1 TH0E:A*E/PWR1:Eft
+their first	1 TH0E:A*E/TPR1:EUfrt
+their hands	1 TH0E:A*E/R1:Apbdz
+their home	1 TH0E:A*E/R1:OEpl
+their jobs	1 TH0E:A*E/SKWR1:Obs
+their new	1 TH0E:A*E/TPHR1:AOU
+their own	1 TH0E:A*E/R1:O*Epb
+their price	1 TH0E:A*E/PR1:AOEUs
+their time	1 TH0E:A*E/TR1:AOEUpl
+their way	1 TH0E:A*E/WR1:AEU
+their work	1 TH0E:A*E/WR1:Orbg
+them a	1 TH0E:E/PH1:A
+them all	1 TH0E:E/PH1:AUl
+them and	1 TH0E:E/PH1:Apbd
+them are	1 TH0E:E/PH1:Ar
+them as	1 TH0E:E/PH1:As
+them at	1 TH0E:E/PH1:At
+them but	1 TH0E:E/PWH1:Ut
+them by	1 TH0E:E/PWH1:AOEU
+them for	1 TH0E:E/TPH1:Or
+them from	1 TH0E:E/TPHR1:Opl
+them in	1 TH0E:E/PH1:EUpb
+them is	1 TH0E:E/PH1:EUs
+them on	1 TH0E:E/PH1:Opb
+them out	1 TH0E:E/PH1:OUt
+them that	1 TH0E:E/TPH1:At
+them to	1 TH0E:E/TPH1:O
+them up	1 TH0E:E/PH1:Up
+them were	1 TH0E:E/PWH1:Er
+them with	1 TH0E:E/PWH1:*EUt
+then a	1 TH1:Epb/0A:A
+then be	1 TH1:Epb/0E:E
+then he	1 TH1:Epb/0E:E
+then in	1 TH1:Epb/0EU:EUpb
+then it	1 TH1:Epb/0EU:EUt
+then there	1 TH1:*Epbt/0E:Er
+then they	1 TH1:*Epbt/0E:A*EU
+then we	1 TH1:Epb/0E:E
+there a	1 TH0E:E/R1:A
+there and	1 TH0E:E/R1:Apbd
+there are	1 TH0E:E/R1:Ar
+there for	1 TH0E:E/TPR1:Or
+there has	1 TH0E:E/R1:As
+there have	1 TH0E:E/R1:Af
+there in	1 TH0E:E/R1:EUpb
+there is	1 TH0E:E/R1:EUs
+there may	1 TH0E:E/PHR1:AEU
+there to	1 TH0E:E/TR1:O
+there was	1 TH0E:E/WR1:As
+there were	1 TH0E:E/WR1:Er
+there will	1 TH0E:E/WR1:EUl
+there would	1 TH0E:E/WR1:OUld
+these are	1 TH0E:AOE/S1:Ar
+these days	1 TH0E:AOE/STK1:AEUs
+these new	1 TH0E:AOE/STPH1:AOU
+these things	1 TH0E:AOE/STH1:EUpbgs
+these three	1 TH0E:AOE/STHR1:AOE
+these two	1 TH0E:AOE/ST1:O
+these were	1 TH0E:AOE/SW1:Er
+they all	1 TH0E:A*EU/1:AUl
+they are	1 TH0E:A*EU/1:Ar
+they both	1 TH0E:A*EU/PW1:O*t
+they came	1 TH0E:A*EU/K1:AEUpl
+they can	1 TH0E:A*EU/K1:Apb
+they come	1 TH0E:A*EU/K1:Opl
+they could	1 TH0E:A*EU/K1:OUld
+they did	1 TH0E:A*EU/TK1:EUd
+they do	1 TH0E:A*EU/TK1:O
+they found	1 TH0E:A*EU/TP1:OUpbd
+they get	1 TH0E:A*EU/TKPW1:Et
+they go	1 TH0E:A*EU/TKPW1:O
+they got	1 TH0E:A*EU/TKPW1:Ot
+they had	1 TH0E:A*EU/H1:Ad
+they have	1 TH0E:A*EU/H1:Af
+they just	1 TH0E:A*EU/SKWR1:Uft
+they know	1 TH0E:A*EU/TPH1:O*E
+they made	1 TH0E:A*EU/PH1:AEUd
+they make	1 TH0E:A*EU/PH1:AEUbg
+they may	1 TH0E:A*EU/PH1:AEU
+they might	1 TH0E:A*EU/PH1:AO*EUt
+they must	1 TH0E:A*EU/PH1:Uft
+they need	1 TH0E:A*EU/TPH1:AOEd
+they said	1 TH0E:A*EU/S1:A*EUd
+they say	1 TH0E:A*EU/S1:AEU
+they see	1 TH0E:A*EU/S1:AOE
+they should	1 TH0E:A*EU/SH1:OUld
+they use	1 TH0E:A*EU/KWR1:AOUs
+they want	1 TH0E:A*EU/W1:Apbt
+they were	1 TH0E:A*EU/W1:Er
+they will	1 TH0E:A*EU/W1:EUl
+they would	1 TH0E:A*EU/W1:OUld
+thing is	1 TH1:EUpbg/0EU:EUs
+thing that	1 TH1:*EUpbgt/0A:At
+thing to	1 TH1:EUpbgt/0O:O
+things and	1 TH1:EUpbgs/0A:Apbd
+things are	1 TH1:EUpbgs/0A:Ar
+things in	1 TH1:EUpbgs/0EU:EUpb
+think he	1 TH1:*EUpbg/0E:E
+think it	1 TH1:*EUpbg/0EU:EUt
+think of	1 TH1:*EUpbg/0O:Of
+think that	1 TH1:*EUpbgt/0A:At
+think there	1 TH1:*EUpbgt/0E:Er
+think they	1 TH1:*EUpbgt/0E:A*EU
+think this	1 TH1:*EUpbgt/0EU:EUs
+think we	1 TH1:*EUpbg/0E:E
+third of	1 TH1:EUrd/0O:Of
+thirds of	1 TH1:EUrdz/0O:Of
+this a	1 TH0EU:EU/S1:A
+this and	1 TH0EU:EU/S1:Apbd
+this as	1 TH0EU:EU/S1:As
+this book	1 TH0EU:EU/SPW1:AObg
+this can	1 TH0EU:EU/SK1:Apb
+this case	1 TH0EU:EU/SK1:AEUs
+this could	1 TH0EU:EU/SK1:OUld
+this day	1 TH0EU:EU/STK1:AEU
+this does	1 TH0EU:EU/STK1:O*Es
+this fall	1 TH0EU:EU/STP1:AUl
+this for	1 TH0EU:EU/STP1:Or
+this game	1 TH0EU:EU/STKPW1:AEUpl
+this group	1 TH0EU:EU/STKPWR1:AOUp
+this has	1 TH0EU:EU/S1:As
+this in	1 TH0EU:EU/S1:EUpb
+this is	1 TH0EU:EU/S1:EUs
+this kind	1 TH0EU:EU/SK1:AOEUpbd
+this led	1 TH0EU:EU/SHR1:Ed
+this list	1 TH0EU:EU/SHR1:EUft
+this may	1 TH0EU:EU/SPH1:AEU
+this means	1 TH0EU:EU/SPH1:AEpbs
+this might	1 TH0EU:EU/SPH1:AO*EUt
+this month	1 TH0EU:EU/SPH1:O*pbt
+this new	1 TH0EU:EU/STPH1:AOU
+this one	1 TH0EU:EU/SW1:Opb
+this past	1 TH0EU:EU/SP1:Aft
+this point	1 TH0EU:EU/SP1:OEUpbt
+this post	1 TH0EU:EU/SP1:Oft
+this site	1 TH0EU:EU/S1:AOEUt
+this time	1 TH0EU:EU/ST1:AOEUpl
+this to	1 TH0EU:EU/ST1:O
+this type	1 TH0EU:EU/ST1:AO*EUp
+this was	1 TH0EU:EU/SW1:As
+this way	1 TH0EU:EU/SW1:AEU
+this week	1 TH0EU:EU/SW1:AOEbg
+this will	1 TH0EU:EU/SW1:EUl
+this with	1 TH0EU:EU/SW1:*EUt
+this work	1 TH0EU:EU/SW1:Orbg
+this world	1 TH0EU:EU/SW1:Orld
+this would	1 TH0EU:EU/SW1:OUld
+this year	1 TH0EU:EU/S1:AEr
+those are	1 TH0O:OE/S1:Ar
+those in	1 TH0O:OE/S1:EUpb
+those of	1 TH0O:OE/S1:Of
+those that	1 TH0O:OE/STH1:At
+those things	1 TH0O:OE/STH1:EUpbgs
+those who	1 TH0O:OE/S1:O
+those with	1 TH0O:OE/SW1:*EUt
+though he	1 TH0O:OE/H1:E
+though it	1 TH0O:OE/1:EUt
+though not	1 TH0O:OE/TPH1:Ot
+though there	1 TH0O:OE/TH1:Er
+though they	1 TH0O:OE/TH1:A*EU
+thought it	1 TH1:AUt/0EU:EUt
+thought of	1 TH1:AUt/0O:Of
+thought that	1 TH1:A*Ut/0A:At
+thought to	1 TH1:AUt/0O:O
+threat of	1 THR1:AEt/0O:Of
+threat to	1 THR1:AEt/0O:O
+three days	1 THR0E:AOE/TK1:AEUs
+three months	1 THR0E:AOE/PH1:O*pbts
+three of	1 THR1:AOE/0O:Of
+three or	1 THR1:AOE/0O:Or
+three to	1 THR1:AOEt/0O:O
+three weeks	1 THR0E:AOE/W1:AOEbgs
+three year	1 THR0E:AOE/KWR1:AEr
+three years	1 THR0E:AOE/KWR1:AErs
+through a	1 THR0O:U/1:A
+through an	1 THR0O:U/1:Apb
+through his	1 THR0O:U/H1:EUs
+through it	1 THR0O:U/1:EUt
+through its	1 THR0O:U/1:EUts
+through their	1 THR0O:U/TH1:A*Er
+through this	1 THR0O:U/TH1:EUs
+through to	1 THR0O:U/T1:O
+tied to	1 T1:AO*EUtd/0O:O
+time a	1 T1:AOEUpl/0A:A
+time and	1 T1:AOEUpl/0A:Apbd
+time as	1 T1:AOEUpl/0A:As
+time at	1 T1:AOEUpl/0A:At
+time but	1 T1:AOEUpbl/0U:Ut
+time for	1 T1:AO*EUfpl/0O:Or
+time he	1 T1:AOEUpl/0E:E
+time in	1 T1:AOEUpl/0EU:EUpb
+time is	1 T1:AOEUpl/0EU:EUs
+time it	1 T1:AOEUpl/0EU:EUt
+time of	1 T1:AOEUpl/0O:Of
+time on	1 T1:AOEUpl/0O:Opb
+time or	1 T1:AOEUpl/0O:Or
+time she	1 T1:AOEUrpbl/0E:E
+time since	1 T0EU:AOEU/SPH1:EUpbs
+time that	1 T1:AO*EUplt/0A:At
+time they	1 T1:AO*EUplt/0E:A*EU
+time to	1 T1:AOEUplt/0O:O
+time was	1 T1:AOEUpl/0A:As
+time we	1 T1:AOEUpl/0E:E
+time when	1 T0EU:AOEU/PWH1:Epb
+time with	1 T1:AOEUpl/0EU:*EUt
+to a	1 T0O:O/1:A
+to act	1 T0O:O/1:Abgt
+to add	1 T0O:O/1:Ad
+to all	1 T0O:O/1:AUl
+to an	1 T0O:O/1:Apb
+to and	1 T0O:O/1:Apbd
+to as	1 T0O:O/1:As
+to ask	1 T0O:O/1:Afbg
+to at	1 T0O:O/1:At
+to back	1 T0O:O/PW1:Abg
+to be	1 T0O:O/PW1:E
+to beat	1 T0O:O/PW1:AEt
+to block	1 T0O:O/PWHR1:Obg
+to boost	1 T0O:O/PW1:AOft
+to both	1 T0O:O/PW1:O*t
+to break	1 T0O:O/PWR1:AEbg
+to bring	1 T0O:O/PWR1:EUpbg
+to build	1 T0O:O/PW1:EUld
+to buy	1 T0O:O/PW1:AO*EU
+to by	1 T0O:O/PW1:AOEU
+to call	1 T0O:O/K1:AUl
+to care	1 T0O:O/K1:AEUr
+to catch	1 T0O:O/K1:Afp
+to cause	1 T0O:O/K1:AUs
+to change	1 T0O:O/KH1:AEUpbg
+to check	1 T0O:O/KH1:Ebg
+to choose	1 T0O:O/KH1:AOs
+to claim	1 T0O:O/KHR1:A*EUpl
+to clean	1 T0O:O/KHR1:AEpb
+to clear	1 T0O:O/KHR1:AEr
+to close	1 T0O:O/KHR1:OEs
+to come	1 T0O:O/K1:Opl
+to cook	1 T0O:O/K1:AObg
+to cross	1 T0O:O/KR1:Os
+to cut	1 T0O:O/K1:Ut
+to date	1 T0O:O/TK1:AEUt
+to day	1 T0O:O/TK1:AEU
+to deal	1 T0O:O/TK1:AEl
+to death	1 T0O:O/TK1:A*Et
+to die	1 T0O:O/TK1:AO*EU
+to do	1 T0O:O/TK1:O
+to draw	1 T0O:O/TKR1:AU
+to drive	1 T0O:O/TKR1:AOEUf
+to drop	1 T0O:O/TKR1:Op
+to each	1 T0O:O/1:AEfp
+to earn	1 T0O:O/1:AErpb
+to earth	1 T0O:O/1:A*Ert
+to eat	1 T0O:O/1:AEt
+to end	1 T0O:O/1:Epbd
+to face	1 T0O:O/TP1:AEUs
+to fall	1 T0O:O/TP1:AUl
+to feed	1 T0O:O/TP1:AOEd
+to feel	1 T0O:O/TP1:AOEl
+to fight	1 T0O:O/TP1:AO*EUt
+to fill	1 T0O:O/TP1:EUl
+to find	1 T0O:O/TP1:AOEUpbd
+to fit	1 T0O:O/TP1:EUt
+to five	1 T0O:O/TP1:AOEUf
+to fix	1 T0O:O/TP1:EUbgs
+to fly	1 T0O:O/TPHR1:AOEU
+to for	1 T0O:O/TP1:Or
+to force	1 T0O:O/TP1:OErs
+to form	1 T0O:O/TP1:Orpl
+to four	1 T0O:O/TP1:OUr
+to from	1 T0O:O/TPR1:Opl
+to gain	1 T0O:O/TKPW1:A*EUpb
+to get	1 T0O:O/TKPW1:Et
+to give	1 T0O:O/TKPW1:EUf
+to go	1 T0O:O/TKPW1:O
+to god	1 T0O:O/TKPW1:Od
+to grow	1 T0O:O/TKPWR1:O*E
+to have	1 T0O:O/H1:Af
+to head	1 T0O:O/H1:AEd
+to hear	1 T0O:O/H1:AEr
+to help	1 T0O:O/H1:Epl
+to her	1 T0O:O/H1:Er
+to hide	1 T0O:O/H1:AOEUd
+to high	1 T0O:O/H1:AO*EU
+to him	1 T0O:O/H1:EUpl
+to hire	1 T0O:O/H1:AOEUr
+to his	1 T0O:O/H1:EUs
+to hit	1 T0O:O/H1:EUt
+to hold	1 T0O:O/H1:Old
+to host	1 T0O:O/H1:Oft
+to how	1 T0O:O/H1:OU
+to in	1 T0O:O/1:EUpb
+to it	1 T0O:O/1:EUt
+to its	1 T0O:O/1:EUts
+to join	1 T0O:O/SKWR1:OEUpb
+to just	1 T0O:O/SKWR1:Uft
+to keep	1 T0O:O/K1:AOEp
+to kill	1 T0O:O/K1:EUl
+to know	1 T0O:O/TPH1:O*E
+to land	1 T0O:O/HR1:Apbd
+to last	1 T0O:O/HR1:Aft
+to launch	1 T0O:O/HR1:AUfrpb
+to lead	1 T0O:O/HR1:AEd
+to learn	1 T0O:O/HR1:AErpb
+to leave	1 T0O:O/HR1:AEf
+to let	1 T0O:O/HR1:Et
+to life	1 T0O:O/HR1:AOEUf
+to light	1 T0O:O/HR1:AO*EUt
+to live	1 T0O:O/HR1:AOEUf
+to look	1 T0O:O/HR1:AObg
+to lose	1 T0O:O/HR1:Os
+to love	1 T0O:O/HR1:Of
+to make	1 T0O:O/PH1:AEUbg
+to mark	1 T0O:O/PH1:Arbg
+to match	1 T0O:O/PH1:Afp
+to me	1 T0O:O/PH1:E
+to meet	1 T0O:O/PH1:AOEt
+to more	1 T0O:O/PH1:OEr
+to most	1 T0O:O/PH1:Oft
+to move	1 T0O:O/PH1:Of
+to my	1 T0O:O/PH1:AOEU
+to name	1 T0O:O/TPH1:AEUpl
+to new	1 T0O:O/TPH1:AOU
+to no	1 T0O:O/TPH1:O
+to not	1 T0O:O/TPH1:Ot
+to note	1 T0O:O/TPH1:OEt
+to of	1 T0O:O/1:Of
+to on	1 T0O:O/1:Opb
+to one	1 T0O:O/W1:Opb
+to or	1 T0O:O/1:Or
+to our	1 T0O:O/1:OUr
+to pass	1 T0O:O/P1:As
+to pay	1 T0O:O/P1:AEU
+to per	1 T0O:O/P1:Er
+to pick	1 T0O:O/P1:EUbg
+to place	1 T0O:O/PHR1:AEUs
+to plan	1 T0O:O/PHR1:Apb
+to play	1 T0O:O/PHR1:AEU
+to point	1 T0O:O/P1:OEUpbt
+to post	1 T0O:O/P1:Oft
+to prove	1 T0O:O/PR1:Of
+to pull	1 T0O:O/P1:Ul
+to push	1 T0O:O/P1:Urb
+to put	1 T0O:O/P1:Ut
+to raise	1 T0O:O/R1:A*EUs
+to reach	1 T0O:O/R1:AEfp
+to read	1 T0O:O/R1:AEd
+to rise	1 T0O:O/R1:AOEUs
+to run	1 T0O:O/R1:Upb
+to save	1 T0O:O/S1:AEUf
+to say	1 T0O:O/S1:AEU
+to school	1 T0O:O/SK1:AOl
+to score	1 T0O:O/SK1:OEr
+to search	1 T0O:O/S1:AEfrpb
+to see	1 T0O:O/S1:AOE
+to seek	1 T0O:O/S1:AOEbg
+to self	1 T0O:O/S1:Efl
+to sell	1 T0O:O/S1:El
+to send	1 T0O:O/S1:Epbd
+to serve	1 T0O:O/S1:Efrb
+to set	1 T0O:O/S1:Et
+to share	1 T0O:O/SH1:AEUr
+to shoot	1 T0O:O/SH1:AOt
+to show	1 T0O:O/SH1:O*E
+to sign	1 T0O:O/S1:AOEUpb
+to sit	1 T0O:O/S1:EUt
+to six	1 T0O:O/S1:EUbgs
+to sleep	1 T0O:O/SHR1:AOEp
+to slow	1 T0O:O/SHR1:O*E
+to solve	1 T0O:O/S1:Ofl
+to some	1 T0O:O/S1:Opl
+to south	1 T0O:O/S1:O*Ut
+to speak	1 T0O:O/SP1:AEbg
+to spend	1 T0O:O/SP1:Epbd
+to spread	1 T0O:O/SPR1:AEd
+to stand	1 T0O:O/ST1:Apbd
+to start	1 T0O:O/ST1:Art
+to state	1 T0O:O/ST1:AEUt
+to stay	1 T0O:O/ST1:AEU
+to step	1 T0O:O/ST1:Ep
+to stop	1 T0O:O/ST1:Op
+to store	1 T0O:O/ST1:OEr
+to such	1 T0O:O/S1:Ufp
+to switch	1 T0O:O/SW1:EUfp
+to take	1 T0O:O/T1:AEUbg
+to talk	1 T0O:O/T1:AUbg
+to teach	1 T0O:O/T1:AEfp
+to tell	1 T0O:O/T1:El
+to test	1 T0O:O/T1:Eft
+to thank	1 T0O:O/TH1:A*pbg
+to that	1 T0O:O/TH1:At
+to their	1 T0O:O/TH1:A*Er
+to them	1 T0O:O/TH1:Epl
+to these	1 T0O:O/TH1:AOEs
+to think	1 T0O:O/TH1:*EUpbg
+to this	1 T0O:O/TH1:EUs
+to those	1 T0O:O/TH1:OEs
+to three	1 T0O:O/THR1:AOE
+to throw	1 T0O:O/THR1:O*E
+to time	1 T0O:O/T1:AOEUpl
+to track	1 T0O:O/TR1:Abg
+to trade	1 T0O:O/TR1:AEUd
+to train	1 T0O:O/TR1:A*EUpb
+to treat	1 T0O:O/TR1:AEt
+to try	1 T0O:O/TR1:AOEU
+to turn	1 T0O:O/T1:Urpb
+to two	1 T0O:O/T1:O
+to us	1 T0O:O/1:Us
+to use	1 T0O:O/KWR1:AOUs
+to vote	1 T0O:O/SR1:OEt
+to wait	1 T0O:O/W1:A*EUt
+to walk	1 T0O:O/W1:AUbg
+to watch	1 T0O:O/W1:Afp
+to wear	1 T0O:O/W1:AEr
+to what	1 T0O:O/WH1:At
+to which	1 T0O:O/WH1:EUfp
+to win	1 T0O:O/W1:EUpb
+to work	1 T0O:O/W1:Orbg
+to write	1 T0O:O/WR1:AOEUt
+to years	1 T0O:O/KWR1:AErs
+to you	1 T0O:O/KWR1:AOU
+to your	1 T0O:O/KWR1:OUr
+told her	1 T1:Old/0:Er
+told him	1 T1:Old/0EU:EUpl
+told me	1 T1:Opld/0E:E
+told that	1 T1:O*ltd/0A:At
+ton of	1 T1:Opb/0O:Of
+tons of	1 T1:Opbs/0O:Of
+too late	1 T0O:AO/HR1:AEUt
+too long	1 T0O:AO/HR1:Opbg
+too much	1 T0O:AO/PH1:Ufp
+took a	1 T1:AObg/0A:A
+took place	1 T0O:AO/KPHR1:AEUs
+took to	1 T1:AObgt/0O:O
+tool for	1 T1:AOfl/0O:Or
+tools and	1 T1:AOls/0A:Apbd
+top of	1 T1:Op/0O:Of
+touch with	1 T1:Ufp/0EU:*EUt
+tour of	1 T1:OUr/0O:Of
+town and	1 T1:OUpb/0A:Apbd
+town of	1 T1:OUpb/0O:Of
+track and	1 TR1:Abg/0A:Apbd
+trade and	1 TR1:AEUd/0A:Apbd
+tried to	1 TR1:AO*EUtd/0O:O
+tries to	1 TR1:AO*EUtz/0O:O
+trip to	1 TR1:EUpt/0O:O
+trump and	1 TR1:Ufrp/0A:Apbd
+trump has	1 TR1:Ufrp/0A:As
+trump is	1 TR1:Ufrp/0EU:EUs
+trump said	1 TR0U:U/SPH1:A*EUd
+truth is	1 TR1:*Ut/0EU:EUs
+try and	1 TR1:AOEU/0A:Apbd
+try to	1 TR1:AOEUt/0O:O
+turn to	1 T1:Urpbt/0O:O
+turns out	1 T0:U/STPHR1:OUt
+two and	1 T1:O/0A:Apbd
+two days	1 T0O:O/TK1:AEUs
+two main	1 T0O:O/PH1:A*EUpb
+two men	1 T0O:O/PH1:Epb
+two months	1 T0O:O/PH1:O*pbts
+two more	1 T0O:O/PH1:OEr
+two of	1 T1:O/0O:Of
+two or	1 T1:O/0O:Or
+two thirds	1 T0O:O/TH1:EUrdz
+two to	1 T1:Ot/0O:O
+two weeks	1 T0O:O/W1:AOEbgs
+two year	1 T0O:O/KWR1:AEr
+two years	1 T0O:O/KWR1:AErs
+type of	1 T1:AO*EUp/0O:Of
+up a	1 1:Up/0A:A
+up an	1 1:Up/0A:Apb
+up and	1 1:Up/0A:Apbd
+up as	1 1:Up/0A:As
+up at	1 1:Up/0A:At
+up by	1 1:Upb/0EU:AOEU
+up for	1 1:Ufp/0O:Or
+up his	1 1:Up/0EU:EUs
+up in	1 1:Up/0EU:EUpb
+up of	1 1:Up/0O:Of
+up on	1 1:Up/0O:Opb
+up or	1 1:Up/0O:Or
+up their	1 1:*Upt/0E:A*Er
+up to	1 1:Upt/0O:O
+up with	1 1:Up/0EU:*EUt
+us a	1 0U:U/S1:A
+us all	1 0U:U/S1:AUl
+us and	1 0U:U/S1:Apbd
+us as	1 0U:U/S1:As
+us in	1 0U:U/S1:EUpb
+us that	1 0U:U/STH1:At
+us to	1 0U:U/ST1:O
+us with	1 0U:U/SW1:*EUt
+use a	1 KWR1:AOUs/0A:A
+use and	1 KWR1:AOUs/0A:Apbd
+use as	1 KWR1:AOUs/0A:As
+use for	1 KWR1:AOUfs/0O:Or
+use in	1 KWR1:AOUs/0EU:EUpb
+use it	1 KWR1:AOUs/0EU:EUt
+use of	1 KWR1:AOUs/0O:Of
+use their	1 KWR1:AO*Uts/0E:A*Er
+use them	1 KWR1:AO*Uts/0E:Epl
+use this	1 KWR1:AO*Uts/0EU:EUs
+use to	1 KWR1:AOUft/0O:O
+voice of	1 SR1:OEUs/0O:Of
+vote for	1 SR1:OEft/0O:Or
+vote in	1 SR1:OEt/0EU:EUpb
+wait for	1 W1:A*EUft/0O:Or
+wait to	1 W1:A*EUt/0O:O
+wake of	1 W1:AEUbg/0O:Of
+wake up	1 W0A:AEU/K1:Up
+wall street	1 W0A:AU/STHR1:AOEt
+want a	1 W1:Apbt/0A:A
+want it	1 W1:Apbt/0EU:EUt
+want to	1 W1:Apbt/0O:O
+wants to	1 W1:Afpbt/0O:O
+war and	1 W1:Ar/0A:Apbd
+war in	1 W1:Ar/0EU:EUpb
+war with	1 W1:Ar/0EU:*EUt
+was a	1 W0A:A/S1:A
+was all	1 W0A:A/S1:AUl
+was an	1 W0A:A/S1:Apb
+was and	1 W0A:A/S1:Apbd
+was as	1 W0A:A/S1:As
+was at	1 W0A:A/S1:At
+was born	1 W0A:A/SPW1:Orpb
+was brought	1 W0A:A/SPWR1:AUt
+was built	1 W0A:A/SPW1:EUlt
+was done	1 W0A:A/STK1:Opb
+was due	1 W0A:A/STK1:AO*U
+was first	1 W0A:A/STP1:EUfrt
+was for	1 W0A:A/STP1:Or
+was found	1 W0A:A/STP1:OUpbd
+was held	1 W0A:A/S1:Eld
+was his	1 W0A:A/S1:EUs
+was in	1 W0A:A/S1:EUpb
+was it	1 W0A:A/S1:EUt
+was just	1 W0A:A/SKWR1:Uft
+was known	1 W0A:A/STPH1:O*Epb
+was left	1 W0A:A/SHR1:Eft
+was like	1 W0A:A/SHR1:AOEUbg
+was made	1 W0A:A/SPH1:AEUd
+was more	1 W0A:A/SPH1:OEr
+was much	1 W0A:A/SPH1:Ufp
+was my	1 W0A:A/SPH1:AOEU
+was no	1 W0A:A/STPH1:O
+was not	1 W0A:A/STPH1:Ot
+was now	1 W0A:A/STPH1:OU
+was of	1 W0A:A/S1:Of
+was on	1 W0A:A/S1:Opb
+was once	1 W0A:A/SW1:Opbs
+was one	1 W0A:A/SW1:Opb
+was part	1 W0A:A/SP1:Art
+was put	1 W0A:A/SP1:Ut
+was quite	1 W0A:A/SKW1:AOEUt
+was said	1 W0A:A/S1:A*EUd
+was seen	1 W0A:A/S1:AOEpb
+was sent	1 W0A:A/S1:Epbt
+was set	1 W0A:A/S1:Et
+was shot	1 W0A:A/SH1:Ot
+was so	1 W0A:A/S1:O
+was sold	1 W0A:A/S1:Old
+was still	1 W0A:A/ST1:EUl
+was that	1 W0A:A/STH1:At
+was then	1 W0A:A/STH1:Epb
+was there	1 W0A:A/STH1:Er
+was to	1 W0A:A/ST1:O
+was told	1 W0A:A/ST1:Old
+was too	1 W0A:A/ST1:AO
+was up	1 W0A:A/S1:Up
+was well	1 W0A:A/SW1:El
+was when	1 W0A:A/SW1:Epb
+was with	1 W0A:A/SW1:*EUt
+was years	1 W0A:A/S1:AErs
+wave of	1 W1:AEUf/0O:Of
+way and	1 W1:AEU/0A:Apbd
+way back	1 W0A:AEU/PW1:Abg
+way for	1 W1:AEUf/0O:Or
+way he	1 W1:AEU/0E:E
+way in	1 W1:AEU/0EU:EUpb
+way it	1 W1:AEU/0EU:EUt
+way of	1 W1:AEU/0O:Of
+way out	1 W0A:AEU/1:OUt
+way that	1 W1:A*EUt/0A:At
+way they	1 W1:A*EUt/0E:A*EU
+way through	1 W1:A*EUrt/0O:U
+way to	1 W1:AEUt/0O:O
+way we	1 W1:AEU/0E:E
+ways of	1 W1:AEUs/0O:Of
+ways that	1 W1:A*EUtz/0A:At
+ways to	1 W1:AEUtz/0O:O
+we all	1 W0E:E/1:AUl
+we are	1 W0E:E/1:Ar
+we can	1 W0E:E/K1:Apb
+we could	1 W0E:E/K1:OUld
+we did	1 W0E:E/TK1:EUd
+we do	1 W0E:E/TK1:O
+we find	1 W0E:E/TP1:AOEUpbd
+we found	1 W0E:E/TP1:OUpbd
+we get	1 W0E:E/TKPW1:Et
+we go	1 W0E:E/TKPW1:O
+we got	1 W0E:E/TKPW1:Ot
+we had	1 W0E:E/H1:Ad
+we have	1 W0E:E/H1:Af
+we hope	1 W0E:E/H1:OEp
+we just	1 W0E:E/SKWR1:Uft
+we know	1 W0E:E/TPH1:O*E
+we live	1 W0E:E/HR1:AOEUf
+we look	1 W0E:E/HR1:AObg
+we love	1 W0E:E/HR1:Of
+we make	1 W0E:E/PH1:AEUbg
+we may	1 W0E:E/PH1:AEU
+we might	1 W0E:E/PH1:AO*EUt
+we must	1 W0E:E/PH1:Uft
+we need	1 W0E:E/TPH1:AOEd
+we saw	1 W0E:E/S1:AU
+we see	1 W0E:E/S1:AOE
+we should	1 W0E:E/SH1:OUld
+we still	1 W0E:E/ST1:EUl
+we take	1 W0E:E/T1:AEUbg
+we think	1 W0E:E/TH1:*EUpbg
+we use	1 W0E:E/KWR1:AOUs
+we want	1 W0E:E/W1:Apbt
+we went	1 W0E:E/W1:Epbt
+we were	1 W0E:E/W1:Er
+we will	1 W0E:E/W1:EUl
+we would	1 W0E:E/W1:OUld
+wear a	1 W1:AEr/0A:A
+week and	1 W1:AOEbg/0A:Apbd
+week in	1 W1:AOEbg/0EU:EUpb
+week of	1 W1:AOEbg/0O:Of
+week that	1 W1:AO*Ebgt/0A:At
+week to	1 W1:AOEbgt/0O:O
+weeks and	1 W1:AOEbgs/0A:Apbd
+weeks of	1 W1:AOEbgs/0O:Of
+weight of	1 W1:A*Et/0O:Of
+well and	1 W1:El/0A:Apbd
+well as	1 W1:El/0A:As
+well for	1 W1:Efl/0O:Or
+well in	1 W1:El/0EU:EUpb
+well known	1 W0E:E/TPHR1:O*Epb
+well to	1 W1:Elt/0O:O
+well with	1 W1:El/0EU:*EUt
+went on	1 W1:Epbt/0O:Opb
+went out	1 W0E:E/TPH1:OUt
+went to	1 W1:Epbt/0O:O
+were a	1 W0:E/R1:A
+were all	1 W0:E/R1:AUl
+were at	1 W0:E/R1:At
+were both	1 W0:E/PWR1:O*t
+were built	1 W0:E/PWR1:EUlt
+were found	1 W0:E/TPR1:OUpbd
+were held	1 W0:E/R1:Eld
+were in	1 W0:E/R1:EUpb
+were just	1 W0:E/SKWR1:Uft
+were made	1 W0:E/PHR1:AEUd
+were more	1 W0:E/PHR1:OEr
+were no	1 W0:E/TPHR1:O
+were not	1 W0:E/TPHR1:Ot
+were on	1 W0:E/R1:Opb
+were sent	1 W0:E/SR1:Epbt
+were so	1 W0:E/SR1:O
+were still	1 W0:E/STR1:EUl
+were to	1 W0:E/TR1:O
+west and	1 W1:Eft/0A:Apbd
+west coast	1 W0E:E/STK1:O*Eft
+west of	1 W1:Eft/0O:Of
+what a	1 WH1:At/0A:A
+what are	1 WH1:At/0A:Ar
+what can	1 WH1:Abgt/0A:Apb
+what do	1 WH1:Atd/0O:O
+what does	1 WH1:Atd/0O:O*Es
+what has	1 WH1:At/0A:As
+what he	1 WH1:At/0E:E
+what if	1 WH1:At/0EU:EUf
+what is	1 WH1:At/0EU:EUs
+what it	1 WH1:At/0EU:EUt
+what kind	1 WH0A:A/TK1:AOEUpbd
+what she	1 WH1:Arbt/0E:E
+what they	1 WH1:A*t/0E:A*EU
+what this	1 WH1:A*t/0EU:EUs
+what to	1 WH1:At/0O:O
+what was	1 WH1:At/0A:As
+what we	1 WH1:At/0E:E
+what will	1 WH1:At/0EU:EUl
+what would	1 WH1:At/0O:OUld
+when a	1 WH1:Epb/0A:A
+when an	1 WH1:Epb/0A:Apb
+when he	1 WH1:Epb/0E:E
+when his	1 WH1:Epb/0EU:EUs
+when in	1 WH1:Epb/0EU:EUpb
+when it	1 WH1:Epb/0EU:EUt
+when one	1 WH0E:E/TPWH1:Opb
+when she	1 WH1:Erpb/0E:E
+when their	1 WH1:*Epbt/0E:A*Er
+when there	1 WH1:*Epbt/0E:Er
+when they	1 WH1:*Epbt/0E:A*EU
+when this	1 WH1:*Epbt/0EU:EUs
+when we	1 WH1:Epb/0E:E
+where a	1 WH1:Er/0A:A
+where he	1 WH1:Er/0E:E
+where is	1 WH1:Er/0EU:EUs
+where it	1 WH1:Er/0EU:EUt
+where she	1 WH1:*Erb/0E:E
+where there	1 WH1:*Ert/0E:Er
+where they	1 WH1:*Ert/0E:A*EU
+where to	1 WH1:Ert/0O:O
+where we	1 WH1:Er/0E:E
+which a	1 WH0EU:EU/KH1:A
+which are	1 WH0EU:EU/KH1:Ar
+which can	1 WH0EU:EU/KH1:Apb
+which could	1 WH0EU:EU/KH1:OUld
+which had	1 WH0EU:EU/KH1:Ad
+which has	1 WH0EU:EU/KH1:As
+which have	1 WH0EU:EU/KH1:Af
+which he	1 WH0EU:EU/KH1:E
+which in	1 WH0EU:EU/KH1:EUpb
+which is	1 WH0EU:EU/KH1:EUs
+which it	1 WH0EU:EU/KH1:EUt
+which led	1 WH0EU:EU/KHR1:Ed
+which may	1 WH0EU:EU/KPH1:AEU
+which means	1 WH0EU:EU/KPH1:AEpbs
+which one	1 WH0EU:EU/KWH1:Opb
+which she	1 WH0EU:EU/SKH1:E
+which they	1 WH0EU:EU/TKH1:A*EU
+which to	1 WH0EU:EU/TKH1:O
+which was	1 WH0EU:EU/KWH1:As
+which we	1 WH0EU:EU/KWH1:E
+which were	1 WH0EU:EU/KWH1:Er
+which will	1 WH0EU:EU/KWH1:EUl
+which would	1 WH0EU:EU/KWH1:OUld
+which you	1 WH0EU:EU/KH1:AOU
+while a	1 WH1:AOEUl/0A:A
+while he	1 WH1:AOEUl/0E:E
+while in	1 WH1:AOEUl/0EU:EUpb
+while it	1 WH1:AOEUl/0EU:EUt
+while on	1 WH1:AOEUl/0O:Opb
+while she	1 WH1:AOEUrbl/0E:E
+while some	1 WH0EU:AOEU/SHR1:Opl
+while still	1 WH0EU:AOEU/STHR1:EUl
+while there	1 WH1:AO*EUlt/0E:Er
+while they	1 WH1:AO*EUlt/0E:A*EU
+while this	1 WH1:AO*EUlt/0EU:EUs
+while we	1 WH1:AOEUl/0E:E
+white and	1 WH1:AOEUt/0A:Apbd
+white house	1 WH0EU:AOEU/T1:OUs
+who are	1 WH0O:O/1:Ar
+who came	1 WH0O:O/K1:AEUpl
+who can	1 WH0O:O/K1:Apb
+who could	1 WH0O:O/K1:OUld
+who did	1 WH0O:O/TK1:EUd
+who died	1 WH0O:O/TK1:AO*EUd
+who do	1 WH0O:O/TK1:O
+who had	1 WH0O:O/H1:Ad
+who has	1 WH0O:O/H1:As
+who have	1 WH0O:O/H1:Af
+who is	1 WH0O:O/1:EUs
+who knows	1 WH0O:O/TPH1:O*Es
+who live	1 WH0O:O/HR1:AOEUf
+who made	1 WH0O:O/PH1:AEUd
+who may	1 WH0O:O/PH1:AEU
+who said	1 WH0O:O/S1:A*EUd
+who want	1 WH0O:O/W1:Apbt
+who was	1 WH0O:O/W1:As
+who were	1 WH0O:O/W1:Er
+who will	1 WH0O:O/W1:EUl
+who would	1 WH0O:O/W1:OUld
+who you	1 WH0O:O/KWR1:AOU
+whom he	1 WH0O:O/PH1:E
+why do	1 WH1:AOEUd/0O:O
+why he	1 WH1:AOEU/0E:E
+why is	1 WH1:AOEU/0EU:EUs
+why it	1 WH1:AOEU/0EU:EUt
+why not	1 WH0EU:AOEU/TPH1:Ot
+why they	1 WH1:AO*EUt/0E:A*EU
+why we	1 WH1:AOEU/0E:E
+wide range	1 W0EU:AOEU/TKR1:AEUpbg
+wife and	1 W1:AOEUf/0A:Apbd
+will be	1 W0EU:EU/PWHR1:E
+will bring	1 W0EU:EU/PWHR1:EUpbg
+will change	1 W0EU:EU/KHR1:AEUpbg
+will come	1 W0EU:EU/KHR1:Opl
+will do	1 W0EU:EU/TKHR1:O
+will find	1 W0EU:EU/TPHR1:AOEUpbd
+will get	1 W0EU:EU/TKPWHR1:Et
+will give	1 W0EU:EU/TKPWHR1:EUf
+will go	1 W0EU:EU/TKPWHR1:O
+will have	1 W0EU:EU/HR1:Af
+will help	1 W0EU:EU/HR1:Epl
+will keep	1 W0EU:EU/KHR1:AOEp
+will look	1 W0EU:EU/HR1:AObg
+will make	1 W0EU:EU/PHR1:AEUbg
+will need	1 W0EU:EU/TPHR1:AOEd
+will not	1 W0EU:EU/TPHR1:Ot
+will now	1 W0EU:EU/TPHR1:OU
+will see	1 W0EU:EU/SHR1:AOE
+will soon	1 W0EU:EU/SHR1:AOpb
+will start	1 W0EU:EU/STHR1:Art
+will still	1 W0EU:EU/STHR1:EUl
+will take	1 W0EU:EU/THR1:AEUbg
+will then	1 W0EU:EU/THR1:Epb
+will use	1 W0EU:EU/HR1:AOUs
+will work	1 W0EU:EU/WHR1:Orbg
+will you	1 W0EU:EU/HR1:AOU
+win a	1 W1:EUpb/0A:A
+wish to	1 W1:EUrbt/0O:O
+with a	1 W0EU:EU/TH1:A
+with all	1 W0EU:EU/TH1:AUl
+with an	1 W0EU:EU/TH1:Apb
+with and	1 W0EU:EU/TH1:Apbd
+with both	1 W0EU:EU/TPWH1:O*t
+with each	1 W0EU:EU/TH1:AEfp
+with four	1 W0EU:EU/TPH1:OUr
+with friends	1 W0EU:EU/TPHR1:Epbdz
+with great	1 W0EU:EU/TKPWHR1:AEt
+with her	1 W0EU:EU/TH1:Er
+with high	1 W0EU:EU/TH1:AO*EU
+with him	1 W0EU:EU/TH1:EUpl
+with his	1 W0EU:EU/TH1:EUs
+with in	1 W0EU:EU/TH1:EUpb
+with it	1 W0EU:EU/TH1:EUt
+with its	1 W0EU:EU/TH1:EUts
+with just	1 W0EU:EU/STKWHR1:Uft
+with less	1 W0EU:EU/THR1:Es
+with me	1 W0EU:EU/TPH1:E
+with more	1 W0EU:EU/TPH1:OEr
+with most	1 W0EU:EU/TPH1:Oft
+with my	1 W0EU:EU/TPH1:AOEU
+with new	1 W0EU:EU/TPH1:AOU
+with no	1 W0EU:EU/TPH1:O
+with of	1 W0EU:EU/TH1:Of
+with one	1 W0EU:EU/TWH1:Opb
+with or	1 W0EU:EU/TH1:Or
+with our	1 W0EU:EU/TH1:OUr
+with so	1 W0EU:EU/STH1:O
+with some	1 W0EU:EU/STH1:Opl
+with such	1 W0EU:EU/STH1:Ufp
+with that	1 W0EU:EU/TH1:At
+with their	1 W0EU:EU/TH1:A*Er
+with them	1 W0EU:EU/TH1:Epl
+with these	1 W0EU:EU/TH1:AOEs
+with this	1 W0EU:EU/TH1:EUs
+with those	1 W0EU:EU/TH1:OEs
+with three	1 W0EU:EU/THR1:AOE
+with two	1 W0EU:EU/TH1:O
+with us	1 W0EU:EU/TH1:Us
+with what	1 W0EU:EU/TWH1:At
+with which	1 W0EU:EU/TWH1:EUfp
+with whom	1 W0EU:EU/TH1:Opl
+with you	1 W0EU:EU/TH1:AOU
+with your	1 W0EU:EU/TH1:OUr
+won a	1 W1:Opb/0A:A
+word for	1 W1:Ofrd/0O:Or
+word of	1 W1:Ord/0O:Of
+words and	1 W1:Ordz/0A:Apbd
+words of	1 W1:Ordz/0O:Of
+work and	1 W1:Orbg/0A:Apbd
+work as	1 W1:Orbg/0A:As
+work at	1 W1:Orbg/0A:At
+work for	1 W1:Ofrbg/0O:Or
+work in	1 W1:Orbg/0EU:EUpb
+work is	1 W1:Orbg/0EU:EUs
+work of	1 W1:Orbg/0O:Of
+work on	1 W1:Orbg/0O:Opb
+work out	1 W0:O/KR1:OUt
+work that	1 W1:O*rbgt/0A:At
+work to	1 W1:Orbgt/0O:O
+work was	1 W1:Orbg/0A:As
+work with	1 W1:Orbg/0EU:*EUt
+works and	1 W1:Orbgs/0A:Apbd
+works in	1 W1:Orbgs/0EU:EUpb
+works of	1 W1:Orbgs/0O:Of
+works with	1 W1:Orbgs/0EU:*EUt
+world and	1 W1:Orld/0A:Apbd
+world cup	1 W0:O/TKHR1:Up
+world health	1 W0:O/TKHR1:A*Elt
+world in	1 W1:Orld/0EU:EUpb
+world is	1 W1:Orld/0EU:EUs
+world of	1 W1:Orld/0O:Of
+world that	1 W1:O*rltd/0A:At
+world to	1 W1:Orltd/0O:O
+world war	1 W0:O/TKWHR1:Ar
+world where	1 W0:O/TKWHR1:Er
+worse than	1 W1:O*rts/0A:Apb
+worth it	1 W1:O*rt/0EU:EUt
+worth of	1 W1:O*rt/0O:Of
+would be	1 W0O:OU/TKPW1:E
+would do	1 W0O:OU/TK1:O
+would get	1 W0O:OU/TKPW1:Et
+would give	1 W0O:OU/TKPW1:EUf
+would go	1 W0O:OU/TKPW1:O
+would have	1 W0O:OU/TK1:Af
+would help	1 W0O:OU/TK1:Epl
+would like	1 W0O:OU/TKHR1:AOEUbg
+would love	1 W0O:OU/TKHR1:Of
+would make	1 W0O:OU/TKPH1:AEUbg
+would need	1 W0O:OU/TKPH1:AOEd
+would not	1 W0O:OU/TKPH1:Ot
+would say	1 W0O:OU/STK1:AEU
+would take	1 W0O:OU/TK1:AEUbg
+would you	1 W0O:OU/TK1:AOU
+write a	1 WR1:AOEUt/0A:A
+wrong with	1 WR1:Opbg/0EU:*EUt
+wrote a	1 WR1:OEt/0A:A
+wrote in	1 WR1:OEt/0EU:EUpb
+wrote that	1 WR1:O*Et/0A:At
+wrote to	1 WR1:OEt/0O:O
+yards and	1 KWR1:Ardz/0A:Apbd
+year and	1 KWR1:AEr/0A:Apbd
+year as	1 KWR1:AEr/0A:As
+year at	1 KWR1:AEr/0A:At
+year but	1 KWR1:AErb/0U:Ut
+year for	1 KWR1:A*Efr/0O:Or
+year he	1 KWR1:AEr/0E:E
+year in	1 KWR1:AEr/0EU:EUpb
+year is	1 KWR1:AEr/0EU:EUs
+year of	1 KWR1:AEr/0O:Of
+year old	1 KWR0E:AE/R1:Old
+year on	1 KWR1:AEr/0O:Opb
+year round	1 KWR0E:AE/R1:OUpbd
+year that	1 KWR1:A*Ert/0A:At
+year to	1 KWR1:AErt/0O:O
+year with	1 KWR1:AEr/0EU:*EUt
+years and	1 KWR1:AErs/0A:Apbd
+years as	1 KWR1:AErs/0A:As
+years he	1 KWR1:AErz/0E:E
+years in	1 KWR1:AErs/0EU:EUpb
+years of	1 KWR1:AErs/0O:Of
+years old	1 KWR0E:AE/SR1:Old
+years since	1 KWR0E:AE/SR1:EUpbs
+years with	1 KWR1:AErz/0EU:*EUt
+yet to	1 KWR1:Et/0O:O
+you a	1 KWR0O:AOU/1:A
+you all	1 KWR0O:AOU/1:AUl
+you and	1 KWR0O:AOU/1:Apbd
+you are	1 KWR0O:AOU/1:Ar
+you as	1 KWR0O:AOU/1:As
+you can	1 KWR0O:AOU/K1:Apb
+you choose	1 KWR0O:AOU/KH1:AOs
+you could	1 KWR0O:AOU/K1:OUld
+you did	1 KWR0O:AOU/TK1:EUd
+you do	1 KWR0O:AOU/TK1:O
+you feel	1 KWR0O:AOU/TP1:AOEl
+you find	1 KWR0O:AOU/TP1:AOEUpbd
+you for	1 KWR0O:AOU/TP1:Or
+you get	1 KWR0O:AOU/TKPW1:Et
+you go	1 KWR0O:AOU/TKPW1:O
+you guys	1 KWR0O:AOU/TKPW1:AOEUs
+you had	1 KWR0O:AOU/H1:Ad
+you have	1 KWR0O:AOU/H1:Af
+you in	1 KWR0O:AOU/1:EUpb
+you just	1 KWR0O:AOU/SKWR1:Uft
+you know	1 KWR0O:AOU/TPH1:O*E
+you like	1 KWR0O:AOU/HR1:AOEUbg
+you look	1 KWR0O:AOU/HR1:AObg
+you love	1 KWR0O:AOU/HR1:Of
+you make	1 KWR0O:AOU/PH1:AEUbg
+you may	1 KWR0O:AOU/PH1:AEU
+you might	1 KWR0O:AOU/PH1:AO*EUt
+you must	1 KWR0O:AOU/PH1:Uft
+you need	1 KWR0O:AOU/TPH1:AOEd
+you on	1 KWR0O:AOU/1:Opb
+you put	1 KWR0O:AOU/P1:Ut
+you read	1 KWR0O:AOU/R1:AEd
+you say	1 KWR0O:AOU/S1:AEU
+you see	1 KWR0O:AOU/S1:AOE
+you should	1 KWR0O:AOU/SH1:OUld
+you so	1 KWR0O:AOU/S1:O
+you start	1 KWR0O:AOU/ST1:Art
+you take	1 KWR0O:AOU/T1:AEUbg
+you that	1 KWR0O:AOU/TH1:At
+you think	1 KWR0O:AOU/TH1:*EUpbg
+you to	1 KWR0O:AOU/T1:O
+you use	1 KWR0O:AOU/KWR1:AOUs
+you want	1 KWR0O:AOU/W1:Apbt
+you were	1 KWR0O:AOU/W1:Er
+you will	1 KWR0O:AOU/W1:EUl
+you with	1 KWR0O:AOU/W1:*EUt
+you won	1 KWR0O:AOU/W1:Opb
+you would	1 KWR0O:AOU/W1:OUld
+young and	1 KWR1:Upbg/0A:Apbd
+your app	1 KWR0O:OU/R1:Ap
+your blog	1 KWR0O:OU/PWHR1:Og
+your child	1 KWR0O:OU/KHR1:AOEUld
+your first	1 KWR0O:OU/TPR1:EUfrt
+your hands	1 KWR0O:OU/R1:Apbdz
+your home	1 KWR0O:OU/R1:OEpl
+your life	1 KWR0O:OU/HR1:AOEUf
+your mind	1 KWR0O:OU/PHR1:AOEUpbd
+your new	1 KWR0O:OU/TPHR1:AOU
+your own	1 KWR0O:OU/R1:O*Epb
+your phone	1 KWR0O:OU/TPR1:OEpb
+your site	1 KWR0O:OU/SR1:AOEUt
+your way	1 KWR0O:OU/WR1:AEU
+your work	1 KWR0O:OU/WR1:Orbg
