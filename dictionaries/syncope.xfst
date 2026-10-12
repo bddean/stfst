@@ -10,6 +10,6 @@ define Stressed1 [ ?* Gap "1" ( r ) ":" ?* ] ;
 define Sonorant [ L | M | N | R ] ;
 define Weak     [ Eq Letter* Gap Unstressed0 Gap ] ;
 define Syncope  [ [ Stressed1 [ Cons - W - Y ] Weak Sonorant ?* ]
-                  .o. [ Weak -> Dot || Stressed1 [ Cons - W - Y ] _ Sonorant ] ] ;
+                  .o. [ Weak -> Dot || Stressed1 [ Cons - W - Y ] _ Sonorant ] .o. Flagged(Dropped) ] ;
 
 define Stage    [ [ Written .o. Before(Syncope) ] | Outlined ] ;

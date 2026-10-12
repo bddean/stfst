@@ -37,7 +37,16 @@ define LastSeg  [ Phones Eq Letter* ( Tail ) ] ;
 ! word has another outline without: the resolver takes the outline only where
 ! those are taken.
 define Cost     "'" ;
-define Rank     [ [ 1 | 2 | 3 | 4 ] Cost* ] ;
+
+! What the rewrites did, after the costs: `!` for each syllable one dropped,
+! `&` for an affix whose keys took a syllable's place. `@` is the lexicon's,
+! on a pronunciation of a word it also has an outline for, which split.xfst
+! takes only where a rewrite made it shorter.
+define Dropped  "!" ;
+define Affixed  "&" ;
+define Outlines "@" ;
+define Flag     [ Dropped | Affixed | Outlines ] ;
+define Rank     [ [ 1 | 2 | 3 | 4 ] Cost* Flag* ] ;
 
 define Word     [ ConsSeg [ Gap VowelSeg Gap ConsSeg ]* Gap VowelSeg Gap LastSeg ] ;
 define Entry    [ Rank Gap Word ] ;
@@ -85,6 +94,7 @@ define Outlined [ Rank Gap LeftKey* [ "0" | "1" ] ":" VowelKeys RightKey* "/" Le
 ! `Instead` takes the rewrite only, `Before` puts the word as it was one
 ! rewrite later, and `After` puts the rewrite later.
 define Later    [ [ 1 | 2 | 3 | 4 ] Cost* Ins(Cost) ?* ] ;
+define Flagged(F) [ [ 1 | 2 | 3 | 4 ] Cost* Flag* Ins(F) Gap ?* ] ;
 define Instead(R) PU(R, ?*) ;
 define Before(R) [ R | [ R.u .o. Later ] | ~R.u ] ;
 define After(R) [ [ R .o. Later ] | ?* ] ;

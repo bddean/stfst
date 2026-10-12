@@ -13,6 +13,12 @@ first letter: create is `K.R=cr IY0=e = EY1=a T=t_e`.
 The phonemes come first so that a rule reads a segment's sound before its
 spelling, which is the order a steno theory asks in.
 
+A word with a Typey Type outline of two strokes (after the vowel theory) also
+has that outline as an entry, each chord headed with its stress, `1:` or `0:`:
+pirouette is `1 P0:EUr/W1:Et`. The outline is the word written out, so its CMU
+entries are flagged `@`, and the pipeline takes them only where a rewrite made
+them shorter.
+
 Each entry starts with the pronunciation's place in CMU's order and a space, so
 a rule can prefer the first. The pronunciations are CMU's as steno hears them
 (`vowels.prons`). A word whose vowel letters do not line up with its
@@ -33,9 +39,10 @@ import sys
 from dataclasses import dataclass
 
 import lemminflect
+import plover_tape
 import wordfreq
 
-from . import ROOT
+from . import ROOT, SYSTEM
 from . import vowels as g
 
 LEXICON = os.path.join(ROOT, "dictionaries", "lexicon.lexc")
@@ -145,13 +152,81 @@ def vocabulary():
     return words
 
 
+# --- Outlines ----------------------------------------------------------------------
+
+# A stroke of the theory: a left bank, a chord with a vowel, a right bank.
+STROKE = re.compile(r"([STKPWHR]*)([AO*EU]*[AOEU][AO*EU]*)([frpblgtsdz]*)")
+FIRST_KEYS = {"a": "A", "e": "E", "i": "EU", "o": "O", "u": "U", "y": "EU"}
+
+
+def typey_outlines():
+    """{word: [outline]} of Typey Type after the vowel theory, in its order, the
+    outlines it gave up to the rules included."""
+    out = {}
+    for path in (g.OUTPUT, g.COMPOSED, g.SUPERSEDED):
+        if os.path.exists(path):
+            with open(path) as f:
+                for o, w in json.load(f).items():
+                    out.setdefault(w, []).append(o)
+    return out
+
+
+def stressed_stroke(entry, strokes):
+    """Which of two strokes holds the entry's stressed vowel, or None where
+    that is unclear. With two vowels it is the stressed one's; with more, the
+    first or last when the stress is there, else the one stroke whose chord
+    has the stressed vowel's first letter's keys."""
+    vowels = [s for s in entry.segments[1::2]]
+    k = next((i for i, v in enumerate(vowels) if v.phones[0][-1] == "1"), None)
+    if k is None or len(vowels) < 2:
+        return None
+    if len(vowels) == 2 or k in (0, len(vowels) - 1):
+        return 0 if k == 0 else 1 if k == len(vowels) - 1 else None
+    keys = set(FIRST_KEYS.get(vowels[k].letters[:1], "-"))
+    found = [i for i, (_, chord, _) in enumerate(strokes) if keys <= set(chord)]
+    return found[0] if len(found) == 1 else None
+
+
+def outline_entries(words, lex):
+    """{word: [entry text]}: each word's two-stroke outlines, the stressed
+    stroke's chord headed `1:` and the other's `0:`, in Typey Type's order."""
+    system = plover_tape.System.load(SYSTEM)
+    out = {}
+    for w, outlines in typey_outlines().items():
+        if w not in lex or w not in words:
+            continue
+        texts = []
+        for o in outlines:
+            tapes = system.tape(o).split("/")
+            strokes = [m.groups() for t in tapes if (m := STROKE.fullmatch(t))]
+            if len(tapes) != 2 or len(strokes) != 2:
+                continue
+            k = stressed_stroke(lex[w][1][0], strokes)
+            if k is None:
+                continue
+            text = "/".join(f"{on}{'1' if i == k else '0'}:{chord}{co}" for i, (on, chord, co) in enumerate(strokes))
+            if text not in texts:
+                texts.append(text)
+        if texts:
+            out[w] = [Keys(f"{min(n, 4)} {t}") for n, t in enumerate(texts, 1)]
+    return out
+
+
 # --- The lexc file ---------------------------------------------------------------
 
 PHONES = sorted({p for ps in g.CMU.values() for pron in ps for p in pron if len(p) > 1})
 
 
 def lexc_escape(text):
-    return re.sub(r"([ !%;:<>#\"0])", r"%\1", text)
+    return re.sub(r"([ !%;:<>#\"0@&])", r"%\1", text)
+
+
+class Keys(str):
+    """Entry text that is keys, a symbol each: TH is T and H, not a phoneme."""
+
+
+def lexc_text(text):
+    return "".join("%" + c for c in text) if isinstance(text, Keys) else lexc_escape(text)
 
 
 def lexc(header, rows):
@@ -161,7 +236,7 @@ def lexc(header, rows):
     lines += ["", "Multichar_Symbols", " ".join(lexc_escape(p) for p in PHONES), "", "LEXICON Root"]
     for word, text, weight in rows:
         tail = f' "weight: {weight:g}"' if weight is not None else ""
-        lines.append(f"{lexc_escape(word)}:{lexc_escape(text)} #{tail} ;")
+        lines.append(f"{lexc_escape(word)}:{lexc_text(text)} #{tail} ;")
     return "\n".join(lines) + "\n"
 
 
@@ -172,8 +247,11 @@ def main():
 
     words = vocabulary()
     lex = entries(words)
+    outlined = outline_entries(words, lex)
+    rows = [(w, str(e).replace(" ", "@ ", 1) if w in outlined else str(e), -z) for w, (z, es) in lex.items() for e in es]
+    rows += [(w, t, -lex[w][0]) for w, ts in outlined.items() for t in ts]
     text = lexc("Written by scripts/gen-lexicon.py: see scripts/gen/lexicon.py for the format.\nDo not edit.",
-                [(w, str(e), -z) for w, (z, es) in lex.items() for e in es])
+                sorted(rows, key=lambda r: r[0]))
     if args.check:
         if not os.path.exists(LEXICON) or open(LEXICON).read() != text:
             sys.exit(f"{LEXICON} is stale: run {sys.argv[0]}")
@@ -185,3 +263,4 @@ def main():
     print(f"{len(lex)} of {len(words)} words, {n} pronunciations; {len(left)} do not align, "
           f"most frequent first:")
     print("  " + " ".join(left[:200]))
+    print(f"{len(outlined)} words have a Typey Type outline of two strokes, which is their written-out form")

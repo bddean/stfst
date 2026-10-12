@@ -9,6 +9,7 @@
 
 define Tion [ ?* Gap [ Phones Del(Dot) | 0 ] Del([ SH | ZH | CH ]) Eq Letter*
               Del(Gap "0" ":" i [ o | a ] Eq VowelKeys Gap N Eq n) Ins(Gap "-" g s) ] ;
-define Ly   [ [ Gap "0" ":" y Eq VowelKeys Gap Eq ] -> 0 || L Eq Letter* _ .#. ] ;
+define LyEnd [ ?* L Eq Letter* Gap "0" ":" y Eq VowelKeys Gap Eq ] ;
+define Ly   [ [ LyEnd .o. [ [ Gap "0" ":" y Eq VowelKeys Gap Eq ] -> 0 || _ .#. ] .o. Flagged(Affixed) ] | ~LyEnd ] ;
 
-define Stage [ [ Written .o. Instead(Tion) .o. Ly ] | Outlined ] ;
+define Stage [ [ Written .o. Instead(Tion .o. Flagged(Affixed)) .o. Ly ] | Outlined ] ;

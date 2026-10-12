@@ -68,7 +68,12 @@ define Second(C) [ Rank Gap Mark OnsetOf(C) Gap Weak Gap Ins(Eq "/")
 define First(C) [ ~$[ "_" u e ] .o. [ Rank Gap Mark OnsetOf(C) Gap Strong Gap ConsSeg Ins("/" Eq) Gap Weak End ] ] ;
 
 define Shapes(C) [ Single(C) | Second(C) | First(C) ] ;
-define FromWritten [ Written .o. [ [ ~$[z] .o. Shapes(NoZ) ] | [ $[z] .o. Shapes(Cons) ] ] ] ;
+
+! What the rewrites did decides whether the form is taken: at most one
+! syllable dropped, and a word with an outline only where a rewrite made its
+! pronunciation shorter, since the outline is the word written out.
+define Taken    [ ~$[ Dropped ?* Dropped ] & [ ~$[ Outlines ] | $[ Dropped | Affixed ] ] ] ;
+define FromWritten [ Written .o. Taken .o. [ Flag -> 0 ] .o. [ [ ~$[z] .o. Shapes(NoZ) ] | [ $[z] .o. Shapes(Cons) ] ] ] ;
 
 define OtherStroke [ LeftKey* "0" Del(":") OutlineOp RightKey* ] ;
 define StressedStroke [ LeftKey* "1" ":" VowelKeys RightKey* ] ;
