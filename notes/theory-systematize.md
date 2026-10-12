@@ -312,3 +312,130 @@ rerun gen-two-syllable to measure the cap alone (6 minutes).
 3. Prefix rewrites over outline strokes (TKEUS/... as STK) so disappoint is
    STKPOEUPBT again.
 4. Tasks 2 and 3 above, then the -ment/-ness/-ful/-less suffix chords.
+
+## Phase 3b: finishing phase 3, and your notes from the evening
+
+check.sh passes at 870b4b3, once, at the end.
+
+### Every free outline, and which rules write them
+
+The resolver now gives a word each outline no other word takes, after its
+first. Cost decides only contested strokes. "Words" and "coverage" are as in
+phase 2 (coverage: the sum of 10^zipf over words with a stroke, / 10^6).
+
+| two-syllable.json | entries | words | coverage | lose | user.json briefs reproduced |
+|---|---|---|---|---|---|
+| first outline only | 10996 | 11381 | 192.5 | 545 | 18 |
+| every free outline (chosen) | 19732 | 11381 | 192.5 | 546 | 30 |
+
+So the dictionary grows 79% and the words do not change: the extra entries
+are second ways to write the same words. 4261 of them are bare (no `^`). The
+cost is in two-word: pairs that leave their stroke to two-syllable go from
+402 to 605. If that matters more than the second outlines, give the extras a
+lower priority than two-word's first outlines (an "extras" layer below
+two-word), or keep extras only where no pair wants the stroke.
+
+Each rule below, measured by dropping it from the chosen pipeline (every free
+outline in all rows):
+
+| variant | entries | words | coverage | lose | briefs |
+|---|---|---|---|---|---|
+| chosen | 19732 | 11381 | 192.5 | 546 | 30 |
+| no -ment/-ness/-ful/-less chords | 19605 | 11338 | 191.9 | 546 | 29 |
+| lead as in phase 3 (drop whole syllable, any length) | 19992 | 11379 | 192.7 | 551 | 29 |
+| no prefix cluster over outline strokes | 19956 | 11386 | 192.5 | 545 | 28 |
+| no iron rule (r-coloured vowel fused) | 19721 | 11375 | 192.3 | 543 | 30 |
+| no written-out filter on outlines | 20913 | 11595 | 194.4 | 515 | 30 |
+| no filler strip (KWR, SKWR, W) | 19837 | 11388 | 192.5 | 541 | 30 |
+
+Decisions:
+
+- Lead (your attempt and creative notes). A leading syllable is dropped first
+  only in a word of three syllables or more, a prefix counted. One with an
+  onset keeps it: only its vowel goes (creative `^KRAFT`, not `^AFT`). A word
+  of two syllables is contracted whole first, and the onsetless or con/com
+  drop is one rewrite later, so with every free outline it can have both:
+  anoint `^TPHAOEUPBT` and `^TPHOEUPBT`. attempt is `^TAEPLT` only, because
+  teammate takes `^TEPLT`. The numbers are a draw with phase 3's lead.
+- Outline filter (task 2). An outline counts as written out when its
+  stressed chord is the stressed vowel's short or long chord, the vowel
+  table's, or spells one of its letters, and the other chord does the same
+  for another vowel. It drops 663 of 14947 words' outlines: actually's
+  TAOUL/HREU, control's KAUPB/TROEL, attempt's A/TOEPLT. It costs 214 words
+  and 1.9 coverage, most of them words whose brief-outline wrote a junk
+  stroke. vowels.align was stricter (7987 of 14947 words, coverage 86.9 of
+  142) and rejects pirouette, so I did not use it.
+- Fillers (your makeup note). KWR, SKWR and W (W only after an o or u
+  stroke) are dropped from an outline stroke's onset when the word has no Y,
+  JH or W sound: makeup is `^PHAEPBG`. pirouette keeps its W (its first
+  stroke is i). 7 words fewer.
+- Prefix over outline strokes (task 3). TK0:EUs/TK0:Es as STK, 0:EUpbt SPW,
+  0:Ebgs KP, K0:Opl KPW before PW or else KPH, 0:Epl/0:EUpl KPW. disappoint
+  is STKPOEUPBT again (and `^STKPAOEUPBT`). Of the other rewrites: suffix,
+  lead, glide, syncope and middle are about sounds and do not apply to
+  outline strokes. A two-stroke outline is already the written-out result,
+  and those rules would make it one syllable, which Typey Type writes as its
+  own one-stroke outline anyway. Only the prefix cluster is a steno
+  convention, so only it applies.
+- iron (your note). An r-coloured unstressed vowel right after the stressed
+  one, with no consonant between, is in its syllable: iron `AOEURPB` and
+  `^AOEURPB`. fire, hour and tire were one syllable already in CMU.
+- -ment, -ness, -ful, -less as -PLT, -PBS, -FL, -LS: +43 words, +0.6
+  coverage, and it writes your PHOEPLT moment. Kept.
+- The lexicon ordered a word's outlines by which Typey Type file held them,
+  which moved each time the vowel generator superseded one, so the
+  generators did not reach a fixed point. They are ordered by keys now.
+
+### Superseded Typey Type outlines
+
+The committed typey-superseded.json was stale after phase 3. Regenerated, it
+moved many frequent one-stroke outlines. Part of that was the extra outlines:
+`^AFR` for after superseded AFT. So an outline is now superseded only when it
+has at least as many keys as each of the rule's outlines of as many strokes.
+That keeps AFT, HREUL little, ERL early and TPHAO* into. Newly superseded
+by phase 1's rule, because phase 3's outline source writes the word in as
+many keys or fewer: AULS always (`^ULS`), SPH-PB someone, TPHARBL national.
+(TPHEU any and OEPBL only were superseded before this phase.) typey-superseded.json: 3319 outlines at phase 3's commit,
+2896 now. The hole fixture writes always as `^ULS` now. If you want AULS
+back, the simplest rule is that a word above zipf 5.5 keeps its Typey Type
+outlines (31 outlines).
+
+### Two-word order and the S-/ST- folds (task 4)
+
+- A pair's stroke with a suffix key becomes an entry where the stressed word
+  inflected, before or after the other, is in the corpora at least 150 times
+  and more often than what the fold writes: `^TKPW-G` "going to", `^WAOPBTD`
+  "wanted to", `^PHEUBGS` "makes a". 181 entries. The stressed word must be a
+  content word ("a" + -S is not "as").
+- folds.xfst: S- on a word's stroke is "is", unless S-K-P- says "and", and
+  ST- is "it's" where T- and the rest is no word: STPHOU "is now", STPWAD
+  "it's bad". Over the "is"/"it's" bigrams (at least 50 uses) whose stroke no
+  entry holds, this reads 93% of the use right. "it's" first: 87%. With a T-
+  word's T put back after ST- (as after "and"): 66%. After the suffix folds:
+  77%. 67% of all such bigram use is on strokes an entry already holds.
+
+### user.json
+
+- 24 entries the rule now writes moved to tests/briefs/two-syllable.tsv
+  (uncertain, addition, attention, crayon, modern, paper, public, await,
+  rely, around, empty, disappear, sleepless, departure, detector, explore,
+  correctly, kindly x2, curtain, moment, disable, disappoint, update).
+- 7 stay because the rule writes them only while your entry is there:
+  written `^WRUPBT`, happiness `^HAEUPBS`, inbox, discord, discrete (discreet
+  takes STKRAOET), garden, patient.
+- `^` briefs the rule writes differently (yours / the rule's first), 26:
+  access, advantage, another, argue, assemble, avalanche, beyond, container,
+  disadvantage, encourage, enormous, epic, episode, frustrate, implicit,
+  isolate, nowhere, potential, reduced, regardless, revision, unfortunate,
+  unpleasant, very `^SRU`/`^SRUR`, water `^WART`/WAURT. The report of
+  gen-two-syllable lists them with strokes.
+
+### Left
+
+- Two-word's 203 pairs lost to two-syllable's extra outlines (above).
+- AULS always and the other frequent outlines superseded by phase 1's rule.
+- control is `^TROL`, TKPHREL and `^TKPHR-L`: contract.xfst moves con's -PB
+  to the left bank as TPH. A lead drop for con before a cluster would be the
+  cleaner first choice.
+- semantics: the report says your `^SPHAEUPBGTS` differs, but the rule writes
+  it by the -S fold.
