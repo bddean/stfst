@@ -47,7 +47,7 @@ import plover_tape
 
 from . import ROOT, corpora
 from . import vowels as g
-from .lexicon import align, lexc
+from .lexicon import MIN_ZIPF, align, lexc
 from .resolve import candidates, compile_pipeline, resolve, typey_gives_way
 from .stack import Stack
 
@@ -58,7 +58,6 @@ LEXICON = os.path.join(ROOT, "dictionaries", "affixes-lexicon.xfst")
 STEMS = os.path.join(ROOT, "dictionaries", "affixes-stems.lexc")
 GOLDEN = os.path.join(ROOT, "tests", "golden", "affixes.tsv")
 NAME = "affixes"
-MIN_ZIPF = 3.0
 
 # How often "stem word, then what the affix stroke writes" may occur in the
 # corpora (17M tokens) before the outline is not written.

@@ -196,11 +196,11 @@ def report(found, out, r):
     print(wrap([f"{w.replace(' ', '_')}={s}({n}:{t})" for w, s, (n, t) in left[:80]]))
     print(f"{len(r['bare'])} are also written without ^, and {len(r['bare_taken'])} could be "
           f"but that stroke is taken")
-    with open(os.path.join(DICTS, "stfst-user.json")) as f:
+    with open(os.path.join(DICTS, "user.json")) as f:
         user = json.load(f)
     by_pair = {p: s for s, p in out.items() if s.startswith("^")}
     theirs = sorted((p, s) for s, p in user.items() if p in found)
-    print(f"{len(theirs)} stfst-user.json entries for pairs in scope:",
+    print(f"{len(theirs)} user.json entries for pairs in scope:",
           " ".join(f"{p.replace(' ', '_')}={s}/{by_pair.get(p, rule.get(p, '-'))}" for p, s in theirs))
 
 

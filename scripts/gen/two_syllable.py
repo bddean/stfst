@@ -17,10 +17,13 @@ A prefix spelled with a cluster no English onset has takes that cluster instead
 of `^`, and the rest of the word is one syllable by the table: display is
 `STKPHRAEU`.
 
-That rule is the pipeline recipe.toml names: `dictionaries/contract.xfst`
-contracts the lexicon's two syllables to one, `theory.xfst` writes it and
-`caret.xfst` adds the marks. What this script decides is the rest, which is not
-a rule:
+A common word of one syllable that Typey Type does not write is its stroke by
+the same theory, with no mark (sheikh), and takes no stroke Typey Type writes.
+
+That rule is the pipeline recipe.toml names: `dictionaries/one.xfst` takes the
+lexicon's one syllable as it is and `contract.xfst` contracts two to one,
+`theory.xfst` writes it and `caret.xfst` adds the marks. What this script
+decides is the rest, which is not a rule:
 
 - An -s or -ed form is its word's stroke and the suffix key, and is not an
   entry, since the key folds (allowed is `^HRAOU` + `-D`). Nor is a regular -s,
@@ -42,19 +45,16 @@ for the pipeline: run it in the dev shell):
 import argparse
 import json
 import os
-import re
 import sys
 
 from . import DICTS
+from . import lexicon as lex
 from . import vowels as g
 from .resolve import candidates, compile_pipeline, resolve, typey_gives_way
 from .stack import Stack, retro_words
 
 OUTPUT = os.path.join(DICTS, "two-syllable.json")
 NAME = "two-syllable"
-
-# A word below this is not worth a stroke.
-MIN_ZIPF = 3.0
 
 
 # --- Inflections ---------------------------------------------------------------
@@ -133,17 +133,22 @@ def bare_entries(name, out, typey, stack, held, gives_way):
     return {s: w for s, w in plain.items() if s not in taken}, taken
 
 
-def build(typey, rule):
-    """(entries, report data), from `rule`, {word: outline}."""
-    words = sorted((w for w in typey.known if re.fullmatch("[a-z]+", w)), key=lambda w: (-g.zipf(w), w))
-    strokes = {w: s for w in words if (s := rule.get(w))}
+def syllables(w):
+    return sum(p[-1].isdigit() for p in g.prons(w)[0])
+
+
+def build(typey, rule, vocabulary):
+    """(entries, report data), from `rule`, {word: outline}, over the lexicon's
+    `vocabulary`."""
+    words = sorted(vocabulary, key=lambda w: (-g.zipf(w), w))
+    strokes = {w: s for w in words if (s := rule.get(w)) and (w not in typey.known or syllables(w) > 1)}
     base = compose(strokes, words)
     # A base ranks as its most frequent form, so exalted folds from exalt.
     z = {w: g.zipf(w) for w in strokes}
     for w, b in base.items():
         z[b] = max(z[b], z[w])
     strokes = {w: s for w, s in sorted(strokes.items())
-               if z[w] >= MIN_ZIPF and (w in base or not inflection(w, typey.known))}
+               if z[w] >= lex.MIN_ZIPF and (w in base or not inflection(w, vocabulary))}
     # two-word.json gives way to this dictionary, so it is not asked.
     stack = Stack(g.written(), skip=(NAME, "two-word"))
     others = {s: found[0] for s, found in stack.ask(strokes.values()).items() if found}
@@ -153,15 +158,15 @@ def build(typey, rule):
     # wins the stroke its suffix key folds to: agrees goes with agree. A Typey
     # Type entry gives way unless it is an affix or a hundred times as
     # frequent: compress is KPHRES here, so its old KPRES can be express.
+    typey_way = typey_gives_way(typey.reserved)
     out, lost, left = resolve(strokes, lambda w: (-g.zipf(base.get(w, w)), -g.zipf(w), w), others,
-                              typey_gives_way(typey.reserved))
+                              lambda s, w, other: syllables(base.get(w, w)) > 1 and typey_way(s, w, other))
     folded = {s: w for s, w in out.items() if w in base and out.get(strokes.get(base[w])) == base[w]}
     for s in folded:
         del out[s]
     # A bare stroke takes a Typey Type one as a `^` stroke does, and also when
     # this dictionary writes that word: only keeps `^OEUPBL`, so omen is
     # `OEPBL`. The rest are reported.
-    typey_way = typey_gives_way(typey.reserved)
     ours = set(out.values())
     plain, taken = bare_entries(NAME, out, typey, stack, retro,
                                 lambda s, w, other: typey_way(s, w, other)
@@ -216,7 +221,7 @@ def main():
 
     if not args.check:
         compile_pipeline(NAME)
-    out, r = build(g.Typey.load(), candidates(NAME))
+    out, r = build(g.Typey.load(), candidates(NAME), lex.vocabulary())
     if args.check:
         with open(OUTPUT) as f:
             if json.load(f) != out:

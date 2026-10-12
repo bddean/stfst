@@ -1,5 +1,5 @@
-"""Write `dictionaries/lexicon.lexc`: each word Typey Type writes, its CMU
-pronunciations aligned to its spelling, and its frequency.
+"""Write `dictionaries/lexicon.lexc`: each word Typey Type writes and each
+common word, its CMU pronunciations aligned to its spelling, and its frequency.
 
 A pronunciation is aligned by syllable. The word alternates consonant segments
 and vowel segments, starting and ending with a consonant one, and each segment
@@ -19,7 +19,7 @@ a rule can prefer the first. The pronunciations are CMU's as steno hears them
 pronunciation is left out. The weight is the word's zipf negated, so the more
 frequent word costs less.
 
-Usage (needs cmudict and wordfreq, which the phrasing venv has):
+Usage (needs cmudict, wordfreq and lemminflect, which the phrasing venv has):
 
     PY=~/.config/plover/phrasing/.venv/bin/python
     $PY scripts/gen-lexicon.py            # write the lexicon, print the report
@@ -32,10 +32,15 @@ import re
 import sys
 from dataclasses import dataclass
 
+import lemminflect
+import wordfreq
+
 from . import ROOT
 from . import vowels as g
 
 LEXICON = os.path.join(ROOT, "dictionaries", "lexicon.lexc")
+# A word below this is not worth a stroke.
+MIN_ZIPF = 3.0
 
 
 @dataclass(frozen=True)
@@ -124,9 +129,19 @@ def entries(words):
 
 
 def vocabulary():
-    """The words Typey Type writes that CMU pronounces."""
+    """The words CMU pronounces that Typey Type writes, or that lemminflect, which
+    lists no names, knows and that are at least MIN_ZIPF frequent: mare. A word
+    Typey Type writes capitalized (Welsh) is not taken in lower case."""
     with open(g.UPSTREAM) as f:
-        return {w for w in json.load(f).values() if re.fullmatch("[a-z]+", w) and w in g.CMU}
+        typey = set(json.load(f).values())
+    words = {w for w in typey if re.fullmatch("[a-z]+", w) and w in g.CMU}
+    folded = {w.lower() for w in typey}
+    for w in wordfreq.iter_wordlist("en"):
+        if g.zipf(w) < MIN_ZIPF:
+            break
+        if re.fullmatch("[a-z]+", w) and w in g.CMU and w not in folded and lemminflect.getAllLemmas(w):
+            words.add(w)
+    return words
 
 
 # --- The lexc file ---------------------------------------------------------------

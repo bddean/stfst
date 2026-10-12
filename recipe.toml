@@ -17,11 +17,6 @@ name = "lexicon"
 lexc = "dictionaries/lexicon.lexc"
 generator = "scripts/gen-lexicon.py"
 
-# Two syllables contracted to one, marked with what the stroke adds.
-[[stage]]
-name = "contract"
-xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/contract.xfst"]
-
 # Two words of one syllable, often written together: scripts/gen-two-word.py
 # writes each pair as two of the lexicon's entries, the stressed one marked.
 [[stage]]
@@ -49,7 +44,7 @@ name = "affix-stems"
 lexc = "dictionaries/affixes-stems.lexc"
 generator = "scripts/gen-affixes.py"
 
-# A syllable as it is, or two contracted to one.
+# A syllable as it is, or two contracted to one, marked with what the stroke adds.
 [[stage]]
 name = "stem"
 xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/contract.xfst",
@@ -153,7 +148,7 @@ name = "two-syllable"
 priority = 35
 json = "dictionaries/two-syllable.json"
 generator = "scripts/gen-two-syllable.py"
-pipeline = ["lexicon", "contract", "theory", "caret"]
+pipeline = ["lexicon", "stem", "theory", "caret"]
 
 [[dict]]
 name = "two-word"
