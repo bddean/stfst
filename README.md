@@ -283,9 +283,9 @@ file against the typey-type artifact and fails if the JSON is stale.
 same tagger and table. Its pipeline writes a word out, a stroke per syllable,
 and then rewrites that form shorter: a prefix's cluster (display is
 `STKPHRAEU`), -tion as -GS, -ment, -ness, -ful and -less as their chords and
--ly as L, a leading unstressed vowel dropped for `^` (append is `^PEPBD`; in a
-word of two syllables only after the whole contraction, so anoint is
-`^TPHAOEUPBT` and `^TPHOEUPBT`), an unstressed u before a vowel as w, an unstressed vowel between
+-ly as L, a leading unstressed or secondary-stressed vowel dropped for `^`
+(append is `^PEPBD`, include `^KHRAOUD`; in a word of two syllables only after
+the whole contraction, so anoint is `^TPHAOEUPBT` and `^TPHOEUPBT`), an unstressed u before a vowel as w, an unstressed vowel between
 a consonant and l, m, n or r dropped (river is `REUFR`), an r-coloured vowel
 right after the stressed one joining its syllable (iron is `AOEURPB`), and a
 middle t or d dropped as a last resort. A word's Typey Type outline of two
@@ -307,10 +307,21 @@ not write is its plain stroke (sheikh is `SHA*EBG`); the lexicon has such words
 where lemminflect knows them. A word keeps each of its outlines no other word
 takes, not only its first. `tests/briefs/` holds the user's briefs the rules
 came to write, which `--check` holds them to. `gen-typey-vowels.py` then supersedes the
-Typey Type outlines of the words it writes. Run the two in turn until both pass
-`--check`; one round is usually enough. The script leaves a stroke to any other
-dictionary that writes it, which it learns from the compiled stack, so run it
-after a compile. `check.sh` fails if its JSON is stale.
+Typey Type outlines of the words it writes; a one-stroke outline is a brief and
+is never superseded. The script leaves a stroke to any other dictionary that
+writes it, which it learns from the compiled stack. `check.sh` fails if its JSON
+is stale.
+
+The generators read each other's output and the compiled stack, so they are run
+together: `make regen` (`scripts/regen.sh`, in the dev shell) compiles, runs each
+generator's `--check`, reruns the stale ones in dependency order, and repeats
+until all pass. Then it writes the pipelines' stage golden files
+(`scripts/stages.sh NAME --update`). `--composed` also runs
+`find-typey-composed.py` first. `stfst compile` caches each stage's net and each
+pipeline prefix under `build/work/cache` by what they are built from, so a change
+to one stage rebuilds only it and what follows. `stfst compile recipe.toml --dict
+NAME --ablate STAGE` writes the pipeline without one stage to
+`build/work/NAME/without-STAGE`, to measure what the stage does.
 
 `scripts/gen-two-word.py` writes `two-word.json` by the same rule across a word
 boundary: two words of one syllable, 150 times in a row or more in the phrasing
@@ -318,11 +329,16 @@ corpora, as one `^` stroke (at all is `^TUL`, make it `^PHABGT`). The content
 word has the stress, or the second of two alike. Its pipeline is the pairs it
 writes as `dictionaries/pairs.lexc`, written out by `written.xfst`, then
 `dictionaries/join.xfst`, which joins the two words into one of two syllables,
-then the same contract, theory and caret stages as a word's. It gives way to `two-syllable.json`, and `affixes` reads it,
-so run it between the two.
+then the same split, theory, contract and caret stages as a word's. A pair's
+first outline outranks a two-syllable word's second, and otherwise it gives way
+to `two-syllable.json`. A pair stroke with a suffix key is an entry where the
+content word inflected, on whichever side, reads more often than the fold
+(`^TKPW-G` is "going to").
 
 The same rule, read backwards, is a fold for four function words: "a" before a
-word, and "of", "is" and "to" after one (one of is `^WOUFPB`, up to `^OUPT`).
+word, and "of", "is" and "to" after one (one of is `^WOUFPB`). `folds.xfst` also
+reads S- before a word's stroke as "is" (`STPHOU` is "is now") and ST- as "it's"
+where T- and the rest is no word (`STPWAD` is "it's bad").
 So those pairs need no entry, at any frequency. A pair the folds read as
 something else takes the stroke when the pair is the more frequent text, and a
 stroke a fold reads as the pair gets no entry. Of the pairs in scope that the
@@ -341,8 +357,7 @@ outline to a more frequent word or to another dictionary, or whose two strokes,
 read apart, are text someone writes, which it counts in
 `~/.config/plover/phrasing/corpora`. It also writes `tests/golden/affixes.tsv`,
 every entry at the outline it computes, so the script and the grammar are held to
-one rule. Run it after `gen-two-word.py` and a compile; `check.sh` fails if
-either file is stale.
+one rule. `check.sh` fails if either file is stale.
 
 ## Measurements and decisions
 
