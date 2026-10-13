@@ -15,7 +15,7 @@ DICTS := build/dicts/.compiled
 RUST_SRC := $(shell find crates -name '*.rs') Cargo.toml Cargo.lock
 APP_SRC := $(shell find android/app/src -type f -not -path '*/assets/*')
 
-.PHONY: install apk native assets dicts test sync-user clean-apk
+.PHONY: install apk native assets dicts regen test sync-user clean-apk
 
 install: $(APK)
 	$(ADB) install -r $(APK)
@@ -49,6 +49,10 @@ $(DICTS): recipe.toml $(wildcard dictionaries/*)
 	touch $@
 
 dicts: $(DICTS)
+
+# The generators, run until each is current: see scripts/regen.sh.
+regen:
+	scripts/regen.sh
 
 test:
 	cd android && $(GRADLE) :app:testDebugUnitTest
