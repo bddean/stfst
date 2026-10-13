@@ -180,9 +180,11 @@ def build(typey, rule, vocabulary):
     typey_way = typey_gives_way(typey.reserved)
     # A plain stroke takes nothing: where it is taken, the word has the same
     # keys with `^`.
+    # A pair's first outline in two-word outranks a word's second.
+    pairs = {next(iter(cs)) for cs in candidates("two-word").values()}
     out, lost, left = resolve(strokes, lambda w: (-g.zipf(stem(w)), -g.zipf(w), w), others,
                               lambda s, w, other: "^" + s not in strokes[w] and syllables(stem(w)) > 1
-                              and typey_way(s, w, other))
+                              and typey_way(s, w, other), firsts=pairs)
     written = {}
     for o, w in out.items():
         written.setdefault(w, o)

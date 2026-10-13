@@ -79,7 +79,7 @@ def compile_pipeline(name):
         sys.exit(f"compiling {name}'s pipeline failed")
 
 
-def resolve(outlines, rank, taken, gives_way=lambda outline, word, other: False):
+def resolve(outlines, rank, taken, gives_way=lambda outline, word, other: False, firsts=frozenset()):
     """(entries, lost, left) for `outlines`, {word: {outline: cost}}.
 
     An outline goes to the word that wants it at the least cost, and among
@@ -87,7 +87,8 @@ def resolve(outlines, rank, taken, gives_way=lambda outline, word, other: False)
     outlines it can, and then every other one no word took. `taken` is
     {outline: (dictionary, translation)}, what the rest of the stack writes
     there, and the outline is left to it unless it writes the same word or
-    `gives_way(outline, word, (dictionary, translation))`. Returns {outline: word}, and for each word with no
+    `gives_way(outline, word, (dictionary, translation))`. An outline in
+    `firsts` goes only to a word that takes it first. Returns {outline: word}, and for each word with no
     outline, why its first had to go: [(loser, winner, outline)] and [(word,
     outline, (dictionary, translation))]."""
     order = sorted(outlines, key=rank)
@@ -108,7 +109,7 @@ def resolve(outlines, rank, taken, gives_way=lambda outline, word, other: False)
                     break
     for w in order:
         for o in outlines[w] if w in placed else ():
-            if free(o, w):
+            if o not in firsts and free(o, w):
                 out[o] = w
     lost, left = [], []
     for w in order:
