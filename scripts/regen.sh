@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Run the generators until each one's --check passes, compiling the stack between
 # rounds, since the generators read each other's output and the compiled stack.
+# Then write the pipelines' stage golden files.
 #
 # Usage: scripts/regen.sh [--composed]
 #
@@ -36,6 +37,7 @@ for round in $(seq "$ROUNDS"); do
     done
     if [ ${#stale[@]} -eq 0 ]; then
         echo "regen: every generator is current after $((round - 1)) rounds"
+        for d in tests/golden/*/; do scripts/stages.sh "$(basename "$d")" --update; done
         exit 0
     fi
     echo "regen: round $round: stale: ${stale[*]}"
