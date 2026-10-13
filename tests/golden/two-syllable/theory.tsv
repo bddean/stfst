@@ -19,6 +19,7 @@ abash	1' ^ PW1:Arb
 abate	1 0A:A/PW1:AEUt
 abate	1' ^ PW1:AEUt
 abattoir	1 0A:Ab/T1:OEUr
+abattoir	1 ^ PW0A:A/TW1:OEUr
 abbey	1 1:Ab/PW0EU:EU
 abbey	2 1:Ab/PW0E:AOE
 abbey	3 1:Ab/0E:AOE
@@ -26,6 +27,7 @@ abbot	1 1:Ab/0O:O*t
 abbot	2 1:Ab/PW0O:Ot
 abby	1 1:Ab/0EU:EU
 abdicate	1 1:Abd/K0A:AEUt
+abdication	1 ^ TKPW0EU:EU/K1:AEUgs
 abdomen	1' 0A:A/TKPW1:OEpbl
 abdomen	1' ^ TKPW1:OEpl/0E:Epb
 abduct	1 0A:Ab/T1:Ubgt
@@ -49,6 +51,7 @@ abductor	2'' 0A:A/TKPW1:Urbg
 aberrant	1 0A:Ab/1:Erpbt
 aberrant	1' 0A:A/PW1:Erpbt
 aberrant	1' ^ PW1:Er/0A:Apbt
+aberration	1 ^ PW0:E/R1:AEUgs
 abet	1 0A:A/PW1:Et
 abet	1' ^ PW1:Et
 abetted	1 ^ PW1:Et/0E:Ed
@@ -68,6 +71,7 @@ abided	1 ^ PW1:AOEUd/0E:Ed
 abiding	1 ^ PW1:AOEUd/0EU:EUpbg
 abject	1 1:Ab/SKWR0E:Ebgt
 ablation	1 0A:A/PWHR1:AEUgs
+ablation	1' ^ PWHR1:AEUgs
 ablaze	1 0A:A/PWHR1:AEUz
 ablaze	1' ^ PWHR1:AEUz
 able	1 1:AEUbl
@@ -97,6 +101,7 @@ abode	1 0A:A/PW1:OEd
 abode	1' ^ PW1:OEd
 abolish	1 ^ PW1:Ol/0EU:EUrb
 abolition	1 0A:Ab/HR1:EUgs
+abolition	1 ^ PW0O:O/HR1:EUgs
 aboriginal	1 0A:Ab/R1:EUpbl
 abort	1 0A:A/PW1:Ort
 abort	1' ^ PW1:Ort
@@ -131,6 +136,7 @@ abridge	1' ^ PWR1:EUpblg
 abridge	2 0A:A/PWR1:EUpblg
 abroad	1 0A:A/PWR1:O*Ed
 abroad	1' ^ PWR1:O*Ed
+abrogation	1 ^ PWR0O:O/TKPW1:AEUgs
 abrupt	1 0A:Ab/R1:Upt
 abrupt	1' ^ PWR1:Upt
 abrupt	2 0A:A/PWR1:Ubt
@@ -153,9 +159,11 @@ absconds	1' ^ SKPW1:Opbdz
 absconds	1'' ^ SKPW1:Opbdz
 absence	1 1:Ab/S0E:Epbs
 absent	1 1:Ab/S0E:Epbt
+absentee	1 ^ SPW0E:E/TPH1:AOE
 absentia	1 ^ SPW1:Erpb/0EU:EU
 absinthe	1 1:Ab/S0EU:*EUpbt
 absolute	2 1:Abs/HR0U:AOUt
+absolution	1 ^ SPW0O:O/HR1:AOUgs
 absolution	2 0A:Abs/HR1:AOUgs
 absolve	1 0A:A/SPW1:Ofl
 absolve	1' ^ SPW1:Ofl
@@ -284,8 +292,10 @@ accidents	1' 1:Abgs/0EU:EUpbsd
 acclaim	1 0A:A/KHR1:A*EUpl
 acclaim	1' ^ KHR1:A*EUpl
 acclaim	2 0A:Abg/KHR1:A*EUpl
+acclamation	1 ^ KHR0A:A/PH1:AEUgs
 acclimate	1 1:Alg/PH0A:AEUt
 acclimate	1 1:Apblg/0A:AEUt
+acclimation	1 ^ KHR0EU:EU/PH1:AEUgs
 accolade	1 1:Abg/HR0A:AEUd
 accolade	1 1:Ablg/0A:AEUd
 accomplice	1 ^ K1:Ofrpl/0EU:EUs
@@ -353,6 +363,8 @@ accuracy	1 1:Abg/S0EU:EU
 accurate	1 1:Abg/R0A:At
 accurate	2 1:Abg/KR0A:At
 accurate	3 K1:Abg/R0A:At
+accusation	1 ^ K0U:U/S1:AEUgs
+accusation	2 ^ K0U:U/S1:AEUgs
 accuse	1 0A:A/K1:AOUs
 accuse	1' ^ K1:AOUs
 accuse	2 0A:Abg/K1:AOUs
@@ -421,6 +433,7 @@ acquaintance	1'' 0A:A/KW1:A*EUpbs
 acquainted	1 ^ KW1:A*EUpbt/0E:Ed
 acquainted	2 ^ KW1:A*EUpb/0E:Ed
 acquiesce	1 0A:Abg/W1:Es
+acquiesce	1 ^ KW0EU:AOE/1:Es
 acquiesce	2 0A:A/KW1:AOEs
 acquiesce	3 0A:Abg/1:Es
 acquire	1 0A:A/KW1:AOEU
@@ -439,6 +452,7 @@ acquiring	1 0A:A/KW1:AOEUrg
 acquiring	1 ^ KW1:AOEUr/0EU:EUpbg
 acquiring	2 0A:A/KW1:AOEUrpbg
 acquisition	1 0A:Abg/S1:EUgs
+acquisition	1 ^ KW0EU:EU/S1:EUgs
 acquit	1 0A:A/KW1:EUt
 acquit	1' ^ KW1:EUt
 acquit	2 0A:Abg/KW1:EUt
@@ -480,6 +494,7 @@ acting	1 1:Abgt/0EU:EUpbg
 action	1 1:Abgs
 actions	1' 1:Arbg/0EU:EUpbs
 activate	1 1:Abgt/SR0A:AEUt
+activation	1 ^ TK0EU:EU/SR1:AEUgs
 active	1 1:Abgt/0EU:EUf
 active	2 1:Abg/T0EU:*EUf
 activist	1 1:Abgt/SR0EU:*EUs
@@ -533,6 +548,7 @@ adapt	1 0A:A/T1:Apt
 adapt	1' ^ TK1:Apt
 adapt	2 0A:Ad/1:Apt
 adapt	3 0A:A/TK1:Apt
+adaptation	1 ^ TK0A:A/TP1:AEUgs
 adapted	1 ^ TK1:Apt/0E:Ed
 adapter	1' 0A:A/TK1:Arpt
 adapter	1' ^ TK1:Apt/0:Er
@@ -588,6 +604,7 @@ address	1 1:A/TKR0E:Es
 address	2 1:Ad/TKR0E:Es
 address	2' ^ TKR1:Es
 address	3 1:Ad/TKR0E:Esz
+addressee	1 ^ TKR0E:E/S1:AOE
 addresses	1 1:A/TKR0E:Efs
 addresses	2 ^ TKR1:Es/0E:Es
 addressing	1 0A:A/TKR1:Efg
@@ -640,6 +657,7 @@ adieu	1 0A:A/TK1:AOU
 adieu	2 0A:Ad/TK1:AOU
 adieu	3 0A:Ad/1:AOU
 adios	1 0A:Ad/1:OEs
+adios	1 ^ TK0EU:AOE/1:Os
 adipose	1 1:Ad/P0O:OEs
 adjacent	1' 0A:A/SKWR1:AEUpbts
 adjacent	1' ^ SKWR1:AEUs/0E:Epbt
@@ -711,6 +729,7 @@ administrator	1 TKPH1:EUpb/0O:O*r
 admirable	1 1:Ad/PH0EU:EUrbl
 admirable	2 1:Ad/PH0EU:AOEUrbl
 admiral	1 1:Ad/PH0EU:EUrl
+admiration	1 ^ TKPH0:EU/R1:AEUgs
 admire	1 0A:Ad/PH1:AOEUr
 admire	1' ^ TKPH1:AOEUr
 admired	1 0A:Ad/PH1:AOEUrd
@@ -746,6 +765,7 @@ admitting	1 ^ TKPH1:EUt/0EU:EUpbg
 admitting	2 ^ TKPH1:EUt/0EU:EUpbg
 admonish	1 ^ TKPH1:Opb/0EU:EUrb
 admonishment	1 ^ TKPH1:Opb/0EU:EUrpblt
+admonition	1 ^ TKPH0O:O/TPH1:EUgs
 ado	1 0A:A/TK1:O
 ado	1' ^ TK1:O
 adobe	1 ^ TK1:OEb/0E:E
@@ -771,6 +791,7 @@ adopts	1' ^ TK1:Opts
 adopts	1'' ^ TK1:Opts
 adorable	1 0A:A/TK1:Orbl
 adorable	2 0A:A/TK1:Orpbl
+adoration	1 ^ TK0:O/R1:AEUgs
 adore	1 0A:A/TK1:Or
 adore	1' ^ TK1:OEr
 adore	2 0A:A/TK1:OEr
@@ -796,6 +817,7 @@ adsorption	1' ^ STK1:Orpgs
 adsorption	2 0A:A*d/S1:Orpgs
 adsorption	3 0A:A*d/SPW1:Orpgs
 adulate	1 1:Apblg/0A:AEUt
+adulation	1 ^ SKWR0U:U/HR1:AEUgs
 adult	1 0A:A/T1:Ult
 adult	1' ^ TK1:Ult
 adult	2 0A:Ad/1:Ult
@@ -867,6 +889,7 @@ advisors	1' ^ STKR1:AOEUs/0:Ors
 advocate	1 1:Afd/K0A:At
 advocate	2 1:Afd/K0A:AEUt
 advocated	1 1:Afd/K0A:AEUtd
+advocation	1 ^ STKR0O:O/K1:AEUgs
 aegis	1 1:AE/SKWR0EU:EUs
 aegis	2 1:AOE/SKWR0EU:EUs
 aegis	3 1:AOEpblg/0EU:EUs
@@ -895,6 +918,7 @@ affect	1 0A:A/TP1:Ebgt
 affect	1' ^ TP1:Ebgt
 affect	2 0A:A/TP1:Eblgt
 affect	3 0A:Af/TP1:Ebgt
+affectation	1 ^ TP0E:E/TK1:AEUgs
 affected	1 0A:A/TP1:Ebgd
 affected	1 ^ TP1:Ebgt/0E:Ed
 affected	2 0A:A/TP1:Ebgtd
@@ -918,6 +942,7 @@ affinity	1 0A:A/TP1:EUpbt
 affinity	2 0A:A/TP1:EUpbtd
 affirm	1 0A:A/TP1:EUrpl
 affirm	1' ^ TP1:EUrpl
+affirmation	1 ^ TP0:EU/PHR1:AEUgs
 affirming	1 0A:A/TP1:EUrplg
 affirming	1 ^ TP1:EUrpl/0EU:EUpbg
 affirms	1 0A:A/TP1:EUrpls
@@ -983,6 +1008,8 @@ aftereffect	1 1:A*f/TP0E:Ebgt
 aftermath	1 1:Afrplt/0A:A*t
 aftermath	1' 1:Afrpl/0A:A*t
 afternoon	1 0A:Afr/TPH1:AOpb
+afternoon	1 ^ TP0:E/TPHR1:AOpb
+afternoons	1 ^ TP0:E/TPHR1:AOpbs
 afterward	1 1:Af/W0A:Ard
 afterward	1 1:Afrt/0:Ard
 afterward	1' 1:Afr/0:Ard
@@ -1029,8 +1056,10 @@ aggrandize	1 ^ TKPWR1:Apbd/0EU:AOEUz
 aggravate	1 1:Ag/SR0A:AEUt
 aggravate	2 1:Arg/SR0A:AEUt
 aggravated	1 1:Arg/SR0A:AEUtd
+aggravation	1 ^ TKPWR0A:A/SR1:AEUgs
 aggregate	1 1:Arg/TKPW0A:At
 aggregate	2 1:Arg/TKPW0A:AEUt
+aggregation	1 ^ TKPWR0E:E/TKPW1:AEUgs
 aggress	1 0A:Ag/TKPWR1:Esz
 aggress	1' ^ TKPWR1:Es
 aggression	1 0A:A/TKPWR1:Egs
@@ -1052,6 +1081,7 @@ agility	1 0A:A/SKWR1:EUlt
 aging	1 1:AEUpblg/0EU:EUpbg
 agitate	1 1:Apblg/T0A:AEUt
 agitated	1 1:Apblg/T0A:AEUtd
+agitation	1 ^ SKWR0EU:EU/T1:AEUgs
 aglow	1 0A:A/TKPWHR1:O*E
 aglow	1' ^ TKPWHR1:O*E
 agnostic	1 ^ TKPWH1:Oft/0EU:*EUbg
@@ -1185,7 +1215,7 @@ album	1 1:Apbl
 albumin	1' 0A:A/PWHR1:AOUpbl
 albumin	1' ^ PWHR1:AOUpl/0EU:EUpb
 albums	1 1:Al/PW0U:Upls
-albuterol	1 0A:A/PWHR1:AOUrlt
+albuterol	1' 0A:A/PWHR1:AOUrlt
 alchemist	1 1:A*lg/PH0EU:EUft
 alchemist	1 1:Aplg/0EU:EUft
 alchemist	2 1:A*Uplg/0EU:EUft
@@ -1214,6 +1244,7 @@ alertness	1' ^ HR1:Erpbts
 alerts	1 0A:A/HR1:Erts
 alerts	1' ^ HR1:Erts
 alerts	1'' ^ HR1:Ers
+alfalfa	1 ^ TPHR1:Afl/0A:A
 algae	1 1:Al/SKW0E:AOE
 algae	2 1:Al/SKWR0E:AE
 algae	3 1:Al/TKPW0E:AE
@@ -1267,6 +1298,7 @@ all	1 1:AUl
 allay	1 0A:A/HR1:AEU
 allay	1' ^ HR1:AEU
 allay	2 0A:Al/HR1:AEU
+allegation	1 ^ HR0E:E/TKPW1:AEUgs
 allege	1 0A:A/HR1:Epblg
 allege	1' ^ HR1:Epblg
 allege	2 0A:Al/HR1:Epblg
@@ -1307,6 +1339,7 @@ allies	1 1:Al/HR0EU:AOEUs
 allies	2' ^ HR1:AO*EUs
 allocate	1 1:Al/K0A:AEUt
 allocate	2 1:Al/KHR0A:AEUt
+allocation	1 ^ HR0O:O/K1:AEUgs
 allot	1 0A:A/HR1:Ot
 allot	1' ^ HR1:Ot
 allotment	1 0A:A/HR1:Oplt
@@ -1388,6 +1421,7 @@ alpine	1 1:Al/P0EU:AOEUpb
 already	1 ^ HR1:AEd/0EU:EU
 already	2 ^ R1:AEd/0EU:EU
 alright	1 0A:Al/R1:AO*EUt
+alright	1' ^ HR1:AO*EUt
 also	1 1:Al/S0O:O
 also	2 1:Al/S0O:OE
 alt	1 1:AUlt
@@ -1407,6 +1441,8 @@ alter	3 1:Alt/0E:*Er
 alter	4 1:AUl/T0E:Er
 alter	4 1:AUlt/0E:*Er
 alter	4 1:Alt/T0E:Er
+alteration	1 ^ THR0:E/R1:AEUgs
+altercation	1 ^ THR0:E/KR1:AEUgs
 altering	1 1:AUrlt/0EU:EUpbg
 altering	1 1:Alt/0E:Erg
 altering	1' 1:AUrl/0EU:EUpbg
@@ -1428,6 +1464,7 @@ alternator	1 1:AUrpblt/0A:Art
 alternator	1' 1:AUrpbl/0A:Art
 alters	1 1:Alt/0E:Ers
 alters	2 1:Alt/T0E:Ers
+although	1' ^ THR1:OE
 altitude	1 1:Alt/T0U:AOUd
 altitude	2 1:AUlt/T0U:AOUd
 alto	1 1:Al/T0O:OE
@@ -1517,6 +1554,7 @@ amigo	1 ^ PH1:AOEg/0O:O
 amin	1 0A:Apl/1:*EUpb
 amin	1' ^ PH1:AOEpb
 amine	1 0A:A/PH1:AOEpb
+amine	1' ^ PH1:AOEpb
 amine	2 0A:Apl/1:AOEUpb
 amine	3 0A:A/PHR1:AOEUpb
 amino	1 ^ PH1:AOEpb/0O:O
@@ -1525,6 +1563,7 @@ amiss	1' ^ PH1:EUs
 amity	1 1:Apl/T0EU:EU
 ammo	1 1:Apl/PH0O:OE
 ammunition	1 0A:Apl/TPH1:EUgs
+ammunition	1 ^ KWR0U:U/TPH1:EUgs
 amnesia	1 ^ TPH1:AOEpblg/0EU:EU
 amoeba	1 ^ PH1:O*Eb/0A:A
 amoebic	1 ^ PH1:O*Eb/0EU:*EUbg
@@ -1553,6 +1592,7 @@ amounts	1' 0A:A/PH1:OUpbts
 amounts	1' ^ PH1:OUpbts
 amounts	1'' ^ PH1:OUpbts
 amour	1 0A:AU/PH1:OUr
+amour	1' ^ PH1:OUr
 amp	1 1:Afrp
 amperage	1 1:A*pl/R0A:Apblg
 ampere	1 1:Apl/P0E:AOEr
@@ -1573,6 +1613,7 @@ amply	1 1:Afrpl
 amply	2 1:Apl/PHR0EU:EU
 amputate	1 1:A*pl/T0A:AEUt
 amputate	2 1:Afrp/T0A:AEUt
+amputation	1 ^ P0U:U/T1:AEUgs
 amputee	1 1:A*pl/T0E:AOE
 amputee	2 1:Afrp/T0E:AOE
 amulet	1 1:Apl/HR0E:Et
@@ -1683,6 +1724,7 @@ angel	2 1:AEUpbg/0E:El
 angel	3 1:Apb/SKWR0E:El
 angel	4 1:AEUpb/SKWR0E:El
 angel	4 1:AEUpb/SKWR0E:Epbl
+angelic	1 ^ SKWR1:El/0EU:*EUbg
 angels	1' 1:Apbg/0E:Els
 anger	1 1:Apbg/0E:Er
 anger	1 1:Arpbg
@@ -1728,6 +1770,8 @@ animate	1 1:Apb/PH0A:At
 animate	1 1:Apbl/0A:At
 animate	2 1:Apb/PH0A:AEUt
 animate	2 1:Apbl/0A:AEUt
+animation	1 ^ TPH0EU:EU/PH1:AEUgs
+anime	1 ^ TPH0EU:EU/PH1:E
 animosity	1 0A:Apb/PH1:Oft
 animus	1 1:Apb/PH0U:Us
 animus	1 1:Apbl/0U:Us
@@ -1751,8 +1795,10 @@ annelid	1 1:Apbl/0EU:EUd
 annex	1 1:A/TPH0E:Ebgs
 annex	2 1:Apb/TPH0E:Ebgs
 annex	2' ^ TPH1:Ebgs
+annexation	1 ^ TPH0E:E/SK1:AEUgs
 annie	1 1:A*pb/TPH0E:AO*E
 annotate	1 1:Apb/T0A:AEUt
+annotation	1 ^ TPH0O:O/T1:AEUgs
 announce	1 0A:A/TPH1:OUpbs
 announce	1' ^ TPH1:OUpbs
 announcer	1' 0A:A/TPH1:OUrpbs
@@ -1797,6 +1843,7 @@ anomaly	1' ^ TPH1:Opl/0A:Al
 anomie	1 1:Apb/PH0E:AOE
 anomie	1 1:Apbl/0EU:AOE
 anon	1 0A:A/TPH1:Opb
+anon	1' ^ TPH1:Opb
 another	1 0A:A/TPH1:OEr
 another	1' 0A:A/TPH1:O*rt
 another	1' ^ TPH1:O*t/0:Er
@@ -1843,11 +1890,16 @@ antigen	3 1:AEUpbt/SKWR0E:Epb
 antigen	4 1:A*EUpbt/SKWR0E:Epb
 antigens	1 1:Apbt/0EU:EUpblgz
 antigens	1 1:Apbt/SKWR0E:Epbs
+antipode	1 ^ T0EU:EU/P1:OEd
+antipode	1 ^ T1:EUp/0O:OEd
 antiquate	1 1:Apbt/KW0A:AEUt
 antique	1 0A:Apb/T1:AOEbg
 antique	1' ^ T1:AOEbg
 antitrust	1 0A:AEUpbt/TR1:Uft
+antitrust	1 ^ T0EU:AOEU/TR1:Uft
 antiwar	1 0A:A*EUpbt/W1:Ar
+antiwar	1 ^ T0EU:AOEU/W1:Ar
+antiwar	2 ^ T0EU:AOE/W1:Ar
 antler	1 1:Apbt/HR0E:Er
 ants	1 1:Apbts
 ants	1' 1:Apbts
@@ -1867,6 +1919,7 @@ anxiously	1 1:A*rpbg/0EU:EUls
 anxiously	1 1:Apbgs/HR0EU:EU
 any	1 1:Apb/0EU:EU
 anymore	1 TPH0EU:EU/PH1:O*r
+anymore	1 ^ TPH0EU:EU/PH1:OEr
 aoki	1 ^ 1:OEbg/0EU:AOE
 aorta	1 1:AOrt/0A:A
 aorta	1 ^ 1:Ort/0A:A
@@ -1931,6 +1984,7 @@ apparently	1' ^ P1:Ar/0E:Epblt
 apparently	1'' 0A:A/P1:Arpbl
 apparently	1'' ^ P1:Ar/0E:Epbl
 apparition	1 0A:Ap/R1:EUgs
+apparition	1 ^ P0:A/R1:EUgs
 appeal	1 0A:A/P1:AEl
 appeal	1' ^ P1:AEl
 appeal	2 0A:Ap/P1:AEl
@@ -1968,6 +2022,7 @@ appellants	1'' ^ P1:El/0A:Apbts
 appellate	1 0A:A/P1:Elt
 appellate	1 ^ P1:El/0A:At
 appellate	2 ^ P1:El/0A:AEUt
+appellation	1 ^ P0E:E/HR1:AEUgs
 append	1 0A:A/P1:Epbd
 append	1' ^ P1:Epbd
 append	2 0A:Ap/P1:Epbd
@@ -2000,6 +2055,7 @@ applicant	1 1:Apl/0EU:EUpbgt
 applicant	2 1:Apl/K0A:Apbt
 applicants	1' 1:Apl/0EU:EUpbgs
 application	1 1:Ap/K0EU:EUgs
+application	1 ^ PHR0EU:EU/K1:AEUgs
 applied	1 0A:A/PHR1:AOEUd
 applied	1' ^ PHR1:AO*EUd
 applies	1 0A:A/PHR1:AO*EUs
@@ -2048,10 +2104,12 @@ appraises	1 ^ PR1:A*EUs/0E:Es
 appraising	1 ^ PR1:A*EUs/0EU:EUpbg
 appreciably	1 ^ PR1:AOErb/0EU:EUbl
 apprehend	1 0A:A/PR1:Epbd
+apprehend	1 ^ PR0E:E/H1:Epbd
 apprehend	2 0A:Ap/H1:Epbd
 apprehend	3 0A:Ap/R1:Epbd
 apprehend	4 0A:Arp/H1:Epbd
 apprehension	1 0A:Ap/H1:Epbgs
+apprehension	1 ^ PR0E:E/H1:Epbgs
 apprehension	2 0A:Ap/R1:Epbgs
 apprehension	3 0A:Arp/H1:Epbgs
 apprentice	1 ^ PR1:Epbt/0EU:EUs
@@ -2074,6 +2132,7 @@ approaches	1 ^ PR1:O*Efp/0E:Es
 approaches	2 ^ PR1:O*Efp/0E:Es
 approaching	1 0A:A/PR1:OEfpg
 approaching	1 ^ PR1:O*Efp/0EU:EUpbg
+approbation	1 ^ PR0O:O/PW1:AEUgs
 appropriate	1 0A:A/PR1:OEptd
 appropriate	2 PR1:OEp/0A:At
 appropriate	3 PR1:O*Ep/0A:At
@@ -2106,6 +2165,7 @@ apron	1 1:AEUp/R0O:Opb
 apron	1 1:AEUrpb
 aprons	1 1:AEUrpb
 aprons	1' 1:AEUrp/0O:Opbs
+apropos	1 ^ PR0O:O/P1:O
 apt	1 1:Apt
 aptitude	1 1:Apt/T0U:AOUd
 aptly	1 1:Aplt
@@ -2140,6 +2200,7 @@ arbitrarily	1 1:Arb/TR0A:AEUrl
 arbitrarily	2 1:Arb/TR0A:AEUrbl
 arbitrary	1 1:Arb/TR0A:AEUr
 arbitrate	1 1:Arb/TR0A:AEUt
+arbitration	1 ^ PWR0EU:EU/TR1:AEUgs
 arbor	1 1:Ar/PW0O:Or
 arbor	1 1:Arb
 arbor	2 1:Arb/0O:O*r
@@ -2150,9 +2211,11 @@ arc	1 1:Arbg
 arcade	1 0A:Ar/K1:AEUd
 arcade	1' ^ KR1:AEUd
 arcane	1 0A:Ar/K1:AEUpb
+arcane	1' ^ KR1:AEUpb
 arch	1 1:Afrpb
 archaic	1 ^ KR1:A/0EU:*EUbg
-archangel	1 0A:A/KR1:Apblg
+archangel	1' 0A:A/KR1:Apblg
+archangel	1' ^ KR1:Apbg/0E:El
 archer	1 1:Afrpb
 archer	1 1:Ar/KH0E:Er
 archers	1' 1:Afrpb/0:Ers
@@ -2357,6 +2420,7 @@ artery	2 1:Art/R0EU:EU
 artery	3 1:Arlt/R0EU:EU
 artesian	1 0A:A/TR1:AOEgs
 artesian	1 0A:Ar/T1:AOEgs
+artesian	1' ^ TR1:AOEgs
 artful	1 1:Afrlt
 artful	1 1:Art/TP0U:Ul
 artfully	1 1:Art/TPHR0EU:EU
@@ -2424,6 +2488,7 @@ ascent	1 0A:A/SKR1:Epbt
 ascent	1' ^ S1:Epbt
 ascent	2 0A:As/KR1:Epbt
 ascertain	1 0A:As/T1:AEUpb
+ascertain	1 ^ S0:E/TR1:A*EUpb
 ascetic	1 ^ S1:Et/0EU:*EUbg
 ascorbic	1 ^ SK1:Orb/0EU:*EUbg
 ascot	1 1:As/K0O:Ot
@@ -2482,6 +2547,7 @@ aspirate	1 1:Afrp/0A:AEUt
 aspirate	2 1:Afp/R0A:AEUt
 aspirate	3 1:As/PR0A:AEUt
 aspiration	1 1:Afp/R0EU:EUgs
+aspiration	1 ^ SP0:EU/R1:AEUgs
 aspiration	2 1:As/P0EU:EUrgs
 aspire	1 0A:As/P1:AOEUr
 aspire	1' ^ SP1:AOEUr
@@ -2767,6 +2833,7 @@ atrophy	3 1:A/TR0O:O*Ef
 attach	1 0A:A/T1:Afp
 attach	1' ^ T1:Afp
 attach	2 0A:At/T1:Afp
+attache	1 ^ T0A:A/SH1:E
 attaches	1 ^ T1:Afp/0E:Es
 attaching	1 ^ T1:Afp/0EU:EUpbg
 attachment	1 0A:A/T1:Afplt
@@ -2846,6 +2913,7 @@ attribute	1 1:A/TR0EU:EUbt
 attribute	2 1:Art/PW0U:AOUt
 attribute	3 1:Arb/PWR0U:AOUt
 attribution	1 0A:Art/PW1:AOUgs
+attribution	1 ^ TR0EU:EU/PW1:AOUgs
 attribution	2 0A:Art/PWR1:AOUgs
 attrition	1 0A:A/TR1:EUgs
 attrition	1' ^ TR1:EUgs
@@ -2857,6 +2925,7 @@ auburn	2 1:AU/PW0U:Urpb
 auction	1 1:AUbgs
 auction	2 1:AUbgs
 auctioneer	1 0A:A*Ubgs/1:AOEr
+auctioneer	1 ^ SKH0EU:EU/TPH1:AOEr
 auctioneer	2 0A:AUbgs/TPH1:AOEr
 auctions	1' 1:AUrbg/0EU:EUpbs
 auctions	2' 1:AUrbg/0EU:EUpbs
@@ -2877,7 +2946,8 @@ audition	1 0A:AUd/1:EUgs
 audition	1' ^ TK1:EUgs
 audition	2 0A:AU/TK1:EUgs
 audition	3 0A:AUd/TK1:EUgs
-auditions	1 0A:AU/TK1:EUrpbz
+auditions	1' 0A:AU/TK1:EUrpbz
+auditions	1' ^ TK1:EUrb/0EU:EUpbs
 auditor	1 1:AUd/0EU:EUrt
 auditor	1 1:AUd/T0O:Or
 auditorium	1 0A:AUd/T1:Orpl
@@ -2892,6 +2962,7 @@ auger	1 1:AUrg
 aught	1 1:AUt
 augment	1 0A:AU/TKPWH1:Epbt
 augment	1' ^ TKPWH1:Epbt
+augmentation	1 ^ TKPWH0E:E/TPH1:AEUgs
 augmented	1 ^ TKPWH1:Epbt/0E:Ed
 augur	1 1:AUg/0U:Ur
 augur	1 1:AUrg
@@ -3006,11 +3077,13 @@ averts	1' ^ SR1:Erts
 averts	1'' ^ SR1:Ers
 avian	1 1:AEUf/0A:Apb
 aviary	1 1:A*EUf/0A:AEUr
+aviation	1 ^ SR0EU:AOE/1:AEUgs
 avid	1 1:Af/0EU:EUd
 avid	2 1:A*f/0EU:EUd
 avid	3 1:A*f/SR0EU:EUd
 avidly	1 1:Af/0EU:EUld
 avidly	1 1:Afd/HR0EU:EU
+avocation	1 ^ SR0O:O/K1:AEUgs
 avoid	1 0A:A/SR1:OEUd
 avoid	1' ^ SR1:OEUd
 avoidable	1 0A:A/SR1:OEUbl
@@ -3116,6 +3189,7 @@ baby	3 PW1:AEUb/0EU:EU
 babysat	1 PW1:AEUb/S0A:At
 babysit	1 PW1:AEUb/S0EU:EUt
 babysit	2 PW1:AEUb/S0EU:*EUt
+baccarat	1' ^ KPW0:A/R1:AU
 bacchanal	1 PW0A:A/K1:AEUpbl
 bacchanal	1'' ^ KPW1:AEUpb/0A:Al
 bachelor	1 PW1:Afp/HR0O:Or
@@ -3256,6 +3330,7 @@ bale	1 PW1:AEUl
 baler	1 PW1:AEUrl
 baler	1' PW1:AEUl/0:Er
 balinese	1 PW0A:A*l/TPH1:AOEs
+balinese	1' ^ PWHR0EU:EU/TPH1:AOEs
 balk	1 PW1:AUbg
 balk	2 PW1:A*Ulg
 ball	1 PW1:AUl
@@ -3297,10 +3372,12 @@ balsa	1 PW1:Al/S0A:A
 balsam	1 PW1:AUpls
 balsam	1 PW1:Al/S0A:Apl
 balsam	2 PW1:AUl/S0A:Apl
+balsamic	1' ^ SPWHR1:AUpl/0EU:*EUbg
 baltimore	1 PW1:AUplt/0O:OEr
 baltimore	1 PW1:Alt/PH0O:Or
 baltimore	1' PW1:AUpl/0O:OEr
 bam	1 PW1:Apl
+bambino	1' ^ PWH1:AOEpb/0O:O
 bamboo	1 PW0A:Apl/PW1:AO
 ban	1 PW1:Apb
 banal	1 PW0A:A/TPH1:Al
@@ -3454,6 +3531,7 @@ baron	2 PW1:AEUr/0O:O*pb
 baron	2 PW1:Arpb
 baroness	1 PW1:Ar/0O:Opbs
 baronet	1 PW1:Arpb/0E:Et
+baronet	2' ^ PWR0O:O/TPH1:Et
 barons	1 PW1:Arpb
 barons	1' PW1:Ar/0O:Opbs
 barons	2 PW1:Arpb
@@ -3731,6 +3809,7 @@ bedding	1 PW1:Ed/0EU:EUpbg
 bede	1 PW1:AOEd
 bedford	1 PW1:Ed/TP0O:Ord
 bedizen	1 PW0E:E/TK1:AOEpbz
+bedizen	1'' ^ TKPW1:AOEz/0E:Epb
 bedlam	1 PW1:Ed/HR0A:Apl
 bedlam	1 PW1:Epld
 bedpan	1 PW1:Ed/P0A:Apb
@@ -3935,6 +4014,7 @@ bene	3 PW1:Epb/TPH0E:AOE
 beneath	1 PW0E:E/TPH1:AO*Et
 beneath	2 PW0E:AOE/TPH1:AO*Et
 benediction	1 PW0E:Epb/TK1:EUbgs
+benediction	1' ^ TPWH0E:E/TK1:EUbgs
 benediction	2 PW0E:Epb/TK1:*EUbgs
 beneficial	1 PW0E:Epb/TP1:EUrl
 beneficial	2 PW0E:Epb/TP1:EUrbl
@@ -4091,6 +4171,8 @@ bifurcate	2 PW1:AOEUfrbg/0A:AEUt
 bifurcate	3 PW1:AOEU/TP0U:Urbgt
 bifurcate	4 PW1:AOEUfr/K0A:AEUt
 bifurcation	1 PW0EU:EUfr/K1:AEUgs
+bifurcation	1' ^ TPW0:U/KR1:AEUgs
+bifurcation	2' ^ TPW0:U/KR1:AEUgs
 big	1 PW1:EUg
 bigger	1 PW1:EUrg
 bigger	1' PW1:EUg/0:Er
@@ -4127,11 +4209,13 @@ billiards	1 PW1:EUl/KWR0A:Ardz
 billing	1 PW1:EUl/0EU:EUpbg
 billion	1 PW1:EUl/KWR0O:Opb
 billionaire	1 PW0O:OEUpb/1:AEUr
+billionaire	1' ^ PWHR0EU:EU/TPH1:A*EUr
 billionth	1 PW1:EUl/KWR0O:O*pbt
 billow	1 PW1:EUl/HR0O:OE
 bills	1 PW1:EUls
 bimbo	1 PW1:EUpl/PW0O:OE
 bimodal	1 PW0EU:AOEU/PH1:OEld
+bimodal	1'' ^ PWH1:OEd/0A:Al
 bin	1 PW1:EUpb
 binary	1 PW1:*EU/TPH0A:AEUr
 binary	1 PW1:AOEUrpb/0EU:EU
@@ -4163,6 +4247,7 @@ biologist	4 PW0EU:EU/1:O*lgs
 biology	1 PW0EU:*EU/1:Olg
 biology	2 PW0EU:EU/1:Olg
 biome	1 PW1:*EU/0O:OEpl
+bionic	1' ^ PW1:Opb/0EU:*EUbg
 biopsy	1 PW1:AOEUp/S0EU:EU
 bipolar	1 PW0EU:AOEU/P1:OErl
 bipolar	1'' ^ PW1:OEl/0:Ar
@@ -4229,7 +4314,9 @@ bitterness	1 PW1:EUt/0E:*Erpbs
 bitterness	1' PW1:EUt/0:Erpbs
 bittersweet	1 PW1:EUrts/0E:AOEt
 bitumen	1 PW0EU:EU/T1:AOUpbl
+bitumen	1'' ^ TPW1:AOUpl/0E:Epb
 bitumen	2 PW0EU:AOEU/T1:AOUpbl
+bitumen	2'' ^ TPW1:AOUpl/0E:Epb
 bivouac	1 PW1:*EUf/W0A:Abg
 biz	1 PW1:EUz
 bizarre	1 PW0EU:EUz/1:Ar
@@ -4303,6 +4390,7 @@ blaster	1' PWHR1:Aft/0:Er
 blaster	1' PWHR1:Ars
 blasting	1 PWHR1:Aft/0EU:EUpbg
 blastoff	1 PWHR1:Aft/0O:O*f
+blastoma	1' ^ STPWHR1:OEpl/0A:A
 blasts	1 PWHR1:Afts
 blasts	1' PWHR1:As
 blatant	1 PWHR1:AEU/T0A:Apbt
@@ -4403,6 +4491,8 @@ block	1 PWHR1:Obg
 blockade	1 PWHR0O:O*bg/1:AEUd
 blockade	2 PWHR0O:Obg/1:A*EUd
 blockade	3 PWHR0O:Obg/K1:AEUd
+blockaded	1' ^ KPWHR1:AEUd/0E:Ed
+blockading	1' ^ KPWHR1:AEUd/0EU:EUpbg
 blockage	1 PWHR1:Obg/0A:Apblg
 blockbuster	1 PWHR1:Obg/0U:Ufrt
 blockbuster	1' PWHR1:Obg/0U:Urs
@@ -4750,6 +4840,8 @@ booms	1 PW1:AOpls
 boon	1 PW1:AOpb
 boondocks	1 PW1:AOpb/TK0O:Obgs
 boondoggle	1 PW0O:AO/TKPH1:Olg
+boondoggle	1'' ^ TKPWH1:Og/0E:El
+boondoggles	1'' ^ TKPWH1:Og/0E:Elz
 boop	1 PW1:AOp
 boor	1 PW1:AOr
 boos	1 PW1:AOs
@@ -4926,7 +5018,9 @@ bourgeois	1 PW0U:Urpblg/W1:OEU
 bourgeois	2 PW0O:Orpblg/W1:OEUs
 bourgeois	3 PW0O:OUrpblg/W1:OEUs
 bourgeois	4 PW0U:AOUrpblg/W1:OEUs
+bourgeoisie	1' ^ SPWHR0E:E/S1:AOE
 bourguignon	1 PW0O:Org/KWR1:Opb
+bourguignon	1' ^ TKPWR0EU:AOE/TPH1:Opb
 bourguignon	2 PW0U:Urg/KWR1:Opb
 bourn	1 PW1:OUrpb
 bout	1 PW1:OUt
@@ -5162,6 +5256,8 @@ brigade	1 PWR0EU:EUg/1:AEUd
 brigade	2 PWR0EU:EU/TKPW1:AEUd
 brigade	3 PWR0EU:EUg/TKPW1:AEUd
 brigadier	1 PWR0EU:EUg/TK1:AOEr
+brigadier	1' ^ TKPWR0A:A/TK1:AOEr
+brigantine	1' ^ TKPWR0A:A/TPH1:AOEpb
 bright	1 PWR1:AO*EUt
 brighten	1 PWR1:AO*EUpbt
 brighten	1 PWR1:AO*EUt/0E:*Epb
@@ -5352,6 +5448,7 @@ buccal	2 PW1:Ubg/K0A:Al
 buccal	3 PW1:Urbg/0A:A*l
 buccal	4 PW1:AOUbg/0A:A*l
 buccaneer	1 PW0U:Ubg/TPH1:AOEr
+buccaneer	1' ^ KPW0A:A/TPH1:AOEr
 bucco	1 PW1:Ubg/HR0O:O
 buck	1 PW1:Ubg
 bucket	1 PW1:Ubg/0E:Et
@@ -5382,6 +5479,7 @@ budgetary	2 PW1:Upblg/T0A:AEUr
 budgetary	3 PW1:Upblgt/TR0EU:EU
 budgetary	4 PW1:Upblgt/T0A:AEUr
 budgeteer	1 PW0U:Upblgt/1:AOEr
+budgeteer	1' ^ SKPWR0E:E/T1:AOEr
 budgets	1 PW1:Upblg/0E:Ets
 buds	1 PW1:Udz
 bueno	1 PW1:AOUpb/TPH0O:OE
@@ -5704,10 +5802,12 @@ byways	1 PW1:AO*EU/0A:AEUs
 cab	1 K1:Ab
 cabal	1 K0A:A/PW1:AUl
 cabana	1' ^ KPW1:Apb/0A:A
+cabaret	1' ^ KPW0:A/R1:E
 cabbage	1 K1:Ab/0A:Apblg
 cabbage	2 K1:Ab/PW0A:Apblg
 cabbie	1 K1:Ab/0E:AO*E
 cabbie	2 K1:Ab/0EU:EU
+cabernet	1' ^ KPW0:E/TPHR1:E
 cabin	1 K1:Ab/0EU:EUpb
 cabin	1 K1:Apb
 cabin	2 K1:A/PW0EU:EUpb
@@ -5796,6 +5896,7 @@ calcium	3 K1:Alts/0U:Upl
 calcium	4 K1:AUls/0U:Upl
 calculate	1 K1:Al/KHR0A:AEUt
 calculate	2 K1:Alg/HR0A:AEUt
+calculation	1' ^ KHR0U:U/HR1:AEUgs
 calculator	1 KHR1:AEUt/0O:O*r
 calculus	1 K1:Al/KHR0U:Us
 calculus	2 K1:Alg/HR0U:Us
@@ -5811,6 +5912,7 @@ caliber	1 K1:Al/0EU:EUrb
 caliber	1 K1:Al/PW0E:Er
 calibrate	1 K1:Al/PWR0A:AEUt
 calibration	1 KHR0EU:EUb/R1:AEUgs
+calibration	1' ^ KHR0EU:EU/PWR1:AEUgs
 calico	1 K1:Al/K0O:OE
 calif	1 K1:Al/0EU:EUf
 caliper	1 K1:Al/0EU:EUrp
@@ -5927,6 +6029,7 @@ cancel	1 K1:Apbls
 cancel	2 K1:Apbs/0E:El
 canceling	1 K1:Apbls/0EU:EUpbg
 canceling	1 K1:Apbs/HR0EU:EUpbg
+cancellation	1' ^ STKPH0E:E/HR1:AEUgs
 cancelling	1 K1:Apbls/0EU:EUpbg
 cancels	1 K1:Apb/S0E:Els
 cancer	1 K1:Apb/S0E:Er
@@ -6005,11 +6108,13 @@ cant	1 K1:Apbt
 cantaloupe	1 K1:Apblt/0O:OUp
 cantaloupe	1 K1:Apbt/HR0O:OEp
 cantaloupe	1' K1:Apbl/0O:OUp
+cantata	1' ^ TKPH1:AUt/0A:A
 canteen	1 K0A:Apb/T1:AOEpb
 canter	1 K1:Apb/T0E:Er
 canter	1 K1:Arpbt
 canter	1' K1:Arpb
 canter	2 K1:Apbt/0E:*Er
+cantina	1' ^ TKPH1:AOEpb/0A:A
 canto	1 K1:Apb/T0O:OE
 cantor	1 K1:Apb/T0O:Or
 cantor	1 K1:Arpbt
@@ -6067,6 +6172,7 @@ capricious	2 KPR1:EUrb/0O:OUs
 caps	1 K1:Aps
 capsaicin	1 K0A:A/SP1:A*EUpbs
 capsaicin	1 K1:Aps/S0EU:EUpb
+capsaicin	1'' ^ SKP1:A*EUs/0EU:EUpb
 capsize	1 K1:Ap/S0EU:AOEUz
 capstan	1 K1:Ap/ST0A:Apb
 capstan	1' K1:Apbs
@@ -6185,6 +6291,7 @@ caricature	2 K1:Arbg/T0U:AOUr
 carillon	1 K1:AEUr/0O:Opb
 carillon	1 K1:Arl/0O:Opb
 caring	1 K1:Ar/0EU:EUpbg
+carinii	1' ^ KR1:AOEpb/0EU:EU
 carjack	1 K1:Ar/SKWR0A:Abg
 carload	1 K1:Ar/HR0O:O*Ed
 carloads	1 K1:Ar/HR0O:O*Edz
@@ -6509,9 +6616,11 @@ cava	4 K1:Af/0A:A
 cavalcade	1 K1:A*fl/K0A:AEUd
 cavalcade	1 K1:A*flg/0A:AEUd
 cavalier	1 K0A:A*fl/1:AOEr
+cavalier	1' ^ SKR0A:A/HR1:AOEr
 cavalier	2 K0A:Af/HR1:AOEr
 cavalier	3 K0A:A*f/HR1:AOEr
 cavalier	4 K0A:A*fl/HR1:AOEr
+cavaliers	1' ^ SKR0A:A/HR1:AOErs
 cavalry	1 K1:Afl/R0EU:EU
 cavalry	2 K1:A*fl/R0EU:EU
 cave	1 K1:AEUf
@@ -6560,6 +6669,7 @@ celebrant	1 S1:El/PWR0A:Apbt
 celebrate	1 S1:El/PWR0A:AEUt
 celebrating	1 S1:El/PWR0A:AEUgt
 celebration	1 S0E:El/PWR1:AEUgs
+celebration	1' ^ SHR0E:E/PWR1:AEUgs
 celebre	1 S1:E/HR0E:Erb
 celery	1 S1:El/R0EU:EU
 celery	1 S1:Erl/0EU:EU
@@ -6723,6 +6833,8 @@ certify	3 S1:Erb/TP0EU:AOEU
 certify	4 S1:Ert/TP0EU:AOEU
 certifying	1 S1:Ert/TP0EU:AOEUg
 certitude	1 S1:Ert/T0U:AOUd
+cerveza	1' ^ SR1:Ez/0A:A
+cerveza	2' ^ SR1:Ez/0A:A
 cervical	1 S1:Efr/K0A:Al
 cervical	1 S1:Efrb/0EU:EUblg
 cervical	2 S1:Efrb/0EU:EUblg
@@ -6780,6 +6892,8 @@ chamber	1 KH1:Apl/PW0E:Er
 chamber	2 KH1:AEUpl/PW0E:Er
 chambers	1 KH1:AEUpl/PW0E:Ers
 chameleon	1 KPH1:AOEl/0O:Opb
+chamomile	1' ^ KPH0O:O/PH1:AOEUl
+chamomile	2' ^ KPH0O:O/PH1:AOEl
 champ	1 KH1:Afrp
 champagne	1 KH0A:Apl/P1:AEUpb
 champion	1 KH1:Apl/0O:Opb
@@ -6804,6 +6918,7 @@ chancy	2 KH1:Apbs/S0EU:EU
 chancy	3 KH1:Apbs/0EU:EU
 chandelier	1 KH0A:Apbd/HR1:AOEr
 chandelier	1' ^ STKPH0E:E/HR1:AOEr
+chandeliers	1' ^ STKPH0E:E/HR1:Ers
 chandler	1 KH1:Apb/TKHR0E:Er
 change	1 KH1:AEUpbg
 changeable	1 KH1:AEUpb/SKWR0A:Abl
@@ -6832,6 +6947,7 @@ chaos	1 K1:AEU/0O:Os
 chaos	2 KH1:AEU/0O:Os
 chaotic	1' ^ KH1:Ot/0EU:*EUbg
 chap	1 KH1:Ap
+chaparral	1' ^ SPH0:A/R1:Al
 chapel	1 KH1:Ap/0E:El
 chapel	1 KH1:Apl
 chaperone	1 KH1:Ap/R0O:OEpb
@@ -7068,6 +7184,7 @@ chestnut	1 KH1:*Es/TPH0U:Ut
 chestnut	2 KH1:Eft/TPH0U:Ut
 chests	1 KH1:Efts
 chests	1' KH1:Es
+chevalier	1' ^ SHR0A:A/HR1:AOEr
 chew	1 KH1:AOU
 chewing	1 KH1:E/0EU:EUpbg
 chez	1 SH1:E
@@ -7316,6 +7433,7 @@ cigar	1 S0EU:EUg/1:Ar
 cigar	2 S0EU:EUg/1:A*r
 cigar	3 S0EU:EU/TKPW1:Ar
 cigarette	1 S0EU:EUg/R1:Et
+cigarette	1' ^ STKPW0:A/R1:Et
 cigars	1 S0EU:EUg/1:Ars
 cilantro	1' ^ SHR1:Arpbt/0O:O
 cilantro	1'' ^ SHR1:Arpb/0O:O
@@ -7358,14 +7476,19 @@ circulating	1 S1:EUrbg/HR0A:AEUgt
 circulation	1 S1:EUrbg/HR0A:AEUgs
 circulatory	1 S1:EUrbg/T0O:OEr
 circumcise	1 S1:*EUrbg/S0EU:AOEUz
+circumcision	1' ^ SKR0U:U/SPH1:EUgs
 circumscribe	1 S0EU:EUrbg/SKR1:AOEUb
+circumscribe	1' ^ SKR0U:U/SKPHR1:AOEUb
 circumspect	1 S1:EUrbg/SP0E:Ebgt
+circumspection	1' ^ SKR0U:U/SPH1:Ebgs
 circumstance	1 S1:EUrbg/ST0A:Apbs
 circumstantial	1 S0EU:EUrbg/1:A*l
 circumstantial	3 S0EU:EUrbg/1:Al
 circumstantial	4 S0EU:EUrbg/ST1:Apbgs
 circumstantial	4 S0EU:EUrbg/ST1:Apbl
 circumvent	1 S0EU:EUrbg/SR1:Epbt
+circumvent	1' ^ SKR0U:U/SPHR1:Epbt
+circumvention	1' ^ SKR0U:U/SPHR1:Epbgs
 circus	1 S1:EUr/K0U:Us
 circus	2 S1:EUrbg/0U:Us
 cirrhosis	1 SR1:OEs/0EU:EUs
@@ -7408,6 +7531,7 @@ citrus	2 S1:EUt/TR0U:Us
 city	1 S1:EUt/T0EU:EU
 city	2 S1:EUt/0EU:EU
 ciudad	1 S0U:AOU/TK1:Ad
+ciudad	1' ^ S0U:U/TK1:Ad
 civic	1 S1:EUf/0EU:EUbg
 civic	2 S1:*EUf/0EU:EUbg
 civics	1 S1:EUf/0EU:EUbgs
@@ -7479,6 +7603,7 @@ clarify	3 KHR1:Ar/TP0EU:AOEU
 clarify	4 KHR1:AEUr/TP0EU:AOEU
 clarifying	1 KHR1:AEUr/TP0EU:AOEUg
 clarinet	1 KHR0A:AEUr/TPH1:Et
+clarinet	1' ^ KHR0EU:EU/TPH1:Et
 clarion	1 KHR1:AEUr/0O:Opb
 clarity	1 KHR1:Ar/T0EU:EU
 clarity	2 KHR1:AEUr/T0EU:EU
@@ -7616,6 +7741,7 @@ clicking	1 KHR1:EUbg/0EU:EUpbg
 clicks	1 KHR1:EUbgs
 client	1 KHR1:AOEU/0E:Epbt
 clientele	1 KHR0EU:AOEUpb/T1:El
+clientele	1' ^ KHR0E:E/TPH1:El
 clientele	2 KHR0EU:AOEUpbt/1:El
 clientele	3 KHR0EU:AOEUpbt/1:AOEl
 clientele	4 KHR0EU:AOEUpbt/1:AO*El
@@ -7790,10 +7916,13 @@ coagulate	1 K0O:OEg/HR1:AEUt
 coagulation	1 K0O:OEg/HR1:AEUgs
 coal	1 K1:O*El
 coalesce	1 K0O:O/HR1:Es
+coalesce	1 ^ 0A:A/HR1:Es
 coalesce	2 K0O:OE/HR1:Es
 coalesce	3 KR0O:O/HR1:Es
 coalesce	4 K0O:OEl/HR1:Es
+coalesced	1' ^ K0E:E/HR1:Eft
 coalition	1 K0O:O/HR1:EUgs
+coalition	1 ^ 0A:A/HR1:EUgs
 coalition	2 K0O:OE/HR1:EUgs
 coalition	3 K0O:OEl/HR1:EUgs
 coarse	1 K1:O*Ers
@@ -7908,6 +8037,7 @@ coercing	1 ^ 1:Ers/0EU:EUpbg
 coercion	1 K0O:O/1:Ergs
 coercion	1' ^ 1:Ergs
 coercive	1 ^ 1:Ers/0EU:EUf
+coexist	1 ^ 0E:E/STKPW1:EUft
 coffee	1 K1:Of/0E:AOE
 coffee	2 K1:Of/TP0E:AE
 coffee	3 K1:Of/0E:AE
@@ -7927,6 +8057,7 @@ cogent	1 K1:OEpblgt
 cogent	2 K1:OEpblg/0E:Epbt
 cogitate	1 K1:Opblg/T0A:AEUt
 cogitation	1 K0O:Opblg/T1:AEUgs
+cogitation	1 ^ SKWR0EU:EU/T1:AEUgs
 cognac	1 K1:Ob/KWR0A:Abg
 cognac	2 K1:Opb/KWR0A:Abg
 cognac	3 K1:OEpb/KWR0A:Abg
@@ -7969,11 +8100,13 @@ coils	1 K1:OEUls
 coin	1 K1:OEUpb
 coinage	1 K1:OEUpb/0A:Apblg
 coincide	1 K0O:OEpb/S1:AOEUd
+coincide	1 ^ 0EU:EU/STPH1:AOEUd
 coincide	2 K0O:OEUpb/S1:AOEUd
 coincide	3 KW0EU:EUpb/S1:AOEUd
 coincide	4 K0O:OEUpb/S1:AO*EUd
 coincidence	1 KW1:EUpbs/TK0E:Epbs
 coincident	1 KW1:EUpbs/TK0E:Epbt
+coincides	1' ^ K0EU:EU/STPH1:Edz
 coins	1 K1:OEUpbs
 coitus	1 K1:OEU/T0U:Us
 coitus	2 K1:OEUt/0U:Us
@@ -8116,6 +8249,7 @@ colonization	1 KHR0O:Opb/S1:A*EUgs
 colonize	1 K1:Ol/TPH0EU:AOEUz
 colonize	1 K1:Opbl/0EU:AOEUz
 colonnade	1 K0O:Ol/TPH1:AEUd
+colonnade	1 ^ HR0O:O/TPH1:AEUd
 colony	1 K1:Ol/TPH0EU:EU
 colony	1 K1:Opbl/0EU:EU
 colony	2 K1:Ol/TPH0EU:*EU
@@ -8124,6 +8258,7 @@ color	1 K1:Orl
 color	2 K1:Ol/0O:O*r
 color	2 K1:Orl
 coloration	1 K0O:Ol/R1:AEUgs
+coloration	1 ^ HR0:O/R1:AEUgs
 coloration	2 KHR0O:Or/1:AEUgs
 coloration	3 K0O:Ol/R1:AEUrgs
 colorblind	1 KHR1:Or/PWHR0EU:AOEUpbd
@@ -8201,6 +8336,7 @@ combustion	2 KPW 1:*Ugs
 come	1 K1:Opl
 comedian	1 KPH1:AOEd/0A:Apb
 comedic	1 KPH 1:AOEd/0EU:*EUbg
+comedienne	1 KPH TK0EU:AOE/1:Epb
 comedienne	1 KPH0E:AOEd/1:Epb
 comedies	1 KPH TK1:AOEs
 comedies	1' KPH 0E:E/TK1:AOEs
@@ -8289,6 +8425,7 @@ commands	1 KPH PH1:Apbdz
 commands	1' KPH 1:Apbdz
 commas	1 KPH 1:As
 commemorate	1 KPH 1:Erpl/0A:AEUt
+commemoration	1 KPH PH0:O/R1:AEUgs
 commemoration	1 KPH0E:Epl/R1:AEUgs
 commence	1 KPH 1:Epbs
 commence	1 KPH PH1:Epbs
@@ -8423,8 +8560,10 @@ commune	1 KPH 1:AOUpb
 commune	2 KPH 1:AOUpb
 communicable	1 KPH1:Upb/K0A:Abl
 communicable	2 KPH1:AOUpb/K0A:Abl
+communication	1 KPH TPH0EU:EU/K1:AEUgs
 communion	1 KPH1:AOUpb/KWR0O:Opb
 communion	2 KPHR1:AOUpb/KWR0O:Opb
+communique	2 KPH TPH0EU:EU/K1:E
 communist	1 K1:Opl/TPH0EU:EUs
 communist	1 KPH TPH1:EUft
 communist	1' KPH 0U:U/TPH1:EUft
@@ -8500,6 +8639,8 @@ comparisons	1 KPH P1:Ar/0EU:EUpbsz
 compartment	1 KPH P1:Arplt
 compartmental	1 KPH P0A:A/TPHR1:Epblt
 compartmental	1' KPH P0A:A/PHR1:Epbl
+compartmental	1'' KPH TPHR1:Epbt/0A:Al
+compartmental	1''' KPH PHR1:Epbt/0A:Al
 compartments	1' KPH P1:Arpbls
 compartments	1' KPH P1:Arplt/0E:Epbts
 compartments	1'' KPH P1:Arpl/0E:Epbts
@@ -8779,6 +8920,7 @@ comptroller	1 KPH TR1:Orl
 comptroller	1' KPH TR1:Ol/0:Er
 comptroller	2 KPH TR0O:O/HR1:Er
 comptroller	2 KPH TR1:Ol/0:Er
+comptroller	2' KPH THR1:Er
 compulsion	1 KPH P1:Ulgs
 compulsive	1 KPH P1:Uls/0EU:EUf
 compulsory	1 KPH P1:Urls/0EU:EU
@@ -8829,6 +8971,8 @@ conceiving	1 ^ S1:A*Ef/0EU:EUpbg
 concentrate	1 K1:Opbs/TR0A:AEUt
 concentrate	2 K1:Opbs/SPWR0A:AEUt
 concentration	1 K0O:Opbs/TR1:AEUgs
+concentration	1 ^ S0E:E/TPHR1:AEUgs
+concentration	1' ^ S0E:E/TPHR1:AEUgs
 concentration	2 K0O:Opbs/SPWR1:AEUgs
 concentric	1 ^ S1:Erpbt/0EU:*EUbg
 concentric	1' ^ S1:Erpb/0EU:*EUbg
@@ -8873,6 +9017,7 @@ conch	2 K1:O*pbg
 concha	1 K1:O*pbg/0A:A
 concha	2 K1:O*pblg/0A:A
 concierge	1 K0O:Opb/S1:Erpblg
+concierge	1 ^ S0EU:AOE/1:Erpblg
 concierge	2 K0O:Opb/S1:AOErpblg
 concierge	3 K0O:Opbs/1:Erpblg
 concise	1 K0O:Opb/S1:AOEUs
@@ -8917,14 +9062,18 @@ concussion	1 K0O:Opb/K1:Ugs
 concussion	1' ^ K1:Ugs
 condemn	1 K0O:Opb/TK1:Epl
 condemn	1' ^ TK1:*Epl
+condemnation	1 ^ TK0E:E/TPH1:AEUgs
 condemning	1 ^ TK1:*Epl/0EU:EUpbg
 condemns	1 K0O:O/TKPH1:Eplz
 condemns	1' ^ TK1:Eplz
+condensation	1 ^ TK0E:E/STPH1:AEUgs
 condense	1 K0O:Opb/TK1:Epbs
 condense	1' ^ TK1:Epbs
 condenser	1' K0O:O/TKPH1:Erpbs
 condenser	1' ^ TK1:Epbs/0:Er
 condescend	1 K0O:Opbd/S1:Epbd
+condescend	1 ^ TK0E:E/S1:Epbd
+condescension	1 ^ TK0E:E/S1:Epbgs
 condiment	1 K1:Opb/TK0EU:EUplt
 condiment	1 K1:Opbd/0EU:EUplt
 condition	1 K0O:O/TKPH1:EUgs
@@ -8982,6 +9131,7 @@ confection	1 K0O:Opb/TP1:*Ebgs
 confection	1' ^ TP1:Ebgs
 confer	1 K0O:O/TPH1:Er
 confer	1' ^ TP1:Er
+conferee	1 ^ TP0:E/R1:AOE
 conference	1 K1:Opb/TPR0E:Epbs
 conferring	1 ^ TP1:Er/0EU:EUpbg
 confers	1 K0O:O/TPH1:Ers
@@ -9009,9 +9159,12 @@ confine	1 K0O:Opb/TP1:AOEUpb
 confine	1' ^ TP1:AOEUpb
 confirm	1 K0O:Opb/TP1:EUrpl
 confirm	1' ^ TP1:EUrpl
+confirmation	1 ^ TP0:EU/PHR1:AEUgs
 confirming	1 ^ TP1:EUrpl/0EU:EUpbg
 confirms	1 K0O:O/TPH1:EUrpls
 confirms	1' ^ TP1:EUrpls
+confiscation	1 ^ TP0EU:EU/SK1:AEUgs
+conflagration	1 ^ TPHR0A:A/TKPWR1:AEUgs
 conflation	1 K0O:O/TPHR1:AEUgs
 conflation	1' ^ TPHR1:AEUgs
 conflict	1 K1:Opb/TPHR0EU:EUbgt
@@ -9040,6 +9193,7 @@ confounded	1 ^ TP1:OUpbd/0E:Ed
 confrere	1 K1:Opb/TPR0E:Er
 confront	1 K0O:Opb/TPR1:Opbt
 confront	1' ^ TPR1:Opbt
+confrontation	1 ^ TPR0O:O/TPH1:AEUgs
 confronted	1 ^ TPR1:Opbt/0E:Ed
 confronted	2 ^ TPR1:Opbt/0E:Ed
 confronting	1 ^ TPR1:Opbt/0EU:EUpbg
@@ -9077,6 +9231,7 @@ congregate	3 K1:Orpbg/TKPW0A:AEUt
 congregate	4 K1:Opbg/TKPW0A:AEUfplt
 congregate	4 TKPW1:Orpbg/TKPW0A:AEUt
 congregation	1 K0O:Opbg/TKPW1:AEUgs
+congregation	1 ^ TKPWR0E:E/TKPW1:AEUgs
 congregation	2 K0O:Orpbg/TKPW1:AEUgs
 congress	1 K1:Opb/TKPWR0E:Esz
 congruence	1 K1:Orpbg/0E:Epbs
@@ -9089,7 +9244,10 @@ conifer	1 K1:Opb/TP0E:Er
 conjecture	1' ^ SKWR1:Efpbg/0:Ur
 conjecture	2' ^ SKWR1:Erbg/0:Ur
 conjoin	1 K0O:Opb/SKWR1:OEUpb
+conjoin	1' ^ SKWR1:OEUpb
 conjugal	1 K1:Opbg/0U:Ulg
+conjugate	1 ^ SKWR0U:U/TKPW1:AEUt
+conjugation	1 ^ SKWR0U:U/TKPW1:AEUgs
 conjunction	1 K0O:O/STKPWHR1:*Upbgs
 conjunction	1 K0O:Opb/SKWR1:Upbgs
 conjunction	1' ^ SKWR1:*Upbgs
@@ -9131,6 +9289,8 @@ connive	1 K0O:Opb/TPH1:AO*EUf
 connive	1' ^ TPH1:AOEUf
 conniving	1 ^ TPH1:AOEUf/0EU:EUpbg
 connoisseur	1 K0O:Opb/S1:AOUr
+connoisseur	1 ^ TPH0O:OEU/S1:AOUr
+connotation	1 ^ TPH0O:O/T1:AEUgs
 connote	1 K0O:Opb/TPH1:OEt
 connote	1' ^ TPH1:OEt
 conquer	1 K1:O*rpbg
@@ -9156,6 +9316,7 @@ conscription	1' ^ SKR1:EUpgs
 consecrate	1 K1:Opb/SKR0A:AEUt
 consecrate	2 K1:Opbs/KR0A:AEUt
 consecration	1 K0O:Opb/SKR1:AEUgs
+consecration	1 ^ S0E:E/KR1:AEUgs
 consecration	2 K0O:Opbs/KR1:AEUgs
 consensus	1 ^ S1:Epbs/0U:Us
 consent	1 K0O:Opb/S1:Epbt
@@ -9173,6 +9334,7 @@ consequent	2 K1:Opbs/KW0E:Epbt
 consequential	1 K0A:AUpbs/KW1:Epbl
 consequential	2 K0O:Opbs/KW1:Epbgs
 conservation	1 K1:AUpb/S0E:Efrgs
+conservation	1 ^ S0:E/SR1:AEUgs
 conservation	2 K0O:Opbs/SR1:AEUgs
 conservator	1 K1:Efrb/T0O:Or
 conserve	1 K0O:Opb/S1:Efrb
@@ -9207,6 +9369,7 @@ consists	1 K0O:O/STPH1:EUfts
 consists	1' K0O:O/STPH1:EUs
 consists	1' ^ S1:EUfts
 consists	1'' ^ S1:EUs
+consolation	1 ^ S0O:O/HR1:AEUgs
 consolation	2 K0O:Opbs/HR1:AEUgs
 console	1 K1:Opb/S0O:OEl
 console	1 K1:Opbls
@@ -9240,15 +9403,19 @@ constants	1' K1:Ofpbt/0A:Apbts
 constants	1' K1:Opbs
 constants	1'' K1:Ofpbt/0A:Apbts
 constellation	1 K0O:O*pbs/HR1:AEUgs
+constellation	1 ^ ST0E:E/HR1:AEUgs
 consternation	1 K0O:O*pbs/TPH1:AEUgs
+consternation	1 ^ ST0:E/TPHR1:AEUgs
 constipate	1 K1:O*pbs/P0A:AEUt
 constipation	1 K0O:O*pbs/P1:AEUgs
+constipation	1 ^ ST0EU:EU/P1:AEUgs
 constituency	1 ST1:EUt/W0E:Epbs
 constituency	2 ST1:EUt/W0E:AEpbs
 constituent	1 ST1:EUt/W0E:Epbt
 constitute	1 K1:Opb/ST0U:AOUt
 constitute	2 K1:Opbs/T0U:AOUt
 constitution	1 K0O:Opb/ST1:AOUgs
+constitution	1 ^ ST0EU:EU/T1:AOUgs
 constitution	2 K0O:Opbs/T1:AOUgs
 constitutional	1 ST1:AO*Us/0A:A*l
 constitutional	2 ST1:AOUgs/0A:A*l
@@ -9328,6 +9495,7 @@ consultants	1' ^ S1:Ult/0A:Apbts
 consultants	1'' K0O:O/STPH1:Upbls
 consultants	1'' ^ S1:Ult/0A:Apbts
 consultation	1 K0U:Ultd/1:AEUgs
+consultation	1 ^ S0U:U/THR1:AEUgs
 consultation	2 K0O:Opbs/T1:AEUgs
 consulted	1 ^ S1:Ult/0E:Ed
 consulted	2 ^ S1:Ult/0E:Ed
@@ -9352,6 +9520,7 @@ consummate	2 K1:Opbs/PH0A:At
 consummate	3 K1:Opb/SPH0A:AEUt
 consummate	4 K1:Opbs/PH0A:AEUt
 consummation	1 K0O:Opb/SPH1:AEUgs
+consummation	1 ^ S0U:U/PH1:AEUgs
 consummation	2 K0O:Opbs/PH1:AEUgs
 consumption	1 K0O:O/STPH1:Ufrpgs
 consumption	1 K0O:Opb/S1:Uplgs
@@ -9379,6 +9548,7 @@ contains	1 K0O:O/TPH1:A*EUpbs
 contains	1' ^ T1:A*EUpbs
 conte	1 K1:Opbt
 conte	2 K1:Opbt/0E:E
+contemplation	1 ^ T0E:E/PHR1:AEUgs
 contemporaneous	1 K0E:Efrp/R1:AEUpbs
 contemporaneous	2 K0E:Epl/PR1:AEUpbs
 contemporaneous	3 KPR1:AEUpb/0O:OUs
@@ -9459,6 +9629,7 @@ contours	1 K1:Opbt/0O:OUrs
 contra	1 K1:Opb/TR0A:A
 contraband	1 K1:Orpbt/PW0A:Apbd
 contraception	1 K0O:Orpbt/S1:Epgs
+contraception	1 ^ TR0A:A/S1:Epgs
 contract	1 K1:Opb/TR0A:Abgt
 contract	2' ^ TR1:Abgt
 contraction	1 K0O:O/TPHR1:Abgs
@@ -9475,8 +9646,12 @@ contracts	2' K0O:O/TPHR1:Abgts
 contracts	2' ^ TR1:Abgts
 contracts	2'' ^ TR1:Abgts
 contradict	1 KR0A:A/TK1:EUbgt
+contradict	1 ^ TR0A:A/TK1:EUbgt
 contradict	2 K0A:AUpbt/TK1:EUbgt
 contradiction	1 KR0A:A/TK1:EUbgs
+contradiction	1 ^ TR0A:A/TK1:EUbgs
+contradicts	1 ^ TR0A:A/TK1:EUbgts
+contradicts	1' ^ TR0A:A/TK1:EUbgts
 contraption	1 K0O:O/TPHR1:Apgs
 contraption	1 K0O:Opb/TR1:Apgs
 contraption	1' K0O:O/TPHR1:Apgs
@@ -9498,6 +9673,7 @@ contrasts	3' K1:Orpb/0A:As
 contrasts	4 K0O:O/TPHR1:As
 contrasts	4' K0O:O/TPHR1:As
 contrasts	4' ^ TR1:As
+contribution	1 ^ TR0EU:EU/PW1:AOUgs
 contributor	1 KR1:EUbt/T0O:Or
 contrite	1 K0O:Opb/TR1:AOEUt
 contrite	1' ^ TR1:AOEUt
@@ -9540,6 +9716,7 @@ conundrum	1'' K0O:O/TPH1:Urpbl
 conundrum	1'' ^ TPH1:Urpb/0U:Upl
 conus	1 K1:OEpb/0U:Us
 convalesce	1 K0A:AUfpb/HR1:Es
+convalesce	1 ^ SR0A:A/HR1:Es
 convection	1 K0O:O/STPHR1:Ebgs
 convection	1 K0O:Opb/SR1:*Ebgs
 convection	1' ^ SR1:Ebgs
@@ -9560,6 +9737,7 @@ convergent	1' ^ SR1:Erpblg/0E:Epbt
 conversant	1 KW1:Ers/0A:Apbt
 conversant	1' K0O:O/STPHR1:Erpbts
 conversant	1' ^ SR1:Ers/0A:Apbt
+conversation	1 ^ SR0:E/SR1:AEUgs
 converse	1 K1:Opb/SR0E:Ers
 converse	2' ^ SR1:Ers
 conversion	1 K0O:O/STPHR1:Ergs
@@ -9608,6 +9786,7 @@ convince	1 K0O:Opb/SR1:EUpbs
 convince	1' ^ SR1:EUpbs
 convincing	1 ^ SR1:EUpbs/0EU:EUpbg
 convincingly	1 ^ SR1:EUpbs/0EU:EUpblg
+convocation	1 ^ SR0O:O/K1:AEUgs
 convoy	1 K1:Opb/SR0O:OEU
 convoys	1 K1:Ofpb/0O:OEUs
 convulsant	1 KW1:Uls/0A:Apbt
@@ -9650,6 +9829,8 @@ coon	1 K1:AOpb
 coop	1 K1:AOp
 cooperate	1 K1:AOp/R0A:AEUt
 cooperate	2 KW1:AOrp/0A:AEUt
+cooperation	2' ^ KPW0:E/R1:AEUgs
+cooperation	3' ^ KPW0:E/R1:AEUgs
 cooperative	1 KW1:Op/T0EU:EUf
 cooperative	2 K1:AOp/T0EU:*EUf
 cooperative	3 K1:AOpt/0EU:*EUf
@@ -9708,6 +9889,7 @@ cordial	3 K1:Ord/SKWR0A:Al
 cordially	1 K1:Orpblg
 cordially	1 K1:Orpblg/HR0EU:EU
 cordially	1' K1:Orpblg/0EU:EUl
+cordoba	1 ^ TKR1:OEb/0A:A
 cordon	1 K1:Orpbd
 cordon	1' K1:Ord/0O:Opb
 cordon	1' K1:Orpb
@@ -9726,6 +9908,7 @@ cornbread	1 K1:Orpb/PWR0E:AEd
 corncob	1 K1:Orpb/K0O:Ob
 cornea	1 K1:Orpb/0A:A
 corneal	1 K0O:Orpb/1:AEl
+corneal	1' ^ TPHR1:AEl
 corneas	1 K1:Orpb/0A:As
 corner	1 K1:Orpb
 corner	1 K1:Orpb/0E:*Er
@@ -9750,6 +9933,7 @@ coronal	1' ^ R1:OEpb/0A:Al
 coronary	1 K1:Orpb/R0EU:EU
 coronary	2 K1:Or/TPH0A:AEUr
 coronation	1 K0O:Or/TPH1:AEUgs
+coronation	1 ^ R0O:O/TPH1:AEUgs
 coronation	2 K0O:O*r/TPH1:AEUgs
 coroner	1 K1:Or/TPH0E:Er
 coroner	1 K1:Orpb
@@ -9765,6 +9949,7 @@ corporate	1 K1:Orp/0A:At
 corporate	2 K1:Orp/R0A:At
 corporate	3 K1:Orp/R0A:AEUt
 corporation	1 K0O:Or/PR1:AEUgs
+corporation	1 ^ PR0:O/R1:AEUgs
 corporation	2 K0O:Orp/R1:AEUgs
 corps	1 K1:Or
 corps	2 K1:Orz
@@ -9811,10 +9996,14 @@ correlate	4 K1:OEr/HR0A:AEUt
 correlate	4 K1:Or/HR0A:AEUt
 correlated	1 K1:Or/HR0A:AEUtd
 correlation	1 K0O:Or/HR1:AEUgs
+correlation	1 ^ R0E:E/HR1:AEUgs
 correlation	2 K0O:OEr/HR1:AEUgs
 correspond	1 K0O:Or/SP1:Opbd
+correspond	1 ^ R0E:E/SP1:Opbd
 correspondent	1 K1:OEr/TK0E:Epbt
 corresponds	1 K0O:Or/SP1:Opbdz
+corresponds	1 ^ R0E:E/SP1:Opbdz
+corresponds	1' ^ R0E:E/SP1:Opbdz
 corridor	1 K1:Or/0EU:EUrd
 corridor	1 K1:Or/TK0O:Or
 corridor	2 K1:Or/0EU:EUrd
@@ -9876,7 +10065,8 @@ cosmic	2 K1:Oz/PH0EU:EUbg
 cosmos	1 K1:Os/PH0O:Os
 cosmos	2 K1:Os/PH0O:OEs
 cosmos	3 K1:Oz/PH0O:OEs
-cosponsor	1 K0O:O/SP1:Orpbs
+cosponsor	1' K0O:O/SP1:Orpbs
+cosponsor	1' ^ SP1:Opbs/0:Or
 cost	1 K1:Oft
 cost	2 K1:Oft
 costa	1 K1:Os/T0A:A
@@ -10461,6 +10651,7 @@ crucible	1 KR1:AOUs/0EU:EUbl
 crucified	1 KR1:AOUs/TP0EU:AOEUd
 crucifix	1 KR1:AOUs/TP0EU:EUbgs
 crucifixion	1 KR0U:AOUs/TP1:*EUbgs
+crucifixion	1' ^ SKR0EU:EU/TP1:EUbgs
 crucify	1 KR1:AOUs/TP0EU:EU
 crucify	2 KR1:AOUs/TP0EU:AOEU
 crud	1 KR1:Ud
@@ -10521,6 +10712,7 @@ crusty	2 KR1:*Us/T0EU:EU
 crutch	1 KR1:Ufp
 crutches	1 KR1:Ufp/0E:Es
 crux	1 KR1:Ubgs
+cruzado	1' ^ STKPWR1:AUd/0O:O
 cry	1 KR1:AOEU
 crying	1 KR1:AOEU/0EU:EUpbg
 crypt	1 KR1:EUpt
@@ -10576,6 +10768,7 @@ culminate	1 K1:Ul/TPH0A:AEUt
 culminate	1 K1:Upbl/0A:AEUt
 culminate	2 K1:Upl/TPH0A:AEUt
 culmination	1 K0U:Upl/TPH1:AEUgs
+culmination	1' ^ KPHR0EU:EU/TPH1:AEUgs
 culmination	2 K0U:*Upl/TPH1:AEUgs
 culpable	1 K1:Ul/P0A:Abl
 culpable	1 K1:Upl/0A:Abl
@@ -10586,6 +10779,7 @@ cult	1 K1:Ult
 cultivate	1 K1:Ult/SR0A:AEUt
 cultivate	2 K1:AOUlt/SR0A:AEUt
 cultivation	1 K0U:Ult/SR1:AEUgs
+cultivation	1' ^ TKHR0EU:EU/SR1:AEUgs
 cults	1 K1:Ults
 cults	1' K1:Uls
 cultural	1 K1:Ult/0A:A*l
@@ -10632,6 +10826,7 @@ cups	1 K1:Ups
 cur	1 K1:Ur
 curable	1 K1:Ur/0A:Abl
 curacao	1 K1:AOUr/S0O:OU
+curare	1' ^ KWR1:Ar/0E:E
 curate	1 K1:Ur/0A:A*t
 curated	1' ^ KWR1:AEUt/0E:Ed
 curative	1 K1:AOUrt/0EU:EUf
@@ -11143,6 +11338,7 @@ debit	3 TK1:Eb/PW0EU:EUt
 debits	1 TK1:Eb/0EU:EUts
 debits	2 TK1:E/PW0EU:EUts
 debonair	1 TK0E:Eb/TPH1:AEUr
+debonair	1' ^ TKPW0O:O/TPH1:A*EUr
 debris	1 TK0E:Eb/R1:EU
 debris	2 TK0E:Eb/R1:AOE
 debris	3 TK0E:E/PWR1:AOE
@@ -11189,6 +11385,7 @@ deceive	1 TK0E:E/S1:A*Ef
 deceive	2 TK0E:AOE/S1:A*Ef
 deceiving	1 STK 1:A*Ef/0EU:EUpbg
 decelerate	1 STK 1:Erl/0A:AEUt
+deceleration	1 STK HR0:E/R1:AEUgs
 decency	1 STK S1:EU
 decency	1 TK1:AOEpbs/S0EU:EU
 decency	1' STK 0E:E/STPH1:EU
@@ -11256,6 +11453,7 @@ declarant	1 TK0E:E/KHR1:Arpbt
 declarant	1'' ^ TKHR1:Ar/0A:Apbt
 declarant	2 TK0E:E/KHR1:AEUrpbt
 declaration	1 TK0E:Ebg/HR1:AEUgs
+declaration	1' ^ TKHR0:A/R1:AEUgs
 declaration	2 TK0E:Erbg/HR1:AEUgs
 declare	1 TK0E:E/KHR1:Ar
 declare	2 TK0E:E/KHR1:AEUr
@@ -11275,6 +11473,8 @@ decoder	1'' ^ TK1:OEd/0:Er
 decoding	1' ^ TK1:OEd/0EU:EUpbg
 decommission	1 TK0E:E/KPH1:EUgs
 decommission	1' ^ TK0O:O/PH1:EUgs
+decompose	1' ^ TK0O:O/PH1:OEs
+decompression	1' ^ TK0O:O/PHR1:Egs
 decor	1 TK0E:E/K1:Or
 decor	2 TK0E:E/K1:OEr
 decor	2 TK1:Erbg
@@ -11282,6 +11482,7 @@ decor	3 TK0E:Ebg/1:O*r
 decorate	1 TK1:Ebg/R0A:AEUt
 decorate	1 TK1:Erbg/0A:AEUt
 decoration	1 TK0E:Ebg/R1:AEUgs
+decoration	1' ^ TK0:O/R1:AEUgs
 decorator	1 TK1:Erbg/0A:Art
 decorous	1 TK1:Ebg/R0U:Us
 decorous	1 TK1:Erbg/0O:Us
@@ -11308,6 +11509,7 @@ decrying	1' ^ TKR1:AOEU/0EU:EUpbg
 dedicate	1 TK1:Ed/K0A:AEUt
 dedicated	1 TK1:Ed/K0A:AEUtd
 dedication	1 TK0E:Ed/K1:AEUgs
+dedication	1' ^ TK0EU:EU/K1:AEUgs
 deduce	1 TK0E:E/TK1:AOUs
 deduce	2 TK0E:AOE/TK1:AOUs
 deduct	1 TK0E:E/TK1:Ubgt
@@ -11345,6 +11547,7 @@ deface	1 TK0E:E/TP1:AEUs
 deface	2 TK0E:AOE/TP1:AEUs
 defacing	1' ^ TKP1:AEUs/0EU:EUpbg
 defamation	1 TK0E:Ef/PH1:AEUgs
+defamation	1' ^ TKP0A:A/PH1:AEUgs
 defame	1 TK0E:E/TP1:AEUpl
 defame	2 TK0E:AOE/TP1:AEUpl
 default	1 TK0E:E/TP1:AUlt
@@ -11433,6 +11636,7 @@ defining	2 TK0E:AOE/TP1:AOEUpbg
 definite	1 TK1:Ef/TPH0EU:EUt
 definite	1 TK1:Efpb/0EU:EUt
 definition	1 TK0E:Ef/TP1:EUgs
+definition	1' ^ TKP0EU:EU/TPH1:EUgs
 definition	2 TK0E:Ef/TPH1:EUgs
 definitive	1 TK0E:Ef/T1:EUf
 definitive	2 TK0E:Efpb/T1:EUf
@@ -11443,6 +11647,7 @@ deflected	1' ^ TKPHR1:Ebgt/0E:Ed
 deflection	1 TK0E:E/TPHR1:Ebgs
 deform	1 TK0E:AOE/TP1:Orpl
 deformation	1 TK0E:Efr/PH1:AEUgs
+deformation	1' ^ TKP0O:O/PHR1:AEUgs
 deformity	1 TK0E:E/TP1:Orplt
 defraud	1 TK0E:AOE/TPR1:AUd
 defrauded	1' ^ TKPR1:AUd/0E:Ed
@@ -11459,6 +11664,7 @@ defy	3 TK0E:AOE/TP1:AOEU
 defying	1 TK0E:AOE/TP1:AOEUg
 defying	1' ^ TKP1:AOEU/0EU:EUpbg
 degradation	1 TK0E:Eg/TK1:AEUgs
+degradation	1' ^ TKPWR0A:A/TK1:AEUgs
 degradation	2 TK0E:Erg/TK1:AEUgs
 degrade	1 TK0E:E/TKPWR1:AEUd
 degrade	2 TK0E:AOE/TKPWR1:AEUd
@@ -11471,6 +11677,7 @@ degree	3 TK0E:AOE/TKPWR1:AOE
 degrees	1 TK0E:E/TKPWR1:AOEs
 dehydrate	1 TK0E:E/H1:AOEUrtd
 dehydrate	1' ^ TK1:AO*EUrd/0A:AEUt
+dehydration	1' ^ TK0EU:AOEU/TKR1:AEUgs
 deify	1 TK1:AOE/TP0EU:EU
 deign	1 TK1:A*Epb
 deities	1 TK1:AOEt/0EU:EUs
@@ -11486,6 +11693,7 @@ delays	1 TK0E:E/HR1:AEUs
 delegate	1 TK1:El/TKPW0A:At
 delegate	2 TK1:El/TKPW0A:AEUt
 delegation	1 TK0E:El/TKPW1:AEUgs
+delegation	1' ^ TKHR0E:E/TKPW1:AEUgs
 delete	1 TK0E:E/HR1:AOEt
 delete	2 TK0E:AOE/HR1:AOEt
 deleted	1' ^ TKHR1:AOEt/0E:Ed
@@ -11556,6 +11764,7 @@ demanded	1' ^ TKPH1:Apbd/0E:Ed
 demanded	2' ^ TKPH1:Apbd/0E:Ed
 demanding	1' ^ TKPH1:Apbd/0EU:EUpbg
 demands	1 TK0E:E/PH1:Apbdz
+demarcation	1' ^ TKPH0A:A/KR1:AEUgs
 demean	1 TK0E:E/PH1:AEpb
 demean	2 TK0E:AOE/PH1:AEpb
 demeaning	1' ^ TKPH1:AEpb/0EU:EUpbg
@@ -11595,6 +11804,7 @@ demolish	2 TKPH1:Ol/0EU:EUrb
 demolishes	1 TKPH1:Ol/0EU:EUrbs
 demolishing	1 TKPH1:Ol/0EU:EUrbg
 demolition	1 TK0E:Epl/HR1:EUgs
+demolition	1' ^ TKPH0O:O/HR1:EUgs
 demon	1 TK1:AOEpbl
 demon	1 TK1:E/PH0O:Opb
 demon	2 TK1:AOE/PH0O:Opb
@@ -11607,6 +11817,8 @@ demonstrate	1 TK1:Epl/STR0A:AEUt
 demonstrated	1 TK1:Epl/STR0A:AEUtd
 demonstrating	1 TK1:Epl/STR0A:AEUgt
 demonstration	1 TK0E:Epl/STR1:AEUgs
+demonstration	1' ^ TKPH0O:O/STPHR1:AEUgs
+demonstration	1'' ^ TKPH0O:O/STPHR1:AEUgs
 demonstration	2 TKPH0O:Opb/STR1:AEUgs
 demos	1 TK1:Epl/0O:Os
 demote	1 TK0E:E/PH1:OEt
@@ -11640,6 +11852,7 @@ denote	1 TK0E:E/TPH1:OEt
 denote	2 TK0E:AOE/TPH1:OEt
 denoted	1' ^ TKPH1:OEt/0E:Ed
 denoting	1' ^ TKPH1:OEt/0EU:EUpbg
+denouement	1' ^ TKPH0O:O/PH1:Epb
 denounce	1 TK0E:E/TPH1:OUpbs
 denouncing	1' ^ TKPH1:OUpbs/0EU:EUpbg
 dens	1 TK1:Epbs
@@ -11745,6 +11958,7 @@ deployments	1''' ^ TKPHR1:OEUpl/0E:Epbts
 depo	1 TK1:Ep/P0O:OE
 deport	1 TK0E:E/P1:Ort
 deportation	1 TKP0O:Or/T1:AEUgs
+deportation	1' ^ TKP0O:O/TR1:AEUgs
 deported	1 TK0E:E/P1:Ortd
 deported	1' ^ TKP1:Ort/0E:Ed
 deporting	1' ^ TKP1:Ort/0EU:EUpbg
@@ -11759,6 +11973,7 @@ deposit	4 TKP1:Os/S0EU:EUt
 deposit	4 TKP1:Oz/S0EU:*EUt
 deposit	4 TKP1:Oz/S0EU:EUt
 deposition	1 TK0E:Ep/S1:EUgs
+deposition	1' ^ TKP0O:O/S1:EUgs
 deposition	2 TK0E:Ep/S1:*EUgs
 depository	1 TK1:O*ft/0E:AEr
 depository	2 TKP1:Os/TR0EU:EU
@@ -11768,10 +11983,12 @@ deposits	2' ^ TKP1:Os/0EU:EUts
 depot	1 TK1:E/P0O:OE
 depot	2 TK1:AOE/P0O:OE
 depots	1 TK1:AOEp/0O:Oz
+depravation	1' ^ TKPR0A:A/SR1:AEUgs
 deprave	1 TK0E:E/PR1:AEUf
 deprave	2 TK0E:E/PR1:A*EUf
 depravity	1 TKPR1:Af/T0EU:EU
 depravity	2 TKPR1:A*f/T0EU:EU
+depredation	1' ^ TKPR0E:E/TK1:AEUgs
 depress	1 TK0E:E/PR1:Es
 depressant	1 TK0E:E/PR1:Epbts
 depressant	1 TKPR1:Es/S0A:Apbt
@@ -11787,6 +12004,7 @@ depressions	1 TK0E:E/PR1:Erpbz
 depressions	1'' ^ TKPR1:Erb/0EU:EUpbs
 depressive	1' ^ TKPR1:Es/0EU:EUf
 deprivation	1 TK0E:Erp/SR1:AEUgs
+deprivation	1' ^ TKPR0EU:EU/SR1:AEUgs
 deprivation	2 TKPR0EU:EUf/1:AEUgs
 deprive	1 TK0E:E/PR1:AOEUf
 deprive	2 TK0E:E/PR1:AO*EUf
@@ -11807,6 +12025,7 @@ derby	2 TK1:Erb/0EU:EU
 derelict	1 TK1:Er/HR0EU:EUbgt
 derelict	1 TK1:Erl/0EU:EUbgt
 dereliction	1 TK0E:Er/HR1:EUbgs
+dereliction	1' ^ TKR0E:E/HR1:EUbgs
 dereliction	2 TK0E:Er/HR1:*EUbgs
 derelicts	1 TK1:Er/HR0EU:EUbgts
 derelicts	1 TK1:Erl/0EU:EUbgts
@@ -11820,6 +12039,7 @@ derision	1 TK0E:E/R1:EUgs
 derisive	1' ^ TKR1:EUs/0EU:EUf
 derisive	2' ^ TKR1:AOEUs/0EU:EUf
 derivation	1 TK0E:Er/SR1:AEUgs
+derivation	1' ^ TKR0EU:EU/SR1:AEUgs
 derivative	1 TKR1:EUf/T0A:Af
 derive	1 TK0E:E/R1:AOEUf
 derive	2 TK0E:E/R1:AO*EUf
@@ -11841,6 +12061,7 @@ derringer	2 TK1:Erpb/SKWR0E:Er
 dervish	1 TK1:Er/SR0EU:EUrb
 des	1 TK1:Es
 des	2 TK1:E
+desalination	1 STK HR0EU:EU/TPH1:AEUgs
 descend	1 STK 1:Epbd
 descend	1 TK0E:E/S1:Epbd
 descend	2 STK S1:Epbd
@@ -11893,6 +12114,7 @@ desecration	1 STK KR1:AEUgs
 desecration	1' STK 0E:E/KR1:AEUgs
 desecration	2 STK KR1:AEUgs
 desecration	2' STK 0E:E/KR1:AEUgs
+desegregation	1 STK TKPWR0E:E/TKPW1:AEUgs
 desegregation	2 STK TKPWR0E:E/TKPW1:AEUgs
 desert	1 STK 1:Ert
 desert	1 TK1:E/S0E:Ert
@@ -12102,6 +12324,7 @@ detailing	1' ^ TK1:A*EUl/0EU:EUpbg
 details	1 TK0E:E/T1:A*EUls
 details	2 TK0E:E/T1:AEUlsz
 detain	1 TK0E:E/T1:A*EUpb
+detainee	1' ^ TK0A:A*EU/TPH1:AOE
 detainees	1' ^ TK0A:A*EU/TPH1:AOEs
 detect	1 TK0E:E/T1:Ebt
 detect	2 TK0E:E/T1:Ebgt
@@ -12148,6 +12371,7 @@ detest	1 TK0E:E/T1:Eft
 detonate	1 TK1:Epbt/0A:AEUt
 detonate	1 TK1:Et/TPH0A:AEUt
 detonation	1 TK0E:Et/TPH1:AEUgs
+detonation	1' ^ TK0O:O/TPH1:AEUgs
 detonator	1 TK1:Epbt/0A:Art
 detour	1 TK0E:E/T1:OUr
 detour	2 TK1:AOErt
@@ -12178,6 +12402,7 @@ devastate	2 TK1:Ef/ST0A:AEUt
 devastate	3 TK1:*Ef/ST0A:AEUt
 devastating	1 TK1:Ef/ST0A:AEUgt
 devastation	1 TK0E:Ef/ST1:AEUgs
+devastation	1' ^ STKR0A:A/ST1:AEUgs
 devastation	2 TK0E:Efs/T1:AEUgs
 devastation	3 TK0E:*Ef/ST1:AEUgs
 devastation	4 TK0E:Efs/ST1:AEUgs
@@ -12196,6 +12421,7 @@ deviate	2 TK1:AO*Ef/0A:At
 deviate	3 TK1:AOEf/0A:AEUt
 deviate	4 TK1:AO*Ef/0A:AEUt
 deviates	1 TK1:AOEf/0A:AEUts
+deviation	1' ^ STKR0EU:AOE/1:AEUgs
 device	1 TK0E:E/SR1:AOEUs
 device	2 TK0E:AOE/SR1:AOEUs
 devices	1' ^ STKR1:AOEUs/0E:Es
@@ -12211,10 +12437,12 @@ devises	1' ^ STKR1:AOEUs/0E:Es
 devising	1' ^ STKR1:AOEUs/0EU:EUpbg
 devoid	1 TK0E:E/SR1:OEUd
 devoid	2 TK0E:AOE/SR1:OEUd
+devolution	1' ^ STKR0O:O/HR1:AOUgs
 devolve	1 TK0E:E/SR1:Ofl
 devote	1 TK0E:E/SR1:OEt
 devoted	1' ^ STKR1:OEt/0E:Ed
 devotee	1 TK0E:*Ef/T1:AOE
+devotee	1' ^ STKR0O:O/T1:AOE
 devoting	1' ^ STKR1:OEt/0EU:EUpbg
 devotion	1 TK0E:E/SR1:OEgs
 devour	1 TK0E:E/SR1:OUr
@@ -12232,7 +12460,11 @@ dextrose	1 TK1:*Ebgs/R0O:OEs
 dextrose	2 TK1:Ebgs/TR0O:OEs
 di	1 TK1:AOE
 di	2 TK1:AOEU
+diablo	1' ^ TK1:Abl/0O:O
+diablo	2' ^ TK1:Abl/0O:O
 diagnose	1 TK0EU:AOEUg/TPH1:OEs
+diagnose	1' ^ TK0A:A/TKPWH1:OEs
+diagnosed	1' ^ TK0O:O/TKPWH1:Eft
 diagnostic	1 TK1:Og/0EU:EUbg
 diagram	1 TK1:AOEU/TKPR0A:Apl
 diagram	2 TK1:AOEU/TKWR0A:Apl
@@ -12315,6 +12547,8 @@ dietary	4 TK1:AOEUt/R0EU:EU
 dietary	4 TK1:AOEUt/T0A:AEUr
 dieter	1 TK1:AOEUt/0E:*Er
 dieter	1 TK1:AOErt
+dietician	1' ^ TK0E:E/T1:EUgs
+dietitian	1' ^ TK0E:E/T1:EUgs
 diets	1 TK1:AOEU/0E:Ets
 diff	1 TK1:EUf
 differ	1 TK1:EUf/0E:Er
@@ -12393,8 +12627,10 @@ digressing	1' ^ TKPWR1:Es/0EU:EUpbg
 digression	1 TK0EU:AOEU/TKPWR1:Egs
 digs	1 TK1:EUgs
 dike	1 TK1:AOEUbg
+dilatation	1' ^ TKHR0A:A/T1:AEUgs
 dilate	1 TK0EU:EU/HR1:AEUt
 dilate	2 TK0EU:AOEU/HR1:AEUt
+dilated	1' ^ TKHR1:AEUt/0E:Ed
 dilation	1 TK0EU:AOEU/HR1:AEUgs
 dilation	1 TK0EU:EU/HR1:AEUgs
 dilatory	1 TK1:EUl/T0O:OEr
@@ -12443,6 +12679,7 @@ dimer	1 TK1:AOEUrpl
 dimer	1 TKP1:AOEUpl/0E:*Er
 diminish	1' ^ TKPH1:EUpb/0EU:EUrb
 diminishment	1' ^ TKPH1:EUpb/0EU:EUrpblt
+diminution	1' ^ TKPH0EU:EU/TPH1:AOUgs
 dimly	1 TK1:EUpl
 dimly	1 TK1:EUpl/HR0EU:EU
 dimmer	1 TK1:EUpl/0E:Er
@@ -12483,6 +12720,7 @@ diode	1 TK1:EU/0O:OEd
 diode	2 TK1:AOEU/0O:OEd
 dioxide	1' ^ TK1:Obgs/0EU:AOEUd
 dioxin	1 TK0EU:AOEU/1:Opbgs
+dioxin	1'' ^ TK1:Obgs/0EU:EUpb
 dip	1 TK1:EUp
 diploma	1 TKPHR1:OE/PH0A:A
 diploma	1' ^ TKPHR1:OEpl/0A:AU
@@ -12682,9 +12920,11 @@ discharges	1 STK KH1:Apblgs
 discharges	1 STK KH1:Arpblg/0E:Es
 discharges	2 STK KH0A:A/SKWR1:Es
 discharges	2 STK KH1:Arpblg/0E:Es
+discharges	2' STK SKWHR1:Es
 discharging	1 STK KH1:Arpblg/0EU:EUpbg
 discharging	2 STK KH0A:A/SKWR1:EUpbg
 discharging	2 STK KH1:Arpblg/0EU:EUpbg
+discharging	2' STK SKWHR1:EUpbg
 disciple	1 STK 1:AOEUpl
 disciple	1' STK 1:AOEUp/0E:El
 disciples	1' STK 1:AOEUp/0E:Elz
@@ -12707,6 +12947,7 @@ disclosure	1 STK KHR1:OErpblg
 disclosure	1' STK KHR1:OEpblg/0:Ur
 disco	1 STK K1:O
 disco	1 TK1:EUs/K0O:OE
+discoloration	1 STK HR0:O/R1:AEUgs
 discomfort	1 STK K1:O*frplt
 discomfort	1 STK K1:Ofrt
 discomfort	1' STK K1:O*fpl/0:Ort
@@ -12741,12 +12982,16 @@ discount	1 STK K1:OUpbt
 discount	2 STK K1:OUpbt
 discounted	1 STK K0O:OU/TPH1:Ed
 discounted	1 STK K1:OUpbt/0E:Ed
+discounted	1' STK TKPH1:Ed
 discounted	2 STK K0O:OU/TPH1:Ed
 discounted	2 STK K1:OUpb/0E:Ed
+discounted	2' STK TKPH1:Ed
 discounting	1 STK K0O:OU/TPH1:EUpbg
 discounting	1 STK K1:OUpbt/0EU:EUpbg
+discounting	1' STK TKPH1:EUpbg
 discounting	2 STK K0O:OU/TPH1:EUpbg
 discounting	2 STK K1:OUpb/0EU:EUpbg
+discounting	2' STK TKPH1:EUpbg
 discounts	1 STK K1:OUpbts
 discounts	1' STK K1:OUpbts
 discounts	2 STK K1:OUpbts
@@ -12782,6 +13027,7 @@ discretion	1 STK KR1:Egs
 discriminate	1 SKR1:EUpl/TPH0A:At
 discriminate	1 STK KR1:EUpbl/0A:AEUt
 discrimination	1 SKR0EU:EUpl/TPH1:AUgs
+discrimination	1' STK KPHR0EU:EU/TPH1:AEUgs
 discrimination	2 SKR0EU:EUpl/TPH1:AEUgs
 discriminatory	1 SKR1:EUpl/T0O:OEr
 discs	1 TK1:EUfbgs
@@ -12856,6 +13102,8 @@ disinfect	1' STK 0EU:EU/TPH1:Ebgt
 disinfectant	1' STK 0EU:EU/TPH1:Epbgt
 disinfectant	1' STK TP1:Ebgt/0A:Apbt
 disinfectant	1'' STK 0EU:EU/TPH1:Epbgt
+disintegration	1 STK T0E:E/TKPWR1:AEUgs
+disintegration	2 STK TPH0E:E/TKPWR1:AEUgs
 disjointed	1 STK SKWR1:OEUpbt/0E:Ed
 disk	1 TK1:EUfbg
 diskette	1 STK K1:Et
@@ -12943,6 +13191,7 @@ dispatcher	1 STKP1:Afp/0E:*Er
 dispatcher	1' STK P1:Afp/0:Er
 dispatcher	2 STK P0A:A/KH1:Er
 dispatcher	2 STK P1:Afp/0:Er
+dispatcher	2' STK KPH1:Er
 dispatchers	1' STK P1:Afp/0:Ers
 dispatches	1 STK P1:Afp/0E:Es
 dispatching	1 STK P1:Afp/0EU:EUpbg
@@ -13272,6 +13521,7 @@ divider	1 TKW1:AOEUd/0E:Er
 divider	1'' ^ STKR1:AOEUd/0:Er
 dividing	1' ^ STKR1:AOEUd/0EU:EUpbg
 divination	1 TKW0EU:EUpb/1:AEUgs
+divination	1' ^ STKR0EU:EU/TPH1:AEUgs
 divine	1 TK0EU:EU/SR1:AOEUpb
 diving	1 TK1:AOEUf/0EU:EUpbg
 division	1 TK0EU:EU/SR1:EUgs
@@ -13331,6 +13581,8 @@ doctorate	2 TK1:Obgt/R0A:At
 doctoring	1 TK1:Orbgt/0EU:EUpbg
 doctoring	1' TK1:Orbg/0EU:EUpbg
 doctors	1' TK1:Obgt/0:Ors
+doctrinaire	1' ^ TKR0EU:EU/TPH1:A*EUr
+doctrinaire	1'' ^ TKR0EU:EU/TPH1:A*EUr
 doctrine	1 TK1:Obg/TR0EU:EUpb
 doctrine	1 TK1:Orpbgt
 doctrine	1' TK1:Orpbg
@@ -13426,7 +13678,9 @@ dominant	4 TKP1:Opl/TPH0A:Apbt
 dominate	1 TK1:Opbl/0A:AEUt
 dominate	1 TK1:Opl/TPH0A:AEUt
 domination	1 TK0O:Opl/TPH1:AEUgs
+domination	1' ^ TKPH0EU:EU/TPH1:AEUgs
 domineer	1 TK0O:Opl/TPH1:AOEr
+domineer	1' ^ TKPH0EU:EU/TPH1:AOEr
 domineering	1 TK0O:Opl/TPH1:AOErg
 dominion	1 TKPH1:EUpb/KWR0O:Opb
 domino	1 TK1:Opbl/0O:O
@@ -13520,6 +13774,7 @@ doses	2 TK1:OEs/0E:Es
 dosing	1 TK1:OEs/0EU:EUpbg
 dossier	1 TK0O:Os/KWR1:Er
 dossier	2 TK0O:Os/KWR1:AOE
+dossier	2' ^ STK0EU:AOE/1:E
 dot	1 TK1:Ot
 dote	1 TK1:OEt
 doth	1 TK1:O*t
@@ -13589,6 +13844,8 @@ downtown	1 TK1:OUpb/T0O:OUpb
 downtown	2 1:OUpb/T0O:OUpb
 downtrodden	1 TK0O:OU/TPHR1:Opbd
 downtrodden	1' TK0O:OU/TPHR1:Opbd
+downtrodden	1'' ^ TKPHR1:Od/0E:Epb
+downtrodden	1''' ^ TKPHR1:Od/0E:Epb
 downturn	1 TK1:OUpb/T0U:Urpb
 downward	1 TK1:OUpb/W0A:Ard
 downwards	1 TK1:OUpb/W0A:Ardz
@@ -13957,6 +14214,7 @@ duplicate	4 TK1:AOUp/K0A:AEUt
 duplicate	4 TK1:AOUpl/K0A:AEUt
 duplicate	4 TK1:Upl/K0A:AEUt
 duplication	1 TK0U:Up/K1:AEUgs
+duplication	1' ^ TKPWHR0EU:EU/K1:AEUgs
 duplicity	1 TK0U:AOU/PHR1:EUgt
 duquesne	1 TK0U:U/K1:Epb
 dura	1 TK1:U/R0A:A
@@ -14176,6 +14434,8 @@ ebony	1 1:Epb/0EU:EU
 ebony	2 1:Eb/TPH0EU:*EU
 eccentric	1 ^ SK1:Erpbt/0EU:*EUbg
 eccentric	1' ^ SK1:Erpb/0EU:*EUbg
+eccentric	2 ^ SK1:Erpbt/0EU:*EUbg
+eccentric	2' ^ SK1:Erpb/0EU:*EUbg
 echelon	1 1:Efp/HR0O:Opb
 echelon	1 1:Erbl/0O:Opb
 echelon	2 1:Erb/HR0O:Opb
@@ -14251,7 +14511,9 @@ edits	1 1:Ed/0EU:EUts
 educate	1 1:Ed/K0A:AEUt
 educate	2 1:Epblg/K0A:AEUt
 education	1 0E:Ed/K1:AEUg
+education	1 ^ SKWR0U:U/K1:AEUgs
 education	2 0E:Ed/K1:AEUgs
+education	2 ^ SKWR0U:U/K1:AEUgs
 education	3 0E:Epblg/K1:AEUgs
 eel	1 1:AOEl
 eels	1 1:AOEls
@@ -14439,11 +14701,15 @@ electrocute	1 HR1:Ebg/K0U:AOUt
 electrocute	2 HR1:Ebgt/K0U:AOUt
 electrocution	1 HR0E:Ebg/K1:AOUgs
 electrocution	2 HR0E:Ebgt/K1:AOUgs
+electrode	1 ^ HR1:Erbgt/0O:OEd
+electrode	1' ^ HR1:Erbg/0O:OEd
 electrolyte	1 HR0E:Erbg/HR1:AOEUt
 electrolyte	2 HR0E:Erbgt/HR1:AOEUt
-electron	1 0E:E/HR1:Erpbgt
 electron	1 HR1:Ebg/TR0O:Opb
-electron	1' 0E:E/HR1:Erpbg
+electron	1' 0E:E/HR1:Erpbgt
+electron	1' ^ HR1:Erbgt/0O:Opb
+electron	1'' 0E:E/HR1:Erpbg
+electron	1'' ^ HR1:Erbg/0O:Opb
 electron	2 HR1:Ebg/TR0O:O*pb
 electronic	1 HR0E:Ebg/T1:Opbg
 electronic	2 HR0E:Ebg/T1:O*pbg
@@ -14451,10 +14717,14 @@ electronic	3 HR0E:Ebg/TR1:Opbg
 electronic	4 HR0E:Ebg/TR1:O*pbg
 electronic	4 R0E:Ebg/TKR1:O*pbg
 electronics	1 HR0E:Ebg/TR1:Opbgs
-electrons	1 0E:E/HR1:Erpbgt
 electrons	1 HR1:Ebg/TR0O:Opbs
-electrons	1' 0E:E/HR1:Erpbg
+electrons	1' 0E:E/HR1:Erpbgt
+electrons	1' ^ HR1:Erbgt/0O:Opbs
+electrons	1'' 0E:E/HR1:Erpbg
+electrons	1'' ^ HR1:Erbg/0O:Opbs
 elects	1 0E:AOE/HR1:Ebgts
+elects	1' ^ HR1:Ebgts
+elects	1'' ^ HR1:Ebgts
 elegance	1 1:El/0E:Epbgs
 elegance	1 1:El/TKPW0A:Apbs
 elegant	1 1:El/0E:Epbgt
@@ -14474,6 +14744,7 @@ elevate	2 1:El/STR0A:AEUt
 elevated	1 1:El/SR0A:AEUtd
 elevating	1 1:El/SR0A:AEUgt
 elevation	1 0E:El/SR1:AEUgs
+elevation	1 ^ HR0E:E/SR1:AEUgs
 eleven	1' 0E:E/HR1:Efpb
 eleven	1' ^ HR1:Ef/0E:Epb
 eleven	2 1:AOEl/0E:Efpb
@@ -14507,6 +14778,7 @@ ells	1 1:Els
 elm	1 1:Epl
 elms	1 1:Epls
 elocution	1 0E:El/K1:AOUgs
+elocution	1 ^ HR0O:O/K1:AOUgs
 elocution	2 0E:El/KW1:AOUgs
 elongate	1 ^ HR1:Opbg/0A:AEUt
 elope	1 0E:AOE/HR1:OEp
@@ -14528,6 +14800,7 @@ emails	1' ^ PH1:A*EUls
 emanate	1 1:Epbl/0A:AEUt
 emanate	1 1:Epl/TPH0A:AEUt
 emanation	1 0E:Epl/TPH1:AEUgs
+emanation	1 ^ PH0A:A/TPH1:AEUgs
 embalm	1 KPW 1:AUpl
 embalm	1 KPW W1:AUpl
 embankment	1 KPW 1:A*pblgt
@@ -14644,6 +14917,7 @@ emigrant	1 1:Epl/TKPWR0A:Apbt
 emigrate	1 1:Epl/TKPWR0A:AEUt
 emigrated	1 1:Epl/TKPWR0A:AEUtd
 emigration	1 0E:Epl/TKPWR1:AEUgs
+emigration	1 ^ PH0EU:EU/TKPWR1:AEUgs
 emigre	1 1:Epl/TKPWR0E:E
 eminence	1 1:Epl/TPH0E:Epbs
 eminent	1 1:Epl/TPH0E:Epbt
@@ -14781,6 +15055,7 @@ emptying	1 KPW T1:EU/0EU:EUpbg
 emptying	1' KPW T1:EUpbg
 emu	1 1:AOE/PH0U:AOU
 emulate	1 1:Epl/HR0A:AEUt
+emulation	1 ^ KWR0U:U/HR1:AEUgs
 emulsion	1 0E:AOE/PH1:Ulgs
 emulsion	1 0E:E/PH1:Ulgs
 emulsion	1' ^ PH1:Ulgs
@@ -14809,6 +15084,8 @@ enactment	2 0E:E/TPH1:Apblgt
 enactment	2' ^ TPH1:Apblgt
 enacts	1 0E:E/TPH1:Abgts
 enacts	1' 0E:E/TPH1:Abgts
+enacts	1' ^ TPH1:Abgts
+enacts	1'' ^ TPH1:Abgts
 enamel	1 TPH1:Apl/0E:El
 enamel	1' 0E:E/TPH1:Apl
 enamel	1' ^ TPH1:Apl/0E:El
@@ -14987,32 +15264,46 @@ enhances	1 ^ H1:Apbs/0E:Es
 enhancing	1 ^ H1:Apbs/0EU:EUpbg
 enigma	1 ^ TPH1:EUplg/0A:A
 enjoin	1 0E:Epb/SKWR1:OEUpb
+enjoin	1' ^ SKWR1:OEUpb
 enjoin	2' ^ SKWR1:OEUpb
 enjoining	1 0E:Epb/SKWR1:OEUpbg
+enjoining	1 ^ SKWR1:OEUpb/0EU:EUpbg
 enjoy	1 0E:Epb/SKWR1:OEU
+enjoy	1' ^ SKWR1:OEU
 enjoy	2' ^ SKWR1:OEU
 enjoyable	1 0E:Epb/SKWR1:OEUbl
+enjoyably	1 ^ SKWR1:O/0EU:EUbl
 enjoyed	1 0E:Epb/SKWR1:OEUd
+enjoyed	1' ^ SKWR1:OEUd
 enjoyed	2' ^ SKWR1:OEUd
 enjoying	1 0E:Epb/SKWR1:OEUg
+enjoying	1 ^ SKWR1:O/0EU:EUpbg
 enjoying	2 ^ SKWR1:O/0EU:EUpbg
 enjoyment	1 0E:E/STKPWHR1:OEUplt
 enjoyment	1 0E:Epb/SKWR1:OEUplt
+enjoyment	1' ^ SKWR1:OEUplt
 enjoyment	2 0E:E/STKPWHR1:OEUplt
 enjoyment	2' ^ SKWR1:OEUplt
 enjoys	1 0E:Epb/SKWR1:OEUs
+enjoys	1' ^ SKWR1:OEUs
 enjoys	2' ^ SKWR1:OEUs
 enlarge	1 0E:Epb/HR1:Arpblg
+enlarge	1' ^ HR1:Arpblg
 enlarge	2' ^ HR1:Arpblg
 enlarges	1 0E:Epb/HR1:Arpblgs
 enlarges	1 ^ HR1:Arpblg/0E:Es
 enlarging	1 ^ HR1:Arpblg/0EU:EUpbg
-enlighten	1 0E:E/TPHR1:AO*EUpbt
-enlightenment	1 0E:E/TPHR1:AO*EUpblt
+enlighten	1' 0E:E/TPHR1:AO*EUpbt
+enlighten	1' ^ HR1:AO*EUt/0E:Epb
 enlightenment	1 0E:Epb/HR1:AOEUplt
-enlightens	1 0E:E/TPHR1:AO*EUpbtz
+enlightenment	1' 0E:E/TPHR1:AO*EUpblt
+enlightenment	1' ^ HR1:AO*EUt/0E:Epblt
+enlightens	1' 0E:E/TPHR1:AO*EUpbtz
+enlightens	1' ^ HR1:AO*EUt/0E:Epbs
 enlist	1 0E:Epb/HR1:*EUs
+enlist	1' ^ HR1:EUft
 enlist	2 0E:Epb/HR1:EUft
+enlisted	1 ^ HR1:EUft/0E:Ed
 enlisted	2 ^ HR1:EUft/0E:Ed
 enlistee	1 ^ HR0EU:EU/ST1:AOE
 enlisting	1 ^ HR1:EUft/0EU:EUpbg
@@ -15139,6 +15430,7 @@ entertain	1 0E:Epbt/T1:AEUpb
 entertain	1 SPW TR1:A*EUpb
 entertain	1' SPW 0:E/TR1:A*EUpb
 entertain	2 SPW0E:Er/T1:AEUpb
+entertain	2 ^ TPH0:E/TR1:A*EUpb
 entertainer	1 0E:Epbt/T1:AEUrpb
 entertainer	1' SPW 0:E/TR1:A*EUrpb
 entertainer	1' SPW TR1:A*EUpb/0:Er
@@ -15150,9 +15442,11 @@ entertaining	2 SPW T1:AEUpbg
 entertainment	1 0E:Epbt/T1:AEUplt
 entertainment	1 SPW TR1:A*EUpblt
 entertainment	1' SPW 0:E/TR1:A*EUpblt
+entertainment	2 ^ TPH0:E/TR1:A*EUpblt
 entertains	1 0E:Epbt/T1:AEUpbs
 entertains	1 SPW TR1:A*EUpbs
 entertains	1' SPW 0:E/TR1:A*EUpbs
+entertains	2 ^ TPH0:E/TR1:A*EUpbs
 enthral	1' ^ THR1:AUl
 enthuse	1 0E:E/TPH1:AOUs
 enthuse	1' ^ TH1:AOUs
@@ -15408,16 +15702,32 @@ ersatz	1 1:Er/S0A:Atz
 erstwhile	1 1:*Ers/WH0EU:AOEUl
 erudite	1 1:Er/TK0EU:AOEUt
 erudition	1 0E:Er/TK1:EUgs
+erudition	1 ^ R0U:U/TK1:EUgs
 erupt	1 0E:AOE/R1:Upt
 erupt	1' ^ R1:Upt
+erupted	1 ^ R1:Upt/0E:Ed
+erupted	2 ^ R1:Upt/0E:Ed
+erupting	1 ^ R1:Upt/0EU:EUpbg
+erupting	2 ^ R1:Upt/0EU:EUpbg
 eruption	1 0E:AOE/R1:Upgs
 eruption	1 0E:E/R1:Upgs
+eruption	1' ^ R1:Upgs
 eruption	2 0E:AOE/R1:Uplgs
 eruption	2 0E:E/R1:Upgs
+eruption	2' ^ R1:Upgs
+eruptions	1' ^ R1:Urpb/0EU:EUpbs
+eruptions	2' ^ R1:Urpb/0EU:EUpbs
+eruptive	1 ^ R1:Upt/0EU:EUf
+eruptive	2 ^ R1:Upt/0EU:EUf
 erupts	1 0E:AOE/R1:Upts
+erupts	1' ^ R1:Upts
+erupts	1'' ^ R1:Upts
+erupts	2' ^ R1:Upts
+erupts	2'' ^ R1:Upts
 escalate	1 1:Efblg/0A:AEUt
 escalate	1 1:Es/KHR0A:AEUt
 escalation	1 0E:Es/KHR1:AEUgs
+escalation	1 ^ SK0A:A/HR1:AEUgs
 escalator	1 1:Efblg/0A:Art
 escape	1 0E:Es/K1:AEUp
 escape	1' ^ SK1:AEUp
@@ -15426,6 +15736,7 @@ escape	3 0E:AOE/SK1:AEUp
 escapee	1 ^ SK0A:A/P1:AOE
 escaping	1 0E:Es/K1:AEUpg
 escaping	1 ^ SK1:AEUp/0EU:EUpbg
+escargot	1 ^ SK1:Arg/0O:O
 escarpment	1 0E:E/SK1:Arplt
 escarpment	1' ^ SK1:Arplt
 eschew	1 0E:Es/KH1:AOU
@@ -15447,12 +15758,15 @@ especial	1' 0E:E/SP1:Erbl
 especial	1' ^ SP1:Erb/0EU:EUl
 especially	2' 0E:E/SP1:Erbl
 especially	2' ^ SP1:Erb/0EU:EUl
+esplanade	1 ^ SPHR0A:A/TPH1:AUd
 espouse	1 0E:Es/P1:OUs
 espouse	1' ^ SP1:OUs
 espouse	2 0E:Es/P1:OUz
 espouse	2' ^ SP1:OUs
 espouse	3 0E:AOE/SP1:OUs
 espouse	4 0E:AOE/SP1:OUz
+espresso	1 ^ SPR1:Es/0O:O
+espresso	2 ^ SKPR1:Es/0O:O
 esprit	1 0E:Es/PR1:AOE
 esprit	1' ^ SPR1:AOE
 espy	1 1:Es/P0EU:AOEU
@@ -15499,6 +15813,7 @@ estimate	1' 1:Epls/0A:At
 estimate	2 1:Efplt/0A:AEUt
 estimate	2' 1:Epls/0A:AEUt
 estimation	1 0E:Eft/PH1:AEUgs
+estimation	1 ^ ST0EU:EU/PH1:AEUgs
 estimation	2 ST0EU:EUpl/1:AEUgs
 estimation	3 ST0EU:EUplt/1:AEUgs
 estimator	1 ST1:EUplt/0O:O*r
@@ -15654,6 +15969,7 @@ evils	1' 1:AOEf/0EU:EUls
 evince	1 0E:AOE/SR1:EUpbs
 evince	1' ^ SR1:EUpbs
 evocation	1 0E:Ef/K1:AEUgs
+evocation	1 ^ SR0O:O/K1:AEUgs
 evoke	1 0E:AOE/S1:OEbg
 evoke	1' ^ SR1:OEbg
 evoke	2 0E:AOE/SR1:OEbg
@@ -15661,8 +15977,12 @@ evoke	2' ^ SR1:OEbg
 evoking	1 ^ SR1:OEbg/0EU:EUpbg
 evoking	2 ^ SR1:OEbg/0EU:EUpbg
 evolution	1 0E:Efl/1:AOUgs
+evolution	1 ^ SR0O:O/HR1:AOUgs
 evolution	2 0E:Ef/HR1:AOUgs
+evolution	2 ^ SR0O:O/HR1:AOUgs
 evolution	3 0E:*Ef/HR1:AOUgs
+evolution	3 ^ SR0O:O/HR1:AOUgs
+evolution	4 ^ SR0O:O/HR1:AOUgs
 evolve	1 0E:AOE/SR1:Of
 evolve	1' ^ SR1:Ofl
 evolve	2 0E:AOE/SR1:Ofl
@@ -15672,6 +15992,7 @@ evolving	2 ^ SR1:Ofl/0EU:EUpbg
 ewe	1 KWR1:AOU
 ex	1 1:Ebgs
 exacerbate	1 KP 1:Arbs/0A:AEUt
+exacerbation	1 KP S0:E/PWR1:AEUgs
 exacerbation	1 KP1:As/0E:Erbgs
 exact	1 KP 1:Abgt
 exacted	1 KP 1:Abgd
@@ -15685,11 +16006,13 @@ exactly	2 S1:Abgt/SR0EU:EU
 exactly	3 S1:A*bgt/HR0EU:EU
 exactly	4 SK1:Abgt/HR0EU:EU
 exaggerate	1 KP 1:Arpblg/0A:AEUt
+exaggeration	1 KP SKWR0:E/R1:AEUgs
 exalt	1 KP 1:AUlt
 exalt	1 KP 1:Alt
 exalt	2 KP 1:AUlt
 exalted	1 KP 1:AUlt/0E:Ed
 exam	1 KP 1:Apl
+examination	1 KP PH0EU:EU/TPH1:AEUgs
 examine	1 KP 1:Apbl
 examine	1 KP1:Apl/PH0EU:EUpb
 examine	1' KP 1:Apl/0EU:EUpb
@@ -15700,6 +16023,7 @@ example	1' KP 1:Afrp/0E:El
 examples	1' KP 1:Afrp/0E:Elz
 exams	1 KP 1:Apls
 exasperate	1 KP 1:Afrp/0A:AEUt
+exasperation	1 KP SP0:E/R1:AEUgs
 excavate	1 KP K0A:A/SR1:AEUt
 excavate	1 KP K1:Af/0A:AEUt
 excavate	1' KP SKR1:AEUt
@@ -15786,6 +16110,7 @@ exchanges	2 KP KH1:Apbg/0E:Es
 exchanging	1 KP KH1:Apbg/0EU:EUpbg
 exchequer	1 KP KH0E:E/K1:Er
 exchequer	1 KP KH1:Ebg/0:Er
+exchequer	1' KP KH1:Er
 excise	1 KP 1:AOEUs
 excise	2 KP 1:AOEUs
 excise	2 KP 1:AOEUz
@@ -15905,6 +16230,7 @@ exerts	1 0E:Erbgs/P1:Erts
 exerts	1 KP 1:Erts
 exerts	1' KP 1:Ers
 exes	1 KP 1:Es
+exfoliation	1' KP TPHR0EU:AOE/1:AEUgs
 exhalation	1 KP H0A:A/HR1:AEUgs
 exhalation	1 KP HR1:AEUgs
 exhalation	1' KP HR1:AEUgs
@@ -15957,6 +16283,7 @@ exhortation	2 KPH0O:Or/T1:AEUgs
 exhortation	3 KP0O:Ort/T1:AEUgs
 exhortation	4 KPH0O:Ort/T1:AEUgs
 exhumation	1 KP H0U:U/PH1:AEUgs
+exhumation	1' KP KPWHR1:AEUgs
 exhume	1 KP 1:AOUpl
 exhume	1 KP H1:AOUpl
 exhume	2 KP H1:AOUpl
@@ -15992,6 +16319,7 @@ existent	1' KP 1:EUft/0E:Epbt
 existent	1' KP 1:EUpbts
 existent	2 KP1:EUft/0E:Epbt
 existent	3 KP1:EUs/T0E:Epbt
+existential	1' KP ST1:Erpb/0EU:EUl
 existing	1 KP 1:EUfg
 existing	1 KP 1:EUft/0EU:EUpbg
 exists	1 KP 1:EUfts
@@ -16044,6 +16372,8 @@ expansions	2 KP P1:Afrpbz
 expansions	2' KP P1:Afrpb/0EU:EUpbs
 expansive	1 KP P1:Apbs/0EU:EUf
 expansive	1 SP1:Apbs/0EU:EUf
+expatriation	1' KP TPR0EU:AOE/1:AEUgs
+expatriation	1'' KP PR0EU:AOE/1:AEUgs
 expect	1 KP P1:Ebgt
 expectancy	1 KP P1:Epbgts/0EU:EU
 expectancy	1' KP P1:Epbgs/0EU:EU
@@ -16157,11 +16487,14 @@ exploit	1 KP PHR1:OEUt
 exploit	2 1:Ebgs/PWHR0O:OEUt
 exploit	2 KP PHR1:OEUt
 exploitation	1 KP PHR0O:OEU/T1:AEUgs
+exploitation	1' KP TPHR1:AEUgs
 exploited	1 KP PHR0O:OEU/T1:Ed
 exploited	1 KP PHR1:OEUt/0E:Ed
+exploited	1' KP TPHR1:Ed
 exploited	2 KP PHR1:OEUt/0E:Ed
 exploiting	1 KP PHR0O:OEU/T1:EUpbg
 exploiting	1 KP PHR1:OEUt/0EU:EUpbg
+exploiting	1' KP TPHR1:EUpbg
 exploiting	2 KP PHR1:OEUt/0EU:EUpbg
 exploits	1 1:Ebgs/PHR0O:OEUts
 exploits	1 KP PHR1:OEUts
@@ -16196,6 +16529,7 @@ expo	2 1:Ebgs/P0O:OE
 exponent	1 1:Ebgs/P0O:OEpbt
 exponent	1 KP P0O:O/TPH1:Epbt
 exponent	1 KP P1:Opb/0E:Epbt
+exponent	1' KP TPH1:Epbt
 exponential	1'' KP TPH1:Erpb/0EU:EUl
 exponentially	1'' KP TPH1:Erpb/0EU:EUl
 export	1 1:Ebgs/P0O:Ort
@@ -16234,11 +16568,13 @@ expression	1 KP PR1:Egs
 expressionist	1 KP PR1:Erpb/0EU:EUft
 expressionless	1 KP PR0E:E/SH1:EUpbls
 expressionless	1 KP PR1:Erb/0EU:EUpbls
+expressionless	1' KP SPHR1:EUpbls
 expressions	1 KP PR1:Erpbz
 expressions	1' KP PR1:Erb/0EU:EUpbs
 expressive	1 KP PR1:Es/0EU:EUf
 expressly	1 KP PR1:Els
 expressway	1 KP PR1:Es/0A:AEU
+expropriation	1' KP PR0EU:AOE/1:AEUgs
 expulsion	1 KP P1:Ulgs
 expunge	1 KP P1:Upbg
 exquisite	1 1:Ebgs/KW0EU:EUft
@@ -16263,6 +16599,7 @@ extent	2 KP ST1:Epbt
 extent	3 KP T1:Epblt
 exterior	1 1:Ebgs/0O:Or
 exterminate	1 KP T1:Erpbl/0A:AEUt
+extermination	1' KP TPHR0EU:EU/TPH1:AEUgs
 exterminator	1 KP T1:Erpbl/0A:Art
 external	1 KP T1:Erpbl
 external	1' KP T1:Erpb/0A:Al
@@ -16318,6 +16655,7 @@ extralegal	1'' KP THR1:AOEg/0A:Al
 extraordinary	1 KP TR1:AOrd
 extraordinary	2 KP TR1:OErd
 extrapolate	1 KP TR1:Apl/0A:AEUt
+extrapolation	1' KP TPR0O:O/HR1:AEUgs
 extras	1 1:Ebgs/TR0A:As
 extras	1 KP TR1:As
 extravagance	1 KP TR1:Af/0A:Apbgs
@@ -16387,6 +16725,7 @@ fabric	2 TP1:A/PWR0EU:EUbg
 fabricate	1 TP1:Ab/K0A:AEUt
 fabricate	2 TP1:Arb/K0A:AEUt
 fabrication	1 TP1:Ab/R0EU:EUbgs
+fabrication	1' ^ TPWR0EU:EU/K1:AEUgs
 fabrics	1 TP1:Arb/0EU:*EUbgs
 fabry	1 TP1:Ab/R0EU:EU
 fabulous	1 TP1:Ab/HR0U:Us
@@ -16638,6 +16977,7 @@ farmyard	1 TP1:Arpl/KWR0A:Ard
 farmyard	2 TP1:Arpl/KWR0A:A*rd
 farsighted	1 TP1:Ar/S0EU:AOEUtd
 farsighted	2 TP1:Ar/S0EU:AOEUgtd
+farsightedness	1' ^ STPR1:AO*EUt/0E:Epbsd
 fart	1 TP1:Art
 farther	1 TP1:A*rt/0E:*Er
 farthest	1 TP1:A*rt/0E:*Es
@@ -16650,6 +16990,7 @@ fascinating	1 TP1:As/TPH0A:AEUg
 fascinating	2 TP1:As/TPH0A:AEUgt
 fascinating	3 TPH1:As/TPH0A:AEUg
 fascinating	4 TP1:AEUs/TPH0A:AEUg
+fascination	1' ^ STP0EU:EU/TPH1:AEUgs
 fascist	1 TP1:Arb/0EU:*EUs
 fascist	2 TP1:Arb/0EU:EUft
 fascist	3 TP1:Arb/0EU:EUfpt
@@ -16814,6 +17155,7 @@ federally	1 TP1:Erld
 federate	1 TP1:Ed/R0A:AEUt
 federate	1 TP1:Erd/0A:AEUt
 federation	1 TP0E:Ed/R1:AEUgs
+federation	1' ^ TKP0:E/R1:AEUgs
 fedora	1' ^ TKP1:Or/0A:A
 feds	1 TP1:Edz
 fee	1 TP1:AOE
@@ -16911,6 +17253,7 @@ ference	1' TP1:Er/0E:Epbs
 ferment	1 TP0E:Er/PH1:Epbt
 ferment	2 TP1:Erplt
 fermentation	1 TP0E:Erpl/T1:AEUgs
+fermentation	1' ^ TPHR0E:E/TPH1:AEUgs
 fermentation	2 TP0E:Erplt/T1:AEUgs
 fermented	1' ^ TPHR1:Epbt/0E:Ed
 ferments	1 TP0:E/PHR1:Epbts
@@ -17022,6 +17365,7 @@ few	1 TP1:AOU
 fewest	1 TP1:E/0E:Eft
 fez	1 TP1:Ez
 fiance	1' ^ TP1:AUpbs/0E:E
+fiance	2' ^ TP0A:AU/STPH1:E
 fiancee	1' ^ TP1:Apbs/0E:AOE
 fiasco	1' ^ TP1:Afbg/0O:O
 fiat	1 TP1:EU/0A:At
@@ -17044,6 +17388,7 @@ fibre	1 TP1:AOEUrb
 fibre	1' TP1:AOEUb/0:Er
 fibres	1' TP1:AOEUb/0:Erz
 fibrillation	1 TP0EU:EUb/R1:AEUgs
+fibrillation	1' ^ TPWR0EU:EU/HR1:AEUgs
 fibrillation	2 TP0EU:EUrb/HR1:AEUgs
 fibrin	1 TP1:AOEUb/R0EU:EUpb
 fibrin	1 TP1:AOEUrpb
@@ -17117,9 +17462,11 @@ fights	1 TP1:AO*EUts
 figment	1 TP1:EUplgt
 figs	1 TP1:EUgs
 figuration	1 TP0EU:EUg/R1:AEUgs
+figuration	1' ^ TKPW0:U/R1:AEUgs
 figure	1 TP1:EUg/KWR0U:Ur
 figure	2 TP1:EUg/KWR0U:AOUr
 figurine	1 TP0EU:EUg/R1:AOEpb
+figurine	1' ^ TKPW0:U/R1:AOEpb
 figuring	1 TP1:EUg/KWR0U:Urg
 filament	1 TP1:EUl/0A:Aplt
 filament	1 TP1:EUl/HR0A:Aplt
@@ -17197,10 +17544,15 @@ finance	2 TP0EU:AOEU/TPH1:Apbs
 finances	1' ^ TPH1:Apbs/0E:Es
 financial	1'' ^ TPH1:Arpb/0EU:EUl
 financial	2'' ^ TPH1:Arpb/0EU:EUl
+financial	3'' ^ TPH1:Arpb/0EU:EUl
 financially	1'' ^ TPH1:Arpb/0EU:EUl
 financially	2'' ^ TPH1:Arpb/0EU:EUl
+financially	3'' ^ TPH1:Arpb/0EU:EUl
+financials	1'' ^ TPH1:Arpb/0EU:EUls
 financials	2'' ^ TPH1:Arpb/0EU:EUls
 financials	3'' ^ TPH1:Arpb/0EU:EUls
+financier	1' ^ TPH0A:A/STPH1:AOEr
+financier	2' ^ TPH0A:A/STPH1:AOEr
 financing	1 TP0EU:EU/TPH1:Apbgs
 financing	1' ^ TPH1:Apbs/0EU:EUpbg
 financing	2' ^ TPH1:Apbs/0EU:EUpbg
@@ -17680,9 +18032,14 @@ fluoresce	1 TPHR0O:Or/1:Es
 fluoresce	2 TPHR0O:O*r/1:Es
 fluoresce	3 TPHR0U:AOUr/1:Es
 fluorescence	1 TPHR0U:U/R1:Epbs
+fluorescence	1'' ^ TPHR1:Es/0E:Epbs
 fluorescent	1 TPHR0U:U/R1:Epbts
+fluorescent	1'' ^ TPHR1:Es/0E:Epbt
 fluorescent	2 TPHR0U:U/R1:Epbts
+fluorescent	2'' ^ TPHR1:Es/0E:Epbt
 fluoridation	1 TPHR0O:Or/TK1:AEUgs
+fluoridation	1' ^ TPHR0EU:EU/TK1:AEUgs
+fluoridation	2' ^ TPHR0EU:EU/TK1:AEUgs
 fluoride	1 TPHR1:Or/0EU:AOEUd
 fluoride	2 TPHR1:OE/R0EU:AOEUd
 fluoride	3 TPHR1:OEr/0EU:AOEUd
@@ -17772,6 +18129,7 @@ foliage	4 TP1:OEUl/0A:Apblg
 foliate	1 TP1:OEl/0A:At
 foliate	2 TP1:OEl/0A:AEUt
 foliation	1 TP0O:OEl/HR1:AEUgs
+foliation	1' ^ TPHR0EU:AOE/1:AEUgs
 foliation	2 TP0O:OEl/1:AEUgs
 folic	1 TP1:Ol/0EU:EUbg
 folic	2 TP1:OEl/0EU:EUbg
@@ -17910,7 +18268,9 @@ foreigner	4 TP1:OErpb/0E:*Er
 foreigners	1 TP1:Orpb/0E:Ers
 foreigners	2 TP1:Or/TPH0E:Ers
 forensic	1' ^ TPR1:Epbs/0EU:*EUbg
+forensic	2' ^ TPR1:Epbs/0EU:*EUbg
 forensics	1' ^ TPR1:Epbs/0EU:*EUbgs
+forensics	2' ^ TPR1:Epbs/0EU:*EUbgs
 forest	1 TP1:Or/0E:*Es
 forest	2 TP1:Or/0E:Eft
 forester	1 TP1:Or/0E:Efrt
@@ -18002,7 +18362,9 @@ formulate	2 PH1:Orpl/HR0A:AEUt
 formulate	3 TP1:Orpl/HR0A:AEUt
 formulated	1 TP1:Orpl/HR0A:AEUtd
 formulation	1 TP0O:Orpl/HR1:AEUgs
+formulation	1' ^ TPHR0U:U/HR1:AEUgs
 formulation	2 TPH0O:Orpl/HR1:AEUgs
+formulation	2' ^ TPHR0U:U/HR1:AEUgs
 forsake	1 TP0O:O/SR1:AEUbg
 forsaken	1 TP0O:O/SR1:AEUpbg
 forsaken	1 TP0O:OEr/S1:A*EUpb
@@ -18140,6 +18502,7 @@ fragile	4 TPR1:Apblg/0EU:AOEUl
 fragility	1 TPR0A:A/SKWR1:EUlt
 fragility	2 TPR0A:Apblg/1:EUlt
 fragment	1 TPR1:Aplgt
+fragmentation	1' ^ TKPWHR0E:E/TPH1:AEUgs
 fragments	1' TPR1:Aplg/0E:Epbts
 fragments	1'' TPR1:Aplg/0E:Epbts
 fragrance	1 TPR1:AEUg/R0A:Apbs
@@ -18481,6 +18844,7 @@ fumbles	1' TP1:Upbl/0E:Elz
 fumbling	1 TP1:Upl/PWHR0EU:EUpbg
 fume	1 TP1:AOUpl
 fumigate	1 TP1:AOUpl/TKPW0A:AEUt
+fumigation	1' ^ TKPWHR0EU:EU/TKPW1:AEUgs
 fun	1 TP1:Upb
 function	1 TP1:*Upbgs
 functional	1 TP1:Upbgs/0A:Al
@@ -18850,6 +19214,8 @@ gastritis	1' ^ STKPWR1:AOEUt/0EU:EUs
 gastritis	1'' ^ STKPWR1:AOEUt/0EU:EUs
 gastro	1 TKPW1:As/TR0O:OE
 gastrointestinal	1 TKPW0A:Afrt/T1:Epbl
+gastrulation	1' ^ STKPWR0U:U/HR1:AEUgs
+gastrulation	1'' ^ STKPWR0U:U/HR1:AEUgs
 gat	1 TKPW1:At
 gate	1 TKPW1:AEUt
 gated	1 TKPW1:AEUt/0E:Ed
@@ -18869,6 +19235,7 @@ gaucho	2 TKPW1:AUfp/0O:OE
 gaucho	3 TKPW1:AUfp/KH0O:OE
 gaucho	4 TKPW1:AUfp/0O:O
 gaudier	1 TKPW0A:AUd/1:Er
+gaudier	1' ^ TKPW0EU:AOE/1:E
 gaudy	1 TKPW1:AU/TK0EU:EU
 gaudy	2 TKPW1:AUd/TK0EU:EU
 gaudy	3 TKPW1:AUd/0EU:EU
@@ -18940,6 +19307,7 @@ generate	1 SKWR1:Erpb/0A:AEUt
 generated	1 SKWR1:Epb/R0A:AEUtd
 generating	1 SKWR1:Epb/R0A:AEUgt
 generation	1 SKWR0E:Epb/R1:AEUgs
+generation	1' ^ STKPWHR0:E/R1:AEUgs
 generator	1 SKWR1:Epb/R0O:OErt
 generator	1 SKWR1:Erpb/0A:Art
 generator	2 SKWR1:Epb/R0A:AEUrt
@@ -18969,6 +19337,7 @@ genome	1 SKWR1:E/TPH0O:OEpl
 genome	2 SKWR1:AOEpb/0O:OEpl
 genome	3 SKWR1:AO*Epb/0O:OEpl
 genome	4 SKWR1:AOE/TPH0O:OEpl
+genomics	1' ^ STKPWHR1:OEpl/0EU:*EUbgs
 genotype	1 SKWR1:AOEpb/T0EU:AOEUp
 genre	1 1:Epb/0E:Er
 genre	2 1:Epb/R0E:E
@@ -19036,6 +19405,7 @@ germicide	2 SKWR1:Erpl/S0EU:AO*EUd
 germinate	1 SKWR1:Erpbl/0A:AEUt
 germinate	1 SKWR1:Erpl/TPH0A:AEUt
 germination	1 SKWR0E:Erpl/TPH1:AEUgs
+germination	1' ^ SKPWHR0EU:EU/TPH1:AEUgs
 germs	1 SKWR1:Erpls
 geron	1 SKWR1:Er/0O:O*pb
 geron	1 SKWR1:Erpb
@@ -19470,6 +19840,7 @@ gondola	1 TKPW1:Opbld/0A:A
 gondola	1' TKPW1:Opbl/0A:A
 gondola	2' ^ TKPWH1:OEl/0A:A
 gondolier	1 TKPW0O:Opbd/HR1:AOEr
+gondolier	1' ^ TKPWH0O:O/HR1:AOEr
 gone	1 TKPW1:Opb
 goner	1 TKPW1:Opb/0E:Er
 goner	1 TKPW1:Orpb
@@ -19691,6 +20062,7 @@ grandfather	2 TKPWR1:Afpb/0A:A*Urt
 grandfather	2 TKPWR1:Apbd/TP0A:AUr
 grandfather	3 TKPWR1:Apbd/TP0E:A*Er
 grandiose	1 TKPWR0A:Apbd/1:OEs
+grandiose	1' ^ TKPWHR0EU:AOE/1:OEs
 grandiose	2 TKPWR0A:Apbd/1:OUs
 grandkid	1 TKPWR1:Apbd/K0EU:EUd
 grandkids	1 TKPWR1:Apbd/K0EU:EUdz
@@ -19733,6 +20105,7 @@ grantor	3 TKPWR1:Apbt/T0O:Or
 grants	1 TKPWR1:Apbts
 grants	1' TKPWR1:Apbts
 granular	1 TKPWR1:Apb/HR0A:Ar
+granulation	1' ^ TKPWHR0U:U/HR1:AEUgs
 granule	1 TKPWR1:Apb/0U:AOUl
 granule	2 TKPWR1:Apb/KWR0U:Ul
 granule	3 TKPWR1:Apb/KWR0U:AOUl
@@ -19808,6 +20181,7 @@ graveyards	1 TKPWR1:A*EUf/KWR0A:Ardz
 gravitas	1 TKPWR1:Af/T0A:As
 gravitate	1 TKPWR1:Af/T0A:AEUt
 gravitate	2 TKPWR1:A*f/T0A:AEUt
+gravitation	1' ^ STKPWR0EU:EU/T1:AEUgs
 gravity	1 TKPWR1:Af/T0EU:EU
 gravity	2 TKPWR1:A*f/T0EU:EU
 gravity	3 TKPWR1:Aft/0EU:EU
@@ -20045,15 +20419,23 @@ grunts	1' TKPWR1:Upbts
 guanine	1 TKPW1:AUpb/0EU:AOEpb
 guano	1 TKPW1:AU/TPH0O:OE
 guarani	1 TKPW0A:AUr/TPH1:AOE
+guarani	1' ^ TKPWR0A:A/TPH1:AOE
+guarani	2' ^ TKPWR1:AUpb/0EU:AOE
 guarantee	1 TKPWR0A:Apb/T1:E
+guarantee	1' ^ TKPWR0A:A/TPH1:AOE
 guarantee	2 TKPW0A:AEUr/T1:AOE
 guarantee	3 TKPW0A:Arpb/T1:AOE
 guarantee	4 TKPWR0A:Apb/T1:AOE
 guaranteed	1 TKPW0A:Arpb/T1:AOEd
+guaranteed	1' ^ TKPWR0A:A/TPH1:AOEd
 guaranteed	2 TKPWR0A:Apb/T1:AOEd
+guarantees	1' ^ TKPWR0A:A/TPH1:AOEs
 guarantor	1 TKPW0A:Arpb/T1:Or
+guarantor	1' ^ TKPWR0A:A/TPH1:Or
 guarantors	1 TKPW0A:Arpb/T1:Ors
+guarantors	1' ^ TKPWR0A:A/TPH1:Ors
 guaranty	1 TKPW0A:Arpb/T1:EU
+guaranty	1' ^ TKPWR0A:A/TPH1:EU
 guard	1 TKPW1:Ard
 guarded	1 TKPW1:Ard/0E:Ed
 guarded	2 TKPW1:Ard/0E:Ed
@@ -20116,6 +20498,7 @@ guitar	1 TKPW0EU:EU/T1:Ar
 guitar	2 TKPW0EU:EUt/1:Ar
 guitar	3 TKPW0EU:EUt/1:A*r
 guitar	4 TKPW0EU:EUt/T1:Ar
+guitarist	1' ^ TKPW1:Ar/0EU:EUft
 guitars	1 TKPW0EU:EU/T1:Ars
 gulag	1 TKPW1:AOU/HR0A:Ag
 gulch	1 TKPW1:Ulg
@@ -20231,6 +20614,7 @@ habit	2 H1:Ab/PW0EU:EUt
 habitable	1 H1:Ab/T0A:Abl
 habitat	1 H1:Ab/T0A:At
 habitat	2 H1:Abt/T0A:At
+habitation	1' ^ PWH0EU:EU/T1:AEUgs
 habits	1 H1:Ab/0EU:EUts
 habitually	2 H0A:A/PW1:EUfpl
 habitually	2'' ^ PWH1:EUfp/0U:Ul
@@ -20851,6 +21235,7 @@ helix	3 H1:AOE/HR0EU:EUbgs
 helix	4 H1:AOEl/HR0EU:EUbgs
 hell	1 H1:El
 hellacious	1 H0E:El/1:AEUrbs
+hellacious	1' ^ HR1:AEUrb/0EU:EUs
 hellish	1 H1:El/0EU:EUrb
 hello	1 H0E:El/HR1:O
 hello	2 H0E:El/HR1:OE
@@ -20958,6 +21343,7 @@ heroes	2 H1:AOEr/0O:O*Es
 heroic	1 H0E:Er/1:OEUbg
 heroic	1' ^ HR1:O/0EU:*EUbg
 heroically	1 H1:OEUrbg/KHR0EU:EU
+heroically	1' ^ HR1:OEU/0A:Ablg
 heroin	1 H1:Er/R0O:OEUpb
 heroine	1 H1:Er/R0O:O*EUpb
 heron	1 H1:Er/R0O:Opb
@@ -20980,6 +21366,7 @@ hesitant	2 H1:Ez/T0A:Apbt
 hesitate	1 H1:Es/T0A:AEUt
 hesitate	2 H1:Ez/T0A:AEUt
 hesitation	1 H0E:Es/T1:AEUgs
+hesitation	1' ^ SH0EU:EU/T1:AEUgs
 hesitation	2 H0E:Ez/T1:AEUgs
 heuristic	1' ^ KWHR1:EUft/0EU:*EUbg
 hew	1 H1:AOU
@@ -20998,6 +21385,7 @@ hibernate	1 H1:AOEUb/TPH0A:AEUt
 hibernate	1 H1:AOEUrpb/0A:AEUt
 hibernate	2 H1:AOEUrb/TPH0A:AEUt
 hibernation	1 H0EU:EUb/TPH1:AEUgs
+hibernation	1' ^ PWH0:E/TPHR1:AEUgs
 hiccough	1 H1:EUbg/0U:Up
 hiccup	1 H1:EUbg/0U:*Up
 hiccup	2 H1:EUbg/K0U:Up
@@ -21020,6 +21408,7 @@ hiding	1 H1:AOEUd/0EU:EUpbg
 hierarchy	1 H1:AOEUr/K0EU:EU
 hierarchy	2 H1:AOEUrbg/K0EU:EU
 hieroglyph	1 H0EU:AOEUr/TKPWHR1:EUf
+hieroglyph	1' ^ HR0O:O/TKPWHR1:EUf
 high	1 H1:AO*EU
 highbrow	1 H1:AOEU/PWR0O:OU
 highest	1 H1:AOEU/0E:Eft
@@ -21411,6 +21800,8 @@ horny	1 H1:Or/TPH0EU:*EU
 horny	2 H1:Orpb/TPH0EU:*EU
 horoscope	1 H1:Or/SK0O:OEp
 horrendous	1 HR1:Epbd/TK0O:OUs
+horrendous	1' ^ HR1:Epbd/0O:Us
+horrendously	1' ^ HR1:Epbd/0O:Uls
 horrible	1 H1:Or/0EU:EUbl
 horrible	2 H1:Or/R0EU:EUbl
 horrible	3 H1:Or/PW0EU:EUbl
@@ -21528,6 +21919,7 @@ how	1 H1:OU
 howdy	1 H1:OUd/TK0EU:EU
 howdy	2 H1:OUd/0EU:EU
 howell	1 H1:OU/0E:El
+however	1'' ^ H1:Ef/0:Er
 howl	1 H1:OUl
 howling	1 H1:OUl/0EU:EUpbg
 hoy	1 H1:OEU
@@ -21782,6 +22174,8 @@ hydroxide	1' ^ TKHR1:Obgs/0EU:AOEUd
 hydroxide	1'' ^ HR1:Obgs/0EU:AOEUd
 hyena	1' ^ H1:AOEpb/0A:A
 hygiene	1 H1:AOEU/SKWR0E:AOEpb
+hygienist	1' ^ TKPWH1:AOEpb/0EU:EUft
+hygienist	2' ^ TKPWH1:Epb/0EU:EUft
 hymen	1 H1:AO*EUpbl
 hymen	1 H1:AOEU/PH0E:*Epb
 hymen	2 H1:AOEUpl/0E:*Epb
@@ -21790,6 +22184,7 @@ hymns	1 H1:EUplz
 hype	1 H1:AO*EUp
 hyper	1 H1:AO*EUrp
 hyper	1 H1:AOEUp/0E:Er
+hypertension	1' ^ PH0:E/TR1:Epbgs
 hypertext	1 H1:AO*EUrpt/0E:Ebgs
 hypertrophy	1 H1:AOEUrp/TR0O:OEf
 hypertrophy	2 H1:AOEUrp/TR0O:O*Ef
@@ -21798,10 +22193,14 @@ hyphen	1 H1:AOEUf/0E:Epb
 hyphen	2 H1:AOEU/TP0E:Epb
 hyphenate	1 H1:AO*EUfpb/0A:AEUt
 hyphenate	1 H1:AOEUf/TPH0A:AEUt
+hyphenation	1' ^ TPH0E:E/TPH1:AEUgs
 hypnosis	1 H0EU:EUp/TPH1:OEz
 hypnosis	1' ^ TPH1:OEs/0EU:EUs
 hypnotic	1' ^ TPH1:Ot/0EU:*EUbg
 hypocrite	1 H1:EUp/KR0EU:EUt
+hypotension	1' ^ PH0O:O/T1:Epbgs
+hysteric	1' ^ STH1:Er/0EU:*EUbg
+hysterics	1' ^ STH1:Er/0EU:*EUbgs
 ibex	1 1:AOEUb/0E:Ebgs
 ibid	1 1:EUb/0EU:EUd
 ice	1 1:AOEUs
@@ -21814,6 +22213,7 @@ icon	1 1:AOEU/K0O:Opb
 icon	1 1:AOEUpbg
 icon	2 1:AOEUbg/K0O:Opb
 icon	3 1:AOEUbg/0O:O*pb
+iconic	1 ^ K1:Opb/0EU:*EUbg
 icons	1 1:AO*EUbg/0O:Opbs
 icy	1 1:AOEU/S0EU:EU
 icy	2 1:AOEUs/S0EU:EU
@@ -21832,6 +22232,7 @@ ideals	1 0EU:AOEU/TK1:AEls
 ideals	1' ^ TK1:AEls
 ideas	1 ^ TK1:E/0A:As
 ideation	1 0EU:EUd/1:AEUgs
+ideation	1 ^ TK0E:E/1:AEUgs
 ideology	1 0EU:EUd/1:Olg
 idiocy	1 1:EUd/0O:OEs
 idiom	1 1:EUd/0O:Opl
@@ -21867,9 +22268,14 @@ igloo	1 1:EUg/HR0O:AO
 igloo	2 1:EUg/TKPWHR0O:AO
 igneous	1 1:EUg/TPH0O:OUs
 ignite	1 0EU:EUg/TPH1:AOEUt
+ignite	1' ^ TKPWH1:AOEUt
+ignited	1 ^ TKPWH1:AOEUt/0E:Ed
+igniting	1 ^ TKPWH1:AOEUt/0EU:EUpbg
 ignition	1 0EU:EU/TKPWH1:EUgs
-ignoble	1 0EU:EU/TKPWH1:OEbl
+ignition	1' ^ TKPWH1:EUgs
 ignoble	1 0EU:EUg/TPH1:OEbl
+ignoble	1' 0EU:EU/TKPWH1:OEbl
+ignoble	1' ^ TKPWH1:OEb/0E:El
 ignorance	1 1:EUg/R0A:Apbs
 ignorance	2 1:EUg/TPH0A:Apbs
 ignorance	3 1:EUg/TPH0O:Orpbs
@@ -21880,26 +22286,37 @@ ignorant	3 1:EUg/TPH0A:Apbt
 ignorant	4 1:EUg/TPH0O:OErpbt
 ignorant	4 1:EUg/TPH0O:Orpbt
 ignore	1 0EU:EUg/TPH1:Or
+ignore	1' ^ TKPWH1:OEr
 ignore	2 0EU:EUg/TPH1:OEr
 ignoring	1 0EU:EUg/TPH1:Org
+ignoring	1 ^ TKPWH1:Or/0EU:EUpbg
 ignoring	2 0EU:EUg/TPH1:Orpbg
 iguana	1 ^ TKPW1:AUpb/0A:A
 ilk	1 1:*EUlg
 ill	1 1:EUl
-illegal	1 0EU:EU/HR1:AOElg
-illegally	1 0EU:EU/HR1:AOElg
+illegal	1' 0EU:EU/HR1:AOElg
+illegal	1' ^ HR1:AOEg/0A:Al
+illegally	1' 0EU:EU/HR1:AOElg
+illegally	1' ^ HR1:AOEg/0A:Al
+illegals	1' ^ HR1:AOEg/0A:Als
+illicit	1 ^ HR1:EUs/0EU:EUt
 illness	1 1:EUl/TPH0E:Es
 illness	1 1:EUpbls
 ills	1 1:EUls
 illumination	1 HR0U:Upl/TPH1:AEUgs
 illusion	1 0EU:EU/HR1:AOUgs
-illusions	1 0EU:EU/HR1:AOUpblgz
+illusion	1' ^ HR1:AOUgs
+illusions	1' 0EU:EU/HR1:AOUpblgz
+illusions	1' ^ HR1:AOUpblg/0EU:EUpbs
+illusive	1 ^ HR1:AOUs/0EU:EUf
 illustrate	1 1:*EUls/R0A:AEUt
 illustrate	2 1:EUl/STR0A:AEUt
 illustrate	3 1:EUls/TR0A:AEUt
 illustrated	1 1:EUl/STR0A:AEUtd
 illustrating	1 1:EUl/STR0A:AEUgt
 illustration	1 0EU:EUl/SR1:AEUgs
+illustration	1 ^ HR0U:U/STR1:AEUgs
+illustration	1' ^ HR0U:U/SR1:AEUgs
 illustration	2 0EU:*EUls/R1:AEUgs
 illustration	3 0EU:EUl/STR1:AEUgs
 illustration	4 0EU:EUls/TR1:AEUgs
@@ -21913,7 +22330,8 @@ images	1 1:EUpl/0A:Apblgs
 imaginary	1 PH1:Apblg/R0EU:EU
 imaginative	1 PH1:Apblg/T0EU:EUf
 imaginative	2 PH1:Apblg/T0EU:*EUf
-imagine	1 0EU:EU/PH1:Apblg
+imagine	1' 0EU:EU/PH1:Apblg
+imagine	1' ^ PH1:Apblg/0EU:EUpb
 imam	1 1:AOEUpl
 imam	1 1:EUpl/0A:Apl
 imbalance	1 0EU:EUpb/PW1:Al
@@ -21939,26 +22357,35 @@ imitable	1 1:EUpl/T0A:Abl
 imitate	1 1:EUpl/T0A:AEUt
 imitated	1 1:EUpl/T0A:AEUtd
 imitation	1 0EU:EUpl/T1:AEUgs
+imitation	1 ^ PH0EU:EU/T1:AEUgs
 immature	1 0EU:EUpl/KH1:Ur
+immature	1 ^ PH0A:A/T1:AOUr
 immature	2 0EU:EUpl/T1:AOUr
 immense	1 0EU:EUpl/1:Epbs
+immense	1' ^ PH1:Epbs
 immense	2 KPW H1:Epbs
 immense	3 KPW HR1:Epbs
 immerse	1 KPW H1:Ers
+immerse	1' ^ PH1:Ers
 immerse	2 0EU:*EUpl/PH1:Ers
 immersion	1 0EU:EU/PH1:Ergs
+immersion	1' ^ PH1:Ergs
 immigrant	1 1:EUpl/0EU:EUrpbgt
 immigrant	1 1:EUpl/TKPWR0A:Apbt
 immigrants	1 1:EUpl/TKPWR0A:Apbts
 immigrate	1 1:EUpl/TKPWR0A:AEUt
 immigrate	2 1:*EUpl/TKPWR0A:AEUt
 immigration	1 0EU:EUpl/TPR1:AEUgs
+immigration	1 ^ PH0EU:EU/TKPWR1:AEUgs
 immigration	2 0EU:EUpl/TKPWR1:AEUgs
 imminence	1 1:EUpl/TPH0E:Epbs
 imminent	1 1:EUpl/TPH0E:Epbt
 imminent	2 1:*EUpl/TPH0E:Epbt
-immobile	1 0EU:EU/PH1:OEbl
 immobile	1 KPW H1:OEbl
+immobile	1' 0EU:EU/PH1:OEbl
+immobile	1' ^ PH1:OEb/0EU:EUl
+immobile	2 ^ PH1:OEb/0EU:AOEUl
+immobile	3 ^ PH1:OEb/0EU:AOEl
 immobility	1 1:EUpl/PH0O:OEblt
 immobilize	1 KPW H1:OEblz
 immobilizing	1 KPW H1:OEblgz
@@ -21966,12 +22393,15 @@ immolate	1 1:EUpl/0A:AEUt
 immolate	1 1:EUpl/HR0A:AEUt
 immolation	1 1:EUpl/0A:Ags
 immolation	1 1:EUpl/HR0A:AEUgs
-immoral	1 0EU:EU/PH1:Orl
 immoral	1 KPW H1:Orl
-immortal	1 0EU:EU/PH1:Orlt
-immortal	1' 0EU:EU/PH1:Orl
+immoral	1' 0EU:EU/PH1:Orl
+immoral	1' ^ PH1:Or/0A:Al
+immortal	1' 0EU:EU/PH1:Orlt
+immortal	1' ^ PH1:Ort/0A:Al
+immortal	1'' 0EU:EU/PH1:Orl
 immovable	1 0EU:*EUpl/PH1:Ofbl
 immune	1 KPW H1:AOUpb
+immune	1' ^ KWR1:AOUpb
 immune	2 0EU:*EUpl/PH1:AOUpb
 immune	3 0EU:EUpl/KWR1:AOUpb
 immunization	1 0EU:EUpl/S1:A*EUg
@@ -21986,8 +22416,9 @@ impact	2 0EU:*EUpl/P1:Abgt
 impact	2 KPW 1:Abgt
 impact	3 KPW 1:Ablgt
 impacted	1 1:EUpl/P0A:Abgtd
-impacted	1 KPW 0A:A/TK1:Ed
-impacted	1 KPW 1:Abgt/0E:Ed
+impacted	1 KPW TK1:Ed
+impacted	1' KPW 0A:A/TK1:Ed
+impacted	1' KPW 1:Abgt/0E:Ed
 impacted	2 KPW 1:Abgt/0E:Ed
 impacting	1 KPW 1:Abgt/0EU:EUpbg
 impacts	1 KPW 1:Abgts
@@ -22290,32 +22721,51 @@ in	1 1:EUpb
 in	2 1:EUpb
 inability	1 1:EUpb/0A:Ablt
 inaction	1 0EU:EU/TPH1:Abgs
+inaction	1' ^ TPH1:Abgs
 inactive	1 TPH1:Abg/T0EU:EUf
+inactive	1 ^ TPH1:Abgt/0EU:EUf
 inactive	2 TPH1:Abgt/0EU:EUf
 inactivity	1 TPH0A:Abg/T1:EUft
 inane	1 0EU:EUpb/1:AEUpb
+inane	1' ^ TPH1:AEUpb
 inane	2 0EU:EUpb/TPH1:AEUpb
 inappropriate	1 0EU:EUpb/PR1:OEpt
 inappropriate	2 0EU:EUpb/PHR1:OEpt
 inappropriate	3 TPH0A:Ap/PR1:OEpt
-inaugural	1 0EU:EU/TPH1:AUrlg
+inasmuch	1 ^ TPH1:Apls/0U:*Ubg
+inattention	1 ^ TPH0A:A/T1:Epbgs
+inaudibly	1 ^ TPH1:AUd/0EU:EUbl
+inaugural	1' 0EU:EU/TPH1:AUrlg
 inboard	1 1:EUpb/PW0O:O*Erd
 inborn	1 1:EUpb/PW0O:Orpb
 inbound	1 0EU:EUpb/PW1:OUpbd
+inbound	1' ^ PW1:OUpbd
 inbox	1 1:EUpb/PW0O:Obgs
+inbreeding	1 ^ PWR1:AOEd/0EU:EUpbg
+incarnate	1 ^ K1:Arpb/0A:At
+incarnate	2 ^ K1:Arpb/0A:AEUt
 incense	1 0EU:EUpb/S1:Epbs
+incense	1' ^ S1:Epbs
 incense	2 0EU:EUpb/KR1:Epbs
 incense	3 0EU:EUpb/SKR1:Epbs
+incentive	1 ^ S1:Epbt/0EU:EUf
+incentive	2 ^ S1:Epb/0EU:EUf
 inception	1 0EU:EU/STPH1:Epgs
-incessant	1 0EU:EU/STPH1:Epbts
+inception	1' ^ S1:Epgs
+incessant	1' 0EU:EU/STPH1:Epbts
+incessant	1' ^ S1:Es/0A:Apbt
+incessantly	1' ^ S1:Es/0A:Apblt
+incessantly	1'' ^ S1:Es/0A:Apbl
 incest	1 1:EUpb/S0E:*Es
 incest	2 1:EUpb/S0E:Eft
 incest	3 1:EUpb/KR0E:Eft
+incestuous	1 ^ S1:Efps/0U:Us
 inch	1 1:EUfrpb
 inches	1 1:EUfrpb/0E:Es
 inches	2 1:EUfrpb/0E:Es
 inching	1 1:EUfrpb/0EU:EUpbg
 inchoate	1 0EU:EUpb/K1:AOt
+inchoate	1 ^ KH1:O/0A:At
 inchoate	2 0EU:EUpb/K1:OEt
 incidence	1 1:EUpbs/0EU:EUpbsd
 incidence	1 1:EUpbs/TK0E:Es
@@ -22330,22 +22780,41 @@ incident	3 1:EUpbt/TK0E:Epbt
 incidents	1 1:EUpbs/TK0E:Epbts
 incidents	1' 1:EUpbs/0EU:EUpbsd
 incise	1 0EU:EUpb/S1:AOEUs
+incise	1' ^ S1:AOEUs
 incise	2 0EU:EUpb/S1:AOEUz
 incision	1 0EU:EU/STPH1:EUgs
-incisions	1 0EU:EU/STPH1:EUpblgz
-incisor	1 0EU:EU/STPH1:AOEUrz
+incision	1' ^ S1:EUgs
+incisions	1' 0EU:EU/STPH1:EUpblgz
+incisions	1' ^ S1:EUpblg/0EU:EUpbs
+incisive	1 ^ S1:AOEUs/0EU:EUf
+incisor	1' 0EU:EU/STPH1:AOEUrz
+incisor	1' ^ S1:AOEUs/0:Or
+incisors	1' ^ S1:AOEUs/0:Ors
 incite	1 0EU:EUpb/KR1:AOEUt
+incite	1' ^ S1:AOEUt
+inciting	1 ^ S1:AOEUt/0EU:EUpbg
 inclement	1 0EU:EU/TKPHR1:Eplt
+inclement	1' ^ KHR1:Eplt
 inclement	2 1:*EUpblg/0E:Eplt
 inclination	1 0EU:EUpbg/TPH1:AEUgs
+inclination	1 ^ KHR0EU:EU/TPH1:AEUgs
 inclination	2 0EU:*EUpbg/TPH1:AEUgs
 incline	1 0EU:EUpb/KHR1:AOEUpb
+incline	1' ^ KHR1:AOEUpb
 include	1 0EU:EUpb/KHR1:AOUd
+include	1' ^ KHR1:AOUd
+included	1 ^ KHR1:AOUd/0E:Ed
+included	2 ^ KHR1:AOUd/0E:Ed
+including	1 ^ KHR1:AOUd/0EU:EUpbg
 inclusion	1 0EU:EU/TKPHR1:AOUgs
-inclusions	1 0EU:EU/TKPHR1:AOUpblgz
+inclusion	1' ^ KHR1:AOUgs
+inclusions	1' 0EU:EU/TKPHR1:AOUpblgz
+inclusions	1' ^ KHR1:AOUpblg/0EU:EUpbs
+inclusive	1 ^ KHR1:AOUs/0EU:EUf
 income	1 1:EUpb/K0O:Opl
 incoming	1 1:EUpb/K0O:Oplg
 incomplete	1 0EU:EUpb/KPHR1:AOEt
+incomplete	1 ^ K0O:O/PHR1:AOEt
 inconsistencies	1 0EU:EUpb/K1:AOpbsz
 inconsistent	1 1:EUpb/K0O:AOpbt
 inconsistent	2 1:EUpb/K0E:AOEpbt
@@ -22357,46 +22826,82 @@ incorporated	2 0EU:EUpb/K1:Orptd
 incorporated	3 0EU:EUpb/K1:Orpbtd
 incorporating	1 0EU:EUpb/K1:Orpgt
 incorrect	1 0EU:EUpb/KR1:Ebgt
+incorrect	1 ^ K0:O/R1:Ebgt
+incorrectly	1 ^ K0:O/R1:Eblgt
+incorrectly	1' ^ K0:O/R1:Eblg
 increase	1 0EU:EUpb/KR1:AOEs
+increase	1' ^ KR1:AEs
 increase	2 0EU:EUpb/TKR1:AOEs
 increases	1 ^ KR1:AEs/0E:Es
+increasing	1 ^ KR1:AEs/0EU:EUpbg
 increasingly	1 ^ KR1:AEs/0EU:EUpblg
 increasingly	2 ^ KR1:AEs/0EU:EUpblg
+incredibly	1 ^ KR1:Ed/0EU:EUbl
 increment	1 1:*EUrpbg/0E:Eplt
 increment	1 1:EUpb/KR0E:Eplt
 increments	1 1:EUpb/KR0E:Eplts
+incrustation	1 ^ KR0U:U/ST1:AEUgs
 incubate	1 1:*EUpbg/PW0A:AEUt
 incubation	1 0EU:*EUpbg/PW1:AEUgs
+incubation	1 ^ K0U:U/PW1:AEUgs
 inculcate	1 1:*EUpblg/0A:AEUt
+incumbent	1' ^ K1:Upbl/0E:Epbt
+incumbents	1' ^ K1:Upbl/0E:Epbts
+incumbents	1'' ^ K1:Upbl/0E:Epbts
 incur	1 0EU:EUpb/K1:Ur
+incur	1' ^ K1:Ur
+incurring	1 ^ K1:Ur/0EU:EUpbg
 incurs	1 0EU:EUpb/K1:Urs
+incurs	1' ^ K1:Urs
 incursion	1 0EU:EU/TKPH1:Urgs
+incursion	1' ^ K1:Urgs
+indebted	1 ^ TK1:Et/0E:Ed
 indebted	2 ^ TK1:Et/0E:Ed
-indecent	1 0EU:EU/TKPH1:AOEpbts
+indebtedness	1 ^ TK1:Et/0E:Epbsd
+indecent	1' 0EU:EU/TKPH1:AOEpbts
+indecent	1' ^ TK1:AOEs/0E:Epbt
+indecision	1 ^ TK0E:E/S1:EUgs
 indeed	1 0EU:EUpb/TK1:AOEd
+indeed	1' ^ TK1:AOEd
+indelibly	1 ^ TK1:El/0EU:EUbl
 indemnification	1 TK0E:Epl/TP1:A*EUbgs
 indemnification	2 TK0E:Epl/TP1:A*EUfbgs
 indent	1 0EU:EUpb/TK1:Epbt
+indent	1' ^ TK1:Epbt
+indentation	1 ^ TK0E:E/TPH1:AEUgs
 index	1 1:EUpb/0E:Ebgs
 index	2 1:EUpb/TK0E:Ebgs
 indicate	1 1:EUpbd/K0A:AEUt
 indication	1 0EU:EUpbd/K1:AEUgs
+indication	1 ^ TK0EU:EU/K1:AEUgs
 indices	1 1:EUpbd/S0E:Es
 indices	2 1:EUpbd/S0E:AOEs
 indices	3 1:EUpbd/S0E:AOEz
 indict	1 0EU:EUpb/TK1:AOEUt
+indict	1' ^ TK1:AOEUt
+indicted	1 ^ TK1:AOEUt/0E:Ed
 indictment	1 0EU:EU/TKPH1:AOEUplt
+indictment	1' ^ TK1:AOEUplt
+indictments	1' ^ TK1:AOEUplt/0E:Epbts
+indictments	1'' ^ TK1:AOEUplt/0E:Epbts
 indie	1 1:EUpb/TK0EU:EU
 indies	1 1:EUpbd/0EU:AOEs
-indifferent	2 0EU:EU/TKPH1:EUfrpbt
+indifferent	2' 0EU:EU/TKPH1:EUfrpbt
 indigenous	1 TK1:EUpblg/TPH0O:OUs
 indigent	1 1:EUpbd/0EU:EUpblgt
 indigent	1 1:EUpbd/SKWR0E:Epbt
 indigents	1 1:EUpbd/SKWR0E:Epbts
 indigents	1' 1:EUpbd/0EU:EUpblgs
+indigestion	1 ^ TK0EU:AOEU/SKWR1:Efgts
+indignant	1' ^ TK1:EUpbg/0A:Apbt
+indignation	1 ^ TK0EU:EU/TKPWH1:AEUgs
 indigo	1 1:EUpbd/TKPW0O:OE
 indirect	1 0EU:EUpb/TKR1:Ebgt
+indirect	1 ^ TK0:EU/R1:Ebgt
+indiscreet	1 ^ TK0EU:EU/SKR1:AOEt
+indistinct	1 ^ TK0EU:EU/ST1:*EUpbgt
 indite	1 0EU:EUpb/TK1:AO*EUt
+indite	1' ^ TK1:AOEUt
 individuality	1 SR0EU:EUd/1:Alt
 individuality	2 SR0EU:EUd/W1:Al
 individuality	3 SR0EU:EUd/W1:Alt
@@ -22404,44 +22909,80 @@ indolent	1 1:EUpbd/HR0E:Epbt
 indoor	1 1:EUpb/TK0O:AOr
 indoors	1 1:EUpb/TK0O:AOrs
 induce	1 0EU:EUpb/TK1:AOUs
+induce	1' ^ TK1:AOUs
 induce	2 0EU:EUpb/TK1:AOUgs
-inductance	1 0EU:EU/TKPH1:Upbgts
-inductance	1' 0EU:EU/TKPH1:Upbgs
+induces	1 ^ TK1:AOUs/0E:Es
+inducing	1 ^ TK1:AOUs/0EU:EUpbg
+inductance	1' 0EU:EU/TKPH1:Upbgts
+inductance	1' ^ TK1:Ubgt/0A:Apbs
+inductance	1'' 0EU:EU/TKPH1:Upbgs
+inducted	1 ^ TK1:Ubgt/0E:Ed
 induction	1 0EU:EU/TKPH1:Ubgs
-inductor	1 0EU:EU/TKPH1:Urbgt
-inductor	1' 0EU:EU/TKPH1:Urbg
+induction	1' ^ TK1:Ubgs
+inductive	1 ^ TK1:Ubgt/0EU:EUf
+inductor	1' 0EU:EU/TKPH1:Urbgt
+inductor	1' ^ TK1:Ubgt/0:Or
+inductor	1'' 0EU:EU/TKPH1:Urbg
 indulge	1 0EU:EUpb/TK1:Ulg
-indulgence	1 0EU:EU/TKPH1:Upblgs
-indulgent	1 0EU:EU/TKPH1:Upblgt
+indulge	1' ^ TK1:Ulg
+indulgence	1' 0EU:EU/TKPH1:Upblgs
+indulgence	1' ^ TK1:Ulg/0E:Epbs
+indulgent	1' 0EU:EU/TKPH1:Upblgt
+indulgent	1' ^ TK1:Ulg/0E:Epbt
+indulges	1 ^ TK1:Ulg/0E:Es
+indulging	1 ^ TK1:Ulg/0EU:EUpbg
 industrialization	1 STR0EU:EUl/1:A*EUgs
 industrialization	2 STR0EU:*EUl/S1:A*EUgs
 inept	1 0EU:EUpb/1:Ept
+inept	1' ^ TPH1:Ept
 inequality	1 0EU:EUpb/K1:Alt
 inequality	2 0EU:EUpb/KW1:Alt
 inequality	3 0EU:EUpb/KW1:Abgt
 inert	1 0EU:EUpb/1:Ert
+inert	1' ^ TPH1:Ert
+inertia	1 ^ TPH1:*Erb/0EU:EU
 inertia	4 TPH1:Erb/0A:A
 infant	1 1:EUpb/TP0A:Apbt
 infants	1 1:EUpb/TP0A:Apbts
 infarction	1 0EU:EU/TPH1:Arbgs
 infarction	1 0EU:EUpb/TP1:Arbgs
+infarction	1' ^ TP1:Arbgs
 infarction	2 0EU:EUpb/TP1:A*rbgs
 infect	1 0EU:EUpb/TP1:Egt
+infect	1' ^ TP1:Ebgt
 infect	2 0EU:EUpb/TP1:Ebgt
 infect	3 0EU:EUpb/TP1:*Ebgt
+infected	1 ^ TP1:Ebgt/0E:Ed
+infecting	1 ^ TP1:Ebgt/0EU:EUpbg
 infection	1 0EU:EU/TPH1:Ebgs
+infection	1' ^ TP1:Ebgs
+infections	1' ^ TP1:Erbg/0EU:EUpbs
+infectious	1 ^ TP1:Erbg/0EU:EUs
+infective	1 ^ TP1:Ebgt/0EU:EUf
 infects	1 0EU:EUpb/TP1:Ebgts
+infects	1' ^ TP1:Ebgts
+infects	1'' ^ TP1:Ebgts
 infer	1 0EU:EUpb/TP1:Er
+infer	1' ^ TP1:Er
 inference	1 1:EUpb/TP0E:Erpbs
 inference	2 1:EUpb/TPR0E:Epbs
 inferiority	1 0EU:EUfpb/1:Ort
 inferiority	2 0EU:EUfpbt/1:Ort
-infernal	1 0EU:EU/TPH1:Erpbl
+infernal	1' 0EU:EU/TPH1:Erpbl
+infernal	1' ^ TP1:Erpb/0A:Al
+inferno	1 ^ TP1:Erpb/0O:O
+inferring	1 ^ TP1:Er/0EU:EUpbg
 infers	1 0EU:EU/TPH1:Ers
-infertile	1 0EU:EU/TPH1:Erlt
-infertile	1' 0EU:EU/TPH1:Erl
+infers	1' ^ TP1:Ers
+infertile	1' 0EU:EU/TPH1:Erlt
+infertile	1' ^ TP1:Ert/0EU:EUl
+infertile	1'' 0EU:EU/TPH1:Erl
 infest	1 0EU:EUpb/TP1:*Es
+infest	1' ^ TP1:Eft
+infested	1 ^ TP1:Eft/0E:Ed
 infield	1 1:EUfpb/0EU:AOEld
+infiltration	1 ^ TP0EU:EU/THR1:AEUgs
+infiltration	1' ^ TP0EU:EU/HR1:AEUgs
 infinite	1 1:EUfpb/TPH0EU:EUt
 infinite	2 1:EUpb/TP0EU:*EUpbt
 infinite	3 1:EUpb/TP0EU:AOEUpbt
@@ -22452,19 +22993,31 @@ inflame	1' ^ TPHR1:AEUpl
 inflaming	1 0EU:EUpb/TPHR1:AEUplg
 inflaming	1 ^ TPHR1:AEUpl/0EU:EUpbg
 inflammation	1 0EU:EUpb/TPHR1:Aplgs
+inflammation	1 ^ TPHR0A:A/PH1:AEUgs
 inflammatory	1 TPHR1:Apl/T0O:OEr
 inflate	1 0EU:EUpb/TPHR1:AEUt
 inflate	1' ^ TPHR1:AEUt
 inflated	1 0EU:EUpb/TPHR1:AEUtd
+inflated	1 ^ TPHR1:AEUt/0E:Ed
 inflating	1 0EU:EUpb/TPHR1:AEUgt
+inflating	1 ^ TPHR1:AEUt/0EU:EUpbg
 inflation	1 0EU:EU/TPHR1:AEUgs
 inflation	1 0EU:EUpb/TPHR1:AEUgs
+inflation	1' ^ TPHR1:AEUgs
 inflation	2 0EU:EUpb/TPHR1:AEUbgs
-inflator	1 0EU:EU/TPHR1:AEUrt
+inflator	1' 0EU:EU/TPHR1:AEUrt
+inflator	1' ^ TPHR1:AEUt/0:Or
 inflection	1 0EU:EU/TPHR1:Ebgs
+inflection	1' ^ TPHR1:Ebgs
 inflict	1 0EU:EUpb/TPHR1:EUbgt
+inflict	1' ^ TPHR1:EUbgt
+inflicted	1 ^ TPHR1:EUbgt/0E:Ed
+inflicting	1 ^ TPHR1:EUbgt/0EU:EUpbg
 infliction	1 0EU:EU/TPHR1:EUbgs
+infliction	1' ^ TPHR1:EUbgs
 inflicts	1 0EU:EUpb/TPHR1:EUbgts
+inflicts	1' ^ TPHR1:EUbgts
+inflicts	1'' ^ TPHR1:EUbgts
 inflicts	2' ^ TPHR1:EUbgts
 influence	1 1:EUpb/TPHR0U:AOUpbs
 influential	1 W1:Epbs/0A:A*l
@@ -22474,35 +23027,66 @@ influx	1 1:EUpb/TPHR0U:Ubgs
 info	1 1:EUpb/TP0O:O
 info	2 1:EUpb/TP0O:OE
 inform	1 0EU:EU/TPH1:Orpl
-informal	1 0EU:EU/TPH1:Orpl
+inform	1' ^ TP1:Orpl
 informal	1 0EU:EUpb/TP1:O*l
+informal	1' 0EU:EU/TPH1:Orpl
+informal	1' ^ TP1:Orpl/0A:Al
 informal	2 0EU:EUpb/TP1:Orl
-informally	1 0EU:EU/TPH1:Orpl
-informant	1 0EU:EU/TPH1:Orpblt
+informally	1' 0EU:EU/TPH1:Orpl
+informally	1' ^ TP1:Orpl/0A:Al
 informant	1 0EU:EUpb/TP1:Orplt
-informants	1' 0EU:EU/TPH1:Orpbls
-informer	1 0EU:EU/TPH1:Orpl
+informant	1' 0EU:EU/TPH1:Orpblt
+informant	1' ^ TP1:Orpl/0A:Apbt
+informants	1' ^ TP1:Orpl/0A:Apbts
+informants	1'' 0EU:EU/TPH1:Orpbls
+informants	1'' ^ TP1:Orpl/0A:Apbts
+information	1 ^ TP0:O/PHR1:AEUgs
+informer	1' 0EU:EU/TPH1:Orpl
+informer	1' ^ TP1:Orpl/0:Er
+informing	1 ^ TP1:Orpl/0EU:EUpbg
 informs	1 0EU:EU/TPH1:Orpls
+informs	1' ^ TP1:Orpls
+infotainment	1 ^ TP0O:O/T1:A*EUpblt
 infraction	1 0EU:EU/TPHR1:Abgs
 infraction	1 0EU:EUpb/TPR1:Abgs
+infraction	1' ^ TPR1:Abgs
+infractions	1' ^ TPR1:Arbg/0EU:EUpbs
+infrared	1 ^ TPR0:A/R1:Ed
+infrequent	1 ^ TPR1:Ebg/0E:Epbt
+infrequently	1 ^ TPR1:Ebg/0E:Epblt
+infrequently	1' ^ TPR1:Ebg/0E:Epbl
 infringe	1 0EU:EUpb/TPR1:EUpbg
+infringe	1' ^ TPR1:EUpbg
+infringes	1 ^ TPR1:EUpbg/0E:Es
+infringing	1 ^ TPR1:EUpbg/0EU:EUpbg
+infusing	1 ^ TP1:AOUs/0EU:EUpbg
 infusion	1 0EU:EU/TPH1:AOUgs
+infusion	1' ^ TP1:AOUgs
 ingenue	2 1:EUpbg/0U:AO*U
 ingenue	3 ^ SKWR1:Epb/0U:AO*U
 ingenue	4 1:EUpbg/0U:AO*U
 ingest	1 0EU:EUpb/SKWR1:*Es
+ingest	1' ^ SKWR1:Eft
 ingest	2 0EU:EUpb/SKWR1:Eft
+ingested	1 ^ SKWR1:Eft/0E:Ed
 ingestion	1 0EU:EU/STKPWHR1:Efgts
+ingestion	1' ^ SKWR1:Efgts
 ingot	1 1:EUpbg/0O:Ot
 inhabit	1 0EU:EUpb/H1:Abt
-inhalant	1 0EU:EU/TPH1:AEUpblt
+inhabit	1 ^ H1:Ab/0EU:EUt
+inhalant	1' 0EU:EU/TPH1:AEUpblt
+inhalant	1' ^ H1:AEUl/0A:Apbt
 inhalation	1 0EU:EUpb/HR1:AEUgs
 inhalation	1 ^ TPH0A:A/HR1:AEUgs
+inhalation	2 ^ H0A:A/HR1:AEUgs
 inhale	1 0EU:EUpb/H1:AEUl
-inhaler	1 0EU:EU/TPH1:AEUrl
+inhale	1' ^ H1:AEUl
 inhaler	1 0EU:EUpb/H1:AEUrl
+inhaler	1' 0EU:EU/TPH1:AEUrl
+inhaler	1' ^ H1:AEUl/0:Er
 inhaler	2 0EU:EUpb/HR1:AEUrl
 inhaling	1 0EU:EUpb/H1:AEUlg
+inhaling	1 ^ H1:AEUl/0EU:EUpbg
 inherent	1' 0EU:EU/TPH1:Erpbt
 inherent	1' ^ H1:Er/0E:Epbt
 inherent	2' 0EU:EU/TPH1:Erpbt
@@ -22515,25 +23099,47 @@ inherently	2' 0EU:EU/TPH1:Erpblt
 inherently	2' ^ H1:Er/0E:Epblt
 inherently	2'' 0EU:EU/TPH1:Erpbl
 inherently	2'' ^ H1:Er/0E:Epbl
+inherit	1 ^ H1:Er/0EU:EUt
+inherits	1 ^ H1:Er/0EU:EUts
+inhibit	1 ^ H1:EUb/0EU:EUt
+inhibition	1 ^ H0EU:EU/PW1:EUgs
+inhibition	2 ^ TPH0EU:EU/PW1:EUgs
 inhibitor	1 TPHR1:EUbt/0O:O*r
 inhibitory	1 TPH1:EUbt/T0O:OEr
-inhuman	1 0EU:EU/TPH1:AOUpbl
-initial	1 0EU:EU/TPH1:EUrbl
+inhibits	1 ^ H1:EUb/0EU:EUts
+inhuman	1' 0EU:EU/TPH1:AOUpbl
+inhuman	1' ^ H1:AOUpl/0A:Apb
+inhumane	1 ^ H0U:U/PH1:AEUpb
+initial	1' 0EU:EU/TPH1:EUrbl
+initial	1' ^ TPH1:EUrb/0EU:EUl
 initialling	1 TPH1:EUrblg/0A:A*U
-initially	1 0EU:EU/TPH1:EUrbl
+initially	1' 0EU:EU/TPH1:EUrbl
+initially	1' ^ TPH1:EUrb/0EU:EUl
+initials	1' ^ TPH1:EUrb/0EU:EUls
 initiate	1 TPH1:EUrb/0A:At
 initiation	2 TPH0EU:EUrb/1:AEUgs
 initiation	3 TPH0EU:*EUrb/1:AEUgs
 initiator	1 TPH1:EUrbt/T0O:Or
 initio	1 TPH1:EUrb/0O:OE
 inject	1 0EU:EUpb/SKWR1:Ebt
+inject	1' ^ SKWR1:Ebgt
 inject	2 0EU:EUpb/SKWR1:Ebgt
 inject	3 0EU:EUpb/SKWR1:Eblgt
+injected	1 ^ SKWR1:Ebgt/0E:Ed
+injected	2 ^ SKWR1:Ebgt/0E:Ed
+injecting	1 ^ SKWR1:Ebgt/0EU:EUpbg
 injection	1 0EU:EU/STKPWHR1:Ebgs
-injector	1 0EU:EU/STKPWHR1:Erbgt
-injector	1' 0EU:EU/STKPWHR1:Erbg
+injection	1' ^ SKWR1:Ebgs
+injections	1' ^ SKWR1:Erbg/0EU:EUpbs
+injector	1' 0EU:EU/STKPWHR1:Erbgt
+injector	1' ^ SKWR1:Ebgt/0:Or
+injector	1'' 0EU:EU/STKPWHR1:Erbg
 injunction	1 0EU:EU/STKPWHR1:*Upbgs
+injunction	1' ^ SKWR1:*Upbgs
 injunction	2 0EU:EU/STKPWHR1:Upbgs
+injunction	2' ^ SKWR1:Upbgs
+injunctive	1 ^ SKWR1:*Upbgt/0EU:EUf
+injunctive	2 ^ SKWR1:Upbgt/0EU:EUf
 injure	1 1:EUpb/SKWR0U:Ur
 injure	1 1:EUrpbg
 injuries	1 1:EUrpbg/0EU:AOEs
@@ -22541,6 +23147,7 @@ injuring	1 1:EUrpbg/0EU:EUpbg
 injury	1 1:EUrpbg/0EU:EU
 injury	1 SKWR1:EUr/R0EU:EU
 injury	2 SKWR1:EUr/0EU:EU
+injustice	1 ^ SKWR1:Uft/0EU:EUs
 ink	1 1:*EUpbg
 inkblot	1 1:EUpbg/PWHR0O:Ot
 inkblot	2 1:*EUpbg/PWHR0O:Ot
@@ -22552,6 +23159,7 @@ inland	1 1:EUpb/HR0A:Apbd
 inlet	1 1:EUpb/HR0E:Et
 inlets	1 1:EUpb/HR0E:Ets
 inline	1 0EU:EU/TPHR1:AOEUpb
+inline	1' ^ HR1:AOEUpb
 inmate	1 1:EUpb/PH0A:At
 inmate	2 1:EUpb/PH0A:AEUt
 inn	1 1:EUpb
@@ -22559,6 +23167,7 @@ innard	1 1:EUpb/0A:Ard
 innard	1 1:EUrpbd
 innard	2 1:EUpb/TPH0A:Ard
 innate	1 0EU:EUpb/TPH1:AEUt
+innate	1' ^ TPH1:AEUt
 inner	1 1:EUpb/0E:Er
 inner	1 1:EUrpb
 inner	2 1:EUpb/0E:*Er
@@ -22574,7 +23183,9 @@ innocuous	1 TPH1:Obg/KWR0U:Us
 innovate	1 1:EUpb/SR0A:AEUt
 innovate	2 1:*EUpb/SR0A:AEUt
 innovation	1 0EU:*EUpb/SR1:AEUgs
+innovation	1 ^ TPH0O:O/SR1:AEUgs
 innovation	2 0EU:EUpb/SR1:A*EUgs
+innovation	2 ^ TPH0O:O/SR1:AEUgs
 innovation	3 TPH0O:OE/SR1:AEUgs
 innovative	1 1:EUpb/SR0A:AEUft
 inns	1 1:EUpbz
@@ -22584,69 +23195,121 @@ input	1 1:EUpb/P0U:Ut
 inputs	1 1:EUpb/P0U:Uts
 inquest	1 1:EUpb/KW0E:Eft
 inquire	1 0EU:EUpb/KW1:AOEUr
-inquired	1 0EU:EU/TKPWH1:AOEUrd
-inquirer	1 0EU:EU/TKPWH1:AOEUr
-inquires	1 0EU:EU/TKPWH1:AOEUrz
+inquire	1' ^ KW1:AOEUr
+inquired	1' 0EU:EU/TKPWH1:AOEUrd
+inquirer	1' 0EU:EU/TKPWH1:AOEUr
+inquirer	1' ^ KW1:AOEUr/0:Er
+inquires	1' 0EU:EU/TKPWH1:AOEUrz
 inquiries	1 1:EUpb/KW0EU:AOEUrs
+inquiry	1 ^ KW1:AOEUr/0EU:EU
 inquiry	2 ^ KW0:EU/R1:EU
 inquiry	2 ^ KW1:EUr/0EU:EU
+inquisition	1 ^ KW0EU:EU/S1:EUgs
 ins	1 1:EUpbs
 insane	1 0EU:EUpb/S1:AEUpb
+insane	1' ^ S1:AEUpb
 insanity	1 0EU:EUpb/S1:Apbt
 insatiable	1 0EU:EUpb/S1:AEUrbl
 inscribe	1 0EU:EUpb/SKR1:AOEUb
+inscribe	1' ^ SKR1:AOEUb
+inscribing	1 ^ SKR1:AOEUb/0EU:EUpbg
 inscription	1 0EU:EU/STKPHR1:EUpgs
+inscription	1' ^ SKR1:EUpgs
+inscriptions	1' ^ SKR1:EUrpb/0EU:EUpbs
 insect	1 1:EUpb/S0E:Ebgt
 insect	2 1:EUpb/S0E:Eblgt
 insects	1 1:EUpb/S0E:Ebgts
 insecure	1 1:EUpb/SK0U:AOUr
 insert	1 0EU:EUpb/S1:Ert
+insert	1' ^ S1:Ert
+inserted	1 ^ S1:Ert/0E:Ed
+inserted	2 ^ S1:Ert/0E:Ed
+inserting	1 ^ S1:Ert/0EU:EUpbg
 insertion	1 0EU:EU/STPH1:Ergs
+insertion	1' ^ S1:Ergs
 inserts	1 0EU:EUpb/S1:Erts
+inserts	1' ^ S1:Erts
+inserts	1'' ^ S1:Ers
 inside	1 0EU:EUpb/1:AOEUd
+inside	1' ^ S1:AOEUd
 inside	2 0EU:EUpb/S1:AOEUd
-insider	1 0EU:EU/STPH1:AOEUrd
 insider	1 STPH1:AOEUd/0E:*Er
+insider	1' 0EU:EU/STPH1:AOEUrd
+insider	1' ^ S1:AOEUd/0:Er
+insiders	1' ^ S1:AOEUd/0:Ers
 insight	1 1:EUpb/S0EU:AO*EUt
 insightful	1 1:EUpbs/0EU:AO*EUflt
 insights	1 1:EUpb/S0EU:AO*EUts
+insincere	1 ^ S0EU:EU/STPH1:AOEr
+insipid	1 ^ S1:EUp/0EU:EUd
 insist	1 0EU:EUpb/S1:*EUs
+insist	1' ^ S1:EUft
 insist	2 0EU:EUpb/S1:EUft
-insistence	1 0EU:EU/STPH1:EUfpbts
-insistence	1' 0EU:EU/STPH1:EUpbs
-insistent	1 0EU:EU/STPH1:EUfpbt
-insistent	1' 0EU:EU/STPH1:EUpbts
+insisted	1 ^ S1:EUft/0E:Ed
+insisted	2 ^ S1:EUft/0E:Ed
+insistence	1' 0EU:EU/STPH1:EUfpbts
+insistence	1' ^ S1:EUft/0E:Epbs
+insistence	1'' 0EU:EU/STPH1:EUpbs
+insistent	1' 0EU:EU/STPH1:EUfpbt
+insistent	1' ^ S1:EUft/0E:Epbt
+insistent	1'' 0EU:EU/STPH1:EUpbts
+insistently	1' ^ S1:EUft/0E:Epblt
+insistently	1'' ^ S1:EUft/0E:Epbl
+insisting	1 ^ S1:EUft/0EU:EUpbg
 insists	1 0EU:EUpb/S1:EUfts
+insists	1' ^ S1:EUfts
+insists	1'' ^ S1:EUs
 insofar	1 1:EUpb/S0O:OEf
 insofar	1 1:EUpbs/0O:Ofr
 insofar	2 1:EUpb/S0O:Ofr
 insofar	3 1:EUpb/S0O:OEfr
 insolence	2 1:EUpbs/HR0E:Epbs
 insolent	2 1:EUpbs/HR0E:Epbt
-insolvent	1 0EU:EU/STPH1:Ofpblt
+insolvent	1' 0EU:EU/STPH1:Ofpblt
+insolvent	1' ^ S1:Ofl/0E:Epbt
 inspect	1 0EU:EUpb/SP1:Ebgt
+inspect	1' ^ SP1:Ebgt
+inspected	1 ^ SP1:Ebgt/0E:Ed
+inspecting	1 ^ SP1:Ebgt/0EU:EUpbg
 inspection	1 0EU:EU/STPH1:Ebgs
-inspector	1 0EU:EU/STPH1:Erbgt
-inspector	1' 0EU:EU/STPH1:Erbg
+inspection	1' ^ SP1:Ebgs
+inspections	1' ^ SP1:Erbg/0EU:EUpbs
+inspector	1' 0EU:EU/STPH1:Erbgt
+inspector	1' ^ SP1:Ebgt/0:Or
+inspector	1'' 0EU:EU/STPH1:Erbg
+inspectors	1' ^ SP1:Ebgt/0:Ors
 inspects	1 0EU:EUpb/SP1:Ebgts
+inspects	1' ^ SP1:Ebgts
+inspects	1'' ^ SP1:Ebgts
 inspiration	1 0EU:EUpb/SPR1:AEUgs
+inspiration	1 ^ SP0:EU/R1:AEUgs
 inspiration	2 0EU:EUpbs/PR1:AEUgs
 inspire	1 0EU:EUpb/SP1:AOEUr
+inspire	1' ^ SP1:AOEUr
 inspire	2 0EU:EUpbs/P1:AOEUr
 inspire	3 0EU:EUpb/SPR1:AOEUr
-inspired	1 0EU:EU/STPH1:AOEUrd
+inspired	1' 0EU:EU/STPH1:AOEUrd
+inspiring	1 ^ SP1:AOEUr/0EU:EUpbg
 instability	1 1:EUpb/ST0A:Ablt
 install	1 0EU:EUpb/ST1:Al
+install	1' ^ ST1:AUl
 install	2 0EU:EUpb/ST1:AUl
 installation	1 0EU:EUpb/ST1:AUlgs
+installation	1 ^ ST0A:A/HR1:AEUgs
 installation	2 0EU:*EUpbs/HR1:AEUgs
-installer	1 0EU:EU/STPH1:AUrl
+installer	1' 0EU:EU/STPH1:AUrl
+installer	1' ^ ST1:AUl/0:Er
 installing	1 0EU:EUlg/ST1:AUlg
+installing	1 ^ ST1:AUl/0EU:EUpbg
 installing	2 0EU:EUpb/ST1:AUlg
 installment	1 0EU:EU/STPH1:AUplt
 installment	1 0EU:EUpb/ST1:AUplt
-installments	1' 0EU:EU/STPH1:AUpbls
+installment	1' ^ ST1:AUplt
+installments	1' ^ ST1:AUpl/0E:Epbts
+installments	1'' 0EU:EU/STPH1:AUpbls
+installments	1'' ^ ST1:AUpl/0E:Epbts
 installs	1 0EU:EUpb/ST1:AUls
+installs	1' ^ ST1:AUls
 instance	1 1:EUpb/T0A:Apbs
 instance	1' 1:EUpbs
 instance	2 1:EUpb/ST0A:Apbs
@@ -22662,30 +23325,56 @@ instantaneously	1 ST1:AEUpbs/HR0EU:EU
 instantly	1' 1:EUfpbt/0A:Apblt
 instantly	1'' 1:EUfpbt/0A:Apbl
 instead	1 0EU:EUpb/ST1:AEd
+instead	1' ^ ST1:AEd
 instigate	1 1:EUpbs/TKPW0A:AEUt
 instigate	2 1:*EUpbs/TKPW0A:AEUt
 instigation	1 0EU:EUpbs/TKPW1:AEUgs
+instigation	1 ^ ST0EU:EU/TKPW1:AEUgs
 instigation	2 0EU:*EUpbs/TKPW1:AEUgs
 instill	1 0EU:EUpb/ST1:EUl
+instill	1' ^ ST1:EUl
+instilling	1 ^ ST1:EUl/0EU:EUpbg
 instinct	1 1:EUpb/ST0EU:EUpbg
 instinct	2 1:EUpb/ST0EU:EUpbl
 instinct	3 1:EUpb/ST0EU:EUpbgt
 instinct	4 1:EUpbg/ST0EU:EUpbgt
+instinctive	1 ^ ST1:*EUpbgt/0EU:EUf
 instincts	1 1:EUpb/ST0EU:EUpbgs
 institute	1 1:EUpb/ST0U:AOUt
 institute	2 1:EUpbs/T0U:AOUt
 institute	3 1:*EUpbs/T0U:AOUt
 institute	4 1:EUpbs/ST0U:AOUt
+institution	1 ^ ST0EU:EU/T1:AOUgs
 institutional	1 STPH1:AOUgs/0A:A*l
 instruct	1 0EU:EUpb/STR1:Ubgt
+instruct	1' ^ STR1:Ubgt
+instruct	1'' ^ SR1:Ubgt
+instructed	1 ^ STR1:Ubgt/0E:Ed
+instructed	1' ^ SR1:Ubgt/0E:Ed
+instructed	2 ^ STR1:Ubgt/0E:Ed
+instructed	2' ^ SR1:Ubgt/0E:Ed
+instructing	1 ^ STR1:Ubgt/0EU:EUpbg
+instructing	1' ^ SR1:Ubgt/0EU:EUpbg
 instruction	1 0EU:EU/STPHR1:Ubgs
 instruction	1' 0EU:EU/STPHR1:Ubgs
-instructor	1 0EU:EU/STPHR1:Urbgt
+instruction	1' ^ STR1:Ubgs
+instruction	1'' ^ SR1:Ubgs
+instructions	1' ^ STR1:Urbg/0EU:EUpbs
+instructions	1'' ^ SR1:Urbg/0EU:EUpbs
+instructive	1 ^ STR1:Ubgt/0EU:EUf
+instructive	1' ^ SR1:Ubgt/0EU:EUf
 instructor	1 STR1:Ubg/T0O:Or
-instructor	1' 0EU:EU/STPHR1:Urbg
+instructor	1' 0EU:EU/STPHR1:Urbgt
+instructor	1' ^ STR1:Ubgt/0:Or
+instructor	1'' 0EU:EU/STPHR1:Urbg
+instructor	1'' ^ SR1:Ubgt/0:Or
 instructor	2 STR1:Ubgs/0O:O*r
 instructor	3 STR1:Ubgt/T0O:Or
+instructors	1' ^ STR1:Ubgt/0:Ors
+instructors	1'' ^ SR1:Ubgt/0:Ors
 instructs	1 0EU:EUpb/STR1:Ubgts
+instructs	1' ^ STR1:Ubgts
+instructs	1'' ^ SR1:Ubgts
 instrument	1 1:EUpb/STR0U:Uplt
 instrument	1' 1:EUrpbs/0U:Uplt
 insufficient	1 1:EUpb/S0U:Uf
@@ -22693,19 +23382,32 @@ insular	2 1:EUpbs/HR0A:Ar
 insulate	1 1:EUpbls/0A:AEUt
 insulate	1 1:EUps/HR0A:AEUt
 insulate	3 1:EUpbs/HR0A:AEUt
+insulation	1 ^ S0U:U/HR1:AEUgs
 insulation	2 0EU:EUpbs/HR1:AEUgs
 insulator	1 1:EUpbls/0A:Art
 insulin	2 1:EUpbs/HR0EU:EUpb
 insulin	3 1:EUpbt/HR0EU:EUpb
 insulin	4 1:EUpbs/HR0EU:EUpbl
 insult	1 0EU:EUpb/S1:Ult
+insult	1' ^ S1:Ult
+insulted	1 ^ S1:Ult/0E:Ed
+insulting	1 ^ S1:Ult/0EU:EUpbg
 insults	1 0EU:EUpb/S1:Ults
+insults	1' ^ S1:Ults
+insults	1'' ^ S1:Uls
 insupportable	1 0EU:EUpb/SP1:Orbl
-insurance	1 0EU:EU/STPH1:Urpbs
-insurer	1 0EU:EU/STPH1:Ur
+insurance	1' 0EU:EU/STPH1:Urpbs
+insurance	1' ^ SH1:Ur/0A:Apbs
+insure	1' ^ SH1:AOUr
 insurer	1 STPH1:Ur/0E:*Er
-insurers	1 0EU:EU/STPH1:Urs
-insurgent	1 0EU:EU/STPH1:Urpblgt
+insurer	1' 0EU:EU/STPH1:Ur
+insurer	1' ^ SH1:Ur/0:Er
+insurers	1' 0EU:EU/STPH1:Urs
+insurers	1' ^ SH1:Ur/0:Ers
+insurgent	1' 0EU:EU/STPH1:Urpblgt
+insurgent	1' ^ S1:Urpblg/0E:Epbt
+insuring	1 ^ SH1:Ur/0EU:EUpbg
+insurrection	1 ^ S0:U/R1:Ebgs
 intact	1 0EU:EUpb/T1:Abgt
 intact	1 SPW 1:Abgt
 intact	2 0EU:EUpb/T1:Apbgt
@@ -22750,6 +23452,7 @@ integration	1 SPW TKPWR1:AEUgs
 integration	1 SPW0E:E/TKPWR1:AEUgs
 integration	1' SPW 0E:E/TKPWR1:AEUgs
 integration	2 SPW TKPWR1:AEUgs
+integration	2 ^ TPH0E:E/TKPWR1:AEUgs
 integrator	1 SPW TKPWR0A:A/T1:Or
 integrator	1 SPW TKPWR1:At/0:Or
 intel	1 0EU:EUpb/T1:El
@@ -22796,6 +23499,7 @@ interact	1 SPW 1:Abgt
 interact	1 SPW R1:Abgt
 interact	1' SPW 0:E/R1:Abgt
 interact	2 SPW 1:Ablgt
+interact	2 ^ TPH0:E/R1:Abgt
 interact	3 SPW R1:Abgt
 interacted	1 0EU:EUbt/1:Abgd
 interacted	1 SPW R1:Abgt/0E:Ed
@@ -22803,6 +23507,7 @@ interacting	1 SPW R1:Abgt/0EU:EUpbg
 interaction	1 SPW 1:Abgs
 interaction	1 SPW R1:Abgs
 interaction	1' SPW 0:E/R1:Abgs
+interaction	2 ^ TPH0:E/R1:Abgs
 interactions	1' SPW R1:Arbg/0EU:EUpbs
 interactive	1 SPW R1:Abgt/0EU:EUf
 interacts	1 SPW 1:Abgts
@@ -22810,6 +23515,8 @@ interacts	1 SPW R1:Abgts
 interacts	1' SPW 0:E/R1:Abgts
 interacts	1' SPW R1:Abgts
 interacts	1'' SPW 0:E/R1:Abgts
+interacts	2 ^ TPH0:E/R1:Abgts
+interacts	2' ^ TPH0:E/R1:Abgts
 interbred	1 SPW PWR1:Ed
 interbred	1' SPW 0:E/PWR1:Ed
 intercede	1 SPW S1:AOEd
@@ -22821,11 +23528,13 @@ intercept	1 SPW S1:Ept
 intercept	1 SPW SR1:Ept
 intercept	1' SPW 0:E/SR1:Ept
 intercept	2 SPW0E:Er/S1:Ept
+intercept	2 ^ TPH0:E/SR1:Ept
 intercepted	1 SPW SR1:Ept/0E:Ed
 intercepted	2 SPW SR1:Ept/0E:Ed
 intercepting	1 SPW SR1:Ept/0EU:EUpbg
 interception	1 SPW SR1:Epgs
 interception	1' SPW 0:E/SR1:Epgs
+interception	2 ^ TPH0:E/SR1:Epgs
 interceptions	1' SPW SR1:Erpb/0EU:EUpbs
 interceptor	1' SPW 0:E/SR1:Erpt
 interceptor	1' SPW SR1:Ept/0:Or
@@ -22835,11 +23544,15 @@ intercepts	1 SPW SR1:Epts
 intercepts	1' SPW 0:E/SR1:Epts
 intercepts	1' SPW SR1:Epts
 intercepts	1'' SPW 0:E/SR1:Epts
+intercepts	2 ^ TPH0:E/SR1:Epts
+intercepts	2' ^ TPH0:E/SR1:Epts
 intercession	1 SPW SR1:Egs
 intercession	1' SPW 0:E/SR1:Egs
+intercession	2 ^ TPH0:E/SR1:Egs
 interchange	1 SPW KH1:AEUpbg
 interchange	1 SPW KHR1:AEUpbg
 interchange	1' SPW 0:E/KHR1:AEUpbg
+interchange	2 ^ TPH0:E/KHR1:AEUpbg
 interchangeable	1 SPW KH1:AEUbl
 interchangeably	1 SPW KHR1:Apbg/0E:AEbl
 interchanges	1 1:EUpbt/KH0A:AEUpbgs
@@ -22902,6 +23615,7 @@ interfere	1 SPW TP1:AOEr
 interfere	1 SPW TPR1:AOEr
 interfere	1' SPW 0:E/TPR1:AOEr
 interfere	2 SPW0E:Er/TP1:AOEr
+interfere	2 ^ TPH0:E/TPR1:AOEr
 interfere	3 0EU:EUpblt/TP1:AOEr
 interference	1' SPW 0:E/TPR1:Erpbs
 interference	1' SPW TPR1:Er/0E:Epbs
@@ -22984,6 +23698,7 @@ interpose	1 SPW P1:OEs
 interpose	1 SPW PR1:OEs
 interpose	1' SPW 0:E/PR1:OEs
 interpret	1 SPW 1:Erp/0E:Et
+interpretation	1 SPW PR0E:E/T1:AEUgs
 interpretation	1 T0E:Erp/T1:AEUgs
 interpretation	2 T0E:Erp/T1:AEUgts
 interpretation	3 T0EU:EUrp/T1:AEUgs
@@ -22995,6 +23710,7 @@ interpreting	1 SPW PR1:Et/0EU:EUpbg
 interprets	1 SPW 1:Erp/0E:Ets
 interracial	1' SPW 0:E/R1:AEUrbl
 interracial	1' SPW R1:AEUrb/0EU:EUl
+interrogation	1 SPW R0O:O/TKPW1:AEUgs
 interrogation	1 SPW TKPW1:AEUgs
 interrogation	2 SPW0E:Er/TKPW1:AEUgs
 interrogator	1 SPW1:Ergt/T0O:Or
@@ -23094,6 +23810,7 @@ intimated	1 SPW PH1:At/0E:Ed
 intimation	1 SPW PH1:AEUgs
 intimation	1' SPW 0EU:EU/PH1:AEUgs
 intimation	2 SPW0EU:EU/PH1:AEUgs
+intimidation	1 SPW PH0EU:EU/TK1:AEUgs
 intimidation	1 SPW0EU:EUpl/TK1:AEUgs
 into	1 1:EUpb/T0O:O
 into	1 SPW 1:O
@@ -23115,6 +23832,7 @@ intonation	2 SPW TPH1:AEUgs
 intonation	3 SPW0O:OE/TPH1:AEUgs
 intone	1 SPW 1:OEpb
 intoxicate	1 SPW1:Obgs/K0A:AEUt
+intoxication	1 SPW SK0EU:EU/K1:AEUgs
 intoxication	1 SPW0O:Obgs/K1:AEUgs
 intracranial	1 SPW KR1:AEUpbl
 intractable	1 SPW R1:Abgt/0A:Abl
@@ -23206,43 +23924,96 @@ intuition	1 SPW 1:EUgs
 intuition	1 SPW0U:AOU/1:EUgs
 intuition	1' SPW W1:EUgs
 inundate	1 1:EUpbd/0A:AEUt
+inundation	1 ^ TPH0U:U/TKPH1:AEUgs
 inure	1 0EU:EUpb/KWR1:AOUr
+inure	1' ^ KWR1:AOUr
 inure	2 0EU:EUpb/TPH1:AOUr
 invade	1 0EU:EUpb/SR1:AEUd
-invader	1 0EU:EU/STPHR1:AEUrd
+invade	1' ^ SR1:AEUd
+invaded	1 ^ SR1:AEUd/0E:Ed
+invaded	2 ^ SR1:AEUd/0E:Ed
+invader	1' 0EU:EU/STPHR1:AEUrd
+invader	1' ^ SR1:AEUd/0:Er
+invaders	1' ^ SR1:AEUd/0:Ers
+invading	1 ^ SR1:AEUd/0EU:EUpbg
 invalid	1 1:EUpb/SR0A:Ald
+invalid	3 ^ SR1:Al/0EU:EUd
 invalids	1 1:EUpb/SR0A:Aldz
 invariable	1 0EU:EUpb/SR1:AEUrb
 invariably	1 0EU:EUpb/SR1:AEUrbl
 invasion	1 0EU:EU/STPHR1:AEUgs
 invasion	1 0EU:EUpb/SR1:AEUgs
-invasions	1 0EU:EU/STPHR1:AEUpblgz
+invasion	1' ^ SR1:AEUgs
+invasions	1' 0EU:EU/STPHR1:AEUpblgz
+invasions	1' ^ SR1:AEUpblg/0EU:EUpbs
+invasive	1 ^ SR1:AEUs/0EU:EUf
+invective	1 ^ SR1:Ebgt/0EU:EUf
 invent	1 0EU:EUpb/SR1:Epbt
+invent	1' ^ SR1:Epbt
+invented	1 ^ SR1:Epbt/0E:Ed
+invented	2 ^ SR1:Epbt/0E:Ed
+inventing	1 ^ SR1:Epbt/0EU:EUpbg
 invention	1 0EU:EU/STPHR1:Epbgs
-inventor	1 0EU:EU/STPHR1:Erpbt
-inventor	1' 0EU:EU/STPHR1:Erpb
+invention	1' ^ SR1:Epbgs
+inventions	1' ^ SR1:Erpb/0EU:EUpbs
+inventive	1 ^ SR1:Epbt/0EU:EUf
+inventor	1' 0EU:EU/STPHR1:Erpbt
+inventor	1' ^ SR1:Epbt/0:Or
+inventor	1'' 0EU:EU/STPHR1:Erpb
+inventors	1' ^ SR1:Epbt/0:Ors
 inventory	1 0E:Efpb/T1:OEr
 invents	1 0EU:EUpb/SR1:Epbts
+invents	1' ^ SR1:Epbts
+invents	1'' ^ SR1:Epbts
 inverse	1 0EU:EUpb/SR1:Ers
+inverse	1' ^ SR1:Ers
 inversion	1 0EU:EU/STPHR1:Ergs
+inversion	1' ^ SR1:Ergs
 invert	1 0EU:EUpb/SR1:Ert
+invert	1' ^ SR1:Ert
+inverted	1 ^ SR1:Ert/0E:Ed
 invest	1 0EU:EUpb/SR1:Ef
+invest	1' ^ SR1:Eft
+invested	1 ^ SR1:Eft/0E:Ed
+invested	2 ^ SR1:Eft/0E:Ed
 investigational	1 SR0E:Egt/1:A*l
 investigator	1 SR1:Egt/0O:O*r
 investigator	2 SR1:Egt/T0O:Or
 investigators	1 SR1:Egt/T0O:Ors
+investing	1 ^ SR1:Eft/0EU:EUpbg
 investment	1 0EU:EU/STPHR1:Efplt
+investment	1' ^ SR1:Efplt
 investment	2 0EU:EU/STPHR1:Eplts
-investor	1 0EU:EU/STPHR1:Efrt
-investor	1' 0EU:EU/STPHR1:Ers
+investment	2' ^ SR1:Eplts
+investments	1' ^ SR1:Efplt/0E:Epbts
+investments	1'' ^ SR1:Epls/0E:Epbts
+investments	2' ^ SR1:Epls/0E:Epbts
+investments	2'' ^ SR1:Epls/0E:Epbts
+investor	1' 0EU:EU/STPHR1:Efrt
+investor	1' ^ SR1:Eft/0:Or
+investor	1'' 0EU:EU/STPHR1:Ers
+investors	1' ^ SR1:Eft/0:Ors
 invests	1 0EU:EU/STPHR1:Efts
 invests	1' 0EU:EU/STPHR1:Es
+invests	1' ^ SR1:Efts
+invests	1'' ^ SR1:Es
+invitation	1 ^ SR0EU:EU/T1:AEUgs
 invite	1 0EU:EUpb/SR1:AOEUt
+invite	1' ^ SR1:AOEUt
+invited	1 ^ SR1:AOEUt/0E:Ed
+invited	2 ^ SR1:AOEUt/0E:Ed
+invitee	1 ^ SR0EU:AOEU/T1:AOE
+inviting	1 ^ SR1:AOEUt/0EU:EUpbg
+invocation	1 ^ SR0O:O/K1:AEUgs
 invoice	1 1:EUpb/SR0O:OEs
 invoice	2 1:EUpb/SR0O:OEUs
 invoke	1 0EU:EUpb/SR1:OEbg
+invoke	1' ^ SR1:OEbg
+invoking	1 ^ SR1:OEbg/0EU:EUpbg
 involve	1 0EU:EUpb/SR1:Ofl
+involve	1' ^ SR1:Ofl
 involving	1 0EU:EUpb/SR1:Ofg
+involving	1 ^ SR1:Ofl/0EU:EUpbg
 inward	1 1:EUpb/W0A:Ard
 inwardly	1 1:EUpb/0:Arld
 inwardly	1' 1:EUpb/0:Arl
@@ -23252,12 +24023,14 @@ iodine	1 1:AOEU/TK0EU:AOEUb
 iodine	2 1:AOEU/TK0EU:AOEUpb
 ion	1 1:AOEU/0O:O*pb
 ion	2 1:AOEU/0O:Opb
+ionic	1 ^ 1:Opb/0EU:*EUbg
 ionize	1 1:AOEUpb/0EU:AOEUz
 ionize	2 1:AOEU/TPH0EU:AOEUz
 ionize	3 1:AOEUpb/TPH0EU:AOEUz
 ions	1 1:AOEU/0O:Opbs
 ions	2 1:AOEU/0O:Opbs
 iota	1 1:OE/T0A:A
+iota	1 ^ 1:OEt/0A:A
 irate	1 0EU:AOEU/R1:AEUt
 irate	1' ^ R1:AEUt
 irate	2 0EU:AOEUr/R1:AEUt
@@ -23277,15 +24050,17 @@ irony	2 1:AOEUr/TPH0EU:*EU
 irony	3 1:AOEUrpb/0EU:EU
 irony	4 1:AOEUrpb/TPH0EU:EU
 irrational	1 0EU:EUr/1:Algs
+irregardless	1 ^ R0E:E/TKPW1:AUlsd
 irresponsibility	1 1:EUr/SP0O:Opbt
 irresponsibility	2 1:EUr/SP0O:Opblt
 irresponsible	1 0EU:EUr/SP1:Opb
 irresponsible	2 0EU:EUr/SP1:Opbl
 irresponsibly	1 0EU:EUr/SP1:OEpbl
-irreverent	1 0EU:EU/R1:Efrpbt
+irreverent	1' 0EU:EU/R1:Efrpbt
 irrigate	1 1:EUr/TKPW0A:AEUt
 irrigated	1 1:EUr/TKPW0A:AEUtd
 irrigation	1 0EU:EUr/TPW1:AEUgs
+irrigation	1 ^ R0EU:EU/TKPW1:AEUgs
 irrigation	2 0EU:EUr/TKPW1:AEUgs
 irritability	1 1:EUr/T0A:Ablt
 irritability	2 1:EUrt/0A:Ablt
@@ -23300,8 +24075,10 @@ irritate	2 1:EUr/T0A:AEUt
 irritated	1 1:EUr/T0A:AEUtd
 irritating	1 1:EUr/T0A:AEUgt
 irritation	1 0EU:EUr/T1:AEUgs
+irritation	1 ^ R0EU:EU/T1:AEUgs
 is	1 1:EUs
 is	2 1:EUs
+ischemic	1 ^ SK1:Epl/0EU:*EUbg
 island	1 1:AOEU/HR0A:Apbd
 island	1 1:AOEUpbld
 island	2 1:AOEU/HR0A:A*pbd
@@ -23320,6 +24097,7 @@ isolate	1 1:AOEUs/HR0A:At
 isolate	3 1:AOEUs/HR0A:AEUt
 isolated	1 1:AOEUs/HR0A:AEUtd
 isolating	1 1:AOEUs/HR0A:AEUgt
+isolation	1 ^ S0O:O/HR1:AEUgs
 isomer	1 1:AOEUs/PH0E:Er
 isomer	2 1:AOEUz/PH0E:Er
 isomer	3 1:AOEUs/PH0E:Erb
@@ -23361,10 +24139,12 @@ itemize	1 1:AOEUplt/0EU:AOEUz
 itemize	1 1:AOEUt/PH0EU:AOEUz
 items	1 1:AOEUt/0E:Epls
 iteration	1 0EU:EUt/R1:AEUgs
+iteration	1 ^ T0:E/R1:AEUgs
 itinerant	1' 0EU:AOEU/T1:EUrpbt
 its	1 1:EUts
 its	2 1:EUts
 itself	1 0EU:EUts/S1:Efl
+itself	1' ^ ST1:Efl
 ivory	1 1:AOEUf/R0EU:EU
 ivory	1 1:AOEUfr/0EU:EU
 ivory	2 1:AO*EUf/R0EU:EU
@@ -23619,8 +24399,10 @@ joyride	1 SKWR1:OEU/R0EU:AOEUd
 joys	1 SKWR1:OEUs
 joystick	1 SKWR1:OEU/ST0EU:EUbg
 jubilant	1 SKWR1:AOUb/HR0A:Apbt
+jubilation	1' ^ SKPWR0EU:EU/HR1:AEUgs
 jubilee	1 SKWR1:AOUb/HR0E:AOE
 jubilee	1 SKWR1:AOUbl/0E:AOE
+jubilee	2' ^ SKPWR0EU:EU/HR1:AOE
 judge	1 SKWR1:Upblg
 judges	1 SKWR1:Upblg/0E:Es
 judging	1 SKWR1:Upblg/0EU:EUpbg
@@ -23713,7 +24495,9 @@ juries	1 SKWR1:Ur/0EU:AOEs
 juris	1 SKWR1:Ur/0EU:EUs
 juris	2 KWR1:Ur/0EU:EUs
 jurisdiction	1 SKWR0U:Urs/TK1:EUbgs
+jurisdiction	1' ^ SKWR0EU:EU/STK1:EUbgs
 jurisdiction	2 TK0U:AOUrs/TK1:EUbgs
+jurisdiction	2' ^ SKWR0EU:EU/STK1:EUbgs
 jurisdiction	3 SKWR0U:AOUr/TK1:EUbgs
 jurisdiction	4 SKWR0U:AOUrs/TK1:*EUbgs
 jurisdiction	4 SKWR0U:AOUrs/TK1:EUbgs
@@ -23755,6 +24539,7 @@ juvenile	3 SKWR1:AOUf/TPH0EU:AOEUl
 juvenile	4 SKWR1:AO*Uf/TPH0EU:AOEUl
 juvenile	4 SKWR1:AOUfpb/TPH0EU:AOEUl
 juxtapose	1 SKWR0U:Ugt/P1:OEs
+juxtapose	1' ^ STKWR0A:A/P1:OEs
 juxtapose	2 SKWR0U:Ubgs/P1:OEs
 juxtapose	3 SKWR0U:*Ubgs/P1:OEz
 juxtaposition	1 SKWR0U:Ugs/P1:*EUgs
@@ -23982,6 +24767,7 @@ kitchen	1 K1:EUfp/0E:*Epb
 kitchen	1 K1:EUfpb
 kitchen	2 K1:EUt/KH0E:Epb
 kitchenette	1 K0EU:EUfp/TPH1:Et
+kitchenette	1' ^ KH0E:E/TPH1:Et
 kitchens	1 K1:EUfp/0E:Epbs
 kitchens	1 K1:EUfpbz
 kitchens	2 K1:EUfp/0E:*Epbs
@@ -24116,6 +24902,7 @@ lace	1 HR1:AEUs
 lacerate	1 HR1:Ars/0A:AEUt
 lacerate	1 HR1:As/R0A:AEUt
 laceration	1 HR1:As/0E:Ergs
+laceration	1' ^ SHR0:E/R1:AEUgs
 laces	1 HR1:AEUs/0E:Es
 laces	2 HR1:AEUs/0E:Es
 lack	1 HR1:Abg
@@ -24637,6 +25424,7 @@ legionnaire	1 HR1:AOEpblg/TPH0A:AEUr
 legions	1 HR1:AOEpblgz
 legions	1' HR1:AOEpblg/0EU:EUpbs
 legislate	1 HR1:Epblg/HR0A:AEUt
+legislation	1' ^ SKWHR0EU:EU/SHR1:AEUgs
 legislation	2 HR0E:Epblg/HR1:AEUgs
 legislative	1 HR1:AEgt/0EU:EUf
 legislative	2 HR1:Egt/0EU:*EUf
@@ -24809,6 +25597,7 @@ levied	1 HR1:Ef/0EU:EUd
 levies	1 HR1:Ef/0EU:EUs
 levitate	1 HR1:Ef/T0A:AEUt
 levitation	1 HR0E:Ef/T1:AEUgs
+levitation	1' ^ SHR0EU:EU/T1:AEUgs
 levity	1 HR1:*Ef/T0EU:EU
 levity	2 HR1:Eft/0EU:EU
 levy	1 HR1:E/SR0EU:EU
@@ -24843,9 +25632,11 @@ liberals	1 HR1:EUb/0:Erlz
 liberate	1 HR1:EUb/R0A:AEUt
 liberated	1 HR1:EUb/R0A:AEUtd
 liberation	1 HR0EU:EUb/R1:AEUgs
+liberation	1' ^ PWHR0:E/R1:AEUgs
 libertarian	1 HR0EU:EUb/T1:AEUrpb
 libertarian	2 HR0EU:EUrb/T1:AEUrpb
 liberte	1 HR0EU:EUrbt/1:E
+liberte	1' ^ PWHR0:E/TR1:E
 liberties	1 HR1:EUb/0E:Erts
 liberties	1 HR1:EUrbt/0EU:AOEs
 libertine	1 HR1:EUrbt/0EU:AOEpb
@@ -24871,6 +25662,7 @@ license	1 HR1:EUs/0E:Epbs
 license	2 HR1:AOEU/S0E:Epbs
 license	3 HR1:AOEUs/0E:Epbs
 license	4 HR1:AOEUs/S0E:Epbs
+licensee	1' ^ SHR0E:E/STPH1:AOE
 licenses	1 HR1:AOEUpbs/0E:Es
 licensing	1 HR1:AOEUpbs/0EU:EUpbg
 licentious	1' ^ SHR1:Efrpb/0EU:EUs
@@ -24927,6 +25719,8 @@ lightening	1 HR1:AOEUt/TPH0EU:*EUpbg
 lighter	1 HR1:AO*EUrt
 lighter	1 HR1:AO*EUt/0E:*Er
 lightest	1 HR1:AO*EUt/0E:Eft
+lightheaded	1' ^ THR1:AEd/0E:Ed
+lightheaded	1'' ^ HR1:AEd/0E:Ed
 lighthouse	1 HR1:AO*EUt/H0O:OUs
 lighthouse	2 HR1:AOEUgt/H0O:OUs
 lighthouse	3 HR1:AO*EUt/H0O:O*Us
@@ -24969,6 +25763,7 @@ limine	1 HR0EU:EU/PH1:AOEUpb
 limine	2 HR0EU:EU/PH1:AOEpb
 limit	1 HR1:EUpl/PH0EU:EUt
 limitation	1 HR0EU:EUpl/T1:AEUgs
+limitation	1' ^ PHR0EU:EU/T1:AEUgs
 limitation	2 HR0EU:EUplt/1:AEUgs
 limitation	3 HR0EU:EUplt/T1:AEUgs
 limitless	1 HR1:EUpl/0EU:EUlts
@@ -25053,6 +25848,7 @@ liposome	1 HR1:AOEUp/S0O:OEpl
 liposuction	1 HR1:AOEUp/S0U:Ubgs
 lips	1 HR1:EUps
 lipstick	1 HR1:EUp/ST0EU:EUbg
+liquefaction	1' ^ KWHR0E:E/TP1:Abgs
 liquefy	1 HR1:EUbg/TP0EU:AOEU
 liqueur	1 HR0EU:EUbg/1:AOUr
 liqueur	2 HR0EU:EUbg/K1:AOUr
@@ -25062,6 +25858,7 @@ liquid	2 HR1:EUbg/KW0EU:EUd
 liquid	3 HR1:EUbg/W0EU:EUtd
 liquidate	1 HR1:EUbg/TK0A:AEUt
 liquidation	1 HR0EU:EUbg/TK1:AEUgs
+liquidation	1' ^ KWHR0EU:EU/TK1:AEUgs
 liquids	1 HR1:EU/KW0EU:EUdz
 liquids	2 HR1:EUbg/W0EU:EUdz
 liquor	1 HR1:EU/KW0O:Or
@@ -25135,6 +25932,7 @@ litigants	1 HR1:EUt/TKPW0A:Apbts
 litigants	1' HR1:EUt/0EU:EUpbgs
 litigate	1 HR1:EUt/TKPW0A:AEUt
 litigation	1 HR0EU:EUt/TKPW1:AEUgs
+litigation	1' ^ THR0EU:EU/TKPW1:AEUgs
 litigious	1' ^ THR1:EUpblg/0EU:EUs
 litmus	1 HR1:EUt/PH0U:Us
 litter	1 HR1:EUrt
@@ -25243,6 +26041,7 @@ locksmith	1 HR1:Obg/SPH0EU:*EUt
 lockup	1 HR1:Obg/0U:Up
 loco	1 HR1:O/K0O:O
 loco	2 HR1:OE/K0O:OE
+locomotion	1' ^ KHR0O:O/PH1:OEgs
 locus	1 HR1:OE/K0U:Us
 locus	2 HR1:OEbg/K0U:Us
 locus	3 HR1:OEbg/0U:Us
@@ -25447,6 +26246,7 @@ lubricate	1 HR1:AOUb/K0A:AEUt
 lubricate	2 HR1:AOUb/R0EU:EUbgt
 lubricate	3 HR1:AOUrb/K0A:AEUt
 lubricating	1 HR1:AOUrb/K0A:AEUgt
+lubrication	1' ^ PWHR0EU:EU/K1:AEUgs
 lubricious	1 HR0U:AOU/PWR1:EUrbs
 lubricious	1' ^ PWHR1:EUrb/0EU:EUs
 lucent	1 HR1:AOUpbts
@@ -25517,6 +26317,7 @@ luncheon	4 HR1:Ufrpb/0O:O*pb
 luncheon	4 HR1:Ufrpblg/KH0E:Epb
 luncheon	4 HR1:Ufrpblg/KH0O:Opb
 luncheonette	1 HR0U:Ufrpblg/TPH1:Et
+luncheonette	1' ^ TKPHR0E:E/TPH1:Et
 luncheons	1 HR1:Ufrpbz
 luncheons	1 HR1:Upb/0O:Opbs
 lunches	1 HR1:Ufrpb/0E:Es
@@ -25569,6 +26370,8 @@ luxury	1 HR1:Ubgs/R0EU:EU
 lye	1 HR1:AO*EU
 lying	1 HR1:AOEU/0EU:EUpbg
 lymph	1 HR1:*EUfpl
+lymphatic	1' ^ TPHR1:At/0EU:*EUbg
+lymphoblast	1' ^ TPHR0O:O/PWHR1:Aft
 lymphocyte	1 HR1:EUfpl/S0EU:AOEUt
 lymphocyte	2 HR1:EUfpl/KR0EU:AOEUt
 lymphocyte	3 HR1:*EUfpl/KR0EU:AOEUt
@@ -25599,6 +26402,8 @@ macaw	1 PH0A:A/K1:AU
 mace	1 PH1:AEUs
 machete	1' ^ SPH1:Et/0E:E
 machete	2' ^ KPH1:Et/0E:E
+machination	1' ^ KPH0EU:EU/TPH1:AEUgs
+machination	2' ^ SPH0EU:EU/TPH1:AEUgs
 machining	1' ^ SPH1:AOEpb/0EU:EUpbg
 machinist	1' ^ SPH1:AOEpb/0EU:EUft
 machismo	1' ^ KPH1:EUplz/0O:O
@@ -25753,13 +26558,17 @@ makeup	1 PH1:AEUbg/0U:Up
 making	1 PH1:AEUbg/0EU:EUpbg
 makings	1 PH1:AEUbg/0EU:EUpbgs
 maladroit	1 PH0A:Al/TKR1:OEUt
+maladroit	1' ^ PHR0A:A/TKR1:OEUt
 malady	1 PH1:Al/TK0EU:EU
 malaise	1 PH0A:Al/1:A*EUz
 malaise	2 PH0A:A/HR1:A*EUs
 malaise	3 PH0A:A/HR1:A*EUz
 malarkey	1' ^ PHR1:Arbg/0E:AOE
+malcontent	1' ^ KPHR0O:O/TPH1:Epbt
 male	1 PH1:AEUl
 malfeasance	1 PH0A:A/TPHR1:AEpbsz
+malfeasance	1'' ^ TPHR1:AEs/0A:Apbs
+malformation	1' ^ TPHR0O:O/PHR1:AEUgs
 malfunction	1 PH0A:A/TPHR1:*Upbgs
 malfunction	1 PH0A:Al/TP1:Upbgs
 malfunction	2 PH0A:Al/TP1:*Upbgs
@@ -25788,6 +26597,7 @@ mallet	2 PH1:Al/HR0E:Et
 mallow	1 PH1:Al/HR0O:OE
 malls	1 PH1:AUls
 malnourish	1' ^ TPHR1:OUr/0EU:EUrb
+malnutrition	1' ^ TPHR0U:U/TR1:EUgs
 malpractice	1' ^ PHR1:Abgt/0EU:EUs
 malpractice	2' ^ PHR1:Abgt/0EU:EUs
 malt	1 PH1:AUlt
@@ -25942,6 +26752,7 @@ maples	1' PH1:AEUp/0E:Elz
 mapping	1 PH1:Ap/0EU:EUpbg
 maps	1 PH1:Aps
 mar	1 PH1:Ar
+maraca	1' ^ PHR1:A*Ubg/0A:AU
 marauder	1 PH0:A/R1:AUrd
 marauder	1'' ^ PHR1:AUd/0:Er
 marble	1 PH1:Arbl
@@ -26025,11 +26836,14 @@ market	1 PH1:Ar/K0E:Et
 market	2 PH1:Arbg/0E:Et
 marketable	1 PH1:Arbgt/0A:Abl
 marketeer	1 PH0A:Arbg/T1:AOEr
+marketeer	1' ^ KPHR0E:E/T1:AOEr
 marketeer	2 PH0A:Arbgt/T1:AOEr
 marketer	1 PH1:Arbg/0E:Ert
 marketer	1 PH1:Arbgt/0E:Er
 marketer	2 PH1:Arbgt/0E:*Er
 marketer	3 PH1:Arbgts/0E:*Er
+marketers	1' ^ KPHR0E:E/T1:Ers
+marketers	1' ^ KPHR1:Et/0:Ers
 marketplace	1 PH1:Arbt/PHR0A:AEUs
 marketplace	2 PH1:Arbgt/PHR0A:AEUs
 marketplace	3 PH1:Arbgt/PWHR0A:AEUs
@@ -26144,6 +26958,7 @@ mason	2 PH1:AEUs/0O:O*pb
 masons	1 PH1:AEUpbsz
 masons	1 PH1:AEUs/0O:Opbs
 masquerade	1 PH0A:As/KR1:AEUd
+masquerade	1' ^ SKPH0:E/R1:AEUd
 masquerade	2 PH0A:Afbg/R1:AEUd
 mass	1 PH1:As
 massa	1 PH1:As/0A:A
@@ -26198,6 +27013,7 @@ masturbate	1 PH1:A*s/PW0A:AEUt
 masturbate	1 PH1:Afrbt/0A:AEUt
 masturbate	1' PH1:Arbs/0A:AEUt
 masturbate	2 PH1:Aft/PW0A:AEUt
+masturbation	1' ^ STPH0:U/PWR1:AEUgs
 mat	1 PH1:At
 matador	1 PH1:At/TK0O:Or
 matador	2 PH1:A*t/TK0O:Or
@@ -26251,6 +27067,8 @@ mattress	2 PH1:At/R0E:Es
 mattress	3 PH1:At/R0E:Esz
 mattress	4 PH1:At/TR0E:Es
 mattress	4 PH1:At/TR0E:Esz
+maturation	1' ^ KPH0:U/R1:AEUgs
+maturation	2' ^ KPH0U:U/R1:AEUgs
 mature	1 PH0A:A/T1:Ur
 mature	2 PH0A:At/1:Ur
 mature	3 PH0A:A/KH1:Ur
@@ -26395,6 +27213,7 @@ median	1 PH1:AOEd/0A:Apb
 mediate	1 PH1:AOEd/0A:At
 mediate	2 PH1:AOEd/0A:AEUt
 mediated	1 PH1:AOEd/0A:AEUtd
+mediation	1' ^ TKPH0EU:AOE/1:AEUgs
 mediator	1 PH1:AOEd/0O:OErt
 medic	1 PH1:Ed/0EU:EUbg
 medical	1 PH1:Ed/0EU:EUblg
@@ -26405,6 +27224,7 @@ medically	2 PH1:Ed/0EU:EUblg
 medicate	1 PH1:Ed/K0A:AEUt
 medicated	1 PH1:Ed/K0A:AEUtd
 medication	1 PH0E:Ed/K1:AEUgs
+medication	1' ^ TKPH0EU:EU/K1:AEUgs
 medication	2 PH0EU:EUd/K1:AEUgs
 medication	3 PH0E:Ed/STKPH1:AEUgs
 medicinal	1 PH0E:Ed/S1:EUpbl
@@ -26426,6 +27246,7 @@ medio	1 PH1:AOEd/0O:OE
 meditate	1 PH1:Ed/T0A:AEUt
 meditate	2 PH1:*Ed/T0A:AEUt
 meditation	1 PH0E:Ed/T1:AEUgs
+meditation	1' ^ TKPH0EU:EU/T1:AEUgs
 meditation	2 PH0E:Et/T1:AEUgs
 medium	1 PH1:Ed/0U:Upl
 medium	2 PH1:AOEd/0U:Up
@@ -26882,6 +27703,7 @@ milliner	1 PH1:EUl/TPH0E:Er
 milling	1 PH1:EUl/0EU:EUpbg
 million	1 PH1:EUl/KWR0O:Opb
 millionaire	1 PH0O:OEUpb/1:AEUr
+millionaire	1' ^ PHR0EU:EU/TPH1:A*EUr
 millionth	1 PH1:EUl/KWR0O:O*pbt
 millisecond	1 PH1:EUl/S0E:Ebgd
 millisecond	2 PH1:*EUl/S0E:Ebgd
@@ -26896,6 +27718,7 @@ mimicry	1 PH1:EUpl/KR0EU:EU
 mimics	1 PH1:EUpl/0EU:EUbgs
 mimosa	1' ^ PH1:OEs/0A:A
 minaret	1 PH0EU:EUpb/R1:Et
+minaret	1' ^ TPH0:A/R1:Et
 mince	1 PH1:EUpbs
 mincer	1 PH1:EUpbs/0E:Er
 mincer	1 PH1:EUrpbs
@@ -26968,6 +27791,8 @@ minister	3 PH1:EUpbs/T0E:Er
 ministers	1 PH1:*EUpbs/0E:Ers
 ministers	2 PH1:EUpbs/ST0E:Ers
 ministration	1 PH0EU:EUpb/STR1:AEUgs
+ministration	1' ^ TPH0EU:EU/STR1:AEUgs
+ministration	1'' ^ TPH0EU:EU/SR1:AEUgs
 ministry	1 PH1:*EUpbs/R0EU:EU
 ministry	2 PH1:EUpb/STR0EU:EU
 ministry	3 PH1:EUpbs/TR0EU:EU
@@ -27027,6 +27852,8 @@ misconception	1' ^ SKPH0O:O/STPH1:Epgs
 misconduct	1' ^ SKPH1:Opbd/0U:Ubgt
 misconstrue	1' ^ SKPH0O:O/STPHR1:AO*U
 misconstrue	1'' ^ SKPH0O:O/STPHR1:AO*U
+misconstrued	1' ^ SKPH0O:O/STPHR1:AO*Ud
+misconstrued	1'' ^ SKPH0O:O/STPHR1:AO*Ud
 miscreant	1 PH1:EUs/KR0A:Apbt
 miscreant	2 PH1:EUs/KR0E:AOEpbt
 misdeed	1 PH1:EUz/TK0E:AOEd
@@ -27150,7 +27977,9 @@ mitering	1 PH1:AOEUrt/0EU:EUpbg
 mitigate	1 PH1:EUt/TKPW0A:AEUt
 mitigated	1 PH1:EUt/TKPW0A:AEUtd
 mitigation	1 PH0EU:EUd/TKPW1:AEUgs
+mitigation	1' ^ TPH0EU:EU/TKPW1:AEUgs
 mitigation	2 PH0EU:EUt/TKPW1:AEUgs
+mitotic	1' ^ TPH1:Ot/0EU:*EUbg
 mitral	1 PH1:AOEUrlt
 mitral	1 PH1:EUt/R0A:Al
 mitral	2 PH1:AOEU/TR0A:Al
@@ -27241,6 +28070,7 @@ moderate	2 PH1:Od/R0A:AEUt
 moderate	2 PH1:Ord/0A:AEUt
 moderating	1 PH1:Od/R0A:AEUgt
 moderation	1 PH0O:Od/R1:AEUgs
+moderation	1' ^ TKPH0:E/R1:AEUgs
 moderator	1 PH1:Od/R0A:AEUrt
 moderator	1 PH1:Ord/0A:Art
 modern	1 PH1:Od/0E:Erpb
@@ -27270,6 +28100,7 @@ modulate	1 PH1:Od/HR0A:AEUt
 modulate	2 PH1:Opblg/0A:AEUt
 modulate	2 PH1:Opblg/HR0A:AEUt
 modulation	1 PH0O:Od/HR1:AEUgs
+modulation	1' ^ SKPWHR0U:U/HR1:AEUgs
 modulation	2 PH0O:Opblg/HR1:AEUgs
 modulator	1 PH1:Od/HR0O:OErt
 modulator	1 PH1:Opblg/0A:Art
@@ -27332,6 +28163,7 @@ molest	4 PH0O:OE/HR1:*Es
 molest	4 PH0O:OE/HR1:Eft
 molest	4 PH0O:OEl/1:*Es
 molestation	1 PH0O:Ol/ST1:AEUgs
+molestation	1' ^ PHR0E:E/ST1:AEUgs
 molestation	2 PH0O:Ols/T1:AEUgs
 molestation	3 PH0O:OEls/T1:AEUgs
 molested	1' ^ PHR1:Eft/0E:Ed
@@ -27454,6 +28286,8 @@ monthly	1 PH1:O*pblt
 monthly	1 PH1:Opbt/HR0EU:EU
 monthly	2 PH1:O*pbt/HR0EU:EU
 months	1 PH1:O*pbts
+montreal	1' ^ TPHR0E:E/1:AUl
+montreal	1'' ^ TPHR0E:E/1:AUl
 monument	1 PH1:Opb/0U:AOUplt
 monument	2 PH1:Opb/KWR0U:Uplt
 monument	3 PH1:Opb/KWR0U:AOUplt
@@ -27639,6 +28473,7 @@ motions	1' PH1:OErb/0EU:EUpbs
 motivate	1 PH1:OEt/SR0A:AEUt
 motivated	1 PH1:OEt/SR0A:AEUtd
 motivation	1 PH0O:OEt/SR1:AEUgs
+motivation	1' ^ TPH0EU:EU/SR1:AEUgs
 motive	1 PH1:O/T0EU:*EUf
 motive	2 PH1:OE/T0EU:EUf
 motive	3 PH1:OEt/0EU:EUf
@@ -27926,6 +28761,7 @@ musing	1 PH1:AOUs/0EU:EUpbg
 musk	1 PH1:Ufbg
 musket	1 PH1:Us/K0E:Et
 musketeer	1 PH0U:Ufbg/T1:AOEr
+musketeer	1' ^ SKPH0E:E/T1:AOEr
 muskrat	1 PH1:Ufbg/R0A:At
 musky	1 PH1:Us/K0EU:EU
 muslin	1 PH1:Us/HR0EU:EUpb
@@ -27977,6 +28813,7 @@ muted	1 PH1:AOUt/0E:Ed
 mutilate	1 PH1:AOUlt/0A:AEUt
 mutilate	1 PH1:AOUt/HR0A:AEUt
 mutilated	1 PH1:AOUt/HR0A:AEUtd
+mutilation	1' ^ TKPWHR0EU:EU/HR1:AEUgs
 mutinous	1 PH1:AOUpbt/0O:Us
 mutinous	1 PH1:AOUt/TPH0O:OUs
 mutiny	1 PH1:AOUpbt/0EU:EU
@@ -28209,6 +29046,7 @@ navigate	1 TPH1:Af/TKPW0A:AEUt
 navigate	2 TPH1:A*f/TKPW0A:AEUt
 navigation	1 TPH1:Af/TKPW0A:AEUgs
 navigation	2 TPH1:A*f/TKPW0A:AEUgs
+navigation	2' ^ STPHR0EU:EU/TKPW1:AEUgs
 navy	1 TPH1:AEU/SR0EU:EU
 navy	2 TPH1:A*EUf/SR0EU:EU
 navy	3 TPH1:AEUf/0EU:EU
@@ -28329,6 +29167,7 @@ neon	2 TPH1:AOE/0O:O*pb
 neon	3 TPH1:AOE/0O:Opb
 neophyte	1 TPH1:AOE/TP0EU:AOEUt
 neoprene	1 TPH1:AOE/PR0E:AOEpb
+nepenthe	1' ^ TPH1:*Epbt/0E:E
 nephew	1 TPH1:Ef/0U:AOU
 nephew	2 TPH1:Ef/TP0U:AOU
 nephew	3 TPH1:Ef/KWR0U:AOU
@@ -28435,6 +29274,7 @@ newborns	1 TPH1:AOUb/0O:Orpbs
 newcomer	1 TPH1:AO*Ubg/0O:Orpl
 newest	1 TPH1:E/0E:Eft
 newfangled	1 TPH0E:AOU/TP1:Apblgd
+newfangled	1'' ^ TPH1:Apbg/0E:Eld
 newly	1 TPH1:AOU/HR0EU:EU
 newly	1 TPH1:AOUl
 newlywed	1 TPH1:AOUl/W0E:Ed
@@ -28624,10 +29464,14 @@ nominate	1 TPH1:Opbl/0A:At
 nominate	1 TPH1:Opl/TPH0A:AEUt
 nominate	2 TPH1:Opbl/0A:AEUt
 nomination	1 TPH0O:Opl/TPH1:AEUgs
+nomination	1' ^ TPH0EU:EU/TPH1:AEUgs
 nominee	1 TPH0O:Opl/TPH1:AOE
+nominee	1' ^ TPH0EU:EU/TPH1:AOE
 nominees	1 TPH0O:Opl/TPH1:AOEs
+nominees	1' ^ TPH0EU:EU/TPH1:AOEs
 non	1 TPH1:Opb
 nonce	1 TPH1:Opbs
+nonchalant	1' ^ STPH0A:A/HR1:AUpbt
 nondescript	1 TPH1:Opb/TKR0EU:EUpt
 none	1 TPH1:Opb
 nonfiction	1 TPH0O:O/TPH1:EUbgs
@@ -28677,8 +29521,10 @@ northeast	3 TPH0O:O*rt/1:AO*Es
 northeasterly	1 TPH0O:O/THR1:AEfrlt
 northeasterly	1 TPH0O:Ort/1:AOErl
 northeasterly	1' TPH0O:O/THR1:AErls
+northeasterly	1'' ^ TPHR1:AEft/0:Erl
 northeastern	1 TPH0O:O/THR1:AEfrpbt
 northeastern	1' TPH0O:O/THR1:AErpbs
+northeastern	1'' ^ TPHR1:AEft/0:Erpb
 northerly	1 TPH1:Ort/HR0EU:EU
 northerly	1' TPH1:O*rt/0:Erl
 northerly	2 TPH1:O*rt/HR0EU:EU
@@ -28689,9 +29535,11 @@ northwest	2 TPH0O:O*rt/W1:*Es
 northwesterly	1 TPH0O:O/TWHR1:Efrlt
 northwesterly	1 TPH0O:Ort/W1:Erl
 northwesterly	1' TPH0O:O/TWHR1:Erls
+northwesterly	1'' ^ TPWHR1:Eft/0:Erl
 northwestern	1 TPH0O:O/TWHR1:Efrpbt
 northwestern	1 TPH0O:Ort/W1:Erpb
 northwestern	1' TPH0O:O/TWHR1:Erpbs
+northwestern	1'' ^ TPWHR1:Eft/0:Erpb
 northwestern	2 TPH0O:O*rt/W1:Erpb
 nose	1 TPH1:OEs
 noses	1 TPH1:OEs/0E:Es
@@ -28784,6 +29632,7 @@ nuclear	4 TPH1:AOUbg/KHR0E:AOEr
 nuclear	4 TPH1:AOUpbg/HR0A:Ar
 nuclear	4 TPH1:AOUrbg/HR0A:Ar
 nuclear	4 TPHR1:AOUbg/HR0A:Ar
+nucleation	1' ^ TKPHR0E:E/1:AEUgs
 nuclei	1 TPH1:AOUbg/HR0EU:EU
 nuclei	2 TPH1:AOU/KHR0EU:AOEU
 nuclei	3 TPH1:AOUbg/HR0EU:AOEU
@@ -28898,6 +29747,7 @@ obey	2 0O:OE/PW1:A*EU
 obeyed	1 0O:O/PW1:AO*EUd
 obeyed	1' ^ PW1:AO*EUd
 obeying	1 ^ PW1:E/0EU:EUpbg
+obfuscation	1 ^ TPW0U:U/SK1:AEUgs
 object	1 1:Ob/SKWR0E:Ebgt
 object	2' ^ SKPWR1:Ebgt
 objected	1 ^ SKPWR1:Ebgt/0E:Ed
@@ -28924,6 +29774,7 @@ obligate	3 1:Ob/TKPW0A:AEUt
 obligate	4 1:Obl/TKPW0A:AEUt
 obligate	4 1:Ofpbl/TKPW0A:AEUt
 obligation	1 0O:Ob/TKPW1:AEUgs
+obligation	1 ^ PWHR0EU:EU/TKPW1:AEUgs
 obligation	2 0O:Obl/TKW1:AEUgs
 obligation	3 0O:Obl/TKPW1:AEUgs
 oblige	1 0O:Obl/1:AOEUpblg
@@ -28968,6 +29819,7 @@ observance	1' ^ SPW1:Efrb/0A:Apbs
 observant	1' 0O:O/SPW1:Efrpbt
 observant	1' ^ SPW1:Efrb/0A:Apbt
 observation	1 0O:Obs/SR1:AEUgs
+observation	1 ^ SPW0:E/SR1:AEUgs
 observe	1 0O:Ob/S1:Efrb
 observe	1' ^ SPW1:Efrb
 observe	2 0O:Ob/S1:*Efrb
@@ -28983,11 +29835,13 @@ obsession	1 0O:Ob/S1:Egs
 obsession	1' ^ SPW1:Egs
 obsessive	1 ^ SPW1:Es/0EU:EUf
 obsolete	2 1:Obs/HR0E:AOEt
+obsolete	2 ^ SPW0O:O/HR1:AOEt
 obsolete	3 1:Ops/HR0E:AOEt
 obstacle	1 1:Ob/ST0A:A*lg
 obstacle	1 1:Ofbt/0A:Ablg
 obstetric	1 ^ STPW1:Ert/0EU:*EUbg
 obstetrician	1 0O:Obs/TR1:EUgs
+obstetrician	1 ^ STPW0E:E/TR1:EUgs
 obstetrician	2 0O:O*bs/TR1:EUgs
 obstetrician	3 0O:Obs/STR1:EUgs
 obstetrics	1 ^ STPW1:Ert/0EU:*EUbgs
@@ -29063,6 +29917,7 @@ occupant	1 1:Obg/P0A:Apbt
 occupants	1 1:OUp/0A:Apbts
 occupants	2 1:Obg/P0A:Apbts
 occupation	1 0O:Obg/P1:AEUgs
+occupation	1 ^ K0U:U/P1:AEUgs
 occupational	1 0O:OUpgs/1:Al
 occupied	1 1:Obg/P0EU:AOEUd
 occupier	1 1:OUp/0E:Er
@@ -29206,9 +30061,12 @@ oily	2 1:OEUl/HR0EU:EU
 oily	3 1:OEUl/0EU:EU
 ointment	1 1:OEUpblt
 okay	1 0O:O/K1:AEU
+okay	1' ^ K1:AEU
 okay	2 0O:OE/K1:AEU
 okayed	1 0O:O/K1:AEUd
+okayed	1' ^ K1:AEUd
 okays	1 0O:O/K1:AEUs
+okays	1' ^ K1:AEUs
 okra	1 1:OEbg/R0A:A
 old	1 1:Old
 olden	1 1:Old/0E:*Epb
@@ -29224,6 +30082,7 @@ olds	1 1:Oldz
 olds	1' 1:Olz
 ole	1 1:OEl
 ole	2 0O:O/HR1:E
+ole	2' ^ HR1:E
 olefin	1 1:OEl/0E:Efpb
 oler	1 1:OErl
 oler	1 KH1:Ol/0E:*Er
@@ -29325,6 +30184,7 @@ operate	1 1:Op/R0A:AEUt
 operate	1 1:Orp/0A:AEUt
 operate	2 1:Orp/0A:AEUt
 operation	1 0O:Op/R1:AEUgs
+operation	1 ^ P0:E/R1:AEUgs
 operations	1 0O:Op/R1:AEUbgs
 operative	1 1:Opt/0EU:EUf
 operative	2 1:OErp/T0EU:*EUf
@@ -29349,6 +30209,7 @@ opponents	1' ^ P1:OEpb/0E:Epbts
 opponents	1'' 0O:O/P1:OEpbs
 opponents	1'' ^ P1:OEpb/0E:Epbts
 opportune	1 0O:Op/T1:AOUpb
+opportune	1 ^ P0:O/TR1:AOUpb
 oppose	1 0O:O/P1:OEz
 oppose	1' ^ P1:OEs
 oppose	2 0O:OE/P1:OEs
@@ -29357,6 +30218,7 @@ opposes	1 ^ P1:OEs/0E:Es
 opposing	1 ^ P1:OEs/0EU:EUpbg
 opposite	1 1:Op/S0EU:EUt
 opposition	1 0O:Op/S1:EUgs
+opposition	1 ^ P0O:O/S1:EUgs
 opposition	2 0O:Op/S1:*EUgs
 oppress	1 0O:O/PR1:Esz
 oppress	1' ^ PR1:Es
@@ -29469,6 +30331,8 @@ orchestral	1'' 0O:O/KR1:Erls
 orchestral	1'' ^ KR1:Ers/0A:Al
 orchestrate	1 1:Orbg/STR0A:AEUt
 orchestration	1 0O:O*rbgs/R1:AEUgs
+orchestration	1 ^ KR0E:E/STR1:AEUgs
+orchestration	1' ^ KR0E:E/SR1:AEUgs
 orchestration	2 0O:Orbg/STR1:AEUgs
 orchestration	3 0O:Orbgs/TR1:AEUgs
 orchid	1 1:O*r/K0EU:EUd
@@ -29509,6 +30373,7 @@ ordinarily	4 0O:OErbd/TPH1:AEUrl
 ordinarily	4 0O:OErld/TPH1:AEUrl
 ordinary	1 1:Ord/TPH0A:AEUr
 ordination	1 0O:Ord/TPH1:AEUgs
+ordination	1 ^ TKR0EU:EU/TPH1:AEUgs
 ordnance	1 1:O*rd/TPH0A:Apbs
 ordnance	1' 1:Orpbs
 ore	1 1:OEr
@@ -29578,15 +30443,18 @@ oscillate	1 1:Ols/0A:AEUt
 oscillate	1 1:Os/HR0A:AEUt
 oscillate	3 1:Osz/HR0A:AEUt
 oscillation	1 0O:Os/HR1:AEUgs
+oscillation	1 ^ S0EU:EU/HR1:AEUgs
 oscillation	3 0O:Osz/HR1:AEUgs
 oscillator	1 1:Ols/0A:Art
 oscillator	1 1:Os/HR0A:AEUrt
+osmosis	1 ^ SPH1:OEs/0EU:EUs
 osmotic	1 ^ SPH1:Ot/0EU:*EUbg
 osprey	1 1:Ofrp/0E:AOE
 ossification	1 0O:Os/TP1:A*EUbgs
 ossified	1 1:Os/TP0EU:AOEUd
 ossify	1 1:Os/TP0EU:AOEU
 ostensibly	1 ^ ST1:Epbs/0EU:EUbl
+ostentation	1 ^ ST0E:E/TPH1:AEUgs
 ostrich	1 1:O*s/R0EU:EUfp
 ostrich	2 1:Os/TR0EU:EUfp
 ostrich	3 1:Os/STR0EU:EUfp
@@ -29659,8 +30527,10 @@ outlier	1 1:AOUt/HR0EU:AOEUr
 outliers	1 1:AOUt/HR0EU:AOEUrs
 outline	1 1:OUt/HR0EU:AOEUpb
 outlive	1 0O:OUt/HR1:EUf
+outlive	1' ^ THR1:EUf
 outlook	1 1:OUt/HR0O:AObg
 outlying	1 1:OUt/HR0EU:AOEUg
+outmoded	1 ^ TPH1:OEd/0E:Ed
 outnumber	1' ^ TPH1:Upbl/0:Er
 outpatient	1 1:OUpt/0A:Arpbt
 outpost	1 1:OUpt/0O:Oft
@@ -29670,6 +30540,7 @@ outputs	1 1:OUpt/0U:Uts
 outrage	1 1:OUt/R0A:AEUpblg
 outrageous	1 0O:OUt/R1:AEUrbs
 outrageous	1 ^ TR1:AEUpblg/0E:Es
+outrageously	1 ^ TR1:AEUpblg/0E:Els
 outrages	1 1:AOUt/R0A:AEUpblgs
 outran	1 0O:OUt/R1:Apb
 outran	1' ^ TR1:Apb
@@ -29687,6 +30558,10 @@ outsider	1' ^ ST1:AOEUd/0:Er
 outsiders	1' ^ ST1:AOEUd/0:Ers
 outskirts	1 1:OUt/SK0EU:EUrts
 outsource	1 0O:OU/ST1:OUrs
+outsource	1' ^ ST1:OUrs
+outsources	1 ^ ST1:OUrs/0E:Es
+outsourcing	1 ^ ST1:OUrs/0EU:EUpbg
+outstanding	1 ^ ST1:Apbd/0EU:EUpbg
 outstrip	1 0O:OU/STR1:EUp
 outstrip	1' 0O:OU/STR1:EUp
 outstrip	1' ^ STR1:EUp
@@ -29727,13 +30602,17 @@ over	1' 1:OEf/0:Er
 overall	1 1:OEfr/0A:AUl
 overalls	1 1:O*fr/0A:AUls
 overalls	1 1:OEfr/0A:AUls
+overblown	1 ^ SR0:E/PWHR1:O*Epb
 overboard	1 1:OEfrb/0O:O*Erd
 overcast	1 1:OEfrbg/0A:Aft
 overcoat	1 1:OEfrbg/0O:O*Et
 overcome	1 1:OEfrbg/0O:Opl
 overdose	1 1:OEfrd/0O:OEs
+overflow	2 ^ SR0:E/TPHR1:O*E
+overgrown	1 ^ SR0:E/TKPWR1:O*Epb
 overhaul	1 1:OEfr/0A:AUl
 overhung	1 ^ SR0:E/R1:Upbg
+overjoyed	1 ^ SR0:E/SKWR1:OEUd
 overland	1 1:OEfrl/0A:Apbd
 overlap	1 1:OEfrl/0A:Ap
 overlaps	1 1:OEfrl/0A:Aps
@@ -29751,6 +30630,8 @@ overseen	1 1:OEfrs/0E:AOEpb
 oversees	1 1:OEfrs/0E:AOEs
 oversell	1 1:OEfrs/0E:El
 oversight	1 1:OEfrs/0EU:AO*EUt
+oversleep	1 ^ SR0:E/SHR1:AOEp
+overslept	1 ^ SR0:E/SHR1:Ept
 overstate	1 1:OEfrt/0A:AEUt
 overt	1 0O:O/SR1:Ert
 overt	1' ^ SR1:Ert
@@ -29760,16 +30641,27 @@ overt	3 0O:OE/SR1:Ert
 overtake	1 1:OEfrt/0A:AEUbg
 overtaken	1 1:OEfrt/0A:Apbg
 overtax	1 1:OEfrt/0A:Abgs
+overthrew	1 ^ SR0:E/THR1:AOU
+overthrown	1 ^ SR0:E/THR1:O*Epb
 overtime	1 1:OEfrt/0EU:AOEUpl
 overtly	1 0O:O/SR1:Erlt
 overtly	1' 0O:O/SR1:Erl
 overtly	1' ^ SR1:Erlt
 overtly	1'' ^ SR1:Erl
+overtook	1 ^ SR0:E/TR1:AObg
 overture	1 1:O*fr/KH0U:Ur
 overture	2 1:OEfr/T0U:AOUr
 overturn	1 1:OEfrt/0:Urpb
+overuse	1 ^ SR0:E/R1:AOUs
+overweight	1 ^ SR0:E/WR1:A*Et
+overwhelm	1 ^ SR0:E/WR1:Epl
+overwhelm	2 ^ SR0:E/WR1:Epl
+overwhelms	1 ^ SR0:E/WR1:Epls
+overwhelms	2 ^ SR0:E/WR1:Epls
+overwork	1 ^ SR0:E/WR1:Orbg
 ovoid	1 1:OEf/0O:OEUd
 ovulation	1 0O:Ofl/1:AEUgs
+ovulation	1 ^ SR0U:U/HR1:AEUgs
 ovulation	2 0O:Of/HR1:AEUgs
 ovulation	3 0O:O*f/HR1:AEUgs
 ovulation	4 0O:Ofl/HR1:AEUgs
@@ -29802,6 +30694,7 @@ oxidants	1' 1:Obgs/0EU:EUpbsd
 oxidase	1 1:Obgs/TK0A:AEUs
 oxidase	2 1:Obgs/TK0A:AEUz
 oxidation	1 0O:Obgs/TK1:AEUgs
+oxidation	1 ^ SK0EU:EU/TK1:AEUgs
 oxidation	2 0O:Obgs/TK1:AEUbgs
 oxidative	1 0O:Obgs/TK1:AEUf
 oxide	1 1:Obg/S0EU:AOEUd
@@ -29879,6 +30772,7 @@ pager	1 P1:AEUpblg/0E:Er
 pager	1 P1:AEUrpblg
 pages	1 P1:AEUpblg/0E:Es
 pages	2 P1:AEUpblg/0E:Es
+pagination	1' ^ SKPWR0EU:EU/TPH1:AEUgs
 pagoda	1' ^ TKPW1:OEd/0A:A
 paid	1 P1:A*EUd
 pail	1 P1:A*EUl
@@ -29926,6 +30820,7 @@ palazzo	1' ^ PHR1:AUz/0O:O
 pale	1 P1:AEUl
 palette	1 P1:Al/0E:Et
 palisade	1 P0A:Al/S1:AEUd
+palisade	1' ^ PHR0EU:EU/S1:AEUd
 palisade	2 P0A:A*l/S1:AEUd
 pallet	1 P1:Al/0E:Et
 pallet	2 P1:Al/0E:*Et
@@ -29948,6 +30843,7 @@ palpable	1 P1:Al/P0A:Abl
 palpable	1 P1:Apl/0A:Abl
 palpably	1 P1:Ap/PWHR0EU:EU
 palpably	1 P1:Apl/0A:Abl
+palpitation	1' ^ PHR0EU:EU/T1:AEUgs
 pals	1 P1:Als
 palsy	1 P1:Al/S0EU:EU
 palsy	2 P1:Al/S0EU:*EU
@@ -29967,6 +30863,7 @@ pampering	1 P1:Afrp/0EU:EUpbg
 pampers	1 P1:Afrp/0E:Ers
 pamphlet	1 P1:Afrp/HR0E:Et
 pamphlet	2 P1:Apl/TPHR0E:Et
+pamphleteer	1' ^ TPHR0E:E/T1:AOEr
 pamphlets	1 P1:Apl/TPHR0E:Ets
 pan	1 P1:Apb
 panache	1 P0A:A/TPH1:Arb
@@ -30676,6 +31573,7 @@ penetrate	1 P1:Epb/TR0A:AEUt
 penetrated	1 P1:Epb/TR0A:AEUtd
 penetrating	1 P1:Epb/TR0A:AEUgt
 penetration	1 P0E:Epb/TR1:AEUgs
+penetration	1' ^ TPH0E:E/TR1:AEUgs
 penetration	2 PR0E:Epb/TR1:AEUgs
 penguin	1 P1:Epb/KW0EU:EUpb
 penguin	2 P1:Epbg/W0EU:EUpb
@@ -30778,6 +31676,7 @@ perforate	1 P1:Efr/R0A:AEUt
 perforate	2 P1:Efrb/R0A:AEUt
 perforate	3 P1:Er/TPR0A:AEUt
 perforation	1 P0E:Efr/1:AEUgs
+perforation	1' ^ TPR0:O/R1:AEUgs
 perforation	2 P0E:Efr/R1:AEUgs
 perforation	3 P0E:*Efr/R1:AEUgs
 perforation	4 P0E:Er/TPR1:AEUgs
@@ -30856,6 +31755,7 @@ permits	1 P0E:Er/PH1:EUts
 permitted	1' ^ PHR1:EUt/0E:Ed
 permitting	1' ^ PHR1:EUt/0EU:EUpbg
 permutation	1 P0E:Erpl/T1:AEUgs
+permutation	1' ^ PHR0U:U/T1:AEUgs
 pernicious	1 P0E:Erpb/1:EUrbs
 pernicious	1' ^ TPHR1:EUrb/0EU:EUs
 pernicious	2 P0E:Er/TPH1:EUrbs
@@ -30867,6 +31767,7 @@ perplex	1 P0E:Er/PHR1:Ebgs
 perplexing	1' ^ PHR1:Ebgs/0EU:EUpbg
 persecute	1 P1:Ers/K0U:AOUt
 persecution	1 P0E:Ers/K1:AOUgs
+persecution	1' ^ SPR0E:E/K1:AOUgs
 persevere	1 P0E:Er/S1:AOEfr
 persevere	1' ^ SPR0E:E/SR1:AOEr
 persevere	2 P0E:Ers/SR1:AOEr
@@ -30907,6 +31808,7 @@ personally	2 P1:Erbl/HR0EU:EU
 personally	3 P1:Erpb/HR0EU:EU
 personally	4 P1:Erpbl/HR0EU:EU
 personnel	1 P0E:Erpb/1:El
+personnel	1' ^ SPR0O:O/TPH1:El
 personnel	2 P0E:Ers/TPH1:El
 personnel	3 P0E:Ergs/TPH1:El
 personnel	4 P0E:Erpb/TPH1:El
@@ -30915,6 +31817,7 @@ persons	1 P1:Erpbsz
 persons	1' P1:Ers/0O:Opbs
 perspective	1' ^ SPR1:Ebgt/0EU:EUf
 perspiration	1 P0E:Erp/R1:AEUgs
+perspiration	1' ^ SPR0:EU/R1:AEUgs
 perspiration	2 P0E:Er/SPR1:AEUgs
 perspiration	3 P0E:Erp/PR1:AEUgs
 perspiration	4 P0E:Ers/PR1:AEUgs
@@ -30932,6 +31835,7 @@ pertinent	1 P1:Erpb/0E:Epbt
 pertinent	1' P1:Erpbt
 pertinent	2 P1:Ert/TPH0E:Epbt
 perturb	1 P0E:Er/T1:Urb
+perturbation	1' ^ TPR0:U/PWR1:AEUgs
 perturbing	1 P0E:Er/T1:Urbg
 perturbing	1' ^ TPR1:Urb/0EU:EUpbg
 perturbs	1 P0E:Er/T1:Urbs
@@ -31190,6 +32094,7 @@ piazza	1' ^ P1:Az/0A:A
 pic	1 P1:*EUbg
 pica	1 P1:AOEU/K0A:A
 pica	2 P1:AOEUbg/0A:A
+picayune	1' ^ KP0A:A/KWR1:Epb
 piccolo	1 P1:EUbg/HR0O:OE
 piccolo	1 P1:EUblg/0O:O
 piccolo	2 P1:*EUbg/HR0O:OE
@@ -31258,6 +32163,7 @@ piggly	1 P1:EUg/HR0EU:EU
 piggly	1 P1:EUlg
 piggy	1 P1:EUg/0EU:EU
 pigment	1 P1:EUplgt
+pigmentation	1' ^ TKPWH0E:E/TPH1:AEUgs
 pigments	1' P1:EUplg/0E:Epbts
 pigments	1'' P1:EUplg/0E:Epbts
 pigs	1 P1:EUgs
@@ -31317,6 +32223,7 @@ pincher	1 P1:EUfrpb
 pincher	1 P1:EUpb/KH0E:Er
 pinching	1 P1:EUfrpb/0EU:EUpbg
 pine	1 P1:AOEUpb
+pineal	1' ^ TPH1:E/0A:Al
 pineapple	1 P1:AOEUpb/0A:A*pl
 pineapple	1 P1:AOEUpb/0E:AEpl
 ping	1 P1:EUpbg
@@ -31343,9 +32250,12 @@ pinto	1 P1:EUpb/T0O:OE
 pints	1 P1:AOEUpbts
 pints	1' P1:AOEUpbts
 pioneer	1 P0EU:AOEUpb/1:AOEr
+pioneer	1' ^ P0O:O/TPH1:AOEr
 pioneer	2 P0EU:AOEU/TPH1:AOEr
 pioneered	1 P0EU:AOEU/TPH1:AOErd
+pioneered	1' ^ P0E:AOE/TPH1:Erd
 pioneers	1 P0EU:AOEUpb/1:AOErz
+pioneers	1' ^ P0O:O/TPH1:AOErs
 pioneers	2 P0EU:AOEU/TPH1:AOErs
 pious	1 P1:AOEU/0O:OUs
 pious	2 P1:AOEU/0U:Us
@@ -31506,6 +32416,7 @@ plantain	1' PHR1:Apb
 plantain	2 PHR1:Apbt/0A:AEUpb
 plantation	1 PHR0A:A/TPH1:AEUgs
 plantations	1 PHR0A:A/TPH1:AEUrpbz
+plantations	1'' ^ TPHR1:AEUrb/0EU:EUpbs
 planted	1 PHR1:Apbt/0E:Ed
 planter	1 PHR1:Apb/T0E:Er
 planter	1 PHR1:Arpbt
@@ -31653,6 +32564,7 @@ pleural	1 PHR1:AOUrl
 pleural	1' PHR1:AOUr/0A:Al
 pleurisy	1 PHR1:AOUr/S0EU:EU
 pleuritis	1 PHR0E:Er/1:AOEUts
+pleuritis	1' ^ PHR1:AOEUt/0EU:EUs
 pleuritis	2 PHR0U:AOUr/1:AOEUts
 plex	1 PHR1:Ebgs
 plexus	1 PHR1:Ebg/S0U:Us
@@ -31844,6 +32756,7 @@ polite	3 P0O:OE/HR1:AOEUt
 politic	1 P1:Ol/T0EU:EUbg
 political	1 PHR1:EUt/K0A:Al
 politician	1 P0O:Ol/T1:EUgs
+politician	1' ^ PHR0EU:EU/T1:EUgs
 politico	1 PHR1:EUt/K0O:OE
 politics	1 P1:Ol/T0EU:EUbgs
 polity	1 P1:Ol/T0EU:EU
@@ -31860,6 +32773,7 @@ pollen	1 P1:Opbl
 pollinate	1 P1:Ol/TPH0A:AEUt
 pollinate	1 P1:Opbl/0A:AEUt
 pollination	1 P0O:Ol/TPH1:AEUgs
+pollination	1' ^ PHR0EU:EU/TPH1:AEUgs
 polling	1 P1:Ol/0EU:EUpbg
 pollo	1 P1:Ol/HR0O:O
 pollo	2 P1:Ol/HR0O:OE
@@ -31898,6 +32812,8 @@ polo	1 P1:OE/HR0O:OE
 poltergeist	1 P1:Orlgt/0E:AOEUft
 poltergeist	1' P1:Orlg/0E:AOEUft
 polygamous	1 PHR1:EUg/PH0O:OUs
+polyglot	1' ^ PHR0EU:EU/TKPWHR1:Ot
+polyglot	1' ^ PHR1:EUlg/0O:Ot
 polygon	1 P1:Ol/TKPW0O:Opb
 polygon	2 P1:Ol/TKPW0O:O*pb
 polygraph	1 P1:Ol/TKPWR0A:Af
@@ -31985,6 +32901,7 @@ populate	1 P1:Op/HR0A:AEUt
 populate	2 P1:O*p/HR0A:AEUt
 populated	1 P1:Op/HR0A:AEUtd
 population	1 P0O:Op/HR1:AEUgs
+population	1' ^ P0U:U/HR1:AEUgs
 population	2 P0O:O*p/HR1:AEUgs
 populist	1 P1:Op/HR0EU:*EUs
 populist	2 P1:Op/HR0EU:EUft
@@ -32161,8 +33078,12 @@ postmaster	2 P1:Opls/0A:Afrt
 postmaster	2' P1:Opls/0A:Ars
 postmodern	1 P0O:O/STPH1:Orpbd
 postmodern	1' P0O:O/SPH1:Orpbd
+postmodern	1'' ^ STPH1:Od/0:Erpb
+postmodern	1''' ^ SPH1:Od/0:Erpb
 postmortem	1 P0O:O/STPH1:Orplt
 postmortem	1' P0O:O/SPH1:Orpl
+postmortem	1'' ^ STPH1:Ort/0E:Epl
+postmortem	1''' ^ SPH1:Ort/0E:Epl
 postpone	1 P0O:O*s/P1:OEpb
 postpone	2 P0O:O*Es/P1:OEpb
 postpone	3 P0O:OEft/P1:OEpb
@@ -32206,6 +33127,7 @@ potentials	1'' ^ TP1:Erpb/0EU:EUls
 pothole	1 P1:Ot/H0O:OEl
 potion	1 P1:OEgs
 potpourri	1 P0O:O/PR1:AOE
+potpourri	1' ^ P0O:OU/R1:AOE
 potpourri	2 P0O:OE/PR1:AOE
 pots	1 P1:Ots
 pottery	1 P1:Ort/0EU:EU
@@ -32327,7 +33249,9 @@ preaches	1 PR1:AEfp/0E:Es
 preaching	1 PR1:AEfp/0EU:EUpbg
 preamble	1'' ^ PR1:Apbl/0E:El
 prearrange	1 PR0E:E/1:Arpbg
+prearrange	1' ^ PR0:A/R1:AEUpbg
 prearrange	2 PR0E:AOE/1:Arpblg
+prearranged	1' ^ PR0:A/R1:Epbgd
 precarious	1 PR0E:E/K1:AEUrs
 precaution	1 PR0E:E/K1:AUgs
 precautions	1 PR0E:E/K1:AUrpbz
@@ -32372,6 +33296,7 @@ preclusion	2 PR0E:E/KHR1:AOUgs
 precocious	1 PR0E:E/K1:OErbs
 precocious	1' ^ KPR1:OErb/0EU:EUs
 precocious	2' ^ KPR1:OErb/0EU:EUs
+preconceive	1' ^ KPR0O:O/STPH1:A*Ef
 preconception	1' ^ KPR0O:O/STPH1:Epgs
 precursor	1 PR0E:E/K1:Urs
 precursor	1'' ^ KPR1:Urs/0:Or
@@ -32384,6 +33309,7 @@ predatory	2 PR1:Ed/TR0EU:EU
 predatory	3 PR1:Ed/T0O:OEUr
 predestine	1 PR0E:E/TK1:Efpbt
 predestine	1' PR0E:E/TK1:Epbs
+predestine	1'' ^ TKPR1:Eft/0EU:EUpb
 predicament	1' ^ TKPR1:*EUbg/0A:Aplt
 predicament	2' ^ TKPR1:*EUbg/0A:Aplt
 predicate	1 PR1:Ed/K0A:At
@@ -32407,6 +33333,8 @@ predictor	1 PR0E:E/TK1:EUrbgt
 predictor	1' PR0E:E/TK1:EUrbg
 predictor	1'' ^ TKPR1:EUbgt/0:Or
 predicts	1 PR0E:AOE/TK1:EUbgts
+predilection	1' ^ TKPR0EU:EU/HR1:Ebgs
+predispose	1' ^ TKPR0EU:EU/SP1:OEs
 preempt	1 PR1:E/0E:Eplt
 preempt	2 PR1:E/0E:*Eplt
 preempt	3 PR1:E/0E:Efrpt
@@ -32464,6 +33392,7 @@ prelude	1 PR1:E/HR0U:AOUd
 premarin	1 PR1:Epl/R0EU:*EUpb
 premarin	1 PR1:Erpbl
 premature	1 PR0E:Epl/T1:Ur
+premature	1' ^ PHR0A:A/KH1:AOUr
 premature	2 PR0E:AOEpl/T1:Ur
 premature	3 PR0E:Epl/T1:AOUr
 premature	4 PR0E:AOEpl/KH1:Ur
@@ -32494,6 +33423,7 @@ prenuptial	1'' ^ TPHR1:Urpb/0EU:EUl
 prep	1 PR1:Ep
 prepaid	1 PR0E:AOE/P1:A*EUd
 preparation	1 PR0E:E/PR1:AEUgs
+preparation	1' ^ PR0:A/R1:AEUgs
 preparation	2 PR0E:Ep/R1:AEUgs
 prepare	1 PR0E:E/P1:AEUr
 preparedness	1' ^ PR1:Ar/0E:Epbsd
@@ -32535,6 +33465,7 @@ present	2 PR1:Ez/0E:Epbt
 present	3 PR1:E/S0E:*Epbt
 presentable	1 PR1:Epbt/0A:Abl
 presentation	1 PR0E:Epb/1:AEUgs
+presentation	1' ^ SPR0E:E/TPH1:AEUgs
 presentation	2 PR0E:Es/T1:AEUgs
 presentation	3 PR0E:Epbt/T1:AEUgs
 presented	1' ^ SPR1:Epbt/0E:Ed
@@ -32558,6 +33489,7 @@ presents	1'' PR1:Es/0E:Epbts
 presents	2 PR0E:E/S1:Epbts
 presents	2' PR0E:E/S1:Epbts
 preservation	1 PR0E:Es/SR1:AEUgs
+preservation	1' ^ SPR0:E/SR1:AEUgs
 preservation	2 PR0E:Ez/SR1:AEUgs
 preserve	1 PR0E:E/S1:Efrb
 preserve	2 PR0E:E/S1:Efrb
@@ -32641,6 +33573,7 @@ presumptions	1'' ^ SPR1:Ufrpb/0EU:EUpbs
 presumptions	2'' ^ SPR1:Ufrpb/0EU:EUpbs
 presumptive	1' ^ SPR1:Uplt/0EU:EUf
 presuppose	1 PR0E:E/SP1:Os
+presuppose	1' ^ SPR0U:U/P1:OEs
 presuppose	2 PR0E:E/SP1:OEs
 presuppose	3 PR0E:AOE/SP1:Os
 presuppose	4 PR0E:AOE/SP1:OEs
@@ -32717,6 +33650,8 @@ pricey	1 PR1:AOEU/S0EU:EU
 pricey	2 PR1:AOEUs/S0EU:EU
 pricey	3 PR1:AOEUs/0EU:EU
 pricier	1 PR1:AOEUs/0E:Er
+priciest	1' ^ SPR0EU:AOE/1:Eft
+priciest	1' ^ SPR1:AOE/0E:Eft
 pricing	1 PR1:AOEUs/0EU:EUpbg
 prick	1 PR1:EUbg
 prickly	1 PR1:EUbg/HR0EU:EU
@@ -32847,6 +33782,7 @@ prize	1 PR1:AOEUz
 prizes	1 PR1:AOEUz/0E:Es
 prizes	2 PR1:AOEUz/0E:Es
 pro	1 PR1:O
+proactive	1' ^ PR1:Abgt/0EU:EUf
 probability	1 PR0O:Ob/1:EUblt
 probable	1 PR1:Ob/0A:Abl
 probably	1 PR1:Ob/HR0EU:EU
@@ -32903,6 +33839,7 @@ proclaim	1 PR0O:O/KHR1:A*EUpl
 proclaim	2 PR0O:OE/KHR1:A*EUpl
 proclaiming	1' ^ KPHR1:A*EUpl/0EU:EUpbg
 proclamation	1 PR0O:Obg/PH1:AEUgs
+proclamation	1' ^ KPHR0A:A/PH1:AEUgs
 proclivity	1 PR0O:O/KHR1:*EUft
 proclivity	2 PR0O:OE/KHR1:EUft
 procreate	1 PR1:O/KR0A:AEUt
@@ -32952,6 +33889,7 @@ productivity	2 PR0O:OUbg/T1:*EUft
 productivity	3 PR0O:OUbgt/1:*EUft
 products	1 PR1:Od/0U:Ubgts
 profanation	1 PR0O:Of/TPH1:AEUgs
+profanation	1' ^ TPR0A:A/TPH1:AEUgs
 profane	1 PR0O:O/TP1:AEUpb
 profane	2 PR0O:OE/TP1:AEUpb
 profanity	1 PR0O:O/TP1:Apbt
@@ -32983,6 +33921,7 @@ profit	1 PR1:Of/TP0EU:EUt
 profitable	1 PR1:Oft/0A:Abl
 profitably	1 PR1:Oft/PWHR0EU:EU
 profiteer	1 PR0O:Of/T1:AOEr
+profiteer	1' ^ TPR0EU:EU/T1:AOEr
 profiteer	2 PR0O:Oft/T1:AOEr
 profits	1 PR1:Of/0EU:EUts
 profligate	1 PR1:Ofl/TKPW0A:At
@@ -33021,6 +33960,7 @@ prohibit	1 PR0O:O/H1:EUbt
 prohibit	1' ^ PR1:EUb/0EU:EUt
 prohibit	2 PR0O:OE/H1:EUbt
 prohibition	1 PR0O:O/PW1:EUgs
+prohibition	1' ^ PR0EU:EU/PW1:EUgs
 prohibition	2 PR0O:OE/H1:EUbgs
 prohibition	3 PR0O:OE/PW1:EUgs
 prohibition	4 PR0O:OEb/PW1:EUgs
@@ -33061,6 +34001,7 @@ prolongs	1 PR0O:O/HR1:Opbgs
 prolongs	2 PR0O:OE/HR1:Opbgs
 prom	1 PR1:Opl
 promenade	1 PR0O:Opl/TPH1:Ad
+promenade	1' ^ PHR0E:E/TPH1:AEUd
 promenade	2 PR0O:Opl/TPH1:AUd
 promenade	3 PR0O:Opl/TPH1:AEUd
 prominence	1 PR1:Opl/TPH0E:Ebs
@@ -33127,6 +34068,7 @@ proofs	1 PR1:AOfs
 prop	1 PR1:Op
 propagate	1 PR1:Op/TKPW0A:AEUt
 propagation	1 PR0O:Op/TKPW1:AEUgs
+propagation	1' ^ PR0A:A/TKPW1:AEUgs
 propane	1 PR1:O/P0A:AEUpb
 propane	2 PR1:OE/P0A:AEUpb
 propel	1 PR0O:O/P1:El
@@ -33180,6 +34122,7 @@ propose	3 PR0O:OEp/1:OEs
 proposes	1' ^ PR1:OEs/0E:Es
 proposing	1' ^ PR1:OEs/0EU:EUpbg
 proposition	1 PR0O:Op/1:EUgs
+proposition	1' ^ PR0O:O/S1:EUgs
 proposition	2 PR0O:Op/S1:EUgs
 proposition	3 PR0O:Op/S1:*EUgs
 proposition	4 PWR0O:Op/S1:EUgs
@@ -33210,6 +34153,7 @@ proscription	1 PR0O:O/SKR1:EUpgs
 prose	1 PR1:OEs
 prosecute	1 PR1:Os/K0U:AOUt
 prosecution	1 PR0O:Os/K1:AOUgs
+prosecution	1' ^ SPR0E:E/K1:AOUgs
 prosody	1 PR1:Os/TK0EU:EU
 prospect	1 PR1:O/SP0E:Ebgt
 prospect	2 PR1:Os/P0E:Ebgt
@@ -33241,12 +34185,15 @@ prostate	4 PR1:Oft/T0A:AEUt
 prostate	4 PR1:Os/T0A:AEUlt
 prostatic	1' ^ STPR1:At/0EU:*EUbg
 prostheses	1' ^ STPHR1:AOEs/0E:Es
+prosthesis	1' ^ STPHR1:Es/0EU:EUs
+prosthesis	2' ^ STPHR1:AOEs/0EU:EUs
 prosthetic	1' ^ STPHR1:Et/0EU:*EUbg
 prosthetics	1' ^ STPHR1:Et/0EU:*EUbgs
 prostitute	1 PR1:Os/T0U:AOUt
 prostitute	2 PR1:O*s/T0U:AOUt
 prostitute	3 PR1:Oft/T0U:AOUt
 prostitution	1 PR0O:Os/T1:AOUgs
+prostitution	1' ^ STPR0EU:EU/T1:AOUgs
 prostitution	2 PR0O:Ot/T1:AOUgs
 prostitution	3 PR0O:O*s/T1:AOUgs
 prostitution	4 PR0O:Oft/T1:AOUgs
@@ -33288,6 +34235,7 @@ protest	1 PR1:O/T0E:Eft
 protest	2 PR1:OE/T0E:Eft
 protestant	1 PR1:Ot/0E:Efpbt
 protestant	1' PR1:Ot/0E:Epbts
+protestation	1' ^ TPR0E:E/ST1:AEUgs
 protested	1' ^ TPR1:Eft/0E:Ed
 protester	1 PR1:OEt/0E:Efrt
 protester	1' PR1:OEt/0E:Ers
@@ -33364,6 +34312,7 @@ provisions	1'' ^ SPR1:EUpblg/0EU:EUpbs
 proviso	1' ^ SPR1:AOEUs/0O:O
 provisos	1' ^ SPR1:AOEUs/0O:Os
 provocation	1 PR0O:Of/K1:AEUgs
+provocation	1' ^ SPR0O:O/K1:AEUgs
 provocation	2 PR0O:O*f/K1:AEUgs
 provoke	1 PR0O:O/SR1:OEbg
 provoke	2 PR0O:OE/SR1:OEbg
@@ -33441,6 +34390,7 @@ psychosis	1 SK1:OE/S0EU:EUs
 psychosis	1' ^ SK1:OEs/0EU:EUs
 psychosocial	1 S1:AOEUbg/S0O:OErbl
 psychotic	1 SK1:Ot/0EU:EUbg
+psychotic	1' ^ SK1:Ot/0EU:*EUbg
 psyllium	1 S1:EUl/0U:Upl
 ptomaine	1 T1:OE/PH0A:AEUpb
 ptomaine	1 T1:OEpbl
@@ -33459,6 +34409,7 @@ pubic	3 TP1:AOUb/0EU:EUbg
 public	1 P1:Ubl/0EU:EUbg
 public	2 P1:Ub/HR0EU:EUbg
 publication	1 P0U:Ub/K1:AEUgs
+publication	1' ^ PWHR0EU:EU/K1:AEUgs
 publication	2 P0U:Ubl/K1:AEUgs
 publication	3 PW0U:Ubl/K1:AEUgs
 publicist	1 P1:Ubl/S0EU:EUft
@@ -33711,6 +34662,7 @@ pylon	1 P1:AOEU/HR0O:Opb
 pylon	2 P1:AOEUl/0O:O*pb
 pylon	3 P1:AO*EU/HR0O:Opb
 pylons	1 P1:AO*EUl/0O:Opbs
+pylori	1' ^ PHR1:Or/0EU:AOE
 pyramid	1 P1:EUr/PH0EU:EUd
 pyramid	1 P1:EUrpl/0EU:EUd
 pyramid	2 P1:EUfr/PH0EU:EUd
@@ -33900,6 +34852,7 @@ question	1 KW1:Efgts
 question	2 KW1:Egs
 questioner	1 KW1:E/0E:*Er
 questionnaire	1 KW0E:E/1:AEUr
+questionnaire	1' ^ SKWH0EU:EU/TPH1:A*EUr
 questionnaire	2 KW0E:E/TPH1:AEUr
 questionnaire	3 KW0E:Egs/TPH1:AEUr
 questionnaire	4 KW0E:*Egs/TPH1:AEUr
@@ -33941,6 +34894,7 @@ quinine	1 KW1:EUpb/0EU:AOEUpb
 quinine	2 KW1:EU/TPH0EU:AOEUpb
 quinine	3 KW1:AOEUpb/0EU:AOEUpb
 quinine	4 KW1:AOEU/TPH0EU:AOEUpb
+quinoa	1' ^ TKPH1:O/0A:A
 quintessence	1 KW0EU:EU/TPH1:Epbs
 quintessence	1'' ^ TKPWH1:Es/0E:Epbs
 quintet	1 KW0EU:EUpb/T1:Et
@@ -33948,6 +34902,7 @@ quintet	2 KW0EU:EUpbt/1:Et
 quintuple	1 KW1:EUpb/T0U:*Upl
 quintuple	1 KW1:EUpbt/0U:Upl
 quintuple	2 KW0EU:EU/TPH1:Upl
+quintuple	2'' ^ TKPWH1:Up/0E:El
 quip	1 KW1:EUp
 quire	1 KW1:AOEUr
 quirk	1 KW1:EUrbg
@@ -34039,8 +34994,10 @@ racists	1' R1:AEUs/0EU:EUs
 rack	1 R1:Abg
 racket	1 R1:Abg/0E:Et
 racketeer	1 R0A:Abg/T1:AOEr
+racketeer	1' ^ KR0E:E/T1:AOEr
 racking	1 R1:Abg/0EU:EUpbg
 racks	1 R1:Abgs
+raconteur	1' ^ KR0O:O/TPH1:AOUr
 racquet	1 R1:Abg/0E:Et
 racquet	2 R1:Abg/K0E:Et
 racquet	3 R1:Abg/W0E:Et
@@ -34061,6 +35018,7 @@ radiance	1 R1:AEUd/0A:Apbs
 radiant	1 R1:AEUd/0A:Apbt
 radiate	1 R1:AEUd/0A:AEUt
 radiates	1 R1:AEUd/0A:AEUts
+radiation	1' ^ TKR0EU:AOE/1:AEUgs
 radical	1 R1:Ad/0EU:EUblg
 radical	1 R1:Ad/K0A:Al
 radical	2 R1:Ad/0EU:EUblg
@@ -34264,6 +35222,7 @@ raps	1 R1:Aps
 rapt	1 R1:Apt
 rapture	1 R1:Ap/KH0U:Ur
 rapunzel	1 R0A:AU/P1:Ulz
+rapunzel	1'' ^ PR1:Uz/0E:El
 rara	1 R1:A/R0A:A
 rara	2 R1:Ar/0A:A
 rare	1 R1:AEUr
@@ -34313,6 +35272,7 @@ rational	2 R1:Ags/0A:A*l
 rational	3 R1:Alg/0A:A*l
 rational	4 R1:Ags/TPH0A:Al
 rational	4 R1:Arb/TPH0A:Al
+rationale	1' ^ SHR0EU:EU/TPH1:Al
 rationality	1 R1:Arbl/T0EU:EU
 rationalize	1 R1:Ags/0EU:AOEUz
 rationalize	2 R1:Ags/HR0EU:AOEUz
@@ -34367,6 +35327,7 @@ razor	1 R1:AEUrz
 razor	2 R1:AEUz/0O:O*r
 razor	3 R1:AEUz/S0O:Or
 razor	4 R1:AEUz/S0O:O*r
+reabsorb	1' ^ R0A:A/SPW1:Orb
 reach	1 R1:AEfp
 reachable	1 R1:AEfp/0A:Abl
 reaches	1 R1:AEfp/0E:Es
@@ -34408,13 +35369,18 @@ reading	1 R1:AEd/0EU:EUpbg
 reading	2 R1:AEd/0EU:EUpbg
 readings	1 R1:AEd/0EU:EUpbgs
 readjust	1 R0E:E/SKWR1:Uft
+readjust	1' ^ R0A:A/SKWR1:Uft
+readmit	1' ^ R0A:A/TKPH1:EUt
 readout	1 R1:AEd/0O:OUt
 reads	1 R1:AEdz
 ready	1 R1:AEd/TK0EU:EU
 ready	2 R1:AEd/0EU:EU
 reaffirm	1 R0E:E/TP1:EUrpl
+reaffirm	1' ^ R0A:A/TP1:EUrpl
+reaffirmed	1' ^ R0EU:EU/TP1:Erpld
 reaffirming	1 R0E:E/TP1:EUrplg
 reaffirms	1 R0E:E/TP1:EUrpls
+reaffirms	1' ^ R0A:A/TP1:EUrpls
 reagent	1 R0E:E/1:AEUgt
 reagent	1 R0E:E/1:AEUpblgt
 reagent	1'' ^ R1:AEUpblg/0E:Epbt
@@ -34463,6 +35429,8 @@ reap	1 R1:AEp
 reaper	1 R1:AErp
 reaper	1' R1:AEp/0:Er
 reaping	1 R1:AEp/0EU:EUpbg
+reappear	1' ^ R0A:A/P1:AEr
+reappeared	1' ^ R0E:AE/P1:Erd
 reapply	1 R0E:E/1:Apl
 reapply	1 R1:E/0A:Apl
 rear	1 R1:AEr
@@ -34470,7 +35438,9 @@ rearing	1 R1:AEr/0EU:EUpbg
 rearm	1 R1:E/0A:Arpl
 rearmament	1' ^ R1:Arpl/0A:Aplt
 rearrange	1 R0E:E/1:Arpbg
+rearrange	1' ^ R0:A/R1:AEUpbg
 rearrange	2 R0E:AOE/1:Arpbg
+rearranged	1' ^ R0:A/R1:Epbgd
 rearrangement	1' ^ R0:A/R1:Epblgt
 rears	1 R1:AErs
 reason	1 R1:AE/S0O:Opb
@@ -34481,10 +35451,16 @@ reasonably	1 R1:AEpbz/0A:Abl
 reasoning	1 R1:AEpbz/0EU:EUpbg
 reasons	1 R1:AEpbz
 reasons	1' R1:AEs/0O:Opbs
+reassessment	1' ^ R0A:A/S1:Eplts
 reassign	1 R0E:AE/S1:AOEUpb
+reassign	1' ^ R0A:A/S1:AOEUpb
+reassigned	1' ^ R0EU:EU/S1:Epbd
 reassignment	1 R0E:AE/S1:AOEUplt
 reassignment	1' ^ R0A:A/S1:AOEUpblt
 reassignment	2 R0E:AOE/S1:AOEUplt
+reassure	1' ^ R0U:U/SH1:Er
+reassured	1' ^ R0U:U/SH1:Erd
+reassures	1' ^ R0U:U/SH1:Erz
 rebate	1 R1:E/PW0A:AEUt
 rebate	2 R1:AOE/PW0A:AEUt
 rebel	1 R1:Eb/0E:El
@@ -34530,6 +35506,7 @@ recalls	1 R1:AO*Ebg/0A:AUls
 recalls	2 R0E:E/K1:AUls
 recant	1 R0E:E/K1:Apbt
 recant	2 R0E:AOE/K1:Apbt
+recantation	1' ^ KR0A:A/TPH1:AEUgs
 recantation	2' ^ KR0A:A/TPH1:AEUgs
 recap	1 R1:E/K0A:Ap
 recap	2 R1:AOE/K0A:Ap
@@ -34586,6 +35563,7 @@ receptors	1'' ^ SR1:Ept/0:Ors
 recess	1 R0E:E/S1:Es
 recess	2 R0E:E/S1:Esz
 recess	3 R0E:AOE/S1:Es
+recessing	1' ^ SR1:Es/0EU:EUpbg
 recession	1 R0E:E/S1:Egs
 recession	2 R0E:E/S1:Egs
 recessive	1' ^ SR1:Es/0EU:EUf
@@ -34606,6 +35584,7 @@ recital	1 R0E:E/S1:AOEUlt
 recital	1'' ^ SR1:AOEUt/0A:Al
 recitals	1'' ^ SR1:AOEUt/0A:Als
 recitation	1 R0E:Es/T1:AUgs
+recitation	1' ^ SR0EU:EU/T1:AEUgs
 recitation	2 R0E:Es/T1:AEUgs
 recitation	3 R0E:Es/T1:AEUpbgs
 recite	1 R0E:E/S1:AOEUt
@@ -34629,6 +35608,7 @@ reclaimer	1 R0E:E/KHR1:A*EUrpl
 reclaimer	1'' ^ KHR1:A*EUpl/0:Er
 reclaiming	1' ^ KHR1:A*EUpl/0EU:EUpbg
 reclamation	1 R0E:E/KHR1:Aplgs
+reclamation	1' ^ KHR0A:A/PH1:AEUgs
 reclamation	2 R0E:Ebg/PH1:AEUbgs
 recline	1 R0E:E/KHR1:AOEUpb
 reclining	1 R0E:E/KHR1:AOEUpbg
@@ -34640,21 +35620,34 @@ recluse	3 R0E:Ebg/KHR1:AOUs
 reclusive	1' ^ KHR1:AOUs/0EU:EUf
 reclusive	2' ^ KHR1:AOUs/0EU:EUf
 recognition	1 R0E:Ebg/TPH1:EUgs
+recognition	1' ^ KR0O:O/TKPWH1:EUgs
 recognition	2 R0E:Eg/TPH1:EUbgs
+recognition	2' ^ KR0O:O/TKPWH1:EUgs
 recognition	3 R0E:Ebg/TPH1:EUgdz
 recognize	1 R1:Ebg/TPH0EU:AOEUs
 recognize	2 R1:Ebg/TPH0EU:AOEUz
 recognizing	1 R1:Ebg/TPH0EU:AOEUgz
 recoil	1 R0E:E/K1:OEUl
 recollect	1 R0E:E/KHR1:Ebgt
+recollect	1' ^ KR0O:O/HR1:Ebgt
 recollect	2 R0E:Ebg/HR1:Ebgt
+recollect	2' ^ KR0O:O/HR1:Ebgt
+recollection	1' ^ KR0O:O/HR1:Ebgs
 recollects	1 R0E:Ebg/HR1:Ebgts
+recollects	1' ^ KR0O:O/HR1:Ebgts
+recollects	1'' ^ KR0O:O/HR1:Ebgts
+recollects	2' ^ KR0O:O/HR1:Ebgts
+recollects	2'' ^ KR0O:O/HR1:Ebgts
+recombine	1' ^ KR0O:O/PWH1:AOEUpb
 recommend	1 R0E:Ebg/PH1:Epbd
+recommend	1' ^ KR0O:O/PH1:Epbd
 recommendation	1 R0E:Epl/TK1:Ags
 recommendation	2 R0E:Epl/T1:AEUgs
 recommendation	3 R0E:Epl/TK1:AEUgs
 recommendation	4 R0E:Epld/TK1:AEUgs
 recommends	1 R0E:Ebg/PH1:Epbdz
+recommends	1' ^ KR0O:O/PH1:Epbdz
+recommends	1'' ^ KR0O:O/PH1:Epbdz
 recompense	1 R1:Ebg/P0E:Epbs
 recompense	1 R1:Efrpbg/0E:Epbs
 recompense	2 R1:Epl/P0E:Epbs
@@ -34663,9 +35656,14 @@ reconcile	1 R1:Ebg/S0EU:AOEUl
 reconcile	1 R1:Epbgs/0EU:AOEUl
 recondite	1 R1:Ebg/TK0EU:AOEUt
 recondite	1 R1:Epbgd/0EU:AOEUt
+reconfirm	1' ^ KR0O:O/TPH1:EUrpl
 reconnect	1' ^ KR0O:O/TPH1:Ebgt
 reconstruct	1 R0E:E/KR1:Ubgt
+reconstruct	1' ^ KR0O:O/STPHR1:Ubgt
+reconstruct	1'' ^ KR0O:O/STPHR1:Ubgt
 reconstruction	1 R0E:E/KR1:Ubgs
+reconstruction	1' ^ KR0O:O/STPHR1:Ubgs
+reconstruction	1'' ^ KR0O:O/STPHR1:Ubgs
 reconvene	1' ^ KR0O:O/STPHR1:AOEpb
 record	1 R0E:Ebg/1:Ord
 record	2 R0E:Ebg/K1:Ord
@@ -34693,7 +35691,9 @@ records	2 R0E:Ebg/K1:Ordz
 recount	1 R0E:E/K1:OUpbt
 recount	2 R0E:AOE/K1:OUpbt
 recounted	1' ^ KR1:OUpbt/0E:Ed
+recounted	2' ^ KR1:OUpbt/0E:Ed
 recounting	1' ^ KR1:OUpbt/0EU:EUpbg
+recounting	2' ^ KR1:OUpbt/0EU:EUpbg
 recounts	1 R0E:AOE/K1:OUpbts
 recoup	1 R0E:E/K1:AOUp
 recoup	2 R0E:AOE/K1:AOUp
@@ -34714,6 +35714,7 @@ recreate	2 R1:AOE/KR0E:AOEt
 recreate	2' ^ KR0E:E/1:AEUt
 recreates	1 R1:AOE/KR0E:AOEts
 recreation	1 R0E:Ebg/R1:AEUgs
+recreation	1' ^ KR0E:E/1:AEUgs
 recruit	1 R0E:E/KR1:AOUt
 recruit	2 R0E:AOE/KR1:AOUt
 recruited	1 R0E:E/KR1:AOUtd
@@ -34806,10 +35807,13 @@ redemption	1 R0E:E/TK1:Efrpgs
 redemption	2 R0E:E/TK1:Eplgs
 redemptive	1' ^ TKR1:Eplt/0EU:EUf
 redemptive	2' ^ TKR1:Eplt/0EU:EUf
+redeploy	1' ^ TKR0E:E/PHR1:OEU
+redesign	1' ^ TKR0E:E/S1:AOEUpb
 redhead	1 R1:Ed/H0E:AEd
 redheads	1 R1:Ed/H0E:AEdz
 redid	1 R0E:Ed/1:EUd
 redirect	1 R0E:E/TKR1:Ebgt
+redirect	1' ^ TKR0:EU/R1:Ebgt
 redirect	2 R0E:AOE/TKR1:Ebgt
 rediscover	1 R0E:E/SK1:Ofr
 redneck	1 R1:*Ed/TPH0E:Ebg
@@ -34885,8 +35889,10 @@ reentry	1'' ^ R1:Erpb/0EU:EU
 ref	1 R1:Ef
 refer	1 R0E:E/TP1:Er
 referee	1 R0E:Ef/R1:AOE
+referee	1' ^ TPR0:E/R1:AOE
 referee	2 R0E:Efr/1:AOE
 referee	3 R0E:Efr/1:AE
+referees	1' ^ TPR0:E/R1:AOEs
 reference	1 R1:Ef/0E:Erpbs
 reference	2 R1:Ef/R0E:Epbs
 referendum	1 R1:Efr/TK0U:Upl
@@ -34903,6 +35909,7 @@ refers	2 R0E:E/TP1:Ers
 refill	1 R1:AOEfl
 refill	1 R1:E/TP0EU:EUl
 refill	2 R1:AOE/TP0EU:EUl
+refinance	1' ^ TPR0EU:EU/TPH1:Apbs
 refine	1 R0E:E/TP1:AOEUpb
 refine	2 R0E:AOE/TP1:AOEUpb
 refining	1 R0E:AOE/TP1:AOEUpbg
@@ -34930,6 +35937,7 @@ reflex	2 R1:AOE/TPHR0E:Ebgs
 reflux	1 R1:E/TPHR0U:Ubgs
 reform	1 R0E:E/TP1:Orpl
 reformation	1 R0E:Ef/PH1:AEUgs
+reformation	1' ^ TPR0:O/PHR1:AEUgs
 reformation	2 R0E:Efr/PH1:AUgs
 reformation	3 R0E:Efr/PH1:AEUgs
 reformer	1 R0E:E/TP1:Orpl
@@ -34997,6 +36005,7 @@ refuses	2' ^ TPR1:AOUs/0E:Es
 refusing	1' ^ TPR1:AOUs/0EU:EUpbg
 refusing	2' ^ TPR1:AOUs/0EU:EUpbg
 refutation	1 R0E:Ef/T1:AEUgs
+refutation	1' ^ TPR0U:U/T1:AEUgs
 refute	1 R0E:E/TP1:AOUt
 refute	2 R0E:AOE/TP1:AOUt
 refuted	1' ^ TPR1:AOUt/0E:Ed
@@ -35064,6 +36073,8 @@ registrar	1 R1:Epblg/ST0A:Ar
 registrar	2 R1:Epblg/STR0A:Ar
 registrar	3 HR1:Epblg/STR0A:Ar
 registration	1 R0E:Epblg/TR1:AEUgs
+registration	1' ^ SKWR0EU:EU/STR1:AEUgs
+registration	1'' ^ SKWR0EU:EU/SR1:AEUgs
 registration	2 R0E:Epblg/STR1:AEUgs
 registry	1 R1:Epblg/STR0EU:EU
 rego	1 R1:Eg/0O:O
@@ -35093,6 +36104,7 @@ regulate	1 R1:Eg/HR0A:AEUt
 regulated	1 R1:Eg/HR0A:AEUtd
 regulating	1 R1:Eg/HR0A:AEUgt
 regulation	1 R0E:Eg/HR1:AEUg
+regulation	1' ^ TKPWR0U:U/HR1:AEUgs
 regulation	2 R0E:Eg/HR1:AEUs
 regulation	3 R0E:Eg/HR1:AEUgs
 regulation	4 R0E:Egs/HR1:AEUgs
@@ -35129,23 +36141,41 @@ reign	1 R1:A*Epb
 reigning	1 R1:A*Epb/0EU:EUpbg
 reigns	1 R1:A*Epbs
 reimburse	1 R0E:AOEpl/PW1:Urs
+reimburse	1' ^ R0EU:EU/PWH1:Urs
 reimburse	2 PR0E:AOEpl/PW1:Urs
+reimbursed	1' ^ R0U:U/PWH1:Efrt
 reimbursement	1 R1:AOEpl/PW0U:Urplt
+reimbursement	1' ^ R0U:U/PWH1:Erplts
+reimposed	1' ^ R0O:O/PH1:Edz
 rein	1 R1:A*Epb
 reindeer	1 R1:A*Epb/TK0E:AOEr
 reinforce	1 R0E:AOEpb/TP1:Ors
+reinforce	1' ^ R0EU:EU/TPH1:OErs
+reinforced	1' ^ R0O:O/TPH1:Efrt
 reinforcement	1 R1:AOEpb/TP0O:Orplt
+reinforcement	1' ^ R0O:O/TPH1:Erplts
 reins	1 R1:A*Epbs
 reinstall	1 R0E:AOEpb/ST1:AUl
+reinstall	1' ^ R0EU:EU/STPH1:AUl
 reinstall	2 R0E:AOEpbs/T1:AUl
+reinstalled	1' ^ R0A:A/STPH1:Eld
 reinstate	1 R0E:AOEpb/ST1:AEUt
+reinstate	1' ^ R0EU:EU/STPH1:AEUt
+reinstatement	1' ^ R0A:A/STPH1:Eplt
 reinsurance	1 R0E:AOEpb/STPH1:AOUrpbs
+reinsure	1' ^ R0U:U/STPH1:Er
+reinsured	1' ^ R0U:U/STPH1:Erd
 reinvent	1 R0E:AOEpb/SR1:Epbt
+reinvent	1' ^ R0EU:EU/STPHR1:Epbt
 reinvest	1 R0E:AOE/SR1:Ef
+reinvest	1' ^ R0EU:EU/STPHR1:Eft
 reinvest	2 R0E:AOEpb/SR1:Ef
 reinvest	3 R0E:AOEpb/SR1:Efp
 reinvest	4 R0E:AOEpb/SR1:Eft
+reinvestment	1' ^ R0EU:EU/STPHR1:Efplt
+reinvestment	2' ^ R0EU:EU/STPHR1:Eplts
 reinvite	1 R0E:AOEpb/SR1:AOEUt
+reinvite	1' ^ R0EU:EU/STPHR1:AOEUt
 reissue	1' ^ R1:EUrb/0U:AO*U
 reissued	1' ^ R1:EUrb/0U:AO*Ud
 reject	1 R0E:E/SKWR1:Ebgt
@@ -35179,6 +36209,7 @@ relapse	2 R0E:AOE/HR1:Aps
 relate	1 R0E:E/HR1:AEUt
 relate	2 R0E:AOE/HR1:AEUt
 related	1' ^ HR1:AEUt/0E:Ed
+related	2' ^ HR1:AEUt/0E:Ed
 related	3' ^ HR1:AEUt/0E:Ed
 relating	1' ^ HR1:AEUt/0EU:EUpbg
 relating	2' ^ HR1:AEUt/0EU:EUpbg
@@ -35195,6 +36226,7 @@ relativity	2 R0E:El/T1:*EUft
 relax	1 R0E:E/HR1:Abgs
 relax	2 R0E:El/HR1:Abgs
 relax	3 R0E:AOE/HR1:Abgs
+relaxation	1' ^ HR0A:A/SK1:AEUgs
 relaxes	1' ^ HR1:Abgs/0E:Es
 relaxing	1 R0E:E/HR1:Afg
 relaxing	1' ^ HR1:Abgs/0EU:EUpbg
@@ -35271,6 +36303,7 @@ relive	1 R0E:E/HR1:EUf
 relive	2 R0E:AOE/HR1:EUf
 reload	1 R0E:E/HR1:O*Ed
 relocate	1 R0E:E/HR1:OEbgt
+relocate	1' ^ HR1:O*Ebg/0A:AEUt
 relocation	1 R0E:E/HR1:OEbgs
 reluctance	1 R0E:E/HR1:Upbgts
 reluctance	1' R0E:E/HR1:Upbgs
@@ -35339,6 +36372,7 @@ reminders	1'' ^ PHR1:AOEUpbd/0:Ers
 reminding	1' ^ PHR1:AOEUpbd/0EU:EUpbg
 reminds	1 R0E:AOE/PH1:AOEUpbdz
 reminisce	1 R0E:Epl/TPH1:EUs
+reminisce	1' ^ PHR0EU:EU/TPH1:EUs
 remiss	1 R0E:E/PH1:EUs
 remiss	2 R0E:AOE/PH1:EUs
 remission	1 R0E:E/PH1:EUgs
@@ -35380,6 +36414,7 @@ removing	1 R0E:E/PH1:Ofg
 removing	1' ^ PHR1:Of/0EU:EUpbg
 ren	1 R1:Epb
 renaissance	1 R0E:Epb/S1:A*pbs
+renaissance	1' ^ TPHR0A:A*EU/S1:AUpbs
 renaissance	2 R0E:Epb/S1:AUpbs
 renal	1 R1:AOEpbl
 renal	1 R1:E/TPH0A:Al
@@ -35419,6 +36454,7 @@ renin	2 R1:AOEpb/0EU:*EUpb
 renounce	1 R0E:E/TPH1:OUpbs
 renovate	1 R1:Epb/SR0A:AEUt
 renovation	1 R0E:Epb/SR1:AEUgs
+renovation	1' ^ TPHR0O:O/SR1:AEUgs
 renown	1 R0E:E/TPH1:OUpb
 renown	2 R0E:AOE/TPH1:OUpb
 rent	1 R1:Epbt
@@ -35463,6 +36499,8 @@ repairman	2' ^ PR1:A*EUrpl/0A:Apb
 repairmen	1' ^ PR1:A*EUrpl/0E:Epb
 repairs	1 R0E:AOE/P1:A*EUrs
 reparation	1 R0E:Ep/R1:AEUgs
+reparation	1' ^ PR0:A/R1:AEUgs
+repartee	1' ^ PR0:A/TR1:AOE
 repatriate	1 R0E:E/PR1:AEUrt
 repay	1 R0E:E/P1:AEU
 repay	2 R0E:AOE/P1:AEU
@@ -35496,11 +36534,14 @@ repentant	1 R0E:E/P1:Epbt
 repentant	1' R0E:E/P1:Epbt
 repentant	1'' ^ PR1:Epbt/0A:Apbt
 repercussion	1 R0E:Ep/K1:Ugs
+repercussion	1' ^ PR0:E/KR1:Ugs
+repercussion	2' ^ PR0E:E/K1:Ugs
 repertoire	1 R1:Ep/T0O:OEUr
 repertoire	1 R1:Erpt/0O:OEUr
 repertoire	1' R1:Erp/0O:OEUr
 repertoire	2 R1:Ep/TW0O:OEUr
 repetition	1 R0E:Ep/T1:EUgs
+repetition	1' ^ PR0E:E/T1:EUgs
 repetitious	1 R0E:Ep/T1:EUrbs
 rephrase	1 R0E:E/TPR1:AEUs
 rephrase	2 R0E:AOE/TPR1:AEUs
@@ -35533,6 +36574,7 @@ replicate	2 R1:Ep/K0A:AEUt
 replicate	3 R1:Epl/K0A:AEUt
 replicating	1 R1:Epl/K0A:AEUgt
 replication	1 R0E:Ep/K1:AEUgs
+replication	1' ^ PHR0EU:EU/K1:AEUgs
 replication	2 R0E:*Ep/K1:AEUgs
 replication	3 R0E:Epl/K1:AEUgs
 replication	4 R0E:*Epl/K1:AEUgs
@@ -35553,6 +36595,7 @@ report	2 R0E:E/P1:Ort
 reportable	1 R1:Orp/0A:Abl
 reportage	1 R1:Orp/0A:Apblg
 reportage	1' ^ PR1:Ort/0A:Apblg
+reported	1' ^ PR1:Ort/0E:Ed
 reported	2' ^ PR1:Ort/0E:Ed
 reportedly	1 R1:Orpd/HR0EU:EU
 reportedly	1' ^ PR1:Ort/0E:Eld
@@ -35572,10 +36615,16 @@ reports	2 R0E:E/P1:Orts
 reports	2' R0E:E/P1:Ors
 repose	1 R0E:E/P1:OEs
 repose	2 R0E:AOE/P1:OEs
+reposition	1' ^ PR0O:O/S1:EUgs
+repossess	1' ^ PR0O:O/S1:Es
+repossession	1' ^ PR0O:O/S1:Egs
 represent	1 R0E:Ep/S1:*Epbt
+represent	1' ^ PR0E:E/S1:Epbt
 representation	1 PR0E:Ept/1:AEUgs
 representation	2 R0E:Epgs/1:AEUgs
 representation	3 R0E:Ept/T1:AEUgs
+represents	1' ^ PR0E:E/S1:Epbts
+represents	1'' ^ PR0E:E/S1:Epbts
 repress	1 R0E:E/PR1:Es
 repress	2 R0E:AOE/PR1:Es
 repressing	1' ^ PR1:Es/0EU:EUpbg
@@ -35599,7 +36648,9 @@ reprisal	1'' ^ PR1:AOEUs/0A:Al
 reprise	1 R0E:E/PR1:AOEUs
 reproach	1 R0E:E/PR1:O*Efp
 reproach	2 R0E:AOE/PR1:O*Efp
+reproduce	1' ^ PR0O:O/TK1:AOUs
 reproduction	1 R0E:Erp/TK1:Ubgs
+reproduction	1' ^ PR0O:O/TK1:Ubgs
 reps	1 R1:Eps
 reptile	1 R1:Ep/T0EU:AOEUl
 reptile	1 R1:Eplt
@@ -35612,6 +36663,7 @@ repugnant	1'' ^ PR1:Upbg/0A:Apbt
 repugnant	2'' ^ PR1:Upbg/0A:Apbt
 repulsive	1' ^ PR1:Uls/0EU:EUf
 reputation	1 R0E:Ep/T1:AEUgs
+reputation	1' ^ PR0U:U/T1:AEUgs
 reputation	2 R0E:*Ep/T1:AEUgs
 reputation	3 R0E:Ep/T1:AEUlgs
 repute	1 R0E:E/P1:AOUt
@@ -35644,6 +36696,7 @@ requires	1 R0E:E/KW1:AOEUrz
 requiring	2' ^ KWR1:AOEUr/0EU:EUpbg
 requisite	1 R1:Ebg/S0EU:EUt
 requisition	1 R0E:Ebg/S1:EUgs
+requisition	1' ^ KWR0EU:EU/S1:EUgs
 requisition	2 R0E:Ebg/W1:EUgs
 reread	1 R1:E/R0E:AEd
 reread	2 R1:AOE/R0E:AEd
@@ -35710,6 +36763,7 @@ resentments	2'' ^ SR1:Epbl/0E:Epbts
 resentments	2''' ^ SR1:Epbl/0E:Epbts
 resents	1 R0E:AOE/S1:Epbts
 reservation	1 R0E:Es/SR1:AEUgs
+reservation	1' ^ SR0:E/SR1:AEUgs
 reservation	2 R0E:Ez/SR1:AEUgs
 reservation	3 SR0E:Ers/SR1:AEUgs
 reserve	1 R0E:E/S1:Erb
@@ -35754,7 +36808,10 @@ resign	1 R0E:E/S1:AOEUpb
 resign	2 R0E:E/S1:AO*EUpb
 resign	3 R0E:AOE/S1:AOEUpb
 resignation	1 R0E:Ez/TPH1:AEUgs
+resignation	1' ^ SR0EU:EU/TKPWH1:AEUgs
 resignation	2 R0E:Egs/TPH1:AEUgs
+resignation	2' ^ SR0EU:EU/TKPWH1:AEUgs
+resignee	1' ^ SR0EU:EU/TKPWH1:AOE
 resigning	1 R0E:AOE/S1:AOEUpbg
 resigning	1' ^ SR1:AOEUpb/0EU:EUpbg
 resigning	2' ^ SR1:AOEUpb/0EU:EUpbg
@@ -35799,6 +36856,7 @@ resolute	1 R1:Elz/0U:AOUt
 resolute	1 R1:Es/HR0U:AOUt
 resolute	2 R1:Ez/HR0U:AOUt
 resolution	1 R0E:Es/HR1:AOUgs
+resolution	1' ^ SR0O:O/HR1:AOUgs
 resolution	2 R0E:Ez/HR1:AOUgs
 resolve	1 R0E:E/S1:Ofl
 resolving	1' ^ SR1:Ofl/0EU:EUpbg
@@ -35839,6 +36897,7 @@ respective	1' ^ SPR1:Ebgt/0EU:EUf
 respective	2' ^ SPR1:Ebgt/0EU:EUf
 respects	1 R0E:AOE/SP1:Ebgts
 respiration	1 R0E:Efp/R1:AEUgs
+respiration	1' ^ SPR0:EU/R1:AEUgs
 respiration	2 R0E:Es/PR1:AEUgs
 respirator	1 R1:Efrp/0A:Art
 respiratory	1 R1:Efp/T0O:OEr
@@ -35909,6 +36968,7 @@ restful	1 R1:Eflt
 restful	1 R1:Eft/TP0U:Ul
 resting	1 R1:Eft/0EU:EUpbg
 restitution	1 R0E:Es/T1:AOUgs
+restitution	1' ^ STR0EU:EU/T1:AOUgs
 restitution	2 R0E:*Es/T1:AOUgs
 restitution	3 R0E:Eft/T1:AOUgs
 restive	1 R1:Eft/0EU:EUf
@@ -35919,6 +36979,7 @@ restless	1 R1:Es/HR0E:Es
 restlessness	1 R1:Eflt/0E:Epbs
 restlessness	1' R1:Els/0E:Epbs
 restoration	1 R0E:*Es/R1:AEUgs
+restoration	1' ^ STR0:O/R1:AEUgs
 restoration	2 R0E:Eft/R1:AEUgs
 restoration	3 R0E:Eft/R1:AEUlgs
 restore	1 R0E:E/ST1:Or
@@ -35961,6 +37022,7 @@ restructure	1''' ^ SR1:Ufpbg/0:Ur
 rests	1 R1:Efts
 rests	1' R1:Es
 resubmit	1 R0E:E/SPH1:EUt
+resubmit	1' ^ SR0U:U/PWH1:EUt
 resubmit	2 R0E:E/SPH1:EUpt
 resubmit	3 R0E:AOE/SPH1:EUt
 result	1 R0E:E/S1:Ult
@@ -35998,7 +37060,9 @@ resumption	4 R0E:E/S1:Uplgs
 resurgence	1 R0E:E/S1:Urpblgs
 resurgence	1'' ^ SR1:Urpblg/0E:Epbs
 resurrect	1 R0E:Es/R1:Ebgt
+resurrect	1' ^ SR0:U/R1:Ebgt
 resurrect	2 R0E:Ez/R1:Ebgt
+resurrection	1' ^ SR0:U/R1:Ebgs
 ret	1 R1:Et
 retail	1 R1:E/T0A:A*EUl
 retail	2 R1:AOE/T0A:A*EUl
@@ -36100,6 +37164,8 @@ retrial	1' ^ TR1:AOEU/0A:Al
 retrial	1'' ^ R1:AOEU/0A:Al
 retrial	2 R0E:AOE/TR1:AOEUl
 retribution	1 R0E:Et/PW1:AOUgs
+retribution	1' ^ TR0EU:EU/PW1:AOUgs
+retribution	1'' ^ R0EU:EU/PW1:AOUgs
 retribution	2 R0E:Ert/PW1:AOUgs
 retried	1 R0E:AOE/TR1:AOEUd
 retrieval	1 R0E:E/TR1:AOEUfl
@@ -36139,6 +37205,7 @@ returns	1 R0E:E/T1:Urpbs
 returns	2 R0E:E/T1:Urpbs
 reunion	1 R0E:E/TPH1:AOUpb
 reunion	2 R0E:AOE/TPH1:AOUpb
+reunite	1' ^ R0U:U/TPH1:AOEUt
 reuse	1 R0E:AOU/KWR1:Es
 reuse	2 R0E:AOU/KWR1:Ez
 rev	1 R1:Ef
@@ -36153,6 +37220,7 @@ reveals	2 R0E:AOE/SR1:AEls
 revel	1 R1:*Ef/0E:El
 revel	1 R1:Efl
 revelation	1 R0E:Efl/1:AEUgs
+revelation	1' ^ SR0E:E/HR1:AEUgs
 revelation	2 R0E:Ef/HR1:AEUgs
 revelation	3 R0E:El/SR1:AEUgs
 revelation	4 R0E:*Ef/HR1:AEUgs
@@ -36241,6 +37309,7 @@ reviving	2 R0E:AOE/SR1:AOEUfg
 reviving	2' ^ SR1:AOEUf/0EU:EUpbg
 revocable	1 R1:*Ef/K0A:Abl
 revocation	1 R0E:Ef/K1:AEUgs
+revocation	1' ^ SR0O:O/K1:AEUgs
 revocation	2 R0E:*Ef/K1:AEUgs
 revoke	1 R0E:E/SR1:OEbg
 revoke	2 R0E:AOE/SR1:OEbg
@@ -36249,6 +37318,7 @@ revoking	2' ^ SR1:OEbg/0EU:EUpbg
 revolt	1 R0E:E/SR1:Olt
 revolting	1' ^ SR1:Olt/0EU:EUpbg
 revolution	1 R0E:Efl/1:AOUgs
+revolution	1' ^ SR0O:O/HR1:AOUgs
 revolution	2 R0E:Ef/HR1:AOUgs
 revolution	3 R0E:Efls/1:AOUgs
 revolution	4 R0E:*Ef/HR1:AOUgs
@@ -36302,6 +37372,7 @@ rhesus	4 R1:AO*Es/0U:Us
 rhetoric	1 R1:Ert/0EU:*EUbg
 rhetoric	1 R1:Et/R0EU:EUbg
 rhetorician	1 R0E:Et/R1:EUgs
+rhetorician	1' ^ TR0:O/R1:EUgs
 rheumatic	1' ^ PHR1:At/0EU:*EUbg
 rheumatoid	1 R1:AOUpl/T0O:OEUd
 rhino	1 R1:AOEU/TPH0O:OE
@@ -36479,6 +37550,7 @@ riskiness	1 R1:EUfbg/0EU:AOEpbs
 risking	1 R1:EUfbg/0EU:EUpbg
 risks	1 R1:EUfbgs
 risky	1 R1:EUs/K0EU:EU
+risotto	1' ^ SR1:Ot/0O:O
 risque	1 R0EU:EU/SK1:E
 rite	1 R1:AOEUt
 ritual	1 R1:EUfp/0A:Al
@@ -36566,6 +37638,8 @@ robins	1' R1:Ob/0EU:EUpbs
 robot	1 R1:O/PW0O:Ot
 robot	2 R1:OEb/0O:Ot
 robot	3 R1:OE/PW0O:Ot
+robotic	1' ^ PWR1:Ot/0EU:*EUbg
+robotics	1' ^ PWR1:Ot/0EU:*EUbgs
 robots	1 R1:OE/PW0O:Ots
 robs	1 R1:Obs
 robust	1 R0O:O/PW1:Uft
@@ -36849,6 +37923,7 @@ rumen	1 R1:AOUpl/0E:*Epb
 ruminant	1 R1:AOUpl/TPH0A:Apbt
 ruminate	1 R1:AOUpbl/0A:AEUt
 ruminate	1 R1:AOUpl/TPH0A:AEUt
+rumination	1' ^ PHR0EU:EU/TPH1:AEUgs
 rummage	1 R1:Upl/0A:Apblg
 rummage	2 R1:Upl/PH0A:Apblg
 rumor	1 R1:AOU/PH0O:Or
@@ -36937,6 +38012,7 @@ sable	1' S1:AEUb/0E:El
 sabotage	1 S1:Ab/T0A:Apblg
 sabotage	2 S1:Ab/T0A:AUpblg
 saboteur	1 S0A:Ab/T1:Er
+saboteur	1' ^ SPW0O:O/T1:AOUr
 saboteur	2 S0A:Ab/T1:Ur
 saboteur	3 S0A:Ab/T1:AOUr
 sabre	1 S1:AEUrb
@@ -37095,6 +38171,8 @@ salts	1 S1:AUlts
 salts	1' S1:AUls
 saltwater	1 S0A:AU/TWHR1:Art
 saltwater	1' S0A:AU/WHR1:Art
+saltwater	1'' ^ STWHR1:At/0:Er
+saltwater	1''' ^ SWHR1:At/0:Er
 salty	1 S1:Al/T0EU:EU
 salty	2 S1:Alt/T0EU:EU
 salty	3 S1:AUl/T0EU:EU
@@ -37188,6 +38266,8 @@ sanguine	1 S1:Apb/KW0EU:EUpb
 sanguine	2 S1:Apbg/W0EU:EUpb
 sanitary	1 S1:Apb/TR0EU:EU
 sanitary	2 S1:Apb/T0A:AEUr
+sanitation	1' ^ STPH0EU:EU/T1:AEUgs
+sanitation	2' ^ STPH0EU:EU/T1:AEUgs
 sanitize	1 S1:Apb/T0EU:AOEUz
 sanity	1 S1:Apb/T0EU:EU
 sank	1 S1:A*pbg
@@ -37245,6 +38325,8 @@ satirist	1 S1:At/R0EU:*EUs
 satirist	2 S1:At/R0EU:EUft
 satirize	1 S1:Art/0EU:AOEUz
 satirize	1 S1:At/R0EU:AOEUz
+satisfaction	1' ^ ST0EU:EU/STP1:Abgs
+satisfaction	2' ^ ST0EU:EU/STP1:Abgs
 satisfy	1 S1:Ats/TP0EU:EU
 satisfying	1 S1:Ats/TP0EU:EUg
 satisfying	2 S1:Ats/TP0EU:AOEUg
@@ -37253,6 +38335,7 @@ saturate	1 S1:At/R0A:AEUt
 saturate	2 S1:Afp/R0A:AEUt
 saturated	1 S1:At/R0A:AEUtd
 saturated	2 S1:Afp/R0A:AEUtd
+saturation	1' ^ SKH0:U/R1:AEUgs
 sauce	1 S1:AUs
 saucer	1 S1:AUrs
 saucer	1 S1:AUs/0E:Er
@@ -37942,6 +39025,10 @@ seethe	1 S1:AO*Et
 seething	1 S1:AO*Et/0EU:EUpbg
 segment	1 S1:Eplgt
 segment	2 S0E:E/TKPWH1:Epbt
+segmentation	1' ^ STKPWH0E:E/TPH1:AEUgs
+segmented	2' ^ STKPWH1:Epbt/0E:Ed
+segmented	4' ^ STKPWH1:Epb/0E:Ed
+segmenting	1' ^ STKPWH1:Epbt/0EU:EUpbg
 segments	1' S1:Eplg/0E:Epbts
 segments	1'' S1:Eplg/0E:Epbts
 segments	2 S0E:E/TKPWH1:Epbts
@@ -37950,6 +39037,7 @@ segregate	1 S1:Eg/TKPW0A:AEUt
 segregate	2 S1:Erg/TKPW0A:AEUt
 segregated	1 S1:Erg/TKPW0A:AEUtd
 segregation	1 S0E:Eg/TKPW1:AEUgs
+segregation	1' ^ STKPWR0E:E/TKPW1:AEUgs
 segregation	2 S0E:Erg/TKPW1:AEUgs
 segue	1 S1:Eg
 segue	2 S1:Eg/0E:E
@@ -38063,6 +39151,7 @@ seniors	1 S1:AOEpb/KWR0O:Ors
 senna	1 S1:Epb/TPH0A:A
 senor	1 S0E:Epb/KWR1:OEr
 senora	1 STPH1:Or/0A:A
+senora	1' ^ STPH1:Or/0A:A
 sensation	1 S0E:E/STPH1:AEUgs
 sensation	1 S0E:Epb/S1:AEUgs
 sensation	2 S0E:Epbs/S1:AEUgs
@@ -38129,6 +39218,7 @@ separate	3 TK1:Ep/R0A:At
 separate	4 S1:Ep/PR0A:AEUt
 separate	4 S1:Ep/R0A:AEUt
 separation	1 S0E:Ep/R1:AEUgs
+separation	1' ^ SP0:A/R1:AEUgs
 separation	2 S0E:Ep/PR1:AEUgs
 separator	1 S1:Erp/0A:Art
 sepia	1 S1:AOEp/0A:A
@@ -38150,6 +39240,8 @@ sequester	1' S0E:E/KW1:Ers
 sequester	1'' ^ SKW1:Eft/0:Er
 sequesters	1'' ^ SKW1:Eft/0:Ers
 sequestration	1 SKW0E:Eft/R1:AEUgs
+sequestration	1' ^ SKW0E:E/STR1:AEUgs
+sequestration	1'' ^ SKW0E:E/SR1:AEUgs
 sequestration	2 SKW0E:Es/TR1:AEUgs
 sequestration	3 SKW0E:Eft/TR1:AEUgs
 sequin	1 S1:E/KW0EU:EUpb
@@ -38160,7 +39252,9 @@ sequitur	1 S1:Ebg/0EU:EUrt
 sequitur	1 S1:Ebg/T0U:Ur
 sequoia	1 SKW1:OEU/0A:A
 sequoia	1' ^ SKW1:O/0EU:EU
+seraphim	1' ^ SR0A:AU/TP1:AOEpl
 serenade	1 S0E:Er/TPH1:AEUd
+serenade	1' ^ SR0E:E/TPH1:AEUd
 serene	1 S0E:E/R1:AOEpb
 serf	1 S1:*Efr
 serfs	1 S1:*Efrs
@@ -38289,6 +39383,7 @@ severest	1' ^ SR1:Er/0E:Eft
 severing	1 S1:*Ef/0E:Erg
 severing	1 S1:Efr/0EU:EUpbg
 severs	1 S1:*Ef/0E:Ers
+sevruga	1' ^ SR1:AOUg/0A:A
 sew	1 S1:AOU
 sewage	1 S1:E/0A:Apblg
 sewage	2 S1:E/0A:Apblg
@@ -38308,6 +39403,7 @@ sexton	1 S1:Ebgs/T0O:Opb
 sexton	1 S1:Epbgs
 sexton	1' S1:Epbgs
 sexton	2 S1:Ebgs/T0O:O*pb
+sextuplet	1' ^ STK1:Upl/0E:Et
 sexual	1 S1:Ebgs/W0A:Al
 sexual	1 S1:Erbg/0A:Al
 sexual	2 S1:Ebgs/0A:Al
@@ -38496,6 +39592,8 @@ shore	1 SH1:OEr
 shoring	1 SH1:Or/0EU:EUpbg
 shorn	1 SH1:Orpb
 short	1 SH1:Ort
+shortchanging	1' ^ STKHR1:Apbg/0EU:EUpbg
+shortchanging	1'' ^ SKHR1:Apbg/0EU:EUpbg
 shorted	1 SH1:Ort/0E:Ed
 shorten	1 SH1:Orpbt
 shorten	1' SH1:Orpb
@@ -38673,7 +39771,9 @@ silent	1 S1:AOEUpblt
 silently	1' S1:AOEUl/0E:Epblt
 silently	1'' S1:AOEUl/0E:Epbl
 silhouette	1 S0EU:*EUl/W1:Et
+silhouette	1' ^ SHR0O:O/W1:Et
 silhouette	2 S0EU:EUl/W1:*Et
+silhouettes	1' ^ SHR0O:O/W1:Ets
 silica	1 S1:EUl/K0A:A
 silicate	1 S1:EUl/K0A:At
 silicate	2 S1:EUl/K0A:AEUt
@@ -38754,6 +39854,7 @@ simply	4 ST1:EUpl/PHR0EU:EU
 simulate	1 S1:EUpl/HR0A:AEUt
 simulating	1 S1:EUpl/HR0A:AEUgt
 simulation	1 S0EU:EUpl/HR1:AEUgs
+simulation	1' ^ SPH0U:U/HR1:AEUgs
 simulator	1 S1:EUpl/HR0A:A*EUrt
 sin	1 S1:EUpb
 since	1 S1:EUpbs
@@ -39174,6 +40275,7 @@ smilingly	1 SPH1:AOEUl/0EU:EUpblg
 smilingly	1 SPH1:AOEUlg/HR0EU:EU
 smirk	1 SPH1:EUrbg
 smithereen	1 SPH0EU:*EUt/R1:AOEpb
+smithereen	1' ^ STPH0:E/R1:AOEpb
 smiths	1 SPH1:*EUts
 smitten	1 SPH1:EUpbt
 smitten	1 SPH1:EUt/0E:*Epb
@@ -39523,6 +40625,7 @@ solidly	1 S1:Ol/0EU:EUld
 solids	1 S1:Ol/0EU:EUdz
 solids	2 S1:Ol/HR0EU:EUdz
 solitaire	1 S0O:Ol/T1:A*EUr
+solitaire	1' ^ SHR0EU:EU/T1:A*EUr
 solitary	1 S1:Ol/T0A:AEUr
 solitude	1 S1:Ol/T0U:AOUd
 solo	1 S1:O/HR0O:O
@@ -39553,6 +40656,7 @@ solving	1 S1:Ofl/0EU:EUpbg
 soma	1 S1:OE/PH0A:A
 soma	2 S1:OEpl/0A:A
 somatic	1 SPH1:At/0EU:EUbg
+somatic	1' ^ SPH1:AUt/0EU:*EUbg
 somber	1 S1:Opl/PW0E:Er
 somberly	1 S1:Opl/PW0E:Erl
 somberly	1' S1:Opbl/0:Erl
@@ -39663,6 +40767,7 @@ southeast	1 S0O:O*Ut/1:AEft
 southeast	2 S0O:O*Ut/1:AO*Es
 southeastern	1 S0O:OU/TH1:AEfrpbt
 southeastern	1' S0O:OU/TH1:AErpbs
+southeastern	1'' ^ STH1:AEft/0:Erpb
 southerly	1 S1:*Urlt
 southerly	1 S1:*Ut/HR0EU:EU
 southerly	1' S1:*Ut/0:Erl
@@ -39677,7 +40782,10 @@ southwest	1 S0O:O*Ut/W1:*Es
 southwestern	1 S0O:O*Ut/W1:Erpb
 southwestern	1 S0O:OU/TWH1:Efrpbt
 southwestern	1' S0O:OU/TWH1:Erpbs
+southwestern	1'' ^ STWH1:Eft/0:Erpb
 souvenir	1 S0U:AO*Uf/TPH1:EUr
+souvenir	1' ^ SR0E:E/TPH1:EUr
+souvenirs	1' ^ SR0E:E/TPH1:EUrs
 soviet	1 S1:O*Ef/0E:Et
 sow	1 S1:OU
 sow	2 S1:O*E
@@ -39857,6 +40965,7 @@ spectrum	4 SP1:Ebgt/TR0U:Upl
 speculate	1 SP1:Ebg/HR0A:AEUt
 speculating	1 SP1:Ebg/HR0A:AEUgt
 speculation	1 S0E:Ebg/PHR1:AEUgs
+speculation	1' ^ SKP0U:U/HR1:AEUgs
 speculation	2 SP0E:Ebg/HR1:AEUgs
 sped	1 SP1:Ed
 speech	1 SP1:AOEfp
@@ -40515,6 +41624,8 @@ statistical	2 ST1:EUbgs/0A:A*l
 statistical	3 ST1:*EUbgs/0A:A*l
 statistically	1 ST0A:Ats/KHR1:EU
 statistician	1 ST0A:As/T1:EUgs
+statistician	1' ^ ST0EU:EU/ST1:EUgs
+statistician	1'' ^ ST0EU:EU/ST1:EUgs
 statistician	2 ST0A:At/T1:EUgs
 statistician	3 ST0A:At/ST1:EUgs
 statistician	4 ST0A:Ats/ST1:EUgs
@@ -40630,6 +41741,8 @@ stenographer	2 TPH1:Og/STP0E:Er
 stenographic	1 ST0E:Epb/TKPWR1:Afbg
 stenographic	2 ST0O:OEUpb/TKPWR1:Afbg
 stenosis	1 ST1:O*EUpb/S0EU:EUs
+stenosis	1' ^ STPH1:OEs/0EU:EUs
+stenosis	1'' ^ STPH1:OEs/0EU:EUs
 stent	1 ST1:Epbt
 step	1 ST1:Ep
 stepchild	1 ST1:Ep/KH0EU:AOEUld
@@ -40745,6 +41858,8 @@ stimulate	2 ST1:*EUpl/HR0A:AEUt
 stimulated	1 ST1:EUpl/HR0A:AEUtd
 stimulating	1 ST1:EUpl/HR0A:AEUgt
 stimulation	1 ST0EU:EUpl/HR1:AEUgs
+stimulation	1' ^ STPH0U:U/HR1:AEUgs
+stimulation	1'' ^ SPH0U:U/HR1:AEUgs
 stimulator	1 ST1:EUpl/HR0A:AEUrt
 stimuli	1 T1:EUpl/HR0EU:AOEU
 stimuli	2 ST1:EUpl/HR0EU:AOEU
@@ -40772,6 +41887,8 @@ stipends	1' ST1:AOEUpbz
 stipulate	1 ST1:EUp/HR0A:AEUt
 stipulated	1 ST1:EUp/HR0A:AEUtd
 stipulation	1 ST0EU:EUp/HR1:AEUgs
+stipulation	1' ^ STP0U:U/HR1:AEUgs
+stipulation	1'' ^ SP0U:U/HR1:AEUgs
 stir	1 ST1:EUr
 stirring	1 ST1:EUr/0EU:EUpbg
 stirrings	1 ST1:EUr/0EU:EUpbgs
@@ -41391,11 +42508,13 @@ subcontracts	1'' ^ SKPW1:Orpb/0A:Abgts
 subculture	1 S1:Ubg/0U:Urlg
 subcutaneous	1 SK1:AEUpb/KWR0U:Us
 subdivide	1 S0U:Ub/TKW1:AOEUd
+subdivide	1' ^ STKPW0EU:EU/SR1:AOEUd
 subdivision	1 S1:Ub/TKW0EU:EUgs
 subdue	1 S0U:Ub/TK1:AO*U
 subdued	1 S0U:Ub/TK1:AO*Ud
 subgroup	1 S1:Ub/TKPWR0U:AOUp
 subhuman	1 S0U:U/PW1:AOUpbl
+subhuman	1'' ^ SPW1:AOUpl/0A:Apb
 subject	1 S0U:Ub/SKWR1:Ebgt
 subjected	1' ^ SKPWR1:Ebgt/0E:Ed
 subjecting	1' ^ SKPWR1:Ebgt/0EU:EUpbg
@@ -41414,6 +42533,7 @@ sublime	2 S0U:U/PWHR1:AOEUpl
 sublime	3 S0U:AOU/PWHR1:AOEUpl
 subluxation	1' ^ SPWHR0U:U/SK1:AEUgs
 submarine	1 S1:Ub/PHR0E:AOEpb
+submarine	2' ^ SPWH0:A/R1:AOEpb
 submerge	1 S0U:Ub/PH1:Erpblg
 submergence	1 S0U:U/PWH1:Erpblgs
 submergence	1'' ^ SPWH1:Erpblg/0E:Epbs
@@ -41494,6 +42614,7 @@ substation	1 S1:Ufbt/0A:Ags
 substitute	1 S1:Ub/ST0U:AOUt
 substitute	2 S1:Ubs/T0U:AOUt
 substitute	3 S1:*Ubs/T0U:AOUt
+substitution	1' ^ STPW0EU:EU/T1:AOUgs
 subsystem	1 S1:Ubs/0EU:EUfplt
 subsystem	1' S1:Ubs/0EU:EUpls
 subtitle	1 S1:Ubt/0EU:AOEUlt
@@ -41614,10 +42735,12 @@ suffix	1 S1:Uf/0EU:EUbgs
 suffix	2 S1:Uf/TP0EU:EUbgs
 suffocate	1 S1:Uf/K0A:AEUt
 suffocation	1 S0U:Uf/K1:AEUgs
+suffocation	1' ^ STP0O:O/K1:AEUgs
 suffrage	1 S1:Uf/R0A:Apblg
 suffrage	2 S1:Ufr/0A:Apblg
 suffrage	3 S1:*Ufr/0A:Apblg
 suffrage	4 S1:Uf/TPR0A:Apblg
+suffragette	1' ^ STPR0A:A/SKWR1:Et
 suffuse	1 S0U:Uf/TP1:AOUs
 sugar	1 SH1:Urg
 sugarcane	1 SH1:Urbg/0A:AEUpb
@@ -41795,9 +42918,13 @@ supermarkets	1 S1:AOUp/PH0A:Arbgts
 supermodel	1 S1:AOUrp/PH0O:O*ld
 supermodel	1 S1:AOUrpl/0O:Old
 supersede	1 S0U:AO*Up/S1:AEd
+supersede	1' ^ SP0:E/SR1:AOEd
 supersede	2 S0U:AOUp/S1:AOEd
 supersede	3 S0U:AO*Up/S1:AOEd
+superstar	1' ^ SP0:E/STR1:Ar
+superstars	1' ^ SP0:E/STR1:Ars
 superstition	1 S0U:AOUp/ST1:EUgs
+superstition	1' ^ SP0:E/STR1:EUgs
 superstition	2 S0U:AO*Up/ST1:EUgs
 superstitious	1 S0U:AOUp/ST1:EUrbs
 superstitious	2 S0U:AO*Up/ST1:EUrbs
@@ -41808,6 +42935,7 @@ supervise	3 1:AOUp/SR0EU:AOEUs
 supervise	4 S1:AOUp/SR0EU:AOEUs
 supervise	4 S1:AOUp/SR0EU:AOEUz
 supervision	1 S0U:AOUp/SR1:EUgs
+supervision	1' ^ SP0:E/SR1:EUgs
 supervisor	1 S1:AOUfrpb/0EU:AOEUrz
 supervisor	1 S1:AOUp/0O:O*r
 supine	1 S0U:U/P1:AOEUpb
@@ -41826,6 +42954,7 @@ supple	1' S1:Up/0E:El
 supplement	1 S1:Up/HR0E:Eplt
 supplement	1 S1:Upl/0E:Eplt
 supplement	2 S1:Up/PHR0E:Eplt
+supplement	2' ^ SPHR0E:E/PH1:Epbt
 supplemental	1 SPHR1:Eplt/0A:A*l
 supplementary	1 S0U:*Uplt/1:AEr
 supplied	1 S0U:U/PHR1:AO*EUd
@@ -41863,6 +42992,7 @@ supposedly	2 SP1:OEz/TKHR0EU:EU
 supposes	1' ^ SP1:OEs/0E:Es
 supposing	1' ^ SP1:OEs/0EU:EUpbg
 supposition	1 S0U:Up/S1:EUgs
+supposition	1' ^ SP0O:O/S1:EUgs
 supposition	2 S0U:Up/S1:*EUgs
 suppress	1 S0U:U/PR1:Esz
 suppress	2 S0U:Up/PR1:Es
@@ -41986,6 +43116,7 @@ survey	1 S0U:Ur/SR1:A*EU
 surveyed	1 S0U:Ur/SR1:AO*EUd
 surveying	1' ^ SR1:E/0EU:EUpbg
 surveyors	1 S0:U/SR1:Ers
+surveyors	2' ^ SR1:E/0:EUrs
 surveys	1 S0U:Ur/SR1:A*EUs
 survivability	1 S0U:Ur/SR1:AO*EUfblt
 survivable	1 S0U:Ur/SR1:AO*EUfbl
@@ -42268,6 +43399,7 @@ symptoms	1 S1:EUpl/T0O:Opls
 synagogue	1 S1:EUpb/TKPW0O:Og
 synapse	1 S1:EUpb/0A:Aps
 synaptic	1 STPH1:Apt/0EU:EUbg
+synaptic	1' ^ STPH1:Apt/0EU:*EUbg
 synaptic	2 STPH1:A*pt/0EU:EUbg
 sync	1 S1:*EUpbg
 synch	1 S1:EUfrpb
@@ -42288,6 +43420,7 @@ syncope	4 S1:*EUpbg/P0E:AOE
 syndicate	1 S1:EUpbd/K0A:At
 syndicate	2 S1:EUpbd/K0A:AEUt
 syndication	1 S0EU:EUpbd/K1:AEUgs
+syndication	1' ^ STKPH0EU:EU/K1:AEUgs
 syndrome	1 S1:EUpb/TK0O:OEpl
 syndrome	2 S1:EUpb/TKR0O:Opl
 syndrome	3 S1:EUpbd/R0O:OEpl
@@ -42308,6 +43441,7 @@ synopsis	1 STPH1:Op/S0EU:EUs
 synopsis	1' ^ STPH1:Ops/0EU:EUs
 synopsis	2 STPH1:Ops/0EU:EUs
 synoptic	1' ^ STPH1:Opt/0EU:*EUbg
+syntactic	1' ^ STPH1:Abgt/0EU:*EUbg
 syntax	1 S1:EUpb/T0A:Abgs
 syntax	2 S1:EUpb/T0A:A*bgs
 syntheses	1 S1:*EUpbt/S0E:AOEz
@@ -42365,6 +43499,7 @@ taboo	3 T0A:Ab/PW1:AO
 taboos	1 T0A:A/PW1:AOs
 tabs	1 T1:Abs
 tabulate	1 T1:Ab/HR0A:AEUt
+tabulation	1' ^ TPW0U:U/HR1:AEUgs
 tacit	1 T1:A/S0EU:EUt
 tacit	2 T1:As/0EU:EUt
 tacit	3 T1:As/S0EU:EUt
@@ -42484,6 +43619,7 @@ talon	1 T1:Al/0O:O*pb
 talon	1 T1:Apbl
 tam	1 T1:Apl
 tambourine	1 T0A:Apl/PWR1:AOEpb
+tambourine	1' ^ TPWH0:OU/R1:AOEpb
 tame	1 T1:AEUpl
 tamer	1 T1:AEUpl/0E:Er
 tamer	1 T1:AEUrpl
@@ -42518,6 +43654,7 @@ tangentially	1'' ^ STKPWHR1:Erpb/0EU:EUl
 tangents	1 T1:Apb/SKWR0E:Epbts
 tangents	1' T1:Apbgs
 tangerine	1 T0A:Apbg/R1:AOEpb
+tangerine	1' ^ STKPWHR0:E/R1:AOEpb
 tangerine	2 T0A:Apbg/R1:AOEUpb
 tangible	1 T1:Apbg/0EU:EUbl
 tangible	2 T1:Apb/SKWR0EU:EUbl
@@ -42654,6 +43791,7 @@ tattler	1 T1:At/HR0E:Er
 tattoo	1 T0A:A/T1:AO
 tattoo	2 T0A:At/T1:AO
 tattooing	1 T0A:A/T1:AOg
+tattooing	1' ^ T1:AO/0EU:EUpbg
 tattoos	1 T0A:A/T1:AOs
 taught	1 T1:AUt
 taunt	1 T1:AUpbt
@@ -42799,6 +43937,7 @@ teleology	1 T1:El/0O:Olg
 teleology	2 T1:AOEl/0O:Olg
 teleology	3 T1:AOEl/0O:Og
 telepath	1 T0E:El/P1:A*t
+telepath	1' ^ THR0E:E/P1:A*t
 telephone	1 T1:El/TP0O:OEpb
 telephoning	1 T1:El/TP0O:OEpbg
 teleport	1 T1:El/P0O:Ort
@@ -42985,6 +44124,7 @@ tepid	1 T1:Ep/0EU:EUd
 tequila	1' ^ TK1:AOEl/0A:A
 ter	1 T1:Er
 terabyte	1 T0E:Er/PW1:AO*EUt
+terabyte	1' ^ TR0A:A/PW1:AO*EUt
 term	1 T1:Erpl
 terminable	1 T1:Erpbl/0A:Abl
 terminable	1 T1:Erpl/TPH0A:Abl
@@ -43153,10 +44293,12 @@ theorists	1' TH1:Er/0EU:EUs
 theorize	1 TH1:Er/0EU:AOEUz
 theory	2 TH1:Er/0EU:EU
 there	1 TH1:Er
+thereabouts	1' ^ THR0E:AE/PW1:OUts
 thereafter	1 TH0E:E/R1:AEfrt
 thereafter	1' TH0E:E/R1:AEfr
 thereafter	1'' ^ THR1:AEft/0:Er
 therein	1 TH0E:E/R1:A*Epb
+thereupon	1' ^ THR0E:AOU/P1:Opb
 therm	1 TH1:Erpl
 thermal	1 TH1:Erpl
 thesauri	1' ^ STH1:AUr/0EU:AOE
@@ -43486,6 +44628,7 @@ tithe	1 T1:AO*EUt
 titillate	1 T1:EUlt/0A:AEUt
 titillate	1 T1:EUt/HR0A:AEUt
 titillation	1 T0EU:EUt/HR1:AEUgs
+titillation	1' ^ T0EU:EU/HR1:AEUgs
 title	1 T1:AOEUlt
 title	1' T1:AOEUt/0E:El
 titled	1 T1:AOEUltd
@@ -43574,6 +44717,7 @@ tolerate	2 T1:Ol/R0A:AEUt
 tolerated	1 T1:Ol/R0A:AEUtd
 tolerating	1 T1:Ol/R0A:AEUgt
 toleration	1 T0O:Ol/R1:AEUgs
+toleration	1' ^ THR0:E/R1:AEUgs
 toll	1 T1:Ol
 tolls	1 T1:Ols
 tomato	1 TPH1:AEUt/T0O:OE
@@ -43695,6 +44839,7 @@ torso	4 T1:Ors/0O:O
 tort	1 T1:Ort
 torte	1 T1:OErt
 tortilla	1' ^ TR1:AOE/0A:A
+tortillas	1' ^ TR1:AOE/0A:As
 tortoise	1 T1:Or/T0O:Os
 tortoise	2 T1:Or/T0O:OEUs
 tortoise	3 T1:Ort/0O:OEUs
@@ -43916,6 +45061,7 @@ trampled	1' TR1:Afrp/0E:Eld
 tramples	1' TR1:Afrp/0E:Elz
 trampling	1 TR1:Apl/PHR0EU:EUpbg
 trampoline	1 TR0A:A*pl/HR1:AOEpb
+trampoline	1' ^ TPHR0O:O/HR1:AOEpb
 trampoline	2 TR0A:Afrp/HR1:AOEpb
 trampoline	3 TR0A:Apl/PHR1:AOEpb
 trampoline	4 TR0A:A*pl/HR1:AOEUpb
@@ -43974,6 +45120,7 @@ transcription	3 TR0A:A*pbs/KR1:EUpgs
 transcription	4 TR0A:A*pbs/SKR1:EUpgs
 transcription	4 TR0A:Apbs/1:EUpgs
 transcription	4 TR0A:Apbs/SKR1:EUpgs
+transcriptions	1'' ^ STKPHR1:EUrpb/0EU:EUpbs
 transcripts	1 TR1:Apbs/KR0EU:EUpts
 transducer	1 TR0A:A/STKPH1:AOUrs
 transducer	1 TR0A:Apbs/TK1:AOUfr
@@ -44007,6 +45154,7 @@ transfix	1 TR0A:Apbs/TP1:EUbgs
 transform	1 TR0A:Apbs/TP1:Orpl
 transform	2 TR0A:Apbz/PH1:Orpl
 transformation	1 TR1:Apbs/TP0O:Orplgs
+transformation	1' ^ STPHR0:O/PHR1:AEUgs
 transformer	1 TR0A:A/STPH1:Orpl
 transformer	1'' ^ STPHR1:Orpl/0:Er
 transformers	1'' ^ STPHR1:Orpl/0:Ers
@@ -44014,6 +45162,7 @@ transforming	1' ^ STPHR1:Orpl/0EU:EUpbg
 transforms	1 TR0A:Apbs/TP1:Orpls
 transfusion	1 TR0A:A/STPH1:AOUgs
 transfusion	1 TR0A:Apbs/TP1:AOUgs
+transgenic	1' ^ STKPWHR1:Epb/0EU:*EUbg
 transgress	1 TR0A:Apbs/TKPWR1:Es
 transgress	2 TR0A:A*pbs/TKPWR1:Esz
 transgresses	1' ^ STKPWHR1:Es/0E:Es
@@ -44115,6 +45264,7 @@ transpires	1 TR0A:A/STPH1:AOEUrz
 transpires	1 TR0A:Apbs/P1:AOEUrs
 transplant	1 TR0A:Apbs/PHR1:Apbt
 transplant	2 TR0A:Apbs/PHR1:AUpbt
+transplantation	1' ^ STPHR0A:A/TPH1:AEUgs
 transplanted	1' ^ STPHR1:Apbt/0E:Ed
 transplants	1 TR0A:A/STPHR1:Apbts
 transplants	1' TR0A:A/STPHR1:Apbts
@@ -44123,6 +45273,7 @@ transponder	1' TR0A:A/STPH1:Orpb
 transponder	1'' ^ STPHR1:Opbd/0:Er
 transport	1 TR0A:Apbs/P1:Ort
 transportation	1 TR1:Apbs/P0O:Orgs
+transportation	1' ^ STPHR0:O/TR1:AEUgs
 transported	1 TR0A:Apbs/P1:Ortd
 transported	1' ^ STPHR1:Ort/0E:Ed
 transporter	1 TR0A:A/STPH1:Ort
@@ -44274,6 +45425,7 @@ trendy	1 TR1:Epb/TK0EU:EU
 trendy	2 TR1:Epbd/TK0EU:EU
 trendy	3 TR1:Epbd/0EU:EU
 trepidation	1 TR0E:Epd/1:AEUgs
+trepidation	1' ^ TPR0EU:EU/TK1:AEUgs
 trepidation	2 TR0E:Ep/TK1:AEUgs
 trespass	1 TR1:Es/P0A:As
 trespass	2 TR1:Es/P0A:Asz
@@ -44293,6 +45445,7 @@ triage	1 TR1:AOEU/0A:Apblg
 trial	1 TR1:AOEU/0A:Al
 trials	1 TR1:AOEU/0A:Als
 triangle	1 TR1:AOEU/0A:Apblg
+triathlon	1'' ^ TR1:A*lt/0O:Opb
 trib	1 TR1:EUb
 tribal	1 TR1:AOEU/PW0A:Al
 tribal	1 TR1:AOEUbl
@@ -44300,9 +45453,11 @@ tribal	2 TR1:AOEUb/0A:A*l
 tribal	3 TR1:AOEUb/PW0A:Al
 tribe	1 TR1:AOEUb
 tribulation	1 TR0EU:EUbl/1:AEUgs
+tribulation	1' ^ TPWR0U:U/HR1:AEUgs
 tribulation	2 TR0EU:EUb/HR1:AEUgs
 tribunal	1 TR0EU:EU/PW1:AOUpbl
 tribunal	1'' ^ TPWR1:AOUpb/0A:Al
+tribunals	1'' ^ TPWR1:AOUpb/0A:Als
 tribune	1 TR1:EUb/0U:AOUpb
 tribune	2 TR1:EU/PW0U:AOUpb
 tribune	3 TR1:*EU/PW0U:AOUpb
@@ -44439,6 +45594,7 @@ trolley	3 TR1:Ol/0EU:EU
 trolling	1 TR1:Ol/0EU:EUpbg
 trolls	1 TR1:Ols
 trombone	1 TR0O:Opl/PW1:OEpb
+trombonist	1' ^ TPWHR1:OEpb/0EU:EUft
 tromp	1 TR1:Ofrp
 tron	1 TR1:Opb
 troop	1 TR1:AOp
@@ -44542,6 +45698,7 @@ trustee	2 TR0U:*Us/T1:AOE
 trustee	3 TR0U:Uft/T1:AOE
 trustee	4 TR0U:Uft/1:AOE
 trustees	1 TR0U:Uft/1:AOEs
+trusteeship	1' ^ STR1:AOErb/0EU:EUp
 trusting	1 TR1:Uft/0EU:EUpbg
 trusts	1 TR1:Ufts
 trusts	1' TR1:Us
@@ -44735,6 +45892,7 @@ tutorial	2 T0U:Ut/T1:OErl
 tutoring	1 T1:AOUrt/0EU:EUpbg
 tutors	1' T1:AOUt/0:Ors
 tux	1 T1:Ubgs
+tuxedo	1' ^ STK1:AOEd/0O:O
 twain	1 TW1:A*EUpb
 twang	1 TW1:Apbg
 twat	1 TW1:At
@@ -44856,6 +46014,7 @@ ulcer	1 1:Urls
 ulcer	2 1:Uls/0E:Er
 ulcer	3 1:Uls/0E:*Er
 ulceration	1 0U:Uls/R1:AEUgs
+ulceration	1 ^ SHR0:E/R1:AEUgs
 ulcers	1 1:Ul/S0E:Ers
 ultima	1 1:Ult/PH0A:A
 ultima	1 1:Uplt/0A:A
@@ -44865,6 +46024,8 @@ ultimate	1 1:Uplt/0A:At
 ultimate	1' 1:Upl/0A:At
 ultra	1 1:Ult/TR0A:A
 ultraconservative	1 0U:Urlt/K1:Efrb
+ultrasound	1 ^ THR0A:A/S1:OUpbd
+ultrasound	1' ^ HR0A:A/S1:OUpbd
 um	1 1:Upl
 umbrage	1 1:Upl/PWR0A:Apblg
 umbrella	1 ^ PWR1:El/0A:A
@@ -44877,13 +46038,18 @@ umpteenth	3 1:*Upl/T0E:AO*Epbt
 unable	1 0U:Upb/1:AEUbl
 unable	1' 0U:U/TPH1:AEUbl
 unable	1' ^ TPH1:AEUb/0E:El
+unafraid	1 ^ TPH0A:A/TPR1:A*EUd
 unalloyed	1 ^ TPH1:Al/0O:OEUd
 unanimity	1 0U:AOUpb/1:EUplt
 unanimity	2 0U:AOUpb/TPH1:EUplt
 unavailable	1 0U:Upb/SR1:AEUbl
+unaware	1 ^ TPH0A:A/W1:AEUr
 unbeaten	1' 0U:U/TPWH1:AEpbt
 unbeaten	1' ^ PW1:AEt/0E:Epb
+unbeknown	1 ^ PW0E:E/TPH1:O*Epb
+unbeknown	2 ^ PW0E:E/TPH1:O*Epb
 unbeknownst	1 ^ PW0E:E/TPH1:O*Efpbt
+unbending	1 ^ PW1:Epbd/0EU:EUpbg
 unbolt	1 1:Upb/PW0O:OElt
 unborn	1 1:Upb/PW0O:Orpb
 unbound	1 0U:Upb/PW1:OUpbd
@@ -44918,22 +46084,30 @@ unclear	1 0U:Upb/KHR1:AEr
 unclear	1' ^ KHR1:AEr
 uncles	1' 1:*Upbg/0E:Elz
 uncoil	1 0U:Upb/K1:OEUl
+uncoil	1' ^ K1:OEUl
 uncommon	1 0U:Upb/KPH1:Opb
 uncommon	1' 0U:U/TKPH1:Opbl
 uncommon	1' ^ K1:Opl/0O:Opb
 uncommonly	1 0U:Upb/KPH1:Opbl
+uncommonly	1' ^ K1:Opl/0O:Opbl
+unconcern	1 ^ K0O:O/STPH1:Erpb
 unconnected	1 0U:Upb/K1:Ebgd
 unconscious	1 0U:Upb/K1:Opbgs
+unconscious	1 ^ K1:Orpb/0EU:EUs
+unconsciously	1 ^ K1:Orpb/0EU:EUls
 uncouth	1 1:Upb/K0U:AO*Ut
 uncover	1 0U:Upb/K1:Ofr
 uncover	1' 0U:U/TKPH1:Ofr
 uncover	1' ^ K1:Of/0:Er
 uncovering	1 0U:Upb/K1:Ofrg
 uncovers	1 0U:Upb/K1:Ofrs
+uncovers	1' ^ K1:Of/0:Ers
 unctuous	1 1:Upbg/KH0O:OUs
 unctuous	2 1:Ufrpblg/0O:OUs
 unctuous	3 1:Upbg/KH0U:AOUs
 uncut	1 0U:U/TKPH1:Ut
+uncut	1' ^ K1:Ut
+undated	1 ^ TK1:AEUt/0E:Ed
 undaunted	1 ^ TK1:AUpbt/0E:Ed
 under	1 1:Upb/TK0E:Er
 under	1 1:Urpbd
@@ -44960,12 +46134,15 @@ underestimate	1 1:Upbd/ST0EU:EUplt
 underestimate	2 1:Upbd/STP0EU:EUplt
 underestimated	1 1:Upbd/ST0EU:EUpltd
 undergo	1 0U:Upbdz/TKPW1:OE
+undergo	1 ^ TK0:E/TKPWR1:O
 undergoes	1 1:Urpbgd/0O:O*Es
 undergoes	1' 1:Urpbg/0O:O*Es
 undergone	1 0U:Upbd/TKPW1:Opb
+undergone	1 ^ TK0:E/TKPWR1:Opb
 underground	1 1:Upbd/TKPWR0O:OUpbd
 undergrowth	1 1:Upbd/TKPWR0O:O*Et
 underlies	1 0U:Upbd/HR1:AOEUs
+underlies	1 ^ TK0:E/HR1:AO*EUs
 underline	1 1:Upbd/HR0EU:AOEUpb
 underline	1 1:Urpbld/0EU:AOEUpb
 underline	1' 1:Urpbl/0EU:AOEUpb
@@ -44982,6 +46159,7 @@ undermine	1 1:Urpbld/0EU:AOEUpb
 undermine	1' 1:Urpbl/0EU:AOEUpb
 undermining	1 1:Upbd/PH0EU:AOEUpbg
 underneath	1 0U:Upbd/TPH1:AO*Et
+underneath	1 ^ TK0:E/TPHR1:A*Et
 underneath	2 0U:*Upbd/TPH1:AO*Et
 underneath	3 0U:Upbdz/TPH1:AO*Et
 underpaid	1 1:Upbd/P0A:AEUd
@@ -44990,18 +46168,24 @@ underpass	1 1:Urpbd/0A:As
 underpass	1' 1:Urpb/0A:As
 underpinning	1 1:Upbd/P0EU:EUpbg
 underscore	1 0U:Upbd/SK1:Or
+underscore	1 ^ TK0:E/SKR1:OEr
 undersea	1 0U:Upbd/S1:AE
+undersea	1 ^ TK0:E/SR1:AE
 underside	1 1:Upbd/S0EU:AOEUd
 underside	1 1:Urpbsd/0EU:AOEUd
 underside	1' 1:Urpbs/0EU:AOEUd
 underside	2 1:Upbd/S0EU:AO*EUd
+understand	1 ^ TK0:E/STR1:Apbd
 understanding	1 0U:Upbd/ST1:Apbg
 understands	1 0U:Upbd/ST1:Apbs
+understands	1 ^ TK0:E/STR1:Apbdz
+understands	1' ^ TK0:E/STR1:Apbdz
 understands	2 0U:Upbd/ST1:Apbdz
 understate	1 1:Ufrpbtd/0A:AEUt
 understate	1 1:Upbd/ST0A:AEUt
 understate	1' 1:Ufrpbt/0A:AEUt
 understood	1 0U:Upbd/ST1:AOd
+understood	1 ^ TK0:E/STR1:AOd
 undertake	1 1:Upbd/T0A:AEUbg
 undertake	1 1:Urpbtd/0A:AEUbg
 undertake	1' 1:Urpbt/0A:AEUbg
@@ -45012,11 +46196,13 @@ undertaker	1 1:Urpbtd/0A:Arbg
 undertaker	1' 1:Urpbt/0A:Arbg
 undertaking	1 1:Upbd/T0A:AEUg
 undertook	1 0U:Upbd/T1:AObg
+undertook	1 ^ TK0:E/TR1:AObg
 undertook	2 0U:Upbd/T1:AO*bg
 undervalued	1 1:Upbd/SR0U:AOUld
 underwater	1 1:Urpbd/0A:AUrt
 underwater	1' 1:Urpb/0A:AUrt
 underway	1 0U:Upbd/W1:AEU
+underway	1 ^ TK0:E/WR1:AEU
 underwear	1 1:Upbd/W0E:AEr
 underwear	1 1:Urpbd/0E:AEr
 underwear	1' 1:Urpb/0E:AEr
@@ -45025,6 +46211,7 @@ underweight	1 1:Upbd/W0E:AEt
 underweight	1 1:Urpbd/0E:A*Et
 underweight	1' 1:Urpb/0E:A*Et
 underwent	1 0U:Upbd/W1:Epbt
+underwent	1 ^ TK0:E/WR1:Epbt
 underworld	1 1:Urpbd/0:Orld
 underworld	1' 1:Urpb/0:Orld
 underwrite	1 1:Upbd/WR0EU:AOEUt
@@ -45033,7 +46220,9 @@ underwriter	2 1:Upbd/WR0EU:AOEUrbt
 underwriter	3 1:Urpbd/WR0EU:AOEUrt
 underwriters	1 1:Upbd/WR0EU:AOEUrs
 underwrote	1 0U:Upbd/WR1:OEt
+underwrote	1 ^ TK0:E/R1:OEt
 undid	1 0U:Upb/TK1:EUd
+undid	1' ^ TK1:EUd
 undo	1 0U:Upb/TK1:O
 undo	1' ^ TK1:O
 undoing	1 0U:Upb/TK1:Og
@@ -45055,16 +46244,21 @@ unearthly	1' ^ TPH1:A*Erlt
 uneasily	1 0U:Upb/1:AOEls
 uneasily	1' 0U:U/TPH1:AElz
 uneasily	1' ^ TPH1:AEs/0EU:EUl
+uneasiness	1 ^ TPH1:AEs/0EU:AOEpbs
 uneasy	1 0U:Upb/1:Ez
 uneasy	1 ^ TPH1:AEs/0EU:EU
 unemployed	1 0U:Upb/PHR1:OEUd
+unemployed	1 ^ TPH0E:E/PHR1:OEUd
 unemployment	1 0U:Upb/PHR1:OEUplt
+unemployment	1 ^ TPH0E:E/PHR1:OEUplt
 unequal	1 ^ TPH1:Ebg/0A:Al
 uneven	1 0U:Upb/1:AOEpb
 uneven	1' 0U:U/TPH1:AOEfpb
 uneven	1' ^ TPH1:AOEf/0E:Epb
+uneventful	1 ^ TPH0E:E/SR1:Efpblt
 unfair	1 0U:Upb/TP1:A*EUr
 unfair	1' ^ TP1:A*EUr
+unfair	3' ^ TP1:A*EUr
 unfairly	1 0U:U/TPH1:A*EUrl
 unfairly	1 0U:Upb/TP1:AEUrl
 unfairly	1' ^ TP1:A*EUrl
@@ -45243,6 +46437,7 @@ unreported	1 0U:Upb/R1:Orpd
 unrest	1 0U:Upb/R1:Eft
 unrest	1' ^ R1:Eft
 unroll	1 0U:Upb/R1:Ol
+unroll	1' ^ R1:Ol
 unroll	2 0U:Upb/R1:OEl
 unruly	1 0U:U/TPHR1:AOUl
 unruly	1' ^ R1:AOUl
@@ -45285,6 +46480,7 @@ unsteady	1 ^ ST1:AEd/0EU:EU
 unstinting	1 ^ ST1:EUpbt/0EU:EUpbg
 unsubscribe	1 ^ S0U:U/SKPWR1:AOEUb
 unsuccessful	1 0U:Upb/SK1:Efl
+unsuccessful	1 ^ S0U:U/SK1:Efls
 unsure	1' ^ SH1:AOUr
 untidy	1 ^ T1:AOEUd/0EU:EU
 untie	1 0U:Upb/T1:AO*EU
@@ -45440,6 +46636,7 @@ urbanize	1 1:Urpb/0EU:AOEUz
 urchin	1 1:Ufrpb
 urchin	1 1:Ur/KH0EU:EUpb
 urea	1' ^ KWR1:E/0A:A
+urethra	1' ^ KWR1:*Ert/0A:A
 urge	1 1:Urpblg
 urgency	1 1:Urg/S0EU:EU
 urgency	1 1:Urpblgs/0EU:EU
@@ -45519,6 +46716,8 @@ usurp	2 0U:AOU/S1:Urp
 usurp	3 0U:AOU/S1:AOUrp
 usurp	4 KWR0U:AOU/S1:*Urp
 usurp	4 KWR0U:AOU/S1:Urp
+usurpation	1' ^ SKWR0:U/PR1:AEUgs
+usurping	1' ^ SKWR1:Urp/0EU:EUpbg
 usurps	1 0U:AOU/S1:Urps
 usurps	2 0U:AOUs/1:Urps
 usury	1 1:AOUs/R0EU:EU
@@ -45596,6 +46795,7 @@ vaccine	4 SR0A:Abgs/1:AOEpb
 vaccine	4 SR0A:Abgs/S1:AOEpb
 vacillate	1 SR1:Als/0A:AEUt
 vacillate	1 SR1:As/HR0A:AEUt
+vacillation	1' ^ SR0EU:EU/HR1:AEUgs
 vacuous	1 SR1:Abg/W0U:Us
 vacuous	2 SR1:Abg/KWR0U:Us
 vacuous	3 SR1:Abg/KWR0O:OUs
@@ -45644,6 +46844,7 @@ valid	2 SR1:A/HR0EU:EUd
 valid	3 SR1:Al/HR0EU:EUd
 validate	1 SR1:Ald/0A:AEUt
 validate	2 SR1:Al/TK0A:AEUt
+validation	1' ^ SHR0EU:EU/TK1:AEUgs
 validity	1 SR0A:Ald/T1:EU
 validly	1 SR1:Al/0EU:EUld
 validly	1 SR1:Al/TKHR0EU:EU
@@ -45722,6 +46923,7 @@ variance	2 SR1:AEUrs/0A:Apbs
 variant	1 SR1:Ar/0A:Apbt
 variant	2 SR1:AEUr/0A:Apbt
 variation	1 SR0EU:EUr/1:AEUgs
+variation	1' ^ SR0EU:AOE/1:AEUgs
 varied	1 SR1:AEUr/0EU:EUd
 variegate	1 SR1:AEUr/TKPW0A:AEUt
 varies	1 SR1:AEUr/0EU:EUs
@@ -45790,6 +46992,7 @@ vegetal	1 SR1:Epblgt/0A:A*l
 vegetarian	1 SR0E:Epblg/T1:AEUrpb
 vegetate	1 SR1:Epblg/T0A:AEUt
 vegetation	1 SR0E:Epblg/T1:AEUgs
+vegetation	1' ^ SKWR0E:E/T1:AEUgs
 veggie	1 SR1:Epblg/0E:AO*E
 veggie	2 SR1:Epblg/0EU:EU
 veggies	1 SR1:Epblg/0E:AO*Es
@@ -45847,6 +47050,7 @@ venerable	2 SR1:Epb/R0A:Abl
 venerate	1 SR1:Epb/R0A:AEUt
 venerate	1 SR1:Erpb/0A:AEUt
 veneration	1 SR0E:Epb/R1:AEUgs
+veneration	1' ^ STPHR0:E/R1:AEUgs
 vengeance	1 SR1:Epbg/0A:Apbs
 vengeance	1 SR1:Epbgs
 vengeance	2 SR1:Epbg/0E:Epbs
@@ -45874,6 +47078,8 @@ ventilate	1 SR1:Epbt/HR0A:AEUt
 ventilate	1' SR1:Epbl/0A:AEUt
 ventilate	2 SR1:Epbl/0A:AEUt
 ventilation	1 SR0E:Epbt/HR1:AEUgs
+ventilation	1' ^ STPHR0EU:EU/HR1:AEUgs
+ventilation	2' ^ STPHR0EU:EU/HR1:AEUgs
 ventilator	1 SR1:Epblt/0A:Art
 ventilator	1' SR1:Epbl/0A:Art
 ventilator	2 SR1:Epbl/0A:Art
@@ -46064,6 +47270,7 @@ vice	1 SR1:AOEUs
 vices	1 SR1:AOEUs/0E:Es
 vices	2 SR1:AOEUs/0E:Es
 vichyssoise	1 SR0EU:EUrb/SW1:Os
+vichyssoise	1' ^ SHR0EU:EU/SW1:OEUs
 vichyssoise	2 SR0EU:EUrb/SW1:OEUs
 vicious	1 SR1:EUrb/0O:OUs
 vicious	2 SR1:EUrt/W0U:Us
@@ -46270,6 +47477,7 @@ visit	3 SR1:EUs/S0EU:EUt
 visit	4 SR1:EUz/S0EU:*EUt
 visit	4 SR1:EUz/S0EU:EUt
 visitation	1 SR0EU:EUft/1:AEUgs
+visitation	1' ^ SR0EU:EU/T1:AEUgs
 visitation	2 SR0EU:EUs/T1:AEUgs
 visitation	3 SR0EU:EUz/T1:AEUgs
 visited	1 SR1:EUs/T0E:Ed
@@ -46402,9 +47610,11 @@ voluntarily	1 SR0O:Ol/T1:AEUrl
 voluntary	1 SR1:Ol/TR0EU:EU
 voluntary	2 SR1:Ol/T0A:AEUr
 volunteer	1 SR0O:Ol/T1:AOEr
+volunteer	1' ^ SHR0U:U/TPH1:AOEr
 volunteering	1 SR0O:Ol/T1:AOErg
 volunteering	2 SR0O:Ol/T1:AOErpbg
 volunteers	1 SR0O:Ol/T1:AOErs
+volunteers	1' ^ SHR0U:U/TPH1:AOErs
 vomit	1 SR1:Opl/0EU:EUt
 vomit	2 SR1:Opl/PH0EU:EUt
 von	1 SR1:Opb
@@ -46966,7 +48176,9 @@ wharfs	2 WH1:A*frs
 what	1 WH1:At
 what	2 WH1:At
 whatever	1 WH0A:A/T1:Efr
+whatever	1'' ^ TW1:Ef/0:Er
 whatever	2 WH0A:A/T1:Efr
+whatever	2'' ^ TWH1:Ef/0:Er
 whatnot	1 WH1:Apbt/0O:Ot
 whatnot	2 WH1:Apbt/0O:Ot
 wheat	1 WH1:AEt
@@ -47451,6 +48663,7 @@ wold	1 W1:Old
 wolf	1 W1:Ofl
 wolfing	1 W1:Ofl/0EU:EUpbg
 wolverine	1 W0O:Ofl/R1:AOEpb
+wolverine	1' ^ SWHR0:E/R1:AOEpb
 woman	1 W1:Opbl
 woman	1 W1:Opl/PH0A:Apb
 womanhood	1 W1:Opbl/0O:AOd
@@ -47847,6 +49060,7 @@ yourself	1 KWR0O:OUr/S1:Efl
 yourself	3 KWR1:OUfrls
 yourselfer	1 KWR0O:O*Urs/1:Er
 yourselfer	1 KWR0O:OU/SR1:Efrl
+yourselfer	1'' ^ SKWR1:Efl/0:Er
 youse	1 KWR1:OUs
 youse	2 KWR1:AOUs
 youth	1 KWR1:AO*Ut
