@@ -790,7 +790,8 @@ def supersede(out):
     strokes, move to a dictionary of their own, so a stack that has the rule suggests only its
     outlines. A shorter one, in strokes or in keys with `^` aside, is a brief
     and stays: about keeps PW beside `^PWAOUT`, and after AFT beside `^AFR`
-    and `^AFRT`. A stack without the rules loads both."""
+    and `^AFRT`. So does every outline of one stroke: always keeps AULS beside
+    `^ULS`. A stack without the rules loads both."""
     rules = ruled()
     length = lambda o, fold=0: (o.count("/") + 1, keys(o.replace("^", "")) + fold)
     # The fewest strokes, and the most keys among the outlines of that many.
@@ -800,7 +801,7 @@ def supersede(out):
             n, k = length(o, fold)
             bound[f] = min(bound.get(f, (n, -k)), (n, -k))
     moved = {o: t for o, t in out.items()
-             if t in bound and length(o)[0] == bound[t][0] and length(o)[1] >= -bound[t][1] and o not in rules}
+             if t in bound and "/" in o and length(o)[0] == bound[t][0] and length(o)[1] >= -bound[t][1] and o not in rules}
     return {o: t for o, t in out.items() if o not in moved}, moved
 
 
