@@ -37,8 +37,12 @@ define Seam     "|" ;
 ! The mark: `^`, after a prefix's cluster if there is one.
 define Caret    [ [ 0 | Del("^" Gap) | LeftKey+ Del(Gap) ] Ins("^" Gap) ] ;
 
+! No English onset has a nasal before a consonant, so a nasal crosses only to
+! an empty onset: control is not TKPHR.
+define NasalCross [ ?* [ p b | p l ] RightKey* "/" LeftKey+ "1" ":" ?* ] ;
+
 define Single   [ Rank Gap [ Ins("-" Gap) | Ins("^" Gap) | Lead Gap ] LeftKey* Del("1" ":") VowelKeys RightKey* ] ;
-define Second   [ Rank Gap Caret LeftKey* Trace Crossed(RightKey*, ToLeft) Del("/") Ins(Seam)
+define Second   [ ~NasalCross .o. Rank Gap Caret LeftKey* Trace Crossed(RightKey*, ToLeft) Del("/") Ins(Seam)
                   LeftKey* Del("1" ":") VowelKeys RightKey* ] ;
 define First    [ Rank Gap Caret LeftKey* Del("1" ":") VowelKeys RightKey* Del("/") Ins(Seam)
                   Crossed(LeftKey*, ToRight) Trace RightKey* ] ;
