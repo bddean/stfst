@@ -13,17 +13,18 @@
 !     container  1 K=c 0:o=O N.T=nt 1:ai=A*EU N=n ...  ->  1 ^ T=t 1:ai=A*EU N=n ...
 !     creative   1 K.R=cr 0:e=E = 1:a=AEU T=t ...      ->  1' ^ K.R=cr 1:a=AEU T=t ...
 
+define Weak     [ "0" | "2" ] ;
 define Mark     [ Ins("^" Gap) | Lead Gap ] ;
 define Nasal    [ [ M | N | NG ] .x. 0 ] ;
 define Opening  PU([ Nasal Del(Dot) More Eq Del([ m | n ]+) Letter* ], ConsSeg) ;
 define Long     [ $[ ":" ?* ":" ?* ":" ] | [ Rank Gap Lead Gap ?* ":" ?* ":" ?* ] ] ;
-define Drop(On, V) [ [ Rank Gap Mark Del(On Gap "0" ( r ) ":" V Eq VowelKeys Gap) Opening Gap ?* ] .o. Written
+define Drop(On, V) [ [ Rank Gap Mark Del(On Gap Weak ( r ) ":" V Eq VowelKeys Gap) Opening Gap ?* ] .o. Written
                      .o. Flagged(Dropped) ] ;
 
 define Whole    [ Drop(Eq, Letter+) | Drop(K Eq c, o) ] ;
 define Light    [ Long .o. Whole ] ;
 define Short    [ ~Long .o. Whole ] ;
-define Shed     [ Gap "0" ( r ) ":" Letter+ Eq VowelKeys Gap ] ;
+define Shed     [ Gap Weak ( r ) ":" Letter+ Eq VowelKeys Gap ] ;
 define Kept     [ More [ Del(Eq Letter* Shed) Ins(Dot) More Eq Letter* | Eq Letter* Del(Shed Eq) Letter* ] ] ;
 define Heavy    [ ~Light.u .o. [ [ Long .o. Rank Gap Mark Kept Gap ?* ] .o. Written .o. Flagged(Dropped) ] ] ;
 
