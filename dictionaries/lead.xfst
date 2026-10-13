@@ -1,4 +1,4 @@
-! The unstressed vowel a word starts with, dropped, after suffix.xfst. `^`
+! The unstressed or secondary-stressed vowel a word starts with, dropped, after suffix.xfst. `^`
 ! stands for it, so the rest is never a plain stroke, and after a prefix's
 ! cluster the cluster stands for both (disappoint).
 !
