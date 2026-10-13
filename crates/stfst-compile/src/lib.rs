@@ -25,6 +25,8 @@ pub struct Which {
     pub force: bool,
     /// Write the pipelines and no artifact, which is what a generator reads.
     pub pipelines_only: bool,
+    /// Stages left out of each pipeline, which then writes no artifact.
+    pub ablate: Vec<String>,
 }
 
 /// Compile every dictionary in a recipe into `out`, one artifact directory each.
@@ -47,9 +49,9 @@ pub fn compile_recipe(recipe_path: &Path, out: &Path, work: &Path, which: &Which
             continue;
         }
         if !dict.pipeline.is_empty() {
-            stages::compile(&recipe, &base, &system, &system_path, dict, work, which.force)?;
+            stages::compile(&recipe, &base, &system, &system_path, dict, work, which.force, &which.ablate)?;
         }
-        if which.pipelines_only {
+        if which.pipelines_only || !which.ablate.is_empty() {
             continue;
         }
         let source = dict.source()?;

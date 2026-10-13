@@ -74,6 +74,10 @@ enum Command {
         /// Write only the pipelines, which a generator reads, and no artifact.
         #[arg(long)]
         pipeline_only: bool,
+        /// Leave this stage out of the pipeline, writing it to
+        /// `WORK/NAME/without-STAGE` and no artifact. Repeatable.
+        #[arg(long)]
+        ablate: Vec<String>,
     },
     /// Look up outlines in a compiled artifact.
     Lookup {
@@ -318,8 +322,9 @@ fn main() -> Result<()> {
                 None => print!("{}", compiled.lexc),
             }
         }
-        Command::Compile { recipe, out, work, dicts, force, pipeline_only } => {
-            let which = stfst_compile::Which { names: dicts, force, pipelines_only: pipeline_only };
+        Command::Compile { recipe, out, work, dicts, force, pipeline_only, ablate } => {
+            let which =
+                stfst_compile::Which { names: dicts, force, pipelines_only: pipeline_only, ablate };
             stfst_compile::compile_recipe(&recipe, &out, &work, &which)?;
         }
         Command::Lookup {
