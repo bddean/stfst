@@ -439,3 +439,75 @@ outlines (31 outlines).
   cleaner first choice.
 - semantics: the report says your `^SPHAEUPBGTS` differs, but the rule writes
   it by the -S fold.
+
+## Phase 4: tooling, the evening's fixes, and the plan for the rest
+
+### Tooling
+
+- `make regen` (scripts/regen.sh) compiles the stack, runs each generator's
+  `--check`, reruns the stale ones in dependency order (typey-vowels, lexicon,
+  theory, two-syllable, two-word, affixes), and repeats until every check
+  passes, failing after 5 rounds. Then it writes the stage golden files.
+  `--composed` runs find-typey-composed.py first. From phase 3b's tree it
+  settled in 2 rounds, so the vowels/two-syllable oscillation did not return.
+- `stfst compile` caches each stage's net and each prefix's net and file
+  under build/work/cache by a hash of what they are built from, so an
+  unchanged pipeline costs nothing and a change to one stage rebuilds that
+  stage and the prefixes after it. A forced two-syllable compile is 7.5 min;
+  a cached one is under a second. Entries no compile has used for 3 days are
+  removed.
+- `stfst compile --dict NAME --ablate STAGE` writes the pipeline without
+  that stage to build/work/NAME/without-STAGE, and no artifact.
+
+### Fixes
+
+- A Typey Type outline of one stroke is never superseded: AULS always,
+  SPH-PB someone, TPHARBL national are back. typey-superseded.json: 2896
+  outlines to 290.
+- A pair's first outline in two-word outranks a two-syllable word's second
+  and later outlines. Pairs that leave their stroke to two-syllable: 605 to
+  410. anoint's `^TPHOEUPBT` is "not in"'s first outline, so your brief went
+  back to user.json.
+- control: contract.xfst moved con's -PB to the left bank as TPH before the
+  stressed onset (TKPHR). No English onset has a nasal before a consonant, so
+  a nasal coda now crosses only to an empty onset. control is `^TROL` only;
+  the same junk is gone from include (TKPHRAOED), increase, enhance,
+  concede, consult and himself (`^SPHUF`).
+
+| two-syllable.json | entries | words | coverage | lose |
+|---|---|---|---|---|
+| phase 3b | 19732 | 11381 | 192.5 | 546 |
+| now | 19058 | 11146 | 189.3 | 520 |
+
+214 words lost their stroke and 66 gained one. 160 of the 214 had only a
+nasal-crossing contraction (include, increase, enforce, confirmed); in-, en-
+and con- words with secondary stress on the prefix get no lead drop, so
+nothing replaces it. If you want them back, let the lead rule drop a prefix
+syllable with secondary stress too.
+
+### Rules into xfst: not done, the plan
+
+The affix parse was not straightforward, so it stays in Python. What it
+needs, in order:
+
+1. affixes.toml as xfst: gen-affixes writes each prefix and suffix as a
+   relation over the lexicon's segments (spelling and sounds), not over raw
+   CMU phonemes. The lexicon aligns by syllable, and an affix's boundary can
+   fall inside a segment (in-vi-ta-tion: `N.V=nv`), so the stage must split a
+   consonant segment at the affix's edge.
+2. A `parse` stage over lexicon.lexc: prefix, a stem of one or two syllables
+   with the more stressed vowel re-marked 1, suffix. The doubled consonant
+   (com-mission) is the stem's.
+3. Longest affixes first, as a priority union (`PU` in aligned.xfst), which
+   replaces affixes-stems.lexc and the second compile.
+4. The stem then goes through written, split, theory, contract and caret as
+   now. Python keeps the misread count (corpora) and resolution.
+
+The vowel theory (gen/vowels.py) is about 900 lines: the vowel table already
+lives in theory-tables.xfst. What is left in Python is the rewrite of Typey
+Type's outlines (aligning each stroke to a syllable, which needs Typey Type's
+strokes as a stage input), collisions and displacement (resolution, which
+stays Python), vowel briefs and superseding (stack questions, Python). Order:
+first Typey Type's outlines as a lexc stage aligned to the lexicon, then the
+vowel rewrite as a stage over it, then the coda table as a rule over that
+stage's output rather than counts.
