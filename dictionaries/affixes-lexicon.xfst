@@ -79,7 +79,7 @@ define AffixCountable [ {ation}
     | {ist}
     | {ism} ] ;
 
-! 1176 words: the stem's stroke, then prefix, stem and suffix.
+! 1173 words: the stem's stroke, then prefix, stem and suffix.
 define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | "^" {PWRAOUf} "|" {a} "|" {bbrevi} "|" {ation}
     | {PWEUl} "|" {a} "|" {bil} "|" {ity}
@@ -1021,7 +1021,6 @@ define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | {SKWREbgt} "|" {pro} "|" {ject} "|" {or}
     | "^" {HREUfr} "|" {pro} "|" {lifer} "|" {ation}
     | {HREUf} "|" {pro} "|" {lif} "|" {ic}
-    | {PHEUpb} "|" {pro} "|" {min} "|" {ence}
     | {PHEUpb} "|" {pro} "|" {min} "|" {ent}
     | "^" {PHUpbt} "|" {pro} "|" {minent} "|" {ly}
     | {PHOt} "|" {pro} "|" {mot} "|" {er}
@@ -1100,7 +1099,6 @@ define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | {TPAOEUpb} "|" {re} "|" {fine} "|" {ment}
     | {TPHR} "*" {Ebg} "|" {re} "|" {flec} "|" {tion}
     | {TPHREbgt} "|" {re} "|" {flect} "|" {ive}
-    | {TPHREbgt} "|" {re} "|" {flect} "|" {or}
     | {TPOrpl} "|" {re} "|" {form} "|" {ation}
     | "^" {TPREUrpblg} "|" {re} "|" {friger} "|" {ation}
     | {TKPWArd} "|" {re} "|" {gard} "|" {less}
@@ -1190,7 +1188,6 @@ define AffixWords [ "^" {PWAOpbd} "|" {a} "|" {bandon} "|" {ment}
     | {SUfrp} "|" {re} "|" {sump} "|" {tion}
     | {SUrpblg} "|" {re} "|" {surg} "|" {ence}
     | "^" {SR} "*" {Ebg} "|" {re} "|" {surrec} "|" {tion}
-    | {TA} "*" {EUpb} "|" {re} "|" {tain} "|" {er}
     | "^" {TAEUl} "|" {re} "|" {tali} "|" {ation}
     | {TEpb} "|" {re} "|" {ten} "|" {tion}
     | {TEUpb} "|" {re} "|" {tin} "|" {al}

@@ -329,8 +329,6 @@ PHEU/Rgs	remission
 PHEU/Rgsz	remissions
 PHEU/SPWgs	intermission
 PHEU/SPWgsz	intermissions
-PHEUpb/PRpbs	prominence
-PHEUpb/PRpbsz	prominences
 PHEUpb/PRpbt	prominent
 PHEUpb/TPHpbt	imminent
 PHEUrg/TPHgs	immigration
@@ -821,7 +819,6 @@ T*EUpbgt/STKf	distinctive
 T*EUpbgt/STKl	distinctly
 TA*EUpb/Kplt	containment
 TA*EUpb/Kr	container
-TA*EUpb/Rr	retainer
 TA*EUpb/SPWplt	entertainment
 TA*EUpb/SPWr	entertainer
 TA*EUpb/^plt	attainment
@@ -1068,7 +1065,6 @@ TPHRApl/TPHgs	inflammation
 TPHRApl/TPHgsz	inflammations
 TPHRAt/TPHbl	inflatable
 TPHREbgt/Rf	reflective
-TPHREbgt/Rr	reflector
 TPHRU/Kpbs	confluence
 TPHRU/Kpbsz	confluences
 TPHRU/TPHpbs	influence
