@@ -1,6 +1,60 @@
 # Systematizing the theory
 
-The morning report for the overnight run. Each phase appends a section.
+The morning report for the overnight run: a summary, then each phase's detail,
+then the dev-experience notes.
+
+## Summary
+
+### What changed
+
+- `^` contracts the word's written-out form, not its CMU pronunciation. Each
+  syllable is written as the theory writes a one-syllable word. Where Typey
+  Type has a two-stroke outline whose chords are the word's vowels, that
+  outline is the written-out form; CMU supplies only the stress.
+- Rewrites before `^`, each its own xfst stage: prefix clusters (also over
+  outline strokes), suffix chords (-tion `-GS`, -ment, -ness, -ful, -less, -ly
+  as L), lead (drop a leading unstressed or secondary-stressed syllable),
+  glide, syncope, middle t/d.
+- One stroke left is a plain stroke, or `^` on the same keys where a
+  one-syllable word has it (matter `^PHART`, mare `^PHAEUR`). Two strokes are
+  contracted. A word keeps every outline no other word takes.
+- Two-word pairs go through the same stages (`join.xfst`). A pair stroke with
+  a suffix key reads in the more common order (`^TKPW-G` "going to"). Folds:
+  S- is "is", ST- is "it's".
+- Fixed regressions: WR and other silent onset letters (the rule writes
+  written as WREUPBT; your `^WRUPBT` stays in user.json), nightmare and mare, PW about and KWE
+  question, DUPT's target dictionary, AULS always.
+- Tooling: `make regen`, a per-stage compile cache, `--ablate STAGE`.
+
+two-syllable.json: 4662 entries before the run, 19436 now (11347 words,
+coverage 192.7, from 128.3 at phase 2's first measurement).
+
+### Decisions, with their numbers
+
+| decision | chosen | alternative | numbers (words, coverage) |
+|---|---|---|---|
+| XOR operand of a digraph | first letter | its chord | chord: +9 words, -0.1 coverage |
+| -tion, -sion | affix chord `-GS` | its sounds | sounds: -125 words, -2.6 |
+| -ly | its L | XOR y | L better on every count |
+| syncope | before l, m, n, r | l, r only | l, r only: -282 words, -3 |
+| prefix cluster merged with onset | merged (company TKPHEU) | apart | apart: -252 words |
+| outlines per word | every free outline | first only | +79% entries, same words; costs two-word strokes |
+| outline filter | chords must be the word's vowels | none | none: +214 words, mostly junk |
+| -ment, -ness, -ful, -less chords | kept | none | +43 words, +0.6 |
+| nasal crossing in contract | only to an empty onset | any | removed junk (control `^TKPHRAOEL`) |
+| lead drop of a secondary-stressed prefix | yes | no | +201 words, +3.4 coverage (phase 5) |
+| S-/ST- folds | "it's" before "is", before suffix folds | other orders | 93% of the use read right |
+
+### What is left
+
+- Rules still in Python: the affix parse and the vowel theory's rewrite of
+  Typey Type's outlines. Phase 4 has the plan for both.
+- user.json `^` briefs the rule writes differently: 26, listed under phase 3b.
+- Stale, not updated: `~/.config/plover/vowels-cheatsheet.html`,
+  `affixes-cheatsheet.html`, `cheatsheets.pdf` and `vowels-anki.csv`.
+- Older measurements in VOWELS-DESIGN.md §8 and §13 are the first version's.
+  The new "pipeline as it is now" list says where they no longer hold.
+- Restart Plover to load the new artifacts in build/dicts.
 
 ## Phase 1: regressions that are not new rules
 
@@ -511,3 +565,72 @@ stays Python), vowel briefs and superseding (stack questions, Python). Order:
 first Typey Type's outlines as a lexc stage aligned to the lexicon, then the
 vowel rewrite as a stage over it, then the coda table as a rule over that
 stage's output rather than counts.
+
+## Phase 5: the lead drop for secondary stress, docs, and wrap-up
+
+### Lead drop of a secondary-stressed prefix
+
+Phase 4's nasal fix cost 160 words their only stroke (include, increase,
+enforce, confirmed): CMU gives in-, en- and con- secondary stress, and the lead
+rule dropped only an unstressed syllable. Now it drops one with secondary stress
+too (`Weak` in lead.xfst, a one-line change).
+
+| two-syllable.json | entries | words | coverage | lose |
+|---|---|---|---|---|
+| phase 4 | 19058 | 11146 | 189.3 | 520 |
+| now | 19436 | 11347 | 192.7 | 599 |
+
+207 words gain a stroke and 36 lose theirs. Gains: include `^KHRAOUD`,
+increase `^KRAES`, instead `^STAED`, indeed `^TKAOED`, however `^HEFR`,
+although `^THROE`, install, invite, involve, understand `STKRAPBD`,
+information `^TPHRAEUGS`, conversation `^SRAEUGS` and many -ation words. The
+losses go to more frequent words: conclude to include, consist to insist,
+divide to understood (`STKRAOD`), seventy to incentive, credible to
+incredibly. enforce and confirmed still have no stroke. Kept.
+
+`make regen` settled in one round. check.sh passes at the tip, once.
+
+### Docs
+
+README.md (the vowel theory and two-word sections, the regen workflow) and
+VOWELS-DESIGN.md §8 and §13 (a list of the pipeline as it is now, the S-/ST-
+folds, the two-word resolution) describe the current pipeline. The cheat
+sheets and Anki decks are stale (see the summary).
+
+## Dev experience
+
+Reported by the phases, merged. Fixed now:
+
+- The generators' fixed-point loop was by hand (phases 1, 2, 3b). Fixed:
+  `make regen`.
+- A pipeline compile took 4 to 10 minutes per variant, and ablations were
+  measured by hand-patching (phases 2, 3, 3b). Fixed: the stage cache and
+  `--ablate STAGE`. A change to an early stage still rebuilds everything after
+  it: phase 5's lead change took 5.5 minutes.
+
+Open:
+
+- check.sh stops at the first failure (phases 1, 2). Fix: collect failures and
+  exit non-zero at the end.
+- Stage golden files are 17 MB and slow to diff (phases 2, 3). Fix: store only
+  the lines a stage changes.
+- Generators can read a stale stack or pipeline silently (phases 1, 3b, 4).
+  `make regen` compiles first, but a standalone `--check` does not. Fix: Stack
+  checks stamps; `--check` calls the cached compile.
+- Any compiler change changes every artifact's stamp, so the whole stack
+  rebuilds. Fix: stamp with only the code that builds that artifact.
+- find-typey-composed.py takes about 12 minutes under Plover's python. Fix:
+  cache verdicts per entry.
+- DUPT (`TKUPT`, ADD_OUTLINE) leaves no log of its target dictionary. Fix: the
+  add-outline plugin logs it on save.
+- The caret stage's output loses plain against `^` fallback; Python infers it.
+  Fix: keep a mark in the last stage's output.
+- xfst reads `"1:"` as one multichar symbol, and lexc read TH/SH in key text as
+  phonemes; both failed silently. Fix: export head symbols from one stage
+  file, and escape all key text with `Keys` from gen/lexicon.py.
+- `sed -i ''` fails because nix puts GNU sed on PATH. Fix: a note in the
+  README, or use perl.
+- `--check` gives one exit code for every failure, and regen.sh keeps only a
+  report's tail (the full one is in build/regen-GEN.log). Fix: distinct exit
+  codes, and a `--report` summary.
+
