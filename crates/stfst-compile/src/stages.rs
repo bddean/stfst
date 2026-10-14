@@ -13,7 +13,7 @@
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
 use std::sync::atomic::{AtomicUsize, Ordering};
-use std::sync::{Arc, LazyLock, Mutex, OnceLock};
+use std::sync::{Arc, Condvar, LazyLock, Mutex, OnceLock};
 use std::time::{Duration, SystemTime};
 
 use anyhow::{bail, Result};
@@ -22,6 +22,10 @@ use stfst_core::System;
 use crate::pipeline::run;
 use crate::recipe::{resolve, Dict, Recipe};
 use crate::{fresh, prelude, STAMP};
+
+/// How many shards a pipeline is composed in, at most. A constant, not the
+/// machine's cores, so the cache holds across machines.
+const SHARDS: u64 = 12;
 
 /// How long a cached net no compile has used is kept.
 const KEEP: Duration = Duration::from_secs(3 * 24 * 3600);
@@ -117,20 +121,38 @@ pub fn compile(
         jobs.into_iter().try_for_each(|j| j.join().expect("a stage's compile panicked"))
     })?;
 
-    // Each prefix, composed from the one before it.
+    // Each prefix, composed from the one before it. A prefix is a finite
+    // relation, so it is composed in shards, at once, and its files are their
+    // union: the first stage split by its start state's arcs.
     let _ = std::fs::remove_dir_all(&dir);
     std::fs::create_dir_all(&dir)?;
-    let (mut prev, mut key) = (sources[0].2.clone(), sources[0].3);
+    let mut key = fnv(sources[0].3, &SHARDS.to_le_bytes());
+    let mut prev = shards(&sources[0].2, &cache.join(format!("shards-{key:016x}")), force)?;
     for (name, _, net, stage_key) in &sources[1..] {
         key = fnv(key, &stage_key.to_le_bytes());
-        let out = cache.join(format!("prefix-{key:016x}.hfst"));
-        let tsv = out.with_extension("tsv");
-        if force || !used(&out) || !used(&tsv) {
-            // hfst-xfst takes several times as long for the same composition.
-            run("hfst-compose", &["-1", path(&prev), "-2", path(net), "-o", path(&tmp(&out))])?;
-            std::fs::rename(tmp(&out), &out)?;
-            let mut rows = paths(&run("hfst-fst2txt", &[path(&out)])?)
-                .map_err(|e| e.context(format!("{}: {name}", dict.name)))?;
+        let outs: Vec<PathBuf> =
+            (0..prev.len()).map(|i| cache.join(format!("prefix-{key:016x}.{i}.hfst"))).collect();
+        let tsv = cache.join(format!("prefix-{key:016x}.tsv"));
+        if force || !used(&tsv) || !outs.iter().all(|o| used(o)) {
+            let rows = std::thread::scope(|scope| {
+                let jobs: Vec<_> = prev
+                    .iter()
+                    .zip(&outs)
+                    .map(|(prev, out)| {
+                        scope.spawn(move || -> Result<Vec<String>> {
+                            // hfst-xfst takes several times as long for the same composition.
+                            limited(|| {
+                                run("hfst-compose", &["-1", path(prev), "-2", path(net), "-o", path(&tmp(out))])
+                            })?;
+                            std::fs::rename(tmp(out), out)?;
+                            Txt::parse(&run("hfst-fst2txt", &[path(out)])?)?.paths()
+                        })
+                    })
+                    .collect();
+                jobs.into_iter().map(|j| j.join().expect("a shard's compose panicked")).collect::<Result<Vec<_>>>()
+            })
+            .map_err(|e| e.context(format!("{}: {name}", dict.name)))?;
+            let mut rows = rows.concat();
             rows.sort();
             rows.dedup();
             std::fs::write(tmp(&tsv), rows.join("\n") + "\n")?;
@@ -143,73 +165,171 @@ pub fn compile(
         }
         eprintln!("  {} pipeline: {n} paths after {name}", dict.name);
         std::fs::write(dir.join(format!("{name}.tsv")), rows)?;
-        prev = out;
+        prev = outs;
     }
     // Last, and a new file, so the directory's mtime is when this finished.
     std::fs::write(dir.join(STAMP), stamp)?;
     Ok(())
 }
 
-/// Each path of an acyclic net, from hfst-fst2txt's listing, as
-/// `upper<TAB>lower`. hfst-fst2strings is forty times slower on a pipeline's
-/// prefix.
-fn paths(txt: &str) -> Result<Vec<String>> {
-    #[derive(Default)]
-    struct State<'a> {
-        arcs: Vec<(usize, &'a str, &'a str)>,
-        last: bool,
+/// A net as hfst-fst2txt lists it. A symbol is as the listing writes it, so a
+/// listing of part of the net reads back as that part.
+#[derive(Default)]
+struct Txt<'a> {
+    states: Vec<State<'a>>,
+}
+
+#[derive(Default)]
+struct State<'a> {
+    /// Each arc's target, and the rest of its line: its symbols and weight.
+    arcs: Vec<(usize, &'a str)>,
+    /// The rest of the line that makes the state final.
+    last: Option<&'a str>,
+}
+
+impl<'a> Txt<'a> {
+    fn parse(txt: &'a str) -> Result<Self> {
+        let mut net = Txt::default();
+        for line in txt.lines() {
+            let mut fields = line.splitn(3, '\t');
+            let state: usize = fields.next().unwrap_or_default().parse()?;
+            let (arc, last) = match (fields.next(), fields.next()) {
+                (Some(to), Some(rest)) => (Some((to.parse()?, rest)), None),
+                (weight, _) => (None, Some(weight.unwrap_or(""))),
+            };
+            let top = arc.map_or(state, |(to, _)| state.max(to));
+            if net.states.len() <= top {
+                net.states.resize_with(top + 1, Default::default);
+            }
+            match arc {
+                Some(arc) => net.states[state].arcs.push(arc),
+                None => net.states[state].last = last,
+            }
+        }
+        Ok(net)
     }
-    let mut states: Vec<State> = Vec::new();
-    let symbol = |s| match s {
-        "@0@" | "@_EPSILON_SYMBOL_@" => "",
-        "@_SPACE_@" => " ",
-        "@_TAB_@" => "\t",
-        s => s,
-    };
-    for line in txt.lines() {
-        let fields: Vec<&str> = line.split('\t').collect();
-        let (state, arc): (usize, _) = match fields[..] {
-            [from, to, upper, lower, ..] => (from.parse()?, Some((to.parse()?, symbol(upper), symbol(lower)))),
-            [state, ..] => (state.parse()?, None),
-            [] => continue,
+
+    /// Each path, as `upper<TAB>lower`. hfst-fst2strings is forty times slower
+    /// on a pipeline's prefix.
+    fn paths(&self) -> Result<Vec<String>> {
+        let symbol = |s| match s {
+            "@0@" | "@_EPSILON_SYMBOL_@" => "",
+            "@_SPACE_@" => " ",
+            "@_TAB_@" => "\t",
+            s => s,
         };
-        let top = arc.map_or(state, |(to, _, _)| state.max(to));
-        if states.len() <= top {
-            states.resize_with(top + 1, Default::default);
+        let mut rows = Vec::new();
+        if self.states.is_empty() {
+            return Ok(rows);
         }
-        match arc {
-            Some(arc) => states[state].arcs.push(arc),
-            None => states[state].last = true,
+        // Depth-first. A frame is a state, the next arc to take from it, and the
+        // lengths of the strings that reach it.
+        let (mut upper, mut lower) = (String::new(), String::new());
+        let mut stack = vec![(0, 0, 0, 0)];
+        while let Some((state, next, u, l)) = stack.last_mut() {
+            upper.truncate(*u);
+            lower.truncate(*l);
+            let State { arcs, last } = &self.states[*state];
+            if *next == 0 && last.is_some() {
+                rows.push(format!("{upper}\t{lower}"));
+            }
+            let Some(&(to, rest)) = arcs.get(*next) else {
+                stack.pop();
+                continue;
+            };
+            *next += 1;
+            let mut symbols = rest.split('\t');
+            upper.push_str(symbol(symbols.next().unwrap_or_default()));
+            lower.push_str(symbol(symbols.next().unwrap_or_default()));
+            if stack.len() > self.states.len() {
+                bail!("the net has a cycle");
+            }
+            stack.push((to, 0, upper.len(), lower.len()));
         }
+        Ok(rows)
     }
-    let mut rows = Vec::new();
-    if states.is_empty() {
-        return Ok(rows);
-    }
-    // Depth-first. A frame is a state, the next arc to take from it, and the
-    // lengths of the strings that reach it.
-    let (mut upper, mut lower) = (String::new(), String::new());
-    let mut stack = vec![(0, 0, 0, 0)];
-    while let Some((state, next, u, l)) = stack.last_mut() {
-        upper.truncate(*u);
-        lower.truncate(*l);
-        let State { arcs, last } = &states[*state];
-        if *next == 0 && *last {
-            rows.push(format!("{upper}\t{lower}"));
+
+    /// The net as at most `n` nets whose union it is, each a listing, with
+    /// about as many paths each: the start state's arcs, dealt out.
+    fn shards(&self, n: usize) -> Result<Vec<String>> {
+        if self.states.is_empty() {
+            return Ok(vec![String::new()]);
         }
-        let Some(&(to, a, b)) = arcs.get(*next) else {
-            stack.pop();
-            continue;
+        let counts = self.counts()?;
+        let mut arcs: Vec<_> = self.states[0].arcs.iter().collect();
+        arcs.sort_by_key(|(to, _)| std::cmp::Reverse(counts[*to]));
+        let mut bins: Vec<(u64, Vec<&(usize, &str)>)> = vec![(0, Vec::new()); n.min(arcs.len()).max(1)];
+        for arc in arcs {
+            let bin = bins.iter_mut().min_by_key(|(paths, _)| *paths).expect("a bin");
+            bin.0 += counts[arc.0];
+            bin.1.push(arc);
+        }
+        Ok(bins.into_iter().enumerate().map(|(i, (_, arcs))| self.listing(&arcs, i == 0)).collect())
+    }
+
+    /// How many paths leave each state.
+    fn counts(&self) -> Result<Vec<u64>> {
+        let mut counts = vec![None; self.states.len()];
+        let mut open = vec![false; self.states.len()];
+        // A state is counted after every state it reaches.
+        let mut stack = vec![(0, false)];
+        while let Some((state, reached)) = stack.pop() {
+            if reached {
+                open[state] = false;
+                let s = &self.states[state];
+                counts[state] = Some(s.arcs.iter().fold(s.last.is_some() as u64, |n, (to, _)| {
+                    n.saturating_add(counts[*to].expect("counted"))
+                }));
+            } else if open[state] {
+                bail!("the net has a cycle");
+            } else if counts[state].is_none() {
+                open[state] = true;
+                stack.push((state, true));
+                stack.extend(self.states[state].arcs.iter().map(|(to, _)| (*to, false)));
+            }
+        }
+        Ok(counts.into_iter().map(Option::unwrap_or_default).collect())
+    }
+
+    /// The listing of the part of the net that starts with `arcs`, renumbered
+    /// so it holds only the states they reach.
+    fn listing(&self, arcs: &[&(usize, &str)], last: bool) -> String {
+        let mut number = HashMap::from([(0, 0)]);
+        let mut queue = Vec::new();
+        let mut visit = |to: usize, queue: &mut Vec<usize>| {
+            let next = number.len();
+            *number.entry(to).or_insert_with(|| {
+                queue.push(to);
+                next
+            })
         };
-        *next += 1;
-        upper.push_str(a);
-        lower.push_str(b);
-        if stack.len() > states.len() {
-            bail!("the net has a cycle");
+        let mut out = String::new();
+        for (to, rest) in arcs {
+            out.push_str(&format!("0\t{}\t{rest}\n", visit(*to, &mut queue)));
         }
-        stack.push((to, 0, upper.len(), lower.len()));
+        if let (true, Some(weight)) = (last, self.states[0].last) {
+            out.push_str(&final_line(0, weight));
+        }
+        let mut i = 0;
+        while let Some(&state) = queue.get(i) {
+            i += 1;
+            let from = visit(state, &mut queue);
+            for (to, rest) in &self.states[state].arcs {
+                out.push_str(&format!("{from}\t{}\t{rest}\n", visit(*to, &mut queue)));
+            }
+            if let Some(weight) = self.states[state].last {
+                out.push_str(&final_line(from, weight));
+            }
+        }
+        out
     }
-    Ok(rows)
+}
+
+fn final_line(state: usize, weight: &str) -> String {
+    match weight {
+        "" => format!("{state}\n"),
+        _ => format!("{state}\t{weight}\n"),
+    }
 }
 
 enum Source {
@@ -253,6 +373,40 @@ fn fnv(mut hash: u64, bytes: &[u8]) -> u64 {
         hash = (hash ^ b as u64).wrapping_mul(0x0100_0000_01b3);
     }
     hash
+}
+
+/// The shards of `net`, cached as `PREFIX.I.hfst` beside `PREFIX.count`.
+fn shards(net: &Path, prefix: &Path, force: bool) -> Result<Vec<PathBuf>> {
+    let count = prefix.with_extension("count");
+    let at = |i: usize| prefix.with_extension(format!("{i}.hfst"));
+    if !force && used(&count) {
+        let n: usize = std::fs::read_to_string(&count)?.trim().parse()?;
+        if (0..n).all(|i| used(&at(i))) {
+            return Ok((0..n).map(at).collect());
+        }
+    }
+    let listings = Txt::parse(&run("hfst-fst2txt", &[path(net)])?)?.shards(SHARDS as usize)?;
+    for (i, listing) in listings.iter().enumerate() {
+        let file = tmp(&at(i)).with_extension("txt");
+        std::fs::write(&file, listing)?;
+        run("hfst-txt2fst", &["-i", path(&file), "-o", path(&tmp(&at(i)))])?;
+        let _ = std::fs::remove_file(&file);
+        std::fs::rename(tmp(&at(i)), at(i))?;
+    }
+    std::fs::write(&count, listings.len().to_string())?;
+    Ok((0..listings.len()).map(at).collect())
+}
+
+/// Run `f` when fewer HFST processes than cores are running.
+fn limited<T>(f: impl FnOnce() -> T) -> T {
+    static RUNNING: Mutex<usize> = Mutex::new(0);
+    static FREED: Condvar = Condvar::new();
+    let cores = std::thread::available_parallelism().map_or(4, |n| n.get());
+    *FREED.wait_while(RUNNING.lock().unwrap(), |n| *n >= cores).unwrap() += 1;
+    let out = f();
+    *RUNNING.lock().unwrap() -= 1;
+    FREED.notify_one();
+    out
 }
 
 /// Run `build` for `net` once in this process. Pipelines compile at once and
