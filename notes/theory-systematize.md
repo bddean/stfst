@@ -627,7 +627,11 @@ Reported by the phases, merged. Fixed now:
 - A pipeline compile took 4 to 10 minutes per variant, and ablations were
   measured by hand-patching (phases 2, 3, 3b). Fixed: the stage cache and
   `--ablate STAGE`. A change to an early stage still rebuilds everything after
-  it: phase 5's lead change took 5.5 minutes.
+  it, but a prefix is now composed by hfst-compose, not hfst-xfst, and its
+  paths listed from hfst-fst2txt, not hfst-fst2strings: a lead change takes 34
+  s, not 5.5 minutes. The dictionaries compile at once, so a full compile is
+  2.5 minutes, not 5.5, and is as long as phrasing-tag alone. regen.sh runs the
+  generators' checks at once: a regen with nothing stale is 11 s.
 
 Open:
 

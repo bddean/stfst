@@ -105,7 +105,7 @@ five bugs that check found on its first run.
 
 `stfst compile recipe.toml` prints each artifact's size and build time. Both
 directions of the whole set are about 46 MB, 31 of them `phrasing-tag`, and a
-full compile takes about three minutes. The Plover-style dictionary and its
+full compile takes about two and a half, most of it `phrasing-tag`. The Plover-style dictionary and its
 reverse index take 93.6 MB resident (`docs/M0.md`).
 
 A dictionary whose artifact is newer than everything it is compiled from is left
