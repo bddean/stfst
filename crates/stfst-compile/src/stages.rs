@@ -21,11 +21,12 @@ use stfst_core::System;
 
 use crate::pipeline::run;
 use crate::recipe::{resolve, Dict, Recipe};
-use crate::{fresh, prelude, STAMP};
+use crate::net::{fnv, Source};
+use crate::{fresh, STAMP};
 
 /// How many shards a pipeline is composed in, at most. A constant, not the
-/// machine's cores, so the cache holds across machines.
-const SHARDS: u64 = 12;
+/// machine's cores, so a prefix's shards are the same on every machine.
+const SHARDS: usize = 12;
 
 /// How long a cached net no compile has used is kept.
 const KEEP: Duration = Duration::from_secs(3 * 24 * 3600);
@@ -75,7 +76,7 @@ pub fn compile(
     }
     let stamp = format!(
         "compiler = {:?}\nsystem = {:?}\n{}\n",
-        env!("STFST_COMPILER_HASH"),
+        env!("STFST_PIPELINE_HASH"),
         system_path.display().to_string(),
         described.join("\n")
     );
@@ -91,20 +92,7 @@ pub fn compile(
     // none. The stages are independent, so they compile at once.
     let mut sources = Vec::new();
     for stage in &stages {
-        let source = match &stage.lexc {
-            Some(src) => Source::Lexc(resolve(base, src)),
-            None => {
-                let mut script = prelude::generate_for(system, Some(&[]));
-                for src in &stage.xfst {
-                    let src = resolve(base, src);
-                    script.push_str(
-                        &std::fs::read_to_string(&src)
-                            .map_err(|e| anyhow::anyhow!("reading {}: {e}", src.display()))?,
-                    );
-                }
-                Source::Xfst(script)
-            }
-        };
+        let source = Source::of(stage, base, system)?;
         let key = source.key()?;
         sources.push((stage.name.as_str(), source, cache.join(format!("stage-{key:016x}.hfst")), key));
     }
@@ -113,7 +101,10 @@ pub fn compile(
             .iter()
             .map(|(name, source, net, _)| {
                 scope.spawn(move || once(net, || match force || !used(net) {
-                    true => source.compile(net).map_err(|e| e.context(format!("stage {name}"))),
+                    true => source
+                        .compile(&tmp(net))
+                        .and_then(|()| Ok(std::fs::rename(tmp(net), net)?))
+                        .map_err(|e| e.context(format!("stage {name}"))),
                     false => Ok(()),
                 }))
             })
@@ -126,7 +117,9 @@ pub fn compile(
     // union: the first stage split by its start state's arcs.
     let _ = std::fs::remove_dir_all(&dir);
     std::fs::create_dir_all(&dir)?;
-    let mut key = fnv(sources[0].3, &SHARDS.to_le_bytes());
+    // A prefix's files are a function of the code here too, not only of its
+    // stages' nets.
+    let mut key = fnv(sources[0].3, env!("STFST_PIPELINE_HASH").as_bytes());
     let mut prev = shards(&sources[0].2, &cache.join(format!("shards-{key:016x}")), force)?;
     for (name, _, net, stage_key) in &sources[1..] {
         key = fnv(key, &stage_key.to_le_bytes());
@@ -332,49 +325,6 @@ fn final_line(state: usize, weight: &str) -> String {
     }
 }
 
-enum Source {
-    Lexc(PathBuf),
-    Xfst(String),
-}
-
-impl Source {
-    /// What the net is a function of: the compiler, and the source's text.
-    fn key(&self) -> Result<u64> {
-        let compiler = env!("STFST_COMPILER_HASH").as_bytes();
-        Ok(match self {
-            Source::Lexc(src) => fnv(fnv(FNV, compiler), &std::fs::read(src)?),
-            Source::Xfst(script) => fnv(fnv(fnv(FNV, compiler), b"xfst"), script.as_bytes()),
-        })
-    }
-
-    fn compile(&self, net: &Path) -> Result<()> {
-        let out = tmp(net);
-        match self {
-            Source::Lexc(src) => {
-                run("hfst-lexc", &["-q", path(src), "-o", path(&out)])?;
-            }
-            Source::Xfst(script) => {
-                let file = out.with_extension("xfst");
-                std::fs::write(&file, format!("{script}\npush Stage\nsave stack {}\n", out.display()))?;
-                run("hfst-xfst", &["-F", path(&file)])?;
-                let _ = std::fs::remove_file(&file);
-            }
-        }
-        std::fs::rename(&out, net)?;
-        Ok(())
-    }
-}
-
-const FNV: u64 = 0xcbf2_9ce4_8422_2325;
-
-/// FNV-1a, as build.rs hashes the compiler: stable across Rust releases.
-fn fnv(mut hash: u64, bytes: &[u8]) -> u64 {
-    for &b in bytes {
-        hash = (hash ^ b as u64).wrapping_mul(0x0100_0000_01b3);
-    }
-    hash
-}
-
 /// The shards of `net`, cached as `PREFIX.I.hfst` beside `PREFIX.count`.
 fn shards(net: &Path, prefix: &Path, force: bool) -> Result<Vec<PathBuf>> {
     let count = prefix.with_extension("count");
@@ -385,7 +335,7 @@ fn shards(net: &Path, prefix: &Path, force: bool) -> Result<Vec<PathBuf>> {
             return Ok((0..n).map(at).collect());
         }
     }
-    let listings = Txt::parse(&run("hfst-fst2txt", &[path(net)])?)?.shards(SHARDS as usize)?;
+    let listings = Txt::parse(&run("hfst-fst2txt", &[path(net)])?)?.shards(SHARDS)?;
     for (i, listing) in listings.iter().enumerate() {
         let file = tmp(&at(i)).with_extension("txt");
         std::fs::write(&file, listing)?;

@@ -13,8 +13,7 @@ use stfst_core::record::{all_tags, copy_tag, is_optional_tag, is_tag};
 use stfst_core::window;
 use stfst_core::{Shown, System};
 
-use crate::prelude;
-use crate::recipe;
+use crate::{json, lexc, plain, prelude, recipe};
 
 /// What the compiler proved about a dictionary before writing it.
 #[derive(Debug)]
@@ -119,6 +118,70 @@ pub fn spawn_error(program: &str, e: std::io::Error) -> anyhow::Error {
         ),
         _ => anyhow::Error::new(e).context(format!("running {program}")),
     }
+}
+
+/// Build a dictionary's artifact from its source, in `work_dir`.
+pub fn build(
+    dict: &recipe::Dict,
+    source: &recipe::Source,
+    system: &System,
+    base: &Path,
+    reserved: &str,
+    work_dir: &Path,
+    artifact: &Path,
+) -> Result<()> {
+    std::fs::create_dir_all(work_dir)?;
+    let forward = work_dir.join("forward.hfstol");
+    let reverse = work_dir.join("reverse.hfstol");
+
+    match source {
+        recipe::Source::Xfst(srcs) => {
+            let srcs: Vec<_> = srcs.iter().map(|s| recipe::resolve(base, s)).collect();
+            let checks =
+                compile_xfst(system, &srcs, reserved, work_dir, &forward, &reverse)?;
+            if !checks.passed() {
+                bail!("{} failed its checks:\n{}", dict.name, checks.report());
+            }
+        }
+        recipe::Source::Plain(src) => {
+            let src = recipe::resolve(base, src);
+            let text = std::fs::read_to_string(&src)?;
+            let compiled =
+                plain::compile(&text, system, lexc::Align::Pairwise).map_err(|errors| {
+                    let lines: Vec<String> = errors.iter().map(|e| format!("  {e}")).collect();
+                    anyhow::anyhow!("{}:\n{}", src.display(), lines.join("\n"))
+                })?;
+            if let Some((tape, _)) =
+                compiled.golden.iter().find(|(t, _)| t.contains(|c| reserved.contains(c)))
+            {
+                bail!("{}: {tape} holds a key another dictionary owns ({reserved})", src.display());
+            }
+            eprintln!("  {}: {} entries", dict.name, compiled.entries);
+            let lexc_path = work_dir.join("plain.lexc");
+            std::fs::write(&lexc_path, &compiled.lexc)?;
+            compile_lexc(&lexc_path, work_dir, &forward, &reverse)?;
+        }
+        recipe::Source::Json(src) => {
+            let src = recipe::resolve(base, src);
+            let imported = json::import_file(&src, system, lexc::Align::Pairwise, reserved)?;
+            eprintln!("  {}: {}", dict.name, imported.report.summary());
+            let lexc_path = work_dir.join("import.lexc");
+            std::fs::write(&lexc_path, &imported.lexc)?;
+            compile_lexc(&lexc_path, work_dir, &forward, &reverse)?;
+        }
+    }
+
+    write_artifact(artifact, dict, system, &forward, &reverse)?;
+    let fwd = std::fs::metadata(artifact.join("forward.hfstol"))?.len();
+    let rev = std::fs::metadata(artifact.join("reverse.hfstol"))
+        .map(|m| m.len())
+        .unwrap_or(0);
+    eprintln!(
+        "  {} -> {} ({fwd} bytes forward, {rev} reverse)",
+        dict.name,
+        artifact.display()
+    );
+    Ok(())
 }
 
 /// Compile an xfst source that defines `Grammar`, and prove the §3 properties
