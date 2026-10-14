@@ -199,15 +199,15 @@ entry. "Coverage" is the sum of 10^zipf over those words, divided by 10^6, out
 of about 157. "Lose" is the words in scope that get no outline because a
 higher word took it.
 
-| variant | words | coverage | lose | user.json briefs reproduced |
-|---|---|---|---|---|
-| chosen | 6097 | 128.3 | 392 | 42 |
-| -ly XORs y (old rule) | 6072 | 128.0 | 407 | 38 |
-| digraph XORs its chord, not its first letter | 6081 | 127.9 | 396 | 38 |
-| -tion by its sounds, not -GS | 5947 | 125.4 | 411 | 34 |
-| syncope only before l and r | 5790 | 125.0 | 447 | 37 |
-| lead drop as second choice only | 6063 | 128.0 | 402 | 37 |
-| prefix cluster kept apart from the onset | 5820 | 124.2 | 389 | 34 |
+| variant                                      | words | coverage | lose | user.json briefs reproduced |
+|---                                           |---    |---       |---   |---                          |
+| chosen                                       | 6097  | 128.3    | 392  | 42                          |
+| -ly XORs y (old rule)                        | 6072  | 128.0    | 407  | 38                          |
+| digraph XORs its chord, not its first letter | 6081  | 127.9    | 396  | 38                          |
+| -tion by its sounds, not -GS                 | 5947  | 125.4    | 411  | 34                          |
+| syncope only before l and r                  | 5790  | 125.0    | 447  | 37                          |
+| lead drop as second choice only              | 6063  | 128.0    | 402  | 37                          |
+| prefix cluster kept apart from the onset     | 5820  | 124.2    | 389  | 34                          |
 
 The rows after the -ly row each change that row's pipeline, not "chosen".
 
@@ -527,6 +527,27 @@ outlines (31 outlines).
   a nasal coda now crosses only to an empty onset. control is `^TROL` only;
   the same junk is gone from include (TKPHRAOED), increase, enhance,
   concede, consult and himself (`^SPHUF`).
+
+		** REVIEW: does this increase collisions? we don't necessarily need
+		** to be cosntrained here by phonotactics. If this reduces coverage,
+		** scrap it; altho otherwise, reducign keys needing to be pressed +
+		** making the briefs prnounceable (= more memorable) is good.
+
+Answer: it reduces coverage, and it adds collisions. Measured at phase 5's tip
+(the secondary-stress lead drop in), with and without the rule:
+
+| two-syllable.json | entries | words | coverage | lose |
+|---|---|---|---|---|
+| with the rule (phase 5) | 19436 | 11347 | 192.7 | 599 |
+| without | 20021 | 11489 | 194.1 | 581 |
+
+Without the rule, 166 words gain a stroke and 36 lose theirs. Most gains are
+the unpronounceable kind (champagne `KPHEUPB`, concede `STKPHAOED`, consist
+`STKPHO*EUS`, contempt `TKPHOEFRP`), but some are plain strokes freed by the
+shuffle (confirmed `^TPEURPLD`, assumed `^SAOUPLD`). The losses are mostly
+plurals and -ed forms (effects, events, arrested, affairs). So the rule is
+reverted: contract.xfst is back to before it, and the dictionaries and stage
+golden files are regenerated (uncommitted).
 
 | two-syllable.json | entries | words | coverage | lose |
 |---|---|---|---|---|
