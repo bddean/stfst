@@ -628,10 +628,15 @@ Reported by the phases, merged. Fixed now:
   measured by hand-patching (phases 2, 3, 3b). Fixed: the stage cache and
   `--ablate STAGE`. A change to an early stage still rebuilds everything after
   it, but a prefix is now composed by hfst-compose, not hfst-xfst, and its
-  paths listed from hfst-fst2txt, not hfst-fst2strings: a lead change takes 34
-  s, not 5.5 minutes. The dictionaries compile at once, so a full compile is
-  2.5 minutes, not 5.5, and is as long as phrasing-tag alone. regen.sh runs the
-  generators' checks at once: a regen with nothing stale is 11 s.
+  paths listed from hfst-fst2txt, not hfst-fst2strings, in 12 shards at once:
+  a lead change takes 10 s, not 5.5 minutes. The dictionaries compile at once,
+  so a full compile is 2.5 minutes, not 5.5, and is as long as phrasing-tag
+  alone. regen.sh runs the generators' checks at once: a regen with nothing
+  stale is 11 s.
+- Any compiler change changed every artifact's stamp, so the whole stack
+  rebuilt. Fixed: build.rs stamps stage nets, pipelines and artifacts each with
+  only the files that decide them. A change to stages.rs recomposes the
+  pipelines in 14 s; one to lib.rs rebuilds nothing.
 
 Open:
 
@@ -642,8 +647,6 @@ Open:
 - Generators can read a stale stack or pipeline silently (phases 1, 3b, 4).
   `make regen` compiles first, but a standalone `--check` does not. Fix: Stack
   checks stamps; `--check` calls the cached compile.
-- Any compiler change changes every artifact's stamp, so the whole stack
-  rebuilds. Fix: stamp with only the code that builds that artifact.
 - find-typey-composed.py takes about 12 minutes under Plover's python. Fix:
   cache verdicts per entry.
 - DUPT (`TKUPT`, ADD_OUTLINE) leaves no log of its target dictionary. Fix: the
