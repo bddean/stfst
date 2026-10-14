@@ -10,7 +10,10 @@
 //! into one, and the files are what `scripts/check.sh` holds to
 //! `tests/golden/NAME/`, so a change to one stage shows as a diff at that stage.
 
+use std::collections::HashMap;
 use std::path::{Path, PathBuf};
+use std::sync::atomic::{AtomicUsize, Ordering};
+use std::sync::{Arc, LazyLock, Mutex, OnceLock};
 use std::time::{Duration, SystemTime};
 
 use anyhow::{bail, Result};
@@ -104,9 +107,11 @@ pub fn compile(
     std::thread::scope(|scope| {
         let jobs: Vec<_> = sources
             .iter()
-            .filter(|(_, _, net, _)| force || !used(net))
             .map(|(name, source, net, _)| {
-                scope.spawn(move || source.compile(net).map_err(|e| e.context(format!("stage {name}"))))
+                scope.spawn(move || once(net, || match force || !used(net) {
+                    true => source.compile(net).map_err(|e| e.context(format!("stage {name}"))),
+                    false => Ok(()),
+                }))
             })
             .collect();
         jobs.into_iter().try_for_each(|j| j.join().expect("a stage's compile panicked"))
@@ -121,24 +126,11 @@ pub fn compile(
         let out = cache.join(format!("prefix-{key:016x}.hfst"));
         let tsv = out.with_extension("tsv");
         if force || !used(&out) || !used(&tsv) {
-            let script = format!(
-                "load stack {}\ndefine A ;\nload stack {}\ndefine B ;\ndefine P [ A .o. B ] ;\n\
-                 push P\nsave stack {}\n",
-                prev.display(),
-                net.display(),
-                tmp(&out).display()
-            );
-            let file = dir.join(format!("{name}.xfst"));
-            std::fs::write(&file, script)?;
-            run("hfst-xfst", &["-F", path(&file)])?;
+            // hfst-xfst takes several times as long for the same composition.
+            run("hfst-compose", &["-1", path(&prev), "-2", path(net), "-o", path(&tmp(&out))])?;
             std::fs::rename(tmp(&out), &out)?;
-            let mut rows: Vec<String> = run("hfst-fst2strings", &[path(&out)])?
-                .lines()
-                .map(|line| match line.split_once(':') {
-                    Some((upper, lower)) => format!("{upper}\t{lower}"),
-                    None => format!("{line}\t{line}"),
-                })
-                .collect();
+            let mut rows = paths(&run("hfst-fst2txt", &[path(&out)])?)
+                .map_err(|e| e.context(format!("{}: {name}", dict.name)))?;
             rows.sort();
             rows.dedup();
             std::fs::write(tmp(&tsv), rows.join("\n") + "\n")?;
@@ -156,6 +148,68 @@ pub fn compile(
     // Last, and a new file, so the directory's mtime is when this finished.
     std::fs::write(dir.join(STAMP), stamp)?;
     Ok(())
+}
+
+/// Each path of an acyclic net, from hfst-fst2txt's listing, as
+/// `upper<TAB>lower`. hfst-fst2strings is forty times slower on a pipeline's
+/// prefix.
+fn paths(txt: &str) -> Result<Vec<String>> {
+    #[derive(Default)]
+    struct State<'a> {
+        arcs: Vec<(usize, &'a str, &'a str)>,
+        last: bool,
+    }
+    let mut states: Vec<State> = Vec::new();
+    let symbol = |s| match s {
+        "@0@" | "@_EPSILON_SYMBOL_@" => "",
+        "@_SPACE_@" => " ",
+        "@_TAB_@" => "\t",
+        s => s,
+    };
+    for line in txt.lines() {
+        let fields: Vec<&str> = line.split('\t').collect();
+        let (state, arc): (usize, _) = match fields[..] {
+            [from, to, upper, lower, ..] => (from.parse()?, Some((to.parse()?, symbol(upper), symbol(lower)))),
+            [state, ..] => (state.parse()?, None),
+            [] => continue,
+        };
+        let top = arc.map_or(state, |(to, _, _)| state.max(to));
+        if states.len() <= top {
+            states.resize_with(top + 1, Default::default);
+        }
+        match arc {
+            Some(arc) => states[state].arcs.push(arc),
+            None => states[state].last = true,
+        }
+    }
+    let mut rows = Vec::new();
+    if states.is_empty() {
+        return Ok(rows);
+    }
+    // Depth-first. A frame is a state, the next arc to take from it, and the
+    // lengths of the strings that reach it.
+    let (mut upper, mut lower) = (String::new(), String::new());
+    let mut stack = vec![(0, 0, 0, 0)];
+    while let Some((state, next, u, l)) = stack.last_mut() {
+        upper.truncate(*u);
+        lower.truncate(*l);
+        let State { arcs, last } = &states[*state];
+        if *next == 0 && *last {
+            rows.push(format!("{upper}\t{lower}"));
+        }
+        let Some(&(to, a, b)) = arcs.get(*next) else {
+            stack.pop();
+            continue;
+        };
+        *next += 1;
+        upper.push_str(a);
+        lower.push_str(b);
+        if stack.len() > states.len() {
+            bail!("the net has a cycle");
+        }
+        stack.push((to, 0, upper.len(), lower.len()));
+    }
+    Ok(rows)
 }
 
 enum Source {
@@ -201,9 +255,22 @@ fn fnv(mut hash: u64, bytes: &[u8]) -> u64 {
     hash
 }
 
+/// Run `build` for `net` once in this process. Pipelines compile at once and
+/// share stages, so a second caller waits for the first one's result.
+fn once(net: &Path, build: impl FnOnce() -> Result<()>) -> Result<()> {
+    type Done = Arc<OnceLock<Result<(), String>>>;
+    static NETS: LazyLock<Mutex<HashMap<PathBuf, Done>>> = LazyLock::new(Default::default);
+    let done = NETS.lock().unwrap().entry(net.to_path_buf()).or_default().clone();
+    done.get_or_init(|| build().map_err(|e| format!("{e:#}")))
+        .clone()
+        .map_err(anyhow::Error::msg)
+}
+
 fn tmp(p: &Path) -> PathBuf {
     let mut name = p.file_name().expect("a cache file").to_os_string();
-    name.push(format!(".{}.tmp", std::process::id()));
+    static NEXT: AtomicUsize = AtomicUsize::new(0);
+    thread_local!(static THREAD: usize = NEXT.fetch_add(1, Ordering::Relaxed));
+    name.push(format!(".{}.{}.tmp", std::process::id(), THREAD.with(|t| *t)));
     p.with_file_name(name)
 }
 

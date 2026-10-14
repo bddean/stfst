@@ -31,9 +31,15 @@ fi
 
 for round in $(seq "$ROUNDS"); do
     compile
-    stale=()
+    # The checks only read, so they run at once.
+    pids=()
     for g in "${GENERATORS[@]}"; do
-        "$PY" "scripts/$g.py" --check >/dev/null 2>&1 || stale+=("$g")
+        "$PY" "scripts/$g.py" --check >/dev/null 2>&1 &
+        pids+=($!)
+    done
+    stale=()
+    for i in "${!GENERATORS[@]}"; do
+        wait "${pids[$i]}" || stale+=("${GENERATORS[$i]}")
     done
     if [ ${#stale[@]} -eq 0 ]; then
         echo "regen: every generator is current after $((round - 1)) rounds"
