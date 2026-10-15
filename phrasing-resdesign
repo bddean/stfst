@@ -1,0 +1,137 @@
+# ^ T P H +  * F P L T D
+@ S K W R +  * R B G S Z
+
+		  A O      E U
+
+
+	RHS
+
+*EU no change
+FRPBLG -- 6 bits -- word bank, reassigned.
+T S -- complement pair, see below
+Z -- have to, see LINKER. The gap stays on 🦐.
+D -- past
+
+empty verb slot = be, as before. it is article class: -T is the, -S is a(n).
+
+
+	-T -S
+
+-T   primary complement word
+-S   secondary word
+-TS  primary + its top follower (article class: particle)
+
+class        -T         -S                  -TS             e.g.
+to (inf)     to         second complement   to be           need to · need to be · seem like
+to (motion)  to         particle            to the          go to · go on · go to the
+that         that       particle or to      that the        say that · say that the · think of
+article      the        a(n) {held}         particle        make the · make a · make sure
+particle     1st part.  2nd particle        1st part. + the look at · look for · look at the
+
+-TD easy (top row), so the primary pasts cleanly. -SD diagonal only on secondary.
+article -TS is particle: the after the is a noun, and transitives need a home
+for make sure, take place, find out, give up, show up, set up.
+verbs with no strong complement (help) spend T on bank space.
+
+borderline:
+mean     that   T that    S to
+seem     to     T to      S like
+appear   part.  T in      S to
+feel     part.  T like    S that
+think    that   T that    S of/about
+use      art.   T the     S to (used to be)
+like     to     T to      S the
+add      that   T that    S to (add to the)
+get      art.   T the/a   S to
+
+
+	CONJUNCTIONS
+
+S    but
+SK   and     (SKP is "and" in theory)
+K    if
+
+"and if" goes. Before a subject, "but" is as frequent as "and" (9,382 and
+9,353 in web+news) and "and if" is 382. K stays "if" (6,598): "that" before a
+subject is a verb's complement, which -T already writes.
+
+"but" goes where "and" goes: before the clause, before "to", and before an
+inverted finite word ("but am I"). `^` writes no "so" after "but", since "but
+so I can go" is not English; after "and" it does as before. "if" takes no
+conjunction.
+
+
+	THE HOLE
+
+The hole is one PLBG pattern, and its F R extensions are hole chords too:
+
+	          plain       *
+hole      [verb]      not [verb]
+F hole    always      never
+R hole    just        not just
+FR hole   also        not also
+
+*F writes "never" in place of "not", so "I never run" takes no do. "not
+always" is 169 to never's 2,012 in web+news. Every verb outside the bank gets
+these three adverbs in two strokes: `#TU-F<hole> RUPB` is "I've never run".
+
+The hole takes 4 bank chords where -RG took 1, so the bank holds 59 verbs.
+The three it gives up are the lowest-value verbs in the bank; by today's
+ranking, bring, stop and tell.
+
+Its complement is the article class with "to": -T the, -S a(n), -TS to. After
+a verb ranked 60 or lower, the next word is "the" 11.1%, "to" 7.1%, "a" 6.2%,
+"that" 2.8%.
+
+
+	LINKER (undecided)
+
+Z    have to     ZD    had to
+RO   need to     ROD   needed to
+
+On Z, "have to" composes with modality and aspect: "I'll have to", "might have
+had to". It follows a modal 1,192 times in 8,538 in web+news, and in RO it
+cannot. RO then holds a linker that rarely follows a modal: "need to" (11%) or
+"want to" (7%). Personal writing has need to 135, want to 80; web+news has
+want to 8,566, need to 6,949.
+
+If RO is "need to", the bank's "need" is mostly "need the" and "need a", so it
+takes the article class.
+
+
+	* ON AN ADVERB
+
+* on an adverb whose "not" form is rare writes its negative form instead, and
+the negative form replaces "not". Only always/never is on a chord. The same rule
+covers still/no longer (5 to 986), already/yet (24 to 598) and also/either (8
+to 68) if they ever get one. just, really and only take "not" freely (961, 221,
+1,540) and keep it.
+
+
+	RETRO
+
+plain -D -G -S after a phrase edit it:
+
+-D  past         I go -> I went
+-G  progressive  I go -> I'm going
+-S  plural       this is -> these are, the <cat> runs -> the cats run
+
+
+	STILL TO DROP
+
+-RG hole
+semi-modals in the verb bank: have to, going to and used to are modalities now
+
+
+	OPEN
+
+LINKER: have to on Z or in RO; need to or want to in RO
+which PLBG pattern the hole takes
+-S per verb in that/particle classes is a fact to learn
+-SD diagonal on "made a"
+"I do" / "she does" has no key
+what @ does
+what 🦐 does
+specific subj-verb combos low-freq enough to special case?
+
+Extra feature ideas: "also" "just" or "still" after the modal ("also" is best), subjectuive "were"
