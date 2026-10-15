@@ -33,9 +33,6 @@ the stroke. What this script decides is the rest, which is not a rule:
   and a word then keeps every other outline of its own no word took.
   A stroke another dictionary in the stack writes is left to it, and a plain
   stroke takes none, not even one Typey Type gives up to the rules.
-- A stroke with a vowel whose onset or coda no one-syllable word's own stroke
-  has is also written without `^`, since the bank already says two syllables:
-  outside is `^OETSD` and `OETSD`.
 - A common word of one syllable that Typey Type does not write is its plain
   stroke (sheikh).
 
@@ -107,45 +104,6 @@ def inflection(w, known):
     return False
 
 
-# --- Without the caret -----------------------------------------------------------
-
-def banks(typey):
-    """The onsets and codas of the one-syllable words' own strokes."""
-    on, co = set(), set()
-    for w in typey.words.values():
-        for o in w.outlines:
-            s = g.Stroke.parse(o)
-            if g.is_own_stroke(w, s, typey.habit):
-                on.add(s.onset)
-                co.add(s.coda)
-    return on, co
-
-
-def bare(out, typey, strokes):
-    """{stroke without `^`: word} for each entry whose bank says two syllables,
-    and which the rule did not already offer without `^`."""
-    on, co = banks(typey)
-    found = {}
-    for o, w in out.items():
-        s = g.Stroke.parse(o[1:]) if o.startswith("^") else None
-        if s and s.vowel and (s.onset not in on or s.coda not in co) and o[1:] not in strokes[w]:
-            found[o[1:]] = w
-    return found
-
-
-def bare_entries(name, out, typey, strokes, stack, held, gives_way):
-    """({stroke: word}, {stroke: (word, (dictionary, translation))}): the bare
-    strokes of `out`, a dictionary's {stroke: word}, that it writes, and those
-    something else keeps. `held` is {stroke: (dictionary, translation)} for what
-    keeps a stroke the stack does not answer for."""
-    plain = bare(out, typey, strokes)
-    taken = {s: (plain[s], theirs[0]) for s, theirs in stack.ask(plain).items()
-             if theirs and theirs[0][1] != plain[s] and not gives_way(s, plain[s], theirs[0])}
-    taken.update((s, (w, (name, out[s]))) for s, w in plain.items() if s in out)
-    taken.update((s, (w, held[s])) for s, w in plain.items() if s in held)
-    return {s: w for s, w in plain.items() if s not in taken}, taken
-
-
 def syllables(w):
     return sum(p[-1].isdigit() for p in g.prons(w)[0])
 
@@ -191,17 +149,8 @@ def build(typey, rule, vocabulary):
     folded = {s: w for s, w in out.items() if w in base and out.get(base[w][1][s]) == base[w][0]}
     for s in folded:
         del out[s]
-    # A bare stroke takes a Typey Type one as a `^` stroke does, and also when
-    # this dictionary writes that word: only keeps `^OEUPBL`, so omen is
-    # `OEPBL`. The rest are reported.
-    ours = set(out.values())
-    plain, taken = bare_entries(NAME, out, typey, strokes, stack, retro,
-                                lambda s, w, other: typey_way(s, w, other)
-                                or (other[0] == "typey-type" and other[1] in ours))
-    out.update(plain)
     return dict(sorted(out.items())), dict(strokes=strokes, base=base, folded=folded, written=written,
-                                          lost=lost, left=left, stack=stack,
-                                          bare=plain, bare_taken=taken)
+                                          lost=lost, left=left, stack=stack)
 
 
 def write_json(d, path):
@@ -229,10 +178,6 @@ def report(out, r):
     left.sort(key=lambda x: (-z(x[0]), x[:2]))
     print(f"{len(left)} leave their stroke to another dictionary:")
     print(wrap([f"{w}={s}({n}:{t})" for w, s, (n, t) in left]))
-    b = sorted(r["bare"].items(), key=lambda x: (-z(x[1]), x))
-    print(f"{len(b)} are also written without ^, and {len(r['bare_taken'])} could be but that stroke is taken:")
-    print(wrap([f"{w}={s}" for s, w in b]))
-    print(wrap([f"{w}={s}({n}:{t})" for s, (w, (n, t)) in r["bare_taken"].items()]))
 
     print("Each rewrite, the words in scope it rewrites: how many have an entry, lose their stroke to "
           "another word, and take another's:")

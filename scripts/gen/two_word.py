@@ -23,8 +23,6 @@ one word. What this script decides is the rest, which is not a rule:
   after one, so `^TPOU` is a few with no entry. A stroke a fold reads as
   something else goes to the pair if the pair is the more frequent text: the
   most is `^TPHOEFT`, which the -T fold reads as "naive the".
-- A stroke with a vowel whose onset or coda no one-syllable word's own stroke has
-  is also written without `^`, as two-syllable.json does.
 - A pair's stroke with a suffix key, which a fold reads as the last word
   inflected, is an entry where the stressed word inflected, on either side, is
   the more common text: `^TKPW-G` is "going to".
@@ -49,7 +47,7 @@ from . import lexicon as lex
 from . import vowels as g
 from .resolve import candidates, compile_pipeline, resolve, unwritten_briefs
 from .stack import Stack, retro_words
-from .two_syllable import bare_entries, coda, with_coda, write_json
+from .two_syllable import coda, with_coda, write_json
 
 OUTPUT = os.path.join(DICTS, "two-word.json")
 PAIRS = os.path.join(ROOT, "dictionaries", "pairs.lexc")
@@ -179,13 +177,12 @@ def inflected(out, stack):
     return found
 
 
-def build(typey, rule, counts):
+def build(rule, counts):
     """(entries, report data), from `rule`, {pair: {outline: cost}}."""
     count = lambda p: counts[tuple(p.split(" "))]
-    never = lambda outline, word, other: False
     stack = Stack(g.written(), skip=(NAME,))
     strokes = {o for cs in rule.values() for o in cs}
-    folds = stack.folds(strokes | {s[1:] for s in strokes})
+    folds = stack.folds(strokes)
     held = {s: ("retro-words", "") for s in retro_words()}
     held.update((s, ("folds", t)) for s, (t, _) in folds.items())
     # A fold reads a stroke only where no entry does.
@@ -200,7 +197,6 @@ def build(typey, rule, counts):
         other[0] == "folds" and (pair in OVER_FOLD
                                  or count(pair) > max((reading_counts[w] for w in readings[outline]), default=0)))
     out, lost, left = resolve(rule, lambda p: (-count(p), p), others, over_fold)
-    plain, taken = bare_entries(NAME, out, typey, rule, stack, held, never)
     # A pair a fold writes needs no entry. A fold's base may be one of this
     # dictionary's entries, which changes what it reads, so ask again with them.
     folded = {s: p for s, p in out.items() if others.get(s) == ("folds", p)}
@@ -213,20 +209,17 @@ def build(typey, rule, counts):
         folded = still
     for s in folded:
         del out[s]
-    out.update(plain)
     reordered = {s: t for s, t in inflected(out, stack).items() if s not in out}
     out.update(reordered)
     return dict(sorted(out.items())), dict(rule=rule, count=count, lost=lost, left=left,
-                                          folded=folded, bare=plain, bare_taken=taken, reordered=reordered)
+                                          folded=folded, reordered=reordered)
 
 
 def report(found, out, r):
     wrap = lambda items: "\n".join("  " + " ".join(items[i:i + 8]) for i in range(0, len(items), 8))
     rule, count = r["rule"], r["count"]
     unwritten = sorted(set(found) - set(rule), key=lambda p: -count(p))
-    caret = sum(1 for o in out if o.startswith("^"))
-    print(f"{len(found)} pairs in scope, {len(rule)} with a stroke; {len(out)} entries, "
-          f"{caret} with ^ and {len(out) - caret} without")
+    print(f"{len(found)} pairs in scope, {len(rule)} with a stroke; {len(out)} entries")
     print(f"{len(r['folded'])} a fold writes, so they need no entry")
     print(f"{len(r['reordered'])} with a suffix key read better with the stressed word inflected:",
           " ".join(f"{s}={t.replace(' ', '_')}" for s, t in r["reordered"].items()))
@@ -241,8 +234,6 @@ def report(found, out, r):
     by = collections.Counter(n for _, _, (n, _) in left)
     print(f"{len(left)} leave their stroke to another dictionary:", dict(by.most_common()))
     print(wrap([f"{w.replace(' ', '_')}={s}({n}:{t})" for w, s, (n, t) in left[:80]]))
-    print(f"{len(r['bare'])} are also written without ^, and {len(r['bare_taken'])} could be "
-          f"but that stroke is taken")
     with open(os.path.join(DICTS, "user.json")) as f:
         user = json.load(f)
     by_pair = {p: s for s, p in out.items() if s.startswith("^")}
@@ -268,7 +259,7 @@ def main():
             with open(PAIRS, "w") as f:
                 f.write(text)
         compile_pipeline(NAME)
-    out, r = build(g.Typey.load(), candidates(NAME), counts)
+    out, r = build(candidates(NAME), counts)
     if args.check:
         with open(OUTPUT) as f:
             if json.load(f) != out:

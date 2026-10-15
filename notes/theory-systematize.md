@@ -651,8 +651,6 @@ Open:
   cache verdicts per entry.
 - DUPT (`TKUPT`, ADD_OUTLINE) leaves no log of its target dictionary. Fix: the
   add-outline plugin logs it on save.
-- The caret stage's output loses plain against `^` fallback; Python infers it.
-  Fix: keep a mark in the last stage's output.
 - xfst reads `"1:"` as one multichar symbol, and lexc read TH/SH in key text as
   phonemes; both failed silently. Fix: export head symbols from one stage
   file, and escape all key text with `Keys` from gen/lexicon.py.
