@@ -40,22 +40,24 @@ class Reload:
     def __init__(self, engine):
         self._engine = engine
         self._stop = threading.Event()
-        self._thread = None
 
     def start(self):
-        self._stop.clear()
-        self._thread = threading.Thread(target=self._watch, name=NAME, daemon=True)
-        self._thread.start()
+        # Each watcher gets its own event, so a restart cannot revive one that
+        # is still finishing.
+        self._stop = threading.Event()
+        threading.Thread(
+            target=self._watch, args=(self._stop,), name=NAME, daemon=True
+        ).start()
 
     def stop(self):
+        # The engine holds its lock while it stops extensions, and the watcher
+        # takes that lock, so joining the watcher here would deadlock.
         self._stop.set()
-        self._thread.join()
-        self._thread = None
 
-    def _watch(self):
-        while not self._stop.wait(INTERVAL):
+    def _watch(self, stop):
+        while not stop.wait(INTERVAL):
             rebuilt = self._rebuilt()
-            if rebuilt:
+            if rebuilt and not stop.is_set():
                 log.info("%s: %s was rebuilt", NAME, ", ".join(rebuilt))
                 # Queued onto the engine thread, which is where a configuration
                 # change belongs and where the dictionaries are read.
