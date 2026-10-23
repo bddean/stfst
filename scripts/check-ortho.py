@@ -70,7 +70,26 @@ def main(limit=4000):
         if a != b and shown < 15:
             print("  %s + %s: plover %r, ours %r" % (word, suffix, b, a))
             shown += 1
-    return 0
+
+    # The completion is ours on both sides, so it has to agree exactly wherever
+    # the join it starts from does.
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "plover-plugin"))
+    from plover_stfst.morph import join_or_complete
+    ours = subprocess.run(
+        [BINARY, "ortho", "--complete", "--pairs", "/dev/stdin"],
+        input="\n".join("%s\t%s" % p for p in pairs) + "\n",
+        capture_output=True, text=True)
+    if ours.returncode != 0:
+        print(ours.stderr.strip(), file=sys.stderr)
+        return 1
+    joined = [(p, a, join_or_complete(*p)) for p, a, b, c in
+              zip(pairs, ours.stdout.splitlines(), theirs, mine) if b == c]
+    completed = sum(1 for (w, s), a, b in joined if b != add_suffix(w, s))
+    bad = [(p, a, b) for p, a, b in joined if a != b]
+    print("%d completed, %d differ from the plugin" % (completed, len(bad)))
+    for (word, suffix), a, b in bad[:15]:
+        print("  %s + %s: plugin %r, ours %r" % (word, suffix, b, a))
+    return 1 if bad else 0
 
 
 if __name__ == "__main__":

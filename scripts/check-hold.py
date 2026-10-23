@@ -37,6 +37,7 @@ DEFAULT = [
     "tests/hole/hole.strokes",
     "tests/repeat-word/repeat-word.strokes",
     "tests/retro-words/ops.strokes",
+    "tests/translate/complete.strokes",
 ]
 
 
@@ -112,8 +113,9 @@ def main(paths):
         # fixture that listed them any other way would be asking the two hosts
         # different questions.
         listed = os.path.join(os.path.dirname(fixture), "artifacts")
-        dicts = [load_dictionary(os.path.join(ROOT, p.strip()))
-                 for p in open(listed) if p.strip()]
+        dicts = [load_dictionary(found)
+                 for p in open(listed) if p.strip()
+                 for found in sorted(glob.glob(os.path.join(ROOT, p.strip())))]
         expected = fixture[:-len(".strokes")] + ".expected"
         for seed, strokes, want in cases(fixture, expected):
             buf = [""]

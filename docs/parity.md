@@ -187,6 +187,28 @@ not in a set comparison. It found three transcription errors and one alphabet ga
 the first time it ran, and it reports which of the 38 rules the sample never
 reached rather than leaving coverage to a hopeful `limit`.
 
+## A join that makes no word, which departs from Plover on purpose
+
+Where no candidate of a join is in the word list, Plover writes the earliest
+rule's non-word, so `idea` and `{^cal}` is `ideacal`. Both hosts complete it
+instead: the word less a final vowel, then at most three letters, never more than
+the suffix has, then the suffix, and the commonest such word wins. So it is
+`identical`, `nun` and `{^ry}` is `nunnery`, and `reserve` and `{^tion}` is
+`reservation`. A one-letter suffix is never completed, because `child` and `s`
+would be `childes`.
+
+It is a fallback and not a change to the join: `Morph::join` is still Plover's
+`add_suffix` exactly, so the two measurements above still hold, and the formatter
+calls `Morph::join_or_complete`. Plover's half is `plover_stfst.morph`, which the
+extension puts where `plover.meta.attach` looks `add_suffix` up, and
+`scripts/check-ortho.py` holds the two completions to each other where the joins
+agree:
+
+```
+40000 pairs, 40000 agree (100.0%)
+ 1375 completed, 0 differ from the plugin
+```
+
 ## Inflection, which is the other half of a join
 
 *Done.* `plover-semantic-suffixes` uses `lemminflect` for `run`→`ran` and

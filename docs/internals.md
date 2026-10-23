@@ -251,6 +251,10 @@ lexicons come from data that ships with Plover and lemminflect, so
 second is inflection, so it is `children`. Only the second asks a lexicon, and a
 host with no lexicon refuses `{:infl:…}` rather than answering it with rules.
 
+A join that makes no word completes to one: `idea` and `{^cal}` is
+`identical`, where Plover alone writes `ideacal`. The plugin does the same in
+Plover, and `docs/parity.md` says how far each half reaches.
+
 The rules are also a layer a grammar composes as it compiles: `affixes` spells
 the plurals it writes through `Ortho`, so each is the word `{^s}` would write.
 There is no word list to rank candidates at compile time, so a rule's candidate

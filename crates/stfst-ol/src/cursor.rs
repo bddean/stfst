@@ -110,6 +110,28 @@ impl<'a> Cursor<'a> {
         out
     }
 
+    /// Every live cursor this one reaches by reading at most `depth` more
+    /// symbols, with the symbols it read, shortest first and itself first of all.
+    pub fn within(&self, depth: usize) -> Vec<(Vec<Sym>, Cursor<'a>)> {
+        let mut out = vec![(Vec::new(), self.clone())];
+        let mut i = 0;
+        while i < out.len() {
+            if out[i].0.len() < depth {
+                for sym in out[i].1.next_inputs() {
+                    let mut next = out[i].1.clone();
+                    next.step(sym);
+                    if next.live() > 0 {
+                        let mut read = out[i].0.clone();
+                        read.push(sym);
+                        out.push((read, next));
+                    }
+                }
+            }
+            i += 1;
+        }
+        out
+    }
+
     /// Whether what has been read so far is an entry, which is `outputs` without
     /// reading any of them.
     pub fn accepts(&self) -> bool {

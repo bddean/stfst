@@ -14,6 +14,10 @@
 //! fifteen lines: prefer a candidate the word list knows, among those prefer the
 //! commonest, and break a tie by which rule made it. None of it is English.
 //!
+//! A join that makes no word completes to one where a word is near, so `idea` and
+//! `cal` is `identical`. That is `join_or_complete`, which the formatter calls;
+//! `join` stays Plover's own, so the two can still be held to each other.
+//!
 //! The two halves stay separate on purpose, and mixing them was the bug this
 //! replaced. `{^s}` is orthography, so `child` and `s` make `childs`, exactly as
 //! Plover says. `{:infl:ofs}` is inflection, so they make `children`. No rule can
@@ -38,6 +42,10 @@ const SIMPLE: u32 = 50;
 /// out of the word. `match_case` needs to know when it fired.
 const DOUBLING: u32 = 38;
 
+/// How many letters a completion may put between a word and its suffix: `ram`
+/// and `ication` is `ramification`.
+const COMPLETION_GAP: usize = 3;
+
 #[derive(Debug, thiserror::Error)]
 pub enum MorphError {
     #[error("reading {0}: {1}")]
@@ -46,8 +54,48 @@ pub enum MorphError {
 
 pub struct Morph {
     rules: Automaton,
-    words: Automaton,
+    words: Lexicon,
     infl: Automaton,
+}
+
+/// The word list: a word to how common it is.
+pub struct Lexicon(Automaton);
+
+impl Lexicon {
+    /// How common a word is, lower being commoner, or `None` for a word the list
+    /// does not have.
+    pub fn freq(&self, word: &str) -> Option<u32> {
+        self.0.lookup(word)?.into_iter().next()?.parse().ok()
+    }
+
+    /// Every word that is `prefix`, then at most `gap` letters, then `suffix`,
+    /// with how common it is.
+    pub fn between(&self, prefix: &str, gap: usize, suffix: &str) -> Vec<(String, u32)> {
+        let alphabet = self.0.alphabet();
+        let (Some(head), Some(tail)) = (alphabet.tokenize(prefix), alphabet.tokenize(suffix))
+        else {
+            return Vec::new();
+        };
+        let mut start = self.0.cursor();
+        for &sym in &head {
+            start.step(sym);
+        }
+        let mut out = Vec::new();
+        for (read, mut cursor) in start.within(gap) {
+            let fill = alphabet.render(&read);
+            if !fill.chars().all(char::is_alphabetic) {
+                continue;
+            }
+            for &sym in &tail {
+                cursor.step(sym);
+            }
+            let freq = cursor.outputs().iter().find_map(|o| alphabet.render(o).parse().ok());
+            if let Some(freq) = freq {
+                out.push((format!("{prefix}{fill}{suffix}"), freq));
+            }
+        }
+        out
+    }
 }
 
 /// A candidate the word list knows, and everything that ranks it.
@@ -83,7 +131,7 @@ impl Morph {
         };
         Ok(Morph {
             rules: load("ortho.hfstol")?,
-            words: load("words.hfstol")?,
+            words: Lexicon(load("words.hfstol")?),
             infl: load("infl.hfstol")?,
         })
     }
@@ -103,6 +151,41 @@ impl Morph {
             None => format!("{word}{suffix}"),
             Some(rule) => match_case(&joined, word, rule == DOUBLING),
         }
+    }
+
+    /// A join that lands on a word where the rules alone do not: `idea` and `cal`
+    /// is `identical` where `join` says `ideacal`.
+    ///
+    /// The word less a final vowel, then a few letters, then the suffix, and the
+    /// commonest such word wins. Only where no candidate of the join is a word, so
+    /// it never overrides `join`, which stays Plover's own.
+    pub fn join_or_complete(&self, word: &str, suffix: &str) -> String {
+        let lower = word.to_lowercase();
+        let suffix_lower = suffix.to_lowercase();
+        let (_, joined) = self.join_lower(&lower, &suffix_lower);
+        let letters = suffix_lower.chars().count();
+        // A one-letter suffix ends too many words: `child` and `s` would be
+        // `childes`.
+        if letters < 2 || self.words.freq(&joined).is_some() {
+            return self.join(word, suffix);
+        }
+        let gap = letters.min(COMPLETION_GAP);
+        let found = self.complete(&lower, &suffix_lower, gap).into_iter().min_by(|a, b| {
+            (a.1, a.0.len(), &a.0).cmp(&(b.1, b.0.len(), &b.0))
+        });
+        match found {
+            Some((completed, _)) => match_case(&completed, word, false),
+            None => self.join(word, suffix),
+        }
+    }
+
+    /// The words that complete a lowercase join, with how common each is.
+    fn complete(&self, word: &str, suffix: &str, gap: usize) -> Vec<(String, u32)> {
+        let stem = word.strip_suffix(['a', 'e', 'i', 'o', 'u', 'y']).unwrap_or(word);
+        if stem.chars().count() < 2 {
+            return Vec::new();
+        }
+        self.words.between(stem, gap, suffix)
     }
 
     /// `{:infl:mode}`: the inflected form, or `None` for a mode that is not one.
@@ -148,7 +231,7 @@ impl Morph {
         let simple = format!("{word}{suffix}");
         let mut best: Option<Pick> = None;
         let mut consider = |rank: u32, rule: Option<u32>, word: String| {
-            if let Some(freq) = self.freq(&word) {
+            if let Some(freq) = self.words.freq(&word) {
                 let pick = Pick { freq, rank, rule, word };
                 if best.as_ref().is_none_or(|b| b.beaten_by(&pick)) {
                     best = Some(pick);
@@ -178,12 +261,6 @@ impl Morph {
             Some((rule, candidate)) => (Some(*rule), candidate.clone()),
             None => (None, simple),
         }
-    }
-
-    /// How common a word is. `None` means the list does not have it, which is the
-    /// only question the ranking asks of the list besides the number.
-    fn freq(&self, word: &str) -> Option<u32> {
-        self.first(&self.words, word)?.parse().ok()
     }
 
     /// Every candidate the rules make, as `(rule number, word)`.
@@ -239,4 +316,43 @@ fn match_case(joined: &str, word: &str, doubled: bool) -> String {
         }
     }
     out.into_iter().collect()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// The artifacts are built rather than committed, so a test without them skips.
+    fn morph() -> Option<Morph> {
+        let dir = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../build/morph");
+        let morph = Morph::open(&dir).ok();
+        if morph.is_none() {
+            eprintln!("skipped: no build/morph");
+        }
+        morph
+    }
+
+    #[test]
+    fn a_join_that_makes_no_word_completes_to_one() {
+        let Some(m) = morph() else { return };
+        for (word, suffix, want) in [
+            ("nun", "ry", "nunnery"),
+            ("ram", "ication", "ramification"),
+            ("idea", "cal", "identical"),
+            ("reserve", "tion", "reservation"),
+            ("compete", "tion", "competition"),
+            ("Reserve", "tion", "Reservation"),
+        ] {
+            assert_ne!(m.join(word, suffix), want, "{word} + {suffix} was already a word");
+            assert_eq!(m.join_or_complete(word, suffix), want, "{word} + {suffix}");
+        }
+    }
+
+    #[test]
+    fn a_join_that_makes_a_word_or_nothing_near_one_stands() {
+        let Some(m) = morph() else { return };
+        for (word, suffix) in [("run", "ing"), ("child", "s"), ("run", "tion")] {
+            assert_eq!(m.join_or_complete(word, suffix), m.join(word, suffix), "{word} + {suffix}");
+        }
+    }
 }

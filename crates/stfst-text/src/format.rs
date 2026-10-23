@@ -5,9 +5,9 @@
 //! must agree on to be a host, minus the parts only the host can do (press a key,
 //! run a command), which come back as events.
 //!
-//! Not a full Plover formatter. Orthography is absent, and so is anything that
-//! needs a dictionary lookup, because a formatter that looked things up would put
-//! the two concerns back together.
+//! Not a full Plover formatter. Orthography is `morph`'s, and anything that needs
+//! a dictionary lookup is absent, because a formatter that looked things up would
+//! put the two concerns back together.
 
 use stfst_core::record::{Case, Item, Mods, Record, SpaceOp};
 use stfst_core::window::{Class, Window};
@@ -410,7 +410,7 @@ impl Text {
                 true => {
                     let rewritten = match (joining, &self.morph) {
                         (true, Some(morph)) => {
-                            Some(morph.join(&self.cells.last().expect("a cell").word, &word))
+                            Some(morph.join_or_complete(&self.cells.last().expect("a cell").word, &word))
                         }
                         _ => None,
                     };

@@ -1,0 +1,16 @@
+! A join that makes no word completes to one: the word less a final vowel, a few
+! letters, then the suffix. Seeded, because the stack holds each of these as an
+! outline of its own.
+!buffer nun
+REU
+!buffer ram
+KAEUGS
+!buffer imagine
+SH*UPB
+!buffer reserve
+SH*UPB
+!buffer compete
+SH*UPB
+! A join nothing is near stands.
+!buffer run
+SH*UPB

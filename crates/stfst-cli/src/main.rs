@@ -165,6 +165,9 @@ enum Command {
     Ortho {
         #[arg(long)]
         pairs: PathBuf,
+        /// Complete a join that makes no word, as the formatter does.
+        #[arg(long)]
+        complete: bool,
         /// Where `stfst morph` wrote the artifacts.
         #[arg(long, default_value = "build/morph")]
         morph: PathBuf,
@@ -441,7 +444,11 @@ fn main() -> Result<()> {
             };
             translate::run(&artifacts, &system, editable.as_deref(), lines, quiet, &morph)?;
         }
-        Command::Ortho { pairs, morph } => {
+        Command::Ortho {
+            pairs,
+            complete,
+            morph,
+        } => {
             let text = std::fs::read_to_string(&pairs)
                 .with_context(|| format!("reading {}", pairs.display()))?;
             let morph = stfst_text::morph::Morph::open(&morph)?;
@@ -449,7 +456,10 @@ fn main() -> Result<()> {
                 let Some((word, suffix)) = line.split_once('\t') else {
                     continue;
                 };
-                println!("{}", morph.join(word, suffix));
+                match complete {
+                    true => println!("{}", morph.join_or_complete(word, suffix)),
+                    false => println!("{}", morph.join(word, suffix)),
+                }
             }
         }
         Command::Infl { pairs, morph } => {
