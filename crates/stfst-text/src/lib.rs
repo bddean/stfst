@@ -82,6 +82,18 @@ pub struct Tail {
     /// A choice that waits for the next unit's text, with what it takes to write
     /// it again once that text exists.
     pub(crate) undecided: Option<Undecided>,
+    /// Where a ladder the previous record pressed stands, so the next press
+    /// climbs on from it.
+    pub(crate) rung: Option<Rung>,
+}
+
+/// A word a ladder wrote, as where it stands on the words it climbs from `base`.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) struct Rung {
+    /// The ladder's argument, so a different ladder starts a climb of its own.
+    pub ladder: String,
+    pub base: String,
+    pub at: usize,
 }
 
 /// A record holding an `IfNext`, written as if the next text matched nothing.

@@ -172,6 +172,17 @@ enum Command {
         #[arg(long, default_value = "build/morph")]
         morph: PathBuf,
     },
+    /// The words a ladder climbs to from each word, for holding `[META=ladder]` to
+    /// the plugin's. One word per line in, its words tab-separated out.
+    Ladder {
+        #[arg(long)]
+        words: PathBuf,
+        /// The meta's argument: `fallback:group/group/…`.
+        #[arg(long)]
+        ladder: String,
+        #[arg(long, default_value = "build/morph")]
+        morph: PathBuf,
+    },
     /// Inflect words, for measuring `{:infl:…}` against the lexicon it came from.
     /// One `word<TAB>mode` per line.
     Infl {
@@ -460,6 +471,20 @@ fn main() -> Result<()> {
                     true => println!("{}", morph.join_or_complete(word, suffix)),
                     false => println!("{}", morph.join(word, suffix)),
                 }
+            }
+        }
+        Command::Ladder {
+            words,
+            ladder,
+            morph,
+        } => {
+            let text = std::fs::read_to_string(&words)
+                .with_context(|| format!("reading {}", words.display()))?;
+            let morph = stfst_text::morph::Morph::open(&morph)?;
+            let ladder = stfst_text::morph::Ladder::parse(&ladder)
+                .with_context(|| format!("{ladder:?} is not a ladder"))?;
+            for word in text.lines() {
+                println!("{}", morph.climb(word, &ladder).join("\t"));
             }
         }
         Command::Infl { pairs, morph } => {

@@ -46,10 +46,10 @@ CANNOT = {
 # word, and nothing binds one here.
 SLOTS = ("CAP",)
 
-# What Plover writes for itself. Every one is a built-in meta, so no dictionary
-# needs a plugin to get it; `infl` is the exception and is checked for by name.
+# What Plover writes for itself, or this plugin does, so no dictionary needs
+# another plugin to get it; `infl` is the exception and is checked for by name.
 BUILTIN_METAS = frozenset(["retro.cap", "retro.upper", "retro.lower",
-                           "retro.currency"])
+                           "retro.currency", "ladder"])
 
 # How many outlines a reverse lookup returns, shortest first. A generative
 # dictionary writes one word with unboundedly many outlines, so "every outline"

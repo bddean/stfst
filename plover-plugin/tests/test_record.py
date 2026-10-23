@@ -31,6 +31,7 @@ PAIRS = [
     ("{*<}", "[META=retro.upper][END]"),
     ("{*(£c)}", "[META=retro.currency]£c[END]"),
     ("{:infl:ed}", "[META=infl]ed[END]"),
+    ("{:stfst_ladder:ly:le,el/ly}", "[META=ladder]ly:le,el/ly[END]"),
     ("{mode:CAPS}", "[CMD=mode.caps][END]"),
     ("{mode:SET_SPACE:_}", "[CMD=mode.set_space]_[END]"),
     ("{PLOVER:TOGGLE}", "[CMD=plover.toggle][END]"),

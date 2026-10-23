@@ -255,6 +255,10 @@ A join that makes no word completes to one: `idea` and `{^cal}` is
 `identical`, where Plover alone writes `ideacal`. The plugin does the same in
 Plover, and `docs/parity.md` says how far each half reaches.
 
+A ladder asks the same lexicon a different question: which words some suffixes
+make of the previous word. `-L` climbs them one per press, so `cap` is `capable`
+and then `capably`. `[META=ladder]` is the meta and `docs/parity.md` the rule.
+
 The rules are also a layer a grammar composes as it compiles: `affixes` spells
 the plurals it writes through `Ortho`, so each is the word `{^s}` would write.
 There is no word list to rank candidates at compile time, so a rule's candidate

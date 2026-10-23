@@ -85,6 +85,10 @@ pub const METAS: &[&str] = &[
     // of its input. What a folded key adds, it appends, and appending needs no part
     // of speech.
     "infl",
+    // `{:stfst_ladder:…}`: replace the previous word with the next word some
+    // suffixes make of it, one per press. Its own meta and not a dictionary's,
+    // because which words exist is the lexicon's to say.
+    "ladder",
 ];
 
 pub fn command_tag(name: &str) -> String {

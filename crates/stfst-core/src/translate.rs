@@ -602,6 +602,11 @@ fn long_form(
             name: "infl".into(),
             arg: mode.to_string(),
         }]),
+        // `plover_stfst`'s own meta, so the plugin is what writes it in Plover.
+        ("stfst_ladder", ladder) => Ok(vec![Item::Meta {
+            name: "ladder".into(),
+            arg: ladder.to_string(),
+        }]),
         ("retro_currency", format) => Ok(vec![Item::Meta {
             name: "retro.currency".into(),
             arg: format.to_string(),
@@ -716,6 +721,14 @@ mod tests {
         assert_eq!(r("{,}").to_string(), ",[ATTACH_L]");
         assert_eq!(r("{:comma:,}").to_string(), ",[ATTACH_L]");
         assert_eq!(r("{:stop:.}").to_string(), ".[ATTACH_L][CAP_NEXT]");
+    }
+
+    #[test]
+    fn a_ladder_is_the_plugins_meta() {
+        assert_eq!(
+            r("{:stfst_ladder:ly:le,el/ly}").to_string(),
+            "[META=ladder]ly:le,el/ly[END]"
+        );
     }
 
     #[test]

@@ -46,6 +46,38 @@ const DOUBLING: u32 = 38;
 /// and `ication` is `ramification`.
 const COMPLETION_GAP: usize = 3;
 
+/// The rarest frequency a ladder counts as common. Plover's list ranks a word by
+/// the smallest SCOWL size that holds it, and 60 is SCOWL's large dictionary.
+const COMMON: u32 = 60;
+
+/// The words a key climbs through, one per press: `[META=ladder]`.
+///
+/// Written `fallback:group/group/…`, each group a comma-separated list of
+/// suffixes: `ly:le,el,al/ly/able,ible`. Where no group makes a word, the fallback
+/// is joined as `{^…}` would join it.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct Ladder {
+    pub fallback: String,
+    pub groups: Vec<Vec<String>>,
+}
+
+impl Ladder {
+    pub fn parse(arg: &str) -> Option<Ladder> {
+        let (fallback, groups) = arg.split_once(':')?;
+        let groups: Vec<Vec<String>> = groups
+            .split('/')
+            .map(|group| group.split(',').map(str::to_lowercase).collect())
+            .collect();
+        if fallback.is_empty() || groups.iter().flatten().any(String::is_empty) {
+            return None;
+        }
+        Some(Ladder {
+            fallback: fallback.to_string(),
+            groups,
+        })
+    }
+}
+
 #[derive(Debug, thiserror::Error)]
 pub enum MorphError {
     #[error("reading {0}: {1}")]
@@ -177,6 +209,44 @@ impl Morph {
             Some((completed, _)) => match_case(&completed, word, false),
             None => self.join(word, suffix),
         }
+    }
+
+    /// The words a ladder climbs to from `word`, in the order it climbs them.
+    ///
+    /// A group's words are its suffixes joined to the word, and the words one
+    /// letter away from that, so `sad` and `le` is `saddle`. An earlier group comes
+    /// before a later, and the commoner word first within one. A rare word is
+    /// climbed to only where no common one is, so `cap` climbs to `capable` and
+    /// never to `caple`. Where no group makes a word, the one word is the
+    /// fallback's join.
+    pub fn climb(&self, word: &str, ladder: &Ladder) -> Vec<String> {
+        let lower = word.to_lowercase();
+        let mut found: Vec<(usize, u32, usize, String)> = Vec::new();
+        for (group, suffixes) in ladder.groups.iter().enumerate() {
+            for (n, suffix) in suffixes.iter().enumerate() {
+                let (_, joined) = self.join_lower(&lower, suffix);
+                let mut words = self.complete(&lower, suffix, 1);
+                words.extend(self.words.freq(&joined).map(|freq| (joined, freq)));
+                for (w, freq) in words {
+                    found.push((group, freq, n, w));
+                }
+            }
+        }
+        if found.iter().any(|f| f.1 <= COMMON) {
+            found.retain(|f| f.1 <= COMMON);
+        }
+        found.sort();
+        let mut out: Vec<String> = Vec::new();
+        for (.., w) in found {
+            let w = match_case(&w, word, false);
+            if !out.contains(&w) {
+                out.push(w);
+            }
+        }
+        if out.is_empty() {
+            out.push(self.join_or_complete(word, &ladder.fallback));
+        }
+        out
     }
 
     /// The words that complete a lowercase join, with how common each is.
@@ -346,6 +416,44 @@ mod tests {
             assert_ne!(m.join(word, suffix), want, "{word} + {suffix} was already a word");
             assert_eq!(m.join_or_complete(word, suffix), want, "{word} + {suffix}");
         }
+    }
+
+    const L: &str = "ly:le,el,al,il,ol,ul/ly/able,ible/ably,ibly";
+
+    #[test]
+    fn a_ladder_climbs_the_common_words_its_groups_make_in_group_order() {
+        let Some(m) = morph() else { return };
+        let ladder = Ladder::parse(L).unwrap();
+        for (word, want) in [
+            ("abe", &["able", "ably"][..]),
+            ("cap", &["capable", "capably"]),
+            ("sad", &["saddle", "sadly"]),
+            ("Sad", &["Saddle", "Sadly"]),
+            ("dog", &["dogly"]),
+        ] {
+            assert_eq!(m.climb(word, &ladder), want, "{word}");
+        }
+    }
+
+    #[test]
+    fn each_press_climbs_one_word_and_undo_takes_one_back() {
+        let Some(m) = morph() else { return };
+        let mut text = crate::Text::with_morph(std::sync::Arc::new(m));
+        let press = format!("[META=ladder]{L}[END]");
+        let mut write = |text: &mut crate::Text, r: &str| {
+            let record = stfst_core::Record::parse_display(r).unwrap();
+            text.apply(&record, &[]).unwrap();
+            text.to_string()
+        };
+        assert_eq!(write(&mut text, "cap"), "cap");
+        assert_eq!(write(&mut text, &press), "capable");
+        assert_eq!(write(&mut text, &press), "capably");
+        assert_eq!(write(&mut text, &press), "capably", "past the top it stays");
+        text.undo();
+        text.undo();
+        assert_eq!(write(&mut text, &press), "capably");
+        assert_eq!(write(&mut text, "sad"), "capably sad");
+        assert_eq!(write(&mut text, &press), "capably saddle", "a word starts a new climb");
     }
 
     #[test]

@@ -12,7 +12,8 @@
 use stfst_core::record::{Case, Item, Mods, Record, SpaceOp};
 use stfst_core::window::{Class, Window};
 
-use crate::{Cell, ModeCase, Tail, Text, Undecided};
+use crate::morph::Ladder;
+use crate::{Cell, ModeCase, Rung, Tail, Text, Undecided};
 
 /// What only the host can carry out.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -125,6 +126,7 @@ impl Text {
         }
 
         let mut events = Vec::new();
+        let mut rung = None;
         let start = self.cells.len();
         // Where a joining write would land, so the first letter this record wrote
         // can be found again afterwards even when it went inside an existing word.
@@ -159,6 +161,7 @@ impl Text {
                     // A glyph is a window character, and a record that holds one
                     // belongs to `rewrite`, not here.
                     Item::Glyph(_) | Item::Drop => return Err(FormatError::NoWindow),
+                    Item::Meta { name, arg } if name == "ladder" => rung = self.climb(arg)?,
                     Item::Meta { name, arg } => self.meta(name, arg)?,
                     Item::IfNext(choice) => {
                         let text = choice.text(next).map_err(|e| {
@@ -219,6 +222,7 @@ impl Text {
                 (None, false) => None,
             },
             undecided,
+            rung,
         };
         Ok(events)
     }
@@ -320,6 +324,7 @@ impl Text {
         // them stays as it was written.
         self.tail.wrote = !text.is_empty();
         self.tail.undecided = None;
+        self.tail.rung = None;
         Ok(events)
     }
 
@@ -511,6 +516,30 @@ impl Text {
             self.mode.camel_first = true;
         }
         true
+    }
+
+    /// `[META=ladder]`: replace the last word with the next word the ladder
+    /// climbs to. A press right after the last one climbs on from where it stood,
+    /// and past the top it stays there.
+    fn climb(&mut self, arg: &str) -> Result<Option<Rung>, FormatError> {
+        let ladder = Ladder::parse(arg)
+            .ok_or_else(|| FormatError::BadMeta("ladder".into(), arg.into()))?;
+        let morph = self.morph.as_ref().ok_or(FormatError::NoMorph)?;
+        let Some(cell) = self.cells.last_mut() else {
+            return Ok(None);
+        };
+        let (base, at) = match &self.tail.rung {
+            Some(rung) if rung.ladder == arg => (rung.base.clone(), rung.at + 1),
+            _ => (cell.word.clone(), 0),
+        };
+        let words = morph.climb(&base, &ladder);
+        let at = at.min(words.len() - 1);
+        cell.word = words[at].clone();
+        Ok(Some(Rung {
+            ladder: arg.to_string(),
+            base,
+            at,
+        }))
     }
 
     /// The declared metas: edits to text already written. Everything here is a

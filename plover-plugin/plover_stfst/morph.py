@@ -99,3 +99,69 @@ def uninstall():
     for module, original in _replaced.items():
         module.add_suffix = original
     _replaced.clear()
+
+
+# `stfst_text::morph`'s: the rarest frequency a ladder counts as common.
+COMMON = 60
+
+
+def parse_ladder(arg):
+    """`fallback:group/group/…`, each group a comma-separated list of suffixes,
+    as `(fallback, groups)`. `None` for an argument that is not one."""
+    fallback, sep, rest = arg.partition(":")
+    groups = [[s.lower() for s in group.split(",")] for group in rest.split("/")]
+    if not sep or not fallback or not all(all(group) for group in groups):
+        return None
+    return fallback, groups
+
+
+def climb(word, ladder):
+    """`Morph::climb`: the words a ladder climbs to from `word`, in order."""
+    words = system.ORTHOGRAPHY_WORDS
+    fallback, groups = ladder
+    lower = word.lower()
+    found = []
+    for g, suffixes in enumerate(groups):
+        for n, suffix in enumerate(suffixes):
+            joined = orthography._add_suffix(lower, suffix)
+            near = complete(lower, suffix, 1)
+            for w in near + ([joined] if joined in words else []):
+                found.append((g, words[w], n, w))
+    if any(f[1] <= COMMON for f in found):
+        found = [f for f in found if f[1] <= COMMON]
+    out = []
+    for *_, w in sorted(found):
+        w = match_case(w, word)
+        if w not in out:
+            out.append(w)
+    return out or [join_or_complete(word, fallback)]
+
+
+def stfst_ladder(ctx, arg):
+    """`[META=ladder]`: replace the last word with the next word the ladder
+    climbs to.
+
+    Where the climb stands lives on the action, so a press right after the last
+    one climbs on, and undoing a press takes its place back with it.
+    """
+    action = ctx.copy_last_action()
+    ladder = parse_ladder(arg)
+    tokens = ctx.last_words(count=1)
+    if ladder is None or not tokens or not tokens[-1].strip():
+        action.text = ""
+        return action
+    token = tokens[-1]
+    word = token.rstrip()
+    rung = getattr(ctx.last_action, "stfst_rung", None)
+    if rung is not None and rung[0] == arg:
+        base, at = rung[1], rung[2] + 1
+    else:
+        base, at = word, 0
+    words = climb(base, ladder)
+    at = min(at, len(words) - 1)
+    action.prev_attach = True
+    action.prev_replace = token
+    action.text = words[at] + token[len(word):]
+    action.word = words[at]
+    action.stfst_rung = (arg, base, at)
+    return action

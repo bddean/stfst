@@ -38,6 +38,7 @@ DEFAULT = [
     "tests/repeat-word/repeat-word.strokes",
     "tests/retro-words/ops.strokes",
     "tests/translate/complete.strokes",
+    "tests/translate/ladder.strokes",
 ]
 
 
@@ -95,7 +96,7 @@ def main(paths):
     from plover.steno_dictionary import StenoDictionaryCollection
     from plover.translation import Translation, Translator
     from plover_stfst.dictionary import StfstDictionary
-    from plover_stfst import host
+    from plover_stfst import host, morph
     from plover_stfst.extension import Extension
 
     registry.update()
@@ -104,6 +105,7 @@ def main(paths):
     for meta in ("stfst_copy", "stfst_retro", "stfst_hold", "stfst_frame",
                  "stfst_drop"):
         registry.register_plugin("meta", meta, getattr(host, meta))
+    registry.register_plugin("meta", "stfst_ladder", morph.stfst_ladder)
     system.setup("Stenotype Extended")
 
     bad = total = 0

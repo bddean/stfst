@@ -166,6 +166,7 @@ start. `docs/latency.md` has the measurements.
 | `plover_stfst/record.py` | The record language and Plover's translation language, each read as the other. Needs no Plover, because the golden generators use it as an oracle. |
 | `plover_stfst/dictionary.py` | The `plover.dictionary` entry point. |
 | `plover_stfst/host.py` | The `plover.meta` and `plover.extension` entry points: what a lookup cannot be told. |
+| `plover_stfst/morph.py` | A join that makes no word completes to one, installed over Plover's `add_suffix` by the extension, and the `stfst_ladder` meta. |
 | `plover_stfst/window.py` | Text as the tape carries it, for a frame: a class per character, and the characters beside them. |
 | `plover_stfst/reload.py` | The second `plover.extension` entry point: reload an artifact that has been rebuilt. |
 

@@ -13,6 +13,9 @@ The pairs come from `typey-type-full.json`: every word it writes as a single
 translation, against the suffixes its own `{^…}` entries use. That weights the
 sample the way real writing does rather than the way a rule list does.
 
+It also holds the plugin's half of what is ours on both sides: the completion of
+a join that makes no word, and the words a ladder climbs to.
+
 Lowercase words only, and that is the case that happens rather than a convenient
 one: a formatter capitalises after it joins, so a word reaching a join is lowercase
 unless a dictionary already wrote a capital. `docs/parity.md` has the number for
@@ -24,6 +27,8 @@ import subprocess
 import sys
 
 SUFFIXES = ["s", "ed", "ing", "er", "est", "ly", "ion", "able", "y", "en"]
+# The ladder `-L` climbs in `user.json`.
+LADDER = "ly:le,el,al,il,ol,ul/ly/able,ible/ably,ibly"
 BINARY = "./target/release/stfst"
 
 
@@ -89,7 +94,24 @@ def main(limit=4000):
     print("%d completed, %d differ from the plugin" % (completed, len(bad)))
     for (word, suffix), a, b in bad[:15]:
         print("  %s + %s: plugin %r, ours %r" % (word, suffix, b, a))
-    return 1 if bad else 0
+
+    # A ladder is the same two halves again, over every word of the sample.
+    from plover_stfst.morph import climb, parse_ladder
+    sample = words(limit)
+    ours = subprocess.run(
+        [BINARY, "ladder", "--ladder", LADDER, "--words", "/dev/stdin"],
+        input="\n".join(sample) + "\n", capture_output=True, text=True)
+    if ours.returncode != 0:
+        print(ours.stderr.strip(), file=sys.stderr)
+        return 1
+    ladder = parse_ladder(LADDER)
+    climbed = [(w, a.split("\t"), climb(w, ladder))
+               for w, a in zip(sample, ours.stdout.splitlines())]
+    worse = [c for c in climbed if c[1] != c[2]]
+    print("%d ladders, %d differ from the plugin" % (len(climbed), len(worse)))
+    for word, a, b in worse[:15]:
+        print("  %s: plugin %r, ours %r" % (word, b, a))
+    return 1 if bad or worse else 0
 
 
 if __name__ == "__main__":

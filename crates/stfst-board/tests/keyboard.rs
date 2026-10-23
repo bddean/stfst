@@ -165,6 +165,25 @@ fn a_suffix_key_inflects_the_word_before_it() {
     assert_eq!("keeping", board.text().trim());
 }
 
+/// `-L` climbs a ladder of words, one per press, and undo takes a press back.
+#[test]
+fn each_press_of_a_ladder_key_climbs_one_word() {
+    let (Some(dicts), Some(morph)) = (dicts(), morph()) else {
+        eprintln!("skipped: no build/dicts or no build/morph");
+        return;
+    };
+    let system = system();
+    let stack = Stack::open(&dicts, &system, &Capabilities::all()).expect("opening the stack");
+    let mut board = Board::new(&system, &stack, Some(morph));
+    board.push(stroke(bits(&system, "KAp"))).expect("a stroke");
+    board.push(stroke(bits(&system, "l"))).expect("a stroke");
+    assert_eq!("capable", board.text().trim());
+    board.push(stroke(bits(&system, "l"))).expect("a stroke");
+    assert_eq!("capably", board.text().trim());
+    board.undo();
+    assert_eq!("capable", board.text().trim());
+}
+
 /// A key order the phone reads out of the system file, so the ring is built from
 /// the same string the tapes are.
 #[test]

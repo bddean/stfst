@@ -24,6 +24,7 @@ installed system's 38 orthography rules.
 | `=undo` `{*+}` `{*}` | `[CMD=engine.undo]` `[CMD=engine.repeat_stroke]` `[CMD=engine.toggle_star]` |
 | `{plover:…}` | `[CMD=plover.…]` |
 | `{:infl:ed}` | `[META=infl]ed[END]`: a lexicon, no part of speech |
+| `{:stfst_ladder:ly:le,el/ly}` | `[META=ladder]ly:le,el/ly[END]`: the plugin's own meta, below |
 | `{:retro:past}` | **not carried.** A clause rewrite over a tagger |
 | `{=regex/yes/no}` | `[IF_NEXT]regex[THEN]yes[ELSE]no[END]`: decided by the host |
 | `{}` and any unknown brace atom | **refused.** Plover writes nothing for one |
@@ -208,6 +209,27 @@ agree:
 40000 pairs, 40000 agree (100.0%)
  1375 completed, 0 differ from the plugin
 ```
+
+## A ladder, which is a meta of the plugin's own
+
+`-L` was `{^ly}`, so `cap` and `-L` was `caply`. It is
+`{:stfst_ladder:ly:le,el,al,il,ol,ul/ly/able,ible/ably,ibly}` now: the previous
+word goes to the words those suffixes make of it, one per press, so `cap` climbs
+to `capable` and then `capably`, `abe` to `able` and `ably`, and `sad` to
+`saddle` and `sadly`. Past the top it stays, and where no suffix makes a word it
+is the fallback's join, `dogly`.
+
+A group's words are its suffixes joined to the word and the words one letter from
+that, which is what makes `sad` and `le` into `saddle`. The groups climb in
+order and the commoner word first within one. A rare word, past SCOWL's large
+dictionary, is climbed to only where no common one is, or `cap` would climb to
+`caple` first.
+
+Where the climb stands lives on the unit that wrote the word: the tail in
+`stfst-text`, and the action in Plover, which `ctx.last_action` reads. So undoing
+a press takes its place back, and any other unit between two presses starts a
+new climb. `plover_stfst.morph` is the Plover half, and `scripts/check-ortho.py`
+holds it to ours over 4,000 words, none differing.
 
 ## Inflection, which is the other half of a join
 

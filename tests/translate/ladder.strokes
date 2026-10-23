@@ -1,0 +1,28 @@
+! -L climbs the words some suffixes make of the last word, one per press: the
+! schwa-l spellings, then -ly, -able, -ably. A common word comes before a rare
+! one, and past the top it stays.
+!buffer abe
+-L
+-L
+-L
+-L
+! Undo takes one press back, and the next press climbs on from there.
+!buffer
+KAP
+-L
+-L
+!undo
+-L
+!buffer sad
+-L
+-L
+! Where no suffix makes a word, it joins -ly.
+!buffer
+TKOG
+-L
+-L
+! A word between two presses starts a climb of its own.
+!buffer quick
+-L
+KAP
+-L

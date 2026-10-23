@@ -27,6 +27,9 @@ stfst_retro = "plover_stfst.host:stfst_retro"
 stfst_hold = "plover_stfst.host:stfst_hold"
 stfst_frame = "plover_stfst.host:stfst_frame"
 stfst_drop = "plover_stfst.host:stfst_drop"
+# Not a host ability but a meta of its own: the words some suffixes make of the
+# previous word, one per press.
+stfst_ladder = "plover_stfst.morph:stfst_ladder"
 
 # The translator's half: a held stroke waiting for the next unit, and a fold.
 [project.entry-points."plover.extension"]

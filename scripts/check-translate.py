@@ -63,10 +63,11 @@ def main(paths):
     registry.update()
     system.setup("English Stenotype")
     # A join that makes no word completes to one in both hosts, and Plover's half
-    # of that is the plugin's.
+    # of that is the plugin's, as is its ladder.
     sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "plover-plugin"))
     from plover_stfst import morph
     morph.install()
+    registry.register_plugin("meta", "stfst_ladder", morph.stfst_ladder)
 
     translations = []
     for path in paths:

@@ -64,7 +64,8 @@ COMMANDS = [
     "stack.toggle", "stack.solo", "stack.end_solo", "stack.priority",
 ]
 
-METAS = ["retro.cap", "retro.upper", "retro.lower", "retro.currency", "infl"]
+METAS = ["retro.cap", "retro.upper", "retro.lower", "retro.currency", "infl",
+         "ladder"]
 
 CASES = {"[CAP_NEXT]": "cap", "[LOWER_NEXT]": "lower", "[UPPER_NEXT]": "upper"}
 SPACES = {"[CANCEL_SPACE]": "cancel", "[RETRO_SPACE]": "retro"}
@@ -568,6 +569,8 @@ def _meta(name, arg):
         return "{*(%s)}" % arg
     if name == "infl":
         return "{:infl:%s}" % arg
+    if name == "ladder":
+        return "{:stfst_ladder:%s}" % arg
     raise Unsupported("no Plover spelling for the meta %s" % name)
 
 
@@ -1104,6 +1107,9 @@ def _long_form(d, name, arg, record, join):
     # `{:retro:past}` and the rest, are deliberately not here.
     if name == "infl":
         return [("meta", "infl", arg)]
+    # This plugin's own meta, `plover_stfst.morph`.
+    if name == "stfst_ladder":
+        return [("meta", "ladder", arg)]
     if name == "retro_currency":
         return [("meta", "retro.currency", arg)]
     # Both of these write a fixed punctuation mark, and the difference is only
