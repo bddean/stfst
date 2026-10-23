@@ -33,6 +33,11 @@ SKPAOEPT
 STPHOU
 !buffer
 STPWAD
+! ---- but a suffix key comes first: STAEU is "stay", so STAEUS is "stays"
+!buffer
+STAEUS
+!buffer
+STROLG
 ! ---- a real entry is never folded
 !buffer
 PWABGS

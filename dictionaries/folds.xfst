@@ -12,7 +12,8 @@
 !
 !   [FOLD] before [STRIP] keys ([ADD] keys) [END] after
 !
-! "and" comes first, then the suffixes in Plover's order for its suffix keys.
+! "and" comes first, then the suffixes in Plover's order for its suffix keys,
+! then the folds that write a word beside the base.
 ! A suffix on an "and" brief is junk (SKPA is "and a", so SKPAD would be "and
 ! aed"), and the "and" alternative needs its base to be a word, so where it is
 ! not the suffix still applies: SKPAOEPT is "and keep" and then "the".
@@ -72,8 +73,9 @@ define Caret      [ Stroke & $["^"] ] ;
 ! "is" is S- on a word's stroke, unless S-K-P- says "and", and "it's" is ST-
 ! where T- and the rest is no word: STPHOU is "is now", STPWAD "it's bad". Of
 ! the corpora's "is" and "it's" bigrams whose stroke no entry holds, these
-! read 93% of the use right. "it's" first reads 87%, with a T- word's T put back
-! 66%, and after the suffixes 77%.
+! read 93% of the use right before the suffixes and 77% after them. They go
+! after anyway, so that a word's stroke and a suffix key is never misread:
+! STAEUS is "stays", not "is it's a".
 define Lead(C, Text, Keys) Rule([ [ Stroke & C ] - Caret ], [ "[FOLD]" Text "[STRIP]" Keys "[END]" ]) ;
 
 ! Toggle one key K, and take Off off too.
@@ -97,12 +99,12 @@ define Folds [ [ Stroke - $["#"] ]
   .o. And(AndH, PutT)
   .o. And(AndStroke, 0)
   .o. And([ AndStroke - AndH ], PutT)
-  .o. Lead([ [ S ?+ ] - [ S K P ?* ] ], {is}, S)
-  .o. Lead([ S T ?+ ], {it's}, S T)
   .o. Suffix(z, Infl({ofz}))
   .o. Suffix(d, Infl({ed}))
   .o. Suffix(s, Infl({ofs}))
   .o. Suffix(g, Infl({ing}))
+  .o. Lead([ [ S ?+ ] - [ S K P ?* ] ], {is}, S)
+  .o. Lead([ S T ?+ ], {it's}, S T)
   .o. Suffix(t, {the})
   .o. Toggle(Caret, A, 0, {a}, 0)
   .o. After(O, f, {of})
