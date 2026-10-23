@@ -36,6 +36,11 @@ two disagree. `plover.cfg` names nothing else, so every dictionary Plover loads 
 that system goes through here. The retro family sits below everything else so it
 cannot shadow a working entry.
 
+A suggestion offers the shortest outline, and among outlines of one length the
+one from the dictionary with the higher `suggest`, which is its priority unless
+the recipe says otherwise. Phrasing's is lowest, so a clause outline is offered
+only where nothing as short writes the text.
+
 | Dictionary | Source |
 |---|---|
 | emily-symbols | xfst over a shared glyph table |

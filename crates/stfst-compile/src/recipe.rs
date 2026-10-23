@@ -50,6 +50,10 @@ pub struct Dict {
     pub name: String,
     /// Higher shadows lower, as `plover.cfg` file order does today.
     pub priority: i32,
+    /// Orders a suggestion's outlines of one length, higher first. The priority
+    /// where absent.
+    #[serde(default)]
+    pub suggest: Option<i32>,
     /// Hand-written xfst defining `Grammar`. Gets the §3 acceptor checks.
     /// Several files concatenate in order, which is how two dictionaries share
     /// a table: the shared file comes first and the grammar reads its defines.
@@ -106,6 +110,10 @@ fn default_version() -> String {
 }
 
 impl Dict {
+    pub fn suggest(&self) -> i32 {
+        self.suggest.unwrap_or(self.priority)
+    }
+
     /// The text this dictionary reads, if any. A dictionary reads one span or
     /// none: a rule over the words before the keys and a rule over the words
     /// after them would need two windows on one tape.

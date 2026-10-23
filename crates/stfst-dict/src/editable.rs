@@ -347,7 +347,7 @@ mod tests {
             artifact.join("manifest.toml"),
             format!(
                 "[dict]\nname = \"user\"\nversion = \"0\"\nsystem = \"stenotype-extended\"\n\
-                 priority = 80\n\n[editable]\nfile = {:?}\n",
+                 priority = 80\nsuggest = 80\n\n[editable]\nfile = {:?}\n",
                 file.display().to_string()
             ),
         )

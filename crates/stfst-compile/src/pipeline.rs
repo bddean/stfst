@@ -570,12 +570,14 @@ pub fn write_editable(dir: &Path, dict: &recipe::Dict, system: &System, file: &P
              version = {:?}\n\
              system = {:?}\n\
              priority = {}\n\
+             suggest = {}\n\
              \n[editable]\n\
              file = {:?}\n",
         dict.name,
         dict.version,
         system.name,
         dict.priority,
+        dict.suggest(),
         file.display().to_string(),
     );
     let staged = dir.join("manifest.toml.new");
@@ -602,7 +604,7 @@ pub fn write_artifact(
     } else {
         let _ = std::fs::remove_file(dir.join("reverse.hfstol"));
     }
-    let (name, version, priority) = (&dict.name, &dict.version, dict.priority);
+    let (name, version, priority, suggest) = (&dict.name, &dict.version, dict.priority, dict.suggest());
     std::fs::write(dir.join("tags.txt"), all_tags().join("\n") + "\n")?;
     let keys: Vec<String> = system
         .keys()
@@ -615,6 +617,7 @@ pub fn write_artifact(
              version = {version:?}\n\
              system = {:?}\n\
              priority = {priority}\n\
+             suggest = {suggest}\n\
              \n[requires]\n\
              keys = [{}]\n\
              host = {}\n\

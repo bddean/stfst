@@ -59,6 +59,7 @@ pub struct Meta {
     pub version: String,
     pub system: String,
     pub priority: i64,
+    pub suggest: i64,
 }
 
 #[derive(Debug, Deserialize)]
@@ -358,6 +359,10 @@ impl Dict {
 
     pub fn priority(&self) -> i64 {
         self.manifest.dict.priority
+    }
+
+    pub fn suggest(&self) -> i64 {
+        self.manifest.dict.suggest
     }
 
     /// The shortest outlines that write this record, as key tapes, shortest

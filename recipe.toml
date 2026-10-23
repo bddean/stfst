@@ -4,6 +4,9 @@
 # `generator` names the script that writes a dictionary's source, and `golden`
 # the golden files beside `tests/golden/NAME.tsv`. The compiler reads neither:
 # they are how `scripts/check.sh NAME` finds a dictionary's checks.
+#
+# `suggest` orders a suggestion's outlines of one length, higher first, and is
+# the priority where absent.
 system = "systems/stenotype-extended.toml"
 
 # Stages: relations a dictionary's `pipeline` composes, from a word to what it
@@ -102,6 +105,7 @@ xfst = ["dictionaries/emily-symbols-tables.xfst", "dictionaries/emily-modifiers-
 [[dict]]
 name = "phrasing-tag"
 priority = 96
+suggest = 0
 owns = "#"
 # `#^`, the question tag. Its own artifact so that only a tagged clause carries
 # the tag's features: see the file's header.
@@ -113,10 +117,12 @@ xfst = [
 ]
 
 # `#` is the phrasing gate, and no other dictionary has an outline with it: see
-# `owns` in docs/phrasing.md.
+# `owns` in docs/phrasing.md. A suggestion offers a clause outline after any
+# other outline of its length.
 [[dict]]
 name = "phrasing"
 priority = 95
+suggest = 0
 owns = "#"
 xfst = [
     "dictionaries/phrasing-subjects.xfst",

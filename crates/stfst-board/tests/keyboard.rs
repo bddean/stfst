@@ -116,6 +116,24 @@ fn hints_offer_a_briefer_outline_for_the_trailing_phrase() {
     assert!(board.hints(4).iter().all(|h| h.text != "little one"));
 }
 
+/// Phrasing's clause outline is as short as Typey Type's brief, and the brief is
+/// the one offered.
+#[test]
+fn a_hint_offers_a_clause_outline_last() {
+    let Some(dicts) = dicts() else {
+        eprintln!("skipped: no build/dicts");
+        return;
+    };
+    let system = system();
+    let stack = Stack::open(&dicts, &system, &Capabilities::all()).expect("opening the stack");
+    let mut board = Board::new(&system, &stack, morph());
+    board.push(stroke(bits(&system, "WE"))).expect("a stroke");
+    board.push(stroke(bits(&system, "R"))).expect("a stroke");
+    assert_eq!("we are", board.text().trim());
+    let hint = board.hints(4).into_iter().find(|h| h.text == "we are").map(|h| h.outline);
+    assert_eq!(hint.as_deref(), Some("WER"));
+}
+
 #[test]
 fn a_suffix_key_inflects_the_word_before_it() {
     let (Some(dicts), Some(morph)) = (dicts(), morph()) else {

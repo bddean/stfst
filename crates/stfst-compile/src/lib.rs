@@ -121,12 +121,13 @@ pub(crate) const STAMP: &str = "stamp";
 fn stamp(system: &Path, dict: &recipe::Dict, reserved: &str) -> Result<String> {
     let files: Vec<String> = dict.source()?.files().iter().map(|f| f.display().to_string()).collect();
     Ok(format!(
-        "compiler = {:?}\nsystem = {:?}\nname = {:?}\npriority = {}\nversion = {:?}\n\
+        "compiler = {:?}\nsystem = {:?}\nname = {:?}\npriority = {}\nsuggest = {}\nversion = {:?}\n\
          sources = {files:?}\neditable = {}\nshown = {:?}\nstrokes = {:?}\nreserved = {reserved:?}\n",
         env!("STFST_ARTIFACT_HASH"),
         system.display().to_string(),
         dict.name,
         dict.priority,
+        dict.suggest(),
         dict.version,
         dict.editable,
         dict.shown()?,

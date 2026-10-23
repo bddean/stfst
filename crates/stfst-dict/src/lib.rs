@@ -104,6 +104,15 @@ impl Slot {
         }
     }
 
+    /// Orders a suggestion's outlines of one length, higher first. An editable
+    /// dictionary's is its priority.
+    pub fn suggest(&self) -> i64 {
+        match self {
+            Slot::Compiled(d) => d.suggest(),
+            Slot::Editable(e) => e.priority(),
+        }
+    }
+
     pub fn compiled(&self) -> Option<&Dict> {
         match self {
             Slot::Compiled(d) => Some(d),

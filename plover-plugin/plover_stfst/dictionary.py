@@ -93,10 +93,13 @@ class StfstDictionary(StenoDictionary):
         self._context = ()       # the context slots it reads, in table order
         self._significant = ""   # the characters it named, so they reach it raw
         self._slot = None        # its slot in `host.windows`, if it has one
+        # Orders a suggestion's outlines of one length, higher first.
+        self.suggest = 0
 
     def _load(self, filename):
         manifest = _manifest(filename)
         name = manifest["dict"]["name"]
+        self.suggest = manifest["dict"]["suggest"]
         needs = manifest["requires"]
         wants = _why(needs)
         if wants:
@@ -460,6 +463,7 @@ class EditableDictionary(JsonDictionary):
         if os.path.exists(file):
             d._load(file)
         d.path = artifact
+        d.suggest = _manifest(artifact)["dict"]["suggest"]
         d.file = file
         d.timestamp = d.read_at()
         if not os.access(file if os.path.exists(file) else os.path.dirname(file), os.W_OK):

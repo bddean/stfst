@@ -629,7 +629,7 @@ impl<'a> Board<'a> {
         if lower != phrase {
             records.push(Record::text(lower.as_str()));
         }
-        let mut best: Option<(usize, usize, Outline)> = None;
+        let mut best: Option<((usize, usize, i64, usize), Outline)> = None;
         for (prio, record) in records.iter().enumerate() {
             for (rank, dict) in self.stack.dicts().iter().enumerate() {
                 let Ok(found) = dict.outlines(record, 1) else {
@@ -639,14 +639,14 @@ impl<'a> Board<'a> {
                     let Ok(outline) = self.system.from_tape(tape) else {
                         continue;
                     };
-                    let cost = (outline.0.len(), prio * self.stack.dicts().len() + rank);
-                    if best.as_ref().map_or(true, |(s, r, _)| (*s, *r) > cost) {
-                        best = Some((cost.0, cost.1, outline));
+                    let cost = (outline.0.len(), prio, -dict.suggest(), rank);
+                    if best.as_ref().map_or(true, |(b, _)| *b > cost) {
+                        best = Some((cost, outline));
                     }
                 }
             }
         }
-        let (short, _, outline) = best?;
+        let ((short, ..), outline) = best?;
         let brief = self.system.format_outline(&outline);
         let worth = if words > 1 {
             short < strokes
