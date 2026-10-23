@@ -2,9 +2,11 @@
 ! it. `dictionaries/folds.xfst` says how, and the base is in another dictionary.
 ! `scripts/check-hold.py` asks Plover the same questions.
 
-! ---- a suffix key, and -T as "the"
+! ---- a suffix key, -T as "the", and -F as "of"
 !buffer
 KAOEPT
+!buffer
+SKAOFL
 !buffer
 TAPGS
 !buffer
@@ -24,6 +26,9 @@ SKPAD
 SKPHA
 !buffer
 SKPHAPBG
+! ---- and a P- word shares its P
+!buffer
+SKPHAEB
 ! ---- "and" needs its base to be a word, so a suffix still applies after it:
 ! SKPAOEP is "and keep" in user.json, then "the"
 !buffer
@@ -45,9 +50,14 @@ PWABGS
 !buffer
 SEFRB
 SKPAD
-! ---- a word beside a `^` stroke: "a" before it, "of", "is" and "to" after it
+! ---- a word beside a `^` stroke: "a" and "so" before it, "of", "is" and "to"
+! after it
 !buffer
 ^TPOU
+!buffer
+^SPHAOEB
+!buffer
+^SHROELTS
 !buffer
 ^WOUFPB
 !buffer

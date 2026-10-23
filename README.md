@@ -44,7 +44,7 @@ Type is the base, and the rest sits on top of it:
 | phrasing | A clause grammar on `#`: subject, modality, aspect, negation and verb in one stroke. |
 | two-syllable, two-word | A two-syllable word, or two short words, in one stroke marked `^` (report is `^PROERT`, at all is `^TUL`). |
 | affixes | A stem's stroke, then one stroke for its prefix and suffix. |
-| folds | A stroke nothing matched, read as a word plus "the" or "and" (`KAOEPT` is "keep the"). |
+| folds | A stroke nothing matched, read as a word plus "the", "of", "and" or "so" (`KAOEPT` is "keep the"). |
 | frames, ahead | Write a frame now and fill it later: `STPR*T` writes "from to", and "here" makes it "from here to". |
 | retro-words | Recase, join and split the last words written. |
 

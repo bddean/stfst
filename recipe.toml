@@ -163,9 +163,9 @@ priority = 50
 xfst = ["dictionaries/emily-symbols-tables.xfst", "dictionaries/emily-modifiers-tables.xfst", "dictionaries/emily-modifiers.xfst"]
 
 # A stroke nothing matched, read as another with something written around it:
-# the suffix keys, "the" on -T, and "and" on S-K-P-. A fold is only tried where
-# nothing matched, so its priority only orders it among other folds; the bare
-# suffix keys are ordinary entries, and it is their place that this is.
+# the suffix keys, "the" on -T, "of" on -F, and "and" on S-K-P-. A fold is only
+# tried where nothing matched, so its priority only orders it among other folds;
+# the bare suffix keys are ordinary entries, and it is their place that this is.
 [[dict]]
 name = "folds"
 priority = 40

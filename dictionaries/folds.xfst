@@ -3,6 +3,7 @@
 ! with it.
 !
 !   KAOEPT   -T off, KAOEP is "keep", then "the"       keep the
+!   SKAOFL   -F off, SKAOL is "school", then "of"      school of
 !   TAPGS    -S off, TAPG is "tapping", then -s         tappings
 !   SKPAD    S-K-P- off, "and", then AD is "add"        and add
 !
@@ -47,11 +48,13 @@ define Suffix(K, R)  Rule([ [ Stroke & $[K] ] - K ],
 ! more common, and one guess per initial is as good as a rule gets: after H-
 ! the th- word (SKPHA "and that", not "and hah"), elsewhere the word as struck
 ! (SKPAD "and add", not "and tad"). Over the 635 strokes the mined and-fold
-! dictionary held, that writes the same word for 80% of their use.
+! dictionary held, that writes the same word for 80% of their use. Last, a P-
+! word shares its P with the chord: SKPHAEB is "and maybe".
 define AndStroke  [ Stroke & [ S K P ?+ ] ] ;
 define AndH       [ Stroke & [ S K P H ?* ] ] ;
 define And(C, Add) Rule(C, [ "[FOLD]" {and} "[STRIP]" S K P Add "[END]" ]) ;
 define PutT       [ "[ADD]" T ] ;
+define PutP       [ "[ADD]" P ] ;
 
 ! A function word beside a word is two-word.json's rule read back: the
 ! word's stroke with `^`, the function word's consonants on the word's side,
@@ -62,13 +65,15 @@ define PutT       [ "[ADD]" T ] ;
 !   ^WOUFPB   ^ O -F off: WUPB is "one"                one of
 !   ^THEUZ    ^ E U -Z off: TH is "this"               this is
 !   ^OUPT     ^ O -T off: UP is "up"                   up to
+!   ^SPHAOEB  ^ S- O off: PHAEB is "maybe"            so maybe
 !
 ! Which words is measured. Most strokes have some base that translates, so
-! each rule misreads strokes meant for the rules after it. These four write 74%
-! of the pairs the phrasing corpora hold five times or more. "to" or "the"
-! before a word would lower that by six points each, so two-word.json keeps
-! those pairs.
+! each rule misreads strokes meant for the rules after it. a, of, is and to
+! write 74% of the pairs the phrasing corpora hold five times or more. "to" or
+! "the" before a word would lower that by six points each, so two-word.json
+! keeps those pairs. "so" came later and is not in that measure.
 define Caret      [ Stroke & $["^"] ] ;
+define SoStroke   [ Caret & [ "^" S ?* ] ] ;
 
 ! "is" is S- on a word's stroke, unless S-K-P- says "and", and "it's" is ST-
 ! where T- and the rest is no word: STPHOU is "is now", STPWAD "it's bad". Of
@@ -99,6 +104,7 @@ define Folds [ [ Stroke - $["#"] ]
   .o. And(AndH, PutT)
   .o. And(AndStroke, 0)
   .o. And([ AndStroke - AndH ], PutT)
+  .o. And(AndStroke, PutP)
   .o. Suffix(z, Infl({ofz}))
   .o. Suffix(d, Infl({ed}))
   .o. Suffix(s, Infl({ofs}))
@@ -106,7 +112,10 @@ define Folds [ [ Stroke - $["#"] ]
   .o. Lead([ [ S ?+ ] - [ S K P ?* ] ], {is}, S)
   .o. Lead([ S T ?+ ], {it's}, S T)
   .o. Suffix(t, {the})
+  .o. Suffix(f, {of})
   .o. Toggle(Caret, A, 0, {a}, 0)
+  .o. Rule([ SoStroke & $[O] ], [ "[FOLD]" {so} "[STRIP]" "^" S O "[END]" ])
+  .o. Rule([ SoStroke - $[O] ], [ "[FOLD]" {so} "[STRIP]" "^" S "[ADD]" O "[END]" ])
   .o. After(O, f, {of})
   .o. AfterI(z, {is})
   .o. After(O, t, {to})
