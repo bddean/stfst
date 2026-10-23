@@ -1,10 +1,30 @@
+decide
+	- user.json: keep, fix, or drop
+		- TKREUFLGS "drivellings"
+		- SWR-G "somewhere a" (SW-RG exists; misstroke?)
+		- STKRAOEUR "desire": Typey's STKAOEUR plus a left R
+		- ^KORD "coder" overrides two-syllable's "coward"
+		- TPHUPB/REU, RAPL/KAEUGS, KWR-D/K-L: completion now writes these; drop?
+	- -Z after s/sh/ch/x/z: plural ("misses") instead of possessive ("miss'")?
+	- -S on a phrasal verb inflects the verb: "comes up", not "come ups"?
+	- ^ for -ing forms? ^W-PBG "winning" fits the rule, but ^W-PB is "wanna"
+	- syllable split: merge consonants after the first cluster to the right?
+		Today everything after the stressed vowel goes right.
+	- KWE: "question" instead of "que"?
+	- -L ladder:
+		- a rare word is skipped while a common one exists (else CAP/-L is "caple"). ok?
+		- past the top, -L stays put. cycle back to the root instead?
+	- suffix completion fires on every {^...} join, not only -tion. Some
+		results are odd: insure+tion "insurrection", display+tion
+		"displantation". Narrow it?
+	- phrasing RHS: the questions in docs/phrasing-rhs.md, then build it
+	- the generator gaps from the user.json review: nobler, retake, insult
+		(noun stress), chore/core on O, an unneeded star (cruel, drivel),
+		-F for s before other coda keys (recent, hasn't)
+
 dictionary
-	- see recent dict updates for context. this is combination
-		of: things that should be systematized; experiments i'm still
-		uncertain about; mistaken entries to be discarded;
-		maybe other htings i'm nto forget about
-	- ST- fold should be lower precedence; in general phrasing folds hsould have lower precdence
-	- phrasing: decide the questions in docs/phrasing-rhs.md, then build the RHS
+	- I don't understand/-D writes "I'm not understood"; should be "I didn't
+		understand". RETRO in docs/phrasing-rhs.md covers it.
 
 
 ---
