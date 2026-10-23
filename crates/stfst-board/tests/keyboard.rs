@@ -134,6 +134,23 @@ fn a_hint_offers_a_clause_outline_last() {
     assert_eq!(hint.as_deref(), Some("WER"));
 }
 
+/// No dictionary writes "hypocrites", and a fold does: hypocrite's stroke and -S.
+#[test]
+fn a_hint_offers_an_outline_a_fold_writes() {
+    let (Some(dicts), Some(morph)) = (dicts(), morph()) else {
+        eprintln!("skipped: no build/dicts or no build/morph");
+        return;
+    };
+    let system = system();
+    let stack = Stack::open(&dicts, &system, &Capabilities::all()).expect("opening the stack");
+    let mut board = Board::new(&system, &stack, Some(morph));
+    board.push(stroke(bits(&system, "HEUp"))).expect("a stroke");
+    board.push(stroke(bits(&system, "KREUts"))).expect("a stroke");
+    assert_eq!("hypocrites", board.text().trim());
+    let hint = board.hints(4).into_iter().find(|h| h.text == "hypocrites").map(|h| h.outline);
+    assert_eq!(hint.as_deref(), Some("^H-RPBGTS"));
+}
+
 #[test]
 fn a_suffix_key_inflects_the_word_before_it() {
     let (Some(dicts), Some(morph)) = (dicts(), morph()) else {

@@ -14,7 +14,7 @@ use std::collections::VecDeque;
 use std::sync::Arc;
 
 use stfst_core::{Emission, Outline, Record, Stroke, System};
-use stfst_dict::{Held, Session, Stack};
+use stfst_dict::{Held, Session, Slot, Stack};
 use stfst_text::format::Event;
 use stfst_text::morph::Morph;
 use stfst_text::Text;
@@ -115,6 +115,9 @@ pub struct Hint {
     pub text: String,
     pub outline: String,
 }
+
+/// The folds' suffix keys, and the inflection each one asks for.
+const SUFFIXES: &[(char, &str)] = &[('s', "s"), ('d', "ed"), ('g', "ing"), ('z', "z")];
 
 /// How many per-stroke text snapshots [`Board::hints`] can look back through.
 /// Far more strokes than any trailing phrase spans.
@@ -624,25 +627,28 @@ impl<'a> Board<'a> {
             .format_outline(&Outline(history[history.len() - strokes..].to_vec()));
         // Exact text first; the lowercase variant after it, so a brief still
         // surfaces for the word that opened a sentence.
-        let mut records = vec![Record::text(phrase)];
+        let mut texts = vec![phrase.to_string()];
         let lower = phrase.to_lowercase();
         if lower != phrase {
-            records.push(Record::text(lower.as_str()));
+            texts.push(lower);
         }
-        let mut best: Option<((usize, usize, i64, usize), Outline)> = None;
-        for (prio, record) in records.iter().enumerate() {
+        // Shortest first, then the exact text, then an outline a dictionary holds
+        // over one a fold makes, then by `suggest` and the stack's order.
+        let mut best: Option<((usize, usize, bool, i64, usize), Outline)> = None;
+        let mut offer = |cost: (usize, usize, bool, i64, usize), outline: Outline| {
+            if best.as_ref().is_none_or(|(b, _)| *b > cost) {
+                best = Some((cost, outline));
+            }
+        };
+        for (prio, text) in texts.iter().enumerate() {
             for (rank, dict) in self.stack.dicts().iter().enumerate() {
-                let Ok(found) = dict.outlines(record, 1) else {
-                    continue;
-                };
-                for tape in &found.tapes {
-                    let Ok(outline) = self.system.from_tape(tape) else {
-                        continue;
-                    };
-                    let cost = (outline.0.len(), prio, -dict.suggest(), rank);
-                    if best.as_ref().map_or(true, |(b, _)| *b > cost) {
-                        best = Some((cost, outline));
-                    }
+                for outline in self.outlines(dict, text) {
+                    offer((outline.0.len(), prio, false, -dict.suggest(), rank), outline);
+                }
+            }
+            if words == 1 {
+                for (outline, suggest, rank) in self.folded(text) {
+                    offer((outline.0.len(), prio, true, -suggest, rank), outline);
                 }
             }
         }
@@ -657,6 +663,62 @@ impl<'a> Board<'a> {
             text: phrase.to_string(),
             outline: brief,
         })
+    }
+
+    /// The cheapest outline `dict` writes `text` with, if it has one.
+    fn outlines(&self, dict: &Slot, text: &str) -> Vec<Outline> {
+        let Ok(found) = dict.outlines(&Record::text(text), 1) else {
+            return Vec::new();
+        };
+        found.tapes.iter().filter_map(|t| self.system.from_tape(t).ok()).collect()
+    }
+
+    /// The outlines a fold writes `word` with: a base's outline and a suffix key,
+    /// where the base inflects to the word and a fresh board reads the outline
+    /// back as it. Each with its base's dictionary's `suggest` and place.
+    fn folded(&self, word: &str) -> Vec<(Outline, i64, usize)> {
+        let Some(morph) = &self.morph else {
+            return Vec::new();
+        };
+        let chars: Vec<char> = word.chars().collect();
+        let mut out = Vec::new();
+        for (key, mode) in SUFFIXES {
+            let Some(key) = self.system.index_of_symbol(*key) else {
+                continue;
+            };
+            let bases: Vec<String> = (1..=4.min(chars.len().saturating_sub(1)))
+                .map(|n| chars[..chars.len() - n].iter().collect::<String>())
+                .flat_map(|stem| ["", "e", "y"].map(|end| format!("{stem}{end}")))
+                .filter(|base| morph.inflect(base, mode).as_deref() == Some(word))
+                .collect();
+            for base in bases {
+                for (rank, dict) in self.stack.dicts().iter().enumerate() {
+                    for Outline(mut strokes) in self.outlines(dict, &base) {
+                        let Some(last) = strokes.last_mut() else { continue };
+                        if last.contains(key) {
+                            continue;
+                        }
+                        *last = last.with(key);
+                        let outline = Outline(strokes);
+                        if self.reads(&outline) == word {
+                            out.push((outline, dict.suggest(), rank));
+                        }
+                    }
+                }
+            }
+        }
+        out
+    }
+
+    /// What `outline` writes on a board of its own.
+    fn reads(&self, outline: &Outline) -> String {
+        let mut board = Board::new(self.system, self.stack, self.morph.clone());
+        for stroke in &outline.0 {
+            if board.push(*stroke).is_err() {
+                return String::new();
+            }
+        }
+        board.text().trim().to_string()
     }
 
     /// The same stroke with the star key flipped, which is what `{*}`

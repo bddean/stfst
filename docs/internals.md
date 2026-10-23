@@ -39,7 +39,10 @@ cannot shadow a working entry.
 A suggestion offers the shortest outline, and among outlines of one length the
 one from the dictionary with the higher `suggest`, which is its priority unless
 the recipe says otherwise. Phrasing's is lowest, so a clause outline is offered
-only where nothing as short writes the text.
+only where nothing as short writes the text. A word no dictionary writes may be
+a fold's, so a suggestion also tries a base word's outline and a suffix key, and
+offers it where the stack reads it back as the word: hypocrites is `^H-RPBGTS`.
+Among outlines of one length, a dictionary's comes before a fold's.
 
 | Dictionary | Source |
 |---|---|
