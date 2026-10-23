@@ -346,10 +346,10 @@ stroke, and an undo that leaves it waiting again.
 
 `tests/ahead` and `tests/hole` are the inflected tails, and both are skipped
 where `build/morph` is absent, because what they prove is an inflection.
-`scripts/check-hold.py` replays seven fixtures through a real Plover engine and
-compares: 1,394 cases, no difference, which is the two hosts agreeing on
+`scripts/check-hold.py` replays nine fixtures through a real Plover engine and
+compares: 1,417 cases, no difference, which is the two hosts agreeing on
 everything a lookup cannot be told, the preview included. `tests/repeat-word` and
-`tests/retro-words/ops.strokes` are two of the seven, so the 1,316 retro
+`tests/retro-words/ops.strokes` are two of the nine, so the 1,316 retro
 operations over fourteen buffers are answered the same way by both. Those fixtures list their artifacts in priority order,
 highest first, because that is the order Plover reads a collection in and the
 order `Stack::open` sorts a recipe into; a fixture that listed them any other

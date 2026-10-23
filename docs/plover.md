@@ -299,7 +299,7 @@ nothing above it wanted.
 
 `scripts/check-hold.py` is what holds this half to the Rust one. It drives a real
 translator over the same fixtures `stfst translate` answers, and compares the
-text at the end of every case: 1,394 of them, no difference, including the 1,316
+text at the end of every case: 1,417 of them, no difference, including the 1,316
 retro-words operations over fourteen buffers. `reach.strokes` is the one fixture
 it cannot ask, because that one asserts which strokes have *no* entry and Plover
 writes the raw steno where `stfst-board` writes nothing.

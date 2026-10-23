@@ -211,8 +211,8 @@ refused only for an ability the host lacks, never by a version number, because
 these are separate abilities and a version is one number.
 
 `scripts/check-hold.py` checks that half. It drives a whole Plover
-engine over seven stroke fixtures and compares the text at the end of every case
-against what `stfst translate` wrote for the same strokes: 1,394 cases, no
+engine over nine stroke fixtures and compares the text at the end of every case
+against what `stfst translate` wrote for the same strokes: 1,417 cases, no
 difference, including the 1,316 `retro-words` operations over fourteen buffers.
 
 Nothing is shared with the Rust: the plugin has its own `hfstol` reader and its

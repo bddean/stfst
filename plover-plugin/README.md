@@ -131,8 +131,8 @@ run and by taking the word back and writing it again where it has, so that one
 `*` undoes both as it does in the Rust host.
 
 `scripts/check-hold.py` is the check, and it drives a real translator: every case
-of five fixtures replayed through Plover and compared against what `stfst
-translate` wrote for the same strokes, 1,363 of them. Those fixtures list their
+of nine fixtures replayed through Plover and compared against what `stfst
+translate` wrote for the same strokes, 1,417 of them. Those fixtures list their
 artifacts in priority order, highest first, which is the order Plover reads a
 collection in: a fixture that listed them any other way would be asking the two
 hosts different questions, and one that did caught it.
@@ -176,7 +176,7 @@ start. `docs/latency.md` has the measurements.
 python3 -m unittest discover plover-plugin/tests   # the record language, the reader
 scripts/crosscheck-py.sh build/dicts/typey-type.stfst systems/stenotype-extended.toml
 "$PLOVER_PYTHON" scripts/check-plugin.py           # every entry, judged by Plover
-"$PLOVER_PYTHON" scripts/check-hold.py             # five fixtures, through an engine
+"$PLOVER_PYTHON" scripts/check-hold.py             # nine fixtures, through an engine
 ```
 
 The last one is the one that matters. For every entry of every imported
