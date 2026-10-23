@@ -109,9 +109,11 @@ semi-modals in the verb bank: have to, going to and used to are modalities now
 
 	OPEN
 
+docs/phrasing-rhs.md has the data for each, a recommendation, and the bank: its
+59 verbs, each verb's class and its -T -S -TS words.
+
 LINKER: have to on Z or in RO; need to or want to in RO
 which PLBG pattern the hole takes
--S per verb in that/particle classes is a fact to learn
 -SD diagonal on "made a"
 "I do" / "she does" has no key
 what @ does

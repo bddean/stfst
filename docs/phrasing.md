@@ -14,8 +14,9 @@ the source:
 | `dictionaries/phrasing.xfst` | every rule | hand-written |
 
 `~/.config/plover/PHRASING-DESIGN.md` is the design these implement.
-`phrasing-resdesign`, at the repo root, holds only what is not yet built: its
-RHS, `-T -S`, THE HOLE, LINKER, RETRO, STILL TO DROP and OPEN sections.
+`phrasing-resdesign`, at the repo root, holds only what is not yet built: the
+right bank's redesign. `docs/phrasing-rhs.md` fills it in from the corpora and
+lists what is still to decide.
 
 ## The keys
 
