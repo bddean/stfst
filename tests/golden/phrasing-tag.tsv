@@ -206,38 +206,42 @@
 #^+TPWHOUrg
 #^+TPWHROU	there's had to be[AFTER], hasn't there[ATTACH_L][END]
 #^+TPWHOEd	there should be[AFTER], shouldn't there[ATTACH_L][END]
-#^+STg	and I go, don't I
-#^+ST*g	and I don't go, do I
-#^+STAg	and I can go, can't I
-#^+STA*g	and I can't go, can I
-#^+STOg	and I shall go, shall I not
-#^+STO*g	and I shall not go, shall I
-#^+STAOg	and I'll go, won't I
-#^+STAO*g	and I won't go, will I
-#^+STRg	and I may go, may I not
-#^+STR*g	and I may not go, may I
-#^+STRAg	and I must go, mustn't I
-#^+STRA*g	and I mustn't go, must I
-#^+STROg	and I have to go, don't I
-#^+STRO*g	and I don't have to go, do I
-#^+STRAOg	and I'm going to go, aren't I
-#^+STRAO*g	and I'm not going to go, am I
-#^+STPg	and it goes, doesn't it
-#^+STP*g	and it doesn't go, does it
-#^+STPAg	and it can go, can't it
-#^+STPA*g	and it can't go, can it
-#^+STPOg	and it shall go, shall it not
-#^+STPO*g	and it shall not go, shall it
-#^+STPAOg	and it'll go, won't it
-#^+STPAO*g	and it won't go, will it
-#^+STPRg	and it may go, may it not
-#^+STPR*g	and it may not go, may it
-#^+STPRAg	and it must go, mustn't it
-#^+STPRA*g	and it mustn't go, must it
-#^+STPROg	and it has to go, doesn't it
-#^+STPRO*g	and it doesn't have to go, does it
-#^+STPRAOg	and it's going to go, isn't it
-#^+STPRAO*g	and it isn't going to go, is it
+#^+STg	but I go, don't I
+#^+ST*g	but I don't go, do I
+#^+STAg	but I can go, can't I
+#^+STA*g	but I can't go, can I
+#^+STOg	but I shall go, shall I not
+#^+STO*g	but I shall not go, shall I
+#^+STAOg	but I'll go, won't I
+#^+STAO*g	but I won't go, will I
+#^+STRg	but I may go, may I not
+#^+STR*g	but I may not go, may I
+#^+STRAg	but I must go, mustn't I
+#^+STRA*g	but I mustn't go, must I
+#^+STROg	but I have to go, don't I
+#^+STRO*g	but I don't have to go, do I
+#^+STRAOg	but I'm going to go, aren't I
+#^+STRAO*g	but I'm not going to go, am I
+#^+STPg	but it goes, doesn't it
+#^+STP*g	but it doesn't go, does it
+#^+STPAg	but it can go, can't it
+#^+STPA*g	but it can't go, can it
+#^+STPOg	but it shall go, shall it not
+#^+STPO*g	but it shall not go, shall it
+#^+STPAOg	but it'll go, won't it
+#^+STPAO*g	but it won't go, will it
+#^+STPRg	but it may go, may it not
+#^+STPR*g	but it may not go, may it
+#^+STPRAg	but it must go, mustn't it
+#^+STPRA*g	but it mustn't go, must it
+#^+STPROg	but it has to go, doesn't it
+#^+STPRO*g	but it doesn't have to go, does it
+#^+STPRAOg	but it's going to go, isn't it
+#^+STPRAO*g	but it isn't going to go, is it
+#^+STKg	and I go, don't I
+#^+STKPRO*g	and it doesn't have to go, does it
+#^+SKPWAg	and this can go, can't it
+#^+STKRAOg	and I'm going to go, aren't I
 #^+TPb	it adds, doesn't it
 #^+TP*b	it doesn't add, does it
 #^+T*	I'm not[AFTER], am I[ATTACH_L][END]

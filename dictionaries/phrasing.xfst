@@ -49,9 +49,13 @@ define Mid   [ "[M:have]" | "[M:be]" | "[M:been]" | "[M:being]" | "[M:going]" ] 
 define PronSym  [ "[P:I]" | "[P:you]" | "[P:he]" | "[P:she]" | "[P:it]" | "[P:we]"
                 | "[P:they]" | "[P:there]" ] ;
 
+! "and" and "but" lead a whole clause, an inverted one or an infinitive.
+define Coord  [ "[AND]" | "[BUT]" ] ;
+define CoordW  [ [ "[AND]" .x. [ {and} " " ] ] | [ "[BUT]" .x. [ {but} " " ] ] ] ;
+
 define Feature  [ "[GAP]" | "[TAG]" | "[TW]" | PronSym | "[Q]" | Mode
                 | "[SUBJ]" | "[/SUBJ]" | "[C]"
-                | "[AND]" | "[IF]" | "[SO]" | "[INF]" | "[NOAUX]" | "[TO]"
+                | Coord | "[IF]" | "[SO]" | "[INF]" | "[NOAUX]" | "[TO]"
                 | Agr | Modl | Pol | Asp | Tns | "[V0]"
                 | Lemma | SatPost | Art | Fid | Mid ] ;
 ! Anything that is not a feature symbol: the subject word, and the verb words
@@ -69,6 +73,10 @@ define Chr      [ \Feature ] ;
 
 define KFirst  [ ("🦐") "#" ("^") ("+") ("S")
                  [ [ [ "T" "K" ] .x. [ "K" "T" ] ] | "T" | ("K") ] \[ "T" | "K" ]* ] ;
+
+! One conjunction per clause.
+define ConjKeys  [ [ [ "S" "K" ] .x. "[AND]" ] | [ "S" .x. "[BUT]" ]
+                 | [ "K" .x. "[IF]" ] | 0 ] ;
 
 ! Modality is one dimension of eight over `R A O`.
 define ModKeys  [ [ [ "R" "A" "O" ] .x. "[GOINGTO]" ] | [ [ "R" "A" ] .x. "[MUST]" ]
@@ -111,8 +119,7 @@ define Chord [ [ [ [ "🦐" .x. "[GAP]" ] | 0 ]
                  Kill("#")
                  [ [ "^" .x. "[FULL]" ] | Say("[RED]") ]
                  [ [ "+" .x. "[Q]" ] | 0 ]
-                 [ [ "S" .x. "[AND]" ] | 0 ]
-                 [ [ "K" .x. "[IF]" ] | 0 ]
+                 ConjKeys
                  [ Cl(Subjects, Slot)
                  | Cl(NoSubject, VerbEnd)
                  | DetCl ] ] .o. OneHole .o. IfClause ] ;
@@ -212,11 +219,11 @@ define NoAux [ [ Bare("[3sg]", "[PRES]")               Verb(V3sg)  ]
 
 ! A non-finite "to" clause has no subject and no agreement, so modality, tense
 ! and the question have nothing to inflect and are ignored. Negation is the "not
-! to" form, and a clausal "and" precedes both. Its full form is "in order to".
+! to" form, and "and" or "but" precedes both. Its full form is "in order to".
 !
 ! A held clause waits between the "to" and the rest: "to often run".
 define InfMode(M, W)  [ Kill(M) [ Kill("[Q]") | 0 ]
-                        [ [ "[AND]" .x. [ {and} " " ] ] | 0 ] Say(W) ] ;
+                        (CoordW) Say(W) ] ;
 define Infinitive [ [ InfMode("[RED]", 0) | InfMode("[FULL]", [ {in} " " {order} " " ]) ]
     Kill("[INF]") Kill(Agr) Kill(Modl)
     [ [ "[AFF]" .x. {to} ] | [ "[NEG]" .x. [ {not} " " {to} ] ] ]
@@ -224,7 +231,7 @@ define Infinitive [ [ InfMode("[RED]", 0) | InfMode("[FULL]", [ {in} " " {order}
 
 ! A question and the full form are read before the subject, so the branch that
 ! does do-support for them says so in its prefix.
-define SubjRec  [ [ "[AND]" | 0 ] [ "[IF]" | 0 ]
+define SubjRec  [ [ Coord | "[IF]" | 0 ]
                   [ [ "[SUBJ]" Word "[/SUBJ]" [ "[C]" | 0 ] ] | 0 ] ] ;
 define PfxAny    [ Mode [ "[Q]" | 0 ] SubjRec ] ;
 define PfxTrig   [ [ [ Mode "[Q]" ] | "[FULL]" ] SubjRec ] ;
@@ -344,16 +351,15 @@ define Tail  [ [ Chr | MidW ]* ] ;
 ! "are adding" -- is the same shapes with the head absent.
 define SubjA  [ Kill("[SUBJ]") Word Kill("[/SUBJ]") [ Kill("[C]") | 0 ] ] ;
 define SubjC  [ Kill("[SUBJ]") Word Kill("[/SUBJ]") Kill("[C]") ] ;
-define AndW  [ [ [ "[AND]" .x. [ {and} " " ] ] | 0 ]
-               [ [ "[IF]" .x. [ {if} " " ] ] | [ "[SO]" .x. [ {so} " " ] ] | 0 ] ] ;
-define Decl(F, T)  [ Kill(Mode) AndW [ [ SubjA SaySp ] | 0 ] F T ] ;
-define Clit(F, T)  [ Kill(Mode) AndW SubjC F T ] ;
+define ConjW  [ (CoordW) [ [ "[IF]" .x. [ {if} " " ] ] | [ "[SO]" .x. [ {so} " " ] ] | 0 ] ] ;
+define Decl(F, T)  [ Kill(Mode) ConjW [ [ SubjA SaySp ] | 0 ] F T ] ;
+define Clit(F, T)  [ Kill(Mode) ConjW SubjC F T ] ;
 
 ! Inversion moves the selector in front of the subject, one symbol at a time, so
 ! that the same finite-word tables serve both orders. The transducer guesses each
 ! symbol before reading the subject, which nondeterminism makes free -- the same
-! hoist the record language uses for its flags. A clausal "and" leads the whole
-! clause, inverted or not, so it comes along.
+! hoist the record language uses for its flags. "and" and "but" lead the whole
+! clause, inverted or not, so they come along.
 define Pull(X)  [ [ 0 .x. X ] \X* [ X .x. 0 ] ?* ] ;
 define PullAgr [ Pull("[1sg]") | Pull("[3sg]") | Pull("[pl]") ] ;
 define PullPol [ Pull("[AFF]") | Pull("[NEG]") ] ;
@@ -361,11 +367,11 @@ define PullTns [ Pull("[PRES]") | Pull("[PAST]") ] ;
 define PullFid [ Pull("[F:be]") | Pull("[F:have]")  | Pull("[F:do]")
                | Pull("[F:can]") | Pull("[F:shall]") | Pull("[F:will]")
                | Pull("[F:may]") | Pull("[F:must]") ] ;
-define PullAnd [ Pull("[AND]") | ~[ ?* "[AND]" ?* ] ] ;
-define Invert  [ PullFid .o. PullTns .o. PullPol .o. PullAgr .o. PullAnd ] ;
+define PullCoord [ Pull("[AND]") | Pull("[BUT]") | ~[ ?* Coord ?* ] ] ;
+define Invert  [ PullFid .o. PullTns .o. PullPol .o. PullAgr .o. PullCoord ] ;
 
 define Ques(F, T)  [ Invert .o.
-                     [ AndW F Kill(Mode) Kill("[Q]") [ [ SaySp SubjA ] | 0 ] T ] ] ;
+                     [ ConjW F Kill(Mode) Kill("[Q]") [ [ SaySp SubjA ] | 0 ] T ] ] ;
 
 ! The contraction dimension is chosen absolutely, never cycled, so each mode is
 ! a filter on the tape rather than a state.
@@ -378,8 +384,8 @@ define Red(B)   [ [ "[RED]" ?* ] .o. B ] ;
 ! `Chain` writes every word of a tail with the space that precedes it, which is
 ! the subject's space when there is a subject and nobody's when there is not.
 define Arrange [
-    [ Kill(Mode) AndW SubjA Kill("[NOAUX]") Tail ]
-  | [ Kill(Mode) AndW Kill("[NOAUX]") Kill(" ") Tail ]
+    [ Kill(Mode) ConjW SubjA Kill("[NOAUX]") Tail ]
+  | [ Kill(Mode) ConjW Kill("[NOAUX]") Kill(" ") Tail ]
   | Tail
   | Full(Decl([ IsAff .o. AffW ], Tail))
   | Full(Decl([ IsNeg .o. AffW ], [ SayNot Tail ]))
@@ -398,9 +404,9 @@ define Arrange [
 
 ! `^` asks for the full form. Where a modal clause has nothing to contract, it
 ! writes "so" before the subject instead: `#^TA-G` is "so I can go" and
-! `#^STA-G` "and so I can go". `Contracted` is every branch above that the
-! reduced mode prefers to the full form, so a clause outside its domain reads
-! the same either way. Only a statement whose subject is a word of its own:
+! `#^STKA-G` "and so I can go". "but so I can go" is not English, so "but" takes
+! no "so". `Contracted` is every branch above that the reduced mode prefers to
+! the full form, so a clause outside its domain reads the same either way. Only a statement whose subject is a word of its own:
 ! "so" before a question, "if", "what" or a held noun is not what `^` asked for.
 define Contracted [ Ques([ IsNeg .o. NegW ], Tail)
                   | Clit([ IsAff .o. SufW ], Tail)

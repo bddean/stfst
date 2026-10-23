@@ -14,15 +14,15 @@ the source:
 | `dictionaries/phrasing.xfst` | every rule | hand-written |
 
 `~/.config/plover/PHRASING-DESIGN.md` is the design these implement.
-`~/.config/plover/phrasing-resdesign` holds only what is not yet built: its RHS,
-`-T -S`, RETRO, STILL TO DROP and OPEN sections.
+`phrasing-resdesign`, at the repo root, holds only what is not yet built: its
+RHS, `-T -S`, THE HOLE, LINKER, RETRO, STILL TO DROP and OPEN sections.
 
 ## The keys
 
 ```
 🦐  held clause          #  the gate: every phrasing stroke has it
 ^   full form           +  question order          @  not phrasing
-S   "and"               K  "if"                    R A O  modality
+S   "but"   SK "and"    K  "if"                    R A O  modality
 T P W H  the subject    *  negation                E U    aspect
 ```
 
@@ -41,9 +41,15 @@ T P W H  the subject    *  negation                E U    aspect
 | none | no subject, 3sg: `#-B` "adds" | | `W` | no subject, plural: `#W-B` "add" |
 
 The two with no subject need a verb. There is no plural bit: "these", "those",
-"one", the wh-words but "what", the passive and the imperative are gone. `S` is
-the clausal "and" and `K` "if", with any subject, and `SK` is "and if". "if"
-takes no question, no infinitive and no clause without a subject.
+"one", the wh-words but "what", the passive and the imperative are gone. A clause
+takes one conjunction: `S` is "but", `SK` "and" and `K` "if", with any subject.
+"if" takes no question, no infinitive and no clause without a subject.
+
+"and if" was `SK`. It is gone, "and" moved from `S` to `SK`, and "but" took `S`.
+`SK` is the theory's "and", `SKP`, without the `P`. Before a subject, "but" is
+as frequent as "and" in web+news (9,382 and 9,353), and "and if" is 382. `K`
+stays "if" (6,598), since a "that" before a subject is a verb's complement and
+the right bank writes it.
 
 ## Three tapes, and who owns each
 
@@ -148,7 +154,7 @@ bank's redesign, not this one.
 
 `TWH` is the nonfinite "to" clause. It has no subject and no agreement, so
 modality, tense and the question have nothing to inflect and are ignored.
-Negation is "not to", and an "and" goes before it.
+Negation is "not to", and "and" or "but" goes before it.
 
 `#-B` and `#W-B` name no subject and need a verb: "adds", "add", "can add",
 "are adding". `[NOAUX]` is what tells `Arrange` the clause opens on a word
@@ -182,8 +188,9 @@ define Pull(X, P)  [ [ 0 .x. X ] P [ X .x. 0 ] ?* ] ;
 define Invert  [ PullFid .o. PullTns .o. PullPol .o. PullAgr .o. PullAnd ] ;
 ```
 
-Four symbols, fifteen branches, composed. A clausal "and" comes along, because
-"and" leads the whole clause: `#+ST` is "and am I", not "am and I".
+Four symbols, fifteen branches, composed. "and" and "but" come along, because
+they lead the whole clause: `#+STK` is "and am I", not "am and I", and `#+ST`
+"but am I".
 
 ## The hole: the verb is the word you write next
 
@@ -278,7 +285,8 @@ no auxiliary has no full form to undo, so `^` gives it one: `do`, which is what
 #^-B      ->   does add
 #^TROG   ->   I do have to go
 #^TAG    ->   so I can go
-#^STAG   ->   and so I can go
+#^STKAG  ->   and so I can go
+#^STAG   ->   but I can go
 #^TWH-G   ->   in order to go
 #^TWH*G  ->   in order not to go
 ```
@@ -287,9 +295,10 @@ no auxiliary has no full form to undo, so `^` gives it one: `do`, which is what
 to" and "used to" are lexical verbs by then, so they take it too.
 
 A modal clause that reduces to nothing shorter writes "so" before its subject
-instead, after any "and". `Contracted` is every branch of `Arrange` that the
-reduced mode prefers to the full form, so a clause outside its domain reads the
-same in both modes, and `SoMark` gives a `[SO]` there to a statement whose
+instead, after any "and". "but so I can go" is not English, so `^` writes no
+"so" after "but". `Contracted` is every branch of `Arrange` that the reduced
+mode prefers to the full form, so a clause outside its domain reads the same in
+both modes, and `SoMark` gives a `[SO]` there to a statement whose
 subject is a word of its own. "so" before a question, after "if", or before
 "what" or a held noun is not what `^` asked for, so those keep the no-op:
 `#^TKAG` is "if I can go", and `#^PWHAG` "what can go". So do "was" and
@@ -445,7 +454,7 @@ outline per modality.
 
 ## Checked
 
-`tests/golden/phrasing.tsv`, 4,761 cases. The file is the expectation, and the
+`tests/golden/phrasing.tsv`, 4,797 cases. The file is the expectation, and the
 sample is chosen the way the grammar is split:
 
 - **One case per ender chord**, all 631 of them. That is the part that is a
