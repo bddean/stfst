@@ -26,3 +26,8 @@ TKOG
 -L
 KAP
 -L
+! The climbed word is whole, so a prefix's attachment does not reach the next word.
+!buffer
+PHEUD
+-L
+-F

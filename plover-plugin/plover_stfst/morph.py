@@ -160,6 +160,8 @@ def stfst_ladder(ctx, arg):
     words = climb(base, ladder)
     at = min(at, len(words) - 1)
     action.prev_attach = True
+    action.next_attach = False
+    action.glue = False
     action.prev_replace = token
     action.text = words[at] + token[len(word):]
     action.word = words[at]

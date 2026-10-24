@@ -189,6 +189,8 @@ impl Text {
         // case, and Plover says it about all of them: a keystroke between two
         // words does not open the gap the attachment closed.
         let kept = wrote.is_none();
+        // A ladder rewrote the last word whole, so no attachment it left survives.
+        let passes = kept && rung.is_none();
         // A record that wrote nothing is not the text a choice waits for, so it
         // joins the units the choice writes again.
         let undecided = match (from, self.tail.undecided.take()) {
@@ -203,8 +205,8 @@ impl Text {
             (None, _) => None,
         };
         self.tail = Tail {
-            attach: flags.attach_r || (kept && self.tail.attach),
-            glue: flags.glue || (kept && self.tail.glue),
+            attach: flags.attach_r || (passes && self.tail.attach),
+            glue: flags.glue || (passes && self.tail.glue),
             word_end: flags.word_end || (kept && self.tail.word_end),
             wrote: !kept,
             start: match (self.cells.len() > start, kept) {

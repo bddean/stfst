@@ -20,4 +20,8 @@ TKOG	1	typey-type	dog	"dog"
 -L	1	user	[META=ladder]ly:le,el,al,il,ol,ul/ly/able,ible/ably,ibly[END]	"quickly"
 KAP	1	typey-type	cap	"quickly cap"
 -L	1	user	[META=ladder]ly:le,el,al,il,ol,ul/ly/able,ible/ably,ibly[END]	"quickly capable"
-! 15 strokes, 5 candidates at the widest
+!buffer	""
+PHEUD	1	typey-type	mid[ATTACH_R]	"mid"
+-L	1	user	[META=ladder]ly:le,el,al,il,ol,ul/ly/able,ible/ably,ibly[END]	"middle"
+-F	1	typey-type	of	"middle of"
+! 18 strokes, 5 candidates at the widest
