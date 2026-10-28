@@ -503,7 +503,9 @@ Android asks before an app may open a USB device. Picking the keyboard with
 "always" when a machine is plugged in makes the answer stick; otherwise it is
 asked again at every plug. A HID device that is not a boot keyboard or mouse is
 asked about too, because only its report descriptor says whether it is a
-machine, and reading it needs the permission.
+machine, and reading it needs the permission. Neither question is asked unless
+this is the selected keyboard: the activity Android offers is enabled only
+while it is.
 
 What a machine sends means nothing to the Kotlin side. `stfst-machine` has the
 wire formats, the chorder, the keymap and the sounds, so a desktop client can

@@ -38,6 +38,7 @@
 
         <activity
             android:name=".UsbActivity"
+            android:enabled="false"
             android:exported="true"
             android:excludeFromRecents="true"
             android:noHistory="true"

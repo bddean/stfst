@@ -36,6 +36,9 @@ import java.util.concurrent.atomic.AtomicBoolean
  * Every event does the same thing, [scan], which is idempotent: open what is
  * attached, usable and permitted, and close what is gone. Everything here but
  * the reader threads runs on the main thread.
+ *
+ * It lives exactly as long as the keyboard is the selected input method, which
+ * is what keeps its prompts, and [UsbActivity]'s, away from every other time.
  */
 class Machines(
     private val context: Context,
@@ -75,10 +78,12 @@ class Machines(
         } else {
             context.registerReceiver(receiver, filter)
         }
+        UsbActivity.offer(context, true)
         scan()
     }
 
     fun stop() {
+        UsbActivity.offer(context, false)
         context.unregisterReceiver(receiver)
         links.values.forEach { it.close() }
         links.clear()
