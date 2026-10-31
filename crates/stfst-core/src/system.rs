@@ -245,7 +245,14 @@ impl Stroke {
     }
 
     pub fn indices(self) -> impl Iterator<Item = usize> {
-        (0..64).filter(move |i| self.0 & (1 << i) != 0)
+        let mut bits = self.0;
+        std::iter::from_fn(move || {
+            (bits != 0).then(|| {
+                let i = bits.trailing_zeros() as usize;
+                bits &= bits - 1;
+                i
+            })
+        })
     }
 
     pub fn len(self) -> u32 {
