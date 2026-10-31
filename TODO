@@ -28,9 +28,9 @@ dictionary
 	- give v its own chord. In a contracted stroke v's SR reads as re- or s-,
 		and most of what a left-hand voicing key gained came from v alone
 		(docs/caret-replacement.md, "Left-hand voicing key").
-	- not done: the left edge of the board. A `^`/`+` column left of S, and `@`
-		above S, acting as S in a chord with `^` or `+`. The details are to be
-		settled.
+	- the left edge of the board (`^ @` over `+ S`, `@` as S with a marker):
+		done for Plover's keymap and emily-modifiers. Not done: the Android
+		keyboard's layout and its USB keymap.
 
 
 ---

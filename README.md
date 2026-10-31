@@ -37,7 +37,19 @@ system they are written for, and the APK is attached to each GitHub release. See
 These are for Plover's Stenotype Extended system, which adds the keys `^` and
 `+`. This repo adds two more: `@`, and `🦐`, which marks a stroke as a Shrimple
 syllable and is sent by holding a chord. This is not a standard theory. Typey
-Type is the base, and the rest sits on top of it:
+Type is the base, and the rest sits on top of it.
+
+The board's left edge is two columns, `@` above `S`:
+
+```
+ ^  @  T  P  H
+ +  S  K  W  R
+```
+
+`@` opens the modifiers' namespace, except in a chord with `^` or `+`, where it
+is `S`: `^@TP` is `^STP`.
+
+
 
 | Dictionary | What it does |
 |---|---|

@@ -136,7 +136,7 @@ so where a mark lands on one the word falls back:
 |---|---|
 | affixes | the prefix a- is `^` on the affix stroke |
 | phrasing, phrasing-tag | `#^` the full form, `#^+` the question tag, behind `#` |
-| emily-modifiers | `^` with `@` is the literal-number bit |
+| emily-modifiers | `@` with `^` or `+` is `S` |
 | semantic-retro | lone `+` and `^+` strokes with no left bank (`+U`, `^+`) |
 | retro-words | `^A` and its menus (`^AEP`) |
 | repeat-word, repeat-idioms | a connective folded onto `^` (`^SKP`, `^O`) |

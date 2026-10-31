@@ -59,6 +59,8 @@ selector with no modifier tags after it, so the subtraction inside `PU` says
 The payload's binary reading is arithmetic: `R` is 1, `W` is 2, up to `T` at 64,
 plus 128 for `^` and 256 for `#`. xfst has no arithmetic, so this is either a
 double-and-add cascade or a table of 512 rows, and the generator writes the table.
+The grammar reads neither high bit: `#` is phrasing's, and with `^` or `+` held
+`@` is `S`, a fold onto the stroke with `S` in its place (`^@TP` is `^STP`).
 
 Enumerating a rule is usually the thing this format exists to avoid, so it is
 worth being precise about why it is right here. The function is finite: nine bits,
@@ -87,7 +89,7 @@ The sharing runs the other way for numbers. `emily-symbols` lists
 
 `tests/golden/emily-modifiers.tsv` covers every table exhaustively: 39 keysym rows
 in four variants, all 29 fingerspelling chords against all 32 modifier
-combinations, all 128 payload chords as numbers, all 512 literal numbers. 3,238
+combinations, all 128 payload chords as numbers, all 128 literal numbers. 2,605
 cases. The expectations came from `emily-modifiers.py` while that dictionary was
 still the definition, with two exceptions where it could not be.
 
