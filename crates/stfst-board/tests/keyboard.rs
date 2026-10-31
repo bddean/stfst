@@ -116,8 +116,8 @@ fn hints_offer_a_briefer_outline_for_the_trailing_phrase() {
     assert!(board.hints(4).iter().all(|h| h.text != "little one"));
 }
 
-/// Phrasing's clause outline is as short as Typey Type's brief, and the brief is
-/// the one offered.
+/// Phrasing's clause outline is as short as two-word's stroke and Typey Type's
+/// brief, and the pair's stroke is the one offered.
 #[test]
 fn a_hint_offers_a_clause_outline_last() {
     let Some(dicts) = dicts() else {
@@ -131,7 +131,7 @@ fn a_hint_offers_a_clause_outline_last() {
     board.push(stroke(bits(&system, "R"))).expect("a stroke");
     assert_eq!("we are", board.text().trim());
     let hint = board.hints(4).into_iter().find(|h| h.text == "we are").map(|h| h.outline);
-    assert_eq!(hint.as_deref(), Some("WER"));
+    assert_eq!(hint.as_deref(), Some("^WAR"));
 }
 
 /// No dictionary writes "hypocrites", and a fold does: hypocrite's stroke and -S.
@@ -148,7 +148,7 @@ fn a_hint_offers_an_outline_a_fold_writes() {
     board.push(stroke(bits(&system, "KREUts"))).expect("a stroke");
     assert_eq!("hypocrites", board.text().trim());
     let hint = board.hints(4).into_iter().find(|h| h.text == "hypocrites").map(|h| h.outline);
-    assert_eq!(hint.as_deref(), Some("^H-RPBGTS"));
+    assert_eq!(hint.as_deref(), Some("^+HEURPBGTS"));
 }
 
 #[test]
