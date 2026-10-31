@@ -79,6 +79,12 @@ define PlusO      [ PlusMark & $[O] ] ;
 define CaretPlus  [ Stroke & [ "^" "+" ?* ] ] ;
 define SoStroke   [ PlusO & [ "+" S ?* ] ] ;
 
+! The i or y mark alone is -y, joined as `{^y}` joins: ^+TAOEUP is "typey".
+! Last, so a marked stroke's inflections and "is" come first. A base of the
+! right bank alone is a suffix key or a function word: ^+-T is not "they".
+define YStroke    [ CaretPlus & $[ S | T | K | P | W | H | R | A | O | E | U ] ] ;
+define Y          [ {y} "[ORTHO_L]" ] ;
+
 ! "is" is S- on a word's stroke, unless S-K-P- says "and", and "it's" is ST-
 ! where T- and the rest is no word: STPHOU is "is now", STPWAD "it's bad". Of
 ! the corpora's "is" and "it's" bigrams whose stroke no entry holds, these
@@ -117,6 +123,7 @@ define Folds [ [ Stroke - $["#"] ]
   .o. AfterO(f, {of})
   .o. AfterI(z, {is})
   .o. AfterO(t, {to})
+  .o. Beside(YStroke, [ "^" "+" ], 0, 0, Y)
   .o. [ [ Stroke .x. 0 ] Alts ] ] ;
 
 define Grammar [ Bare | Folds ] ;

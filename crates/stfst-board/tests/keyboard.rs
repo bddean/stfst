@@ -151,6 +151,23 @@ fn a_hint_offers_an_outline_a_fold_writes() {
     assert_eq!(hint.as_deref(), Some("^+HEURPBGTS"));
 }
 
+/// No dictionary writes "funny" in one stroke, and the -y fold does: fun's and `^+`.
+#[test]
+fn a_hint_offers_an_outline_the_y_fold_writes() {
+    let (Some(dicts), Some(morph)) = (dicts(), morph()) else {
+        eprintln!("skipped: no build/dicts or no build/morph");
+        return;
+    };
+    let system = system();
+    let stack = Stack::open(&dicts, &system, &Capabilities::all()).expect("opening the stack");
+    let mut board = Board::new(&system, &stack, Some(morph));
+    board.push(stroke(bits(&system, "TPUpb"))).expect("a stroke");
+    board.push(stroke(bits(&system, "KWREU"))).expect("a stroke");
+    assert_eq!("funny", board.text().trim());
+    let hint = board.hints(4).into_iter().find(|h| h.text == "funny").map(|h| h.outline);
+    assert_eq!(hint.as_deref(), Some("^+TPUB"));
+}
+
 #[test]
 fn a_suffix_key_inflects_the_word_before_it() {
     let (Some(dicts), Some(morph)) = (dicts(), morph()) else {

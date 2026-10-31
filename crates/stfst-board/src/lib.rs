@@ -116,8 +116,22 @@ pub struct Hint {
     pub outline: String,
 }
 
-/// The folds' suffix keys, and the inflection each one asks for.
-const SUFFIXES: &[(char, &str)] = &[('s', "s"), ('d', "ed"), ('g', "ing"), ('z', "z")];
+/// The keys a fold reads as an ending, and how each makes its word of the base's.
+const SUFFIXES: &[(&str, Ending)] = &[
+    ("s", Ending::Infl("s")),
+    ("d", Ending::Infl("ed")),
+    ("g", Ending::Infl("ing")),
+    ("z", Ending::Infl("z")),
+    ("^+", Ending::Join("y")),
+];
+
+#[derive(Clone, Copy)]
+enum Ending {
+    /// `{:infl:…}`.
+    Infl(&'static str),
+    /// `{^…}`.
+    Join(&'static str),
+}
 
 /// How many per-stroke text snapshots [`Board::hints`] can look back through.
 /// Far more strokes than any trailing phrase spans.
@@ -673,32 +687,39 @@ impl<'a> Board<'a> {
         found.tapes.iter().filter_map(|t| self.system.from_tape(t).ok()).collect()
     }
 
-    /// The outlines a fold writes `word` with: a base's outline and a suffix key,
-    /// where the base inflects to the word and a fresh board reads the outline
-    /// back as it. Each with its base's dictionary's `suggest` and place.
+    /// The outlines a fold writes `word` with: a base's outline and an ending's
+    /// keys, where the ending makes the word of the base and a fresh board reads
+    /// the outline back as it. Each with its base's dictionary's `suggest` and
+    /// place.
     fn folded(&self, word: &str) -> Vec<(Outline, i64, usize)> {
         let Some(morph) = &self.morph else {
             return Vec::new();
         };
         let chars: Vec<char> = word.chars().collect();
         let mut out = Vec::new();
-        for (key, mode) in SUFFIXES {
-            let Some(key) = self.system.index_of_symbol(*key) else {
+        for (keys, ending) in SUFFIXES {
+            let Some(keys) = keys.chars().try_fold(Stroke::EMPTY, |k, c| {
+                self.system.index_of_symbol(c).map(|i| k.with(i))
+            }) else {
                 continue;
+            };
+            let makes = |base: &str| match ending {
+                Ending::Infl(mode) => morph.inflect(base, mode).as_deref() == Some(word),
+                Ending::Join(suffix) => morph.join_or_complete(base, suffix) == word,
             };
             let bases: Vec<String> = (1..=4.min(chars.len().saturating_sub(1)))
                 .map(|n| chars[..chars.len() - n].iter().collect::<String>())
                 .flat_map(|stem| ["", "e", "y"].map(|end| format!("{stem}{end}")))
-                .filter(|base| morph.inflect(base, mode).as_deref() == Some(word))
+                .filter(|base| makes(base))
                 .collect();
             for base in bases {
                 for (rank, dict) in self.stack.dicts().iter().enumerate() {
                     for Outline(mut strokes) in self.outlines(dict, &base) {
                         let Some(last) = strokes.last_mut() else { continue };
-                        if last.contains(key) {
+                        if last.minus(keys) != *last {
                             continue;
                         }
-                        *last = last.with(key);
+                        *last = last.union(keys);
                         let outline = Outline(strokes);
                         if self.reads(&outline) == word {
                             out.push((outline, dict.suggest(), rank));
