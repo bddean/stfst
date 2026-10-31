@@ -1,0 +1,915 @@
+<title>Caret Replacement Study</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500;7..72,650&family=Public+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; steno outlines in mono, each stroke part keeps one color throughout. */
+:root {
+  --bg: #f4f5f2; --panel: #ffffff; --fg: #1c2126; --muted: #5a626b; --line: #d6d9d3; --keycap: #e7e9e4;
+  --accent: #33569e;
+  --z-mark: #8a3f9e; --z-onset: #2f6fb3; --z-vowel: #a8660f; --z-coda: #237f63;
+  --good: #1f7a46; --bad: #b3372f;
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a;
+  --f-display: "Literata", Georgia, serif; --f-body: "Public Sans", system-ui, sans-serif; --f-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #15181b; --panel: #1c2024; --fg: #e6e8e4; --muted: #9ba3ab; --line: #343a40; --keycap: #262b30;
+  --accent: #8fb0f0;
+  --z-mark: #c48ad6; --z-onset: #6aa6e8; --z-vowel: #e0a74a; --z-coda: #5cc3a1;
+  --good: #5cc38a; --bad: #ef7a70;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #15181b; --panel: #1c2024; --fg: #e6e8e4; --muted: #9ba3ab; --line: #343a40; --keycap: #262b30;
+  --accent: #8fb0f0;
+  --z-mark: #c48ad6; --z-onset: #6aa6e8; --z-vowel: #e0a74a; --z-coda: #5cc3a1;
+  --good: #5cc38a; --bad: #ef7a70;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--f-body); font-size: 16px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 32px 64px; }
+main { max-width: 980px; margin: 0 auto; display: grid; gap: 56px; }
+h1, h2, h3 { font-family: var(--f-display); font-weight: 650; text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
+h1 { font-size: clamp(30px, 5vw, 44px); line-height: 1.1; }
+h2 { font-size: 25px; }
+h3 { font-size: 18px; }
+p, ul { margin: 0; max-width: 68ch; }
+section { display: grid; gap: 16px; min-width: 0; }
+.lede { color: var(--muted); font-size: 18px; }
+.label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 700; }
+code, .mono { font-family: var(--f-mono); font-size: 0.92em; }
+ul.plain { padding-left: 1.2em; display: grid; gap: 6px; }
+a { color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.hd { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 14px; }
+
+/* scale tag: names the metric and word set behind every number next to it */
+.scale { font-family: var(--f-mono); font-size: 12px; font-weight: 600; color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--line)); border-radius: 4px; padding: 1px 7px; white-space: nowrap; }
+
+/* contents */
+.toc { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 4px 20px; font-size: 14.5px; padding: 0; margin: 0; list-style: none; }
+.toc a { text-decoration: none; }
+.toc a:hover { text-decoration: underline; }
+
+/* stroke anatomy strip */
+.strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--panel); }
+.strip div { padding: 12px; display: grid; gap: 4px; border-left: 1px solid var(--line); min-width: 0; align-content: start; }
+.strip div:first-child { border-left: 0; }
+.strip .snd { font-family: var(--f-mono); font-size: 22px; font-weight: 600; }
+.strip small { color: var(--muted); font-size: 13px; line-height: 1.35; }
+@media (max-width: 640px) { .strip { grid-template-columns: 1fr; } .strip div { border-left: 0; border-top: 1px solid var(--line); } .strip div:first-child { border-top: 0; } }
+
+/* tables */
+.tw { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
+th, td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+tbody tr:last-child td { border-bottom: 0; }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 700; white-space: nowrap; }
+td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+tr.base td { color: var(--muted); }
+tr.best td { background: color-mix(in srgb, var(--accent) 9%, transparent); }
+tr.best td:first-child { font-weight: 700; }
+td small { color: var(--muted); display: block; font-size: 12.5px; }
+tbody td:first-child { min-width: 10em; }
+td.fam { white-space: nowrap; }
+th .scale { text-transform: none; letter-spacing: 0; margin-left: 6px; }
+th button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; text-transform: inherit; letter-spacing: inherit; }
+th button[data-dir]::after { content: attr(data-dir); margin-left: 4px; }
+
+/* outlines */
+.o { font-family: var(--f-mono); font-weight: 600; white-space: nowrap; }
+.o .m { color: var(--z-mark); } .o .l { color: var(--z-onset); } .o .v { color: var(--z-vowel); } .o .r { color: var(--z-coda); }
+.lose { color: var(--bad); font-size: 12px; font-weight: 700; margin-left: 4px; }
+
+/* key maps */
+.kb { display: grid; gap: 6px; grid-template-columns: repeat(11, minmax(28px, 1fr)); max-width: 640px; font-family: var(--f-mono); font-weight: 600; }
+.kb.plainkb { grid-template-columns: repeat(10, minmax(40px, 1fr)); max-width: 680px; }
+.k { background: var(--keycap); border: 1px solid var(--line); border-radius: 6px; min-height: 40px; display: grid; place-items: center; font-size: 15px; color: var(--muted); }
+.k.tall { grid-row: span 2; }
+.k.hot { background: color-mix(in srgb, var(--z-mark) 16%, var(--panel)); border-color: var(--z-mark); color: var(--z-mark); }
+.k.vow { color: var(--z-vowel); }
+.k.on { color: var(--z-onset); } .k.co { color: var(--z-coda); }
+.k b { font-size: 17px; line-height: 1; }
+.k small { font-size: 10.5px; color: var(--muted); font-weight: 400; line-height: 1; }
+.k.two { align-content: center; gap: 4px; min-height: 48px; }
+.kbwrap { overflow-x: auto; padding-bottom: 2px; }
+.rules { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.rule { border: 1px solid var(--line); background: var(--panel); border-radius: 8px; padding: 12px; display: grid; gap: 4px; align-content: start; }
+.rule > .o { font-size: 22px; color: var(--z-mark); }
+.rule small { color: var(--muted); }
+@media (max-width: 640px) { .rules { grid-template-columns: 1fr; } }
+
+/* key figures */
+.figs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.fig { border: 1px solid var(--line); background: var(--panel); border-radius: 8px; padding: 12px; display: grid; gap: 2px; align-content: start; min-width: 0; }
+.fig b { font-family: var(--f-display); font-size: 28px; font-weight: 650; font-variant-numeric: tabular-nums; line-height: 1.15; }
+.fig small { color: var(--muted); font-size: 13px; line-height: 1.35; }
+@media (max-width: 760px) { .figs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* tabs, chips and word explorer */
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+.tab { font: inherit; font-size: 14px; border: 1px solid var(--line); background: var(--panel); color: var(--fg); border-radius: 999px; padding: 6px 14px; cursor: pointer; }
+.tab[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.tab small { color: inherit; opacity: 0.7; margin-left: 4px; }
+.chips .tab { font-size: 13px; padding: 4px 11px; }
+.words { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
+.word { border: 1px solid var(--line); background: var(--panel); border-radius: 6px; padding: 8px 10px; display: grid; gap: 2px; min-width: 0; align-content: start; }
+.word b { font-weight: 600; }
+.word .read { color: var(--muted); font-size: 12.5px; line-height: 1.35; }
+.word .fb { font-size: 12.5px; line-height: 1.35; }
+.scalenote { color: var(--muted); font-size: 14px; max-width: 80ch; }
+
+/* charts */
+.chart { border: 1px solid var(--line); border-radius: 8px; background: var(--panel); padding: 12px; position: relative; min-width: 0; display: grid; gap: 8px; }
+.chart svg { display: block; width: 100%; height: auto; }
+.chart text { fill: var(--muted); font-family: var(--f-body); font-size: 12px; }
+.chart .lbl { fill: var(--fg); }
+.chart .grid { stroke: var(--line); stroke-width: 1; }
+.chart .ref { stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 4 4; }
+.legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 13px; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 10px; height: 10px; border-radius: 50%; background: var(--c); display: inline-block; }
+.tip { position: absolute; pointer-events: none; background: var(--fg); color: var(--bg); font-size: 13px; padding: 6px 8px; border-radius: 6px; max-width: 260px; line-height: 1.35; z-index: 2; }
+.callout { border-left: 3px solid var(--accent); padding: 4px 0 4px 14px; max-width: 68ch; }
+pre { font-family: var(--f-mono); font-size: 13.5px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px; overflow-x: auto; margin: 0; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<main>
+<header style="display:grid;gap:12px">
+  <div class="label">stfst · two-syllable strokes</div>
+  <h1>Writing the other vowel without XOR</h1>
+  <p class="lede">stfst writes a two-syllable word as one stroke marked <code>^</code>, with the weak vowel XORed into the stressed vowel's chord. The XOR is hard to learn and very hard to read back. This study scores replacements on stfst's real theory and word set, treats every unsystematic fallback outline as something to memorize, and compares new layouts built from scratch.</p>
+  <div class="figs" aria-label="The recommendation in four numbers">
+    <div class="fig"><span class="label">Letter rule alone</span><b>1.574%</b><small>lost, against 1.824% for <code>^</code> XOR today</small></div>
+    <div class="fig"><span class="label">With the theory fallback</span><b>0.093%</b><small>lost, at 1.015 strokes per word</small></div>
+    <div class="fig"><span class="label">Memorized entries</span><b>0</b><small>against 295 with the Typey Type fallback</small></div>
+    <div class="fig"><span class="label">Vowel keys literal</span><b>100%</b><small>of strokes, against 2.7% today</small></div>
+  </div>
+  <p class="scalenote">Those four numbers are resolved against the compiled stack on the 12,208 two-syllable words. <a href="#scales">Scales</a> lists the others.</p>
+</header>
+
+<nav aria-label="Contents">
+  <ul class="toc">
+    <li><a href="#scales">How the numbers are scored</a></li>
+    <li><a href="#dropin">Drop-in replacements</a></li>
+    <li><a href="#or">OR'd marker chords</a></li>
+    <li><a href="#fallback">The fallback is memorization</a></li>
+    <li><a href="#novo">De novo foot-zone layouts</a></li>
+    <li><a href="#plain">A plain de novo board</a></li>
+    <li><a href="#voice">A left-hand voicing key</a></li>
+    <li><a href="#six">Six vowel keys</a></li>
+    <li><a href="#all">Every design, scored</a></li>
+    <li><a href="#explorer">The words, read back</a></li>
+    <li><a href="#rec">Recommendation</a></li>
+    <li><a href="#open">Open decisions</a></li>
+    <li><a href="#run">Running the solver</a></li>
+  </ul>
+</nav>
+
+<section>
+  <h2>What one stroke holds</h2>
+  <p>The recommended rule keeps everything stfst writes today and moves the weak vowel off the vowel keys, onto the two keys beside S.</p>
+  <div class="strip" aria-label="The parts of the stroke ^+HAP, for happy">
+    <div><span class="label" style="color:var(--z-mark)">Other vowel</span><span class="snd" style="color:var(--z-mark)">^+</span><small>The weak vowel's first letter: i or y. Keys <code>^</code> and <code>+</code>.</small></div>
+    <div><span class="label" style="color:var(--z-onset)">Onset</span><span class="snd" style="color:var(--z-onset)">H</span><small>Every consonant before the stressed vowel. Left bank.</small></div>
+    <div><span class="label" style="color:var(--z-vowel)">Stressed vowel</span><span class="snd" style="color:var(--z-vowel)">A</span><small>Its chord by spelling, as Typey Type writes it. Unchanged.</small></div>
+    <div><span class="label" style="color:var(--z-coda)">Coda</span><span class="snd" style="color:var(--z-coda)">-P</span><small>Every consonant after it. Right bank, with -S, -D, -G still folding.</small></div>
+  </div>
+  <p>The word is <i>happy</i>: <span class="o"><span class="m">^+</span><span class="l">H</span><span class="v">A</span><span class="r">P</span></span>. Today it is <span class="o">^HAEUP</span>, which reads as a long a.</p>
+</section>
+
+<section>
+  <h2>Why <code>^</code> is hard to read</h2>
+  <ul class="plain">
+    <li><b>The vowel keys lie.</b> XOR by any operand maps the 16 vowel chords onto themselves, so each result has four or five parses. <i>today</i> is <span class="o">^TKAOEU</span>, which reads as <i>tie</i>; <i>always</i> is <span class="o">^ULS</span>; <i>city</i> is <span class="o">^S-T</span>, with no vowel at all.</li>
+    <li><b>Position is gone.</b> <i>report</i> (weak vowel before the stress) and <i>happy</i> (after it) are marked the same way.</li>
+    <li><b><code>^</code> means several things.</b> XOR with a vowel, an r-coloured vowel absorbed into -R, or only "the plain stroke is taken" (matter is <span class="o">^PHART</span> because mart is <span class="o">PHART</span>).</li>
+    <li><b>Undoing it needs the spelling and the vowel table.</b> The reader must guess the stressed chord, guess the operand, and XOR them back, in their head.</li>
+  </ul>
+</section>
+
+<section id="scales">
+  <h2>How the numbers are scored</h2>
+  <p>The study uses several metrics on several word sets. A number is only comparable with numbers on the same scale. Every table and chart below carries a tag naming its scale.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Tag</th><th>Metric</th><th>Words</th><th>Used for</th></tr></thead>
+    <tbody>
+      <tr><td><span class="scale">resolved · 12,208</span></td><td>Lost frequency after resolving against the compiled stack, as <code>gen-two-syllable.py</code> resolves it. Outlines the rest of the stack holds count as taken.</td><td>stfst's two-syllable dictionary, inflections included</td><td>Drop-in rules, OR'd markers, voicing</td></tr>
+      <tr><td><span class="scale">resolved + fallback · 12,208</span></td><td>The same, with a second outline for each word: Typey Type's, the theory's two strokes, or both in order.</td><td>The same</td><td>The fallback study</td></tr>
+      <tr><td><span class="scale">hard · 12,208 · no stack</span></td><td>Hard collision: the frequency share of words whose first outline equals a more frequent word's. No rest of the stack.</td><td>The same</td><td>Cross-checks</td></tr>
+      <tr><td><span class="scale">hard by sound · 11,344</span></td><td>Hard collision, words written by sound from <code>lexicon.lexc</code>, homophones kept apart (floor 0.51%).</td><td>The words both sources share</td><td>De novo layouts, the plain board</td></tr>
+      <tr><td><span class="scale">hard · 78,853 · handoff</span></td><td>The foot-zone handoff's own metric, homophones merged.</td><td>CMUdict + wordfreq content words</td><td>Context only</td></tr>
+      <tr><td><span class="scale">hard · 3,606 · approx.</span></td><td>Hard collision among these words only, a cheap model.</td><td>Marked words with exactly 2 vowels</td><td>Six vowel keys</td></tr>
+    </tbody>
+  </table></div>
+  <p>The runs span two builds of the stack. The later build moved the two baselines by 0.004 points: <code>^</code> XOR from 1.824% to 1.820%, the letter rule from 1.574% to 1.571%. The voicing rows use the later build. Everything else uses the earlier one.</p>
+  <h3>Readability</h3>
+  <p>Readability is scored on the stroke as written, without the dictionary, weighted by frequency over the marked words.</p>
+  <ul class="plain">
+    <li><b>Readings</b>: how many (stressed chord, other vowel's letter, side of the stress) triples the word set uses that the rule writes with the same marker and vowel keys. Fewer is better. About 4 is the floor on two marker keys.</li>
+    <li><b>Stressed readings</b>: how many stressed chords those triples have. A rule that leaves the vowel keys alone scores 1.</li>
+    <li><b>Literal vowel</b>: the share of strokes whose vowel keys are exactly the stressed vowel's chord.</li>
+    <li><b>One reading</b>: the share of strokes with a single (stressed chord, letter) reading, whatever the side.</li>
+    <li><b>Memorized</b>: outlines a learner must learn word by word, because no rule produces them. See <a href="#fallback">the fallback study</a>.</li>
+  </ul>
+</section>
+
+<section id="dropin">
+  <div class="hd"><h2>Drop-in replacements</h2><span class="scale">resolved · 12,208</span></div>
+  <p>Each rule keeps stfst's onset, vowel and coda chords and changes only what the marker keys say. Each is run through stfst's real two-syllable pipeline. <b>Lost</b> is the frequency share of the words that end up with no stroke. <b>Words lost</b> counts words that lose to another word plus words whose outline another dictionary keeps. Every placed word is one stroke.</p>
+  <div class="tw"><table id="t-dropin"></table></div>
+  <div class="chart" id="c-dropin" role="img" aria-label="Lost frequency for each drop-in rule, with the two baselines as reference lines"></div>
+  <p>The two-key ceiling is about 1.44%. A free search over every (side, letter) cell on <code>^</code> and <code>+</code> reaches 1.466%. Adding <code>#</code> as a third key only reaches 1.441%, since the stack holds most <code>#</code> strokes. The letter rule gets within 0.11 points of the ceiling with three entries a learner can say aloud. Showing the side of the stress costs much more. Two keys cannot show both the side and the letter, and the letter is worth more.</p>
+</section>
+
+<section id="or">
+  <div class="hd"><h2>OR'd marker chords</h2><span class="scale">resolved · 12,208</span></div>
+  <p>Here the marker chord may also hold vowel keys or <code>*</code>, OR'd into the stressed chord. The question is whether that buys loss without bringing back XOR's problem.</p>
+  <div class="tw"><table id="t-ordef"></table></div>
+  <div class="chart" id="c-or" role="img" aria-label="Lost frequency against stressed readings for every drop-in and OR design"></div>
+  <div class="legend" id="l-or"></div>
+  <ul class="plain">
+    <li><b>A single <code>^</code> with the letter OR'd repeats XOR's problem.</b> or-letter loses 2.471%, more than XOR's 1.824%. happy is <span class="o">^HAEUP</span> and today <span class="o">^TKAOEU</span>, the same keys as XOR. In 36% of strokes the weak key is already in the stressed chord, so it is hidden: city is <span class="o">^SEUT</span>. Searching the whole single-<code>^</code> family reaches only 1.569%, at 9.41 readings.</li>
+    <li><b><code>*</code> for i or y helps,</b> but <code>*</code> is part of stressed chords too. or-side-letter-star, the only design that shows both the side and the letter, loses 1.634%. Its vowel keys are literal in only 34.5% of strokes.</li>
+    <li><b>OR works best as a small addition to the letter rule.</b> or-plus adds <code>+O</code> and <code>+U</code> to the letter rule. It loses 1.340% alone, 0.234 points less. The OR'd keys are rare letters, so only 6.5% of strokes hide the weak key. But o's O merges into stressed chords that hold A: also <span class="o">+AOLS</span>, today <span class="o">+TKAOEU</span>, minor <span class="o">+PHAOEURP</span>. Stressed readings rise from 1.00 to 1.43.</li>
+    <li><b>The ceiling</b> is about 0.95%, with any of 21 OR chords per (side, letter) cell. With one readable chord per letter it is 1.09 to 1.11%. Neither table follows a pattern, and twelve random starts of the second land between 1.088% and 1.161%, so no table stands out.</li>
+  </ul>
+</section>
+
+<section id="fallback">
+  <div class="hd"><h2>The fallback is memorization</h2><span class="scale">resolved + fallback · 12,208</span></div>
+  <p>A word that loses its one stroke needs some other outline. The study tried three fallbacks:</p>
+  <ul class="plain">
+    <li><b>Typey Type</b>: the word's Typey Type outlines, restored from <code>typey-superseded.json</code>.</li>
+    <li><b>Theory split</b>: the two strokes stfst's theory already writes in <code>theory.tsv</code>, before <code>contract.xfst</code> joins them. Every word gets one by rule.</li>
+    <li><b>Theory, then Typey Type</b>: the theory's two strokes first, and Typey Type only for the words the theory cannot place.</li>
+  </ul>
+  <p>A Typey Type outline counts as <b>predicted</b> when it is exactly one of the theory's two-stroke outlines. Every other Typey Type outline is unsystematic, so it counts as <b>memorized</b>. That includes one-stroke briefs (actual <span class="o">STAOUL</span>, animal <span class="o">TPHAPBL</span>, prevent <span class="o">PRAOEPBLT</span>) and multi-stroke outlines that follow no rule (favourite <span class="o">TPA*EUFRT/A*U</span>, successfully <span class="o">SUBG/SES/TPHREU</span>).</p>
+  <div class="chart" id="c-mem" role="img" aria-label="Memorized words per rule with the Typey Type fallback and with the theory then Typey Type fallback"></div>
+  <div class="legend" id="l-mem"></div>
+  <p>With Typey Type as the fallback, roughly half the fallback words are memorized under every rule. The count grows with the rule's loss: mark only needs 578 memorized words, the letter rule 295. A Typey Type fallback does not level the rules. It turns their losses into memorization.</p>
+  <div class="tw"><table id="t-fb"></table></div>
+  <h3>What the Typey Type fallback holds, letter rule</h3>
+  <div class="tw"><table id="t-kinds"></table></div>
+  <p>With the theory first, 29 words are still left for Typey Type under the letter rule (0.090% of frequency). Most are near pairs whose theory outline the pair's other word holds: referred/preferred, complain/explain, assure/ensure, expel/excel, revolve/resolve, compute/commute. Five words are lost under every fallback: focussed, desserts, methodologies, moderators and gentiles. These are spelling variants and near-homographs.</p>
+  <p>The theory fallback costs 0.006 strokes per word against Typey Type (1.015 against 1.009). The difference is Typey Type's 113 one-stroke briefs, which the theory writes in two strokes.</p>
+</section>
+
+<section id="novo">
+  <div class="hd"><h2>De novo foot-zone layouts</h2><span class="scale">hard by sound · 11,344</span></div>
+  <p>The foot-zone layouts from the handoff study, rebuilt on stfst's words. Every word is written by sound from <code>lexicon.lexc</code>, and the chords are chosen by search inside zones. A free layout replaces all of stfst's chords. The Ireland rows keep stfst's onset, coda and vowel chords and search only the weak-syllable markers.</p>
+  <p>A layout by sound has one outline per word, so these rows are scored by hard collision with no stack. The drop-in rules are scored the same way here, which is why their numbers are higher than in the resolved tables. Homophones stay apart, which puts a floor of 0.51% under any layout by sound (<i>whether/weather</i>, <i>principal/principle</i>, <i>center/centre</i>).</p>
+  <div class="tw"><table id="t-novo"></table></div>
+  <div class="chart" id="c-novo" role="img" aria-label="Hard-collision loss against strokes per word for every layout"></div>
+  <div class="legend" id="l-novo"></div>
+  <p>The free foot-zone layouts sit almost on the homophone floor. Nearly every word they lose is a homophone or spelling pair. But they replace every chord stfst has, with search-chosen chords, and they give up spelling, which separates many homophones in stfst. Kept to stfst's own chords and keys, the by-sound Ireland layout does worse than stfst's spelling theory: 4.32% against 2.80% for the letter rule on the same two keys.</p>
+  <p>For context, on the handoff's own 78,853 words <span class="scale">hard · 78,853 · handoff</span> its layout A loses 0.10% at 6.73 keys per stroke. This study's solver reproduces that and finds a layout at the same loss with 6.49 keys per stroke. Those numbers are not comparable with the rows above.</p>
+</section>
+
+<section id="plain">
+  <div class="hd"><h2>A plain de novo board</h2><span class="scale">hard by sound · 11,344</span></div>
+  <p>This asks what a key chart built from scratch is worth under plain standard theory: one stroke per syllable, onset on the left bank, vowel on the thumbs, coda on the right bank. The board is stfst's own: 8 left keys (S1 and S2 apart), <code>*</code>, the four thumbs and 10 right keys, with no <code>^ + @ #</code>. The vowels keep Ireland's chords by sound. Each consonant gets its own chord on each bank, with at most 3 keys, and the search also rewards clusters written in steno order.</p>
+  <div class="kbwrap"><div class="kb plainkb" id="kb-plain" aria-label="The searched plain board: the consonant each key writes alone"></div></div>
+  <p class="scalenote">Each key shows the consonant it writes alone, above its position. Steno order on the left is s k p m t n r l. On the right it is r n k l m p s t d v. Other consonants are two-key chords: on the left b <code>KP</code>, d <code>TP</code>, g <code>TW</code>, f <code>SP</code>, h <code>TK</code>; on the right g <code>-PB</code>, b <code>-RB</code>, f <code>-GT</code>, ng <code>-FR</code>. -ed is <code>-D</code> and -s is <code>-Z</code>.</p>
+  <div class="tw"><table id="t-plain"></table></div>
+  <ul class="plain">
+    <li><b>Under plain theory, Ireland's chart loses almost nothing.</b> It loses 0.60%, 0.09 points above the homophone floor. The searched board reaches the floor. With <code>*</code> as the disambiguator both lose 0.00%.</li>
+    <li><b>The board gains effort and order.</b> 3.56 weighted keys per stroke against 4.12 (14% less), and 99% of clusters in steno order against 92% of onsets and 84% of codas. Ordering the clusters costs almost nothing: 3.56 keys per stroke at 99% in order, against 3.48 when order is not rewarded and only 22% of onsets are in order.</li>
+    <li><b>The plain theory buys its low loss with 2.4 strokes per word.</b> The word set has almost no one-syllable words, so a stroke per syllable never meets its real rivals. 0.51% is optimistic for that reason.</li>
+  </ul>
+  <h3>Board or theory</h3>
+  <p>The same three theories, run once on Ireland's chart and once on a searched chart. Only the consonant chords and key order change.</p>
+  <div class="chart" id="c-split" role="img" aria-label="Loss for three theories on Ireland's chart and on a searched chart, with the homophone floor"></div>
+  <div class="legend" id="l-split"></div>
+  <p>The theory dominates. Going from one stroke per word to one per syllable removes 3.72 points on Ireland's board. Changing the board removes at most 1.62 points, and only in the most contracted theory. There Ireland's place chords nest (T ⊂ TP ⊂ TPH, P ⊂ PH), so unions of whole-word clusters erase consonants. Even searched, contracted strokes write only 50 to 60% of their clusters in order, because clusters that span a syllable boundary cannot all be ordered on one bank.</p>
+  <div class="tw"><table id="t-plainw"></table></div>
+</section>
+
+<section id="voice">
+  <div class="hd"><h2>A left-hand voicing key</h2><span class="scale">resolved · 12,208</span></div>
+  <p>The idea is one key that voices a left-bank consonant: d <code>+T</code>, b <code>+P</code>, g <code>+K</code>, v <code>+TP</code>, z <code>+S</code>, j <code>+KH</code>. th/dh and sh/zh keep one chord each. The chords Ireland spends on voiced consonants (<code>TK PW TKPW SR STKPW SKWR</code>) would then be free.</p>
+  <p><b>Verdict: not worth it as stated.</b></p>
+  <ul class="plain">
+    <li><b>No key is free.</b> <code>#</code> is the number bar and phrasing's gate (<code>#T</code> is already "2"). <code>^</code> is the two-syllable marker. <code>@</code> is Emily's modifiers. Only <code>+</code> could be taken, and the letter rule needs it.</li>
+    <li><b>On <code>+</code> it is worth less than the letter rule.</b> The best voicing rule on <code>+</code>, with today's XOR, loses 1.710%. The letter rule alone loses 1.571%.</li>
+    <li><b>On a key of its own</b> (<code>@</code> standing in, with Emily's outlines dropped) it adds to the letter rule: 1.571% to 1.453%, and 43 words gain a one-stroke outline. With the theory fallback, strokes per word go from 1.015 to 1.014.</li>
+    <li><b>Retraining is large.</b> 38,516 of Typey Type's 132,060 entries change (29.2%), and 13.3% of running-text words get a new outline. b and d go from one finger to two.</li>
+    <li><b>Ireland already encodes voicing.</b> In one-syllable words the key is a one-to-one re-encoding, so no dictionary gains or loses a collision. The gain comes only from consonant unions in contracted strokes.</li>
+  </ul>
+  <div class="tw"><table id="t-voice"></table></div>
+  <p><b>The follow-up worth doing is v alone.</b> Changing only v's chord, from <code>SR</code> to <code>+TP</code>, gives two-thirds of the gain: −0.073 points with XOR and −0.071 with the letter rule, out of −0.110 and −0.118 for full voicing. <code>SR</code>'s keys are the commonest consonants before a stressed syllable (re-, s-), so v in a contracted stroke reads as re- or s-. Options are v as <code>TP</code> in contracted strokes only, a v chord that avoids S and R, or the key for v only. 463 one-stroke Typey Type entries sit on <code>SR</code>.</p>
+</section>
+
+<section id="six">
+  <div class="hd"><h2>Six vowel keys</h2><span class="scale">hard · 3,606 · approx.</span></div>
+  <p>The design is in <code>~/.config/plover/VOWELS-DESIGN.md</code> §10, "six thumb keys". Each thumb has a row of three keys and reaches 6 states, so the thumbs have 36 vowel states against 16 for <code>AOEU</code>. In a two-syllable stroke the left thumb spells the first syllable's vowel letter and the right thumb the second's. It was evaluated there and not built.</p>
+  <p>A cheap score: the 3,606 marked words with exactly two vowels, the stfst base stroke's consonants, each syllable's first vowel letter on its thumb, every stroke marked. Hard collision among these words only.</p>
+  <div class="tw"><table id="t-six"></table></div>
+  <p>It does no better than the letter rule. It drops the stressed vowel's long or short digraph, and it needs a new board, so Typey Type and the rest of the stack would not carry over. A fair score would need a new system and theory. There is no layout file for it.</p>
+</section>
+
+<section id="all">
+  <div class="hd"><h2>Every design, scored</h2></div>
+  <p>Every design the study ran, one scale at a time. Pick a scale, then filter by family. Click a column to sort. Numbers on different scales are not comparable, so the table never shows two scales at once.</p>
+  <div class="tabs" role="group" aria-label="Scale" id="all-scales"></div>
+  <p class="scalenote" id="all-note"></p>
+  <div class="tabs chips" role="group" aria-label="Family" id="all-fams"></div>
+  <div class="tw"><table id="t-all"></table></div>
+</section>
+
+<section id="explorer">
+  <div class="hd"><h2>The words, read back</h2><span class="scale">resolved · 12,208</span></div>
+  <p>The first outline each rule writes, for the most frequent marked words, the ones <code>xor-conflicts.md</code> studies, and a few that lose. Words whose first outline is a plain stroke (matter, mother, major) are the same under every rule. <span class="lose">loses</span> marks a word that loses that outline. Under the letter rule and or-plus, a losing word shows the fallback it gets.</p>
+  <div class="tabs" role="group" aria-label="Rule" id="tabs"></div>
+  <div class="words" id="words"></div>
+</section>
+
+<section id="rec">
+  <h2>Recommendation: the letter rule, with the theory's two strokes behind it</h2>
+  <p>A two-syllable stroke is the stressed syllable as stfst writes it, plus the other vowel's first letter on the keys beside S. The marker copies the right thumb, where E is one key and i is both. A word that loses its stroke falls back to the two strokes stfst's theory already writes for it.</p>
+  <div class="rules">
+    <div class="rule"><span class="o">^</span><b>e, or no vowel left</b><small>money <span class="o">^PHOPB</span>, report <span class="o">^PRORT</span>, number <span class="o">^TPHURPBL</span>. Also a syllable a rewrite dropped, and a one-syllable word whose plain stroke is taken.</small></div>
+    <div class="rule"><span class="o">^+</span><b>i or y, like EU</b><small>happy <span class="o">^+HAP</span>, city <span class="o">^+SEUT</span>, very <span class="o">^+SRER</span>, music <span class="o">^+PHAOUBGS</span>.</small></div>
+    <div class="rule"><span class="o">+</span><b>a, o or u</b><small>about <span class="o">+PWOUT</span>, today <span class="o">+TKAEU</span>, also <span class="o">+ALS</span>, support <span class="o">+SPORT</span>.</small></div>
+  </div>
+  <div class="kbwrap"><div class="kb" aria-label="Stenotype Extended keys; the two marker keys beside S are highlighted">
+    <div class="k hot">^</div><div class="k tall">S</div><div class="k">T</div><div class="k">P</div><div class="k">H</div><div class="k tall">*</div><div class="k">-F</div><div class="k">-P</div><div class="k">-L</div><div class="k">-T</div><div class="k">-D</div>
+    <div class="k hot">+</div><div class="k">K</div><div class="k">W</div><div class="k">R</div><div class="k">-R</div><div class="k">-B</div><div class="k">-G</div><div class="k">-S</div><div class="k">-Z</div>
+    <div></div><div></div><div></div><div class="k vow">A</div><div class="k vow">O</div><div></div><div class="k vow">E</div><div class="k vow">U</div><div></div><div></div><div></div>
+  </div></div>
+  <div class="tw"><table>
+    <thead><tr><th>Configuration <span class="scale">resolved · 12,208</span></th><th class="n">Lost</th><th class="n">Strokes per word</th><th class="n">On two strokes</th><th class="n">Memorized</th></tr></thead>
+    <tbody>
+      <tr class="base"><td><code>^</code> XOR today, nothing behind it</td><td class="n">1.824%</td><td class="n">1.000</td><td class="n">0</td><td class="n">0</td></tr>
+      <tr class="base"><td><code>^</code> XOR, Typey Type behind it</td><td class="n">0.037%</td><td class="n">1.011</td><td class="n">–</td><td class="n">368 (1.268%)</td></tr>
+      <tr><td>Letter alone</td><td class="n">1.574%</td><td class="n">1.000</td><td class="n">0</td><td class="n">0</td></tr>
+      <tr><td>Letter, Typey Type behind it</td><td class="n">0.026%</td><td class="n">1.009</td><td class="n">–</td><td class="n">295 (1.092%)</td></tr>
+      <tr class="best"><td>Letter, theory split behind it</td><td class="n">0.093%</td><td class="n">1.015</td><td class="n">554 (1.477%)</td><td class="n">0</td></tr>
+      <tr><td>Letter, theory split, then Typey Type</td><td class="n">0.003%</td><td class="n">1.015</td><td class="n">554 (1.477%)</td><td class="n">29 (0.090%)</td></tr>
+    </tbody>
+  </table></div>
+  <ul class="plain">
+    <li><b>Loss.</b> Alone the letter rule loses 1.574% (589 words, 66 of zipf above 4), against 1.824% for <code>^</code>. With the theory split behind it, 0.093% (34 words, 4 of zipf above 4) at 1.015 strokes per word.</li>
+    <li><b>Memorization.</b> Nothing to memorize beyond the rule and stfst's theory. A Typey Type fallback would add 295 word-by-word outlines. Keeping Typey Type only after the theory adds 29 and brings the loss to 0.003%.</li>
+    <li><b>Readability.</b> 3 marker states to learn instead of an XOR table. The vowel keys are always literal (1.00 stressed readings, against 5.45), and readings fall from 10.4 to 4.2. <code>^</code> alone means "a weak e, or none", one meaning instead of three.</li>
+    <li><b>It stays inside stfst's theory.</b> The operand is still the first letter by spelling, the vowel chord still comes from <code>typey-vowels.toml</code>, and inflection folds and -GS, -ment and the other rewrites are untouched. Only <code>caret.xfst</code>'s XOR becomes a table from operand to marker, and the losers take their <code>theory.tsv</code> outlines.</li>
+  </ul>
+  <h3>Runners-up</h3>
+  <ul class="plain">
+    <li><b>or-plus</b> (the letter rule, with o as <code>+O</code> and u as <code>+U</code>). 1.340% alone, 0.234 points less. With the theory fallback both lose 0.093%, and or-plus needs 1.012 strokes per word against 1.015. The cost is literal vowel keys: 86.5% of strokes instead of 100%, and today becomes <span class="o">+TKAOEU</span>.</li>
+    <li><b>Side and y</b> (<code>^</code> after the stress, <code>+</code> before it, <code>^+</code> a weak i or y after it). The only rule that shows position. 2.397% alone. With the theory fallback, 0.119% at 1.023 strokes per word.</li>
+    <li><b>Mark only</b> (<code>^</code> means two syllables, and nothing else). One rule. 4.061% alone. With the theory fallback, 0.132% at 1.039 strokes per word, 1,246 words on two strokes, nothing memorized. Choose it if one key with one meaning is worth putting 2.4 points more of the frequency on two strokes.</li>
+    <li><b>The searched table</b> on <code>^ +</code> (<code>stfst-side-free.toml</code>). 1.466% alone, the best on two keys without OR, but its 12 cells follow no pattern. It is a ceiling, not a rule.</li>
+  </ul>
+</section>
+
+<section id="open">
+  <h2>Open decisions</h2>
+  <ul class="plain">
+    <li><b>The 29 words the theory cannot place.</b> Keep their Typey Type outlines as memorized entries (0.003% lost), or drop them (0.093% lost). Most are near pairs such as referred/preferred and assure/ensure.</li>
+    <li><b>Word boundaries in the fallback.</b> A two-stroke outline whose strokes are each words (<span class="o">HAP/PEU</span>) is the usual steno word-boundary risk. Typey Type outlines carry the same risk.</li>
+    <li><b>Letter or or-plus.</b> or-plus loses 0.23 points less alone. With the theory fallback the two differ by 0.002 strokes per word, and the letter rule keeps the vowel keys literal.</li>
+    <li><b>Letter or side.</b> The letter rule loses less. The side rule says where the weak syllable is. Both fit on <code>^</code> and <code>+</code>; neither fits with the other.</li>
+    <li><b>The other users of <code>^</code> and <code>+</code>.</b> Two-word pairs (<code>two_word.py</code>, <code>join.xfst</code>) and affix stems also end in <code>caret.xfst</code>. Folds ("a X", "X of", "X is", "X to") use <code>^</code>, and phrasing-tag uses <code>#^</code> and <code>^+</code>. The scores count every outline the stack holds now, but the two-word dictionary was not rerun under the new rule.</li>
+    <li><b>A weak e and no vowel share <code>^</code>.</b> Giving the bare mark (append, mother) a chord of its own costs about 0.1 points (1.678% with <code>^+</code>).</li>
+    <li><b>Spelling variants.</b> <i>focussed/focused</i> and <i>desserts/deserts</i> count as losses under every rule. They could be dropped from scoring.</li>
+    <li><b>A v chord.</b> v's <code>SR</code> reads as re- or s- in contracted strokes. Fixing v alone is the part of the voicing idea worth studying.</li>
+    <li><b>Words of 3+ syllables.</b> 10,115 lexicon words, 3.1% of tokens, sit outside the two-syllable dictionary. They would need a skeleton theory of their own. This study does not score one.</li>
+  </ul>
+</section>
+
+<section id="run">
+  <h2>Running the solver</h2>
+  <p>The solver is the <code>stfst-layout</code> crate. Each candidate is a TOML file in <code>layouts/</code>. Words are encoded by <code>scripts/layout-units.py</code> and cached under <code>build/layout</code>. A run writes <code>build/layout/&lt;design&gt;.json</code> with the score, chords, losers and fallbacks. The two-syllable source needs a compiled stack (<code>build/dicts</code>) and the pipeline TSVs (<code>build/work/two-syllable/pipeline</code>). It does not recompile the stack.</p>
+<pre>cargo build --release -p stfst-layout
+./target/release/stfst-layout layouts/stfst-letter.toml           # resolved against the stack, alone
+./target/release/stfst-layout layouts/stfst-letter-split.toml     # with the theory's two strokes behind it
+./target/release/stfst-layout layouts/stfst-letter-theory.toml    # theory, then Typey Type
+./target/release/stfst-layout layouts/stfst-letter-typey.toml     # Typey Type behind it
+./target/release/stfst-layout layouts/stfst-or-plus.toml          # OR'd: +O and +U
+./target/release/stfst-layout layouts/stfst-or-free-own.toml      # descent over [choices]
+./target/release/stfst-layout layouts/stfst-letter-voice-pretonic.toml
+./target/release/stfst-layout layouts/stfst-letter.toml --hard --eval    # hard collision, no stack
+./target/release/stfst-layout layouts/novo-plain.toml             # plain de novo board, by sound
+FOOT_STENO=&lt;handoff dir&gt; ./target/release/stfst-layout layouts/novo-a.toml   # foot zones, by sound</pre>
+  <ul class="plain">
+    <li><code>--eval</code> scores the start chords only. <code>--warm RESULT.json</code> starts from a result's chords. <code>--moves</code>, <code>--seeds</code>, <code>--method anneal|descent|anneal+descent</code> and <code>-o</code> override <code>[search]</code>.</li>
+    <li><code>encode.form = "position"</code> gives each marked stroke an atom <code>X:a:E</code> or <code>X:b:E</code> (the side of the stress, then the operand), and <code>"operand"</code> gives <code>X:E</code>. <code>[fixed]</code> pins a rule, <code>[zones]</code> lets search choose within keys, and <code>[choices]</code> limits an atom to a list of chords.</li>
+    <li><code>encode.fallback</code> is <code>"typey"</code>, <code>"theory"</code>, or a list of them in order. The run prints how many words land on each.</li>
+    <li><code>encode.reach</code> lists the keys, or the chords, whose outlines are asked of the stack. It must cover every marker chord, or those outlines are scored as free.</li>
+    <li><code>encode.voice</code> and <code>encode.bare</code> drive the voicing variants. <code>objective.order</code> and <code>objective.distinct</code> drive the plain board.</li>
+    <li>The first run of a design encodes its words, which takes 40 s to 2 minutes, most of it stack lookups. Later runs read the cache.</li>
+  </ul>
+  <h3>Speed</h3>
+  <ul class="plain">
+    <li><b>Resolve mode.</b> One full resolve of the 12,208 words takes about 1 ms. Descent scores every chord of each free atom in parallel, so the 12 marker cells of a two-key table finish in under 0.1 s.</li>
+    <li><b>Hard-collision mode.</b> On the handoff's 78,853 words, one annealing move takes about 450 µs on one thread, against 1.5 to 2 ms for the handoff's numba solver (3.5 to 4.5 times faster). Twelve seeds of 300k moves plus descent run in parallel in 13 minutes. The handoff took about 8 minutes for one. On the 11,344 words, a plain-board design of 8 seeds × 300k moves takes about 50 s.</li>
+    <li><b>What makes it fast.</b> A read-only incremental delta, so a rejected move costs no mutation. Fixed atoms folded into a per-unit base. Words that always collide merged into one unit. Warm starts, parallel seeds and parallel descent candidates. A group index that never needs rebuilding. Encodings cached on disk.</li>
+  </ul>
+</section>
+</main>
+
+<script>
+const f2 = (x, d) => x == null ? "–" : x.toFixed(d);
+const pct = (x, d) => x == null ? "–" : x.toFixed(d) + "%";
+const row = (cls, cells) => `<tr class="${cls}">${cells.join("")}</tr>`;
+const td = (x, n) => `<td${n ? ' class="n"' : ""}>${x}</td>`;
+const plain = s => s.replace(/<[^>]+>/g, "");
+const ws = (w, s) => w == null ? "–" : `${w} <small style="display:inline">(${s.toFixed(3)}%)</small>`;
+
+// ---------- Drop-in table and chart (resolved, earlier stack build) ----------
+const DROPIN = [
+  {name:"<code>^</code> XOR (today)", note:"stfst-caret.toml", base:true, loss:1.824, lost:719, common:79, spw:1.000, readings:10.36, stressed:5.45, literal:2.7},
+  {name:"No rule: Typey Type outlines", note:"stfst-typey.toml; 747 words have no outline", base:true, loss:1.475, lost:1, common:0, spw:1.252},
+  {name:"Letter: <code>^</code> e, <code>^+</code> i/y, <code>+</code> a/o/u", note:"stfst-letter.toml", best:true, loss:1.574, lost:589, common:66, spw:1.000, readings:4.17, stressed:1.00, literal:100},
+  {name:"Side and y: <code>^</code> after, <code>+</code> before, <code>^+</code> i/y after", note:"stfst-side-y.toml", loss:2.397, lost:839, common:94, spw:1.000, readings:4.12, stressed:1.00, literal:100},
+  {name:"Side: <code>^</code> after, <code>+</code> before", note:"stfst-side.toml", loss:3.349, lost:1094, common:123, spw:1.000, readings:5.82, stressed:1.00, literal:100},
+  {name:"Mark only: <code>^</code>", note:"stfst-mark.toml", loss:4.061, lost:1293, common:152, spw:1.000, readings:11.63, stressed:1.00, literal:100},
+  {name:"Searched table on <code>^ +</code>", note:"stfst-side-free.toml; 12 cells, no pattern", loss:1.466, lost:570, common:61, spw:1.000, readings:3.94, stressed:1.00, literal:100},
+  {name:"Searched table on <code># ^ +</code>", note:"stfst-wide-free.toml", loss:1.441, lost:570, common:65, spw:1.000, stressed:1.00, literal:100},
+];
+document.getElementById("t-dropin").innerHTML =
+  `<thead><tr><th>Rule</th><th class="n">Lost</th><th class="n">Words lost</th><th class="n">of zipf &gt; 4</th><th class="n">Strokes per word</th><th class="n">Readings</th><th class="n">Stressed readings</th><th class="n">Literal vowel</th></tr></thead><tbody>` +
+  DROPIN.map(r => row(r.base ? "base" : r.best ? "best" : "", [
+    td(`${r.name}<small>${r.note}</small>`), td(pct(r.loss, 3), 1), td(r.lost, 1), td(r.common, 1), td(f2(r.spw, 3), 1),
+    td(f2(r.readings, 2), 1), td(f2(r.stressed, 2), 1), td(r.literal == null ? "–" : r.literal + "%", 1)])).join("") + "</tbody>";
+
+const NS = "http://www.w3.org/2000/svg";
+function el(tag, attrs, parent, text) {
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (text != null) e.textContent = text;
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function tipper(box) {
+  const t = document.createElement("div"); t.className = "tip"; t.hidden = true; box.appendChild(t);
+  return {
+    show(html, ev) { t.innerHTML = html; t.hidden = false; const b = box.getBoundingClientRect();
+      let x = ev.clientX - b.left + 12, y = ev.clientY - b.top + 12; if (x + 260 > b.width) x = Math.max(4, b.width - 264); t.style.left = x + "px"; t.style.top = y + "px"; },
+    hide() { t.hidden = true; } };
+}
+function hover(node, tip, html) {
+  node.addEventListener("mousemove", ev => tip.show(html, ev));
+  node.addEventListener("mouseleave", () => tip.hide());
+}
+const bar = (x0, y, w, h, fill, svg) => el("path", { d: `M${x0},${y} h${Math.max(0, w - 4)} a4,4 0 0 1 4,4 v${h - 8} a4,4 0 0 1 -4,4 h${-Math.max(0, w - 4)} z`, fill }, svg);
+
+(function () {
+  const box = document.getElementById("c-dropin");
+  const rows = DROPIN.filter(r => !r.base);
+  const W = 720, rowH = 30, top = 28, left = 230, right = 70, H = top + rows.length * rowH + 30;
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}` }, box);
+  const max = 4.5, x = v => left + (W - left - right) * v / max;
+  for (let v = 0; v <= max; v += 1) { el("line", { x1: x(v), x2: x(v), y1: top - 6, y2: H - 24, class: "grid" }, svg); el("text", { x: x(v), y: H - 8, "text-anchor": "middle" }, svg, v + "%"); }
+  const tip = tipper(box);
+  rows.forEach((r, i) => {
+    const y = top + i * rowH;
+    el("text", { x: left - 10, y: y + rowH / 2 + 4, "text-anchor": "end", class: "lbl" }, svg, plain(r.name).replace(/:.*/, ""));
+    bar(left, y + 7, x(r.loss) - left, rowH - 14, r.best ? "var(--s1)" : "color-mix(in srgb, var(--s1) 45%, var(--panel))", svg);
+    el("text", { x: x(r.loss) + 6, y: y + rowH / 2 + 4 }, svg, r.loss.toFixed(2) + "%");
+    hover(el("rect", { x: 0, y, width: W, height: rowH, fill: "transparent" }, svg), tip, `<b>${plain(r.name)}</b><br>${r.loss.toFixed(3)}% lost, ${r.lost} words`);
+  });
+  [["^ today 1.82%", 1.824], ["no rule 1.48%", 1.475]].forEach(([t, v], k) => {
+    el("line", { x1: x(v), x2: x(v), y1: top - 6, y2: H - 24, class: "ref" }, svg);
+    el("text", { x: x(v) + (k ? -4 : 4), y: top - 12, "text-anchor": k ? "end" : "start" }, svg, t);
+  });
+})();
+
+// ---------- OR family (resolved, earlier stack build) ----------
+const ORDEF = [
+  ["or-letter", "<code>^A</code>", "<code>^E</code>", "<code>^EU</code>", "<code>^O</code>", "<code>^U</code>", "<code>^</code>"],
+  ["or-letter-star", "<code>^A</code>", "<code>^E</code>", "<code>^*</code>", "<code>^O</code>", "<code>^U</code>", "<code>^</code>"],
+  ["or-letter-nobare", "<code>^A</code>", "<code>^E</code>", "<code>^EU</code>", "<code>^O</code>", "<code>^U</code>", "<code>^*</code>"],
+  ["or-side-letter", "before <code>+</code>, after <code>^</code>, each with the letter's key; i/y <code>EU</code>", "", "", "", "", "<code>+</code> / <code>^</code>"],
+  ["or-side-letter-star", "as or-side-letter, with i/y on <code>*</code>", "", "", "", "", "<code>+</code> / <code>^</code>"],
+  ["or-after", "after the stress: <code>^</code> + the letter's key; before it: <code>+</code> alone", "", "", "", "", "<code>^</code> / <code>+</code>"],
+  ["or-letter-plus", "<code>+A</code>", "<code>^</code>", "<code>^+</code>", "<code>+O</code>", "<code>+U</code>", "<code>^</code>"],
+  ["or-plus", "<code>+</code>", "<code>^</code>", "<code>^+</code>", "<code>+O</code>", "<code>+U</code>", "<code>^</code>"],
+  ["letter (no OR)", "<code>+</code>", "<code>^</code>", "<code>^+</code>", "<code>+</code>", "<code>+</code>", "<code>^</code>"],
+];
+document.getElementById("t-ordef").innerHTML =
+  `<thead><tr><th>Design</th><th>a</th><th>e</th><th>i/y</th><th>o</th><th>u</th><th>none</th></tr></thead><tbody>` +
+  ORDEF.map(r => r[2] === "" ? `<tr><td><b>${r[0]}</b></td><td colspan="5">${r[1]}</td><td>${r[6]}</td></tr>`
+    : `<tr${r[0] === "or-plus" ? ' class="best"' : r[0].startsWith("letter") ? ' class="base"' : ""}><td>${r[0]}</td>${r.slice(1).map(c => `<td>${c}</td>`).join("")}</tr>`).join("") + "</tbody>";
+
+// family: 0 baseline, 1 drop-in, 2 OR fixed, 3 OR searched
+const ORPTS = [
+  {fam:0, n:"^ XOR today", loss:1.824, st:5.45, lit:2.7},
+  {fam:1, n:"Letter", loss:1.574, st:1.00, lit:100},
+  {fam:1, n:"Side and y", loss:2.397, st:1.00, lit:100},
+  {fam:1, n:"Side", loss:3.349, st:1.00, lit:100},
+  {fam:1, n:"Mark only", loss:4.061, st:1.00, lit:100},
+  {fam:1, n:"Searched table", loss:1.466, st:1.00, lit:100},
+  {fam:2, n:"or-letter", loss:2.471, st:3.64, lit:39.1},
+  {fam:2, n:"or-letter-star", loss:1.901, st:3.08, lit:34.5},
+  {fam:2, n:"or-letter-nobare", loss:2.177, st:3.71, lit:36.5},
+  {fam:2, n:"or-side-letter", loss:2.126, st:3.59, lit:39.1},
+  {fam:2, n:"or-side-letter-star", loss:1.634, st:2.98, lit:34.5},
+  {fam:2, n:"or-after", loss:2.299, st:2.64, lit:58.5},
+  {fam:2, n:"or-letter-plus", loss:1.351, st:1.75, lit:72.4},
+  {fam:2, n:"or-plus", loss:1.340, st:1.43, lit:86.5},
+  {fam:3, n:"or-free", loss:1.569, st:2.98, lit:33.8},
+  {fam:3, n:"or-free-side", loss:0.953, st:1.91, lit:38.6},
+  {fam:3, n:"or-free-letter", loss:1.076, st:1.86, lit:39.3},
+  {fam:3, n:"or-free-own", loss:1.105, st:1.65, lit:57.8},
+];
+const COLORS = ["var(--s2)", "var(--s1)", "var(--s3)", "var(--muted)"];
+function mark(f, cx, cy, g) {
+  const ring = { stroke: "var(--panel)", "stroke-width": 2 };
+  if (f === 0) return el("rect", { x: cx - 6, y: cy - 6, width: 12, height: 12, fill: COLORS[0], ...ring }, g);
+  if (f === 1) return el("circle", { cx, cy, r: 6.5, fill: COLORS[1], ...ring }, g);
+  if (f === 2) return el("path", { d: `M${cx},${cy - 8} L${cx + 7.5},${cy + 5.5} L${cx - 7.5},${cy + 5.5} Z`, fill: COLORS[2], ...ring }, g);
+  return el("path", { d: `M${cx},${cy - 7.5} L${cx + 7.5},${cy} L${cx},${cy + 7.5} L${cx - 7.5},${cy} Z`, fill: COLORS[3], ...ring }, g);
+}
+function legendHtml(names, shapes) {
+  return names.map((f, i) => `<span><i style="--c:${COLORS[shapes ? shapes[i] : i]};border-radius:${(shapes ? shapes[i] : i) === 1 ? "50%" : "2px"}"></i>${f}</span>`).join("");
+}
+(function () {
+  const box = document.getElementById("c-or");
+  const W = 720, H = 340, L = 56, R = 24, T = 16, B = 44;
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}` }, box);
+  const x = v => L + (W - L - R) * v / 5.8, y = v => T + (H - T - B) * (1 - v / 4.5);
+  for (let v = 0; v <= 4; v++) { el("line", { x1: L, x2: W - R, y1: y(v), y2: y(v), class: "grid" }, svg); el("text", { x: L - 8, y: y(v) + 4, "text-anchor": "end" }, svg, v + "%"); }
+  for (let v = 1; v <= 5; v++) el("text", { x: x(v), y: H - 22, "text-anchor": "middle" }, svg, String(v));
+  el("text", { x: (L + W - R) / 2, y: H - 4, "text-anchor": "middle" }, svg, "Stressed readings (1 = the vowel keys are always the stressed vowel)");
+  const tip = tipper(box);
+  const lab = { "^ XOR today": [-10, 4, "end"], "Letter": [-10, -1, "end"], "Mark only": [-10, 4, "end"], "Side": [-10, 4, "end"], "Side and y": [-10, 4, "end"], "Searched table": [-10, 13, "end"], "or-plus": [-8, 16, "end"], "or-letter-plus": [0, -12, "middle"], "or-letter": [10, 4, "start"], "or-free-side": [10, 4, "start"], "or-side-letter-star": [10, 14, "start"] };
+  ORPTS.forEach(r => {
+    const g = el("g", {}, svg), cx = x(r.st), cy = y(r.loss);
+    mark(r.fam, cx, cy, g);
+    if (lab[r.n]) el("text", { x: cx + lab[r.n][0], y: cy + lab[r.n][1], "text-anchor": lab[r.n][2], class: "lbl" }, g, r.n);
+    hover(el("circle", { cx, cy, r: 13, fill: "transparent" }, g), tip, `<b>${r.n}</b><br>${r.loss.toFixed(3)}% lost<br>${r.st.toFixed(2)} stressed readings, vowel keys literal in ${r.lit}%`);
+  });
+  document.getElementById("l-or").innerHTML = legendHtml(["Today", "Drop-in rule", "OR'd, fixed table", "OR'd, searched table"]);
+})();
+
+// ---------- Fallback (resolved + fallback, earlier stack build) ----------
+// ty: Typey fallback [lost, wordsLost, spw, onTypey, onTypeyShare, predicted, predShare, memorized, memShare]
+// th: theory only [lost, wordsLost, spw, onTheory, share]; tt: theory then Typey [lost, spw, memorized, memShare]
+const FB = [
+  {n:"<code>^</code> XOR (today)", base:true, ty:[0.037,46,1.011,672,1.783,304,0.515,368,1.268], th:[0.151,62,1.017,656,1.669], tt:[0.013,1.018,49,0.138]},
+  {n:"Letter", best:true, ty:[0.026,33,1.009,555,1.545,260,0.452,295,1.092], th:[0.093,34,1.015,554,1.477], tt:[0.003,1.015,29,0.090]},
+  {n:"Side and y", ty:[0.038,45,1.013,793,2.356,414,0.751,379,1.604], th:[0.119,37,1.023,801,2.274], tt:[0.006,1.023,30,0.113]},
+  {n:"Side", ty:[0.048,57,1.018,1036,3.298,556,1.066,480,2.232], th:[0.120,39,1.032,1054,3.226], tt:[0.005,1.033,33,0.116]},
+  {n:"Mark only", ty:[0.057,69,1.023,1223,3.979,645,1.269,578,2.710], th:[0.132,46,1.039,1246,3.904], tt:[0.008,1.040,37,0.125]},
+  {n:"Searched table on <code>^ +</code>", ty:[0.024,33,1.009,536,1.438,248,0.416,288,1.022], th:[0.118,36,1.013,533,1.344], tt:[0.005,1.014,30,0.114]},
+  {n:"or-plus", ty:[0.021,30,1.008,484,1.319,214,0.362,270,0.957], th:[0.093,34,1.012,480,1.247], tt:[0.003,1.013,29,0.090]},
+];
+document.getElementById("t-fb").innerHTML =
+  `<thead><tr><th rowspan="2">Rule</th><th class="n" colspan="3">Typey Type behind it</th><th class="n" colspan="3">Theory split behind it</th><th class="n" colspan="2">Theory, then Typey Type</th></tr>
+   <tr><th class="n">Lost</th><th class="n">Strokes/word</th><th class="n">Memorized</th><th class="n">Lost</th><th class="n">Strokes/word</th><th class="n">On two strokes</th><th class="n">Lost</th><th class="n">Memorized</th></tr></thead><tbody>` +
+  FB.map(r => row(r.base ? "base" : r.best ? "best" : "", [td(r.n), td(pct(r.ty[0], 3), 1), td(f2(r.ty[2], 3), 1), td(ws(r.ty[7], r.ty[8]), 1),
+    td(pct(r.th[0], 3), 1), td(f2(r.th[2], 3), 1), td(ws(r.th[3], r.th[4]), 1), td(pct(r.tt[0], 3), 1), td(ws(r.tt[2], r.tt[3]), 1)])).join("") +
+  `<tr><td colspan="9"><small>Theory split alone memorizes nothing under every rule. The full rule × fallback grid, OR designs included, is under <a href="#all">Every design</a>.</small></td></tr></tbody>`;
+
+(function () {
+  const box = document.getElementById("c-mem");
+  const W = 720, rowH = 40, top = 24, left = 190, right = 80, H = top + FB.length * rowH + 30;
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}` }, box);
+  const max = 600, x = v => left + (W - left - right) * v / max;
+  for (let v = 0; v <= max; v += 100) { el("line", { x1: x(v), x2: x(v), y1: top - 6, y2: H - 24, class: "grid" }, svg); el("text", { x: x(v), y: H - 8, "text-anchor": "middle" }, svg, String(v)); }
+  el("text", { x: left, y: top - 10 }, svg, "Memorized words");
+  const tip = tipper(box);
+  FB.forEach((r, i) => {
+    const y = top + i * rowH;
+    el("text", { x: left - 10, y: y + rowH / 2 + 4, "text-anchor": "end", class: "lbl" }, svg, plain(r.n));
+    bar(left, y + 6, x(r.ty[7]) - left, 13, "var(--s2)", svg);
+    el("text", { x: x(r.ty[7]) + 6, y: y + 17 }, svg, String(r.ty[7]));
+    bar(left, y + 21, x(r.tt[2]) - left, 13, "var(--s1)", svg);
+    el("text", { x: x(r.tt[2]) + 6, y: y + 32 }, svg, String(r.tt[2]));
+    hover(el("rect", { x: 0, y, width: W, height: rowH, fill: "transparent" }, svg), tip,
+      `<b>${plain(r.n)}</b><br>Typey Type behind it: ${r.ty[7]} memorized (${r.ty[8]}%), ${r.ty[5]} more predicted by the theory<br>Theory, then Typey Type: ${r.tt[2]} memorized<br>Theory split alone: 0`);
+  });
+  document.getElementById("l-mem").innerHTML = `<span><i style="--c:var(--s2);border-radius:2px"></i>Typey Type behind the rule</span><span><i style="--c:var(--s1);border-radius:2px"></i>Theory split, then Typey Type</span><span>Theory split alone: 0 for every rule</span>`;
+})();
+
+const KINDS = [
+  ["One stroke, not the theory's (a brief)", 113, 0.716, "memorized", "actual <span class='o'>STAOUL</span> (theory ABG/KHUL), animal <span class='o'>TPHAPBL</span>, prevent <span class='o'>PRAOEPBLT</span>, ocean <span class='o'>OEGS</span>"],
+  ["The theory's two strokes, exactly", 260, 0.452, "predicted", "magic <span class='o'>PHA/SKWREUBG</span>, regret <span class='o'>RAOE/TKPWRET</span>, invasion <span class='o'>EUPB/SRAEUGS</span>"],
+  ["2 strokes, not the theory's", 100, 0.245, "memorized", "favourite <span class='o'>TPA*EUFRT/A*U</span> (theory TPAEUFR/EUT), initially <span class='o'>TPHEURB/HREU</span>"],
+  ["3 strokes, not the theory's", 65, 0.098, "memorized", "successfully <span class='o'>SUBG/SES/TPHREU</span>, defeated <span class='o'>TKAOE/TPAOET/-D</span>"],
+  ["No theory outline", 14, 0.031, "memorized", "assured <span class='o'>A/SHAOURD</span>, dessert <span class='o'>TKES/SERT</span>"],
+  ["4 strokes, not the theory's", 2, 0.002, "memorized", "exponentially <span class='o'>EBGS/POE/TPHEPBGS/HREU</span>"],
+  ["The theory's, but for <code>*</code>", 1, 0.001, "memorized", "causation <span class='o'>KAU/SA*EUGS</span>"],
+];
+document.getElementById("t-kinds").innerHTML =
+  `<thead><tr><th>Kind <span class="scale">resolved + fallback · 12,208</span></th><th class="n">Words</th><th class="n">Share</th><th>Counts as</th><th>Examples</th></tr></thead><tbody>` +
+  KINDS.map(k => row(k[3] === "predicted" ? "base" : "", [td(k[0]), td(k[1], 1), td(pct(k[2], 3), 1), td(k[3]), td(k[4])])).join("") +
+  `<tr class="best"><td><b>Memorized in all</b></td><td class="n">295</td><td class="n">1.092%</td><td></td><td></td></tr></tbody>`;
+
+// ---------- De novo, foot zones (hard by sound, 11,344) ----------
+const NOVO = [
+  {fam:0, name:"<code>^</code> XOR (today)", short:"^ XOR", note:"stfst-caret.toml", loss:3.15, spw:1.000, keys:8.23, chords:"stfst's"},
+  {fam:0, name:"No rule: Typey Type", short:"Typey Type", note:"stfst-typey.toml; most of its loss is words with no outline", loss:0.98, spw:1.224, keys:5.84, chords:"stfst's"},
+  {fam:1, name:"Letter", short:"Letter", note:"stfst-letter.toml", loss:2.80, spw:1.000, keys:8.55, chords:"stfst's + 3 marker entries", best:true},
+  {fam:1, name:"Side and y", short:"Side and y", note:"stfst-side-y.toml", loss:3.43, spw:1.000, keys:8.50, chords:"stfst's + 3"},
+  {fam:1, name:"Side", short:"Side", note:"stfst-side.toml", loss:4.15, spw:1.000, keys:8.15, chords:"stfst's + 2"},
+  {fam:1, name:"Mark only", short:"Mark", note:"stfst-mark.toml", loss:4.83, spw:1.000, keys:8.15, chords:"stfst's + 1"},
+  {fam:2, name:"Ireland by sound, markers on <code>^ +</code>", short:"Ireland, ^ +", note:"novo-ireland-caret.toml", loss:4.32, spw:1.000, keys:9.77, chords:"Ireland + 16 searched"},
+  {fam:2, name:"Ireland by sound, markers on <code># @ ^ + *</code>", short:"Ireland, 5 keys", note:"novo-ireland.toml", loss:2.47, spw:1.000, keys:9.77, chords:"Ireland + 16 searched"},
+  {fam:2, name:"Ireland by sound, a stroke per full vowel", short:"Ireland split", note:"novo-ireland-split.toml", loss:1.45, spw:1.160, keys:8.41, chords:"Ireland + 16 searched"},
+  {fam:2, name:"Foot zones, one stroke always", short:"Foot, one", note:"novo-one.toml", loss:0.68, spw:1.000, keys:7.61, chords:"246 searched"},
+  {fam:2, name:"Foot zones B: a new stroke after two pretonic syllables", short:"Foot B", note:"novo-b.toml", loss:0.60, spw:1.037, keys:6.94, chords:"244 searched"},
+  {fam:2, name:"Foot zones A: a stroke per full vowel", short:"Foot A", note:"novo-a.toml", loss:0.58, spw:1.158, keys:6.14, chords:"241 searched"},
+];
+const NOVOFAMS = ["Baseline", "Drop-in rule", "De novo layout"];
+document.getElementById("t-novo").innerHTML =
+  `<thead><tr><th>Layout</th><th>Chords</th><th class="n">Hard-collision loss</th><th class="n">Strokes per word</th><th class="n">Weighted keys per stroke</th></tr></thead><tbody>` +
+  NOVO.map(r => row(r.fam === 0 ? "base" : r.best ? "best" : "", [td(`${r.name}<small>${r.note}</small>`), td(r.chords), td(pct(r.loss, 2), 1), td(f2(r.spw, 3), 1), td(f2(r.keys, 2), 1)])).join("") + "</tbody>";
+
+(function () {
+  const box = document.getElementById("c-novo");
+  const W = 720, H = 360, L = 56, R = 24, T = 20, B = 44;
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}` }, box);
+  const x = v => L + (W - L - R) * (v - 0.98) / (1.26 - 0.98), y = v => T + (H - T - B) * (1 - v / 5);
+  for (let v = 0; v <= 5; v++) { el("line", { x1: L, x2: W - R, y1: y(v), y2: y(v), class: "grid" }, svg); el("text", { x: L - 8, y: y(v) + 4, "text-anchor": "end" }, svg, v + "%"); }
+  for (const v of [1.0, 1.05, 1.1, 1.15, 1.2, 1.25]) el("text", { x: x(v), y: H - 22, "text-anchor": "middle" }, svg, v.toFixed(2));
+  el("text", { x: (L + W - R) / 2, y: H - 4, "text-anchor": "middle" }, svg, "Strokes per word");
+  el("line", { x1: L, x2: W - R, y1: y(0.511), y2: y(0.511), class: "ref" }, svg);
+  el("text", { x: x(1.08), y: y(0.511) + 16, "text-anchor": "middle" }, svg, "homophone floor 0.51%");
+  const tip = tipper(box);
+  const shapes = [0, 1, 2];
+  const labelled = new Set(["Letter", "^ XOR", "Typey Type", "Foot A", "Foot B", "Foot, one", "Ireland split", "Ireland, ^ +", "Mark", "Ireland, 5 keys"]);
+  NOVO.forEach(r => {
+    const g = el("g", {}, svg), cx = x(r.spw), cy = y(r.loss);
+    mark(shapes[r.fam], cx, cy, g);
+    if (labelled.has(r.short)) {
+      const right = r.spw < 1.2;
+      el("text", { x: cx + (right ? 11 : -11), y: cy + (r.loss < 1 && r.short !== "Typey Type" ? -10 : 4), "text-anchor": right ? "start" : "end", class: "lbl" }, g, r.short);
+    }
+    hover(el("circle", { cx, cy, r: 14, fill: "transparent" }, g), tip, `<b>${plain(r.name)}</b><br>${NOVOFAMS[r.fam]}<br>${r.loss.toFixed(2)}% lost, ${r.spw.toFixed(3)} strokes per word, ${r.keys.toFixed(2)} keys per stroke`);
+  });
+  document.getElementById("l-novo").innerHTML = legendHtml(NOVOFAMS);
+})();
+
+// ---------- Plain board (hard by sound, 11,344) ----------
+(function () {
+  const L = [["s","S1"],["p","T"],["t","P"],["r","H"]], L2 = [["k","S2"],["m","K"],["n","W"],["l","R"]];
+  const R1 = [["r","F"],["k","P"],["m","L"],["s","T"],["d","D"]], R2 = [["n","R"],["l","B"],["p","G"],["t","S"],["v","Z"]];
+  const k = (c, p, cls) => `<div class="k two ${cls}"><b>${c}</b><small>${p}</small></div>`;
+  document.getElementById("kb-plain").innerHTML =
+    L.map(([c, p]) => k(c, p, "on")).join("") + `<div class="k tall">*</div>` + R1.map(([c, p]) => k(c, "-" + p, "co")).join("") +
+    L2.map(([c, p]) => k(c, p, "on")).join("") + R2.map(([c, p]) => k(c, "-" + p, "co")).join("") +
+    `<div></div><div></div><div class="k vow">A</div><div class="k vow">O</div><div></div><div class="k vow">E</div><div class="k vow">U</div><div></div><div></div><div></div>`;
+})();
+const PLAIN = [
+  {n:"Ireland by sound", f:"novo-plain-ireland.toml", loss:0.60, star:0.00, spw:2.400, keys:4.12, kw:9.9, on:91.7, co:84.2, base:true},
+  {n:"Searched, 8 left keys", f:"novo-plain.toml", loss:0.51, star:0.00, spw:2.400, keys:3.56, kw:8.5, on:99.2, co:99.0, best:true},
+  {n:"Searched, 7 left keys (one S)", f:"novo-plain-7.toml", loss:0.51, star:0.00, spw:2.400, keys:3.58, kw:8.6, on:99.2, co:98.4},
+];
+document.getElementById("t-plain").innerHTML =
+  `<thead><tr><th>Board, plain theory <span class="scale">hard by sound · 11,344</span></th><th class="n">Loss</th><th class="n">With <code>*</code></th><th class="n">Strokes/word</th><th class="n">Keys/stroke</th><th class="n">Keys/word</th><th class="n">Onsets in order</th><th class="n">Codas in order</th></tr></thead><tbody>` +
+  PLAIN.map(r => row(r.base ? "base" : r.best ? "best" : "", [td(`${r.n}<small>${r.f}</small>`), td(pct(r.loss, 2), 1), td(pct(r.star, 2), 1), td(f2(r.spw, 3), 1), td(f2(r.keys, 2), 1), td(f2(r.kw, 1), 1), td(pct(r.on, 1), 1), td(pct(r.co, 1), 1)])).join("") +
+  `<tr><td colspan="8"><small>Homophone floor 0.51%. Ireland's codas reach 94.9% in order counting its cluster chords (<code>*S</code>, <code>*PL</code>, <code>*PBG</code>, <code>-F</code>).</small></td></tr></tbody>`;
+
+const SPLIT = [
+  {t:"One stroke per word, markers on ^ +", ir:4.32, irs:1.63, se:2.70, ses:0.23},
+  {t:"A stroke per full vowel, markers on # @ ^ + *", ir:1.45, irs:0.85, se:1.22, ses:0.26},
+  {t:"A stroke per syllable (plain)", ir:0.60, irs:0.00, se:0.51, ses:0.00},
+];
+(function () {
+  const box = document.getElementById("c-split");
+  const W = 720, rowH = 52, top = 30, left = 24, right = 30, H = top + SPLIT.length * rowH + 30;
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}` }, box);
+  const max = 4.5, x = v => left + (W - left - right) * v / max;
+  for (let v = 0; v <= 4; v++) { el("line", { x1: x(v), x2: x(v), y1: top - 8, y2: H - 24, class: "grid" }, svg); el("text", { x: x(v), y: H - 8, "text-anchor": "middle" }, svg, v + "%"); }
+  el("text", { x: W - right, y: top - 14, "text-anchor": "end" }, svg, "dashed: homophone floor 0.51%");
+  const tip = tipper(box);
+  SPLIT.forEach((r, i) => {
+    const y = top + i * rowH + 30;
+    el("text", { x: left, y: y - 14, class: "lbl" }, svg, r.t);
+    el("line", { x1: x(0.511), x2: x(0.511), y1: y - 10, y2: y + 10, class: "ref" }, svg);
+    el("line", { x1: x(r.se), x2: x(r.ir), y1: y, y2: y, stroke: "var(--line)", "stroke-width": 3 }, svg);
+    el("circle", { cx: x(r.ir), cy: y, r: 6.5, fill: "var(--s2)", stroke: "var(--panel)", "stroke-width": 2 }, svg);
+    el("rect", { x: x(r.se) - 6, y: y - 6, width: 12, height: 12, fill: "var(--s1)", stroke: "var(--panel)", "stroke-width": 2 }, svg);
+    if (r.ir - r.se > 0.5) {
+      el("text", { x: x(r.ir) + 10, y: y + 4 }, svg, r.ir.toFixed(2) + "%");
+      el("text", { x: x(r.se) - 10, y: y + 4, "text-anchor": "end" }, svg, r.se.toFixed(2) + "%");
+    } else el("text", { x: x(r.ir) + 10, y: y + 4 }, svg, `${r.se.toFixed(2)}% / ${r.ir.toFixed(2)}%`);
+    hover(el("rect", { x: 0, y: y - 26, width: W, height: rowH, fill: "transparent" }, svg), tip,
+      `<b>${r.t}</b><br>Ireland's chart: ${r.ir.toFixed(2)}% (with *: ${r.irs.toFixed(2)}%)<br>Searched chart: ${r.se.toFixed(2)}% (with *: ${r.ses.toFixed(2)}%)`);
+  });
+  document.getElementById("l-split").innerHTML = `<span><i style="--c:var(--s2)"></i>Ireland's chart</span><span><i style="--c:var(--s1);border-radius:2px"></i>Searched chart</span>`;
+})();
+
+const PLAINW = [["about","U/PWOUT","U/KPOUS"],["because","PWEU/KAUZ","KPEU/SAULG"],["every","E/SRUR/AOE","E/KHUF/AOE"],["little","HREU/TUL","REU/PUB"],["family","TPA/PHU/HRAOE","SPA/KU/RAOE"],["city","SEU/TAOE","@EU/PAOE"],["problem","PRO/PWHRUPL","THO/KPRUL"],["country","KUPB/TRAOE","SUR/PHAOE"],["children","KHEUL/TKRUPB","KREUB/TPHUR"],["attempts","U/T*EPLTS","U/PELGSZ"],["instinct","EUPB/ST*EUPBGT","EUR/@PEUFRPS"],["strengthen","STREPBG/THUPB","@PHEFR/@WUR"],["splendid","SPHREPB/TKEUD","@TRER/TPEUD"]];
+document.getElementById("t-plainw").innerHTML =
+  `<thead><tr><th>Word</th><th>Ireland by sound</th><th>Searched, 8 keys</th></tr></thead><tbody>` +
+  PLAINW.map(r => `<tr><td>${r[0]}</td><td><span class="o">${r[1]}</span></td><td><span class="o">${r[2]}</span></td></tr>`).join("") +
+  `<tr><td colspan="3"><small>Key letters are physical positions; <code>@</code> is S1. The searched strokes read in order: instinct's <code>-FRPS</code> is -nkt, attempts' <code>-LGSZ</code> is -mpts. Ireland needs <code>*</code> for -mp and -nk.</small></td></tr></tbody>`;
+
+// ---------- Voicing (resolved, later stack build) ----------
+const VOICE = [
+  ["<code>^</code> XOR today", "–", 1.820, 718, 79, 1.018, 656, 49, true],
+  ["XOR, V2 pretonic", "<code>+</code>", 1.710, 677, 74, 1.017, 615, 49],
+  ["XOR, V1 any", "<code>+</code>", 1.753, 692, 76, 1.017, 629, 50],
+  ["XOR, v alone", "<code>+</code>", 1.747, 700, 75, null, null, null],
+  ["Letter", "–", 1.571, 588, 66, 1.015, 554, 29, true],
+  ["Letter, V2 pretonic", "own (<code>@</code>)", 1.453, 547, 62, 1.014, 513, 29, false, true],
+  ["Letter, v alone", "own", 1.500, 572, 63, null, null, null],
+];
+document.getElementById("t-voice").innerHTML =
+  `<thead><tr><th>Variant</th><th>Key</th><th class="n">Lost</th><th class="n">Words lost</th><th class="n">of zipf &gt; 4</th><th class="n">Fallback strokes/word</th><th class="n">On two strokes</th><th class="n">Memorized</th></tr></thead><tbody>` +
+  VOICE.map(r => row(r[8] ? "base" : r[9] ? "best" : "", [td(r[0]), td(r[1]), td(pct(r[2], 3), 1), td(r[3], 1), td(r[4], 1), td(f2(r[5], 3), 1), td(r[6] ?? "–", 1), td(r[7] ?? "–", 1)])).join("") +
+  `<tr><td colspan="8"><small>V2 pretonic: the key voices the stressed onset; consonants before the stressed syllable keep the theory's chords. Later stack build. All 17 variants are under <a href="#all">Every design</a>.</small></td></tr></tbody>`;
+
+document.getElementById("t-six").innerHTML =
+  `<thead><tr><th>Scheme</th><th class="n">Lost</th><th class="n">Words lose</th></tr></thead><tbody>` +
+  [["<code>^</code> XOR today", 1.37, 196, "base"], ["Letter", 1.01, 137, "best"], ["Six thumbs, syllable letters", 1.41, 172, ""], ["Six thumbs, keeping stfst's <code>*</code>", 1.18, 144, ""]]
+    .map(r => row(r[3], [td(r[0]), td(pct(r[1], 2), 1), td(r[2], 1)])).join("") + "</tbody>";
+
+// ---------- Every design ----------
+const FAM = { base:"Baseline", drop:"Drop-in rule", or:"OR'd marker", voice:"Voicing key", foot:"Foot-zone layout", plain:"Plain board", hand:"Handoff layout", six:"Six vowel keys" };
+const P3 = v => pct(v, 3), P2 = v => pct(v, 2), P1 = v => pct(v, 1), N3 = v => f2(v, 3), N2 = v => f2(v, 2), I = v => v == null ? "–" : String(v);
+const WS = v => v == null ? "–" : ws(v[0], v[1]);
+const SCALES = [
+  {id:"res", label:"Resolved, alone", tag:"resolved · 12,208",
+   note:"Lost frequency after resolving against the compiled stack, with no fallback. Words lost counts words that lose to another word plus words another dictionary keeps. Voicing rows use the later stack build, where the baselines are 1.820% and 1.571%.",
+   cols:[["loss","Lost",P3],["lost","Words lost",I],["common","of zipf > 4",I],["spw","Strokes/word",N3],["readings","Readings",N2],["stressed","Stressed readings",N2],["literal","Literal vowel",P1],["one","One reading",P1]]},
+  {id:"fb", label:"Resolved, with fallback", tag:"resolved + fallback · 12,208",
+   note:"The same, with a fallback outline for each word. Memorized counts Typey Type outlines that are not the theory's two strokes. The theory split alone memorizes nothing. Voicing rows were run with theory, then Typey Type only.",
+   cols:[["tyL","Typey: lost",P3],["tyS","Typey: strokes/word",N3],["tyM","Typey: memorized",WS],["thL","Theory: lost",P3],["thS","Theory: strokes/word",N3],["thO","Theory: on two strokes",WS],["ttL","Theory→Typey: lost",P3],["ttS","Theory→Typey: strokes/word",N3],["ttM","Theory→Typey: memorized",WS]]},
+  {id:"hard", label:"Hard, no stack", tag:"hard · 12,208 · no stack",
+   note:"Hard collision of first outlines among the 12,208 words, with no rest of the stack. Resolve without stack is resolve with the held outlines removed. Keys per stroke count every key as 1.",
+   cols:[["hard","Hard collision",P2],["nostack","Resolve without stack",P3],["keys","Keys/stroke",N2]]},
+  {id:"sound", label:"By sound", tag:"hard by sound · 11,344",
+   note:"Hard collision on the 11,344 words written by sound, homophones apart (floor 0.51%). With * gives each loser its outline plus * when free. Keys are weighted keys per stroke on the handoff board.",
+   cols:[["loss","Loss",P2],["star","With *",P2],["spw","Strokes/word",N3],["keys","Keys/stroke",N2],["on","Onsets in order",P1],["co","Codas in order",P1]]},
+  {id:"handoff", label:"Handoff words", tag:"hard · 78,853 · handoff",
+   note:"The handoff's own metric and words, homophones merged. Context only. Keys per stroke count a key held in both strokes once, as the handoff did; the true figure is in brackets where known.",
+   cols:[["loss","Loss",P2],["keys","Keys/stroke",v => v == null ? "–" : v[1] ? `${v[0].toFixed(2)} (${v[1].toFixed(2)})` : v[0].toFixed(2)],["spw","Strokes/word",N3]]},
+  {id:"six", label:"Six vowel keys", tag:"hard · 3,606 · approx.",
+   note:"A cheap model: marked words with exactly two vowels, hard collision among themselves only.",
+   cols:[["loss","Lost",P2],["lose","Words lose",I]]},
+];
+const r_ = (s, f, n, file, v, cls) => ({ s, f, n, file, v, cls: cls || "" });
+const ALL = [
+  // resolved, alone
+  r_("res","base","<code>^</code> XOR (today)","stfst-caret",{loss:1.824,lost:719,common:79,spw:1,readings:10.36,stressed:5.45,literal:2.7,one:0},"base"),
+  r_("res","base","No rule: Typey Type outlines","stfst-typey; 747 words have none",{loss:1.475,lost:1,common:0,spw:1.252},"base"),
+  r_("res","drop","Letter","stfst-letter",{loss:1.574,lost:589,common:66,spw:1,readings:4.17,stressed:1,literal:100,one:32.0},"best"),
+  r_("res","drop","Side and y","stfst-side-y",{loss:2.397,lost:839,common:94,spw:1,readings:4.12,stressed:1,literal:100,one:27.4}),
+  r_("res","drop","Side","stfst-side",{loss:3.349,lost:1094,common:123,spw:1,readings:5.82,stressed:1,literal:100,one:0.4}),
+  r_("res","drop","Mark only","stfst-mark",{loss:4.061,lost:1293,common:152,spw:1,readings:11.63,stressed:1,literal:100,one:0}),
+  r_("res","drop","Searched table on ^ +","stfst-side-free",{loss:1.466,lost:570,common:61,spw:1,readings:3.94,stressed:1,literal:100,one:0.1}),
+  r_("res","drop","Searched table on # ^ +","stfst-wide-free",{loss:1.441,lost:570,common:65,spw:1,stressed:1,literal:100}),
+  r_("res","drop","Operand table searched on ^ + (a demonstration)","stfst-operand",{loss:1.523,lost:568,common:71,spw:1}),
+  r_("res","or","or-letter","stfst-or-letter",{loss:2.471,lost:992,common:102,spw:1,readings:14.57,stressed:3.64,literal:39.1,one:0.3}),
+  r_("res","or","or-letter-star","stfst-or-letter-star",{loss:1.901,lost:717,common:78,spw:1,readings:9.66,stressed:3.08,literal:34.5,one:0}),
+  r_("res","or","or-letter-nobare","stfst-or-letter-nobare",{loss:2.177,lost:882,common:89,spw:1,readings:13.21,stressed:3.71,literal:36.5,one:8.9}),
+  r_("res","or","or-side-letter","stfst-or-side-letter",{loss:2.126,lost:850,common:85,spw:1,readings:7.32,stressed:3.59,literal:39.1,one:0.4}),
+  r_("res","or","or-side-letter-star","stfst-or-side-letter-star",{loss:1.634,lost:620,common:67,spw:1,readings:4.86,stressed:2.98,literal:34.5,one:0.1}),
+  r_("res","or","or-after","stfst-or-after",{loss:2.299,lost:898,common:93,spw:1,readings:6.80,stressed:2.64,literal:58.5,one:0.7}),
+  r_("res","or","or-letter-plus","stfst-or-letter-plus",{loss:1.351,lost:526,common:57,spw:1,readings:4.57,stressed:1.75,literal:72.4,one:37.4}),
+  r_("res","or","or-plus","stfst-or-plus",{loss:1.340,lost:514,common:56,spw:1,readings:4.19,stressed:1.43,literal:86.5,one:39.6},"best"),
+  r_("res","or","or-plus, u as ^U","operand form, --eval",{loss:1.348,readings:3.97,stressed:1.34,literal:86.5,one:45.5}),
+  r_("res","or","Hand table: e as ^E","operand form, --eval",{loss:1.300,readings:4.57,stressed:1.62,literal:77.3,one:39.6}),
+  r_("res","or","Hand table: none ^+, i/y ^*","operand form, --eval",{loss:1.202,readings:4.97,stressed:1.75,literal:57.8,one:31.4}),
+  r_("res","or","Hand table: o ^O, u ^U","operand form, --eval",{loss:1.458,readings:4.33,stressed:1.38,literal:86.5,one:55.3}),
+  r_("res","or","Hand table: a ^A, o ^O, u ^U","operand form, --eval",{loss:1.813}),
+  r_("res","or","Hand table: i/y ^EU","operand form, --eval",{loss:1.789}),
+  r_("res","or","Hand table: i/y +EU","operand form, --eval",{loss:1.794}),
+  r_("res","or","or-free (single ^, searched)","stfst-or-free",{loss:1.569,lost:679,common:64,spw:1,readings:9.41,stressed:2.98,literal:33.8,one:0}),
+  r_("res","or","or-free-side (21 chords per cell, ceiling)","stfst-or-free-side",{loss:0.953,lost:397,common:42,spw:1,readings:3.46,stressed:1.91,literal:38.6,one:3.4}),
+  r_("res","or","or-free-letter (one of 21 chords per letter)","stfst-or-free-letter",{loss:1.076,lost:436,common:48,spw:1,readings:3.91,stressed:1.86,literal:39.3,one:25.3}),
+  r_("res","or","or-free-own (one readable chord per letter)","stfst-or-free-own",{loss:1.105,lost:450,common:50,spw:1,readings:3.99,stressed:1.65,literal:57.8,one:38.3}),
+  r_("res","voice","XOR today (later build)","stfst-caret",{loss:1.820,lost:718,common:79,spw:1},"base"),
+  r_("res","voice","XOR + bare skeletons","stfst-caret-bare",{loss:1.770,lost:674,common:70,spw:1}),
+  r_("res","voice","XOR, V1 any, on +","stfst-voice",{loss:1.753,lost:692,common:76,spw:1}),
+  r_("res","voice","XOR, V1 first, on +","stfst-voice-first",{loss:1.775,lost:701,common:78,spw:1}),
+  r_("res","voice","XOR, V1 onset, on +","stfst-voice-onset",{loss:2.244,lost:722,common:83,spw:1}),
+  r_("res","voice","XOR, V1 any + bare, on +","stfst-voice-bare",{loss:1.760,lost:653,common:73,spw:1}),
+  r_("res","voice","XOR, V2 pretonic, on +","stfst-voice-pretonic",{loss:1.710,lost:677,common:74,spw:1}),
+  r_("res","voice","XOR, V2 pretonic + bare, on +","stfst-voice-pretonic-bare",{loss:1.698,lost:637,common:68,spw:1}),
+  r_("res","voice","XOR, V3 hard (g z j), on +","stfst-voice-hard",{loss:1.806,lost:710,common:79,spw:1}),
+  r_("res","voice","XOR, V3 hard + v, on +","stfst-voice-hardv",{loss:1.733,lost:692,common:75,spw:1}),
+  r_("res","voice","XOR, v alone, on +","stfst-voice-v",{loss:1.747,lost:700,common:75,spw:1}),
+  r_("res","voice","Letter (later build)","stfst-letter",{loss:1.571,lost:588,common:66,spw:1},"base"),
+  r_("res","voice","Letter, V1 any, own key","stfst-letter-voice",{loss:1.463,lost:555,common:61,spw:1}),
+  r_("res","voice","Letter, V2 pretonic, own key","stfst-letter-voice-pretonic",{loss:1.453,lost:547,common:62,spw:1},"best"),
+  r_("res","voice","Letter, V3 hard, own key","stfst-letter-voice-hard",{loss:1.536,lost:573,common:65,spw:1}),
+  r_("res","voice","Letter, V3 hard + v, own key","stfst-letter-voice-hardv",{loss:1.465,lost:557,common:62,spw:1}),
+  r_("res","voice","Letter, v alone, own key","stfst-letter-voice-v",{loss:1.500,lost:572,common:63,spw:1}),
+  // resolved + fallback
+  ...[
+    ["base","<code>^</code> XOR (today)","stfst-caret-*",[0.037,1.011,368,1.268],[0.151,1.017,656,1.669],[0.013,1.018,49,0.138],"base"],
+    ["drop","Letter","stfst-letter-*",[0.026,1.009,295,1.092],[0.093,1.015,554,1.477],[0.003,1.015,29,0.090],"best"],
+    ["drop","Side and y","stfst-side-y-*",[0.038,1.013,379,1.604],[0.119,1.023,801,2.274],[0.006,1.023,30,0.113]],
+    ["drop","Side","stfst-side-*",[0.048,1.018,480,2.232],[0.120,1.032,1054,3.226],[0.005,1.033,33,0.116]],
+    ["drop","Mark only","stfst-mark-*",[0.057,1.023,578,2.710],[0.132,1.039,1246,3.904],[0.008,1.040,37,0.125]],
+    ["drop","Searched table on ^ +","side-free",[0.024,1.009,288,1.022],[0.118,1.013,533,1.344],[0.005,1.014,30,0.114]],
+    ["or","or-letter","or-letter",[0.045,1.016,482,1.617],[0.125,1.023,939,2.346],[0.009,1.024,43,0.116]],
+    ["or","or-letter-star","or-letter-star",[0.030,1.011,370,1.373],[0.121,1.018,668,1.780],[0.008,1.019,40,0.114]],
+    ["or","or-side-letter","or-side-letter",[0.042,1.012,412,1.446],[0.124,1.020,799,2.003],[0.009,1.021,41,0.114]],
+    ["or","or-side-letter-star","or-side-letter-star",[0.028,1.009,315,1.172],[0.121,1.015,572,1.513],[0.008,1.016,39,0.113]],
+    ["or","or-after","or-after",[0.043,1.013,427,1.525],[0.124,1.022,847,2.175],[0.009,1.022,41,0.114]],
+    ["or","or-letter-plus","or-letter-plus",[0.019,1.008,280,0.964],[0.093,1.013,492,1.257],[0.003,1.013,29,0.090]],
+    ["or","or-plus","stfst-or-plus-theory",[0.021,1.008,270,0.957],[0.093,1.012,480,1.247],[0.003,1.013,29,0.090]],
+    ["or","or-free-side (ceiling)","or-free-side",[0.016,1.006,217,0.711],[0.089,1.009,365,0.864],[0.003,1.009,27,0.085]],
+    ["or","or-free-own","or-free-own",[0.022,1.007,240,0.788],[0.095,1.010,414,1.010],[0.006,1.011,29,0.088]],
+    ["voice","XOR + bare skeletons","stfst-caret-bare-theory",null,null,[0.013,1.017,53,0.254]],
+    ["voice","XOR, V1 any","stfst-voice-theory",null,null,[0.013,1.017,50,0.154]],
+    ["voice","XOR, V1 first","stfst-voice-first-theory",null,null,[0.013,1.017,50,0.154]],
+    ["voice","XOR, V1 onset","stfst-voice-onset-theory",null,null,[0.013,1.022,50,0.140]],
+    ["voice","XOR, V1 any + bare","stfst-voice-bare-theory",null,null,[0.013,1.017,54,0.270]],
+    ["voice","XOR, V2 pretonic","stfst-voice-pretonic-theory",null,null,[0.013,1.017,49,0.138]],
+    ["voice","XOR, V3 hard","stfst-voice-hard-theory",null,null,[0.013,1.018,49,0.138]],
+    ["voice","Letter, V1 any, own key","stfst-letter-voice-theory",null,null,[0.003,1.014,29,0.090]],
+    ["voice","Letter, V2 pretonic, own key","stfst-letter-voice-pretonic-theory",null,null,[0.003,1.014,29,0.090]],
+  ].map(([f, n, file, ty, th, tt, cls]) => r_("fb", f, n, file, {
+    tyL: ty && ty[0], tyS: ty && ty[1], tyM: ty && [ty[2], ty[3]],
+    thL: th && th[0], thS: th && th[1], thO: th && [th[2], th[3]],
+    ttL: tt[0], ttS: tt[1], ttM: [tt[2], tt[3]] }, cls)),
+  // hard, no stack
+  ...[
+    ["base","<code>^</code> XOR (today)",3.20,1.636,7.16,"base"],["drop","Letter",2.78,1.352,7.27,"best"],["drop","Side and y",3.43,1.892],["drop","Side",4.13,2.436],["drop","Mark only",4.79,2.962],["drop","Searched table on ^ +",2.81,1.264],
+    ["or","or-letter",3.74,2.119],["or","or-letter-star",2.99,1.544],["or","or-letter-nobare",3.66,1.982],["or","or-side-letter",3.35,1.811],["or","or-side-letter-star",2.69,1.317],["or","or-after",3.63,1.983],
+    ["or","or-letter-plus",2.52,1.195,7.44],["or","or-plus",2.53,1.156,7.35],["or","or-free",2.89,1.383],["or","or-free-side",2.25,0.931],["or","or-free-letter",2.37,1.046],["or","or-free-own",2.43,1.067],
+    ["voice","XOR, V1 any",3.09,null,7.13],["voice","XOR, V1 first",3.14,null,7.12],["voice","XOR, V1 onset",3.20,null,7.09],["voice","XOR, V2 pretonic",3.05,null,7.14],["voice","XOR, V3 hard",3.17,null,7.10],
+    ["voice","XOR + bare",3.38,null,7.11],["voice","XOR, V1 any + bare",3.24,null,7.07],["voice","Letter, V1 any",2.63,null,7.24],["voice","Letter, V2 pretonic",2.63,null,7.24],["voice","Letter, V3 hard",2.73,null,7.21],
+  ].map(([f, n, hard, nostack, keys, cls]) => r_("hard", f, n, "--hard --eval", { hard, nostack, keys }, cls)),
+  // by sound
+  ...NOVO.map(r => r_("sound", r.fam === 0 ? "base" : r.fam === 1 ? "drop" : "foot", r.name, r.note.split(";")[0], { loss:r.loss, spw:r.spw, keys:r.keys, star: r.short === "Ireland split" ? 0.85 : r.short === "Ireland, ^ +" ? 1.63 : null }, r.fam === 0 ? "base" : r.best ? "best" : "")),
+  r_("sound","plain","Plain theory, Ireland's chart","novo-plain-ireland",{loss:0.60,star:0,spw:2.400,keys:4.12,on:91.7,co:84.2},"base"),
+  r_("sound","plain","Plain theory, searched, 8 left keys","novo-plain",{loss:0.51,star:0,spw:2.400,keys:3.56,on:99.2,co:99.0},"best"),
+  r_("sound","plain","Plain theory, searched, 7 left keys","novo-plain-7",{loss:0.51,star:0,spw:2.400,keys:3.58,on:99.2,co:98.4}),
+  r_("sound","plain","Searched chart, a stroke per full vowel, markers on # @ ^ + *","novo-plain-split",{loss:1.22,star:0.26,spw:1.160,keys:8.44,on:75.0,co:53.2}),
+  r_("sound","plain","Searched chart, one stroke, markers on ^ +","novo-plain-caret",{loss:2.70,star:0.23,spw:1.000,keys:9.64,on:61.2,co:52.0}),
+  // handoff
+  r_("handoff","hand","Ireland + weak-syllable marker keys","handoff-ireland",{loss:1.18,keys:[7.91],spw:1.107},"base"),
+  r_("handoff","hand","A: zones + dactyl tails, a stroke per full vowel","handoff-a",{loss:0.10,keys:[6.73,6.84],spw:1.105}),
+  r_("handoff","hand","B: one stroke unless 2+ syllables precede the stress","handoff-b",{loss:0.16,keys:[7.59,7.62],spw:1.020}),
+  r_("handoff","hand","One stroke always","handoff",{loss:0.22,keys:[8.15],spw:1.000}),
+  r_("handoff","hand","A + standard-theory prefixes","handoff",{loss:0.13,keys:[6.74]}),
+  r_("handoff","hand","A + prefixes, pretonic weak vowel dropped","handoff",{loss:0.99,keys:[6.86]}),
+  r_("handoff","hand","A, best of 12 seeds of this solver","handoff-a --seeds 12",{loss:0.10,keys:[6.49,6.60]},"best"),
+  // six
+  r_("six","base","<code>^</code> XOR today","tools/six_thumb.py",{loss:1.37,lose:196},"base"),
+  r_("six","drop","Letter","tools/six_thumb.py",{loss:1.01,lose:137},"best"),
+  r_("six","six","Six thumbs, syllable letters","tools/six_thumb.py",{loss:1.41,lose:172}),
+  r_("six","six","Six thumbs, keeping stfst's *","tools/six_thumb.py",{loss:1.18,lose:144}),
+];
+const ALLSTATE = { scale: "res", fam: "", sort: null, dir: 1 };
+function sortKey(v) { return v == null ? null : Array.isArray(v) ? v[0] : v; }
+function renderAll() {
+  const sc = SCALES.find(s => s.id === ALLSTATE.scale);
+  document.querySelectorAll("#all-scales .tab").forEach(b => b.setAttribute("aria-pressed", b.dataset.s === sc.id));
+  document.getElementById("all-note").innerHTML = `<span class="scale">${sc.tag}</span> ${sc.note}`;
+  const inScale = ALL.filter(r => r.s === sc.id);
+  const fams = [...new Set(inScale.map(r => r.f))];
+  if (ALLSTATE.fam && !fams.includes(ALLSTATE.fam)) ALLSTATE.fam = "";
+  document.getElementById("all-fams").innerHTML = [["", `All <small>${inScale.length}</small>`], ...fams.map(f => [f, `${FAM[f]} <small>${inScale.filter(r => r.f === f).length}</small>`])]
+    .map(([f, t]) => `<button class="tab" type="button" id="fam-${f || "all"}" data-f="${f}" aria-pressed="${ALLSTATE.fam === f}">${t}</button>`).join("");
+  document.querySelectorAll("#all-fams .tab").forEach(b => b.addEventListener("click", () => { ALLSTATE.fam = b.dataset.f; renderAll(); }));
+  let rows = inScale.filter(r => !ALLSTATE.fam || r.f === ALLSTATE.fam);
+  if (ALLSTATE.sort) {
+    const k = ALLSTATE.sort;
+    rows = rows.slice().sort((a, b) => { const x = sortKey(a.v[k]), y = sortKey(b.v[k]); if (x == null) return 1; if (y == null) return -1; return (x - y) * ALLSTATE.dir; });
+  }
+  const head = `<thead><tr><th>Design</th><th>Family</th>${sc.cols.map(([k, l]) => `<th class="n"><button type="button" data-k="${k}"${ALLSTATE.sort === k ? ` data-dir="${ALLSTATE.dir > 0 ? "↑" : "↓"}"` : ""}>${l}</button></th>`).join("")}</tr></thead>`;
+  document.getElementById("t-all").innerHTML = head + "<tbody>" +
+    rows.map(r => row(r.cls, [td(`${r.n}<small>${r.file}</small>`), `<td class="fam">${FAM[r.f]}</td>`, ...sc.cols.map(([k, , fmt]) => td(fmt(r.v[k]), 1))])).join("") + "</tbody>";
+  document.querySelectorAll("#t-all th button").forEach(b => b.addEventListener("click", () => {
+    if (ALLSTATE.sort === b.dataset.k) ALLSTATE.dir = -ALLSTATE.dir; else { ALLSTATE.sort = b.dataset.k; ALLSTATE.dir = 1; }
+    renderAll();
+  }));
+}
+document.getElementById("all-scales").innerHTML = SCALES.map(s => `<button class="tab" type="button" id="scale-${s.id}" data-s="${s.id}" aria-pressed="false">${s.label} <small>${ALL.filter(r => r.s === s.id).length}</small></button>`).join("");
+document.querySelectorAll("#all-scales .tab").forEach(b => b.addEventListener("click", () => { ALLSTATE.scale = b.dataset.s; ALLSTATE.fam = ""; ALLSTATE.sort = null; renderAll(); }));
+renderAll();
+
+// ---------- Word explorer ----------
+const SAMPLES = [{"w":"about","atom":"X:b:A","caret":["^PWAOUT",false],"letter":["+PWOUT",false],"side-y":["+PWOUT",false],"mark":["^PWOUT",false],"side-free":["^PWOUT",false],"or-plus":["+PWOUT",false],"or-letter":["^PWAOUT",false],"or-letter-star":["^PWAOUT",false],"or-side-letter-star":["+PWAOUT",false],"or-free-own":["+PWOUT",false]},{"w":"also","atom":"X:a:O","caret":["^AOLS",false],"letter":["+ALS",false],"side-y":["^ALS",false],"mark":["^ALS",false],"side-free":["+ALS",false],"or-plus":["+AOLS",false],"or-letter":["^AOLS",false],"or-letter-star":["^AOLS",false],"or-side-letter-star":["^AOLS",false],"or-free-own":["+AOLS",false]},{"w":"any","atom":"X:a:EU","caret":["^AEUPB",false],"letter":["^+APB",false],"side-y":["^+APB",false],"mark":["^APB",false],"side-free":["^APB",false],"or-plus":["^+APB",false],"or-letter":["^AEUPB",false],"or-letter-star":["^A*PB",false],"or-side-letter-star":["^A*PB",false],"or-free-own":["^+A*PB",false]},{"w":"because","atom":"X:b:E","caret":["^KPWAEUS",false],"letter":["^KPWAUS",false],"side-y":["+KPWAUS",false],"mark":["^KPWAUS",false],"side-free":["+KPWAUS",false],"or-plus":["^KPWAUS",false],"or-letter":["^KPWAEUS",false],"or-letter-star":["^KPWAEUS",false],"or-side-letter-star":["+KPWAEUS",false],"or-free-own":["^KPWAUS",false]},{"w":"very","atom":"X:a:EU","caret":["^SRUR",false],"letter":["^+SRER",false],"side-y":["^+SRER",false],"mark":["^SRER",false],"side-free":["^SRER",false],"or-plus":["^+SRER",false],"or-letter":["^SREUR",false],"or-letter-star":["^SR*ER",false],"or-side-letter-star":["^SR*ER",false],"or-free-own":["^+SR*ER",false]},{"w":"before","atom":"X:b:E","caret":["^TPWOR",false],"letter":["^TPWOER",false],"side-y":["+TPWOER",false],"mark":["^TPWOER",false],"side-free":["+TPWOER",false],"or-plus":["^TPWOER",false],"or-letter":["^TPWOER",false],"or-letter-star":["^TPWOER",false],"or-side-letter-star":["+TPWOER",false],"or-free-own":["^TPWOER",false]},{"w":"many","atom":"X:a:EU","caret":["^PHAEUPB",false],"letter":["^+PHAPB",false],"side-y":["^+PHAPB",false],"mark":["^PHAPB",false],"side-free":["^PHAPB",false],"or-plus":["^+PHAPB",false],"or-letter":["^PHAEUPB",false],"or-letter-star":["^PHA*PB",false],"or-side-letter-star":["^PHA*PB",false],"or-free-own":["^+PHA*PB",false]},{"w":"every","atom":"X:a:EU","caret":["^UFR",false],"letter":["^+EFR",false],"side-y":["^+EFR",false],"mark":["^EFR",false],"side-free":["^EFR",false],"or-plus":["^+EFR",false],"or-letter":["^EUFR",false],"or-letter-star":["^*EFR",false],"or-side-letter-star":["^*EFR",false],"or-free-own":["^+*EFR",false]},{"w":"between","atom":"X:b:E","caret":["^TPWAOPB",false],"letter":["^TPWAOEPB",false],"side-y":["+TPWAOEPB",false],"mark":["^TPWAOEPB",false],"side-free":["+TPWAOEPB",false],"or-plus":["^TPWAOEPB",false],"or-letter":["^TPWAOEPB",false],"or-letter-star":["^TPWAOEPB",false],"or-side-letter-star":["+TPWAOEPB",false],"or-free-own":["^TPWAOEPB",false]},{"w":"around","atom":"X:b:A","caret":["^RAOUPBD",false],"letter":["+ROUPBD",false],"side-y":["+ROUPBD",false],"mark":["^ROUPBD",false],"side-free":["^ROUPBD",false],"or-plus":["+ROUPBD",false],"or-letter":["^RAOUPBD",false],"or-letter-star":["^RAOUPBD",false],"or-side-letter-star":["+RAOUPBD",false],"or-free-own":["+ROUPBD",false]},{"w":"always","atom":"X:a:A","caret":["^ULS",false],"letter":["+AULS",false],"side-y":["^AULS",false],"mark":["^AULS",false],"side-free":["^+AULS",false],"or-plus":["+AULS",false],"or-letter":["^AULS",false],"or-letter-star":["^AULS",false],"or-side-letter-star":["^AULS",false],"or-free-own":["+AULS",false]},{"w":"another","atom":"X:b:A","caret":["^TPHAOER",false],"letter":["+TPHOER",false],"side-y":["+TPHOER",false],"mark":["^TPHOER",false],"side-free":["^TPHOER",false],"or-plus":["+TPHOER",false],"or-letter":["^TPHAOER",false],"or-letter-star":["^TPHAOER",false],"or-side-letter-star":["+TPHAOER",false],"or-free-own":["+TPHOER",false]},{"w":"again","atom":"X:b:A","caret":["^TKPW*EUPB",false],"letter":["+TKPWA*EUPB",false],"side-y":["+TKPWA*EUPB",false],"mark":["^TKPWA*EUPB",false],"side-free":["^TKPWA*EUPB",false],"or-plus":["+TKPWA*EUPB",false],"or-letter":["^TKPWA*EUPB",false],"or-letter-star":["^TKPWA*EUPB",false],"or-side-letter-star":["+TKPWA*EUPB",false],"or-free-own":["+TKPWA*EUPB",false]},{"w":"money","atom":"X:a:E","caret":["^PHOEPB",false],"letter":["^PHOPB",false],"side-y":["^PHOPB",false],"mark":["^PHOPB",false],"side-free":["+PHOPB",false],"or-plus":["^PHOPB",false],"or-letter":["^PHOEPB",false],"or-letter-star":["^PHOEPB",false],"or-side-letter-star":["^PHOEPB",false],"or-free-own":["^PHOPB",false]},{"w":"number","atom":"X:a:E","caret":["^TPHEURPBL",false],"letter":["^TPHURPBL",false],"side-y":["^TPHURPBL",false],"mark":["^TPHURPBL",false],"side-free":["+TPHURPBL",false],"or-plus":["^TPHURPBL",false],"or-letter":["^TPHEURPBL",false],"or-letter-star":["^TPHEURPBL",false],"or-side-letter-star":["^TPHEURPBL",false],"or-free-own":["^TPHURPBL",false]},{"w":"away","atom":"X:b:A","caret":["^WEU",false],"letter":["+WAEU",false],"side-y":["+WAEU",false],"mark":["^WAEU",false],"side-free":["^WAEU",false],"or-plus":["+WAEU",false],"or-letter":["^WAEU",false],"or-letter-star":["^WAEU",false],"or-side-letter-star":["+WAEU",false],"or-free-own":["+WAEU",false]},{"w":"city","atom":"X:a:EU","caret":["^S-T",false],"letter":["^+SEUT",false],"side-y":["^+SEUT",false],"mark":["^SEUT",false],"side-free":["^SEUT",false],"or-plus":["^+SEUT",false],"or-letter":["^SEUT",false],"or-letter-star":["^S*EUT",false],"or-side-letter-star":["^S*EUT",false],"or-free-own":["^+S*EUT",false]},{"w":"company","atom":"X:b:A","caret":["^TKPHAEU",false],"letter":["+TKPHEU",false],"side-y":["+TKPHEU",false],"mark":["^TKPHEU",false],"side-free":["^TKPHEU",false],"or-plus":["+TKPHEU",false],"or-letter":["^TKPHAEU",false],"or-letter-star":["^TKPHAEU",false],"or-side-letter-star":["+TKPHAEU",false],"or-free-own":["+TKPHEU",false]},{"w":"public","atom":"X:a:EU","caret":["^PEBLG",false],"letter":["^+PUBLG",false],"side-y":["^+PUBLG",false],"mark":["^PUBLG",false],"side-free":["^PUBLG",false],"or-plus":["^+PUBLG",false],"or-letter":["^PEUBLG",false],"or-letter-star":["^P*UBLG",false],"or-side-letter-star":["^P*UBLG",false],"or-free-own":["^+P*UBLG",false]},{"w":"today","atom":"X:b:O","caret":["^TKAOEU",false],"letter":["+TKAEU",false],"side-y":["+TKAEU",false],"mark":["^TKAEU",false],"side-free":["^TKAEU",false],"or-plus":["+TKAOEU",false],"or-letter":["^TKAOEU",false],"or-letter-star":["^TKAOEU",false],"or-side-letter-star":["+TKAOEU",false],"or-free-own":["+TKAOEU",false]},{"w":"enough","atom":"X:b:E","caret":["^TPHEUF",false],"letter":["^TPHUF",false],"side-y":["+TPHUF",false],"mark":["^TPHUF",false],"side-free":["+TPHUF",false],"or-plus":["^TPHUF",false],"or-letter":["^TPHEUF",false],"or-letter-star":["^TPHEUF",false],"or-side-letter-star":["+TPHEUF",false],"or-free-own":["^TPHUF",false]},{"w":"support","atom":"X:b:U","caret":["^SPOURT",false],"letter":["+SPORT",false],"side-y":["+SPORT",false],"mark":["^SPORT",false],"side-free":["^+SPORT",false],"or-plus":["+SPOURT",false],"or-letter":["^SPOURT",false],"or-letter-star":["^SPOURT",false],"or-side-letter-star":["+SPOURT",false],"or-free-own":["^+SPOURT",false]},{"w":"music","atom":"X:a:EU","caret":["^PHAOEBGS",false],"letter":["^+PHAOUBGS",false],"side-y":["^+PHAOUBGS",false],"mark":["^PHAOUBGS",false],"side-free":["^PHAOUBGS",false],"or-plus":["^+PHAOUBGS",false],"or-letter":["^PHAOEUBGS",false],"or-letter-star":["^PHAO*UBGS",false],"or-side-letter-star":["^PHAO*UBGS",false],"or-free-own":["^+PHAO*UBGS",false]},{"w":"believe","atom":"X:b:E","caret":["^PWHRAO*F",false],"letter":["^PWHRAO*EF",false],"side-y":["+PWHRAO*EF",false],"mark":["^PWHRAO*EF",false],"side-free":["+PWHRAO*EF",false],"or-plus":["^PWHRAO*EF",false],"or-letter":["^PWHRAO*EF",false],"or-letter-star":["^PWHRAO*EF",false],"or-side-letter-star":["+PWHRAO*EF",false],"or-free-own":["^PWHRAO*EF",false]},{"w":"party","atom":"X:a:EU","caret":["^PAEURT",false],"letter":["^+PART",false],"side-y":["^+PART",false],"mark":["^PART",false],"side-free":["^PART",false],"or-plus":["^+PART",false],"or-letter":["^PAEURT",false],"or-letter-star":["^PA*RT",false],"or-side-letter-star":["^PA*RT",false],"or-free-own":["^+PA*RT",false]},{"w":"country","atom":"X:a:EU","caret":["^KERPBT",false],"letter":["^+KURPBT",false],"side-y":["^+KURPBT",false],"mark":["^KURPBT",false],"side-free":["^KURPBT",false],"or-plus":["^+KURPBT",false],"or-letter":["^KEURPBT",false],"or-letter-star":["^K*URPBT",false],"or-side-letter-star":["^K*URPBT",false],"or-free-own":["^+K*URPBT",false]},{"w":"story","atom":"X:a:EU","caret":["^STOEUR",false],"letter":["^+STOR",false],"side-y":["^+STOR",false],"mark":["^STOR",false],"side-free":["^STOR",false],"or-plus":["^+STOR",false],"or-letter":["^STOEUR",false],"or-letter-star":["^STO*R",false],"or-side-letter-star":["^STO*R",false],"or-free-own":["^+STO*R",false]},{"w":"report","atom":"X:b:E","caret":["^PROERT",false],"letter":["^PRORT",false],"side-y":["+PRORT",false],"mark":["^PRORT",false],"side-free":["+PRORT",false],"or-plus":["^PRORT",false],"or-letter":["^PROERT",false],"or-letter-star":["^PROERT",false],"or-side-letter-star":["+PROERT",false],"or-free-own":["^PRORT",false]},{"w":"happy","atom":"X:a:EU","caret":["^HAEUP",false],"letter":["^+HAP",false],"side-y":["^+HAP",false],"mark":["^HAP",false],"side-free":["^HAP",false],"or-plus":["^+HAP",false],"or-letter":["^HAEUP",false],"or-letter-star":["^HA*P",false],"or-side-letter-star":["^HA*P",false],"or-free-own":["^+HA*P",false]},{"w":"minor","atom":"X:a:O","caret":["^PHAEURP",false],"letter":["+PHAOEURP",false],"side-y":["^PHAOEURP",false],"mark":["^PHAOEURP",false],"side-free":["+PHAOEURP",false],"or-plus":["+PHAOEURP",false],"or-letter":["^PHAOEURP",false],"or-letter-star":["^PHAOEURP",false],"or-side-letter-star":["^PHAOEURP",false],"or-free-own":["+PHAOEURP",false]},{"w":"appear","atom":"X:b:A","caret":["^PER",false],"letter":["+PAER",false],"side-y":["+PAER",false],"mark":["^PAER",false],"side-free":["^PAER",false],"or-plus":["+PAER",false],"or-letter":["^PAER",false],"or-letter-star":["^PAER",false],"or-side-letter-star":["+PAER",false],"or-free-own":["+PAER",false]},{"w":"prefer","atom":"X:b:E","caret":["^TPR-R",false],"letter":["^TPRER",false],"side-y":["+TPRER",false],"mark":["^TPRER",false],"side-free":["+TPRER",false],"or-plus":["^TPRER",false],"or-letter":["^TPRER",false],"or-letter-star":["^TPRER",false],"or-side-letter-star":["+TPRER",false],"or-free-own":["^TPRER",false]},{"w":"refer","atom":"X:b:E","caret":["^TPR-R",true],"letter":["^TPRER",true],"side-y":["+TPRER",true],"mark":["^TPRER",true],"side-free":["+TPRER",true],"or-plus":["^TPRER",true],"or-letter":["^TPRER",true],"or-letter-star":["^TPRER",true],"or-side-letter-star":["+TPRER",true],"or-free-own":["^TPRER",true],"fb":{"letter":"RE/TPER","typey":"REFR","or-plus":"RE/TPER"}},{"w":"actual","atom":"X:a:U","caret":["^AUFPBLG",false],"letter":["+AFPBLG",true],"side-y":["^AFPBLG",true],"mark":["^AFPBLG",true],"side-free":["^AFPBLG",false],"or-plus":["+AUFPBLG",false],"or-letter":["^AUFPBLG",false],"or-letter-star":["^AUFPBLG",false],"or-side-letter-star":["^AUFPBLG",false],"or-free-own":["^+AUFPBLG",false],"fb":{"letter":"ABG/KHUL","typey":"STAOUL"}},{"w":"animal","atom":"X:a:A","caret":["^-PBL",true],"letter":["+APBL",true],"side-y":["^APBL",true],"mark":["^APBL",true],"side-free":["^+APBL",true],"or-plus":["+APBL",true],"or-letter":["^APBL",true],"or-letter-star":["^APBL",true],"or-side-letter-star":["^APBL",true],"or-free-own":["+APBL",true],"fb":{"letter":"APB/PHAL","typey":"TPHAPBL","or-plus":"APB/PHAL"}},{"w":"prevent","atom":"X:b:E","caret":["^SPR-PBT",true],"letter":["^SPREPBT",true],"side-y":["+SPREPBT",true],"mark":["^SPREPBT",true],"side-free":["+SPREPBT",true],"or-plus":["^SPREPBT",true],"or-letter":["^SPREPBT",true],"or-letter-star":["^SPREPBT",true],"or-side-letter-star":["+SPREPBT",true],"or-free-own":["^SPREPBT",true],"fb":{"letter":"PRE/SREPBT","typey":"PRAOEPBLT","or-plus":"PRE/SREPBT"}},{"w":"magic","atom":"X:a:EU","caret":["^PHAEUPBLG",true],"letter":["^+PHAPBLG",true],"side-y":["^+PHAPBLG",false],"mark":["^PHAPBLG",true],"side-free":["^PHAPBLG",false],"or-plus":["^+PHAPBLG",true],"or-letter":["^PHAEUPBLG",true],"or-letter-star":["^PHA*PBLG",true],"or-side-letter-star":["^PHA*PBLG",true],"or-free-own":["^+PHA*PBLG",true],"fb":{"letter":"PHA/SKWREUBG","typey":"PHA/SKWREUBG","or-plus":"PHA/SKWREUBG"}},{"w":"lady","atom":"X:a:EU","caret":["^HRAD",false],"letter":["^+HRAEUD",false],"side-y":["^+HRAEUD",false],"mark":["^HRAEUD",false],"side-free":["^HRAEUD",false],"or-plus":["^+HRAEUD",false],"or-letter":["^HRAEUD",true],"or-letter-star":["^HRA*EUD",false],"or-side-letter-star":["^HRA*EUD",false],"or-free-own":["^+HRA*EUD",false]},{"w":"apple","atom":"","caret":["APL",true],"letter":["APL",true],"side-y":["APL",true],"mark":["APL",true],"side-free":["APL",false],"or-plus":["APL",true],"or-letter":["APL",true],"or-letter-star":["APL",true],"or-side-letter-star":["APL",true],"or-free-own":["APL",false],"fb":{"letter":"AP/EL","typey":"A*EPL","or-plus":"AP/EL"}},{"w":"ocean","atom":"","caret":["OERPB",false],"letter":["OERPB",true],"side-y":["OERPB",true],"mark":["OERPB",true],"side-free":["OERPB",false],"or-plus":["OERPB",true],"or-letter":["OERPB",true],"or-letter-star":["OERPB",true],"or-side-letter-star":["OERPB",true],"or-free-own":["OERPB",false],"fb":{"letter":"OERB/AEPB","typey":"OEGS","or-plus":"OERB/AEPB"}},{"w":"major","atom":"","caret":["PHAEURPBLG",false],"letter":["PHAEURPBLG",false],"side-y":["PHAEURPBLG",false],"mark":["PHAEURPBLG",false],"side-free":["PHAEURPBLG",false],"or-plus":["PHAEURPBLG",false],"or-letter":["PHAEURPBLG",false],"or-letter-star":["PHAEURPBLG",false],"or-side-letter-star":["PHAEURPBLG",false],"or-free-own":["PHAEURPBLG",false]},{"w":"motor","atom":"","caret":["PHOERT",false],"letter":["PHOERT",false],"side-y":["PHOERT",false],"mark":["PHOERT",false],"side-free":["PHOERT",false],"or-plus":["PHOERT",false],"or-letter":["PHOERT",false],"or-letter-star":["PHOERT",false],"or-side-letter-star":["PHOERT",false],"or-free-own":["PHOERT",false]},{"w":"mother","atom":"","caret":["PHO*RT",false],"letter":["PHO*RT",false],"side-y":["PHO*RT",false],"mark":["PHO*RT",false],"side-free":["PHO*RT",false],"or-plus":["PHO*RT",false],"or-letter":["PHO*RT",false],"or-letter-star":["PHO*RT",false],"or-side-letter-star":["PHO*RT",false],"or-free-own":["PHO*RT",false]},{"w":"matter","atom":"","caret":["PHART",false],"letter":["PHART",false],"side-y":["PHART",false],"mark":["PHART",false],"side-free":["PHART",false],"or-plus":["PHART",false],"or-letter":["PHART",false],"or-letter-star":["PHART",false],"or-side-letter-star":["PHART",false],"or-free-own":["PHART",false]}];
+const SCHEMES = [["letter","Letter","recommended"],["caret","^ XOR","today"],["or-plus","or-plus",""],["side-y","Side and y",""],["mark","Mark only",""],["side-free","Searched table",""],["or-letter","or-letter",""],["or-letter-star","or-letter-star",""],["or-side-letter-star","or-side-letter-star",""],["or-free-own","or-free-own",""]];
+function colour(o) {
+  const m = o.match(/^([\^+]*)([STKPWHR]*)([AO*EU-]*)([FRPBLGTSDZ]*)$/);
+  if (!m) return `<span class="o">${o}</span>`;
+  return `<span class="o"><span class="m">${m[1]}</span><span class="l">${m[2]}</span><span class="v">${m[3]}</span><span class="r">${m[4]}</span></span>`;
+}
+const LETTER = { E: "e", EU: "i or y", A: "a", O: "o", U: "u", "^": "none" };
+function reading(r) {
+  if (!r.atom) return "a plain stroke under every rule";
+  const [, side, op] = r.atom.split(":");
+  return `weak ${LETTER[op]} ${side === "a" ? "after" : "before"} the stress`;
+}
+function fallback(s, r) {
+  if (!r.fb) return "";
+  if (s === "letter" && r.fb.letter) {
+    const ty = r.fb.typey, same = ty === r.fb.letter;
+    return `<span class="fb">falls back to the theory's <span class="o">${r.fb.letter}</span>${ty ? `; Typey Type has <span class="o">${ty}</span> (${same ? "the same" : "memorized"})` : ""}</span>`;
+  }
+  if (s === "or-plus" && r.fb["or-plus"]) return `<span class="fb">falls back to the theory's <span class="o">${r.fb["or-plus"]}</span></span>`;
+  return "";
+}
+function show(s) {
+  document.querySelectorAll("#tabs .tab").forEach(b => b.setAttribute("aria-pressed", b.dataset.s === s));
+  document.getElementById("words").innerHTML = SAMPLES.filter(r => r[s]).map(r => {
+    const [o, loses] = r[s];
+    const today = s === "caret" ? "" : ` · today ${r.caret[0]}`;
+    return `<div class="word"><b>${r.w}${loses ? '<span class="lose">loses</span>' : ""}</b>${colour(o)}<span class="read">${reading(r)}${today}</span>${loses ? fallback(s, r) : ""}</div>`;
+  }).join("");
+}
+document.getElementById("tabs").innerHTML = SCHEMES.map(([s, n, k]) => `<button class="tab" type="button" id="tab-${s}" data-s="${s}" aria-pressed="false">${n}${k ? `<small>${k}</small>` : ""}</button>`).join("");
+document.querySelectorAll("#tabs .tab").forEach(b => b.addEventListener("click", () => show(b.dataset.s)));
+show("letter");
+</script>
