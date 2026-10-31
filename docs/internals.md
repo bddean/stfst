@@ -40,8 +40,9 @@ A suggestion offers the shortest outline, and among outlines of one length the
 one from the dictionary with the higher `suggest`, which is its priority unless
 the recipe says otherwise. Phrasing's is lowest, so a clause outline is offered
 only where nothing as short writes the text. A word no dictionary writes may be
-a fold's, so a suggestion also tries a base word's outline and a suffix key, and
-offers it where the stack reads it back as the word: hypocrites is `^H-RPBGTS`.
+a fold's, so a suggestion also tries a base word's outline and a suffix key or
+`^+`, and offers it where the stack reads it back as the word: hypocrites is
+`^H-RPBGTS`, and funny `^+TPUB`.
 Among outlines of one length, a dictionary's comes before a fold's.
 
 | Dictionary | Source |
@@ -70,12 +71,17 @@ Among outlines of one length, a dictionary's comes before a fold's.
 
 A fold is a stroke nothing matched, read as another stroke with something
 written around it: `KAOEPT` is "keep" then "the", `SKPAD` is "and" then "add",
-`+TPAOU` is "a" then "few" (`TPAOU`).
+`+TPAOU` is "a" then "few" (`TPAOU`), and `^+TAOEUP` is "type" and -y, "typey".
 `dictionaries/folds.xfst` says which keys come off and what they write, as a
 record of ordered alternatives, and the host looks the base up across the whole
 stack and takes the first that translates. So a fold is a rule in a dictionary
 like any other, where Plover's is the system's `SUFFIX_KEYS` and the bare key's
 entry. `stfst_core::fold` is the record and `docs/parity.md` the host's half.
+
+The base is looked up and not folded again. So a generated dictionary drops an
+entry a fold writes as it does only where nothing else wants the stroke and no
+inflection of the word is one: two-syllable has no `^+TPUPB` for funny, but
+keeps `^+ARPL` for army, or `^+ARPLS` would not be armies.
 
 `retro-words` has no reverse automaton, and that is not an omission: it rewrites
 text rather than writing a word, so the question a suggestion window asks has no

@@ -56,7 +56,7 @@ is `S`: `^@TP` is `^STP`.
 | phrasing | A clause grammar on `#`: subject, modality, aspect, negation and verb in one stroke. |
 | two-syllable, two-word | A two-syllable word, or two short words, in one stroke: the stressed syllable, marked with the other vowel's letter (happy is `^+HAP`, at all is `+TAUL`). See [the mark](#the-two-syllable-mark). |
 | affixes | A stem's stroke, then one stroke for its prefix and suffix. |
-| folds | A stroke nothing matched, read as a word plus "the", "of", "and" or "so" (`KAOEPT` is "keep the"). |
+| folds | A stroke nothing matched, read as a word plus "the", "of", "and" or "so" (`KAOEPT` is "keep the"), or with `^+` as the word and -y (`^+TAOEUP` is "typey"). |
 | frames, ahead | Write a frame now and fill it later: `STPR*T` writes "from to", and "here" makes it "from here to". |
 | retro-words | Recase, join and split the last words written. |
 
@@ -78,6 +78,12 @@ stays; only `+O` and `+U` can add a vowel key to it.
 | o | `+O` | today `+TKAOEU`, also `+AOLS` |
 | u | `+U` | focus `+TPOEUBGS` |
 | none: one syllable, its plain stroke taken | `^` | matter `^PHART`, since mart is `PHART` |
+
+The i or y mark is also a fold: where nothing holds a stroke, `^+` on it is
+the word the rest writes and -y, joined as `{^y}` joins, so `^+TAOEUP` is
+"typey" and `^+TPUPB` "funny" with no entry for either. It reads the last
+stroke of an outline too (`KHOBG/^+HRAT` is "chocolaty"). The other marks are
+not: `+` as a- or `^` as -er would write about 1% of their words.
 
 A word a rewrite gives two outlines has both (attempt is `+TEPLT`, and
 `^TEPLT` with its a dropped). Two short words written together take the same
