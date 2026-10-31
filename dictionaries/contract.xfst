@@ -5,10 +5,11 @@
 ! the longer the resolver takes only where the plain stroke is taken: mare is
 ! mayor's `PHAEUR`, so it is `^PHAEUR`.
 !
-! Two strokes are the stressed one's, marked `^` and the other's operand,
-! which caret.xfst XORs into the chord. The other stroke's consonants join the
-! side of the stroke they are on, and those between the two cross to the
-! stressed stroke's side, read by the key's sound (-PB is TPH, TK is -D).
+! Two strokes are the stressed one's, marked `^` and the other's operand, its
+! vowel's first letter, which caret.xfst writes as a mark. The other stroke's
+! consonants join the side of the stroke they are on, and those between the
+! two cross to the stressed stroke's side, read by the key's sound (-PB is
+! TPH, TK is -D).
 !
 !     report     1 R0E:E/P1:Ort    ->  1 ^E PROrt
 !     happy      1 H1:Ap/0EU:EU    ->  1 ^EU HAp

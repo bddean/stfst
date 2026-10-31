@@ -788,12 +788,12 @@ def supersede(out):
     """(out, superseded): the outlines of a word a rule writes, by entry or by -s
     or -ed fold, that are as long as each of the rule's outlines of as many
     strokes, move to a dictionary of their own, so a stack that has the rule suggests only its
-    outlines. A shorter one, in strokes or in keys with `^` aside, is a brief
-    and stays: about keeps PW beside `^PWAOUT`, and after AFT beside `^AFR`
-    and `^AFRT`. So does every outline of one stroke: always keeps AULS beside
-    `^ULS`. A stack without the rules loads both."""
+    outlines. A shorter one, in strokes or in keys with the mark aside, is a
+    brief and stays: about keeps PW beside `+PWOUT`, and after AFT beside
+    `^AFR` and `^AFRT`. So does every outline of one stroke: always keeps AULS
+    beside `+AULS`. A stack without the rules loads both."""
     rules = ruled()
-    length = lambda o, fold=0: (o.count("/") + 1, keys(o.replace("^", "")) + fold)
+    length = lambda o, fold=0: (o.count("/") + 1, keys(re.sub(r"[\^+]", "", o)) + fold)
     # The fewest strokes, and the most keys among the outlines of that many.
     bound = {}
     for o, w in rules.items():

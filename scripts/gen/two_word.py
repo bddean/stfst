@@ -1,11 +1,12 @@
 """Write `dictionaries/two-word.json`: two words of one syllable, often written
 together, as one stroke.
 
-It is two-syllable.json's rule across a word boundary. `^` says the stroke holds
-two syllables; the stressed word's vowel is the stroke's, its chord XOR the
-other word's vowel letter; and the other word's consonants join the side of the
-stroke they are on. So go home is `^TKPWHEM` (home's `OE` XOR go's o), at all
-`^TUL` (all's `AU` XOR a), and make it `^PHABGT` (make's `AEU` XOR i).
+It is two-syllable.json's rule across a word boundary. The stressed word's
+vowel is the stroke's chord; the other word's vowel letter is the mark (`+`
+a, `^` e, `^+` i, `+O` o, `+U` u), its keys OR'd in; and the other word's
+consonants join the side of the stroke they are on. So go home is
+`+TKPWHOEM` (home's `OE` and go's o), at all `+TAUL` (all's `AU` and a), and
+make it `^+PHAEUBGT` (make's `AEU` and i).
 
 `dictionaries/contract-pair.xfst` is that rule, between the lexicon's entries of
 the two words, and `theory.xfst` and `caret.xfst` write the stroke as they do for
@@ -20,12 +21,12 @@ one word. What this script decides is the rest, which is not a rule:
 - Which pair keeps a stroke. Two pairs on one go to the more frequent. A stroke
   any other dictionary writes is left to it. A stroke a fold reads as the pair
   needs no entry: `folds.xfst` reads "a" before a word and "of", "is" and "to"
-  after one, so `^TPOU` is a few with no entry. A stroke a fold reads as
-  something else goes to the pair if the pair is the more frequent text: the
-  most is `^TPHOEFT`, which the -T fold reads as "naive the".
+  after one, so `+TPAOU` is a few with no entry. A stroke a fold reads as
+  something else goes to the pair if the pair is the more frequent text:
+  `+KOPLT` is come to, which the -T fold reads as "comma the".
 - A pair's stroke with a suffix key, which a fold reads as the last word
   inflected, is an entry where the stressed word inflected, on either side, is
-  the more common text: `^TKPW-G` is "going to".
+  the more common text: `+WAOPBGT` is "wanting to".
 
 Usage (needs cmudict and wordfreq, which the phrasing venv has, the corpora under
 ~/.config/plover/phrasing/corpora, a compiled stack, and HFST: run it in the dev
@@ -47,7 +48,7 @@ from . import lexicon as lex
 from . import vowels as g
 from .resolve import candidates, compile_pipeline, resolve, unwritten_briefs
 from .stack import Stack, retro_words
-from .two_syllable import coda, with_coda, write_json
+from .two_syllable import coda, marked, with_coda, write_json
 
 OUTPUT = os.path.join(DICTS, "two-word.json")
 PAIRS = os.path.join(ROOT, "dictionaries", "pairs.lexc")
@@ -150,8 +151,8 @@ def inflections(word, kind):
 def inflected(out, stack):
     """{stroke: text} for a pair's stroke with a suffix key, where the stressed
     word inflected reads more often on the other side of its partner than the
-    fold's reading, which inflects the last word: `^TKPW-G` is "going to", not
-    "to going". Only a stroke no entry holds."""
+    fold's reading, which inflects the last word: `+WAOPBGT` is "wanting to",
+    not "want toing". Only a stroke no entry holds."""
     wanted, readings = {}, {}
     folds = stack.with_layer(NAME, out).folds(
         with_coda(s, coda(s) + k) for s in out for k in INFLECTIONS if k not in coda(s))
@@ -236,7 +237,7 @@ def report(found, out, r):
     print(wrap([f"{w.replace(' ', '_')}={s}({n}:{t})" for w, s, (n, t) in left[:80]]))
     with open(os.path.join(DICTS, "user.json")) as f:
         user = json.load(f)
-    by_pair = {p: s for s, p in out.items() if s.startswith("^")}
+    by_pair = {p: s for s, p in out.items() if marked(s)[0]}
     theirs = sorted((p, s) for s, p in user.items() if p in found)
     print(f"{len(theirs)} user.json entries for pairs in scope:",
           " ".join(f"{p.replace(' ', '_')}={s}/{by_pair.get(p, next(iter(rule.get(p, ['-']))))}" for p, s in theirs))

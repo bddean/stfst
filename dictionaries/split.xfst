@@ -3,8 +3,8 @@
 ! rewrites.
 !
 ! Two syllables are split around the stressed vowel: every consonant between
-! the two is its. The other syllable's head has its operand, the keys `^` XORs
-! into the chord (`Operand`).
+! the two is its. The other syllable's head has its operand, the keys of its
+! first letter, which caret.xfst writes as the stroke's mark (`Operand`).
 !
 !     report   1 R=r 0:e=E P=p 1:o=O R.T=rt  ->  1 R=r 0E:E =/P=p 1:O R.T=rt
 !     happy    1 HH=h 1:a=A P=pp 0:y=EU =    ->  1 HH=h 1:A P=pp/= 0EU:EU =

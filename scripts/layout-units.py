@@ -401,6 +401,8 @@ class Ireland:
 # ---- source "stfst-two-syllable": the real pipeline and stack
 
 TAPE_ORDER = "🦐#@^+STKPWHRAO*EUfrpblgtsdz"
+# caret.xfst's mark for each operand, the other vowel's first letter.
+MARKS = {"A": "+", "E": "^", "EU": "^+", "O": "+O", "U": "+U", "": "^"}
 
 
 def caret(op, base):
@@ -409,7 +411,7 @@ def caret(op, base):
     prefix, mark, vowels = op.strip("-").partition("^")
     keys = set(base) | set(prefix)
     if mark:
-        keys = keys ^ set(vowels) | {"^"}
+        keys |= set(MARKS[vowels])
     return "".join(sorted(keys, key=TAPE_ORDER.index))
 
 
@@ -636,8 +638,8 @@ def two_syllable_units(words, enc, out):
     """What gen/two_syllable.py hands `resolve`, captured as it runs.
 
     Each alternative is a list of strokes of atoms. `encode.form` picks them:
-    `caret` is today's outline as one literal atom (`=^PROERT`); `operand` is
-    the stroke before caret.xfst (`=PROERT`) plus the XOR operand as an atom
+    `caret` is the pipeline's outline as one literal atom (`=^PRORT`); `operand`
+    is the stroke before caret.xfst (`=PRORT`) plus the operand as an atom
     (`X:E`, `X:^` for the bare mark), so a design can give the operand keys of
     its own; `position` is `operand` with the side of the stress the other
     vowel is on (`X:a:E` after it, `X:b:E` before, `X:1:^` for a word of one
@@ -757,7 +759,7 @@ def two_syllable_units(words, enc, out):
                 for ch in chords:
                     tape = "".join(sorted(set(b) | set(ch), key=TAPE_ORDER.index))
                     reachable.add(_SYSTEM.outline(tape))
-            displace = form != "typey" and "^" + o not in outlines[w] and t.syllables(stem(w)) > 1
+            displace = form != "typey" and (t.marked(o)[0] or "^" + o not in outlines[w]) and t.syllables(stem(w)) > 1
             alts.append({"cost": c, "strokes": strokes, "displace": displace})
             if (w, o) in tagged:
                 alts[-1]["fallback"] = tagged[w, o]

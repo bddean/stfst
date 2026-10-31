@@ -57,7 +57,7 @@ define Units    [ ConsSeg [ [ Gap VowelSeg Gap ConsSeg ] .o. Heard .o. SpellMid 
 ! A vowel, the letters before it, and its keys a key at a time: the key X where
 ! the vowel's chord has X. Then its stress before its letters, which the table
 ! read and the written-out form keeps. An unstressed vowel the table has no
-! rule for is its first letter's keys, as ^ XORs it (a in nation's io).
+! rule for is its first letter's keys, as the operand is (a in nation's io).
 define Letters(L, K) [ L Letter* ( {_e} ) .x. K ] ;
 define ByLetter [ Letter* Gap ? Eq [ Letters(a, A) | Letters(e, E) | Letters(i, E U) | Letters(o, O)
                                    | Letters(u, U) | Letters(y, E U) ] ] ;

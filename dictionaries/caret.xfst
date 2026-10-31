@@ -1,31 +1,35 @@
 ! The marks contract.xfst puts before a syllable, applied to its stroke.
 !
-! `^` and keys: the stroke takes `^`, and its chord XOR the keys, a key both
-! have not pressed. A stroke left with no key, or only the star, is not
-! written.
+! `^` and the other vowel's first letter: the stroke takes the letter's mark,
+! whose keys are OR'd into it, so the stressed chord's keys all stay.
 !
-!     ^E PROrt   ->  ^PROErt     report
-!     ^EU HAp    ->  ^HAEUp      happy
-!     ^ PHO*rt   ->  ^PHO*rt     mother
+!     letter          a    e or none    i or y    o     u
+!     mark            +    ^            ^+        +O    +U
+!
+!     ^E PROrt   ->  ^PROrt     report
+!     ^EU HAp    ->  ^+HAp      happy
+!     ^O TKAEU   ->  +TKAOEU    today
+!     ^ PHO*rt   ->  ^PHO*rt    mother
 !
 ! A cluster: the prefix's keys, on the left bank beside the stroke's own, with
-! `^` after it as above when the rest had two vowels.
+! the mark before it as above when the rest had two vowels.
 !
 !     STK PHRAEU  ->  STKPHRAEU  display
 !
 ! `-`: nothing.
 
-define Flip(X)  [ X:0 | 0:X ] ;
-define FlipA    [ LeftKey* Flip(A) (O) ("*") (E) (U) RightKey* ] ;
-define FlipO    [ LeftKey* (A) Flip(O) ("*") (E) (U) RightKey* ] ;
-define FlipE    [ LeftKey* (A) (O) ("*") Flip(E) (U) RightKey* ] ;
-define FlipU    [ LeftKey* (A) (O) ("*") (E) Flip(U) RightKey* ] ;
+define Keys     [ LeftKey* VowelKeys RightKey* ] ;
+define OrO      [ LeftKey* (A) [ O | Ins(O) ] ("*") (E) (U) RightKey* ] ;
+define OrU      [ LeftKey* (A) (O) ("*") (E) [ U | Ins(U) ] RightKey* ] ;
 
-! The mark's first key off it, and flipped in the stroke.
-define Xor(K, F) [ [ "^" Del(K) [ ? - Gap ]* Gap F ] | [ "^" [ [ ? - Gap ]* - [ K ?* ] ] Gap ?* ] ] ;
-define Caret    [ [ Xor(A, FlipA) .o. Xor(O, FlipO) .o. Xor(E, FlipE) .o. Xor(U, FlipU) ]
-                  .o. [ "^" Del(Gap) [ ?+ - "*" ] ] ] ;
+define Mark(L, M, Keyed) [ Del("^" L Gap) Ins(M) Keyed ] ;
+define Caret    [ Mark(A, "+", Keys) | Mark(E, "^", Keys) | Mark({EU}, [ "^" "+" ], Keys)
+                | Mark(O, "+", OrO) | Mark(U, "+", OrU) | Mark(0, "^", Keys) ] ;
+
+! The mark to the front, before the prefix's keys.
+define Front(M) [ Ins(M) LeftKey+ Del(M) ?* ] ;
 define Cluster  [ [ LeftKey+ Del(Gap) LeftKey* ] .o. LeftBank ] VowelKeys RightKey* ;
-define Clustered [ [ LeftKey+ Caret ] .o. [ Ins("^") [ [ LeftKey+ Del("^") LeftKey* ] .o. LeftBank ] VowelKeys RightKey* ] ] ;
+define Clustered [ [ LeftKey+ Caret ] .o. [ Front("^") | Front("+") | Front([ "^" "+" ]) ]
+                   .o. [ ("^") ("+") [ LeftKey+ .o. LeftBank ] VowelKeys RightKey* ] ] ;
 
 define Stage    [ Rank Gap [ Caret | Cluster | Clustered | Del("-" Gap) ?* ] ] ;

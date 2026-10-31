@@ -50,18 +50,18 @@ PWABGS
 !buffer
 SEFRB
 SKPAD
-! ---- a word beside a `^` stroke: "a" and "so" before it, "of", "is" and "to"
+! ---- a word beside a marked stroke: "a" and "so" before it, "of", "is" and "to"
 ! after it
 !buffer
-^TPOU
++TPAOU
 !buffer
-^SPHAOEB
++SPHAOEB
 !buffer
-^SHROELTS
++SHROELTS
 !buffer
-^WOUFPB
++WOUFPB
 !buffer
-^THEUZ
-! ---- -T as "the" comes first, but ^PWAOBG writes nothing, so it is "back to"
+^+TH-Z
+! ---- -T as "the" comes first, but +PWAOBG writes nothing, so it is "back to"
 !buffer
-^PWAOBGT
++PWAOBGT

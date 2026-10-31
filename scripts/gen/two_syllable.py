@@ -13,12 +13,13 @@ left is one stroke:
 
 - One syllable is a plain stroke (river), or the same keys with `^` where the
   plain stroke is taken: matter is `^PHART`, since mart is `PHART`.
-- Two are one syllable around the stressed vowel, marked `^`: the left bank is
-  every consonant before it, the right bank every consonant after it, and the
-  chord is its chord XOR the other vowel's first letter (a `A`, e `E`, i and y
-  `EU`, o `O`, u `U`), a key both have not pressed. An r-coloured other vowel
-  is its R and adds no key. So report is `^PROERT`, happy `^HAEUP` and city
-  `^S-T`.
+- Two are one syllable around the stressed vowel, marked by the other
+  vowel's first letter: the left bank is every consonant before it, the right
+  bank every consonant after it, and the chord is its own. The mark is `+` for
+  a, `^` for e, `^+` for i and y, `+O` for o and `+U` for u, its keys OR'd into
+  the stroke. An r-coloured other vowel is its R, and it and a syllable a
+  rewrite dropped are `^`. So report is `^PRORT`, happy `^+HAP`, city
+  `^+SEUT`, today `+TKAOEU` and about `+PWOUT`.
 - More have no stroke.
 
 A rewrite that is a second choice leaves the word's outline without it as the
@@ -65,14 +66,20 @@ NAME = "two-syllable"
 SUFFIX_KEYS = {"S": "s", "D": "d"}
 
 
+def marked(stroke):
+    """(mark, the rest) of a stroke: the `^` and `+` before its left bank."""
+    rest = stroke.lstrip("^+")
+    return stroke[:len(stroke) - len(rest)], rest
+
+
 def with_coda(stroke, coda):
-    mark = stroke[:1] if stroke.startswith("^") else ""
-    s = g.Stroke.parse(stroke[len(mark):])
+    mark, rest = marked(stroke)
+    s = g.Stroke.parse(rest)
     return mark + str(g.Stroke(s.onset, s.vowel, s.star, "".join(k for k in "FRPBLGTSDZ" if k in coda)))
 
 
 def coda(outline):
-    return g.Stroke.parse(outline.lstrip("^")).coda
+    return g.Stroke.parse(marked(outline)[1]).coda
 
 
 def compose(strokes, words):
@@ -138,10 +145,11 @@ def build(typey, rule, vocabulary):
     typey_way = typey_gives_way(typey.reserved)
     # A plain stroke takes nothing: where it is taken, the word has the same
     # keys with `^`.
+    plain = lambda s, w: not marked(s)[0] and "^" + s in strokes[w]
     # A pair's first outline in two-word outranks a word's second.
     pairs = {next(iter(cs)) for cs in candidates("two-word").values()}
     out, lost, left = resolve(strokes, lambda w: (-g.zipf(stem(w)), -g.zipf(w), w), others,
-                              lambda s, w, other: "^" + s not in strokes[w] and syllables(stem(w)) > 1
+                              lambda s, w, other: not plain(s, w) and syllables(stem(w)) > 1
                               and typey_way(s, w, other), firsts=pairs)
     written = {}
     for o, w in out.items():
@@ -195,13 +203,13 @@ def report(out, r):
         user = json.load(f)
     same = sorted(s for s, t in user.items() if out.get(s) == t)
     print(f"{len(same)} user.json entries the rule reproduces:", " ".join(f"{s}={user[s]}" for s in same))
-    theirs = {t: s for s, t in user.items() if s.startswith("^")}
+    theirs = {t: s for s, t in user.items() if marked(s)[0]}
     every = collections.defaultdict(set)
     for o, w in out.items():
         every[w].add(o)
     ours = lambda w: r["written"].get(w, next(iter(strokes[w])))
     other = sorted((w, theirs[w], ours(w)) for w in strokes if w in theirs and theirs[w] not in every[w])
-    print(f"{len(other)} user.json ^ entries the rule writes differently:",
+    print(f"{len(other)} user.json marked entries the rule writes differently:",
           " ".join(f"{w}={a}/{b}" for w, a, b in other))
 
 
