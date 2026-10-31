@@ -5,6 +5,8 @@ import copy
 import importlib.util
 import json
 import os
+import re
+import subprocess
 import tomllib
 
 import plover_tape
@@ -74,7 +76,8 @@ class Stack:
     def folds(self, outlines):
         """{outline: (translation, base)} for each of `outlines` a fold would
         write if no entry held it: the first alternative whose base the stack
-        writes, and what the stack writes for that base."""
+        writes, and what the stack writes for that base. A suffix after it is
+        joined as the host joins it: TAOEUP and `{^y}` is "typey"."""
         out = {}
         for o in sorted(set(outlines)):
             tape = _SYSTEM.tape(o)
@@ -84,9 +87,28 @@ class Stack:
                     continue
                 base = _SYSTEM.outline("".join(sorted(base, key=_SYSTEM.order.index)))
                 if (found := self.ask([base]).get(base)):
-                    out[o] = (" ".join(x for x in (alt.before, found[0][1], alt.after) if x), found[0][1])
+                    out[o] = (alt.before, found[0][1], alt.after)
                     break
-        return out
+        suffix = lambda after: m[1] if (m := re.fullmatch(r"\{\^([a-z]+)\}", after)) else None
+        joins = joined({(word, s) for _, word, after in out.values() if (s := suffix(after))})
+
+        def text(before, word, after):
+            if (s := suffix(after)):
+                word, after = joins[word, s], ""
+            return " ".join(x for x in (before, word, after) if x)
+        return {o: (text(*parts), parts[1]) for o, parts in out.items()}
+
+    def fold_writes(self, name, entries, strokes):
+        """Those of `strokes`, outlines of `entries`, the dictionary `name`, that
+        a fold writes as the entry does where none of them has an entry. One
+        fold's base may be another's entry, so it asks until nothing changes."""
+        folded = set(strokes)
+        while True:
+            now = self.with_layer(name, {s: t for s, t in entries.items() if s not in folded}).folds(folded)
+            still = {s for s in folded if now.get(s, ("",))[0] == entries[s]}
+            if still == folded:
+                return still
+            folded = still
 
     def unwritable(self, translations):
         """Those of `translations` no outline in the stack writes."""
@@ -98,6 +120,18 @@ class Stack:
                         by[t].append(o)
         answers = self.ask(o for os_ in by.values() for o in os_)
         return [t for t in translations if not any(answers[o][0][1] == t for o in by[t])]
+
+
+def joined(pairs):
+    """{(word, suffix): the two joined}, as `{^suffix}` joins them: Plover's
+    orthography, then a completion where that makes no word."""
+    pairs = sorted(pairs)
+    if not pairs:
+        return {}
+    run = subprocess.run([os.path.join(ROOT, "target", "release", "stfst"), "ortho", "--complete",
+                          "--pairs", "/dev/stdin"], input="".join(f"{w}\t{s}\n" for w, s in pairs),
+                         capture_output=True, text=True, cwd=ROOT, check=True)
+    return dict(zip(pairs, run.stdout.splitlines()))
 
 
 def retro_words():

@@ -1,0 +1,17 @@
+! `^+` alone is -y on the word the rest writes, where nothing holds the stroke,
+! joined as `{^y}` joins: typey, and pricey keeps its entry for "price is".
+^+TAOEUP
+^+PRAOEUS
+! An entry wins: ^+HAP is happy, whatever HAP and -y would be.
+^+HAP
+! A word the fold writes has no entry, but army keeps its own, since a fold's
+! base is not folded again and armies is a word.
+^+TPUPB
+^+ARPLS
+! two-word keeps "what it", which the fold would read as "what they".
+^+WHAT
+! The last stroke of an outline: chocolate and -y.
+KHOBG
+^+HRAT
+! A base of the right bank alone takes no -y.
+^+-D

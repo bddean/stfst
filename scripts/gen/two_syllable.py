@@ -29,7 +29,9 @@ the stroke. What this script decides is the rest, which is not a rule:
 - An -s or -ed form is its word's stroke and the suffix key, and is not an
   entry, since the key folds (allowed is `^HRAOU` + `-D`). Nor is a regular -s,
   -ed or -ing form of any other word Typey Type writes (talking is `TAUBG` +
-  `-G`).
+  `-G`). A word a fold writes from another, as `^+` and -y write funny from
+  fun, is not an entry either, unless a pair wants the stroke or the word has
+  an inflection a fold could not write without it.
 - An outline goes to the word that wants it soonest, then to the more frequent,
   and a word then keeps every other outline of its own no word took.
   A stroke another dictionary in the stack writes is left to it, and a plain
@@ -221,8 +223,31 @@ def build(typey, rule, vocabulary):
     folded = {s: w for s, w in out.items() if w in base and out.get(base[w][1].get(s)) == base[w][0]}
     for s in folded:
         del out[s]
-    return dict(sorted(out.items())), dict(strokes=strokes, base=base, folded=folded, written=written,
-                                          fallback=fallback, lost=lost, left=left, stack=stack)
+    # A fold's base is what the stack writes, two-word's and the folded
+    # inflections Typey Type leaves out among it. A stroke a pair could take
+    # keeps its entry, since two-word takes what this leaves.
+    wanted = others.keys() | {o for cs in candidates("two-word").values() for o in cs}
+    with open(g.OUTPUT) as f:
+        affixed = fold_writes(out, wanted, Stack(json.load(f), skip=(NAME,)))
+    for s in affixed:
+        del out[s]
+    return dict(sorted(out.items())), dict(strokes=strokes, base=base, folded=folded, affixed=affixed,
+                                          written=written, fallback=fallback, lost=lost, left=left,
+                                          stack=stack)
+
+
+def fold_writes(out, taken, stack):
+    """{stroke: word} of the entries in `out` a fold writes as they do, outside
+    the strokes another dictionary has `taken`: ^+TAOEUP is type and -y.
+
+    A fold's base is not folded again, so an entry stays where its word has an
+    inflection that is a word too: without ^+ARPL, ^+ARPLS would read ARPLS and
+    not write armies."""
+    inflects = lambda w: any(g.zipf(f) >= lex.MIN_ZIPF for kind in SUFFIX_KEYS.values()
+                             for f in g.regular_forms(w, kind)) or g.zipf(w + "ing") >= lex.MIN_ZIPF
+    found = stack.with_layer(NAME, out).folds(s for s in out if "/" not in s and s not in taken)
+    return {s: out[s] for s in sorted(stack.fold_writes(
+        NAME, out, (s for s, (t, _) in found.items() if t == out[s] and not inflects(out[s]))))}
 
 
 def write_json(d, path):
@@ -236,7 +261,10 @@ def report(out, r):
     strokes, lost, left = r["strokes"], r["lost"], r["left"]
     print(f"{len(strokes)} words in scope; {len(out)} entries, and {len(r['folded'])} "
           f"inflections the suffix keys fold")
-    have = set(out.values()) | set(r["folded"].values())
+    affixed = r["affixed"]
+    print(f"{len(affixed)} a fold writes from another word, so they need no entry:",
+          " ".join(f"{s}={w}" for s, w in list(affixed.items())[:30]))
+    have = set(out.values()) | set(r["folded"].values()) | set(affixed.values())
     freq = lambda ws: sum(10 ** z(w) for w in ws)
     written = r["written"]
     per_word = sum((o.count("/") + 1) * 10 ** z(w) for w, o in written.items()) / freq(written)

@@ -112,8 +112,9 @@ def pairs_lexc(found):
 
 
 # Pairs that take their stroke from a fold whatever it reads, where the reading
-# is counted wrong: "a {^<^}" counts as "a".
-OVER_FOLD = {"not as"}
+# is counted wrong ("a {^<^}" counts as "a") or is a join no one strokes for it:
+# -y on PHA "ma" is "may", and on WHAT "what the" is "what they".
+OVER_FOLD = {"not as", "him a", "how it", "it that", "what it"}
 
 # What an inflection may append, as `{:infl:…}` names it.
 ENDINGS = {"ed": ("ed", "d"), "ing": ("ing",), "ofs": ("s", "es"), "ofz": ("s", "es")}
@@ -198,16 +199,9 @@ def build(rule, counts):
         other[0] == "folds" and (pair in OVER_FOLD
                                  or count(pair) > max((reading_counts[w] for w in readings[outline]), default=0)))
     out, lost, left = resolve(rule, lambda p: (-count(p), p), others, over_fold)
-    # A pair a fold writes needs no entry. A fold's base may be one of this
-    # dictionary's entries, which changes what it reads, so ask again with them.
-    folded = {s: p for s, p in out.items() if others.get(s) == ("folds", p)}
-    while True:
-        kept = {s: p for s, p in out.items() if s not in folded}
-        now = stack.with_layer(NAME, kept).folds(folded)
-        still = {s: p for s, p in folded.items() if now.get(s, ("",))[0] == p}
-        if still == folded:
-            break
-        folded = still
+    # A pair a fold writes needs no entry.
+    folded = {s: out[s] for s in sorted(stack.fold_writes(
+        NAME, out, (s for s, p in out.items() if others.get(s) == ("folds", p))))}
     for s in folded:
         del out[s]
     reordered = {s: t for s, t in inflected(out, stack).items() if s not in out}
