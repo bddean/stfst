@@ -407,7 +407,9 @@ MARKS = {"A": "+", "E": "^", "EU": "^+", "O": "+O", "U": "+U", "": "^"}
 
 def caret(op, base):
     """caret.xfst on a contract.tsv line: OP is `-`, or prefix keys and then
-    optionally `^` and the operand's vowel keys."""
+    optionally `^` and the operand's vowel keys. two_syllable_units checks it
+    against the compiled caret stage, since it also writes voiced stems the
+    pipeline never sees."""
     prefix, mark, vowels = op.strip("-").partition("^")
     keys = set(base) | set(prefix)
     if mark:
@@ -658,11 +660,15 @@ def two_syllable_units(words, enc, out):
                 n, *lead, strokes = rest.split(" ")
                 for op, b, new in contract(lead, strokes, voice):
                     voiced.setdefault((w, n, op, b), new)
+    compiled = rs.relation(pipe["caret"])
     with open(pipe["contract"]) as f:
         for line in f:
             w, rest = line.rstrip("\n").split("\t")
             n, op, b = rest.split(" ")
-            split[w].setdefault(_SYSTEM.outline(caret(op, b)), (op, voiced.get((w, n, op, b), b), n))
+            tape = caret(op, b)
+            if f"{n} {tape}" not in compiled[w]:
+                sys.exit(f"caret() writes {w} {n} {op} {b} as {tape}, which caret.xfst does not: update caret()")
+            split[w].setdefault(_SYSTEM.outline(tape), (op, voiced.get((w, n, op, b), b), n))
     V = lambda o: voice.outline(o, _SYSTEM)
 
     form = enc.get("form", "caret")
@@ -682,15 +688,7 @@ def two_syllable_units(words, enc, out):
         for w, cs in outlines.items():
             for o in [o for o in cs if (w, o) in live]:
                 del cs[o]
-        given = {"typey": t.typey_outlines, "theory": t.theory_outlines}
-        last = max(c for cs in outlines.values() for c in cs.values())
-        for n, name in enumerate(fallback):
-            these = given[name]()
-            for w, cs in outlines.items():
-                for o in these.get(w, []):
-                    if o not in cs:
-                        cs[o] = last + 1 + n
-                        tagged[w, o] = name
+        tagged = t.add_fallbacks(outlines, [(name, t.FALLBACKS[name]()) for name in fallback])
     reach = enc.get("reach", "")
     if isinstance(reach, str):
         chords = [""] + ["".join(sorted(c, key=TAPE_ORDER.index)) for n in range(1, len(reach) + 1)
@@ -737,7 +735,7 @@ def two_syllable_units(words, enc, out):
                 for ch in chords:
                     tape = "".join(sorted(set(b) | set(ch), key=TAPE_ORDER.index))
                     reachable.add(_SYSTEM.outline(tape))
-            displace = form != "typey" and (t.marked(o)[0] or "^" + o not in outlines[w]) and t.syllables(stem(w)) > 1
+            displace = form != "typey" and t.may_displace(o, outlines[w], stem(w))
             alts.append({"cost": c, "strokes": strokes, "displace": displace})
             if (w, o) in tagged:
                 alts[-1]["fallback"] = tagged[w, o]

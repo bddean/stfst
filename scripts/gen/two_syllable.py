@@ -154,9 +154,30 @@ def typey_outlines():
     return out
 
 
-def fallbacks():
-    """The outlines a word that loses its stroke falls back to, in order."""
-    return {"theory": theory_outlines(), "typey": typey_outlines()}
+# The outlines a word that loses its stroke falls back to, in order.
+FALLBACKS = {"theory": theory_outlines, "typey": typey_outlines}
+
+
+def add_fallbacks(strokes, given):
+    """Add to `strokes`, {word: {outline: cost}}, each fallback's outlines,
+    from `given`, [(name, {word: [outline]})], in order and costing more than
+    any word's own. Returns {(word, outline): name}."""
+    last = max(c for cs in strokes.values() for c in cs.values())
+    tagged = {}
+    for n, (name, outlines) in enumerate(given):
+        for w, cs in strokes.items():
+            for o in outlines.get(w, ()):
+                if o not in cs:
+                    cs[o] = last + 1 + n
+                    tagged[w, o] = name
+    return tagged
+
+
+def may_displace(outline, outlines, word):
+    """Whether `outline`, one of the `outlines` of a word whose base is `word`,
+    may take a stroke from Typey Type. A plain stroke takes nothing: where it
+    is taken, the word has the same keys with `^`."""
+    return syllables(word) > 1 and bool(marked(outline)[0] or "^" + outline not in outlines)
 
 
 def build(typey, rule, vocabulary):
@@ -172,15 +193,7 @@ def build(typey, rule, vocabulary):
         z[b] = max(z[b], z[w])
     strokes = {w: s for w, s in sorted(strokes.items())
                if z[w] >= lex.MIN_ZIPF and (w in base or not inflection(w, vocabulary))}
-    # A fallback costs more than any word's own outline.
-    last = max(c for cs in strokes.values() for c in cs.values())
-    fallback = {}
-    for n, (name, given) in enumerate(fallbacks().items()):
-        for w, cs in strokes.items():
-            for o in given.get(w, ()):
-                if o not in cs:
-                    cs[o] = last + 1 + n
-                    fallback[w, o] = name
+    fallback = add_fallbacks(strokes, [(name, f()) for name, f in FALLBACKS.items()])
     # two-word.json gives way to this dictionary, so it is not asked.
     stack = Stack(g.written(), skip=(NAME, "two-word"))
     every = sorted({o for cs in strokes.values() for o in cs})
@@ -196,14 +209,11 @@ def build(typey, rule, vocabulary):
     # Type entry gives way unless it is an affix or a hundred times as
     # frequent: compress is KPHRES here, so its old KPRES can be express.
     typey_way = typey_gives_way(typey.reserved)
-    # A plain stroke takes nothing: where it is taken, the word has the same
-    # keys with `^`.
-    plain = lambda s, w: not marked(s)[0] and "^" + s in strokes[w]
     # A pair's first outline in two-word outranks a word's second, and a
     # fallback is only for a word that has no outline of its own.
     pairs = {next(iter(cs)) for cs in candidates("two-word").values()}
     out, lost, left = resolve(strokes, lambda w: (-g.zipf(stem(w)), -g.zipf(w), w), others,
-                              lambda s, w, other: not plain(s, w) and syllables(stem(w)) > 1
+                              lambda s, w, other: may_displace(s, strokes[w], stem(w))
                               and typey_way(s, w, other), firsts=pairs | {o for _, o in fallback})
     written = {}
     for o, w in out.items():
