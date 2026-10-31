@@ -25,6 +25,12 @@ decide
 dictionary
 	- I don't understand/-D writes "I'm not understood"; should be "I didn't
 		understand". RETRO in docs/phrasing-rhs.md covers it.
+	- give v its own chord. In a contracted stroke v's SR reads as re- or s-,
+		and most of what a left-hand voicing key gained came from v alone
+		(docs/caret-replacement.md, "Left-hand voicing key").
+	- not done: the left edge of the board. A `^`/`+` column left of S, and `@`
+		above S, acting as S in a chord with `^` or `+`. The details are to be
+		settled.
 
 
 ---
