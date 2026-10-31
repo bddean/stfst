@@ -70,7 +70,7 @@ Among outlines of one length, a dictionary's comes before a fold's.
 
 A fold is a stroke nothing matched, read as another stroke with something
 written around it: `KAOEPT` is "keep" then "the", `SKPAD` is "and" then "add",
-`^TPOU` is "a" then "few" (`TPAOU`).
+`+TPAOU` is "a" then "few" (`TPAOU`).
 `dictionaries/folds.xfst` says which keys come off and what they write, as a
 record of ordered alternatives, and the host looks the base up across the whole
 stack and takes the first that translates. So a fold is a rule in a dictionary
@@ -274,8 +274,8 @@ design. They need cmudict and wordfreq, which the phrasing venv has.
 | Generator | Writes |
 |---|---|
 | `gen-typey-vowels.py` | `typey-type-full.json`: Typey Type with its vowels rewritten by `dictionaries/typey-vowels.toml`. Also `vowel-briefs.json`, `typey-superseded.json`, and `tests/vowels.tsv`. |
-| `gen-two-syllable.py` | `two-syllable.json`: a word of two syllables as one stroke marked `^` (report is `^PROERT`). |
-| `gen-two-word.py` | `two-word.json`: two one-syllable words often written together, as one `^` stroke by the same rule (at all is `^TUL`). |
+| `gen-two-syllable.py` | `two-syllable.json`: a word of two syllables as one stroke marked with the other vowel's letter (report is `^PRORT`, happy `^+HAP`), or the theory's two strokes where that stroke is taken. |
+| `gen-two-word.py` | `two-word.json`: two one-syllable words often written together, as one marked stroke by the same rule (at all is `+TAUL`). |
 | `gen-affixes.py` | `dictionaries/affixes-lexicon.xfst`: the words of the `affixes` grammar, a stem's stroke then one stroke for the prefix and suffix (reservation is `SEFRB/R-GS`). |
 
 The output is JSON where `English Stenotype` reads it too, because that system

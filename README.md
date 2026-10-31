@@ -42,7 +42,7 @@ Type is the base, and the rest sits on top of it:
 | Dictionary | What it does |
 |---|---|
 | phrasing | A clause grammar on `#`: subject, modality, aspect, negation and verb in one stroke. |
-| two-syllable, two-word | A two-syllable word, or two short words, in one stroke marked `^` (report is `^PROERT`, at all is `^TUL`). |
+| two-syllable, two-word | A two-syllable word, or two short words, in one stroke: the stressed syllable, marked with the other vowel's letter (happy is `^+HAP`, at all is `+TAUL`). See [the mark](#the-two-syllable-mark). |
 | affixes | A stem's stroke, then one stroke for its prefix and suffix. |
 | folds | A stroke nothing matched, read as a word plus "the", "of", "and" or "so" (`KAOEPT` is "keep the"). |
 | frames, ahead | Write a frame now and fill it later: `STPR*T` writes "from to", and "here" makes it "from here to". |
@@ -50,6 +50,29 @@ Type is the base, and the rest sits on top of it:
 
 `emily-symbols`, `emily-modifiers` and Shrimple are ports of other people's
 dictionaries.
+
+## The two-syllable mark
+
+A word of two syllables is one stroke: its stressed syllable as stfst writes
+it, onset, chord and coda, with the mark of the other vowel's first letter.
+The mark's keys are added to the stroke's, so every key of the stressed chord
+stays; only `+O` and `+U` can add a vowel key to it.
+
+| The other vowel | Mark | Example |
+|---|---|---|
+| a | `+` | about `+PWOUT` |
+| e, or none left | `^` | money `^PHOPB`, report `^PRORT` |
+| i or y | `^+` | happy `^+HAP`, city `^+SEUT` |
+| o | `+O` | today `+TKAOEU` |
+| u | `+U` | focus `+TPOEUBGS` |
+
+`^` also marks a word of one syllable whose plain stroke another word has
+(matter is `^PHART`, because mart is `PHART`), and a word whose other vowel a
+rewrite dropped (attempt is `+TEPLT`, or `^TEPLT` with its a dropped). Two
+short words written together take the same mark. A word that loses its stroke
+to a more frequent one is the two strokes the theory writes for it (animal is
+`APB/PHAL`). The rule is `dictionaries/caret.xfst`;
+`docs/caret-replacement.md` is the study that chose it.
 
 ## More
 

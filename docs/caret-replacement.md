@@ -6,7 +6,7 @@ version.
 
 ## Problem
 
-A two-syllable word is one stroke marked `^`, with its stressed vowel's chord
+A two-syllable word was one stroke marked `^`, with its stressed vowel's chord
 XOR the other vowel's first letter (`caret.xfst`, `contract.xfst`,
 `scripts/gen/two_syllable.py`). The XOR maps the 16 vowel chords onto
 themselves, so the vowel keys read as an unrelated vowel (today `^TKAOEU`,
@@ -95,13 +95,61 @@ losing word such as animal falls back to `APB/PHAL`. 0.093% lost at 1.015
 strokes per word, with nothing to memorize. The vowel keys stay literal.
 Runners-up: or-plus, side and y, and mark only with the theory fallback.
 
+## Decision: or-plus, then the theory, then Typey Type
+
+stfst writes or-plus. The stroke is the stressed syllable as before, and the
+other vowel's first letter is a mark whose keys are OR'd in
+(`dictionaries/caret.xfst`):
+
+| Other vowel | Mark | Example |
+|---|---|---|
+| a | `+` | about `+PWOUT` |
+| e, r-coloured, or a syllable a rewrite dropped | `^` | money `^PHOPB`, report `^PRORT`, attempt `^TEPLT` |
+| i or y | `^+` | happy `^+HAP`, city `^+SEUT` |
+| o | `+O` | today `+TKAOEU`, also `+AOLS` |
+| u | `+U` | focus `+TPOEUBGS` |
+| one syllable, its plain stroke taken | `^` | matter `^PHART` |
+
+A word whose stroke is taken falls back to the two strokes `theory.tsv` writes
+for it (animal `APB/PHAL`), and then to its Typey Type outlines, the superseded
+ones among them. Two-word pairs and affix stems take the same mark, since they
+run the same `caret.xfst`. The function-word folds read the mark back: `+` is
+"a" before a word, `+` and S- "so", `+O` and -F "of", `+O` and -T "to", and
+`^+` and -Z "is" (`folds.xfst`).
+
+As built (`scripts/gen-two-syllable.py`): 491 words (1.280%) on the theory's
+two strokes, 39 (0.117%) on Typey Type, 0.008% lost (8 inflections), 1.014
+strokes per word. The study scored or-plus with the same fallback at 0.003%,
+29 Typey Type words and 1.013. The gap is inflections: the study left an -s
+or -ed form's outline as the XOR stroke with its suffix key, which no design
+rewrote, while the pipeline writes it as the base's or-plus stroke and the
+key. So an inflection collides as its base does (constituents and
+constituency are both `^STEUPBTS`), and 75 of the 538 words without a stroke
+of their own are inflections. `stfst-layout layouts/stfst-or-plus-theory.toml`
+on the current stack agrees with the generator.
+
+Other dictionaries give `^` and `+` meanings of their own. Each holds its own
+outlines, and the resolver leaves an outline another dictionary writes to it,
+so where a mark lands on one the word falls back:
+
+| Dictionary | `^` and `+` |
+|---|---|
+| affixes | the prefix a- is `^` on the affix stroke |
+| phrasing, phrasing-tag | `#^` the full form, `#^+` the question tag, behind `#` |
+| emily-modifiers | `^` with `@` is the literal-number bit |
+| semantic-retro | lone `+` and `^+` strokes with no left bank (`+U`, `^+`) |
+| retro-words | `^A` and its menus (`^AEP`) |
+| repeat-word, repeat-idioms | a connective folded onto `^` (`^SKP`, `^O`) |
+| ahead | `^` with `*` (`^PW*EU` "by _ing") |
+| Shrimple | `^` alone enters fingerspelling |
+
 ## Open decisions
 
-- The 29 words the theory cannot place: keep Typey Type for them (memorized,
-  0.003% lost) or drop them (0.093%).
+- Decided: or-plus, and Typey Type kept for the words the theory cannot
+  place. Two-word pairs, affix stems and the folds follow the mark.
 - Two-stroke fallbacks carry the usual word-boundary risk (`HAP/PEU`).
-- Letter or or-plus; letter or side.
-- Two-word pairs, affix stems, folds and phrasing-tag also use `^` and `+`.
+- An inflection with no stroke of its own has no fallback of its own either
+  (outages, constituents); its base's fallback and the suffix key would be one.
 - A chord for the bare mark (about +0.1 points); spelling variants as losses.
 - A v chord; a skeleton theory for 3+ syllable words (3.1% of tokens).
 

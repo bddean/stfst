@@ -1,5 +1,8 @@
 # Two-syllable strokes without `^`: what they collide with
 
+This measures the `^` XOR rule, which stfst no longer uses: the mark is now
+the other vowel's letter, OR'd in (`docs/caret-replacement.md`).
+
 **Words.** 3,804 words of two syllables at zipf ≥ 3, less regular -s, -ed and -ing forms (folds write those), each written by the §8 rule: the stressed vowel's chord XOR the other vowel's letter, consonants placed by stress. Strokes are rebuilt from CMU phonemes with a plain phoneme-to-key map.
 
 **Rivals.** One-syllable words from `typey-type-full.json`, only at their rule stroke: a stroke is kept when its consonant keys are the word's own phonemes (plus Plover's habits `*S` st, `*LG` lk, `-FBG` sk, `-GT` ght). That drops 900 Typey Type strokes, briefs and misstrokes such as `URB` you're and `ARPBLG` arch. A rival may also be a fold: a one-syllable rule stroke plus `-S`, `-D` or `-G`, written as the inflected word with no entry (*seeds* is `SAOED` + `-S`).
