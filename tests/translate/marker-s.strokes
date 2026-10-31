@@ -1,0 +1,8 @@
+! `@` with `^` or `+` is S, where nothing writes the stroke as struck: the
+! board's `@` sits above S, so a marker chord can take S on the top row.
+@^*EFR
+@^+*EFRBS
+! S held as well is still S
+@^S*EFR
+! without a marker `@` is the modifiers' namespace, S included: ctrl-S
+@S-F

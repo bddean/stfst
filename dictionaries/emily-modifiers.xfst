@@ -3,8 +3,8 @@
 ! One left key opens the namespace and the rest of the board is a payload, so a
 ! stroke is read as five fields:
 !
-!   @    ^    STKPWHR    AO    *    EU    fplt d    z
-!   id   128  payload    var   lit  mode  mods      lit
+!   @    STKPWHR    AO    *    EU    fplt d    z
+!   id   payload    var   lit  mode  mods      lit
 !
 ! The Python reads `#` too, as 16 on a digit or an F-key and 256 on a literal
 ! number. `#` is phrasing's here, so those are gone.
@@ -14,8 +14,11 @@
 !   @E  + a consonant chord   a symbol keysym          @TRE   -> [KEY]Tab[END]
 !   @U  + payload bits        a digit or an F-key      @TPRU  -> [KEY]F1[END]
 !   @   + * or -Z             literal mode             @HR*E  -> !
-!   @U  + * or -Z             a literal number         @^R*U  -> 129
+!   @U  + * or -Z             a literal number         @R*U   -> 1
 !   otherwise                 fingerspelling           @KR    -> c
+!
+! `@` with `^` or `+` is not this namespace's: it is the upper half of S, so a
+! marker chord reads it as S. The Python's 128 bit on `^` is gone with it.
 !
 ! Out of scope, decided: the skhd branch. Whenever an `@` combo matches an skhd
 ! binding the Python shells out and emits nothing, which works around skhd not
@@ -79,10 +82,10 @@ define Num      [ [ Kill("@") Pat Vowels Kill(U) Mod ] .o. Press(NumName, NumCha
 define SymLit   [ [ Kill("@") Some Variant Lit([ Kill(E) LitFlag ]) ]
                   .o. [ GlyphPair Flag* ] .o. OneCase ] ;
 
-! A literal number: the payload read as binary, and `^` the 128 bit.
+! A literal number: the payload read as binary.
 ! Modifiers have nothing to modify here, and the Python ignores them. Glued, as
 ! Plover glues a translation that is all digits.
-define NumLit   [ [ Kill("@") ("^") Pat (Kill(A)) (Kill(O))
+define NumLit   [ [ Kill("@") Pat (Kill(A)) (Kill(O))
                     Lit([ Kill(U) NoMod ]) ] .o. [ LitNum Say("[GLUE]") ] ] ;
 
 ! Fingerspelling, which is what a chord means when no mode key claims it. The
@@ -95,4 +98,10 @@ define NumberMode  [ $[U] & ~$[E] & [ $["*"] | $[{z}] ] ] ;
 define Letter   [ ~NumberMode .o. [ Kill("@") Chord Mod (Kill({z})) ]
                   .o. Press(Spell, Spell) ] ;
 
-define Grammar  Canon([ Sym | Num | SymLit | NumLit | Letter ]) ;
+! A fold, so it applies only where nothing matched the stroke as written, and
+! the base is whatever the stack writes for it: `^@TP` is `^STP`, `^@STP` too.
+! `#` and `🦐` are other dictionaries' keys.
+define AsS      [ [ [ Stroke & $["@"] & $["^" | "+"] ] - $["#" | "🦐"] ]
+                  .x. [ "[FOLD]" "[STRIP]" "@" "[ADD]" S "[END]" ] ] ;
+
+define Grammar  [ Canon([ Sym | Num | SymLit | NumLit | Letter ]) | AsS ] ;

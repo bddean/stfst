@@ -1,0 +1,5 @@
+@^*EFR	1	two-syllable+_	sever	"sever"
+@^+*EFRBS	1	two-syllable+_	service	"sever service"
+@^S*EFR	1	two-syllable+_	sever	"sever service sever"
+@S-F	1	emily-modifiers	[KEY]s[CTRL][END]	"sever service sever"
+! 4 strokes, 2 candidates at the widest
