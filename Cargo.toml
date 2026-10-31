@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["crates/stfst-core", "crates/stfst-ol", "crates/stfst-dict", "crates/stfst-text", "crates/stfst-board", "crates/stfst-machine", "crates/stfst-jni", "crates/stfst-compile", "crates/stfst-cli"]
+members = ["crates/stfst-core", "crates/stfst-ol", "crates/stfst-dict", "crates/stfst-text", "crates/stfst-board", "crates/stfst-machine", "crates/stfst-jni", "crates/stfst-compile", "crates/stfst-cli", "crates/stfst-layout"]
 
 [workspace.package]
 version = "0.1.0"
@@ -26,3 +26,6 @@ toml = { version = "0.8", features = ["preserve_order"] }
 memmap2 = "0.9"
 regex-lite = "0.1"
 clap = { version = "4", features = ["derive"] }
+rayon = "1"
+rustc-hash = "2"
+fastrand = "2"
