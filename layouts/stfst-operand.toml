@@ -1,5 +1,5 @@
-# The two-syllable pipeline up to contract.xfst, with the `^` XOR operand
-# replaced by a chord of its own: X:E for the e operand, X:EU for i and y,
+# The two-syllable pipeline up to contract.xfst, with the operand that
+# caret.xfst writes as a mark replaced by a chord of its own: X:E for the e operand, X:EU for i and y,
 # X:^ for the bare mark of a plain stroke that is taken. Each operand searches
 # its chord on ^ and +; `reach` must cover every key a zone here allows, since
 # only those outlines are asked of the stack.

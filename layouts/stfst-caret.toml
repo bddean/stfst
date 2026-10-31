@@ -1,7 +1,7 @@
 # stfst's two-syllable dictionary as it stands: every outline the compiled
 # pipeline writes, its marks included, resolved against the rest of the stack
-# the way scripts/gen-two-syllable.py resolves it. The study scored the `^` XOR
-# rule with it; since then the pipeline writes or-plus (stfst-or-plus.toml).
+# the way scripts/gen-two-syllable.py resolves it. The study's scores for it
+# are the `^` XOR rule's, which the pipeline wrote then.
 
 system = "../systems/stenotype-extended.toml"
 

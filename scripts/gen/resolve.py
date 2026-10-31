@@ -90,7 +90,8 @@ def resolve(outlines, rank, taken, gives_way=lambda outline, word, other: False,
     `gives_way(outline, word, (dictionary, translation))`. An outline in
     `firsts` goes only to a word that takes it first. Returns {outline: word}, and for each word with no
     outline, why its first had to go: [(loser, winner, outline)] and [(word,
-    outline, (dictionary, translation))]."""
+    outline, (dictionary, translation))]. crates/stfst-layout's resolve.rs
+    is this, for the study's designs, and must agree with it."""
     order = sorted(outlines, key=rank)
     out, placed = {}, set()
 
