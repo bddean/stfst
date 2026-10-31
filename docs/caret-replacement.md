@@ -87,7 +87,7 @@ With Typey Type behind it, today's XOR needs 368 memorized words and mark only
   §10. 1.41% (1.18% with `*`) against 1.01% for the letter rule, and it needs
   a new board.
 
-## Recommendation
+## The study's recommendation
 
 The letter rule, with the theory's two strokes as the fallback: money
 `^PHOPB`, happy `^+HAP`, city `^+SEUT`, about `+PWOUT`, today `+TKAEU`; a
@@ -101,14 +101,14 @@ stfst writes or-plus. The stroke is the stressed syllable as before, and the
 other vowel's first letter is a mark whose keys are OR'd in
 (`dictionaries/caret.xfst`):
 
-| Other vowel | Mark | Example |
+| The other vowel | Mark | Example |
 |---|---|---|
 | a | `+` | about `+PWOUT` |
-| e, r-coloured, or a syllable a rewrite dropped | `^` | money `^PHOPB`, report `^PRORT`, attempt `^TEPLT` |
+| e, r-coloured, or dropped by a rewrite | `^` | money `^PHOPB`, report `^PRORT`, attempt `^TEPLT` |
 | i or y | `^+` | happy `^+HAP`, city `^+SEUT` |
 | o | `+O` | today `+TKAOEU`, also `+AOLS` |
 | u | `+U` | focus `+TPOEUBGS` |
-| one syllable, its plain stroke taken | `^` | matter `^PHART` |
+| none: one syllable, its plain stroke taken | `^` | matter `^PHART`, since mart is `PHART` |
 
 A word whose stroke is taken falls back to the two strokes `theory.tsv` writes
 for it (animal `APB/PHAL`), and then to its Typey Type outlines, the superseded
@@ -145,8 +145,6 @@ so where a mark lands on one the word falls back:
 
 ## Open decisions
 
-- Decided: or-plus, and Typey Type kept for the words the theory cannot
-  place. Two-word pairs, affix stems and the folds follow the mark.
 - Two-stroke fallbacks carry the usual word-boundary risk (`HAP/PEU`).
 - An inflection with no stroke of its own has no fallback of its own either
   (outages, constituents); its base's fallback and the suffix key would be one.

@@ -61,18 +61,19 @@ stays; only `+O` and `+U` can add a vowel key to it.
 | The other vowel | Mark | Example |
 |---|---|---|
 | a | `+` | about `+PWOUT` |
-| e, or none left | `^` | money `^PHOPB`, report `^PRORT` |
+| e, r-coloured, or dropped by a rewrite | `^` | money `^PHOPB`, report `^PRORT`, attempt `^TEPLT` |
 | i or y | `^+` | happy `^+HAP`, city `^+SEUT` |
-| o | `+O` | today `+TKAOEU` |
+| o | `+O` | today `+TKAOEU`, also `+AOLS` |
 | u | `+U` | focus `+TPOEUBGS` |
+| none: one syllable, its plain stroke taken | `^` | matter `^PHART`, since mart is `PHART` |
 
-`^` also marks a word of one syllable whose plain stroke another word has
-(matter is `^PHART`, because mart is `PHART`), and a word whose other vowel a
-rewrite dropped (attempt is `+TEPLT`, or `^TEPLT` with its a dropped). Two
-short words written together take the same mark. A word that loses its stroke
-to a more frequent one is the two strokes the theory writes for it (animal is
-`APB/PHAL`). The rule is `dictionaries/caret.xfst`;
-`docs/caret-replacement.md` is the study that chose it.
+A word a rewrite gives two outlines has both (attempt is `+TEPLT`, and
+`^TEPLT` with its a dropped). Two short words written together take the same
+mark. A word that loses its stroke to a more frequent one is the two strokes
+the theory writes for it (animal is `APB/PHAL`), and a word the theory cannot
+place either keeps its Typey Type outlines. The rule is
+`dictionaries/caret.xfst`; `docs/caret-replacement.md` is the study that chose
+it.
 
 ## More
 
