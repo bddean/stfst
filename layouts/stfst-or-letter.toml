@@ -1,0 +1,20 @@
+# The other vowel's first letter OR'd into the stroke with `^`: a `^A`, e `^E`,
+# i or y `^EU`, o `^O`, u `^U`. `^` alone is a syllable a rewrite dropped, or
+# a one-syllable word whose plain stroke is taken.
+
+include = ["stfst-or.toml"]
+
+[fixed]
+"X:a:A" = "^A"
+"X:a:E" = "^E"
+"X:a:EU" = "^EU"
+"X:a:O" = "^O"
+"X:a:U" = "^U"
+"X:a:^" = "^"
+"X:b:A" = "^A"
+"X:b:E" = "^E"
+"X:b:EU" = "^EU"
+"X:b:O" = "^O"
+"X:b:U" = "^U"
+"X:b:^" = "^"
+"X:1:^" = "^"

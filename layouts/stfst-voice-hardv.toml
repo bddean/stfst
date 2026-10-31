@@ -1,0 +1,6 @@
+# stfst-voice-hard.toml, and v too (`+TP`): b and d keep PW and TK.
+
+include = ["stfst-voice-pretonic.toml"]
+
+[encode.voice]
+voices = ["G", "Z", "JH", "V"]

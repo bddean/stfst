@@ -1,0 +1,10 @@
+# The letter rule (stfst-letter.toml) with stfst-voice.toml's voicing on a key
+# of its own. `@` stands in for that key: `fresh` drops what Emily's
+# modifiers hold on it, as if the key were new.
+
+include = ["stfst-letter.toml"]
+
+[encode.voice]
+key = "@"
+rule = "any"
+fresh = true

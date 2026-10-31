@@ -1,0 +1,19 @@
+# stfst-or-letter.toml with no bare `^`: a dropped syllable or a taken plain
+# stroke is `^*`, so `^` always comes with a key of its own.
+
+include = ["stfst-or.toml"]
+
+[fixed]
+"X:a:A" = "^A"
+"X:a:E" = "^E"
+"X:a:EU" = "^EU"
+"X:a:O" = "^O"
+"X:a:U" = "^U"
+"X:a:^" = "^*"
+"X:b:A" = "^A"
+"X:b:E" = "^E"
+"X:b:EU" = "^EU"
+"X:b:O" = "^O"
+"X:b:U" = "^U"
+"X:b:^" = "^*"
+"X:1:^" = "^*"

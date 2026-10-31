@@ -1,0 +1,7 @@
+# stfst-caret.toml, and a word that loses its stroke keeps its Typey Type
+# outlines: what the `^` rule would cost with the same fallback.
+
+include = ["stfst-caret.toml"]
+
+[encode]
+fallback = "typey"

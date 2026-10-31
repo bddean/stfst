@@ -1,0 +1,20 @@
+# Side and letter: `+` marks an other vowel before the stress, `^` one after
+# it, and the letter is OR'd in with it as in stfst-or-letter.toml: about
+# `+PWAOUT`, happy `^HAEUP`. Bare `^` or `+` is a syllable a rewrite dropped.
+
+include = ["stfst-or.toml"]
+
+[fixed]
+"X:a:A" = "^A"
+"X:a:E" = "^E"
+"X:a:EU" = "^EU"
+"X:a:O" = "^O"
+"X:a:U" = "^U"
+"X:a:^" = "^"
+"X:b:A" = "+A"
+"X:b:E" = "+E"
+"X:b:EU" = "+EU"
+"X:b:O" = "+O"
+"X:b:U" = "+U"
+"X:b:^" = "+"
+"X:1:^" = "^"

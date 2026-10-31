@@ -1,0 +1,11 @@
+# stfst-caret.toml with a voicing key: on the left bank a voiced obstruent is
+# its voiceless partner's chord plus `+` (d `+T`, b `+P`, g `+K`, v `+TP`,
+# z `+S`, j `+KH`; th and sh stay one chord each). Every dictionary's outlines
+# are rewritten the same way. A contracted stroke's left bank is the union of
+# its consonants' voiceless chords, with `+` when any of them is voiced.
+
+include = ["stfst-caret.toml"]
+
+[encode.voice]
+key = "+"
+rule = "any"

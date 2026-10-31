@@ -1,0 +1,13 @@
+# novo-plain.toml's searched consonants under novo-ireland-split.toml's
+# theory: a stroke per full vowel, weak syllables as markers.
+
+include = ["novo-plain.toml"]
+
+[encode]
+policy = "split"
+prefix_keys = ["R", "D", "B"]
+le_en = true
+
+[zones]
+M = "#@^+*"
+P = "#@^+*"

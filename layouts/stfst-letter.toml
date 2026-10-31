@@ -1,0 +1,21 @@
+# The other vowel's first letter on the marker keys, the way the right thumb
+# writes it: `^` is e (E), `^+` is i or y (EU), `+` is a, o or u. The vowel keys
+# are the stressed vowel's chord, untouched. `^` alone is also a syllable a
+# rewrite dropped (append, mother) and a one-syllable word's taken stroke.
+
+system = "../systems/stenotype-extended.toml"
+
+[words]
+source = "stfst-two-syllable"
+
+[encode]
+form = "operand"
+reach = "^+"
+
+[fixed]
+"X:E" = "^"
+"X:^" = "^"
+"X:EU" = "^+"
+"X:A" = "+"
+"X:O" = "+"
+"X:U" = "+"

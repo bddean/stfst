@@ -1,0 +1,7 @@
+# stfst-caret.toml, and a two-syllable stroke whose left bank no word's onset
+# writes (a skeleton: today TKPW is begin's b and g) is first tried unmarked.
+
+include = ["stfst-caret.toml"]
+
+[encode]
+bare = true

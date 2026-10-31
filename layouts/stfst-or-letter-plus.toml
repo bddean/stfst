@@ -1,0 +1,19 @@
+# stfst-letter.toml with a, o and u told apart: `^` e or none, `^+` i or y,
+# `+A`, `+O`, `+U` the other letters OR'd in. Three OR'd chords, all on `+`.
+
+include = ["stfst-or.toml"]
+
+[fixed]
+"X:a:A" = "+A"
+"X:a:E" = "^"
+"X:a:EU" = "^+"
+"X:a:O" = "+O"
+"X:a:U" = "+U"
+"X:a:^" = "^"
+"X:b:A" = "+A"
+"X:b:E" = "^"
+"X:b:EU" = "^+"
+"X:b:O" = "+O"
+"X:b:U" = "+U"
+"X:b:^" = "^"
+"X:1:^" = "^"

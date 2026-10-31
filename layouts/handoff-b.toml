@@ -1,0 +1,7 @@
+# Handoff layout B: layout A, but one stroke unless 2+ syllables precede the
+# stress (fv2.py `hyb`). The handoff reports 0.16% loss, 7.59 keys per stroke.
+
+include = ["handoff-a.toml"]
+
+[encode]
+policy = "hyb"

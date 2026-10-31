@@ -1,0 +1,7 @@
+# Handoff layout B on stfst's words: one stroke unless two or more syllables
+# precede the stress.
+
+include = ["novo-a.toml"]
+
+[encode]
+policy = "hyb"

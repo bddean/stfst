@@ -1,0 +1,26 @@
+# stfst-side.toml, and a weak i or y after the stress (happy, city, very) is
+# `^+` instead of `^`. A one-syllable word whose plain stroke is taken is `^`.
+
+system = "../systems/stenotype-extended.toml"
+
+[words]
+source = "stfst-two-syllable"
+
+[encode]
+form = "position"
+reach = "^+"
+
+[fixed]
+"X:a:A" = "^"
+"X:a:E" = "^"
+"X:a:EU" = "^+"
+"X:a:O" = "^"
+"X:a:U" = "^"
+"X:a:^" = "^"
+"X:b:A" = "+"
+"X:b:E" = "+"
+"X:b:EU" = "+"
+"X:b:O" = "+"
+"X:b:U" = "+"
+"X:b:^" = "+"
+"X:1:^" = "^"

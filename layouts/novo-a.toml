@@ -1,0 +1,7 @@
+# Handoff layout A rebuilt on stfst's words: foot zones, every chord searched,
+# one stroke per full vowel.
+
+include = ["handoff-a.toml", "novo-words.toml"]
+
+[search]
+seeds = 4

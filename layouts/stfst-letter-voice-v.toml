@@ -1,0 +1,6 @@
+# stfst-letter-voice-pretonic.toml for v alone (stfst-voice-v.toml).
+
+include = ["stfst-letter-voice-pretonic.toml"]
+
+[encode.voice]
+voices = ["V"]

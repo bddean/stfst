@@ -1,0 +1,8 @@
+# stfst-voice.toml, but `+` voices only the stressed syllable's onset, and the
+# consonants before it keep the theory's chords: be- is PW, de- TK, so begin
+# is `^+KPW...` and because `^KPW...`.
+
+include = ["stfst-voice.toml"]
+
+[encode.voice]
+rule = "pretonic"

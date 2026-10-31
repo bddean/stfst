@@ -1,0 +1,8 @@
+# Ireland's chords by sound under plain standard theory: one stroke per
+# syllable, nothing but onset, vowel and coda; -s, -ed and -ing fold as -S, -D,
+# -G. The baseline for novo-plain.toml.
+
+include = ["novo-ireland.toml"]
+
+[encode]
+policy = "syllable"

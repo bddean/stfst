@@ -1,0 +1,15 @@
+# The words stfst's two-syllable dictionary is scored on (12,208 with their
+# inflections), at their zipf frequencies, as lexicon.lexc pronounces them, for
+# a layout that writes them by sound from scratch. Homophones stay apart, so a
+# theory by sound loses one of each pair where stfst's spelling would not.
+
+include = ["handoff-board.toml"]
+
+[words]
+source = "stfst"
+path = "../dictionaries/lexicon.lexc"
+within = "two-syllable"
+merge_homophones = false
+function_words = true
+max_syl = 8
+min_f = 0.0

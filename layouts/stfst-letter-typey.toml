@@ -1,0 +1,7 @@
+# stfst-letter.toml, and a word that loses its stroke keeps its Typey Type
+# outlines.
+
+include = ["stfst-letter.toml"]
+
+[encode]
+fallback = "typey"

@@ -1,0 +1,16 @@
+# One chord per letter, searched over readable chords only: a marker (`^`,
+# `+` or `^+`), alone or with the letter's own keys OR'd in (i or y as EU or
+# `*`, no vowel as `*`).
+
+include = ["stfst-or.toml"]
+
+[encode]
+form = "operand"
+
+[choices]
+"X:A" = ["^", "+", "^+", "^A", "+A", "^+A"]
+"X:E" = ["^", "+", "^+", "^E", "+E", "^+E"]
+"X:O" = ["^", "+", "^+", "^O", "+O", "^+O"]
+"X:U" = ["^", "+", "^+", "^U", "+U", "^+U"]
+"X:EU" = ["^", "+", "^+", "^EU", "+EU", "^+EU", "^*", "+*", "^+*"]
+"X:^" = ["^", "+", "^+", "^*", "+*", "^+*"]

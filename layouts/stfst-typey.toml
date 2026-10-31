@@ -1,0 +1,12 @@
+# stfst without `^`: the words two-syllable writes, written instead as Typey
+# Type writes them, which is what e1ceade replaced. Their outlines are the
+# stack's Typey Type entries plus those typey-superseded.json moved aside for
+# the rule. No two-syllable dictionary; the rest of the stack as today.
+
+system = "../systems/stenotype-extended.toml"
+
+[words]
+source = "stfst-two-syllable"
+
+[encode]
+form = "typey"

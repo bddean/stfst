@@ -1,0 +1,8 @@
+# novo-ireland.toml with the markers on ^ and + only: the keys stfst leaves a
+# two-syllable stroke.
+
+include = ["novo-ireland.toml"]
+
+[zones]
+M = "^+"
+P = "^+"

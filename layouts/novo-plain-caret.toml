@@ -1,0 +1,11 @@
+# novo-plain.toml's searched consonants under novo-ireland-caret.toml's
+# theory: every word one stroke, its weak syllables as markers on ^ and +.
+
+include = ["novo-plain-split.toml"]
+
+[encode]
+policy = "one"
+
+[zones]
+M = "^+"
+P = "^+"

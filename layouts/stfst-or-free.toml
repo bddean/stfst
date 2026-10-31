@@ -1,0 +1,7 @@
+# Every position and operand atom searched over `^` and `^` with one vowel
+# key or `*` OR'd in: the best a single `^` does in this family.
+
+include = ["stfst-or.toml"]
+
+[choices]
+X = ["^", "^A", "^O", "^E", "^U", "^*", "^EU"]

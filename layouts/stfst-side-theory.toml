@@ -1,0 +1,8 @@
+# stfst-side.toml, and a word that loses its stroke falls back to the two
+# strokes the theory writes for it (theory.tsv, before contract.xfst joins
+# them), then to its Typey Type outlines.
+
+include = ["stfst-side.toml"]
+
+[encode]
+fallback = ["theory", "typey"]

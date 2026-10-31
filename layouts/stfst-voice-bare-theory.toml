@@ -1,0 +1,7 @@
+# stfst-voice-bare.toml, and a word that loses its stroke falls back to the two
+# strokes the theory writes for it, then to its Typey Type outlines.
+
+include = ["stfst-voice-bare.toml"]
+
+[encode]
+fallback = ["theory", "typey"]

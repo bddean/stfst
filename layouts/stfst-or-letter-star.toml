@@ -1,0 +1,19 @@
+# stfst-or-letter.toml with i or y on `*`: `^*`, one key, as every other
+# letter is.
+
+include = ["stfst-or.toml"]
+
+[fixed]
+"X:a:A" = "^A"
+"X:a:E" = "^E"
+"X:a:EU" = "^*"
+"X:a:O" = "^O"
+"X:a:U" = "^U"
+"X:a:^" = "^"
+"X:b:A" = "^A"
+"X:b:E" = "^E"
+"X:b:EU" = "^*"
+"X:b:O" = "^O"
+"X:b:U" = "^U"
+"X:b:^" = "^"
+"X:1:^" = "^"

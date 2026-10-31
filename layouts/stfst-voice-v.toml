@@ -1,0 +1,6 @@
+# stfst-voice-pretonic.toml for v alone (`+TP`): every other chord stays.
+
+include = ["stfst-voice-pretonic.toml"]
+
+[encode.voice]
+voices = ["V"]

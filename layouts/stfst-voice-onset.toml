@@ -1,0 +1,7 @@
+# stfst-voice.toml, but `+` voices only the stressed syllable's onset; the
+# consonants before it are written by place alone.
+
+include = ["stfst-voice.toml"]
+
+[encode.voice]
+rule = "onset"

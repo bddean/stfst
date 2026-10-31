@@ -1,0 +1,19 @@
+# Only a vowel after the stress gets its letter, OR'd in with `^`; any vowel
+# before it is `+` alone (about `+PWOUT`, report `+PRORT`).
+
+include = ["stfst-or.toml"]
+
+[fixed]
+"X:a:A" = "^A"
+"X:a:E" = "^E"
+"X:a:EU" = "^EU"
+"X:a:O" = "^O"
+"X:a:U" = "^U"
+"X:a:^" = "^"
+"X:b:A" = "+"
+"X:b:E" = "+"
+"X:b:EU" = "+"
+"X:b:O" = "+"
+"X:b:U" = "+"
+"X:b:^" = "+"
+"X:1:^" = "^"

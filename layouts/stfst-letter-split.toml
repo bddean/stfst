@@ -1,0 +1,7 @@
+# stfst-letter.toml, and a word that loses its stroke falls back only to the
+# two strokes the theory writes for it: nothing memorized.
+
+include = ["stfst-letter.toml"]
+
+[encode]
+fallback = "theory"

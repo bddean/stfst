@@ -1,0 +1,48 @@
+# A plain board searched from scratch: novo-plain-ireland.toml's theory and
+# vowels, with every consonant's chord (and so each bank's key order) searched.
+# The left bank has 8 keys, S1- and S2- apart (here @ and S); * is kept for
+# the disambiguator. Each consonant has a chord of its own on its bank, and a
+# cluster whose chords are out of steno order costs `order` times its frequency.
+
+include = ["novo-words.toml"]
+
+[encode]
+scheme = "ireland"
+policy = "syllable"
+infl_keys = ["s", "ed", "ing"]
+fuse = false
+
+[objective]
+max_keys = 3
+order = 0.2
+distinct = ["L", "R"]
+
+[zones]
+L = "@STKPWHR"
+R = "-FRPBLGTSDZ"
+I = "-FRPBLGTSDZ"
+
+[search]
+method = "anneal+descent"
+moves = 300000
+seeds = 8
+
+[fixed]
+"R:W" = ""
+"R:Y" = ""
+"R:HH" = ""
+"V:AA" = "O"
+"V:AE" = "A"
+"V:AH" = "U"
+"V:AO" = "AU"
+"V:AW" = "OU"
+"V:AY" = "AOEU"
+"V:EH" = "E"
+"V:ER" = "U"
+"V:EY" = "AEU"
+"V:IH" = "EU"
+"V:IY" = "AOE"
+"V:OW" = "OE"
+"V:OY" = "OEU"
+"V:UH" = "AOU"
+"V:UW" = "AO"

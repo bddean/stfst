@@ -1,0 +1,37 @@
+# Handoff layout A: foot zones, dactyl tail chords, one stroke per full vowel.
+# fv2.py ENC ordS,arch,clus,end,foot,pfx,pre,wright,tail2 with MINF=1e-8
+# NEND=40. The handoff reports 0.10% loss, 6.73 weighted keys per stroke.
+#
+# Every atom is free within its tag's zone. FOOT_STENO is the handoff folder.
+
+include = ["handoff-board.toml"]
+
+[words]
+source = "handoff"
+path = "${FOOT_STENO}/data/allw.jsonl"
+min_f = 1e-8
+
+[encode]
+scheme = "foot"
+policy = "split"
+rules = ["ordS", "arch", "clus", "end", "pfx", "tail2"]
+clusters = 40
+endings = 40
+prefixes = 12
+
+[zones]
+V = "#AO*EU"                         # stressed vowel: thumbs and centre
+L = "#@^+STKPWHR*"                   # onset: left bank
+Lp = "#@^+S*"                        # pretonic syllable: left outer four
+P = "#@^+S*"
+Wb = "#@^+S*"
+R1 = "#*FRPBLG"                      # after the stress: right inner six
+K = "#*FRPBLG"
+Wa = "#*FRPBLGTSDZ"                  # weak vowel after the stress: right bank
+R2 = "#*TSDZ"                        # weak ending: right outer four
+E = "#*TSDZ"
+I = "#@^+STKPWHRAO*EUFRPBLGTSDZ"     # inflection: anywhere
+
+[search]
+method = "anneal"
+moves = 300000

@@ -1,0 +1,19 @@
+# stfst-letter.toml with o and u told from a: `^` e or none, `^+` i or y, `+`
+# a, and `+O`, `+U` for o and u, their own key OR'd in.
+
+include = ["stfst-or.toml"]
+
+[fixed]
+"X:a:A" = "+"
+"X:a:E" = "^"
+"X:a:EU" = "^+"
+"X:a:O" = "+O"
+"X:a:U" = "+U"
+"X:a:^" = "^"
+"X:b:A" = "+"
+"X:b:E" = "^"
+"X:b:EU" = "^+"
+"X:b:O" = "+O"
+"X:b:U" = "+U"
+"X:b:^" = "^"
+"X:1:^" = "^"

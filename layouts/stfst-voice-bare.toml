@@ -1,0 +1,8 @@
+# stfst-voice.toml, and a skeleton stroke is first tried unmarked
+# (stfst-caret-bare.toml). The voicing key frees TK, PW, TKPW, SR and their
+# clusters, so more left banks are skeletons.
+
+include = ["stfst-voice.toml"]
+
+[encode]
+bare = true

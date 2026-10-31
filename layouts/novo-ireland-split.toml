@@ -1,0 +1,6 @@
+# novo-ireland.toml, one stroke per full vowel.
+
+include = ["novo-ireland.toml"]
+
+[encode]
+policy = "split"

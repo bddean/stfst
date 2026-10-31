@@ -1,0 +1,6 @@
+# stfst-letter-voice-pretonic.toml for the long chords only (stfst-voice-hard.toml).
+
+include = ["stfst-letter-voice-pretonic.toml"]
+
+[encode.voice]
+voices = ["G", "Z", "JH"]

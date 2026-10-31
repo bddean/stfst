@@ -1,0 +1,11 @@
+# stfst's two-syllable dictionary as it stands: every outline the compiled
+# pipeline writes, `^` XOR included, resolved against the rest of the stack the
+# way scripts/gen-two-syllable.py resolves it. The baseline for a replacement.
+
+system = "../systems/stenotype-extended.toml"
+
+[words]
+source = "stfst-two-syllable"
+
+[encode]
+form = "caret"

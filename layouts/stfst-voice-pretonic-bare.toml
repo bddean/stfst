@@ -1,0 +1,6 @@
+# stfst-voice-pretonic.toml, and a skeleton stroke is first tried unmarked.
+
+include = ["stfst-voice-pretonic.toml"]
+
+[encode]
+bare = true

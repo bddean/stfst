@@ -1,0 +1,17 @@
+# Every position and operand atom searched on `^` and `+`: the best the two
+# keys can do, whatever the rule. A reference for the readable designs.
+
+system = "../systems/stenotype-extended.toml"
+
+[words]
+source = "stfst-two-syllable"
+
+[encode]
+form = "position"
+reach = "^+"
+
+[objective]
+max_keys = 2
+
+[zones]
+X = "^+"

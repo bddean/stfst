@@ -1,0 +1,101 @@
+# Ireland chords on stfst's words, by sound, every word one stroke: stfst's
+# onset, coda and (approximately) vowel chords, with the weak syllables as
+# marker atoms the search places on the keys a two-syllable stroke leaves
+# idle (^ + and, for a new layout, # @ *). -s, -ed and -ing fold as -S, -D, -G.
+
+include = ["novo-words.toml"]
+
+[encode]
+scheme = "ireland"
+policy = "one"
+prefix_keys = ["R", "D", "B"]
+le_en = true
+infl_keys = ["s", "ed", "ing"]
+
+[objective]
+max_keys = 2
+
+[zones]
+M = "#@^+*"
+P = "#@^+*"
+
+[search]
+method = "anneal+descent"
+moves = 100000
+seeds = 4
+
+[fixed]
+"L:B" = "PW"
+"L:CH" = "KH"
+"L:D" = "TK"
+"L:DH" = "TH"
+"L:F" = "TP"
+"L:G" = "TKPW"
+"L:HH" = "H"
+"L:JH" = "SKWR"
+"L:K" = "K"
+"L:L" = "HR"
+"L:M" = "PH"
+"L:N" = "TPH"
+"L:P" = "P"
+"L:R" = "R"
+"L:S" = "S"
+"L:SH" = "SH"
+"L:T" = "T"
+"L:TH" = "TH"
+"L:V" = "SR"
+"L:W" = "W"
+"L:Y" = "KWR"
+"L:Z" = "STKPW"
+"L:ZH" = "SKWR"
+"L:NG" = "TPH"
+"L:NAS_lab" = "PH"
+"L:NAS_cor" = "TPH"
+"L:NAS_dor" = "TPH"
+"R:B" = "-B"
+"R:CH" = "-FP"
+"R:D" = "-D"
+"R:DH" = "*T"
+"R:TH" = "*T"
+"R:F" = "-F"
+"R:G" = "-G"
+"R:JH" = "-PBLG"
+"R:K" = "-BG"
+"R:L" = "-L"
+"R:M" = "-PL"
+"R:N" = "-PB"
+"R:NG" = "-PBG"
+"R:P" = "-P"
+"R:R" = "-R"
+"R:S" = "-S"
+"R:SH" = "-RB"
+"R:T" = "-T"
+"R:V" = "*F"
+"R:Z" = "-Z"
+"R:ZH" = "-RB"
+"R:W" = ""
+"R:Y" = ""
+"R:HH" = ""
+"R:NAS_lab" = "*PL"
+"R:NAS_cor" = "-PB"
+"R:NAS_dor" = "*PBG"
+"R:S_K" = "-F"
+"R:S_T" = "*S"
+"V:AA" = "O"
+"V:AE" = "A"
+"V:AH" = "U"
+"V:AO" = "AU"
+"V:AW" = "OU"
+"V:AY" = "AOEU"
+"V:EH" = "E"
+"V:ER" = "U"
+"V:EY" = "AEU"
+"V:IH" = "EU"
+"V:IY" = "AOE"
+"V:OW" = "OE"
+"V:OY" = "OEU"
+"V:UH" = "AOU"
+"V:UW" = "AO"
+"I:s" = "-S"
+"I:ed" = "-D"
+"I:ing" = "-G"

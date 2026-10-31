@@ -1,0 +1,6 @@
+# stfst-letter-voice.toml with stfst-voice-pretonic.toml's rule.
+
+include = ["stfst-letter-voice.toml"]
+
+[encode.voice]
+rule = "pretonic"

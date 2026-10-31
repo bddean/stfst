@@ -1,0 +1,6 @@
+# novo-plain.toml on Ireland's own left keys: one S.
+
+include = ["novo-plain.toml"]
+
+[zones]
+L = "STKPWHR"

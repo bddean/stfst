@@ -1,0 +1,15 @@
+# `^` alone marks a stroke that is a two-syllable word, or a one-syllable word
+# whose plain stroke is taken. The vowel keys are the stressed vowel's chord;
+# the other vowel is not written.
+
+system = "../systems/stenotype-extended.toml"
+
+[words]
+source = "stfst-two-syllable"
+
+[encode]
+form = "position"
+reach = "^+"
+
+[zones]
+X = "^"

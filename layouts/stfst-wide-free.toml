@@ -1,0 +1,13 @@
+# stfst-side-free.toml with `#` as a third marker key: whether the stack
+# leaves enough of `#` free to be worth it.
+
+include = ["stfst-side-free.toml"]
+
+[encode]
+reach = "#^+"
+
+[objective]
+max_keys = 3
+
+[zones]
+X = "#^+"

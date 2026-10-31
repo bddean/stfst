@@ -1,0 +1,7 @@
+# stfst-voice-pretonic.toml for the long chords only: `+` writes g (`+K`),
+# z (`+S`) and j (`+KH`), and b, d and v keep PW, TK and SR.
+
+include = ["stfst-voice-pretonic.toml"]
+
+[encode.voice]
+voices = ["G", "Z", "JH"]

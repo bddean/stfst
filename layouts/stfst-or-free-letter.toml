@@ -1,0 +1,7 @@
+# One chord per letter of the other vowel, whatever its side, searched over
+# the chords of stfst-or-free-side.toml: the best letter table in the family.
+
+include = ["stfst-or-free-side.toml"]
+
+[encode]
+form = "operand"

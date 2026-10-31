@@ -1,0 +1,7 @@
+# Foot zones on stfst's words, every chord searched, every word one stroke:
+# the de novo analogue of the two-syllable rule.
+
+include = ["novo-a.toml"]
+
+[encode]
+policy = "one"

@@ -1,0 +1,11 @@
+# Every position and operand atom searched over `^`, `+` and `^+`, each alone
+# or with one vowel key, `*` or EU OR'd in: the family's ceiling.
+
+include = ["stfst-or.toml"]
+
+[choices]
+X = [
+  "^", "^A", "^O", "^E", "^U", "^*", "^EU",
+  "+", "+A", "+O", "+E", "+U", "+*", "+EU",
+  "^+", "^+A", "^+O", "^+E", "^+U", "^+*", "^+EU",
+]

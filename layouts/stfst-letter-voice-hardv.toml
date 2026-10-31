@@ -1,0 +1,6 @@
+# stfst-letter-voice-pretonic.toml, with stfst-voice-hardv.toml's voiced phonemes.
+
+include = ["stfst-letter-voice-pretonic.toml"]
+
+[encode.voice]
+voices = ["G", "Z", "JH", "V"]

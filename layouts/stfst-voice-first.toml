@@ -1,0 +1,7 @@
+# stfst-voice.toml, but `+` voices only the left bank's first obstruent; the
+# others are written by place alone (#TK is d-k or d-g, not t-g).
+
+include = ["stfst-voice.toml"]
+
+[encode.voice]
+rule = "first"
