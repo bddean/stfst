@@ -36,6 +36,10 @@ the stroke. What this script decides is the rest, which is not a rule:
   stroke takes none, not even one Typey Type gives up to the rules.
 - A common word of one syllable that Typey Type does not write is its plain
   stroke (sheikh).
+- A word that loses its stroke falls back to the two strokes the theory writes
+  for it before contract.xfst joins them (animal is `APB/PHAL`), and where those
+  are taken too, to its Typey Type outlines, the ones the rule superseded
+  among them.
 
 Usage (needs wordfreq, which the phrasing venv has, a compiled stack, and HFST
 for the pipeline: run it in the dev shell):
@@ -48,6 +52,7 @@ import argparse
 import collections
 import json
 import os
+import re
 import sys
 
 from . import DICTS
@@ -55,7 +60,7 @@ from . import lexicon as lex
 from . import vowels as g
 from .resolve import (candidates, compile_pipeline, pipeline, relation, resolve, typey_gives_way,
                       unwritten_briefs)
-from .stack import Stack, retro_words
+from .stack import _SYSTEM, Stack, retro_words
 
 OUTPUT = os.path.join(DICTS, "two-syllable.json")
 NAME = "two-syllable"
@@ -115,6 +120,45 @@ def syllables(w):
     return sum(p[-1].isdigit() for p in g.prons(w)[0])
 
 
+def theory_outlines():
+    """{word: [outline]}: the two strokes theory.tsv writes for each word, by
+    rank, a prefix's cluster on the first."""
+    out = collections.defaultdict(list)
+    with open(dict(pipeline(NAME))["theory"]) as f:
+        for line in f:
+            w, rest = line.rstrip("\n").split("\t")
+            _, *lead, strokes = rest.split(" ")
+            strokes = strokes.split("/")
+            if len(strokes) != 2:
+                continue
+            # An onset, the stress, the letters, then `:` and the chord.
+            tapes = [re.sub(r"[0-2][A-Z]*:", "", s) for s in strokes]
+            tapes[0] += "".join(lead).replace("^", "")
+            o = "/".join(_SYSTEM.outline("".join(sorted(set(t), key=_SYSTEM.order.index))) for t in tapes)
+            if o not in out[w]:
+                out[w].append(o)
+    return out
+
+
+def typey_outlines():
+    """{word: [outline]}: Typey Type's outlines of up to four strokes, the
+    superseded ones among them, the fewest strokes first."""
+    with open(g.SUPERSEDED) as f:
+        superseded = json.load(f)
+    out = collections.defaultdict(list)
+    for o, w in list(g.written().items()) + list(superseded.items()):
+        if o not in out[w] and o.count("/") < 4:
+            out[w].append(o)
+    for outlines in out.values():
+        outlines.sort(key=lambda o: o.count("/"))
+    return out
+
+
+def fallbacks():
+    """The outlines a word that loses its stroke falls back to, in order."""
+    return {"theory": theory_outlines(), "typey": typey_outlines()}
+
+
 def build(typey, rule, vocabulary):
     """(entries, report data), from `rule`, {word: {outline: cost}}, over the
     lexicon's `vocabulary`."""
@@ -128,6 +172,15 @@ def build(typey, rule, vocabulary):
         z[b] = max(z[b], z[w])
     strokes = {w: s for w, s in sorted(strokes.items())
                if z[w] >= lex.MIN_ZIPF and (w in base or not inflection(w, vocabulary))}
+    # A fallback costs more than any word's own outline.
+    last = max(c for cs in strokes.values() for c in cs.values())
+    fallback = {}
+    for n, (name, given) in enumerate(fallbacks().items()):
+        for w, cs in strokes.items():
+            for o in given.get(w, ()):
+                if o not in cs:
+                    cs[o] = last + 1 + n
+                    fallback[w, o] = name
     # two-word.json gives way to this dictionary, so it is not asked.
     stack = Stack(g.written(), skip=(NAME, "two-word"))
     every = sorted({o for cs in strokes.values() for o in cs})
@@ -146,19 +199,20 @@ def build(typey, rule, vocabulary):
     # A plain stroke takes nothing: where it is taken, the word has the same
     # keys with `^`.
     plain = lambda s, w: not marked(s)[0] and "^" + s in strokes[w]
-    # A pair's first outline in two-word outranks a word's second.
+    # A pair's first outline in two-word outranks a word's second, and a
+    # fallback is only for a word that has no outline of its own.
     pairs = {next(iter(cs)) for cs in candidates("two-word").values()}
     out, lost, left = resolve(strokes, lambda w: (-g.zipf(stem(w)), -g.zipf(w), w), others,
                               lambda s, w, other: not plain(s, w) and syllables(stem(w)) > 1
-                              and typey_way(s, w, other), firsts=pairs)
+                              and typey_way(s, w, other), firsts=pairs | {o for _, o in fallback})
     written = {}
     for o, w in out.items():
         written.setdefault(w, o)
-    folded = {s: w for s, w in out.items() if w in base and out.get(base[w][1][s]) == base[w][0]}
+    folded = {s: w for s, w in out.items() if w in base and out.get(base[w][1].get(s)) == base[w][0]}
     for s in folded:
         del out[s]
     return dict(sorted(out.items())), dict(strokes=strokes, base=base, folded=folded, written=written,
-                                          lost=lost, left=left, stack=stack)
+                                          fallback=fallback, lost=lost, left=left, stack=stack)
 
 
 def write_json(d, path):
@@ -173,8 +227,18 @@ def report(out, r):
     print(f"{len(strokes)} words in scope; {len(out)} entries, and {len(r['folded'])} "
           f"inflections the suffix keys fold")
     have = set(out.values()) | set(r["folded"].values())
-    print(f"{len(have)} words have a stroke; coverage {sum(10 ** z(w) for w in have) / 1e6:.1f} "
-          f"(the sum of their frequencies per million words)")
+    freq = lambda ws: sum(10 ** z(w) for w in ws)
+    written = r["written"]
+    per_word = sum((o.count("/") + 1) * 10 ** z(w) for w, o in written.items()) / freq(written)
+    print(f"{len(have)} words have an outline; coverage {freq(have) / 1e6:.1f} (the sum of their "
+          f"frequencies per million words), {freq(set(strokes) - have) / freq(strokes):.3%} of the "
+          f"frequency in scope has none, {per_word:.3f} strokes per word")
+    by = collections.defaultdict(list)
+    for w, o in written.items():
+        by[r["fallback"].get((w, o))].append(w)
+    for name in ("theory", "typey"):
+        print(f"{len(by[name])} words ({freq(by[name]) / freq(strokes):.3%}) fall back to the {name} "
+              f"outlines:", " ".join(f"{w}={written[w]}" for w in sorted(by[name], key=lambda w: -z(w))[:30]))
     lost.sort(key=lambda x: (-z(x[0]), x))
     infl = r["base"]
     words = [x for x in lost if x[0] not in infl]

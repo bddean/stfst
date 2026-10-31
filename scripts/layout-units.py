@@ -587,26 +587,6 @@ def theory_sides(path):
     return out
 
 
-def theory_outlines(path):
-    """{word: [outline]}: the two-stroke outlines theory.tsv writes, by rank."""
-    from gen.stack import _SYSTEM
-    out = collections.defaultdict(list)
-    with open(path) as f:
-        for line in f:
-            w, rest = line.rstrip("\n").split("\t")
-            _, *prefix, strokes = rest.split(" ")
-            strokes = strokes.split("/")
-            if len(strokes) != 2:
-                continue
-            # an onset, the stress digit, the letters, then `:` and the keys
-            tapes = [re.sub(r"[0-2][A-Z]*:", "", s) for s in strokes]
-            tapes[0] = "".join(sorted(set(tapes[0]) | set("".join(prefix).replace("^", "")), key=TAPE_ORDER.index))
-            o = "/".join(_SYSTEM.outline(t) for t in tapes)
-            if o not in out[w]:
-                out[w].append(o)
-    return out
-
-
 def stress_side(pron):
     """The side of the primary stress a word's other vowels are on: "a" when
     any follows it, "b" when all precede it, "1" for one vowel."""
@@ -644,8 +624,9 @@ def two_syllable_units(words, enc, out):
     its own; `position` is `operand` with the side of the stress the other
     vowel is on (`X:a:E` after it, `X:b:E` before, `X:1:^` for a word of one
     syllable). An outline that caret() does not rebuild stays literal.
-    `encode.fallback` adds outlines after the word's own, as the outlines a
-    word that loses would keep, each alternative tagged with its fallback:
+    The pipeline's own fallbacks are dropped, and `encode.fallback` adds
+    outlines after the word's own, as the outlines a word that loses would
+    keep, each alternative tagged with its fallback:
     `"typey"` its Typey Type outlines, `"theory"` the two strokes theory.tsv
     writes before contract.xfst joins them, or a list of both, in order.
     `encode.reach` is the keys whose chords on the base stroke are asked of
@@ -689,22 +670,19 @@ def two_syllable_units(words, enc, out):
     fallback = enc.get("fallback") or []
     fallback = [fallback] if isinstance(fallback, str) else fallback
     if form == "typey" or "typey" in fallback:
-        # Before e1ceade added `^`, Typey Type wrote these words: its outlines
-        # as the stack has them, and those gen-typey-vowels.py moved aside.
         with open(g.SUPERSEDED) as f:
-            superseded = json.load(f)
-        typey = collections.defaultdict(list)
-        for o, tr in list(g.written().items()) + list(superseded.items()):
-            if o not in typey[tr] and len(o.split("/")) <= 4:
-                typey[tr].append(o)
-        for tr in typey:
-            typey[tr].sort(key=lambda o: o.count("/"))
-        taken.update((o, ("typey-type", tr)) for o, tr in superseded.items())
+            taken.update((o, ("typey-type", tr)) for o, tr in json.load(f).items())
     tagged = {}
     if form == "typey":
+        typey = t.typey_outlines()
         outlines = {w: {o: 0 for o in typey.get(w, [])} for w in outlines}
     else:
-        given = {"typey": lambda: typey, "theory": lambda: theory_outlines(pipe["theory"])}
+        # The pipeline's own fallbacks, whose outlines are tagged here.
+        live = r["fallback"]
+        for w, cs in outlines.items():
+            for o in [o for o in cs if (w, o) in live]:
+                del cs[o]
+        given = {"typey": t.typey_outlines, "theory": t.theory_outlines}
         last = max(c for cs in outlines.values() for c in cs.values())
         for n, name in enumerate(fallback):
             these = given[name]()
