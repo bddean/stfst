@@ -275,6 +275,7 @@ impl Morph {
             "ing" => "ing",
             "ofs" | "s" => "s",
             "ofz" | "z" => "z",
+            "y" => "y",
             _ => return None,
         };
         let lower = word.to_lowercase();
@@ -291,8 +292,26 @@ impl Morph {
                 true => format!("{word}'"),
                 false => format!("{word}'s"),
             },
+            "y" => self.y(word),
             _ => self.join(word, mode),
         })
+    }
+
+    /// -y by rule. A word that ends in y has it: lately stays lately. A coined word
+    /// doubles its consonant only in one syllable: prom is prommy, cover is covery.
+    fn y(&self, word: &str) -> String {
+        let lower = word.to_lowercase();
+        if lower.ends_with('y') {
+            return word.to_string();
+        }
+        let joined = self.join(word, "y");
+        let form = joined.to_lowercase();
+        let doubled = lower.chars().last().is_some_and(|c| form == format!("{lower}{c}y"));
+        let syllables = lower.split(|c| !"aeiouy".contains(c)).filter(|s| !s.is_empty()).count();
+        match doubled && syllables > 1 && self.words.freq(&form).is_none() {
+            true => format!("{word}y"),
+            false => joined,
+        }
     }
 
     /// Plover's choice among the candidates, over a lowercase pair, and the rule
@@ -454,6 +473,21 @@ mod tests {
         assert_eq!(write(&mut text, &press), "capably");
         assert_eq!(write(&mut text, "sad"), "capably sad");
         assert_eq!(write(&mut text, &press), "capably saddle", "a word starts a new climb");
+    }
+
+    #[test]
+    fn y_is_a_word_where_one_is_near() {
+        let Some(m) = morph() else { return };
+        for (word, form) in [
+            ("fun", "funny"),
+            ("lately", "lately"),
+            ("Story", "Story"),
+            ("wording", "wordy"),
+            ("cover", "covery"),
+            ("prom", "prommy"),
+        ] {
+            assert_eq!(m.inflect(word, "y").as_deref(), Some(form), "{word}");
+        }
     }
 
     #[test]

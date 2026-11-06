@@ -89,7 +89,11 @@ def _fold(translator, max_len, stroke):
             mapping = translator._lookup_with_prefix(max_len, translations[:i], prior + [base])
             if mapping is None:
                 continue
-            english = " ".join(x for x in (alt.before, mapping, alt.after) if x)
+            # A word the base already writes at that end is not written again.
+            words = mapping.split()
+            before = "" if [alt.before] == words[:1] else alt.before
+            after = "" if [alt.after] == words[-1:] else alt.after
+            english = " ".join(x for x in (before, mapping, after) if x)
             t = Translation(prior + [stroke], english)
             t.replaced = replaced
             return t

@@ -80,8 +80,8 @@ stays; only `+O` and `+U` can add a vowel key to it.
 | none: one syllable, its plain stroke taken | `^` | matter `^PHART`, since mart is `PHART` |
 
 The i or y mark is also a fold: where nothing holds a stroke, `^+` on it is
-the word the rest writes and -y, joined as `{^y}` joins, so `^+TAOEUP` is
-"typey" and `^+TPUPB` "funny" with no entry for either. It reads the last
+the word the rest writes and `{:infl:y}`, so `^+TAOEUP` is "typey" and `^+TPUPB`
+"funny" with no entry for either, and `^+HRAEULT` is "lately", which has its y. It reads the last
 stroke of an outline too (`KHOBG/^+HRAT` is "chocolaty"). The other marks are
 not: `+` as a- or `^` as -er would write about 1% of their words.
 

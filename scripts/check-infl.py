@@ -48,6 +48,8 @@ def main(limit=20000):
                 form = add_suffix(word, mode)
             pairs.append((word, mode))
             want.append(form)
+        pairs.append((word, "y"))
+        want.append(tables.y_lemma(word) or tables.y_rule(word))
 
     run = subprocess.run([BINARY, "infl", "--pairs", "/dev/stdin"],
                          input="\n".join("%s\t%s" % p for p in pairs) + "\n",
@@ -67,7 +69,9 @@ def main(limit=20000):
                              ("child", "s", "children"), ("foot", "s", "feet"),
                              ("is", "ed", "was"), ("sheep", "s", "sheep"),
                              ("walk", "ed", "walked"), ("carry", "s", "carries"),
-                             ("i", "z", "my"), ("boss", "z", "boss'")]:
+                             ("i", "z", "my"), ("boss", "z", "boss'"),
+                             ("fun", "y", "funny"), ("lately", "y", "lately"),
+                             ("wording", "y", "wordy"), ("cover", "y", "covery")]:
         run = subprocess.run([BINARY, "infl", "--pairs", "/dev/stdin"],
                              input="%s\t%s\n" % (word, mode),
                              capture_output=True, text=True)

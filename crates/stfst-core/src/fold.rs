@@ -22,7 +22,7 @@
 
 use std::fmt;
 
-use crate::record::{Record, RecordError};
+use crate::record::{Item, Record, RecordError};
 use crate::system::{Stroke, System};
 
 pub const FOLD: &str = "[FOLD]";
@@ -139,9 +139,30 @@ pub struct Around {
     pub after: Record,
 }
 
+fn plain(record: &Record) -> Option<&str> {
+    match record.body.as_slice() {
+        [Item::Text(text)] => Some(text),
+        _ => None,
+    }
+}
+
 impl Around {
     pub fn is_empty(&self) -> bool {
         self.before.is_empty() && self.after.is_empty()
+    }
+
+    /// This, less a word the base already writes at that end: `a _` around
+    /// "a little" writes nothing.
+    pub fn beside(&self, base: &Record) -> Around {
+        let words = plain(base).unwrap_or_default();
+        let keep = |side: &Record, word: Option<&str>| match word.is_some() && plain(side) == word {
+            true => Record::default(),
+            false => side.clone(),
+        };
+        Around {
+            before: keep(&self.before, words.split_whitespace().next()),
+            after: keep(&self.after, words.split_whitespace().last()),
+        }
     }
 }
 
@@ -207,6 +228,16 @@ mod tests {
             Err(FoldError::NotAKey("[KEY]".into())),
             Fold::parse_symbols(&["[FOLD]", "[STRIP]", "[KEY]", "[END]"], &sys())
         );
+    }
+
+    #[test]
+    fn around_leaves_out_a_word_the_base_writes() {
+        let a = Around { before: Record::text("a"), after: Record::default() };
+        assert_eq!(Around::default(), a.beside(&Record::text("a little")));
+        assert_eq!(a, a.beside(&Record::text("little a")));
+        let the = Around { before: Record::default(), after: Record::text("the") };
+        assert_eq!(Around::default(), the.beside(&Record::text("of the")));
+        assert_eq!(the, the.beside(&Record::text("the of")));
     }
 
     #[test]

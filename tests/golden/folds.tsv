@@ -35,19 +35,22 @@ T
 +SPHAOEb	[FOLD]a[STRIP]+[END][FOLD]so[STRIP]+SO[END][FOLD]so[STRIP]+S[END]
 +STKPWOE	[FOLD]a[STRIP]+[END][FOLD]so[STRIP]+SO[END][FOLD]so[STRIP]+S[END]
 +WOUfpb	[FOLD][STRIP]f[END]of[FOLD]a[STRIP]+[END][FOLD][STRIP]+Of[END]of[FOLD][STRIP]+f[END]of[FOLD][STRIP]+O[END]of[FOLD][STRIP]+[END]of
-^+PWAOEUbgz	[FOLD][STRIP]z[END][META=infl]ofz[END][FOLD][STRIP]g[END][META=infl]ing[END][FOLD][STRIP]^+z[END]is[FOLD][STRIP]^+[END]is[FOLD][STRIP]^+[END]y[ORTHO_L]
-^+THz	[FOLD][STRIP]z[END][META=infl]ofz[END][FOLD][STRIP]^+z[END]is[FOLD][STRIP]^+[END]is[FOLD][STRIP]^+[END]y[ORTHO_L]
+^+PWAOEUbgz	[FOLD][STRIP]z[END][META=infl]ofz[END][FOLD][STRIP]g[END][META=infl]ing[END][FOLD][STRIP]^+z[END]is[FOLD][STRIP]^+[END]is[FOLD][STRIP]^+[END][META=infl]y[END]
+^+THz	[FOLD][STRIP]z[END][META=infl]ofz[END][FOLD][STRIP]^+z[END]is[FOLD][STRIP]^+[END]is[FOLD][STRIP]^+[END][META=infl]y[END]
 +OUpt	[FOLD][STRIP]t[END]the[FOLD]a[STRIP]+[END][FOLD][STRIP]+Ot[END]to[FOLD][STRIP]+t[END]to[FOLD][STRIP]+O[END]to[FOLD][STRIP]+[END]to
 +TAEUplt	[FOLD][STRIP]t[END]the[FOLD]a[STRIP]+[END]
 ^PHOUs	[FOLD][STRIP]s[END][META=infl]ofs[END]
 +A	[FOLD]a[STRIP]+[END]
 
 ! The i or y mark alone is -y, after the rest, and not on the right bank alone.
-^+TAOEUp	[FOLD][STRIP]^+[END]y[ORTHO_L]
-^+HAps	[FOLD][STRIP]s[END][META=infl]ofs[END][FOLD][STRIP]^+[END]y[ORTHO_L]
-^+HApt	[FOLD][STRIP]t[END]the[FOLD][STRIP]^+[END]y[ORTHO_L]
+^+TAOEUp	[FOLD][STRIP]^+[END][META=infl]y[END]
+^+HAps	[FOLD][STRIP]s[END][META=infl]ofs[END][FOLD][STRIP]^+[END][META=infl]y[END]
+^+HApt	[FOLD][STRIP]t[END]the[FOLD][STRIP]^+[END][META=infl]y[END]
 ^+t	[FOLD][STRIP]t[END]the
 
 ! `@` with a mark is S, so the fold is emily-modifiers' respelling, not these.
 @^+SUpb
 @+TP
+
+! "is a" comes before "a is".
++S	[FOLD][STRIP]+[END]a[FOLD]a[STRIP]+[END]

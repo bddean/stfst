@@ -254,6 +254,11 @@ inflections, exactly.
 Re-inflection falls out of the lemma table and cost nothing: `running` and `ed` is
 `ran`, because the lexicon inflects the lemma and not the form it was handed.
 
+`y` is the -y adjective, for the `^+` fold. A word that ends in y has it, so `lately`
+stays `lately`. Where -y of the word is no word and -y of its lemma is one, the
+lexicon says so: `wording` is `wordy`. A word still coined doubles its consonant
+only in one syllable: `prom` is `prommy`, `cover` is `covery`.
+
 One thing needed deciding rather than porting. `-S` is genuinely ambiguous between a
 plural and a third person, and the plugin resolved it with the tagger, by looking at
 the word before. What resolves it here is the inflection itself: try the noun
@@ -357,7 +362,8 @@ base translates. So `SEFRB/R-GTS` is reservation and then "the", because `R-GS`
 extends `SEFRB`. The base is looked up and not folded again, as in Plover, except
 that an alternative that writes nothing is the stroke respelled, and the
 respelling's alternatives follow it: `@^+UPB` is `^+SUPB`, and that is -y on
-`SUPB`. What goes before the base is a unit of its own, so that alternative only
+`SUPB`. A word the base already writes at that end is not written again, so
+`+HRAEUL` is "a little". What goes before the base is a unit of its own, so that alternative only
 applies where the base begins an outline.
 
 A fold is built only when it can matter, which is a stroke that matched nothing.

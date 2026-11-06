@@ -65,3 +65,14 @@ SKPAD
 ! ---- -T as "the" comes first, but +PWAOBG writes nothing, so it is "back to"
 !buffer
 +PWAOBGT
+! ---- -y is an inflection: a word with its y keeps it, and wording is wordy
+!buffer
+^+HRAEULT
+!buffer
+^+WORGD
+! ---- a word the base already writes is not written again
+!buffer
++HRAEUL
+! ---- "is a" and not "a is"
+!buffer
++S

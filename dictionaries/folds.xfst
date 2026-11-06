@@ -67,6 +67,7 @@ define PutP       [ "[ADD]" P ] ;
 !   ^+TH-Z    ^ + -Z off: TH is "this"                 this is
 !   +OUPT     + O -T off: UP is "up"                   up to
 !   +SPHAOEB  + S- O off: PHAEB is "maybe"            so maybe
+!   +S        + off: S is "is"                         is a
 !
 ! Which words is measured. Most strokes have some base that translates, so
 ! each rule misreads strokes meant for the rules after it. a, of, is and to
@@ -78,12 +79,14 @@ define PlusMark   [ Stroke & [ "+" ?* ] ] ;
 define PlusO      [ PlusMark & $[O] ] ;
 define CaretPlus  [ Stroke & [ "^" "+" ?* ] ] ;
 define SoStroke   [ PlusO & [ "+" S ?* ] ] ;
+define IsA        [ "+" S ] ;
 
-! The i or y mark alone is -y, joined as `{^y}` joins: ^+TAOEUP is "typey".
+! The i or y mark alone is -y, an inflection: ^+TAOEUP is "typey", and ^+HRAEULT
+! is "lately", which has its y already.
 ! Last, so a marked stroke's inflections and "is" come first. A base of the
 ! right bank alone is a suffix key or a function word: ^+-T is not "they".
 define YStroke    [ CaretPlus & $[ S | T | K | P | W | H | R | A | O | E | U ] ] ;
-define Y          [ {y} "[ORTHO_L]" ] ;
+define Y          Infl({y}) ;
 
 ! "is" is S- on a word's stroke, unless S-K-P- says "and", and "it's" is ST-
 ! where T- and the rest is no word: STPHOU is "is now", STPWAD "it's bad". Of
@@ -120,6 +123,7 @@ define Folds [ [ Stroke - $["#"] - [ $["@"] & $["^" | "+"] ] ]
   .o. Lead([ S T ?+ ], {it's}, S T)
   .o. Suffix(t, {the})
   .o. Suffix(f, {of})
+  .o. Beside(IsA, "+", 0, 0, {a})
   .o. Beside(PlusMark, "+", 0, {a}, 0)
   .o. BesideO(SoStroke, [ "+" S ], 0, {so}, 0)
   .o. AfterO(f, {of})

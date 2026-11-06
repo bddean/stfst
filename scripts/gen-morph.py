@@ -12,7 +12,8 @@ what a host needs to join a suffix is vocabulary, and vocabulary is data:
   infl.lexc   lemminflect's inflection tables, `word ^ mode` to form, for the
               `{:infl:…}` meta. This is the `run` to `ran` half: `plover-
               semantic-suffixes` uses lemminflect and no rule can know that a
-              verb is irregular.
+              verb is irregular. `y` holds the forms whose lemma makes the word:
+              wording is wordy.
 
 Neither is committed. Both are derived from third-party assets that are already
 installed, they are large, and a build machine that has Plover has them.
@@ -153,6 +154,9 @@ def main(out_dir):
                 agreed += 1
                 continue
             pairs.append(("%s^%s" % (word, mode), form))
+        form = tables.y_lemma(word)
+        if form is not None:
+            pairs.append(("%s^y" % word, form))
     with open(os.path.join(out_dir, "infl.lexc"), "w") as f:
         f.write(entries(pairs))
     print("infl.lexc: %d entries the rules get wrong, %d they already get right"

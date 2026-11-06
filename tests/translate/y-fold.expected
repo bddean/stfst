@@ -1,10 +1,12 @@
-^+TAOEUP	1	vowel-briefs+_ y[ORTHO_L]	type	"typey"
+^+TAOEUP	1	vowel-briefs+_ [META=infl]y[END]	type	"typey"
 ^+PRAOEUS	1	two-syllable	pricey	"typey pricey"
 ^+HAP	1	two-syllable	happy	"typey pricey happy"
-^+TPUPB	1	typey-type+_ y[ORTHO_L]	fun	"typey pricey happy funny"
+^+TPUPB	1	typey-type+_ [META=infl]y[END]	fun	"typey pricey happy funny"
 ^+ARPLS	1	two-syllable+_ [META=infl]ofs[END]	army	"typey pricey happy funny armies"
 ^+WHAT	1	two-word	what it	"typey pricey happy funny armies what it"
 KHOBG	1	typey-type	chock	"typey pricey happy funny armies what it chock"
-^+HRAT	2	typey-type+_ y[ORTHO_L]	chocolate	"typey pricey happy funny armies what it chocolaty"
+^+HRAT	2	typey-type+_ [META=infl]y[END]	chocolate	"typey pricey happy funny armies what it chocolaty"
 ^+-D	-	"typey pricey happy funny armies what it chocolaty"
-! 9 strokes, 3 candidates at the widest
+^+HRAEULT	1	typey-type+_ [META=infl]y[END]	lately	"typey pricey happy funny armies what it chocolaty lately"
+^+WORGD	1	typey-type+_ [META=infl]y[END]	wording	"typey pricey happy funny armies what it chocolaty lately wordy"
+! 11 strokes, 3 candidates at the widest

@@ -424,12 +424,13 @@ impl<'a> Session<'a> {
                     continue;
                 }
                 if let Some((dict, emissions, window)) = self.replay(start, *base, &span)? {
+                    let first = emissions.first().map(|e| e.record.clone()).unwrap_or_default();
                     return Ok(Some(Match {
                         dict,
                         strokes: self.history.len() - start,
                         emissions,
                         window,
-                        fold: Some(around.clone()),
+                        fold: Some(around.beside(&first)),
                     }));
                 }
             }

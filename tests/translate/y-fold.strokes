@@ -1,5 +1,5 @@
 ! `^+` alone is -y on the word the rest writes, where nothing holds the stroke,
-! joined as `{^y}` joins: typey, and pricey keeps its entry for "price is".
+! an inflection: typey, and pricey keeps its entry for "price is".
 ^+TAOEUP
 ^+PRAOEUS
 ! An entry wins: ^+HAP is happy, whatever HAP and -y would be.
@@ -15,3 +15,6 @@ KHOBG
 ^+HRAT
 ! A base of the right bank alone takes no -y.
 ^+-D
+! A word with its y keeps it, and an inflected word's -y is its lemma's.
+^+HRAEULT
+^+WORGD
