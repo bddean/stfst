@@ -56,6 +56,7 @@ is `S`: `^@TP` is `^STP`.
 | phrasing | A clause grammar on `#`: subject, modality, aspect, negation and verb in one stroke. |
 | two-syllable, two-word | A two-syllable word, or two short words, in one stroke: the stressed syllable, marked with the other vowel's letter (happy is `^+HAP`, at all is `+TAUL`). See [the mark](#the-two-syllable-mark). |
 | affixes | A stem's stroke, then one stroke for its prefix and suffix. |
+| k-prefix | `K` as the first stroke of a word that starts con, com, col or cor: concept `K/SEPT`, compute `K/PAOUT`. |
 | folds | A stroke nothing matched, read as a word plus "the", "of", "and" or "so" (`KAOEPT` is "keep the"), or with `^+` as the word and -y (`^+TAOEUP` is "typey"). |
 | frames, ahead | Write a frame now and fill it later: `STPR*T` writes "from to", and "here" makes it "from here to". |
 | retro-words | Recase, join and split the last words written. |

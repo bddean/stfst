@@ -211,6 +211,12 @@ generator = "scripts/gen-affixes.py"
 pipeline = ["affix-stems", "written", "split", "theory", "contract", "caret"]
 
 [[dict]]
+name = "k-prefix"
+priority = 31
+json = "dictionaries/k-prefix.json"
+generator = "scripts/gen-k-prefix.py"
+
+[[dict]]
 name = "typey-type"
 priority = 30
 json = "dictionaries/typey-type-full.json"

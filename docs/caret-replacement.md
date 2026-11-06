@@ -139,9 +139,9 @@ Strict steno order was tried first and lost more (report would be `^RORT`).
 | Union | 491 (1.280%) | 1.014 |
 | Strict steno order, word order wins | 591 (1.604%) | 1.017 |
 | Chords whole, stressed onset wins | 555 (1.725%) | 1.018 |
-| **Chords whole, word's onset wins** | **513 (1.326%)** | **1.014** |
+| **Chords whole, word's onset wins** | **514 (1.324%)** | **1.014** |
 
-These are from a simulation of the rule through the resolver.
+The chosen row is as built; the others are a simulation through the resolver.
 
 Other dictionaries give `^` and `+` meanings of their own. Each holds its own
 outlines, and the resolver leaves an outline another dictionary writes to it,

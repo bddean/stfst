@@ -16,7 +16,7 @@ ROUNDS=${ROUNDS:-5}
 # Dependency order: the lexicon reads the vowel theory's Typey Type, the theory's
 # tables read it too, the pipelines read both, and the vowel theory reads
 # two-syllable.json and the affixes' golden file.
-GENERATORS=(gen-typey-vowels gen-lexicon gen-theory gen-two-syllable gen-two-word gen-affixes)
+GENERATORS=(gen-typey-vowels gen-lexicon gen-theory gen-two-syllable gen-two-word gen-affixes gen-k-prefix)
 
 cargo build --release -q -p stfst-cli
 compile() {
