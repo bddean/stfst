@@ -128,6 +128,21 @@ constituency are both `^STEUPBTS`), and 75 of the 538 words without a stroke
 of their own are inflections. `stfst-layout layouts/stfst-or-plus-theory.toml`
 on the current stack agrees with the generator.
 
+Later, the left bank stopped being a plain union, which split chords: `frontier`
+was `+TPHRAOER`, where fr `TPR` holds the H of n `TPH`. Now the word's onset
+stays, then the stressed onset where it splits nothing, then each sound that
+crossed where it splits neither (`contract.xfst`), so `frontier` is `+TPRAOER`.
+Strict steno order was tried first and lost more (report would be `^RORT`).
+
+| Left bank | On the theory's two strokes | Strokes/word |
+|---|---|---|
+| Union | 491 (1.280%) | 1.014 |
+| Strict steno order, word order wins | 591 (1.604%) | 1.017 |
+| Chords whole, stressed onset wins | 555 (1.725%) | 1.018 |
+| **Chords whole, word's onset wins** | **513 (1.326%)** | **1.014** |
+
+These are from a simulation of the rule through the resolver.
+
 Other dictionaries give `^` and `+` meanings of their own. Each holds its own
 outlines, and the resolver leaves an outline another dictionary writes to it,
 so where a mark lands on one the word falls back:

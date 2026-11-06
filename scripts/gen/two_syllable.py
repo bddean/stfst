@@ -14,8 +14,9 @@ left is one stroke:
 - One syllable is a plain stroke (river), or the same keys with `^` where the
   plain stroke is taken: matter is `^PHART`, since mart is `PHART`.
 - Two are one syllable around the stressed vowel, marked by the other
-  vowel's first letter: the left bank is every consonant before it, the right
-  bank every consonant after it, and the chord is its own. The mark is `+` for
+  vowel's first letter: the left bank is the consonants before it, less any
+  that would split a chord, the right bank every consonant after it, and the
+  chord is its own. The mark is `+` for
   a, `^` for e, `^+` for i and y, `+O` for o and `+U` for u, its keys OR'd into
   the stroke. An r-coloured other vowel is its R, and it and a syllable a
   rewrite dropped are `^`. So report is `^PRORT`, happy `^+HAP`, city

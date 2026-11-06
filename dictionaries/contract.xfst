@@ -11,6 +11,11 @@
 ! two cross to the stressed stroke's side, read by the key's sound (-PB is
 ! TPH, TK is -D).
 !
+! On the left bank, the keys of each chord stay next to each other. So the
+! word's onset stays, then the stressed onset where it splits nothing, then
+! each sound that crossed where it splits neither (frontier is +TPRAOER, with
+! no N and no H).
+!
 !     report     1 R0E:E/P1:Ort    ->  1 ^E PROrt
 !     happy      1 H1:Ap/0EU:EU    ->  1 ^EU HAp
 !     pirouette  1 P0EU:EUr/W1:Et  ->  1 ^EU PWREt
@@ -19,10 +24,12 @@
 ! plain stroke, or a prefix's cluster, which takes the place of `^`.
 
 ! Keys crossing to the other bank, by their sound.
-define ToLeft   [ {pblg} -> {SKWR} ] .o. [ {fp} -> {KH} ] .o. [ {rb} -> {SH} ] .o. [ {pb} -> {TPH} ]
-            .o. [ {pl} -> {PH} ] .o. [ {bg} -> K ] .o. [ f -> {TP} ] .o. [ r -> R ] .o. [ p -> P ]
-            .o. [ b -> {PW} ] .o. [ l -> {HR} ] .o. [ g -> {TKPW} ] .o. [ t -> T ] .o. [ s -> S ]
-            .o. [ d -> {TK} ] .o. [ z -> S ] ;
+define Sep      "," ;
+define ToLeft   [ {pblg} -> {SKWR} Sep ] .o. [ {fp} -> {KH} Sep ] .o. [ {rb} -> {SH} Sep ]
+            .o. [ {pb} -> {TPH} Sep ] .o. [ {pl} -> {PH} Sep ] .o. [ {bg} -> K Sep ] .o. [ f -> {TP} Sep ]
+            .o. [ r -> R Sep ] .o. [ p -> P Sep ] .o. [ b -> {PW} Sep ] .o. [ l -> {HR} Sep ]
+            .o. [ g -> {TKPW} Sep ] .o. [ t -> T Sep ] .o. [ s -> S Sep ] .o. [ d -> {TK} Sep ]
+            .o. [ z -> S Sep ] ;
 define ToRight  [ {STKPW} -> z ] .o. [ {TKPW} -> g ] .o. [ {SKWR} -> {pblg} ] .o. [ {KWR} -> 0 ]
             .o. [ {TPH} -> {pb} ] .o. [ {PH} -> {pl} ] .o. [ {PW} -> b ] .o. [ {TK} -> d ] .o. [ {TP} -> f ]
             .o. [ {SR} -> f ] .o. [ {HR} -> l ] .o. [ {KH} -> {fp} ] .o. [ {SH} -> {rb} ] .o. [ {TH} -> t ]
@@ -39,7 +46,7 @@ define Seam     "|" ;
 define Caret    [ [ 0 | Del("^" Gap) | LeftKey+ Del(Gap) ] Ins("^" Gap) ] ;
 
 define Single   [ Rank Gap [ Ins("-" Gap) | Ins("^" Gap) | Lead Gap ] LeftKey* Del("1" ":") VowelKeys RightKey* ] ;
-define Second   [ Rank Gap Caret LeftKey* Trace Crossed(RightKey*, ToLeft) Del("/") Ins(Seam)
+define Second   [ Rank Gap Caret LeftKey* Ins(Sep) Trace Crossed(RightKey*, ToLeft) Del("/") Ins(Seam)
                   LeftKey* Del("1" ":") VowelKeys RightKey* ] ;
 define First    [ Rank Gap Caret LeftKey* Del("1" ":") VowelKeys RightKey* Del("/") Ins(Seam)
                   Crossed(LeftKey*, ToRight) Trace RightKey* ] ;
@@ -54,9 +61,39 @@ define Untrace  [ Carry(U) .o. Carry(E) .o. Carry(O) .o. Carry(A) .o. [ "~" -> 0
 ! or W that would make another chord with them (perhaps is not pl), and a y,
 ! which is the vowel's glide (do you).
 define Alone    [ ? - LeftKey ] ;
-define Combine  [ [ [ Seam H ] -> Seam || LeftKey _ Alone ] .o. [ [ Seam W ] -> Seam || [ P | K ] _ Alone ]
-                .o. [ [ Seam {KWR} ] -> Seam || LeftKey _ Alone ] .o. [ Seam -> 0 ] ] ;
+define Combine  [ [ [ Seam H ] -> Seam || LeftKey Sep* _ Alone ] .o. [ [ Seam W ] -> Seam || [ P | K ] Sep* _ Alone ]
+                .o. [ [ Seam {KWR} ] -> Seam || LeftKey Sep* _ Alone ] ] ;
+
+! The left bank of a stroke that crossed: the word's onset, each sound that
+! crossed, and the stressed onset. A chord with keys on both sides of K and not
+! K, `Lo+ Hi+`, is split by a chord that has K.
+define Chord    [ (S) (T) (K) (P) (W) (H) (R) ] ;
+define Sound    [ {SKWR} | {KH} | {SH} | {TPH} | {PH} | K | {TP} | R | P | {PW} | {HR} | {TKPW} | T | S | {TK} ] ;
+define Piece    [ Sound Sep ] ;
+define Bank     [ Chord Sep Piece* Seam Chord ] ;
+define Has(K)   [ Chord & $[K] ] ;
+define Split(Lo, Hi) [ Chord & [ Lo+ Hi+ ] ] ;
+define Drop(X)  [ [ Piece - [ X Sep ] ] | Del(X Sep) ]* ;
+
+define OnsetFits(X, Y) [ [ X Sep Piece* Seam Del(Y) ] | [ Y Sep Piece* Seam Del(X) ]
+                       | [ Bank - [ X Sep Piece* Seam Y ] - [ Y Sep Piece* Seam X ] ] ] ;
+define SoundFits(X, Y) [ [ [ X Sep Drop(Y) Seam Chord ] | [ Y Sep Drop(X) Seam Chord ]
+                         | [ [ Chord - X - Y ] Sep Piece* Seam Chord ] ]
+                     .o. [ [ Chord Sep Drop(Y) Seam X ] | [ Chord Sep Drop(X) Seam Y ]
+                         | [ Chord Sep Piece* Seam [ Chord - X - Y ] ] ] ] ;
+
+define SpT      Split(S, [ K | P | W | H | R ]) ;
+define SpK      Split([ S | T ], [ P | W | H | R ]) ;
+define SpP      Split([ S | T | K ], [ W | H | R ]) ;
+define SpW      Split([ S | T | K | P ], [ H | R ]) ;
+define SpH      Split([ S | T | K | P | W ], R) ;
+define Fit      [ OnsetFits(SpT, Has(T)) .o. OnsetFits(SpK, Has(K)) .o. OnsetFits(SpP, Has(P))
+              .o. OnsetFits(SpW, Has(W)) .o. OnsetFits(SpH, Has(H))
+              .o. SoundFits(SpT, Has(T)) .o. SoundFits(SpK, Has(K)) .o. SoundFits(SpP, Has(P))
+              .o. SoundFits(SpW, Has(W)) .o. SoundFits(SpH, Has(H)) ] ;
+define Fitted   [ [ Rank Gap [ ? - Gap ]* Gap Fit VowelKeys RightKey* ] | ~$[ Sep ] ] ;
+define Close    [ [ Seam | Sep ] -> 0 ] ;
 
 define Banks    [ Rank Gap [ ? - Gap ]* Gap [ LeftKey* .o. LeftBank ] VowelKeys [ RightKey* .o. RightBank ] ] ;
 
-define Stage    [ Strokes .o. [ Single | Second | First ] .o. Untrace .o. Combine .o. Banks ] ;
+define Stage    [ Strokes .o. [ Single | Second | First ] .o. Untrace .o. Combine .o. Fitted .o. Close .o. Banks ] ;
