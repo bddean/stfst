@@ -4,6 +4,6 @@
 @S-F	1	emily-modifiers	[KEY]s[CTRL][END]	"sever service sever"
 @^+TP	-	"sever service sever"
 !buffer	""
-@^+SUPB	1	two-syllable+_	sunny	"sunny"
-@^+UPB	1	two-syllable+_	sunny	"sunny sunny"
+@^+SUPB	1	typey-type+_ [META=infl]y[END]	sun	"sunny"
+@^+UPB	1	typey-type+_ [META=infl]y[END]	sun	"sunny sunny"
 ! 7 strokes, 2 candidates at the widest

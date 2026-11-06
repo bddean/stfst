@@ -5,7 +5,6 @@ import copy
 import importlib.util
 import json
 import os
-import re
 import subprocess
 import tomllib
 
@@ -18,6 +17,7 @@ from . import DICTS, PLOVER, RECIPE, ROOT, SYSTEM
 _SYSTEM = plover_tape.System.load(SYSTEM)
 # A fold names keys by tape symbol, and so does this module.
 _KEYS = {k: k for k in _SYSTEM.order}
+Y = "{:infl:y}"
 
 
 class Stack:
@@ -76,8 +76,8 @@ class Stack:
     def folds(self, outlines):
         """{outline: (translation, base)} for each of `outlines` a fold would
         write if no entry held it: the first alternative whose base the stack
-        writes, and what the stack writes for that base. A suffix after it is
-        joined as the host joins it: TAOEUP and `{^y}` is "typey"."""
+        writes, and what the stack writes for that base. -y after it is
+        inflected as the host inflects it: TAOEUP and `{:infl:y}` is "typey"."""
         out = {}
         for o in sorted(set(outlines)):
             tape = _SYSTEM.tape(o)
@@ -89,12 +89,11 @@ class Stack:
                 if (found := self.ask([base]).get(base)):
                     out[o] = (alt.before, found[0][1], alt.after)
                     break
-        suffix = lambda after: m[1] if (m := re.fullmatch(r"\{\^([a-z]+)\}", after)) else None
-        joins = joined({(word, s) for _, word, after in out.values() if (s := suffix(after))})
+        forms = inflected({word for _, word, after in out.values() if after == Y})
 
         def text(before, word, after):
-            if (s := suffix(after)):
-                word, after = joins[word, s], ""
+            if after == Y:
+                word, after = forms[word], ""
             return " ".join(x for x in (before, word, after) if x)
         return {o: (text(*parts), parts[1]) for o, parts in out.items()}
 
@@ -122,16 +121,15 @@ class Stack:
         return [t for t in translations if not any(answers[o][0][1] == t for o in by[t])]
 
 
-def joined(pairs):
-    """{(word, suffix): the two joined}, as `{^suffix}` joins them: Plover's
-    orthography, then a completion where that makes no word."""
-    pairs = sorted(pairs)
-    if not pairs:
+def inflected(words):
+    """{word: its -y form}, as the host inflects it."""
+    words = sorted(words)
+    if not words:
         return {}
-    run = subprocess.run([os.path.join(ROOT, "target", "release", "stfst"), "ortho", "--complete",
-                          "--pairs", "/dev/stdin"], input="".join(f"{w}\t{s}\n" for w, s in pairs),
-                         capture_output=True, text=True, cwd=ROOT, check=True)
-    return dict(zip(pairs, run.stdout.splitlines()))
+    run = subprocess.run([os.path.join(ROOT, "target", "release", "stfst"), "infl", "--pairs", "/dev/stdin"],
+                         input="".join(f"{w}\ty\n" for w in words), capture_output=True, text=True, cwd=ROOT,
+                         check=True)
+    return dict(zip(words, run.stdout.splitlines()))
 
 
 def retro_words():
