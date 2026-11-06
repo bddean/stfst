@@ -6,3 +6,9 @@
 @^S*EFR
 ! without a marker `@` is the modifiers' namespace, S included: ctrl-S
 @S-F
+! with a mark no fold reads `@` as the modifiers' namespace, and ^+STP has no base
+@^+TP
+! the folds of the stroke with S in `@`'s place apply: sun and -y
+!buffer
+@^+SUPB
+@^+UPB

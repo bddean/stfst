@@ -100,6 +100,7 @@ define Letter   [ ~NumberMode .o. [ Kill("@") Chord Mod (Kill({z})) ]
 
 ! A fold, so it applies only where nothing matched the stroke as written, and
 ! the base is whatever the stack writes for it: `^@TP` is `^STP`, `^@STP` too.
+! It writes nothing, so a host tries the base's own folds as well.
 ! `#` and `🦐` are other dictionaries' keys.
 define AsS      [ [ [ Stroke & $["@"] & $["^" | "+"] ] - $["#" | "🦐"] ]
                   .x. [ "[FOLD]" "[STRIP]" "@" "[ADD]" S "[END]" ] ] ;

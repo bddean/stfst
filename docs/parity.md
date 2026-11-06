@@ -354,9 +354,11 @@ The host's order is Plover's. A fold is tried only where nothing matched the str
 as written, so `PWABGS` never folds: it has an entry of its own. Then the longest
 outline the base can end comes first, and among those the first alternative whose
 base translates. So `SEFRB/R-GTS` is reservation and then "the", because `R-GS`
-extends `SEFRB`. The base is looked up and not folded again, as in Plover. What
-goes before the base is a unit of its own, so that alternative only applies where
-the base begins an outline.
+extends `SEFRB`. The base is looked up and not folded again, as in Plover, except
+that an alternative that writes nothing is the stroke respelled, and the
+respelling's alternatives follow it: `@^+UPB` is `^+SUPB`, and that is -y on
+`SUPB`. What goes before the base is a unit of its own, so that alternative only
+applies where the base begins an outline.
 
 A fold is built only when it can matter, which is a stroke that matched nothing.
 Building one as each stroke arrived cost a cursor per key per candidate on every

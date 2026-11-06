@@ -2,4 +2,8 @@
 @^+*EFRBS	1	two-syllable+_	service	"sever service"
 @^S*EFR	1	two-syllable+_	sever	"sever service sever"
 @S-F	1	emily-modifiers	[KEY]s[CTRL][END]	"sever service sever"
-! 4 strokes, 2 candidates at the widest
+@^+TP	-	"sever service sever"
+!buffer	""
+@^+SUPB	1	typey-type+_ y[ORTHO_L]	sun	"sunny"
+@^+UPB	1	typey-type+_ y[ORTHO_L]	sun	"sunny sunny"
+! 7 strokes, 2 candidates at the widest

@@ -39,6 +39,7 @@ DEFAULT = [
     "tests/retro-words/ops.strokes",
     "tests/translate/complete.strokes",
     "tests/translate/ladder.strokes",
+    "tests/translate/marker-s.strokes",
 ]
 
 

@@ -20,7 +20,7 @@
 //! state as they were at `p`, and replay has to reproduce them. So undo is a pop
 //! and redo is a replay, which is what host contract items 5 and 6 ask for.
 
-use stfst_core::{Alternative, Around, Context, Emission, Prefix, Record, Shown, State, Stroke, Window};
+use stfst_core::{Around, Context, Emission, Prefix, Record, Shown, State, Stroke, Window};
 use stfst_ol::Cursor;
 
 use crate::{Dict, DictError, Stack};
@@ -393,7 +393,8 @@ impl<'a> Session<'a> {
     ///
     /// Longest first, and among equals the first alternative, which is Plover's
     /// order: `SEFRB/R-GTS` folds `-T` onto reservation before it tries `R-GS`
-    /// alone. The base is looked up and not folded again, as Plover does.
+    /// alone. The base is looked up and not folded again, as Plover does, except
+    /// that a respelling's alternatives are the stroke's too.
     ///
     /// Built here rather than as the strokes arrive. A fold can only matter on a
     /// stroke that matched nothing, which is the rare case, and building it eagerly
@@ -407,8 +408,8 @@ impl<'a> Session<'a> {
             return Ok(None);
         };
         let stroke = self.history[newest];
-        let alternatives = self.alternatives(newest, stroke)?;
-        if alternatives.is_empty() {
+        let reads = self.reads(newest, stroke)?;
+        if reads.is_empty() {
             return Ok(None);
         }
         // A start live before the last stroke, whether or not it survived the
@@ -416,22 +417,19 @@ impl<'a> Session<'a> {
         // died on `R-GSZ`.
         let oldest = newest.checked_sub(1).map_or(newest, |p| self.oldest[p]);
         for start in (oldest..=newest).filter(|&s| self.begins_unit(s)) {
-            for alt in &alternatives {
+            for (around, base) in &reads {
                 // What goes before the base is a unit of its own, so the base has
                 // to begin one.
-                if start < newest && !alt.around.before.is_empty() {
+                if start < newest && !around.before.is_empty() {
                     continue;
                 }
-                let Some(base) = alt.base(stroke) else {
-                    continue;
-                };
-                if let Some((dict, emissions, window)) = self.replay(start, base, &span)? {
+                if let Some((dict, emissions, window)) = self.replay(start, *base, &span)? {
                     return Ok(Some(Match {
                         dict,
                         strokes: self.history.len() - start,
                         emissions,
                         window,
-                        fold: Some(alt.around.clone()),
+                        fold: Some(around.clone()),
                     }));
                 }
             }
@@ -439,9 +437,23 @@ impl<'a> Session<'a> {
         Ok(None)
     }
 
-    /// Every fold alternative the stack holds for one stroke, highest dictionary
-    /// first.
-    fn alternatives(&self, at: usize, stroke: Stroke) -> Result<Vec<Alternative>, DictError> {
+    /// What a fold writes around each base it reads one stroke as, in the order
+    /// to try them. A respelling's alternatives come right after it.
+    fn reads(&self, at: usize, stroke: Stroke) -> Result<Vec<(Around, Stroke)>, DictError> {
+        let mut out = Vec::new();
+        for (around, base) in self.alternatives(at, stroke)? {
+            let respelled = around.is_empty();
+            out.push((around, base));
+            if respelled {
+                out.extend(self.alternatives(at, base)?);
+            }
+        }
+        Ok(out)
+    }
+
+    /// Every fold alternative the stack holds for one stroke, as what it writes
+    /// and its base, highest dictionary first.
+    fn alternatives(&self, at: usize, stroke: Stroke) -> Result<Vec<(Around, Stroke)>, DictError> {
         let mut out = Vec::new();
         for (dict, slot) in self.stack.dicts().iter().enumerate() {
             let Some(entry) = slot.compiled() else {
@@ -453,7 +465,10 @@ impl<'a> Session<'a> {
             let mut cursor = entry.cursor(&self.prefix(at, dict));
             entry.feed(&mut cursor, stroke, false);
             for fold in entry.folds(&cursor, self.stack.system())? {
-                out.extend(fold.0);
+                out.extend(fold.0.into_iter().filter_map(|alt| {
+                    let base = alt.base(stroke)?;
+                    Some((alt.around, base))
+                }));
             }
         }
         Ok(out)

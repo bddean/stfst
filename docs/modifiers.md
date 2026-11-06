@@ -60,7 +60,8 @@ The payload's binary reading is arithmetic: `R` is 1, `W` is 2, up to `T` at 64,
 plus 128 for `^` and 256 for `#`. xfst has no arithmetic, so this is either a
 double-and-add cascade or a table of 512 rows, and the generator writes the table.
 The grammar reads neither high bit: `#` is phrasing's, and with `^` or `+` held
-`@` is `S`, a fold onto the stroke with `S` in its place (`^@TP` is `^STP`).
+`@` is `S`, a fold onto the stroke with `S` in its place (`^@TP` is `^STP`), and
+that stroke's own folds apply.
 
 Enumerating a rule is usually the thing this format exists to avoid, so it is
 worth being precise about why it is right here. The function is finite: nine bits,

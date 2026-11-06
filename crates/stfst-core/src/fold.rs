@@ -15,6 +15,10 @@
 //! translates. A host asks only where nothing matched the stroke as written,
 //! and tries the longest outline the base can end first, which is Plover's
 //! order for its suffix keys.
+//!
+//! An alternative that writes nothing is the stroke respelled, as `^@TP` is
+//! `^STP`. The respelling's own alternatives follow it, so `@^+UPB` is `^+SUPB`
+//! and that stroke's -y: "sunny".
 
 use std::fmt;
 
@@ -133,6 +137,12 @@ pub struct Around {
     pub before: Record,
     /// Written after the unit the base completes.
     pub after: Record,
+}
+
+impl Around {
+    pub fn is_empty(&self) -> bool {
+        self.before.is_empty() && self.after.is_empty()
+    }
 }
 
 impl fmt::Display for Around {

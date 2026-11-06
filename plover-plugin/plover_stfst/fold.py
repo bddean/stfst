@@ -44,9 +44,30 @@ def _alternatives(translator, stroke):
     return out
 
 
+def _based(alts, stroke):
+    for alt in alts:
+        base = alt.base(stroke.keys())
+        if base is not None:
+            yield alt, Stroke(sorted(base))
+
+
+def _reads(translator, stroke):
+    """Each alternative with its base, in the order to try them.
+
+    An alternative that writes nothing is the stroke respelled, and the
+    respelling's alternatives come right after it.
+    """
+    out = []
+    for alt, base in _based(_alternatives(translator, stroke), stroke):
+        out.append((alt, base))
+        if not (alt.before or alt.after):
+            out.extend(_based(_alternatives(translator, base), base))
+    return out
+
+
 def _fold(translator, max_len, stroke):
-    alts = _alternatives(translator, stroke)
-    if not alts:
+    reads = _reads(translator, stroke)
+    if not reads:
         return None
     # The translations a match may take over, as Plover counts them.
     translations = translator.get_state().translations
@@ -60,15 +81,11 @@ def _fold(translator, max_len, stroke):
     for i in range(len(translations) + 1):
         replaced = translations[i:]
         prior = [s for t in replaced for s in t.strokes]
-        for alt in alts:
+        for alt, base in reads:
             # What goes before the base is a unit of its own, so the base has to
             # begin one.
             if alt.before and prior:
                 continue
-            base = alt.base(stroke.keys())
-            if base is None:
-                continue
-            base = Stroke(sorted(base))
             mapping = translator._lookup_with_prefix(max_len, translations[:i], prior + [base])
             if mapping is None:
                 continue

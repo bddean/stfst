@@ -103,9 +103,11 @@ define AfterO(C, Af) [ BesideO([ PlusO & $[C] ], "+", C, 0, Af) .o. BesideO([ Pl
 define AfterI(C, Af) [ Beside([ CaretPlus & $[C] ], [ "^" "+" ], C, 0, Af)
                      .o. Beside([ CaretPlus & $[C] ], [ "^" "+" ], 0, 0, Af) ] ;
 
-! `#` is phrasing's, so no fold reads a stroke that holds it. A suffix comes
-! before a word, so a two-syllable word's marked stroke keeps its inflections.
-define Folds [ [ Stroke - $["#"] ]
+! `#` is phrasing's, so no fold reads a stroke that holds it. With a mark, `@` is
+! S, so emily-modifiers' fold respells the stroke and these read the respelling.
+! A suffix comes before a word, so a two-syllable word's marked stroke keeps its
+! inflections.
+define Folds [ [ Stroke - $["#"] - [ $["@"] & $["^" | "+"] ] ]
   .o. And(AndH, PutT)
   .o. And(AndStroke, 0)
   .o. And([ AndStroke - AndH ], PutT)

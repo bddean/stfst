@@ -81,7 +81,9 @@ entry. `stfst_core::fold` is the record and `docs/parity.md` the host's half.
 The base is looked up and not folded again. So a generated dictionary drops an
 entry a fold writes as it does only where nothing else wants the stroke and no
 inflection of the word is one: two-syllable has no `^+TPUPB` for funny, but
-keeps `^+ARPL` for army, or `^+ARPLS` would not be armies.
+keeps `^+ARPL` for army, or `^+ARPLS` would not be armies. The exception is a
+fold that writes nothing, which respells the stroke: `@` with `^` or `+` is `S`,
+and the respelled stroke's folds apply.
 
 `retro-words` has no reverse automaton, and that is not an omission: it rewrites
 text rather than writing a word, so the question a suggestion window asks has no

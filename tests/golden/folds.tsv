@@ -47,3 +47,7 @@ T
 ^+HAps	[FOLD][STRIP]s[END][META=infl]ofs[END][FOLD][STRIP]^+[END]y[ORTHO_L]
 ^+HApt	[FOLD][STRIP]t[END]the[FOLD][STRIP]^+[END]y[ORTHO_L]
 ^+t	[FOLD][STRIP]t[END]the
+
+! `@` with a mark is S, so the fold is emily-modifiers' respelling, not these.
+@^+SUpb
+@+TP
