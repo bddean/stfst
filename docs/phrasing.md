@@ -37,11 +37,11 @@ T P W H  the subject    *  negation                E U    aspect
 | `H` | he | | `PWH` | what |
 | `PH` | she | | `WH` | the {noun} |
 | `TP` | it | | `TPW` | a(n) {noun} |
-| `TH` | we | | `TWH` | to (infinitive) |
+| `TH` | we | | `TWH` | free |
 | `TPH` | they | | `TPWH` | there |
-| none | no subject, 3sg: `#-B` "adds" | | `W` | no subject, plural: `#W-B` "add" |
+| none | to (infinitive): `#-B` "to add" | | `W` | no subject, plural: `#W-B` "add" |
 
-The two with no subject need a verb. There is no plural bit: "these", "those",
+`W` needs a verb. There is no plural bit: "these", "those",
 "one", the wh-words but "what", the passive and the imperative are gone. A clause
 takes one conjunction: `S` is "but", `SK` "and" and `K` "if", with any subject.
 "if" takes no question, no infinitive and no clause without a subject.
@@ -153,13 +153,14 @@ bank's redesign, not this one.
 
 ## The infinitive and the clause with no subject
 
-`TWH` is the nonfinite "to" clause. It has no subject and no agreement, so
-modality, tense and the question have nothing to inflect and are ignored.
-Negation is "not to", and "and" or "but" goes before it.
+A clause with no subject keys is the nonfinite "to" clause: `#-B` is "to add".
+It has no subject and no agreement, so modality, tense and the question have
+nothing to inflect and are ignored. Negation is "not to", and "and" or "but"
+goes before it. An empty slot is "be": `#` alone is "to be".
 
-`#-B` and `#W-B` name no subject and need a verb: "adds", "add", "can add",
-"are adding". `[NOAUX]` is what tells `Arrange` the clause opens on a word
-rather than on a subject.
+`#W-B` names no subject and needs a verb: "add", "can add", "are adding".
+`[NOAUX]` is what tells `Arrange` the clause opens on a word rather than on a
+subject.
 
 ## Contraction is a priority union
 
@@ -248,7 +249,7 @@ writes lands there.
 #@TUR     TPHEFR    ->   I've never worked
 #@T*R     AULS      ->   I don't always work
 #@+TP-R   OFPB      ->   does it often work
-#@TWH-R   HRAOERL   ->   to really work
+#@-R      HRAOERL   ->   to really work
 #@TROB   OFPB      ->   I often have to add
 ```
 
@@ -282,13 +283,13 @@ no auxiliary has no full form to undo, so `^` gives it one: `do`, which is what
 ```
 #^T-G     ->   I do go
 #^T-GD    ->   I did go
-#^-B      ->   does add
+#^W-B     ->   do add
 #^TROG   ->   I do have to go
 #^TAG    ->   so I can go
 #^STKAG  ->   and so I can go
 #^STAG   ->   but I can go
-#^TWH-G   ->   in order to go
-#^TWH*G  ->   in order not to go
+#^-G     ->   in order to go
+#^*G     ->   in order not to go
 ```
 
 `Chain` reads `[FULL]` as a reason for do-support, as it reads a question. "have
@@ -442,7 +443,7 @@ $ stfst reverse build/dicts/phrasing.stfst --system systems/stenotype-extended.t
 it's                 #TP      #TPU     #TPE     #@TP    ...
 it is not            #^TP*    #@^TP*  #^TP*E   #@^TP*E
 we weren't           #TH*D    #TH*ED   #@TH*D  #@TH*ED
-in order not to be   #^TWH*   #^TWH*D  #^TWHR*  #^TWHA*  ...
+in order not to be   #^*      #^*D     #^R*     #^A*     ...
 I'm going to         #TEGZ    #TRAO    #TRAORG
 ```
 
@@ -454,7 +455,7 @@ outline per modality.
 
 ## Checked
 
-`tests/golden/phrasing.tsv`, 4,797 cases. The file is the expectation, and the
+`tests/golden/phrasing.tsv`, 4,670 cases. The file is the expectation, and the
 sample is chosen the way the grammar is split:
 
 - **One case per ender chord**, all 631 of them. That is the part that is a
@@ -467,7 +468,7 @@ sample is chosen the way the grammar is split:
   `^` and every aspect.
 - **The held subjects**, each dimension once, and their two exclusions as
   no-entry rows: a clause that already holds its noun cannot also hold its verb.
-- **The cases the design names**: the sixteen subjects, the conjunctions, `^`
+- **The cases the design names**: the fifteen subject sets, the conjunctions, `^`
   over every kind of clause, and the held clause.
 
 The whole language is 20.7M strokes and no file holds it. The file was recorded

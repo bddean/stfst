@@ -1,15 +1,14 @@
 ! phrasing. A subset: one case per ender chord, then a prime stride through the
 ! ender table and through the clause dimensions, so the sample cycles every
-! setting rather than landing on one corner of each. The whole language is 16
+! setting rather than landing on one corner of each. The whole language is 15
 ! subject sets times the clause dimensions times the enders, which no file holds.
 !
 ! The expectations are this grammar's own answers. A line that changes here is
 ! a change to what a clause writes: read it, then update it.
 !
-! A line with no tab claims the stroke has no entry. 176 do: a clause with
+! A line with no tab claims the stroke has no entry. 122 do: a clause with
 ! no subject and no verb, "if" with a question, an infinitive or no subject,
-! `🦐` or no `#`, and a held subject under a second hole.
-#
+! `🦐` or no `#`, a held subject under a second hole, and `TWH`.
 #^+SPWHRAO*f	but is what not going to find
 #+SWHRAEUfr	but must the[AFTER]have been writing[END]
 #^+STWAOUfrp	but will that have provided
@@ -17,7 +16,7 @@
 #^+TPHRO*frpbl	do they not have to form
 #+PWREUfrpblt	may this have been forming in
 #^+HOUfrpbltd	should he have formed in
-#+Efrpbltz	was forming in
+#+Efrpbltz	to be forming in
 #^STKPWROfrpbls	and [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]does have to form by[END]
 #STKHAO*EUfrpblsd	and we wouldn't have been forming by
 #SPWHRAO*Efrpblsz	but what wasn't going to be forming by
@@ -30,7 +29,7 @@
 #TPHRO*Efrpbz	they weren't having to need to
 #^PWR*frpl	so this may not remove
 #HOEUfrplg	he shall have been removing from
-#^Ufrplgd	had removed from
+#^Ufrplgd	in order to have removed from
 #+SPWHRAO*Ufrplgz	but wasn't what going to have removed from
 #^+SWHRA*Efrpls	but must the[AFTER]not be replacing by[END]
 #+STWAO*frplsd	but wouldn't that replace by
@@ -38,7 +37,7 @@
 #+TPHRO*Ufrpld	hadn't they had to remove
 #^+PWR*Efrplz	might this not be removing
 #+HO*frpg	shall he not provide by
-#^+EUfrpgd	had been providing by
+#^+EUfrpgd	in order to have been providing by
 #STKPWROUfrpgz	and [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]had had to provide by[END]
 #^STKHREfrpd	and so we might be providing
 #^SPWHRAO*EUfrpdz	but what was not going to have been choosing to
@@ -51,7 +50,7 @@
 #^TPHRO*EUfrblgsz	they had not been having to recall that
 #PWR*Ufrblgd	this might not have recalled
 #^HO*Efrblgz	he should not be recalling
-#*frbld	didn't feel that
+#*frbld	not to feel that
 #^+STPWHfrblz	but did there feel that
 #+SWHRA*EUfrbg	but mustn't the[AFTER]have been requiring[END]
 #^+STWAO*Ufrbgt	but will that not have required to
@@ -59,7 +58,7 @@
 #^+TPHRAOfrbgtsd	were they going to carry on
 #+PWR*EUfrbgtsz	might this not have been carrying on
 #^+HO*Ufrbgtd	should he not have required to
-#+*Efrbgtz	wasn't requiring to
+#+*Efrbgtz	not to be requiring to
 #^STKPWRO*frbgs	and [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]does not have to call for[END]
 #STKHREUfrbgsd	and we might've been calling for
 #STPWHEfrbgsz	but there was calling for
@@ -72,7 +71,7 @@
 #TPHRAOEfrbd	they were going to be showing
 #^PWRAfrbz	this did use to show
 #HO*EUfrl	he shall not have been following
-#^*Ufrlg	has not followed by
+#^*Ufrlg	in order not to have followed by
 #+STPWHUfrlgd	but had there followed by
 #^+SWHROEfrlgz	but was the[AFTER]having to follow by[END]
 #+STWRfrld	but might that follow
@@ -80,7 +79,7 @@
 #+TPHRAOUfrg	are they going to have offered
 #^+PWRAEfrgt	must this be forgetting
 #+HAOfrgts	will he forget to
-#^+*EUfrgtsd	had not been forgetting to
+#^+*EUfrgtsd	in order not to have been forgetting to
 #STKPWRO*Ufrgtsz	and [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]hadn't had to forget to[END]
 #^STKHR*Efrgtd	and so we might not be forgetting
 #^STPWHEUfrgtz	but there had been forgetting
@@ -93,7 +92,7 @@
 #^TPHRAOEUfrt	they are going to have been writing about
 #PWRAUfrtd	this used to have written about
 #^HAOEfrtz	he would be writing about
-#Afrs	can serve
+#Afrs	to serve
 #^+STPWH*frsd	but did there not serve
 #+SWHROEUfrsz	but had the[AFTER]been having to serve[END]
 #^+STWRUfrd	but might that have written
@@ -101,7 +100,7 @@
 #^+TPHRAO*fp	are they not going to change
 #+PWRAEUfpb	must this have been knowing
 #^+HAOUfpbl	will he have moved
-#+AEfpblg	can be including
+#+AEfpblg	to be including
 #^STKPWRAOfpblgt	and [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]is going to come from[END]
 #STKHR*EUfpblgtd	and we might not have been coming from
 #STPWH*Efpblgtz	but there wasn't coming from
@@ -115,7 +114,7 @@
 #TPHRAO*Efpbltsd	they weren't going to be planning for
 #^PWRA*fpbltsz	this did not use to plan for
 #HAOEUfpbltd	he'd have been meaning that
-#^AUfpbltz	could have meant that
+#^AUfpbltz	in order to have meant that
 #+STPWH*Ufpbls	but hasn't there moved to
 #^+SWHRO*Efpblsd	but was the[AFTER]not having to move to[END]
 #+STWR*fpblsz	but might that not move to
@@ -123,7 +122,7 @@
 #+TPHRAO*Ufpbldz	weren't they going to have opened in
 #^+PWRA*Efpblz	must this not be opening in
 #+HAO*fpbg	won't he check
-#^+AEUfpbgt	can have been checking out
+#^+AEUfpbgt	in order to have been checking out
 #STKPWRAOUfpbgtd	and [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]was going to have checked out[END]
 #^STKHRAEfpbgtz	and we did use to be checking out
 #^STPWH*EUfpbgs	but there has not been beginning to
@@ -137,15 +136,15 @@
 #^TPHRAO*EUfpbtsd	they were not going to have been turning to
 #PWRA*Ufpbtsz	this didn't use to have turned to
 #^HAO*Efpbtd	he would not be needing for
-#A*fpbtz	couldn't need for
+#A*fpbtz	not to need for
 #^+STPWHAfpbs	but can there know that
 #+SWHRO*EUfpbsd	but hadn't the[AFTER]been having to know that[END]
 #^+STWR*Ufpbsz	but might that not have known that
 #+SPO*Efpbd	but shouldn't you be knowing
-#^+TWHfpbz	in order to know
+#^+fpbz	in order to know
 #+PWRA*EUfpl	mustn't this have been applying
 #^+HAO*Ufplg	will he not have made sure
-#+A*Efplgt	can't be applying for
+#+A*Efplgt	not to be applying for
 #^STKPWRAO*fplgtd	and [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]was not going to apply for[END]
 #STKHRAEUfplgtz	and we used to have been applying for
 #STPWHAEfplgd	but there could be making sure
@@ -156,18 +155,18 @@
 #^KPHRO*fpltsz	if she did not have to meet with
 #TKPREUfpltd	if it might've been meeting
 #^TKOUfpltz	if I should have met
-#TWHEfpls	to be seeming like
+#Efpls	to be seeming like
 #^PWROfplsd	this did have to seem like
 #HAO*EUfplsz	he wouldn't have been seeming like
-#^A*Ufpld	could not have applied
+#^A*Ufpld	in order not to have applied
 #+STPWHAUfpldz	but could there have applied to
 #^+SWHRAOEfplz	but is the[AFTER]going to be applying to[END]
 #+STWRAfpg	but must that go on
 #^+SPO*EUfpgs	but shall you not have been passing on
-#+TWHUfpgsd	to have passed on
+#+Ufpgsd	to have passed on
 #^+PWROEfpgsz	was this having to pass on
 #+HRfpgd	might he go on
-#^+A*EUfpgdz	could not have been paying for
+#^+A*EUfpgdz	in order not to have been paying for
 #STKPWRAO*Ufpgz	and [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]isn't going to have paid for[END]
 #^STKHRA*Efpt	and we must not be finding that
 #^STPWHAEUfpts	but there can have been being a
@@ -178,18 +177,18 @@
 #KPHRO*Ufpsz	if she hasn't had to choose from
 #^TKPR*Efpd	if it might not be changing
 #TKO*fpdz	if I shouldn't choose
-#^TWHEUfpz	in order to have been choosing
+#^EUfpz	in order to have been choosing
 #PWROUfb	this has had to become
 #^HREfbl	so he may be believing
-#Ofblg	shall like to
+#Ofblg	to like to
 #^+STPWHA*fblgs	but can there not ask to
 #+SWHRAOEUfblgsd	but was the[AFTER]going to have been asking to[END]
 #^+STWRAUfblgsz	but did that use to have asked to
 #+SPAOEfblgd	but would you be liking to
-#^+TWH*fblgz	in order not to like to
+#^+*fblgz	in order not to like to
 #+PWROEUfblt	has this been having to believe that
 #^+HRUfbltd	might he have believed that
-#+OEfbltz	should be believing that
+#+OEfbltz	to be believing that
 #^STKPHfbls	and they do believe to
 #STKHRA*EUfblsd	and we didn't use to have been believing to
 #STPWHA*Efblsz	but there couldn't be believing to
@@ -200,18 +199,18 @@
 #^KPHRAOfbgts	if she is going to talk to
 #TKPR*EUfbgtsd	if it might not have been talking to
 #^TKO*Ufbgtsz	if I should not have talked to
-#TWH*Efbgtd	not to be walking in
+#*Efbgtd	not to be walking in
 #^PWRO*fbgtz	this did not have to walk in
 #HREUfbgs	he may have been thinking that
-#^OUfbgsd	should have thought that
+#^OUfbgsd	in order to have thought that
 #+STPWHA*Ufbgsz	but couldn't there have thought that
 #^+SWHRAO*Efbgd	but was the[AFTER]not going to be walking[END]
 #+STWRA*fbgdz	but didn't that use to walk into
 #^+SPAOEUfbgz	but will you have been walking into
-#+TWH*Ufbt	not to have become more
+#+*Ufbt	not to have become more
 #^+PWRO*Efbts	is this not having to be the
 #+HR*fbtsd	might he not be the
-#^+OEUfbtd	should have been becoming more
+#^+OEUfbtd	in order to have been becoming more
 #STKPHUfbtz	and they'd become more
 #^STKHROEfbs	and we are having to add that
 #^STPWHA*EUfbsd	but there could not have been adding that
@@ -222,18 +221,18 @@
 #KPHRAOUflg	if she's going to have left
 #^TKPRAEflgt	if it must be loving to
 #TKAOflgtd	if I'd love to
-#^TWH*EUflgtz	in order not to have been loving to
+#^*EUflgtz	in order not to have been loving to
 #PWRO*Uflgs	this hasn't had to guess that
 #^HR*Eflgsd	so he might not be guessing that
-#O*flgsz	shouldn't guess that
+#O*flgsz	not to guess that
 #^+STPWHOflgd	but should there leave
 #+SWHRAO*EUflgz	but wasn't the[AFTER]going to have been leaving[END]
 #^+STWRA*Uflt	but must that not have loved
 #+SPAO*Eflts	but won't you be loving it
-#^+TWHAfltsd	in order to love it
+#^+Afltsd	in order to love it
 #+PWRO*EUfltsz	hadn't this been having to love it
 #^+HR*Ufltd	might he not have loved
-#+O*Efltz	shouldn't be loving
+#+O*Efltz	not to be loving
 #^STKPH*fls	and they do not look for
 #STKHROEUflsd	and we'd been having to look for
 #STPWHOEflsz	but there should be looking for
@@ -244,18 +243,18 @@
 #^KPHRAO*fgts	if she is not going to be an
 #TKPRAEUfgtsd	if it used to have been being an
 #^TKAOUfgs	if I will have given up
-#TWHAEfgsd	to be giving up
+#AEfgsd	to be giving up
 #^PWRAOfgsz	so this was going to give up
 #HR*EUfgd	he might not have been giving
-#^O*Ufgz	should not have given
+#^O*Ufgz	in order not to have given
 #+STPWHOUft	but shall there have had
 #^+STPWEfts	but is [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]starting to[END]
 #+STWROftsd	but did that have to start to
 #^+SPAO*EUftsz	but would you not have been starting to
-#+TWHAUftd	to have had
+#+AUftd	to have had
 #^+PWRAOEftz	was this going to be having
 #+HRAfs	must he save
-#^+O*EUfsd	should not have been saving
+#^+O*EUfsd	in order not to have been saving
 #STKPH*Ufsz	and they hadn't saved
 #^STKHRO*Efd	and we were not having to find
 #^STPWHOEUfdz	but there should have been finding out
@@ -266,18 +265,18 @@
 #KPHRAO*Urpbl	if she isn't going to have learned
 #^TKPRA*Erpblg	if it must not be remembering
 #TKAO*rpblgt	if I won't remember that
-#^TWHAEUrpblgtd	in order to have been remembering that
+#^AEUrpblgtd	in order to have been remembering that
 #PWRAOUrpblgtz	this was going to have remembered that
 #^HRAErpblgs	so he must be explaining that
-#AOrpblgsd	would explain that
+#AOrpblgsd	to explain that
 #^+STPWHO*rpblgsz	but should there not explain that
 #+STPWEUrpblgd	but had [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]been remembering[END]
 #^+STWROUrpblgz	but had that had to remember
 #+SPRErpblt	but may you be returning from
-#^+TWHA*rpbltd	in order not to return from
+#^+A*rpbltd	in order not to return from
 #+PWRAOEUrpbltz	was this going to have been returning from
 #^+HRAUrpbls	must he have learned to
-#+AOErpblsd	would be learning to
+#+AOErpblsd	to be learning to
 #^STKPHArpblsz	and so they could learn to
 #STKHRO*EUrpbld	and we hadn't been having to learn
 #STPWHO*Erpbldz	but there shouldn't be learning about
@@ -288,18 +287,18 @@
 #^KWHrpbgtsd	if the[AFTER]did consider to[END]
 #TKPRA*EUrpbgtsz	if it didn't use to have been considering to
 #^TKAO*Urpbgtd	if I would not have returned to
-#TWHA*Erpbgtz	not to be returning to
+#A*Erpbgtz	not to be returning to
 #^PWRAO*rpbgs	this is not going to consider
 #HRAEUrpbgsd	he used to have been considering
-#^AOUrpbgsz	would have considered
+#^AOUrpbgsz	in order to have considered
 #+STPWHO*Urpbgd	but shouldn't there have brought
 #^+STPW*Erpbgdz	but was [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]not opening up[END]
 #+STWRO*rpbgz	but doesn't that have to open up
 #^+SPREUrpbt	but may you have been returning
-#+TWHA*Urpbtd	not to have returned
+#+A*Urpbtd	not to have returned
 #^+PWRAO*Erpbtz	was this not going to be returning
 #+HRA*rpbs	mustn't he run on
-#^+AOEUrpbsd	would have been running on
+#^+AOEUrpbsd	in order to have been running on
 #STKPHAUrpbsz	and they could've run on
 #^STKHRAOErpbd	and so we were going to be running
 #^STPWHO*EUrpbdz	but there should not have been running for
@@ -310,18 +309,18 @@
 #KWHUrplgz	if the[AFTER]had played with[END]
 #^TKPROErplt	if it is having to remain in
 #TKRrplts	if I may replace with
-#^TWHA*EUrpltsd	in order not to have been replacing with
+#^A*EUrpltsd	in order not to have been replacing with
 #PWRAO*Urpltsz	this wasn't going to have replaced with
 #^HRA*Erpltd	he did not use to be remaining in
-#AO*rpltz	wouldn't remain in
+#AO*rpltz	not to remain in
 #^+STPWHAOrpls	but will there replace
 #+STPW*EUrplsd	but hadn't [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]been replacing[END]
 #^+STWRO*Urplsz	but had that not had to replace
 #+SPR*Erpld	but might you not be remaining
-#^+TWHOrplz	in order to remain
+#^+Orplz	in order to remain
 #+PWRAO*EUrpg	isn't this going to have been appearing in
 #^+HRA*Urpgt	must he not have heard about
-#+AO*Erpgtd	wouldn't be hearing about
+#+AO*Erpgtd	not to be hearing about
 #^STKPHA*rpgtz	and they could not hear about
 #STKHRAOEUrpgs	and we're going to have been producing by
 #STPWHAOErpgsd	but there'd be producing by
@@ -332,18 +331,18 @@
 #^KWH*rptd	if the[AFTER]did not put it[END]
 #TKPROEUrptz	if it'd been having to put it
 #^TKRUrps	if I may have produced
-#TWHOErpsd	to be producing
+#OErpsd	to be producing
 #^PHrpsz	she did produce
 #HRA*EUrpd	he didn't use to have been reaching
-#^AO*Urpdz	would not have reached out
+#^AO*Urpdz	in order not to have reached out
 #+STPWHAOUrpz	but will there have reached out
 #^+STPWAErb	but can [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]be reading[END]
 #+STWRAOrbl	but is that going to share
 #^+SPR*EUrblg	but may you not have been breaking
-#+TWHOUrblgt	to have broken down
+#+OUrblgt	to have broken down
 #^+PHErblgtd	was she breaking down
 #+HROrblgtz	did he have to break down
-#^+AO*EUrblgs	will not have been asking for
+#^+AO*EUrblgs	in order not to have been asking for
 #STKPHA*Urblgsd	and they couldn't have asked for
 #^STKHRAO*Erblgsz	and we were not going to be asking for
 #^STPWHAOEUrblgd	but there would have been breaking
@@ -354,18 +353,18 @@
 #KWH*Urbltz	if the[AFTER]hadn't led by[END]
 #^TKPRO*Erbls	if it is not having to share with
 #TKR*rblsd	if I might not share with
-#^TWHOEUrblsz	in order to have been sharing with
+#^OEUrblsz	in order to have been sharing with
 #PHUrbld	she'd shared
 #^HROErblz	he was having to share
-#Rrbg	may call
+#Rrbg	to call
 #^+STPWHAO*rbgt	but will there not create
 #+STPWAEUrbgts	but can [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]have been talking about[END]
 #^+STWRAOUrbgtsd	but was that going to have talked about
 #+SPRAErbgtsz	but did you use to be talking about
-#^+TWHO*rbgtd	in order not to create
+#^+O*rbgtd	in order not to create
 #+PHEUrbgtdz	had she been caring about
 #^+HROUrbgtz	has he had to care about
-#+RErbgs	may be carrying
+#+RErbgs	to be carrying
 #^STKPHOrbgsd	and so they should carry
 #STKHRAO*EUrbgsdz	and we weren't going to have been carrying out
 #STPWHAO*Erbgsz	but there won't be carrying out
@@ -376,18 +375,18 @@
 #^KWHArbts	if the[AFTER]can decide that[END]
 #TKPRO*EUrbtsd	if it hadn't been having to decide that
 #^TKR*Urbtsz	if I might not have decided that
-#TWHO*Erbtd	not to be trying to
+#O*Erbtd	not to be trying to
 #^PH*rbtz	she did not try to
 #HROEUrbs	he's been having to wish
-#^RUrbsd	might have wished
+#^RUrbsd	in order to have wished
 #+STPWHAO*Urbsdz	but wouldn't there have wished to
 #^+STPWA*Erbsz	but can [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]not be wishing to[END]
 #+STWRAO*rbd	but wasn't that going to read
 #^+SPRAEUrbdz	but did you use to have been reading it
-#+TWHO*Urbz	not to have read it
+#+O*Urbz	not to have read it
 #^+PH*Erl	is she not leading
 #+HRO*rlg	doesn't he have to look at
-#^+REUrlgs	may have been guessing it
+#^+REUrlgs	in order to have been guessing it
 #STKPHOUrlgsd	and they should've guessed it
 #^SKPWErlgsz	and this was guessing it
 #^STPWHAO*EUrlgd	but there would not have been looking at
@@ -398,18 +397,18 @@
 #KWHAUrltsd	if the[AFTER]could've stayed in[END]
 #^TKPRAOErltsz	if it was going to be staying in
 #TKRArltd	if I used to live in
-#^TWHO*EUrltz	in order not to have been living in
+#^O*EUrltz	in order not to have been living in
 #PH*Urls	she hasn't led to
 #^HRO*Erlsd	he was not having to lead to
-#R*rlsz	might not lead to
+#R*rlsz	not to lead to
 #^+STPWHRrld	but might there lead
 #+STPWA*EUrldz	but couldn't [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]have been realizing[END]
 #^+STWRAO*Urlz	but is that not going to have realized
 #+SPRA*Erg	but mustn't you be[AFTER][META=infl]ing[END][END]
-#^+TWHAOrgt	in order to hear
+#^+AOrgt	in order to hear
 #+PH*EUrgtd	hadn't she been hearing
 #^+HRO*Urgtz	had he not had to hear
-#+R*Ergs	may not be working on
+#+R*Ergs	not to be working on
 #^STKPHO*rgsd	and they should not work on
 #SKPWEUrgsz	and this had been working on
 #STPWHRErgd	but there might be[AFTER][META=infl]ing[END][END]
@@ -420,18 +419,18 @@
 #^KWHA*rtd	if the[AFTER]could not try[END]
 #TKPRAOEUrtz	if it was going to have been trying
 #^TKRAUrs	if I must have received
-#TWHAOErsd	to be receiving
+#AOErsd	to be receiving
 #^PHArsz	so she could receive
 #HRO*EUrd	he hadn't been having to work
-#^R*Urdz	might not have worked with
+#^R*Urdz	in order not to have worked with
 #+STPWHRUrz	but may there have worked with
 #^+STPWOEp	but shall [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]be appearing[END]
 #+STHpb	but do we need
 #^+SPRA*EUpbl	but must you not have been meaning
-#+TWHAOUpblg	to have come
+#+AOUpblg	to have come
 #^+PHAEpblgt	can she be imagining
 #+HRAOpblgts	is he going to expect to
-#^+R*EUpblgtsd	might not have been expecting to
+#^+R*EUpblgtsd	in order not to have been expecting to
 #STKPHO*Upblgtsz	and they shouldn't have expected to
 #^SKPW*Epblgtd	and this was not imagining
 #^STPWHREUpblgtdz	but there might have been imagining that
@@ -442,18 +441,18 @@
 #KWHA*Upblgd	if the[AFTER]couldn't have come[END]
 #^TKPRAO*Epblgdz	if it was not going to be coming to
 #TKRA*pblgz	if I mustn't come to
-#^TWHAOEUpblt	in order to have been handling
+#^AOEUpblt	in order to have been handling
 #PHAUpblts	she can have meant to
 #^HRAOEpbltsd	so he was going to be meaning to
-#RApbltsz	used to mean to
+#RApbltsz	to mean to
 #^+STPWHR*pbltd	but might there not handle
 #+STPWOEUpbltdz	but should [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]have been handling of[END]
 #^+STHUpbltz	but have we handled of
 #+SPROEpbls	but are you having to plan
-#^+TWHAO*pblsd	in order not to plan
+#^+AO*pblsd	in order not to plan
 #+PHAEUpblsdz	could she have been planning to
 #^+HRAOUpblsz	is he going to have planned to
-#+RAEpbld	did use to be meaning
+#+RAEpbld	to be meaning
 #^STKPHAOpbldz	and they would mind
 #SKPW*EUpblz	and this hasn't been minding
 #STPWHR*Epbg	but there may not be continuing
@@ -464,18 +463,18 @@
 #^KWHOpbgtd	if the[AFTER]should pick[END]
 #TKPRAO*EUpbgtdz	if it wasn't going to have been picking up
 #^TKRA*Upbgtz	if I must not have picked up
-#TWHAO*Epbgs	not to be beginning
+#AO*Epbgs	not to be beginning
 #^PHA*pbgsd	she could not begin
 #HRAOEUpbgsdz	he was going to have been beginning of
-#^RAUpbgsz	must have begun of
+#^RAUpbgsz	in order to have begun of
 #+STPWHR*Upbgd	but might there not have continued
 #^+STPWO*Epbgdz	but should [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]not be continuing to[END]
 #+STH*pbgz	but don't we continue to
 #^+SPROEUpbt	but have you been having to turn
-#+TWHAO*Upbts	not to have understood of
+#+AO*Upbts	not to have understood of
 #^+PHA*Epbtsd	could she not be understanding of
 #+HRAO*pbtsz	wasn't he going to understand of
-#^+RAEUpbtd	did use to have been turning
+#^+RAEUpbtd	in order to have been turning
 #STKPHAOUpbtdz	and they'd have turned out
 #^SKPWAEpbtz	and so this can be turning out
 #^STPWHR*EUpbs	but there may not have been understanding
@@ -486,18 +485,18 @@
 #KWHOUpbdz	if the[AFTER]should've opened[END]
 #^TKWEpbz	if that is opening
 #TKROpl	if I have to make
-#^TWHAO*EUplg	in order not to have been playing
+#^AO*EUplg	in order not to have been playing
 #PHA*Uplgt	she can't have happened in
 #^HRAO*Eplgtd	he was not going to be happening in
-#RA*plgtz	didn't use to happen in
+#RA*plgtz	not to happen in
 #^+STPWHRAplgs	but must there play in
 #+STPWO*EUplgsd	but shouldn't [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]have been playing in[END]
 #^+STH*Uplgsz	but had we not played in
 #+SPRO*Eplgd	but weren't you having to play
-#^+TWHRplgdz	in order to pay attention
+#^+Rplgdz	in order to pay attention
 #+PHA*EUplgz	can't she have been paying attention
 #^+HRAO*Uplt	is he not going to have let
-#+RA*Eplts	mustn't be seeming to
+#+RA*Eplts	not to be seeming to
 #^STKPHAO*pltsd	and they would not seem to
 #SKPWAEUpltsz	and this could've been seeming to
 #STPWHRAEpltd	but there used to be letting
@@ -508,18 +507,18 @@
 #^KWHO*pld	if the[AFTER]should not make[END]
 #TKWEUpldz	if that'd been making it
 #^TKROUplz	if I have had to make it
-#TWHREpg	to be happening
+#REpg	to be happening
 #^PHOpgt	so she shall get to
 #HRAO*EUpgts	he isn't going to have been stopping by
-#^RA*Upgtsd	did not use to have stopped by
+#^RA*Upgtsd	in order not to have stopped by
 #+STPWHRAUpgtsz	but did there use to have stopped by
 #^+STPWAOEpgtd	but would [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]be getting to[END]
 #+STHApgtz	but could we get to
 #^+SPRO*EUpgs	but have you not been having to say that
-#+TWHRUpgsd	to have said that
+#+RUpgsd	to have said that
 #^+PHOEpgsz	should she be saying that
 #+TPpgd	did it happen
-#^+RA*EUpgdz	did not use to have been happening to
+#^+RA*EUpgdz	in order not to have been happening to
 #STKPHAO*Upgz	and they won't have happened to
 #^SKPWA*Ept	and this can not be putting
 #^STPWHRAEUpts	but there must have been stopping
@@ -530,18 +529,18 @@
 #KWHO*Uptz	if the[AFTER]shall not have put on[END]
 #^TKW*Eps	if that is not passing
 #TKRO*psd	if I didn't have to pass
-#^TWHREUpsdz	in order to have been passing through
+#^REUpsdz	in order to have been passing through
 #PHOUpsz	she shall have passed through
 #^TPEpd	it was appearing
-#ROpdz	had to pay
+#ROpdz	to pay
 #^+STPWHRA*pz	but must there not pay
 #+STPWAOEUb	but will [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]have been adding[END]
 #^+STHAUbl	but can we have allowed
 #+SPRAOEblg	but are you going to be liking
-#^+TWHR*blgt	in order not to think it
+#^+R*blgt	in order not to think it
 #+PHOEUblgts	shall she have been accepting
 #^+TPUblgtsd	had it accepted
-#+ROEblgtsz	was having to accept
+#+ROEblgtsz	to be accepting
 #^STKPHRblgtd	and so they might think it
 #SKPWA*EUblgtz	and this couldn't have been thinking it
 #STPWHRA*Eblgs	but there mustn't be asking
@@ -552,18 +551,18 @@
 #^KWHAOblt	if the[AFTER]will build[END]
 #TKW*EUblts	if that hasn't been allowing for
 #^TKRO*Ubltsd	if I had not had to allow for
-#TWHR*Ebltsz	not to be allowing for
+#R*Ebltsz	not to be allowing for
 #^PHO*bltd	she should not build
 #TPEUbltz	it'd been building
-#^ROUbls	has had to add to
+#^ROUbls	in order to have added to
 #+STPWHRA*Ublsd	but didn't there use to have added to
 #^+STPWAO*Eblsz	but would [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]not be adding to[END]
 #+STHA*bld	but couldn't we allow
 #^+SPRAOEUbldz	but were you going to have been allowing to
-#+TWHR*Ublz	not to have allowed to
+#+R*Ublz	not to have allowed to
 #^+PHO*Ebg	shall she not be thinking
 #+TP*bgt	doesn't it take
-#^+ROEUbgts	has been having to talk
+#^+ROEUbgts	in order to have been talking
 #STKPHRUbgtsd	and they might've talked
 #^SKPWOEbgtsz	and so this should be talking
 #SKHbgtd	and he took
@@ -575,18 +574,18 @@
 #KWHAOUbgd	if the[AFTER]would've thought[END]
 #^TKWAEbgdz	if that could be causing
 #TKRAObgz	if I'm going to cause
-#^TWHR*EUbt	in order not to have been buying
+#^R*EUbt	in order not to have been buying
 #PHO*Ubtd	she shouldn't have bought
 #^TP*Ebtz	it was not buying
-#RO*bs	doesn't have to decide
+#RO*bs	not to decide
 #^+STPWHRObsd	but did there have to decide
 #+STPWAO*EUbsdz	but wouldn't [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]have been deciding to[END]
 #^+STHA*Ubsz	but can we not have decided to
 #+SPRAO*Ebd	but weren't you going to be adding
-#^+TWHRAbdz	in order to use in
+#^+RAbdz	in order to use in
 #+PHO*EUbz	shall she not have been using in
 #^+TP*Ul	has it not looked
-#+RO*Elg	isn't having to help
+#+RO*Elg	not to be helping
 #^STKPHR*lgt	and so they may not tell
 #SKPWOEUlgts	and this shall have been setting up
 #^SKHUlgtsd	and he had set up
@@ -598,18 +597,18 @@
 #^KWHAO*lgsz	if the[AFTER]would not guess[END]
 #TKWAEUlgd	if that could've been helping
 #^TKRAOUlgdz	if I was going to have helped to
-#TWHRAElgz	to be helping to
+#RAElgz	to be helping to
 #^PHAOlt	she will live
 #TP*EUlts	it hasn't been staying
-#^RO*Ultsd	had not had to stay
+#^RO*Ultsd	in order not to have stayed
 #+STPWHROUltsdz	but had there had to stay at
 #^+STPWREltsz	but may [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]be staying at[END]
 #+STHOltd	but should we live
 #^+SPRAO*EUltdz	but were you not going to have been living with
-#+TWHRAUltz	to have lived with
+#+RAUltz	to have lived with
 #^+PHAOEls	will she be sending
 #+TPAlsd	could it send
-#^+RO*EUlsz	had not been having to send
+#^+RO*EUlsz	in order not to have been sending
 #STKPHR*Uld	and they might not have looked
 #^SKPWO*Eldz	and this should not be holding
 #SKH*lz	and he doesn't hold
@@ -621,18 +620,18 @@
 #KWHAO*Ugtd	if the[AFTER]wouldn't have gotten[END]
 #^TKWA*Egtz	if that could not be getting
 #TKRAO*gs	if I'm not going to see
-#^TWHRAEUgsd	in order to have been seeing
+#^RAEUgsd	in order to have been seeing
 #PHAOUgsz	she'd have seen
 #^TPAEgd	so it could be going
-#RAOgdz	was going to go to
+#RAOgdz	to go to
 #^+STPWHRO*gz	but does there not have to go to
 #+STPWREUt	but may [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]have been wanting[END]
 #^+STHOUts	but shall we have started
 #+SWEtsd	but were starting
-#^+TWHRA*tsz	in order not to start
+#^+RA*tsz	in order not to start
 #+PHAOEUtd	would she have been wanting
 #^+TPAUtdz	could it have wanted to
-#+RAOEtz	is going to be wanting to
+#+RAOEtz	to be wanting to
 #^STKPHRAs	and so they must say
 #SKPWO*EUsd	and this shouldn't have been saying
 #^SKH*Usdz	and he had not used to
@@ -645,7 +644,7 @@
 #+WHOUfgsd	should the[AFTER]have given up[END]
 #+SWEUfpbltsd	but had been planning for
 #^KHR*pbsd	if he might not understand
-#^STWHO*Erblgdz	but in order not to be breaking up
+#^SO*Erblgdz	but in order not to be breaking up
 #^+TW*Ufbsz	had that not added that
 #SPHAErplz	but she could be remaining
 #+TRAOUfblgz	was I going to have liked to
@@ -653,7 +652,7 @@
 #^SHRAO*Erpbgs	but he is not going to be considering
 #^+STPWHA*EUptsz	but could there not have been stopping
 #PWrlgz	this realizes that
-#SROEr	but is having to work
+#SROEr	but to be working
 #SKPHRUfpbgsz	and she might've begun to
 #+STPWEUplgz	but has [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]been paying attention[END]
 #^WRO*rbgtdz	did not have to care about
@@ -674,13 +673,13 @@
 #^SHR*Egt	but he may not be getting
 #^+SPWHRAOfl	but is what going to feel
 #THRAEfrgsz	we used to be serving as
-#SAOEl	but will be looking
+#SAOEl	but to be looking
 #SKPHAUpbld	and she could've meant
 #+SWHRA*fbltz	but didn't the[AFTER]use to believe that[END]
 #^WAO*Efrbgtsz	would not be carrying on
 #^TKPHA*Eblsd	if they could not be adding to
 #^SKHRAO*Urz	and he is not going to have worked with
-#^+TWHRA*EUrpbgd	in order not to have been bringing
+#^+RA*EUrpbgd	in order not to have been bringing
 #^+STWRfpldz	but might that apply to
 #KPWEptz	if this is putting on
 #+PHREUrpbl	may she have been learning
@@ -695,13 +694,13 @@
 #^STKPHRAO*EUfpd	and they were not going to have been changing
 #^+SPWHRblgtz	but might what think it
 #THOErgsz	we should be working on
-#SUrpbld	but had learned
+#SUrpbld	but to have learned
 #SKPWROEUfplgtz	and this had been having to apply for
 #+SWHO*pgtz	but shouldn't the[AFTER]get to[END]
 #^W*Erbd	were not reading
 #^TKPWRO*Uftsd	if [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]had not had to start to[END]
 #^SKHR*EUfpblsz	and so he might not have been moving to
-#^+TWHO*EUgtsz	in order not to have been setting
+#^+O*EUgtsz	in order not to have been setting
 #^+STWApl	but can that make
 #TKHRAUflgtd	if we used to have loved to
 #+PHAEUlgts	can she have been setting up
@@ -710,7 +709,7 @@
 #^+HRAO*EUbldz	was he not going to have been allowing to
 #TPWHOUfpgs	there shall have passed on
 #SPWEUfrplgz	but this had been removing from
-#+ROEUpsdz	had been having to pass through
+#+ROEUpsdz	to have been passing through
 #^TPW*Ufpbtsd	[IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]had not turned to[END]
 #^SWRO*Us	but have not had to say
 #^STKPHR*EUpltz	and so they might not have been letting
@@ -722,7 +721,7 @@
 #^PRA*Ufrlz	you did not use to have followed
 #^TKPWAO*Ubt	if [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]will not have bought[END]
 #^SKHA*EUpblts	and he can not have been meaning to
-#^+TWHrpltsz	in order to replace with
+#^+rpltsz	in order to replace with
 #^+STPROEfb	but is it having to become
 #TKHOUblgsz	if we should've asked
 #+PWRO*rpbg	doesn't this have to bring
@@ -731,11 +730,11 @@
 #^+HRAftz	did he use to have
 #PWHRAOUplgtd	what was going to have happened in
 #STHRAEUrblz	but we used to have been sharing
-#+AO*flgsd	wouldn't guess that
+#+AO*flgsd	not to guess that
 #^WHRA*Upbgtsd	the[AFTER]did not use to have expected[END]
 #^SWAO*EUrpgz	but would not have been appearing in
 #^STKPHOfbg	and so they shall walk
-#^+STWHROEbgt	but in order to be taking
+#^+SROEbgt	but in order to be taking
 #TWRUpblgts	that may have expected to
 #TKPWHOEUrpbs	if there shall have been running on
 #SKPW*fpgd	and this didn't go on
@@ -753,11 +752,11 @@
 #^+HObs	shall he decide
 #PWHREUfblgs	what may have been asking to
 #STHO*frblgz	but we shouldn't recall
-#+*blt	doesn't build
+#+*blt	not to build
 #^WHO*EUfpltsz	the[AFTER]should not have been meeting with[END]
 #^SWAfrpbld	but could form
 #^STKPWRAOpgz	and [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]is going to happen to[END]
-#^+STWHAOUfsz	but in order to have saved
+#^+SAOUfsz	but in order to have saved
 #TWAEUfpbgtd	that could've been checking out
 #KPWHRAOEUgd	if what was going to have been going
 #STKHRA*plgsd	and we didn't use to play in
@@ -769,7 +768,7 @@
 #TKWREUbgtsz	if that might've been talking
 #STPWHO*pblgtd	but there shouldn't imagine
 #+PW*Erpbd	wasn't this running
-#+SRO*Ufpt	but hasn't had to find that
+#+SRO*Ufpt	but not to have found that
 #^KPO*EUbl	if you shall not have been allowing
 #^STPWArlz	but [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]can realize[END]
 #^+WRAOErpblgz	were going to be remembering
@@ -779,7 +778,7 @@
 #^PHRAO*EUpbs	she is not going to have been understanding
 #^SPROrblgd	but you did have to break
 #^STKPWREfbsd	and [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]might be adding that[END]
-#^+STWHUbsz	but in order to have decided to
+#^+SUbsz	but in order to have decided to
 #TPROEUpbls	it's been having to plan
 #KPWHR*rpld	if what might not remain
 #STKHO*Efblgd	and we shouldn't be liking to
@@ -791,11 +790,11 @@
 #TKWA*fz	if that can't find out
 #SPWHRAO*Efpbgsd	but what wasn't going to be beginning to
 #+THRA*Et	mustn't we be wanting
-#+SAO*Uplgdz	but wouldn't have paid attention
+#+SAO*Uplgdz	but not to have paid attention
 #^KPfltsd	if you did love it
 #^SWHROEfp	but the[AFTER]is having to change[END]
 #^+WRElgdz	might be helping to
-#TWHRO*fbgtz	not to walk in
+#RO*fbgtz	not to walk in
 #STWR*Efrbd	but that might not be showing
 #STKPWHO*Ebgs	and there shall not be keeping
 #^PHRAfptd	she did use to find that
@@ -815,11 +814,11 @@
 #TKPRO*bz	if it doesn't have to use in
 #SPWHR*Epblsz	but what may not be planning to
 #+THO*Urpgt	shall we not have heard about
-#+S*EUfbltd	but hadn't been believing that
+#+S*EUfbltd	but not to have been believing that
 #^TKRAbls	if I must add to
 #^SWHAOErdz	but the[AFTER]would be working with[END]
 #^+WAUrpbgsz	could have considered
-#TWHAO*ptdz	not to put on
+#AO*ptdz	not to put on
 #STWA*Erlts	but that can't be staying in
 #SKPWHRAO*Urpb	and what isn't going to have run
 #^PHOplts	so she shall seem to
@@ -830,7 +829,7 @@
 #STKWR*Ufbgsz	and that might not have thought that
 #+TPWHO*EUfrlg	shall there not have been following by
 #+SPW*EUbgsz	but hasn't this been causing by
-#^RAOpblgd	was going to come
+#^RAOpblgd	in order to come
 #^KPHRAErplgz	if she did use to be playing with
 #^SKPAOUfpsz	and you will have chosen from
 #^+TPWAEUfrb	can [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]have been showing[END]
@@ -841,7 +840,7 @@
 #^TKOEfts	if I shall be starting to
 #^SWHUfpblsd	but the[AFTER]had moved to[END]
 #^+PROUgtsd	had you had to set
-#TWH*Eflgt	not to be loving to
+#*Eflgt	not to be loving to
 #STPRO*Ufrgdz	but it hadn't had to offer to
 #SKPWHR*Ulgt	and what may not have told
 #^PWRAOEfblsd	so this was going to be believing to
@@ -852,13 +851,13 @@
 #STKWA*Upsd	and that couldn't have passed
 #+PWHRAO*EUrltd	wasn't what going to have been living in
 #+STHROrpblgt	but do we have to remember that
-#^REfpbts	may be turning to
+#^REfpbts	in order to be turning to
 #^KPHOEtz	if she shall be wanting to
 #^SKPUpltd	and you had let
 #^+WHROEUrbgsz	has the[AFTER]been having to carry out[END]
 #^+SWR*flsz	but might not look for
 #TKP*Eltsz	if it isn't staying at
-#STWHRO*Upbt	but not to have turned
+#SRO*Upbt	but not to have turned
 #+TWR*EUrblg	may that not have been breaking
 #^SPHRAUpblt	but she must have handled
 #^+PAOEUrpltsd	would you have been replacing with
@@ -874,13 +873,13 @@
 #STKPRO*EUflgs	and it hasn't been having to guess that
 #+PWHRAfrtd	did what use to write about
 #+STHAOlgtsz	but would we set up
-#^AEpbgts	can be expecting
+#^AEpbgts	in order to be expecting
 #^KPWRAOUrpgd	if this was going to have appeared in
 #^STKRAEUfblz	and I did use to have been believing
 #^+WHAO*frbgsz	would the[AFTER]not call for[END]
 #^+SWA*bg	but can not think
 #KHRA*Urpbtz	if he didn't use to have returned
-#STWHAO*EUfpgsz	but not to have been passing on
+#SAO*EUfpgsz	but not to have been passing on
 #+TWOfrplsd	should that replace by
 #^SPHOEUfpbtd	but she should have been needing for
 #^+PEUsdz	had you been using to
@@ -888,7 +887,7 @@
 #STP*EUfpblgsz	but it hadn't been explaining how
 #+STPWHAOErblgtz	but would there be breaking down
 #^PWAUfbtsd	this could have been the
-#^SRAOEUfrgt	but is going to have been forgetting
+#^SRAOEUfrgt	but in order to have been forgetting
 #^SKPHRAEUbtz	and she did use to have been buying
 #^+STPWA*Erpltz	but could [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]not be remaining in[END]
 #WRAO*Ufblg	aren't going to have liked to
@@ -901,7 +900,7 @@
 #^+WH*rlgs	does the[AFTER]not guess it[END]
 #^+SPRO*Efsd	but were you not having to save
 #KHO*Ugsz	if he shouldn't have seen
-#STWH*EUplgs	but not to have been playing in
+#S*EUplgs	but not to have been playing in
 #+TPRAOrbgt	is it going to create
 #^SPWRAOEUpbgtd	but this was going to have been picking
 #^+TRA*rptd	did I not use to put it
@@ -909,13 +908,13 @@
 #SHRA*EUpblgtsz	but he didn't use to have been expecting to
 #+STPWHUfrplz	but had there removed
 #^THROUb	we have had to add
-#^SREUrldz	but might have been realizing
+#^SREUrldz	but in order to have been realizing
 #^SKPHO*rpblgd	and she should not remember
 #^+SWHRO*Edz	but was the[AFTER]not having to use[END]
 #WR*Upldz	might not have made it
 #TKPHO*EUrbtsd	if they shouldn't have been deciding that
 #STKPAfgtsd	and it could be an
-#+TWHRAOEfpblt	to be meaning that
+#+RAOEfpblt	to be meaning that
 #+STWRAElsz	but did that use to be sending
 #^KPWAEUrblgsz	if this could have been asking for
 #^+PHRA*Efrgtsz	did she not use to be forgetting to
@@ -929,13 +928,13 @@
 #SHAOfpbgs	but he'll begin to
 #+SPWHRAUrbgtsz	but did what use to have talked about
 #^THAOEUflts	we will have been loving it
-#^SA*frz	but could not write
+#^SA*frz	but in order not to write
 #^SKPWRAO*lgd	and this was not going to help
 #^+SWHAO*Urpsd	but would the[AFTER]not have produced[END]
 #WA*EUfbgtd	couldn't have been walking in
 #TKPHfrbsz	if they showed that
 #SKHRObgtz	and he had to take
-#+TWHREpblgtz	to be imagining that
+#+REpblgtz	to be imagining that
 #+STWOUrpbz	but shall that have run for
 #^TKHRO*frpgz	if we did not have to provide by
 #^+PHO*Ergt	shall she not be hearing
@@ -944,7 +943,7 @@
 #+TPAErbtz	could it be trying to
 #^TPWHAOEUlz	there will have been holding
 #^SPWA*pbsdz	but this could not understand that
-#^+RAO*Erblgz	is not going to be breaking up
+#^+RAO*Erblgz	in order not to be breaking up
 #TPWA*EUbdz	[IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]couldn't have been using in[END]
 #SHpblsdz	but he planned to
 #STKPHROErpg	and they're having to appear in
@@ -956,7 +955,7 @@
 #PRO*EUptd	you hadn't been having to put
 #TKPWRArlt	if [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]must live in[END]
 #SKHAOErp	and he'll be reaching
-#+TWHAUfpbgd	to have checked
+#+AUfpbgd	to have checked
 #+STPRAOUtsd	but was it going to have started
 #^TKHAO*rbgtz	if we will not care about
 #^+PWRAO*Ufpbl	is this not going to have moved
@@ -965,11 +964,11 @@
 #+HROUfrl	has he had to follow
 #^TPWH*rplgd	there did not play with
 #^STHRO*Efpsdz	but we were not having to choose from
-#^+R*Ufrpz	may not have chosen to
+#^+R*Ufrpz	in order not to have chosen to
 #WHRAOrpblsd	the[AFTER]was going to learn to[END]
 #SWRAEfplgt	but must be applying for
 #STKPHAOUfrpb	and they'll have needed to
-#+STWHRAOEUrbsdz	but to have been wishing to
+#+SRAOEUrbsdz	but to have been wishing to
 #^TWRA*ft	that must not have
 #^TKPWHAO*Efpbls	if there will not be moving to
 #^SKPWA*Egts	and this can not be setting
@@ -988,11 +987,11 @@
 #+HAOUrltsz	would he have stayed in
 #^PWHRA*tdz	what did not use to want to
 #^STHAO*Epltsz	but we would not be seeming to
-#^+A*Urbgsdz	could not have carried out
+#^+A*Urbgsdz	in order not to have carried out
 #WHRltsdz	the[AFTER]might stay at[END]
 #SWOEpbgz	but shall be continuing to
 #STKPHUrbl	and they've shared
-#+STWHR*frlgz	but not to follow by
+#+SR*frlgz	but not to follow by
 #^TWO*bgdz	that should not cause
 #^TKPWH*Epblgz	if there is not coming to
 #^STKHRO*Urplts	and we have not had to replace with
@@ -1004,7 +1003,7 @@
 #^TKWRA*Erbdz	if that did not use to be reading it
 #^STPWHAO*Uftsz	but there would not have started to
 #^+PWA*EUfpbld	could this not have been moving
-#^+SRAO*EUgtd	but was not going to have been getting
+#^+SRAO*EUgtd	but in order not to have been getting
 #KPRErblsz	if you might be sharing with
 #STPWOUflgtz	but [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]should've loved to[END]
 #+HEUfrt	has he been writing about
@@ -1014,7 +1013,7 @@
 #WHAErpbtd	the[AFTER]could be returning[END]
 #SPRAOUfpgsd	but you were going to have passed on
 #STKPWRAEUfrpls	and [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]must've been replacing by[END]
-#+STWHA*rls	but not to lead to
+#+SA*rls	but not to lead to
 #^TPRAO*Erpblgtz	it was not going to be remembering that
 #^KPWHRA*Ufpbtsz	if what did not use to have turned to
 #^STKHAO*Usd	and we would not have said
@@ -1026,11 +1025,11 @@
 #^TKWO*Ufrg	if that shall not have offered
 #^STPWH*Ubtd	but there had not bought
 #^+THRO*EUpbltsd	had we not been having to mean to
-#^+SRArpltd	but did use to remain in
+#^+SRArpltd	but in order to remain in
 #KPAUfrblgsz	if you could've recalled that
 #SWHRAOUblgd	but the[AFTER]was going to have liked[END]
 #+WRAEUrtsd	did use to have been starting with
-#^TWHRAO*Ufrpblsd	in order not to have formed by
+#^RAO*Ufrpblsd	in order not to have formed by
 #^STWRA*Upgd	but that did not use to have happened
 #^STKPWHAO*EUrlg	and there will not have been looking at
 #PHROEgsd	she was having to see
@@ -1050,11 +1049,11 @@
 #^TKPRAO*Urld	if it was not going to have led
 #^SPWHRA*EUrpblgsz	but what did not use to have been explaining that
 #^+THRfpbs	may we know that
-#^+SOd
+#^+SOd	but in order to be
 #TKROUrbts	if I've had to decide that
 #SWHREUfgts	but the[AFTER]may have been being an[END]
 #+WO*fpblgz	shouldn't include
-#^TWHR*Urblgsd	in order not to have asked for
+#^R*Urblgsd	in order not to have asked for
 #^STWO*EUfbtz	but that should not have been becoming more
 #^STKPWHAfrgtsd	and so there could forget to
 #PHAOUrplsd	she'd have replaced
@@ -1076,7 +1075,7 @@
 #TKAOEUfrbsd	if I'd have been showing that
 #SWHAEUbgtd	but the[AFTER]could've been taking[END]
 #+PRAO*pblgtdz	weren't you going to imagine that
-#^TWHA*EUfrpgd	in order not to have been providing by
+#^A*EUfrpgd	in order not to have been providing by
 #^STPRAO*EUblg	but it is not going to have been liking
 #^SKPWHROrg	and what does have to
 #PHEU	she's been
@@ -1087,7 +1086,7 @@
 #^STKWAOrblgdz	and that would break up
 #^+TPWHAEfbsz	could there be adding that
 #^+STHRAOUfrgtz	but were we going to have forgotten
-#RAUbd	used to have added
+#RAUbd	to have added
 #KPHAOEUpblsd	if she'd have been planning
 #SKPA*rplz	and you couldn't remain
 #+WHRAO*Efblgz	wasn't the[AFTER]going to be liking to[END]
@@ -1110,13 +1109,13 @@
 #^STKWEfrpdz	and that was choosing to
 #^+PWHROEblgtsd	was what having to accept
 #^+STHRUrgtz	but might we have heard
-#OEUrpbls	shall have been learning to
+#OEUrpbls	to have been learning to
 #KPH*fplg	if she doesn't make sure
 #STKRO*Efrp	and I'm not having to provide
 #+WHR*Epgtsd	might the[AFTER]not be stopping by[END]
 #+SWO*Urbsd	but shouldn't have wished
 #^KHRAOfpbltz	if he was going to mean that
-#^STWHRAgt	but in order to get
+#^SRAgt	but in order to get
 #^+TWAOEpbd	would that be needing
 #SPHAO*l	but she won't look
 #+PA*Epbld	couldn't you be meaning
@@ -1138,7 +1137,7 @@
 #+WHA*Ufbgd	couldn't the[AFTER]have walked[END]
 #+SPRAO*EUfrlgd	but weren't you going to have been following by
 #^KHRpblgdz	if he might come to
-#^STWHOErplt	but in order to be remaining in
+#^SOErplt	but in order to be remaining in
 #^+TWUfpd	had that changed
 #SPH*Erpbld	but she wasn't learning
 #+TRO*Ufplgtz	hadn't I had to apply for
@@ -1146,7 +1145,7 @@
 #^SHRAOEftsd	but he was going to be starting to
 #^+STPWHAEUpl	but can there have been making
 #THRAO*rblsd	we weren't going to share with
-#SRA*Eflgtd	but didn't use to be loving to
+#SRA*Eflgtd	but not to be loving to
 #SKPHAO*Ufrgz	and she won't have offered to
 #+SWHRAO*EUpbg	but isn't the[AFTER]going to have been continuing[END]
 #^WROrpgsd	did have to produce by
@@ -1168,13 +1167,13 @@
 #^SHREbt	but he may be buying
 #^+SPWHRO*fb	but does what not have to become
 #THR*Efrblgsd	we might not be recalling that
-#SO*Eblgsz	but shouldn't be asking
+#SO*Eblgsz	but not to be asking
 #SKPH*Urts	and she hasn't started with
 #+SWHRAfplt	but must the[AFTER]meet[END]
 #^WAOEfrpbls	will be forming by
 #^TKPHAEpgsz	if they could be saying that
 #^SKHRAOUrl	and he is going to have led
-#^+TWHRAEUftz	in order to have been having
+#^+RAEUftz	in order to have been having
 #^+STWAO*fpblz	but will that not open in
 #TKHRAO*Eplgtd	if we weren't going to be happening in
 #+PHAO*EUflgsd	wouldn't she have been guessing that
@@ -1195,7 +1194,7 @@
 #^WErblgs	are asking for
 #^TKPWROUfbtd	if [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]had had to become more[END]
 #^SKHREUfrgts	and so he may have been forgetting to
-#^+TWHOEUbs	in order to have been deciding
+#^+OEUbs	in order to have been deciding
 #^+STW*pbltd	but did that not handle
 #TKHR*Ufblgs	if we may not have asked to
 #+PH*EUblt	hasn't she been building
@@ -1204,7 +1203,7 @@
 #^+HRAOEUpgz	is he going to have been happening to
 #TPWHA*Ufpbgtd	there couldn't have checked out
 #STHRAO*Ugd	but we weren't going to have gone
-#+RA*EUplgsd	didn't use to have been playing in
+#+RA*EUplgsd	not to have been playing in
 #^TPWUfrsz	[IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]had served[END]
 #^SWROUlgsd	but had had to guess
 #^STKPHREUpbgtdz	and they might have been picking up
@@ -1226,11 +1225,11 @@
 #^+HR*fbsd	might he not add that
 #PWHRO*Upbls	what hasn't had to plan
 #STHR*EUrpld	but we might not have been remaining
-#+AOfblgd	would like to
+#+AOfblgd	to like to
 #^WHRAUrsd	the[AFTER]did use to have received[END]
 #^SWAOEUrpbgtz	but would have been returning to
 #^STKPHA*fpls	and they can not seem like
-#^+STWHRA*Eptsd	but in order not to be stopping
+#^+SRA*Eptsd	but in order not to be stopping
 #TWAO*Urlgdz	that wouldn't have realized that
 #TKPWHA*EUfz	if there can't have been finding out
 #SKPWfpbgsd	and this began to
@@ -1248,11 +1247,11 @@
 #^+HA*blgts	can he not accept
 #PWHAO*EUfpl	what won't have been applying
 #STHOfr	but we shall write
-#+pgts	does stop by
+#+pgts	to stop by
 #^WHOEUfpbltd	the[AFTER]should have been meaning that[END]
 #^SWEUg	but have been going
 #^STKPWRO*pbsz	and [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]does not have to understand that[END]
-#^+STWHO*Ufbz	but in order not to have become
+#^+SO*Ufbz	but in order not to have become
 #TW*EUfrgsd	that hadn't been serving as
 #KPWHRO*EUbz	if what hasn't been having to use in
 #STKHRApblsz	and we must plan to
@@ -1264,7 +1263,7 @@
 #TKWAO*EUptdz	if that wouldn't have been putting on
 #STPWHOrlts	but there shall stay in
 #+PWErpb	is this running
-#+SROUfpbgdz	but had had to check in
+#+SROUfpbgdz	but to have checked in
 #^KPOEUplts	if you shall have been seeming to
 #^STPW*rbgs	but [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]does not carry[END]
 #^+WRO*Efltz	were not having to love
@@ -1286,11 +1285,11 @@
 #TKWAflgt	if that can love to
 #SPWHRAOEfrgdz	but what was going to be offering to
 #+THRAElgt	must we be telling
-#+SAOUpblz	but will have minded
+#+SAOUpblz	but to have minded
 #^TKRAO*fblsd	if I was not going to believe to
 #^SWHRA*Efrbgtz	but the[AFTER]did not use to be requiring to[END]
 #^+WAO*Ebld	would not be allowing
-#TWHROfpg	to go on
+#ROfpg	to go on
 #STWREfrplgd	but that might be removing from
 #STKPWHOEpsd	and there should be passing
 #^PHR*fpbts	so she may not turn to
@@ -1310,11 +1309,11 @@
 #TKPROblgsd	if it had to ask
 #SPWHRErt	but what may be trying
 #+THOUrpblz	shall we have learned about
-#+SEUfplgz	but had been making sure
+#+SEUfplgz	but to have been making sure
 #^TKR*pgsd	if I might not say that
 #^SWHO*Erbz	but the[AFTER]shall not be reading it[END]
 #^+W*Uftd	had not had
-#TWHAOplgt	to happen in
+#AOplgt	to happen in
 #STWAErbld	but that could be sharing
 #SKPWHRAOUflgs	and what's going to have guessed that
 #^PHA*pbgts	she can not expect
@@ -1325,7 +1324,7 @@
 #STKWRUfpgsz	and that might've passed on
 #+TPWHOEUfrplsd	should there have been replacing by
 #+SPWEUpd	but had this been appearing
-#^RO*rlsd	did not have to lead to
+#^RO*rlsd	in order not to lead to
 #^KPHR*Erpblgs	if she may not be explaining that
 #^SKPO*Ufpbtd	and you should not have needed for
 #^+TPW*Usdz	had [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]not used to[END]
@@ -1336,7 +1335,7 @@
 #^TKA*Efbtsd	if I could not be being the
 #^SPHRAO*Ufrgt	but she is not going to have forgotten
 #^+PRA*Ubtz	did you not use to have bought
-#TWHEfblg	to be liking to
+#Efblg	to be liking to
 #STPROUfrblgd	but it'd had to recall
 #SKPWHRUblgz	and what might've liked
 #^PWRO*Efpltsd	this was not having to meet with
@@ -1347,13 +1346,13 @@
 #STKWAUplgs	and that can have played in
 #+PWHRAOEUrbgt	is what going to have been creating
 #+STHRA*flgd	but didn't we use to leave
-#^AO*Efrsd	would not be serving
+#^AO*Efrsd	in order not to be serving
 #^KPHA*Elgs	if she can not be guessing
 #^STKRAO*Upbgtd	and I was not going to have picked
 #^+WHRA*EUrptd	did the[AFTER]not use to have been putting it[END]
 #^+SWRfbgts	but may talk to
 #TKPEbgtsd	if it was talking
-#STWHROUpblgtsz	but to have expected to
+#SROUpblgtsz	but to have expected to
 #+TWREUrpbsz	might that have been running on
 #^SPHR*Urldz	but she might not have realized
 #^+PO*EUrpblgd	should you not have been remembering
@@ -1369,13 +1368,13 @@
 #STKPROEUfblgsz	and it'd been having to ask to
 #+PWHR*frblz	might what not feel that
 #+STHO*bltsd	but shouldn't we allow for
-#^*Ers	is not receiving
+#^*Ers	in order not to be receiving
 #^KPWRO*Urpbgtd	if this had not had to return to
 #^STKR*EUfpltz	and so I might not have been meeting
 #^+WHAOfrpbgs	will the[AFTER]bring in[END]
 #^+SWApts	but can stop
 #KHRAUfdz	if he used to have found out
-#STWHAOEUfpbgs	but to have been beginning to
+#SAOEUfpbgs	but to have been beginning to
 #+TWAEUgz	can that have been going to
 #^SPHA*EUfrz	but she could not have been writing
 #^+TRAO*EUlgd	was I not going to have been helping
@@ -1383,7 +1382,7 @@
 #STPEUfrbsz	but it'd been showing that
 #+STPWHO*Erpbz	but shall there not be running for
 #^PW*Ufptsd	this had not been a
-#^SRO*EUfrpgz	but had not been having to provide by
+#^SRO*EUfrpgz	but in order not to have been providing by
 #^SKPHR*EUblgt	and so she may not have been thinking it
 #^+STPWAErpbltd	but could [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]be returning from[END]
 #WRAOUfpbz	were going to have known
@@ -1396,7 +1395,7 @@
 #^+WHrblgz	does the[AFTER]break up[END]
 #^+SPROEfbd	but were you having to become
 #KHOUbdz	if he should've used in
-#STWHEUpblsdz	but to have been planning to
+#SEUpblsdz	but to have been planning to
 #+TPRO*rpg	doesn't it have to appear in
 #^SPWRO*EUrd	but this had not been having to work
 #^+TRArpbgsd	did I use to consider
@@ -1404,13 +1403,13 @@
 #SHRAEUrlt	but he must've been living in
 #+SPWHRAO*Etsd	but wasn't what going to be starting
 #^THRA*Uplt	we must not have let
-#^SAO*EUrbgtz	but will not have been caring about
+#^SAO*EUrbgtz	but in order not to have been caring about
 #^SKPHOfltd	and so she should love
 #^+SWHROElt	but is the[AFTER]having to live[END]
 #WRUpbgsz	may have begun of
 #TKPHOEUrpdz	if they should've been reaching out
 #STKP*fbgsd	and it didn't think that
-#+TWHRO*Efrl	not to be following
+#+RO*Efrl	not to be following
 #+STWR*Ebgsdz	but might that not be causing by
 #^KPW*EUrplgd	if this had not been playing with
 #^+PHRAEfrpz	must she be choosing to
@@ -1424,13 +1423,13 @@
 #SHO*frgd	but he shouldn't offer
 #+SPWHR*Urpgtz	but might what not have heard about
 #^THO*EUfbls	so we shall not have been believing to
-#^SAfrbgtd	but could require to
+#^SAfrbgtd	but in order to require to
 #^SKPWRAOblsz	and so this was going to add to
 #^+SWHAOUrpbgdz	but would the[AFTER]have opened up[END]
 #WAEUfplz	can have been applying to
 #TKPWRAO*frplg	if [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]isn't going to remove from[END]
 #SKHRA*ps	and he mustn't pass
-#+TWHAO*Erltsz	not to be staying in
+#+AO*Erltsz	not to be staying in
 #+STWA*Urpblg	but can't that have remembered
 #^TKHRA*EUtdz	if we did not use to have been wanting to
 #^+PHOErbgsdz	should she be carrying out
@@ -1439,7 +1438,7 @@
 #+TP*Erbl	isn't it sharing
 #^TPWHO*EUbgdz	there should not have been causing
 #^SPWApblgz	but this can come to
-#^+RAOErplts	is going to be replacing with
+#^+RAOErplts	in order to be replacing with
 #TPWAEUblgs	[IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]can have been asking[END]
 #SWRAO*rgd	but weren't going to
 #STKPHRA*Erpbldz	and they didn't use to be learning about
@@ -1451,7 +1450,7 @@
 #PROEUplg	you've been having to play
 #TKPWR*rblsz	if [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]might not share with[END]
 #SKHO*Eflgtz	and he shouldn't be loving to
-#+TWH*Ufrt	not to have written about
+#+*Ufrt	not to have written about
 #+STPRO*Ulgtsd	but hadn't it had to set up
 #^TKHAOrpgsz	if we would produce by
 #^+PWRAOUfrbgsd	was this going to have called for
@@ -1460,11 +1459,11 @@
 #+HRA*Ufrpls	mustn't he have replaced by
 #^TPWHrpblgtz	there did remember that
 #^STHROEfpbtsz	but we were having to turn to
-#^+REsd	might be saying
+#^+REsd	in order to be saying
 #WHRO*fldz	the[AFTER]didn't have to feel like[END]
 #SWR*Efpblgsd	but might not be explaining how
 #STKPHO*Eltdz	and they shouldn't be living with
-#+STWHRO*EUrblgtd	but not to have been breaking down
+#+SRO*EUrblgtd	but not to have been breaking down
 #^TWRAfbts	so that must be the
 #^TKPWHAOEfrg	if there will be offering
 #^SKPWAEbtd	and so this could be buying
@@ -1482,11 +1481,11 @@
 #+HO*Urbg	shall he not have called
 #^PWHRAlgtz	what did use to tell
 #^STHAOEpbgtsz	but we would be expecting
-#^+AUrpt	can have put it
+#^+AUrpt	in order to have put it
 #WHAO*bgts	the[AFTER]won't talk[END]
 #SWA*Epblgtsd	but couldn't be expecting to
 #STKPWRAO*Urpbsd	and [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]wasn't going to have run on[END]
-#+STWHRfrpld	but to remove
+#+SRfrpld	but to remove
 #^TWOpz	so that shall pay
 #^TKPWHErld	if there was leading
 #^STKHROUrpblgsz	and we had had to explain that
@@ -1498,7 +1497,7 @@
 #^TKWRAErblgsd	if that did use to be asking for
 #^STPWHAOUfbtz	but there would have become more
 #^+PWAEUfrgtsd	could this have been forgetting to
-#^+SRAOEUbsd	but was going to have been deciding
+#^+SRAOEUbsd	but in order to have been deciding
 #KPAO*Erplsd	if you wouldn't be replacing
 #STPWA*Ufblgsd	but [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]couldn't have asked to[END]
 #+WRAO*EUfrbld	weren't going to have been feeling that
@@ -1508,7 +1507,7 @@
 #WH*Efd	the[AFTER]wasn't finding[END]
 #SPRO*Ufpbgtz	but you hadn't had to check out
 #STKPWR*Ugdz	and [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]might not have gone to[END]
-#+STWHArbgtsd	but to talk about
+#+SArbgtsd	but to talk about
 #^TPRAOEflt	it is going to be loving
 #^KPWHRAUfrd	if what did use to have written
 #^STKHAOUlgsz	and we would have guessed
@@ -1520,11 +1519,11 @@
 #^TKWOUfrpgd	if that should have provided by
 #^STPWHUblg	but there has liked
 #^+THROEUrg	have we been having to
-#^+SR*rpblt	but may not return from
+#^+SR*rpblt	but in order not to return from
 #KP*U	if you haven't
 #SWHRO*Upg	but the[AFTER]hasn't had to happen[END]
 #+WR*EUrbtd	might not have been trying to
-#^TWHRAOEldz	in order to be holding
+#^RAOEldz	in order to be holding
 #^STWRAUpbsd	but that did use to have understood
 #^STKPWHAOEUrblgdz	and there would have been breaking up
 #PHRA*Ebd	she didn't use to be adding
@@ -1544,11 +1543,11 @@
 #^TKPRAOUrbgtdz	if it was going to have cared about
 #^SPWHRAEUfltsz	but what did use to have been loving it
 #^+THAO*fpb	will we not know
-#^+SA*lgz	but can not help to
+#^+SA*lgz	but in order not to help to
 #TKRA*Urpd	if I didn't use to have reached
 #SWHAO*EUfbgs	but the[AFTER]won't have been thinking that[END]
 #+WOfrbz	should show
-#^TWHRUrplg	in order to have played with
+#^RUrplg	in order to have played with
 #^STWOEUfptz	but that should have been finding that
 #^STKPWH*frpdz	and there did not choose to
 #PHO*Urpbls	she shall not have learned to
@@ -1559,7 +1558,7 @@
 #^STKWRAEUgt	and that must have been getting
 #^+TPWHAO*pbd	would there not need
 #^+SPWA*Erbltd	but could this not be leading by
-#RAO*Ufl	isn't going to have felt
+#RAO*Ufl	not to have felt
 #KPHRA*EUfrgsz	if she didn't use to have been serving as
 #SKPAO*EUl	and you won't have been looking
 #+TPWOpbld	should [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]mean[END]
@@ -1570,7 +1569,7 @@
 #TKO*EUfrpl	if I shall not have been removing
 #SWH*EUptz	but the[AFTER]hasn't been putting on[END]
 #+PRAOrltsd	were you going to stay in
-#^TWHAUtd	in order to have wanted
+#^AUtd	in order to have wanted
 #^STPRAOEUpltsd	but it was going to have been seeming to
 #^SKPWHRA*rbgsd	and what did not use to carry
 #PWRAO*Ultsd	this wasn't going to have stayed
@@ -1581,13 +1580,13 @@
 #^STKWO*rplt	and so that shall not remain in
 #^+TPWH*Efpd	was there not changing
 #^+STHRO*Ufrbl	but have we not had to feel that
-#R*Ublgtz	might not have thought it
+#R*Ublgtz	not to have thought it
 #KPHO*EUrgsz	if she shouldn't have been working on
 #SKPArpbld	and you could learn
 #+WHRAOEfplgtz	was the[AFTER]going to be applying for[END]
 #+SWRAUfrpblt	but must have formed in
 #^TKPAEUrbd	if it could have been reading
-#^STWHRAO*ftsd	but in order not to start to
+#^SRAO*ftsd	but in order not to start to
 #^+TWRA*Efpblsz	did that not use to be moving to
 #SPHROflgtd	but she had to love to
 #+PREfrgz	may you be offering to
@@ -1603,13 +1602,13 @@
 #^STKPRAO*s	and it is not going to say
 #^+PWHRA*Epltz	did what not use to be letting
 #^+STHAO*Urbgd	but would we not have called
-#A*EUfld	couldn't have been feeling
+#A*EUfld	not to have been feeling
 #KPHfpblgs	if she explains how
 #STKROltd	and I had to live
 #+WHREpbts	may the[AFTER]be understanding of[END]
 #+SWOUrblgt	but shall have broken down
 #^KHRO*frlz	if he did not have to follow
-#^STWHR*bt	but in order not to buy
+#^SR*bt	but in order not to buy
 #^+TWO*Epblts	shall that not be meaning to
 #SPHAOblgsz	but she'd ask
 #+PAErts	can you be starting with
@@ -1630,7 +1629,7 @@
 #+WHAUfpgd	could the[AFTER]have gone on[END]
 #+SPRAOEUfrplsz	but were you going to have been replacing by
 #^KHAO*rlsz	if he would not lead to
-#^STWHA*Erpblgsd	but in order not to be explaining that
+#^SA*Erpblgsd	but in order not to be explaining that
 #^+TPRAO*Ufpbtz	was it not going to have needed for
 #SPHEfg	but she's giving
 #+TROUfpblgd	had I had to include
@@ -1638,13 +1637,13 @@
 #^SHRO*Efbtd	but he was not having to become more
 #^+STPWH*EUpbltd	but had there not been handling
 #THRAOrpls	we're going to replace
-#SRAEfblgs	but must be asking to
+#SRAEfblgs	but to be asking to
 #SKPHAOUfrblgz	and she'd have recalled
 #+SWHRAOEUrtd	but was the[AFTER]going to have been trying[END]
 #^WRA*rpbgtsd	did not use to consider to
 #^TKPHAO*Efpltsz	if they would not be meeting with
 #^STKPA*Ufrpbld	and it could not have formed
-#^+TWHRAO*Upgz	in order not to have happened to
+#^+RAO*Upgz	in order not to have happened to
 #^+STWRA*EUrlgsd	but did that not use to have been guessing it
 #KPWOEfpbgtd	if this should be checking out
 #STKEgd	and I was going
@@ -1660,13 +1659,13 @@
 #^SHAO*Ebl	but he will not be allowing
 #^+SPWHROfpbsz	but did what have to know that
 #THRz	we may use
-#SOEplz	but shall be making it
+#SOEplz	but to be making it
 #SKPHUrbtsz	and she'd decided that
 #+SWHR*fpblts	but may the[AFTER]not plan for[END]
 #^WO*ld	should not look
 #^TKPH*Epbs	if they are not understanding
 #^SKHRO*Urblgd	and he had not had to break
-#^+TWHR*EUfbsd	in order not to have been adding that
+#^+R*EUfbsd	in order not to have been adding that
 #^+STWAOfrgtd	but would that forget
 #TKHRAOEpbls	if we're going to be planning
 #+PHAOEUfblgd	would she have been liking to
@@ -1687,7 +1686,7 @@
 #^PRAO*Erpl	you are not going to be remaining
 #^TKPWRA*Ufptd	if [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]did not use to have found that[END]
 #^SKHAO*EUfrpd	and he would not have been providing
-#^+TWHA*EUblgts	in order not to have been accepting
+#^+A*EUblgts	in order not to have been accepting
 #^+STWrgtd	but did that hear
 #TKHRUfpl	if we may have applied
 #+PHEUpgts	has she been stopping by
@@ -1696,7 +1695,7 @@
 #^+HRO*EUpbsz	has he not been having to understand that
 #TPWHAUfrgsd	there could've served as
 #STHRAOUbz	but we're going to have used in
-#+RAEUpblsz	must have been planning to
+#+RAEUpblsz	to have been planning to
 #^WHRAO*Ufrbgtsd	the[AFTER]was not going to have carried on[END]
 #^SWRA*Ubls	but must not have added to
 #^STKPHAO*EUrdz	and they would not have been working with
@@ -1719,11 +1718,11 @@
 #^+HRfpsz	may he choose from
 #PWHROUrgsd	what'd had to work on
 #STHREUrpblsz	but we might've been learning to
-#+O*fplgtd	shouldn't apply for
+#+O*fplgtd	not to apply for
 #^WHR*Urbsz	the[AFTER]may not have wished to[END]
 #^SWO*EUfts	but shall not have been starting to
 #^STKPHAfpblsd	and so they could move to
-#^+STWHRAEpbz	but in order to be opening
+#^+SRAEpbz	but in order to be opening
 #TWAOUrbls	that'll have shared with
 #TKPWHAEUflgt	if there can have been loving to
 #STKHRAO*frgdz	and we weren't going to offer to
@@ -1745,7 +1744,7 @@
 #^WHA*EUfrld	the[AFTER]could not have been following[END]
 #^SPRAO*EUbgz	but you are not going to have been causing
 #^STKPWROpblt	and [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]does have to handle[END]
-#^+STWHOUfpz	but in order to have chosen
+#^+SOUfpz	but in order to have chosen
 #TWEUfrblgs	that's been recalling that
 #KPWHROEUblgsd	if what'd been having to ask
 #STKHR*rt	and we may not try
@@ -1757,7 +1756,7 @@
 #TKWAOEUplgt	if that'll have been happening in
 #STPWHA*rbld	but there couldn't share
 #+THRAO*Eflgs	aren't we going to be guessing that
-#+SRA*Ufrtd	but didn't use to have written about
+#+SRA*Ufrtd	but not to have written about
 #^KPA*EUpbgts	if you can not have been expecting
 #^STPWrpgd	but [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]did appear in[END]
 #^+WROEfblz	were having to believe
@@ -1780,11 +1779,11 @@
 #TKW*fblg	if that doesn't like to
 #SPWHRO*Efrblgd	but what wasn't having to recall
 #+THR*Eblgz	might we not be liking
-#+SO*Urtsz	but shouldn't have started with
+#+SO*Urtsz	but not to have started with
 #^TKRAOfpltsd	if I was going to meet with
 #^SWHRAEfrpblsz	but the[AFTER]did use to be forming by[END]
 #^+WAOEpgdz	would be happening to
-#TWHRA*fpbgt	not to check out
+#RA*fpbgt	not to check out
 #STWAO*gsz	but that wouldn't see
 #STKPWHA*Eplgs	and there can't be playing in
 #^PHRfrsd	so she might serve
@@ -1807,7 +1806,7 @@
 #^TKRpbtz	if I may turn out
 #^SWHOErblgsz	but the[AFTER]should be asking for[END]
 #^+WUfbs	have added that
-#TWHO*pbltz	not to handle of
+#O*pbltz	not to handle of
 #STW*Erplsz	but that wasn't replacing
 #SKPWHRO*Ufblgsz	and what hadn't had to ask to
 #^PHArs	so she can receive
@@ -1818,7 +1817,7 @@
 #STKWAO*Ufpbgs	and that won't have begun to
 #+TPWHA*Ugz	can't there have gone to
 #+STHRAO*EUplgd	but weren't we going to have been playing
-#^ROrbgtsz	did have to talk about
+#^ROrbgtsz	in order to talk about
 #^KPHREflts	if she may be loving it
 #^SKPOUfrz	and you should have written
 #^+TPWUlgd	had [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]helped[END]
@@ -1840,13 +1839,13 @@
 #STKW*Upblsdz	and that hadn't planned to
 #+PWHRO*EUrpg	hasn't what been having to appear in
 #+STHRAfblt	but must we believe that
-#^AOEfrbgts	will be carrying on
+#^AOEfrbgts	in order to be carrying on
 #^KPHAEbltz	if she could be building
 #^STKRAOUrd	and so I was going to have worked
 #^+WHRAEUrpbgsd	did the[AFTER]use to have been considering[END]
 #^+SWAO*fplsz	but would not seem like
 #KHRAO*Eptd	if he wasn't going to be putting
-#STWHRA*Urlt	but not to have lived in
+#SRA*Urlt	but not to have lived in
 #+TWAO*EUrp	won't that have been reaching
 #^SPHRUrbgtz	but she may have cared about
 #^+POEUfltd	should you have been loving
@@ -1863,13 +1862,13 @@
 #STKPRA*EUfplgt	and it mustn't have been applying for
 #+PWHRfrpb	may what need to
 #+STHOpgtsz	but should we stop by
-#^Erbsdz	was wishing to
+#^Erbsdz	in order to be wishing to
 #^KPWROUft	if this has had to have
 #^STKREUfpbls	and so I may have been moving to
 #^+WHOEUgts	shall the[AFTER]have been setting[END]
 #^+SW*pbdz	but did not open
 #KHR*Uflg	if he may not have left
-#STWHO*EUfrgd	but not to have been offering
+#SO*EUfrgd	but not to have been offering
 #+TW*EUlg	hasn't that been helping
 #^SPHAEUfrbgtd	but she could have been requiring to
 #^+TRAOEUblsz	was I going to have been adding to
@@ -1877,7 +1876,7 @@
 #SHRAO*EUfrplg	but he isn't going to have been removing from
 #+STPWHOErpblg	but shall there be remembering
 #^PWUfpbt	this has needed for
-#^SROUtdz	but had had to want to
+#^SROUtdz	but in order to have wanted to
 #^SKPHREUpltsz	and she might have been seeming to
 #^+STPW*Eflsd	but was [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]not looking for[END]
 #WRO*Ufpblgtd	hadn't had to come from
@@ -1898,13 +1897,13 @@
 #SHR*EUrblsz	but he might not have been sharing with
 #+SPWHRAOElgtsd	but was what going to be setting up
 #^THRAUpbgt	we must have picked
-#^SAOEUrpgsz	but would have been producing by
+#^SAOEUrpgsz	but in order to have been producing by
 #^SKPHA*fbld	and she could not believe
 #^+SWHRA*Eblz	but must the[AFTER]not be allowing to[END]
 #WAO*Upblg	won't have come
 #TKPHA*EUrpbtd	if they couldn't have been returning
 #STKPfpgsd	and it passed on
-#+TWHROEfrpls	to be replacing by
+#+ROEfrpls	to be replacing by
 #+STWREpsz	but may that be passing through
 #^KPWEUrpblgtz	if this had been remembering that
 #^+PHR*sd	might she not say
@@ -1918,13 +1917,13 @@
 #SHOfrblgsz	but he should recall that
 #+SPWHRUrpbgt	but may what have returned to
 #^THOEUfplts	so we shall have been meeting with
-#^S*frpblsd	but did not form by
+#^S*frpblsd	but in order not to form by
 #^SKPWRO*pgd	and this did not have to happen
 #^+SWHO*Ufs	but shall the[AFTER]not have saved[END]
 #W*EUfpbg	haven't been checking
 #TKPWRO*EUgsd	if [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]hadn't been having to see[END]
 #SKHRAplgtz	and he used to happen in
-#+TWHAOErbg	to be calling
+#+AOErbg	to be calling
 #+STWAUflgsz	but could that have guessed that
 #^TKHRAEUlgtz	if we did use to have been telling
 #^+PHA*Erpt	can she not be putting it
@@ -1933,7 +1932,7 @@
 #+TPErpbsd	was it running on
 #^TPWHOEUpz	so there shall have been paying
 #^SPW*rld	but this did not lead
-#^+RO*Erpblgsz	was not having to explain that
+#^+RO*Erpblgsz	in order not to be explaining that
 #TPW*EUpld	[IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]hadn't been making[END]
 #SWRAOrbts	but are going to decide that
 #STKPHRAEfgts	and they must be being an
@@ -1945,7 +1944,7 @@
 #PRA*EUpbltdz	you didn't use to have been handling of
 #TKPWRrplsd	if [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]might replace[END]
 #SKHOEfblgsd	and he should be asking to
-#+TWHUfrbld	to have felt that
+#+Ufrbld	to have felt that
 #+STPROUblts	but has it had to allow for
 #^TKHO*rpbgtsz	if we should not consider to
 #^+PWRO*Ufrpblz	had this not had to form
@@ -1954,11 +1953,11 @@
 #+HRAEgdz	did he use to be going to
 #^PWHRAO*flt	what is not going to love
 #^STHRA*Efrd	but we did not use to be writing
-#^+AO*Elgsz	would not be guessing
+#^+AO*Elgsz	in order not to be guessing
 #WHROfbgtsz	the[AFTER]had to talk to[END]
 #SWREfrbsd	but might be showing that
 #STKPHOEbgtd	and they should be taking
-#+STWHROEUrpbdz	but to have been running for
+#+SROEUrpbdz	but to have been running for
 #^TWR*fpts	so that may not be a
 #^TKPWHO*Efrpgd	if there should not be providing by
 #^SKPW*Eblg	and this is not liking
@@ -1976,11 +1975,11 @@
 #+HOUrplz	should he have remained
 #^PWHR*bltd	what might not build
 #^STHO*Ersz	but we should not be receiving
-#^+*Urpbgs	has not considered
+#^+*Urpbgs	in order not to have considered
 #WHAOptsz	the[AFTER]would stop[END]
 #SWAErlgz	but can be realizing that
 #STKPWRAOUr	and [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]is going to have worked[END]
-#+STWHAOEUts	but to have been starting
+#+SAOEUts	but to have been starting
 #^TWA*plgz	that can not pay attention
 #^KPWHRAO*Erbgtdz	if what was not going to be caring about
 #^STKHRA*Ufltsz	and we did not use to have loved it
@@ -1992,7 +1991,7 @@
 #^TKWR*Erplg	if that may not be playing with
 #^STPWHO*Ufptz	but there should not have found that
 #^+PW*EUfrpdz	had this not been choosing to
-#^+SRO*EUblgtsd	but had not been having to accept
+#^+SRO*EUblgtsd	but in order not to have been accepting
 #KPAOErpbls	if you'll be learning to
 #STPWAUfplg	but [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]can have made sure[END]
 #+WRAOEUfrp	are going to have been providing
@@ -2002,7 +2001,7 @@
 #WHEfl	the[AFTER]is feeling[END]
 #SPROUfrgsz	but you'd had to serve as
 #STKPWRUl	and [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]may have looked[END]
-#+STWH*rpgtd	but not to hear about
+#+S*rpgtd	but not to hear about
 #^TPRO*Efbltz	it was not having to believe that
 #^KPWHR*Ufrbgtsz	if what might not have carried on
 #^STKHO*Ublsd	and we should not have added to
@@ -2014,11 +2013,11 @@
 #^TKWA*Etd	if that could not be wanting
 #^SPWHRAO*Upltsd	but what was not going to have seemed to
 #^+THRA*EUrbgsd	did we not use to have been carrying
-#^+SRfls	but may look for
+#^+SRfls	but in order to look for
 #KPEltsd	if you were staying
 #SWHROUpbgdz	but the[AFTER]had had to continue to[END]
 #+WREUrb	may have been reading
-#^TWHRO*Ebgd	in order not to be thinking
+#^RO*Ebgd	in order not to be thinking
 #^STWR*Upblgdz	but that might not have come to
 #^STKPWHO*EUrplt	and so there shall not have been remaining in
 #PHRAEblgtz	she used to be thinking it
@@ -2038,11 +2037,11 @@
 #^TKPRO*Urpgsd	if it had not had to produce by
 #^SPWHR*EUfblsz	but what might not have been believing to
 #^+THAOfrbgs	will we call for
-#^+SAbldz	but could allow to
+#^+SAbldz	but in order to allow to
 #TKRAUrpbt	if I must've returned
 #SWHAOEUfpgs	but the[AFTER]will have been passing on[END]
 #+WA*frplgz	couldn't remove from
-#^TWHAO*Urpblgtd	in order not to have remembered that
+#^AO*Urpblgtd	in order not to have remembered that
 #^STWA*EUfpbtsd	but that could not have been turning to
 #^SKPWHRAO*EUs	and what is not going to have been saying
 #PHOUfld	she should've felt
@@ -2053,7 +2052,7 @@
 #^STKWR*EUbt	and so that may not have been buying
 #^+TPWHAOpblts	will there mean to
 #^+SPWAErpltsz	but could this be replacing with
-#RAOUfb	is going to have become
+#RAOUfb	to have become
 #KPHRAEUfrblgsd	if she used to have been recalling that
 #SKPAOEUblgsz	and you'd have been asking
 #+TPWA*rts	can't [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]start with[END]
@@ -2064,7 +2063,7 @@
 #TKOUgs	if I shall have seen
 #SWHEUplgtd	but the[AFTER]had been happening in[END]
 #+PRO*rblz	didn't you have to share
-#^TWH*Ulgtd	in order not to have told
+#^*Ulgtd	in order not to have told
 #^STPRO*EUpbgtsd	but it had not been having to expect
 #^SKPWHRArpgz	and what did use to appear in
 #PWRAOUbgt	this is going to have taken
@@ -2075,13 +2074,13 @@
 #^STKWOrpblgsd	and so that should explain that
 #^+TPWHEfpbtz	was there needing for
 #^+STHROEsz	but are we having to use to
-#RUplsz	might've seemed
+#RUplsz	to have seemed
 #KPHOEUrbt	if she shall have been trying to
 #SKP*fg	and you don't give
 #+WHRO*Efpblgd	wasn't the[AFTER]having to include[END]
 #+SWR*Els	but may not be sending
 #^TKP*EUrblgs	if it has not been asking for
-#^STWHRAOfbtd	but in order to become more
+#^SRAOfbtd	but in order to become more
 #^+TWRAEfrgts	must that be forgetting to
 #SPHRA*fblgs	but she mustn't ask to
 #+PAO*Efrblgz	wouldn't you be recalling
@@ -2097,13 +2096,13 @@
 #^STKPRAOlgsd	and so it was going to guess
 #^+PWHRAEpbgtdz	did what use to be picking up
 #^+STHAOUrptz	but would we have put it
-#AEUfbgtsd	could've been talking to
+#AEUfbgtsd	to have been talking to
 #KPWRAO*frbs	if this isn't going to show that
 #STKRA*bgtsz	and I didn't use to talk
 #+WHAO*Epblgtd	wouldn't the[AFTER]be imagining[END]
 #+SWA*Urpbd	but couldn't have run
 #^KHROfrpg	if he does have to provide by
-#^STWHRbl	but in order to allow
+#^SRbl	but in order to allow
 #^+TWOErlz	shall that be realizing
 #SPHO*plz	but she shall not make it
 #+P*Erbtsz	weren't you deciding that
@@ -2111,7 +2110,7 @@
 #^STPApbs	but it can understand
 #^+STPWHAOEUfrgtd	but would there have been forgetting
 #PWAEUbsz	this can have been deciding to
-#SRAO*pbls	but isn't going to plan
+#SRAO*pbls	but not to plan
 #SKPHRA*Erpld	and she didn't use to be remaining
 #+STPWA*EUfrbg	but can't [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]have been requiring[END]
 #^WRAO*EUbltsz	were not going to have been allowing for
@@ -2124,7 +2123,7 @@
 #+WH*Ufpbgsd	hadn't the[AFTER]begun to[END]
 #+SPRO*Ut	but haven't you had to want
 #^KHAOrbgtd	if he would create
-#^STWHAEfltsd	but in order to be loving it
+#^SAEfltsd	but in order to be loving it
 #^+TPRAOUfp	is it going to have changed
 #SPWRAO*Efbgtz	but this wasn't going to be walking in
 #+TRA*Ufrbd	didn't I use to have shown
@@ -2132,13 +2131,13 @@
 #^SHROEfptd	but he was having to find that
 #^+STPWHEUrgtd	but had there been hearing
 #THRO*rpbltz	we didn't have to return from
-#SR*Efpl	but may not be applying
+#SR*Efpl	but not to be applying
 #SKPHO*Ufr	and she shall not have written
 #+SWHRO*EUrbs	but hasn't the[AFTER]been having to wish[END]
 #^WRAfgd	did use to give
 #^TKPHAOEfpbltd	if they would be meaning that
 #^STKPAEg	and so it can be going
-#^+TWHRAOUpbsz	in order to have understood that
+#^+RAOUpbsz	in order to have understood that
 #^+STWRAEUrblt	but must that have been leading by
 #KPWA*Efrgsd	if this couldn't be serving as
 #+PHRA*Upblsz	mustn't she have planned to
@@ -2153,13 +2152,13 @@
 #^SHAOEplts	but he will be seeming to
 #^+SPWHRA*fpblg	but must what not include
 #THAO*lts	we won't stay
-#SA*Epbgd	but couldn't be continuing
+#SA*Epbgd	but not to be continuing
 #SKPWRAO*Urpz	and this isn't going to have reached out
 #+SWHRfrlg	but may the[AFTER]follow by[END]
 #^WObgsz	shall cause by
 #^TKPHEpblgd	if they were coming
 #^SKHROUrplgz	and he had had to play with
-#^+TWHREUfpsz	in order to have been choosing from
+#^+REUfpsz	in order to have been choosing from
 #^+STWO*frb	but shall that not show
 #TKHRO*Ergsd	if we weren't having to work on
 #+PHO*EUfplgtd	shouldn't she have been applying for
@@ -2168,7 +2167,7 @@
 #^+TPAEUfpblsd	could it have been moving to
 #TPWHAO*Erbls	there won't be sharing with
 #SPWA*Uflgt	but this can't have loved to
-#+RAO*EUfrgdz	wasn't going to have been offering to
+#+RAO*EUfrgdz	not to have been offering to
 #^TPWOErpgs	[IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]shall be producing by[END]
 #^SHUfblsd	but he had believed to
 #^STKPHROEUfrbgtz	and they had been having to require to
@@ -2180,7 +2179,7 @@
 #^PRAOErpblgt	you are going to be remembering that
 #^TKPWRAUfpbts	if [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]must have turned to[END]
 #^SKHAOUtz	and he will have wanted to
-#^+TWHAEUpltd	in order to have been letting
+#^+AEUpltd	in order to have been letting
 #^+STPRAO*rbgsz	but is it not going to carry out
 #TKHAO*Ufpblgtz	if we wouldn't have come from
 #+PWRAO*EUpbt	isn't this going to have been turning
@@ -2189,11 +2188,11 @@
 #^+HROEUpblt	has he been having to handle
 #TPWH*Ufrblgs	there hasn't recalled that
 #STHRO*Ublgsd	but we hadn't had to ask
-#+R*EUrt	may not have been trying
+#+R*EUrt	not to have been trying
 #^WHRAOUfrpbltz	the[AFTER]was going to have formed in[END]
 #^SWRAUpgsd	but did use to have said that
 #^STKPHAOEUrbz	and they will have been reading it
-#^+STWHRAO*Efpbldz	but in order not to be opening in
+#^+SRAO*Efpbldz	but in order not to be opening in
 #TWRA*Egtz	that didn't use to be getting
 #TKPWHAO*Uplgt	if there won't have happened in
 #SKPWA*EUrbld	and this couldn't have been sharing
@@ -2212,11 +2211,11 @@
 #^+HAO*fpbtd	would he not need for
 #PWHRA*Urbgz	what mustn't have cared
 #STHAO*EUflz	but we won't have been feeling like
-#+Ofpblgsz	should explain how
+#+Ofpblgsz	to explain how
 #^WHRUrblgtz	the[AFTER]might have broken down[END]
 #^SWOEUfbtsd
 #^STKPH*frgt	and they do not forget
-#^+STWHR*Epbltsz	but in order not to be meaning to
+#^+SR*Epbltsz	but in order not to be meaning to
 #TWO*Urpltz	that shouldn't have remained in
 #TKPWH*EUfblg	if there hasn't been liking to
 #STKHRAOfrblgd	and we were going to recall
@@ -2238,7 +2237,7 @@
 #^WHAEUfrplz	the[AFTER]could have been removing[END]
 #^SPRAOEUb	but you are going to have been adding
 #^STKPWRA*rldz	and [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]did not use to realize[END]
-#^+STWHA*Ufpbsd	but in order not to have known that
+#^+SA*Ufpbsd	but in order not to have known that
 #TPRAO*Udz	it wasn't going to have used
 #KPWHRA*EUpldz	if what didn't use to have been making it
 #STKHRrbtsd	and we might decide that
@@ -2250,11 +2249,11 @@
 #TKWO*EUpbltz	if that shall not have been handling of
 #STPWHArplsz	but there could replace
 #+THRAOEfblgsz	were we going to be asking to
-#+SRAUfrblz	but did use to have felt that
+#+SRAUfrblz	but to have felt that
 #^KPAEUrs	if you can have been receiving
 #^SWHRAO*rpbgtd	but the[AFTER]was not going to return to[END]
 #^+WRA*Efpltz	did not use to be meeting
-#TWHRAO*EUrlgd	not to have been looking at
+#RAO*EUrlgd	not to have been looking at
 #STWROfdz	but that had to find out
 #STKPWHREfpbgs	and there may be beginning to
 #^PHROEUrbgtsz	she had been having to talk about
@@ -2274,11 +2273,11 @@
 #TKWfpbz	if that knew
 #SPWHROEf	but what's having to find
 #+THREpgt	may we be getting to
-#+SOUrbtz	but should have tried to
+#+SOUrbtz	but to have tried to
 #^TKRO*fpbltsz	if I did not have to plan for
 #^SWHR*lz	but the[AFTER]may not hold[END]
 #^+WO*Epbsdz	should not be understanding that
-#TWHRAfrgs	to serve as
+#RAfrgs	to serve as
 #STWAObdz	but that'd use in
 #STKPWHAEpblsdz	and there could be planning to
 #^PHAO*frbgts	she will not carry on
@@ -2301,7 +2300,7 @@
 #^TKAO*pblgsz	if I would not explain
 #^SWHA*Erplgd	but the[AFTER]could not be playing with[END]
 #^+PRAO*Ufpsdz	were you not going to have chosen from
-#TWHOrgs	to work on
+#Orgs	to work on
 #STWErpblsd	but that was learning to
 #SKPWHROUfplgt	and what's had to apply for
 #^PH*rbsdz	she did not wish to
@@ -2312,7 +2311,7 @@
 #STKWAOUfrgd	and that'd have offered
 #+TPWHAUlg	can there have helped
 #+STHRAOEUpbldz	but were we going to have been minding
-#^RA*rpgtz	did not use to hear about
+#^RA*rpgtz	in order not to hear about
 #^KPHAO*Efbls	if she will not be believing to
 #^SKPA*Ufrbgtd	and you could not have required to
 #^+WHRAO*Ublsz	was the[AFTER]not going to have added to[END]
@@ -2335,13 +2334,13 @@
 #STKWUrgd	and that'd[AFTER][META=infl]en[END][END]
 #+PWHROEUrpbldz	had what been having to learn about
 #+STHR*fplgd	but might we not make sure
-#^O*Efrpbltd	should not be forming in
+#^O*Efrpbltd	in order not to be forming in
 #^KPH*Epgs	if she is not saying that
 #^STKRO*Urbdz	and I had not had to read it
 #^+WHR*EUftsz	might the[AFTER]not have been starting to[END]
 #^+SWAOfpbld	but would move
 #KHRAOEplg	if he's going to be playing
-#STWHRAUrblsz	but to have shared with
+#SRAUrblsz	but to have shared with
 #+TWAOEUflgtz	would that have been loving to
 #^SPHAO*Urpgsz	but she would not have produced by
 #^+PA*EUfbld	could you not have been believing
@@ -2363,7 +2362,7 @@
 #^+WHA*EUbtd	could the[AFTER]not have been buying[END]
 #^+SWpbltsd	but did mean to
 #KHRUfbl	if he may have believed
-#STWHOEUfrblgsz	but to have been recalling that
+#SOEUfrblgsz	but to have been recalling that
 #+TWEUblgd	had that been liking
 #^SPH*EUfrpblsd	but she had not been forming by
 #^+TRO*EUpgd	had I not been having to happen
@@ -2371,7 +2370,7 @@
 #SHRAOUgsd	but he was going to have seen
 #+STPWHA*Eflgsz	but couldn't there be guessing that
 #^THRAO*Ufrs	we are not going to have served
-#^SRA*Ulgtz	but did not use to have told
+#^SRA*Ulgtz	but in order not to have told
 #^SKPHAO*EUpbgtsz	and she would not have been expecting
 #^+STPWEfbgt	but is [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]walking in[END]
 #WROUfrbgdz	had had to require for
@@ -2393,13 +2392,13 @@
 #SHREUrplsd	but he might've been replacing
 #+SPWHRO*Eblts	but isn't what having to allow for
 #^THR*Urtz	so we might not have tried
-#^SO*EUrpbgtsz	but should not have been considering to
+#^SO*EUrpbgtsz	but in order not to have been considering to
 #^SKPHAfpltd	and so she could meet
 #^+SWHRAEpt	but must the[AFTER]be putting[END]
 #WAOUrlgsz	would've guessed it
 #TKPHAEUfd	if they could've been finding
 #SKHRAO*fpbgtz	and he wasn't going to check out
-#+TWHRA*gdz	not to go to
+#+RA*gdz	not to go to
 #+STWAO*Eplgsz	but wouldn't that be playing in
 #^TKHRAO*EUflt	if we are not going to have been loving
 #^+PHRlgsz	might she guess
@@ -2420,7 +2419,7 @@
 #WEUfrgtz	had been forgetting
 #TKPWROEUbd	if [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]had been having to add[END]
 #SKHR*pblsd	and he might not plan
-#+TWHO*Erplz	not to be remaining
+#+O*Erplz	not to be remaining
 #+STW*Ufblgz	but hadn't that liked to
 #^TKHR*EUbltd	if we might not have been building
 #^+PHAErpbgs	can she be considering
@@ -2429,7 +2428,7 @@
 #+HRAO*Er	isn't he going to be working
 #^TPWHA*EUplgz	there can not have been paying attention
 #^SPWrbgtdz	but this did care about
-#^+ROEfltsz	was having to love it
+#^+ROEfltsz	in order to be loving it
 #TPWEUpbgsdz	[IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]had been beginning of[END]
 #SWRO*rpd	but didn't have to reach
 #STKPHR*Efbgs	and they may not be thinking that
@@ -2450,11 +2449,11 @@
 #+HR*El	may he not be looking
 #^PWHRAOfbltz	what was going to believe that
 #^STHRAEfrbgtsz	but we did use to be carrying on
-#^+AOEblsd	would be adding to
+#^+AOEblsd	in order to be adding to
 #WHRA*fpldz	the[AFTER]didn't use to apply to[END]
 #SWAO*Efrpl	but won't be removing
 #STKPHA*Eptz	and they can't be putting on
-#+STWHRA*EUrpbl	but not to have been learning
+#+SRA*EUrpbl	but not to have been learning
 #^TWRfpbgz	so that may check in
 #^TKPWHOtd	if there should want
 #^SKPWEpltsd	and this was seeming to
@@ -2472,11 +2471,11 @@
 #+HA*Urpbld	couldn't he have learned
 #^PWHRpgtz	what might get to
 #^STHOErbd	but we should be reading
-#^+Uftsd	had started to
+#^+Uftsd	in order to have started to
 #WHO*pl	the[AFTER]shall not make[END]
 #SW*Erblsd	but weren't sharing with
 #STKPWRO*Uflgtd	and [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]hadn't had to love to[END]
-#+STWHO*EUlgts	but not to have been setting up
+#+SO*EUlgts	but not to have been setting up
 #^TWApbg	so that can continue
 #^KPWHRAOErpgsd	if what was going to be producing by
 #^STKHRAUfblsz	and we did use to have believed to
@@ -2488,7 +2487,7 @@
 #^TKWRErpblgtd	if that might be remembering that
 #^STPWHOUfpbtsd	but there should have turned to
 #^+PWUs	has this said
-#^+SROEUpltz	but had been having to let
+#^+SROEUpltz	but in order to have been letting
 #KPO*Efld	if you shouldn't be feeling
 #STPW*Ufpblgs	but [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]hasn't explained how[END]
 #+WRO*Ultd	hadn't had to live
@@ -2498,7 +2497,7 @@
 #PHRAO*Efb	she isn't going to be becoming
 #SPRA*Ufrblgsd	but you didn't use to have recalled that
 #STKPWAO*Ublgsz	and [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]wouldn't have asked[END]
-#+STWHrpbg	but to bring
+#+Srpbg	but to bring
 #^TPROEfplt	it is having to meet
 #^KPWHRUfrpbls	if what may have formed by
 #^STKHOUpgsz	and we should have said that
@@ -2510,11 +2509,11 @@
 #^TKWAElgtd	if that could be telling
 #^SPWHRAOUpbgtsd	but what was going to have expected
 #^+THRAEUrpgz	did we use to have been appearing in
-#^+SAO*fbg	but will not walk
+#^+SAO*fbg	but in order not to walk
 #TKRAO*Ebgt	if I'm not going to be taking
 #SWHRA*Upblgts	but the[AFTER]mustn't have expected to[END]
 #+WAO*EUrpbs	won't have been running on
-#^TWHROEpdz	in order to be paying
+#^ROEpdz	in order to be paying
 #^STWRUrlsz	but that might have led to
 #^STKPWHOEUrpblgsd	and there should have been explaining that
 #PHR*Eplsz	she might not be seeming
@@ -2534,11 +2533,11 @@
 #^TKPROUrpbgtsd	if it had had to consider to
 #^SPWHREUfpltsz	but what might have been meeting with
 #^+THO*frpbld	should we not form
-#^+S*pgz	but does not happen to
+#^+S*pgz	but in order not to happen to
 #TKR*Ufsz	if I might not have saved
 #SWHO*EUfpbgtd	but the[AFTER]shouldn't have been checking out[END]
 #+W*EUgd	hadn't been going
-#^TWHAOUflgz	in order to have left
+#^AOUflgz	in order to have left
 #^STWAEUfrsz	but that could have been serving
 #^SKPWHRAOEUlgsd	and what was going to have been guessing
 #PHA*Ufbgtsd	she couldn't have talked to
@@ -2549,7 +2548,7 @@
 #^STKWREUbl	and so that may have been allowing
 #^+TPWHO*rlz	shall there not realize
 #^+SPW*Erpblgz	but was this not remembering
-#RO*Ufpbsz	hadn't had to know that
+#RO*Ufpbsz	not to have known that
 #KPHR*Uz	if she may not have used
 #SKPO*EUplz	and you shall not have been making it
 #+TPWArbtsz	could [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]decide that[END]
@@ -2560,7 +2559,7 @@
 #TKA*Ubsz	if I can't have decided to
 #SPHRAO*EUpbls	but she isn't going to have been planning
 #+PROrpld	did you have to remain
-#^TWHUbltsz	in order to have allowed for
+#^Ubltsz	in order to have allowed for
 #^STPROEUrsd	but it had been having to receive
 #^SKPWHR*rpbgtz	and what might not return to
 #PWRO*Uptsd	this hadn't had to stop
@@ -2571,13 +2570,13 @@
 #^STKWA*fltsd	and that could not love it
 #^+PWHRAO*Efp	is what not going to be changing
 #^+STHRA*Elgdz	but did we not use to be helping to
-#AO*Upbgsd	wouldn't have begun
+#AO*Upbgsd	not to have begun
 #KPHA*EUrpsz	if she couldn't have been producing
 #SKPfbgtz	and you walked in
 #+WHROEfrbd	was the[AFTER]having to show[END]
 #+SWREbgs	but may be keeping
 #^TKPEUrpl	if it has been remaining
-#^STWHRO*fptd	but in order not to find that
+#^SRO*fptd	but in order not to find that
 #^+TWR*Efrpd	might that not be providing
 #SPHRAfpl	but she must apply
 #+PAOEfr	will you be writing
@@ -2593,13 +2592,13 @@
 #^STKPRO*bls	and it does not have to add to
 #^+PWHR*Erdz	might what not be working with
 #^+STHO*Urpbgsz	but should we not have considered
-#*EUfpld	hadn't been applying
+#*EUfpld	not to have been applying
 #KPWRAOfrpbz	if this was going to need to
 #STKRAptdz	and I used to put on
 #+WHAOErlts	will the[AFTER]be staying in[END]
 #+SWAUrpb	but can have run
 #^KHRAEUtsz	if he did use to have been starting
-#^STWHAO*plts	but in order not to seem to
+#^SAO*plts	but in order not to seem to
 #^+TWA*Erbgs	can that not be carrying
 #SPHOpbgd	but she should continue
 #+PErpz	are you reaching out
@@ -2607,7 +2606,7 @@
 #^STP*pblgd	but it did not come
 #^+STPWHO*EUfrb	but shall there not have been showing
 #PW*EUblgtd	this hadn't been thinking it
-#SRAOrgsd	but was going to work on
+#SRAOrgsd	but to work on
 #SKPHRAErpblsz	and she used to be learning to
 #+STPWAEUfrpbl	but can [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]have been forming[END]
 #^WRAOEUpgtd	were going to have been getting to
@@ -2620,7 +2619,7 @@
 #+WHUfrgdz	had the[AFTER]offered to[END]
 #+SPROUlgt	but have you had to tell
 #^KHO*rpgs	if he shall not produce by
-#^STWH*Efblsd	but in order not to be believing to
+#^S*Efblsd	but in order not to be believing to
 #^+TPRO*Ufrbgtz	had it not had to require to
 #SPWRAOEfpg	but this is going to be going on
 #+TRAUfrplgd	did I use to have removed from
@@ -2628,13 +2627,13 @@
 #^SHRA*Efpbts	but he must not be turning to
 #^+SPWHRAO*EUrbgsz	but is what not going to have been carrying out
 #THROflsz	we had to look for
-#SREfpblgtz	but might be coming from
+#SREfpblgtz	but to be coming from
 #SKPHOEltsz	and she shall be staying at
 #+SWHROEUrblg	but has the[AFTER]been having to break[END]
 #^WR*fbgz	may not walk into
 #^TKPHO*Efrld	if they should not be following
 #^STKP*Ebgz	and it is not causing
-#^+TWHRO*Upblt	in order not to have handled
+#^+RO*Upblt	in order not to have handled
 #^+STWR*EUrpltsd	but might that not have been replacing with
 #KPWAEfrblgs	if this can be recalling that
 #+PHRAUrt	must she have tried
@@ -2648,13 +2647,13 @@
 #^SHO*Epbgts	but he shall not be expecting
 #^+SPWHRAfrbgsz	but did what use to call for
 #THAObg	we'll think
-#SAEpblgt	but can be imagining
+#SAEpblgt	but to be imagining
 #SKPWRAOUrpbtz	and this was going to have returned
 #+SWHAO*frplsd	but wouldn't the[AFTER]replace by[END]
 #^WA*pd	could not appear
 #^TKPWRAO*Erlsd	if [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]was not going to be leading to[END]
 #^SKHRA*Urpblgs	and he must not have explained that
-#^+TWHAO*EUfpbtd	in order not to have been needing for
+#^+AO*EUfpbtd	in order not to have been needing for
 #^+STWA*EUsdz	but could that not have been using to
 #TKHROErbgz	if we're having to care
 #+PHOEUfpblgsz	should she have been explaining how
@@ -2663,7 +2662,7 @@
 #^+TP*EUfrgt	has it not been forgetting
 #TPWHAOErpltz	there'd be remaining in
 #SPWAUfblg	but this can have liked to
-#+RAOEUfrblgd	was going to have been recalling
+#+RAOEUfrblgd	to have been recalling
 #^TPWA*Erpbgts	[IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]can not be considering to[END]
 #^SWRAO*Ufpltsd	but were not going to have met with
 #^STKPHRA*EUfrpblsz	and they did not use to have been forming by
@@ -2675,7 +2674,7 @@
 #^PRO*Eflgd	you were not having to leave
 #^TKPWR*Ufrsd	if [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]might not have served[END]
 #^SKHO*Ulgs	and so he shall not have guessed
-#^+TWH*EUpbgtd	in order not to have been picking
+#^+*EUpbgtd	in order not to have been picking
 #^+STPRAOrptd	but was it going to put it
 #TKHAOUfrbgz	if we'll have required for
 #+PWRAOEUpblgtsz	was this going to have been expecting to
@@ -2684,11 +2683,11 @@
 #^+HRA*EUrldz	did he not use to have been realizing
 #TPWHEdz	there was using
 #STHROUpldz	but we'd had to make it
-#+REUrbtsd	might have been deciding that
+#+REUrbtsd	to have been deciding that
 #^WHRO*Elsz	the[AFTER]was not having to send[END]
 #^SWR*Upbtz	but may not have turned out
 #^STKPHO*EUrblgsz	and they should not have been asking for
-#^+STWHRAOEfrgtsz	but in order to be forgetting to
+#^+SRAOEfrgtsz	but in order to be forgetting to
 #TWRAEbsdz	that used to be deciding to
 #TKPWHAOUpbltz	if there'll have handled of
 #SKPWAEUrplsz	and this could've been replacing
@@ -2706,11 +2705,11 @@
 #^+HAOfrz	would he write
 #PWHRAUrpsd	what used to have produced
 #STHAOEUfbgtd	but we'd have been walking in
-#+A*frbsz	couldn't show that
+#+A*frbsz	not to show that
 #^WHAO*Urpbz	the[AFTER]will not have run for[END]
 #^SWA*EUfptsd
 #^STKPHfrpgz	and they did provide by
-#^+STWHRErgt	but in order to be hearing
+#^+SRErgt	but in order to be hearing
 #TWOUrpbltd	that should've returned from
 #TKPWHEUfpbz	if there'd been knowing
 #STKHRO*f	and we don't have to find
@@ -2722,7 +2721,7 @@
 #TKWRAEUfrgs	if that must've been serving as
 #STPWHAOEUbdz	but there'd have been using in
 #+PWA*pblsdz	couldn't this plan to
-#+SRAO*Erpg	but isn't going to be appearing in
+#+SRAO*Erpg	but not to be appearing in
 #^KPAO*EUfrbgts	if you will not have been carrying on
 #^STPWA*EUbltz	but [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]could not have been building[END]
 #^+Hrd	did he work
@@ -2732,7 +2731,7 @@
 #^WH*Utsd	the[AFTER]had not started[END]
 #^SPRO*EUplt	but you have not been having to let
 #^STKPWRArbgtz	and [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]must care about[END]
-#^+STWHAUfpbl	but in order to have moved
+#^+SAUfpbl	but in order to have moved
 #TPRAOUlt	it's going to have lived
 #KPWHRAEUpbgsz	if what must've been beginning of
 #STKHAO*rpdz	and we wouldn't reach out
@@ -2744,11 +2743,11 @@
 #TKWOEUrgs	if that shall have been working on
 #STPWH*rpblsd	but there didn't learn to
 #+THRO*Efplgt	aren't we having to apply for
-#+SR*Ufrpb	but may not have needed to
+#+SR*Ufrpb	but not to have needed to
 #^KP*EUrbsdz	if you had not been wishing to
 #^SWHRAOft	but the[AFTER]is going to have[END]
 #^+WRAEfpbls	must be moving to
-#TWHRAOEUrbltz	to have been leading by
+#RAOEUrbltz	to have been leading by
 #STWRA*flg	but that mustn't leave
 #STKPWHAO*Efrgd	and there wouldn't be offering
 #^PHRA*EUrpgtz	she did not use to have been hearing about
@@ -2768,11 +2767,11 @@
 #TKPRAO*fpblgtd	if it wasn't going to come from
 #SPWHRA*ltsdz	but what didn't use to stay at
 #+THAO*Epbgz	won't we be continuing to
-#+SA*Urbl	but can't have shared
+#+SA*Urbl	but not to have shared
 #^TKROfrlgz	if I did have to follow by
 #^SWHRbgdz	but the[AFTER]might cause[END]
 #^+WOEpblgz	shall be coming to
-#TWHR*frblg	not to recall
+#R*frblg	not to recall
 #STWO*blgs	but that shall not ask
 #STKPWH*Ergd	and there wasn't[AFTER][META=infl]ing[END][END]
 #^PHAOfrpbltd	she would form in
@@ -2783,7 +2782,7 @@
 #STKWRA*Erblsz	and that didn't use to be sharing with
 #+TPWHAO*Uflgtz	wouldn't there have loved to
 #+SPWA*EUfrt	but can't this have been writing about
-#^RAO*EUlgtsd	was not going to have been setting up
+#^RAO*EUlgtsd	in order not to have been setting up
 #^KPHROpbgt	if she does have to pick
 #^SKPRErpgsz	and so you might be producing by
 #^+TPWOUfbld	should [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]have believed[END]
@@ -2794,7 +2793,7 @@
 #^TKAOrls	if I will lead to
 #^SWHAErpblgtz	but the[AFTER]could be remembering that[END]
 #^+PRAOUfpbtsz	were you going to have turned to
-#TWHA*rbgdz	not to care
+#A*rbgdz	not to care
 #STPRAO*Efldz	but it wasn't going to be feeling like
 #SKPWHRA*Ufpblgsd	and what didn't use to have explained how
 #^PHrblgtd	she did break down
@@ -2805,13 +2804,13 @@
 #STKWO*Ufrblgsz	and that shouldn't have recalled that
 #+TPWH*Ublgd	hadn't there liked
 #+STHRO*EUrtsd	but hadn't we been having to start with
-#^RArpbgt	must return to
+#^RArpbgt	in order to return to
 #^KPHAOEfplts	if she will be meeting with
 #^SKPAUfrpblsd	and you could have formed by
 #^+WHRAOUpgd	was the[AFTER]going to have happened[END]
 #^+SWRAEUrlg	but must have been looking at
 #TKPA*Efpbg	if it can't be checking
-#STWHRAO*Egsd	but not to be seeing
+#SRAO*Egsd	but not to be seeing
 #+TWRA*Uplgtz	didn't that use to have happened in
 #^TKEfrs	if I am serving
 #^SPHROElgtz	but she was having to tell
@@ -2828,13 +2827,13 @@
 #STKPRAO*Urbts	and it isn't going to have decided that
 #+PWHRA*EUfgts	mustn't what have been being an
 #+STHRfpblgz	but might we include
-#^Olsd	should send
+#^Olsd	in order to send
 #^KPHEpbtdz	if she was turning out
 #^STKROUrblgsd	and I had had to ask for
 #^+WHREUfbtz	might the[AFTER]have been becoming more[END]
 #^+SWO*frgtsd	but should not forget to
 #KHRO*Epbltdz	if he wasn't having to handle of
-#STWHR*Urplsd	but not to have replaced
+#SR*Urplsd	but not to have replaced
 #+TWO*EUfblgsd	shouldn't that have been asking to
 #^SPHAOUrpbgtsz	but she would have considered to
 #^+PAEUfpltd	could you have been meeting
@@ -2855,7 +2854,7 @@
 #^+WHAEUblg	can the[AFTER]have been liking[END]
 #^+SPRAO*rg	but are you not going to
 #KHAO*Ufpbd	if he wouldn't have known
-#STWHA*EU	but not to have been being
+#SA*EU	but not to have been being
 #+TPRAO*EUpg	isn't it going to have been happening
 #^SPHUldz	but she had held
 #^+TROEUpbsd	had I been having to understand
@@ -2863,7 +2862,7 @@
 #SHRO*Ubd	but he hadn't had to add
 #+STPWHAEfblgz	but could there be liking to
 #^THRAOUfrbgt	we are going to have required to
-#^SRAUbltd	but did use to have built
+#^SRAUbltd	but in order to have built
 #^SKPHAOEUrsz	and she would have been receiving
 #^+SWHRAO*Efplsd	but was the[AFTER]not going to be seeming like[END]
 #WRA*Ufrpbgsz	didn't use to have brought in
@@ -2885,13 +2884,13 @@
 #SHAO*EUrpbls	but he won't have been learning to
 #+SPWHROEpgtsd	but was what having to stop by
 #^THRUrbsd	we might have wished
-#^SOEUfgz	but should have been giving
+#^SOEUfgz	but in order to have been giving
 #^SKPH*fpbltz	and she did not mean that
 #^+SWHR*Epbd	but might the[AFTER]not be needing[END]
 #WO*Urbltd	shouldn't have led by
 #TKPH*EUfl	if they haven't been feeling
 #SKHRAOfrgsz	and he was going to serve as
-#+TWHRAl	to look
+#+RAl	to look
 #+STWAOEpbld	but would that be meaning
 #^TKHRAOEUfbltz	if we were going to have been believing that
 #^+PHAO*blsd	would she not add to
@@ -2912,7 +2911,7 @@
 #PRAO*EUfrbl	you aren't going to have been feeling that
 #TKPWRA*EUblgtz	if [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]didn't use to have been thinking it[END]
 #SKHRrgsz	and he might work on
-#+TWHOErpbld	to be learning
+#+OErpbld	to be learning
 #+STWUfplgtz	but had that applied for
 #^TKHREUpgtz	if we might have been getting to
 #^+PH*Eftsd	was she not starting to
@@ -2921,7 +2920,7 @@
 #+HRAOEflgtd	was he going to be loving to
 #^TPWHAEUpbg	so there can have been continuing
 #^STHRAO*rpgsd	but we were not going to produce by
-#^+RA*Efblsz	did not use to be believing to
+#^+RA*Efblsz	in order not to be believing to
 #WHRAO*EUpbl	the[AFTER]isn't going to have been meaning[END]
 #SWROrpbt	but have to return
 #STKPHREfpgs	and they may be passing on
@@ -2943,11 +2942,11 @@
 #+HREblgsz	might he be asking
 #^PWHRO*fplt	what does not have to meet
 #^STHR*Efrpbls	but we may not be forming by
-#^+O*Epgsz	should not be saying that
+#^+O*Epgsz	in order not to be saying that
 #WHRAfpblz	the[AFTER]must open in[END]
 #SWAOgs	but will see
 #STKPHAEplgtd	and they could be happening in
-#+STWHRAEUflgsd	but to have been guessing that
+#+SRAEUflgsd	but to have been guessing that
 #^TWAO*frtz	that would not write about
 #^TKPWHA*lgtd	if there could not tell
 #^STKHRAO*Epbgtsd	and we were not going to be expecting
@@ -2969,7 +2968,7 @@
 #WHOpbltd	the[AFTER]should handle[END]
 #SWErpls	but are replacing
 #STKPWROUfblgs	and [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]has had to ask to[END]
-#+STWHOEUblt	but to have been building
+#+SOEUblt	but to have been building
 #^TW*rtd	that did not try
 #^KPWHRO*Erpbgtsd	if what was not having to consider to
 #^STKHR*Ufpltsz	and so we might not have met with
@@ -2981,7 +2980,7 @@
 #^TKWAO*Eflgz	if that would not be leaving
 #^STPWHA*Ufrsz	but there could not have served
 #^+THRAO*Ulgsd	were we not going to have guessed
-#^+SRA*EUpbgtdz	but did not use to have been picking up
+#^+SRA*EUpbgtdz	but in order not to have been picking up
 #KPOEfbgtsd	if you should be talking to
 #STPWUfrbs	but [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]has shown that[END]
 #+WROUbgtsz	had had to talk
@@ -3004,11 +3003,11 @@
 #^TKW*Ebltsz	if that was not allowing for
 #^SPWHRO*Ursd	but what had not had to receive
 #^+THR*EUrpbgtz	might we not have been returning to
-#^+SAOfpls	but will seem like
+#^+SAOfpls	but in order to seem like
 #TKRAOEptsd	if I was going to be stopping
 #SWHRAUrlgdz	but the[AFTER]used to have realized that[END]
 #+WAOEUfz	will have been finding out
-#^TWHRA*Eplgdz	in order not to be paying attention
+#^RA*Eplgdz	in order not to be paying attention
 #^STWAO*Urbgtd	but that would not have created
 #^STKPWHA*EUfltsd	and there could not have been loving it
 #PHREpbgsd	she might be beginning
@@ -3028,11 +3027,11 @@
 #^TKPRA*Ufgd	if it did not use to have given
 #^SPWHAO*EUfpbltd	but what would not have been meaning that
 #^+THA*EUg	can we not have been going
-#^+Spbsz	but does understand that
+#^+Spbsz	but in order to understand that
 #TKRUfbz	if I might've become
 #SWHOEUfrgsd	but the[AFTER]should've been serving as[END]
 #+WEUbz	have been using in
-#^TWHO*Ufbltd	in order not to have believed that
+#^O*Ufbltd	in order not to have believed that
 #^STW*EUfrbgtsd	but that had not been carrying on
 #^SKPWHRO*EUbls	and what has not been having to add to
 #PHAUfpld	she could've applied
@@ -3043,7 +3042,7 @@
 #^STKWAO*EUplts	and that will not have been seeming to
 #^+TPWHOrbgs	shall there carry
 #^+SPWEfltz	but was this loving
-#ROUfpblg	has had to include
+#ROUfpblg	to have included
 #KPHRUlts	if she may have stayed
 #SKPOEUpbgd	and you should've been continuing
 #+TPW*rpz	doesn't [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]reach out[END]
@@ -3065,13 +3064,13 @@
 #^STKWAfblsd	and so that could believe to
 #^+PWHRAOEfrbgtz	was what going to be requiring to
 #^+STHRAEbld	but did we use to be allowing
-#AOUpb	will have needed
+#AOUpb	to have needed
 #KPHAEUrpbgz	if she can have been opening up
 #STKRAO*fpg	and I'm not going to go on
 #+WHRA*Efrplgd	didn't the[AFTER]use to be removing from[END]
 #+SWAO*Epsd	but wouldn't be passing
 #^KHRAO*EUrpblgt	if he is not going to have been remembering that
-#^STWHROfpbts	but in order to turn to
+#^SROfpbts	but in order to turn to
 #^+TWRtz	may that want to
 #SPHR*fpblgtz	but she might not come from
 #+PO*ltsz	shall you not stay at
@@ -3087,13 +3086,13 @@
 #^STKPROpgsd	and it did have to say that
 #^+PWHRErbz	may what be reading it
 #^+STHOUftd	but should we have had
-#EUfpbldz	had been opening in
+#EUfpbldz	to have been opening in
 #KPWROEUgtz	if this had been having to get
 #STKR*plgt	and I may not happen in
 #+WHO*Erbld	shouldn't the[AFTER]be sharing[END]
 #+SW*Uflgs	but haven't guessed that
 #^KHR*EUlgtsz	if he might not have been setting up
-#^STWHAOpbgts	but in order to expect
+#^SAOpbgts	but in order to expect
 #^+TWAErpgd	could that be appearing in
 #SPHA*pblgt	but she can't imagine
 #+TRAO*Erpbtz	wasn't I going to be returning
@@ -3101,7 +3100,7 @@
 #^STPrlsd	but it did lead to
 #^+STPWHOUsdz	but should there have used to
 #PWEUplsd	this had been seeming
-#SRO*rbgz	but doesn't have to care
+#SRO*rbgz	but not to care
 #SKPHR*Eflz	and she may not be feeling like
 #+STPW*Ultz	but hasn't [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]lived with[END]
 #^WRO*EUpbtsz	had not been having to understand of
@@ -3114,7 +3113,7 @@
 #+PHRAO*Ufrblgd	wasn't she going to have recalled
 #+SPRA*Ublgz	but didn't you use to have liked
 #^KHOrpbgts	if he shall consider to
-#^STWHEfpltsd	but in order to be meeting with
+#^SEfpltsd	but in order to be meeting with
 #^+TPROUfrpblsz	had it had to form by
 #SPWRO*Efpbgt	but this isn't having to check out
 #+TR*Egsz	might I not be seeing
@@ -3122,13 +3121,13 @@
 #^SHRAEfrsd	but he did use to be serving
 #^+SPWHRAOEUrptd	but was what going to have been putting it
 #THRA*fbgts	we mustn't talk to
-#SAO*Efrbgz	but won't be requiring for
+#SAO*Efrbgz	but not to be requiring for
 #SKPHA*Ebgtsd	and she couldn't be talking
 #+SWHRA*EUrpbsz	but didn't the[AFTER]use to have been running on[END]
 #^WRfpgz	may pay for
 #^TKPHOEfrplz	if they should be removing
 #^STKPEb	and it is adding
-#^+TWHROUrldz	in order to have realized
+#^+ROUrldz	in order to have realized
 #^+STWREUrpblgd	but might that have been remembering
 #KPW*dz	if this didn't use
 #+PHR*Urbtsd	might she not have decided that
@@ -3142,13 +3141,13 @@
 #^SHOErs	but he shall be receiving
 #^+SPWHR*frpbgs	but may what not bring in
 #THO*pts	we shall not stop
-#S*Erlgd	but wasn't looking at
+#S*Erlgd	but not to be looking at
 #SKPWRO*Ufdz	and this hadn't had to find out
 #+SWHO*EUgz	but shall the[AFTER]not have been going to[END]
 #^WAplgd	could play
 #^TKPWRAOErbgtsz	if [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]was going to be talking about[END]
 #^SKHRAUflts	and he must have loved it
-#^+TWHAOEUfrz	in order to have been writing
+#^+AOEUfrz	in order to have been writing
 #^+STWAEUlgd	but could that have been helping
 #TKHRA*Erpsd	if we didn't use to be producing
 #+PHA*EUfrbsz	couldn't she have been showing that
@@ -3157,7 +3156,7 @@
 #^+TPEUfrpgz	had it been providing by
 #TPWHO*Erpbltd	there shouldn't be returning from
 #SPW*Ufpbz	but this hadn't known
-#+RO*EUf	hasn't been having to find
+#+RO*EUf	not to have been finding
 #^TPWAEfgsz	[IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]could be giving up[END]
 #^SWRAOUfpbltsz	but were going to have planned for
 #^STKPHRAUlz	and they must have held
@@ -3169,7 +3168,7 @@
 #^PROEfblt	you are having to believe that
 #^TKPWRUfrbgts	if [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]may have carried on[END]
 #^SKHOUbltz	and he should have built
-#^+TWHEUrd	in order to have been working
+#^+EUrd	in order to have been working
 #^+STPRO*rpbgsd	but did it not have to consider
 #TKHO*Ufrpbd	if we shouldn't have needed to
 #+PWRO*EUrlt	hasn't this been having to live in
@@ -3178,11 +3177,11 @@
 #^+HRAEUrbgtz	must he have been caring about
 #PWHRAO*Elt	what isn't going to be living
 #STHRA*Upbgsz	but we mustn't have begun of
-#+AO*EUrpdz	wouldn't have been reaching out
+#+AO*EUrpdz	not to have been reaching out
 #^WHROEbgsdz	the[AFTER]was having to cause by[END]
 #^SWRUpblgsz	but might have explained
 #^STKPHOEUrplgd	and they should have been playing with
-#^+STWHRO*Efrpz	but in order not to be choosing to
+#^+SRO*Efrpz	but in order not to be choosing to
 #TWR*Eblgtsz	that might not be accepting
 #TKPWHO*Urgs	if there shall not have worked on
 #SKPW*EUrpblsd	and this hadn't been learning to
@@ -3200,11 +3199,11 @@
 #^+HO*frbgtd	should he not require to
 #PWHR*Urpbgdz	what might not have opened up
 #STHO*EUfplz	but we shall not have been applying to
-#+Afrplg	can remove from
+#+Afrplg	to remove from
 #^WHAOUrpblg	the[AFTER]will have remembered[END]
 #^SWAEUfpbt	but can have been needing for
 #^STKPWRAOEUtdz	and [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]was going to have been wanting to[END]
-#^+STWHAO*Erbgsdz	but in order not to be carrying out
+#^+SAO*Erbgsdz	but in order not to be carrying out
 #TWA*Uflsd	that couldn't have looked for
 #KPWHRAO*EUfpblgtd	if what wasn't going to have been coming from
 #STKHRA*EUltsdz	and we didn't use to have been staying at
@@ -3216,7 +3215,7 @@
 #TKWR*EUfrblg	if that may not have been recalling
 #STPWHO*EUblgs	but there shall not have been asking
 #+PWArgd	could this
-#+SRAOErpbldz	but was going to be learning about
+#+SRAOErpbldz	but to be learning about
 #^KPAOEUfrpbltd	if you would have been forming in
 #^STPWAEUpgs	but [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]can have been saying that[END]
 #^+WRAO*rbdz	were not going to read it
@@ -3226,7 +3225,7 @@
 #^WHUlgtsd	the[AFTER]had set up[END]
 #^SPROEUpbgt	but you have been having to pick
 #^STKPWR*rpgsz	and [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]might not produce by[END]
-#^+STWH*Ufrbgsd	but in order not to have called for
+#^+S*Ufrbgsd	but in order not to have called for
 #TPRO*Ublz	it hasn't had to allow to
 #KPWHR*EUpblg	if what may not have been coming
 #STKHAOrpbtd	and we'd return
@@ -3238,11 +3237,11 @@
 #TKWA*EUrbgdz	if that couldn't have been caring
 #STPWHfldz	but there felt like
 #+THROEfpblgsd	were we having to explain how
-#+SREltdz	but might be living with
+#+SREltdz	but to be living with
 #^KPEUrblgtd	if you had been breaking down
 #^SWHRO*fbts	but the[AFTER]does not have to be the[END]
 #^+WR*Efrg	may not be offering
-#TWHRO*EUrpltd	not to have been remaining in
+#RO*EUrpltd	not to have been remaining in
 #STWRAfbl	but that must believe
 #STKPWHAOEfrblgsz	and there'd be recalling that
 #^PHRAEUrpbgt	she must have been returning to
@@ -3262,11 +3261,11 @@
 #TKPRAOfrbgdz	if it was going to require for
 #SPWHRAbgts	but what must talk
 #+THAOEpblgtsd	would we be expecting to
-#+SAUrpbsd	but could have run on
+#+SAUrpbsd	but to have run on
 #^TKRA*frpld	if I did not use to remove
 #^SWHAO*pz	but the[AFTER]will not pay[END]
 #^+WA*Erld	could not be leading
-#TWHAO*EUd	not to have been being
+#AO*EUd	not to have been being
 #STWOpld	but that should make
 #STKPWHErbts	and there's deciding that
 #^PHOEUlsd	she should have been sending
@@ -3277,7 +3276,7 @@
 #STKWRAErplsd	and that used to be replacing
 #+TPWHAOUfblgsd	would there have asked to
 #+SPWAEUfrbld	but could this have been feeling that
-#^RAOEUblts	is going to have been allowing for
+#^RAOEUblts	in order to have been allowing for
 #^KPHRA*rtz	if she did not use to try
 #^SKPAO*Erpbgtsz	and you would not be considering to
 #^+TPWA*Ufpltd	could [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]not have met[END]
@@ -3288,7 +3287,7 @@
 #^TKO*rbgtsd	if I should not talk about
 #^SWH*Eflt	but the[AFTER]is not loving[END]
 #^+PRO*Ufrd	had you not had to write
-#TWHArps	to produce
+#Arps	to produce
 #STPRAOEfbgtsz	but it was going to be talking to
 #SKPWHRAUfrbsd	and what used to have shown that
 #^PWRAO*rpbdz	this was not going to run for
@@ -3299,13 +3298,13 @@
 #STKWOU	and that shall have
 #+TPWHUpg	has there happened
 #+STHROEUrbtd	but had we been having to try to
-#^R*fgsd	might not give up
+#^R*fgsd	in order not to give up
 #^KPHO*Efpbltsd	if she should not be planning for
 #^SKP*Eldz	and you were not holding
 #^+WHRO*Upbsd	had the[AFTER]not had to understand[END]
 #^+SWR*EUrblgdz	but might not have been breaking up
 #TKPAEfrgtz	if it could be forgetting
-#STWHRAOEbd	but to be adding
+#SRAOEbd	but to be adding
 #+TWRAUpblsd	did that use to have planned
 #^SPHRA*Ebltd	but she did not use to be building
 #^+PAO*Ursz	would you not have received
@@ -3321,13 +3320,13 @@
 #STKPRAOUrpd	and it was going to have reached
 #+PWHRAEUfbgs	must what have been thinking that
 #+STHAO*frbz	but wouldn't we show
-#^A*bgsd	could not keep
+#^A*bgsd	in order not to keep
 #^KPWRAO*Epblgsd	if this was not going to be explaining
 #^STKRA*Urplg	and I must not have played with
 #^+WHAO*EUfptz	would the[AFTER]not have been finding that[END]
 #^+SWOfrpdz	but should choose to
 #KHROErgtz	if he was having to hear
-#STWHRUrpbls	but to have learned to
+#SRUrpbls	but to have learned to
 #+TWOEUfplg	shall that have been making sure
 #^SPHO*Ufgz	but she should not have given
 #^+P*EUfpbltz	had you not been meaning that
@@ -3335,7 +3334,7 @@
 #STPAUfl	but it can have felt
 #+STPWHAO*pbld	but wouldn't there mean
 #^PWA*Erpgtd	this could not be hearing about
-#^SRAO*Ufbltz	but was not going to have believed that
+#^SRAO*Ufbltz	but in order not to have believed that
 #^SKPHRA*EUfrbgtsz	and she did not use to have been carrying on
 #^+STPWOrz	but shall [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]work with[END]
 #HErpbgd	he was bringing
@@ -3348,7 +3347,7 @@
 #^+WH*EUpltsd	had the[AFTER]not been seeming to[END]
 #^+SPRAOrbgsd	but were you going to carry
 #KHAOUfpblgt	if he'll have come from
-#STWHAUltsd	but to have stayed
+#SAUltsd	but to have stayed
 #+TPRAOEUpbgdz	was it going to have been continuing to
 #^SPWRAO*Ubgd	but this was not going to have thought
 #^+TRA*EUpblgdz	did I not use to have been coming to
@@ -3356,13 +3355,13 @@
 #SHROUblgtz	but he'd had to think it
 #+STPWH*Efplgtz	but wasn't there applying for
 #^THRO*Ufrpblt	we have not had to form in
-#^SR*Upgtz	but might not have gotten to
+#^SR*Upgtz	but in order not to have gotten to
 #^SKPHO*EUrbd	and she should not have been reading
 #^+SWHRAOEfpblsz	but was the[AFTER]going to be moving to[END]
 #WRAEgtsz	used to be setting
 #TKPHAOUpl	if they'll have made
 #STKPAEUrblsd	and it could've been sharing with
-#+TWHRAO*flgtd	not to love to
+#+RAO*flgtd	not to love to
 #+STWRA*Efrgz	but mustn't that be offering to
 #^KPWA*Upbg	if this can not have continued
 #^+PHROfblsz	did she have to believe to
@@ -3377,13 +3376,13 @@
 #SHAOEUfld	but he'd have been feeling
 #+SPWHRA*Epbts	but mustn't what be understanding of
 #^THAO*Urblgt	we will not have broken down
-#^SA*EUfbt	but can not have been becoming more
+#^SA*EUfbt	but in order not to have been becoming more
 #^SKPHfrlz	and she did follow
 #^+SWHREpblts	but may the[AFTER]be meaning to[END]
 #WOUrpltsz	should've replaced with
 #TKPHEUfb	if they've been becoming
 #SKHRO*frblgsd	and he didn't have to recall that
-#+TWHR*blgsz	not to ask
+#+R*blgsz	not to ask
 #+STWO*Erts	but shall that not be starting with
 #^TKHRO*EUfplt	if we have not been having to meet
 #^+PHAOpgsz	would she say that
@@ -3404,7 +3403,7 @@
 #PRAOUsz	you're going to have used to
 #TKPWRAEUplsz	if [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]used to have been seeming[END]
 #SKHAO*rbt	and he won't try to
-#+TWHA*Efg	not to be giving
+#+A*Efg	not to be giving
 #+STPRAO*Ufpblgd	but wasn't it going to have included
 #^TKHAO*EUpbtd	if we would not have been turning
 #^+PHEfbtd	was she becoming more
@@ -3413,11 +3412,11 @@
 #+HRO*Efblgs	isn't he having to ask to
 #^TPWH*EUrtd	there had not been trying
 #^STHRAOrpbgtsd	but we were going to consider to
-#^+RAEfpltsz	did use to be meeting with
+#^+RAEfpltsz	in order to be meeting with
 #WHRAOEUrlgsd	the[AFTER]was going to have been guessing it[END]
 #SWRA*fsz	but didn't use to save
 #STKPHAO*Efpbgtd	and they wouldn't be checking out
-#+STWHRAO*Uplgsd	but not to have played in
+#+SRAO*Uplgsd	but not to have played in
 #^TWRA*EUrbgts	that must not have been talking about
 #^TKPWHRflgz	if there might leave
 #^SKPWOEfrsz	and so this should be serving
@@ -3436,11 +3435,11 @@
 #+HAO*Eplz	won't he be making it
 #^PWHROfpblts	what does have to plan for
 #^STHRld	but we might look
-#^+OEpbs	shall be understanding
+#^+OEpbs	in order to be understanding
 #WHR*frgtd	the[AFTER]might not forget[END]
 #SWO*bsz	but shall not decide to
 #STKPH*Epbls	and they aren't planning
-#+STWHR*EUfblgd	but not to have been liking to
+#+SR*EUfblgd	but not to have been liking to
 #^TWAOfrbg	that will require
 #^TKPWHAbltsz	if there could allow for
 #^STKHRAOErsd	and so we were going to be receiving
@@ -3462,7 +3461,7 @@
 #WHA*rgtd	the[AFTER]couldn't hear[END]
 #SPRAO*Erpbltz	but you weren't going to be returning from
 #STKPWRA*Ufpl	and [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]mustn't have applied[END]
-#+STWHA*EUpgts	but not to have been stopping by
+#+SA*EUpgts	but not to have been stopping by
 #^TWrbs	that does wish
 #^KPWHROEfgd	if what was having to give
 #^STKHRUfpbltd	and we might have meant that
@@ -3474,7 +3473,7 @@
 #^TKWAOEfbltd	if that would be believing that
 #^STPWHAUfrbgtsd	but there could have carried on
 #^+THRAOUbls	are we going to have added to
-#^+SRAEUrdz	but did use to have been working with
+#^+SRAEUrdz	but in order to have been working with
 #KPA*Efpld	if you couldn't be applying
 #SWHRAO*Ufrpbz	but the[AFTER]wasn't going to have needed to[END]
 #+WRA*Uptdz	didn't use to have put on
@@ -3498,11 +3497,11 @@
 #^TKWEpgtd	if that was getting to
 #^SPWHROUrbsz	but what has had to wish to
 #^+THREUfts	may we have been starting to
-#^+SO*fpblsd	but should not move to
+#^+SO*fpblsd	but in order not to move to
 #TKRO*Epbz	if I'm not having to open
 #SWHR*Urbls	but the[AFTER]may not have shared with[END]
 #+WO*EUflgt	shall not have been loving to
-#^TWHRAEpblz	in order to be minding
+#^RAEpblz	in order to be minding
 #^STWAOUrpgs	but that will have produced by
 #^STKPWHAEUfblsd	and there could have been believing to
 #PHAO*Epb	she won't be needing
@@ -3525,7 +3524,7 @@
 #TKAO*Ufpz	if I won't have chosen
 #SWHA*EUfrblgs	but the[AFTER]can't have been recalling that[END]
 #+PRAO*EUblgsd	weren't you going to have been asking
-#^TWHOUfplgz	in order to have made sure
+#^OUfplgz	in order to have made sure
 #^STWEUfrpbltz	but that had been forming in
 #^SKPWHROEUpgsd	and what had been having to say that
 #PH*Ufpbldz	she hadn't opened in
@@ -3536,7 +3535,7 @@
 #^STKWAOEUpbgts	and that will have been expecting
 #^+TPWHA*rpgd	could there not appear in
 #^+STHRAO*Efblz	but were we not going to be believing
-#RA*Ufrbgsz	didn't use to have called for
+#RA*Ufrbgsz	not to have called for
 #KPHAO*Ubg	if she won't have thought
 #SKPA*EUpblgt	and you can't have been imagining
 #+TPWrpbtz	did [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]return[END]
@@ -3559,13 +3558,13 @@
 #^STKW*fpltsd	and that did not meet with
 #^+PWHRO*Efrpblsz	was what not having to form by
 #^+STHR*Epgdz	but might we not be happening to
-#O*Urlgs	shall not have guessed it
+#O*Urlgs	not to have guessed it
 #KPH*EUfsd	if she hadn't been saving
 #STKRAOfpbgt	and I'm going to check out
 #+WHRAgsz	did the[AFTER]use to see[END]
 #+SWAOEplgs	but will be playing in
 #^KHRAOEUflgd	if he was going to have been leaving
-#^STWHRA*frsd	but in order not to serve
+#^SRA*frsd	but in order not to serve
 #^+TWAO*lgs	will that not guess
 #SPHRfrbgz	but she may require for
 #+PObgtsd	should you talk
@@ -3587,7 +3586,7 @@
 #+WHOErplsz	should the[AFTER]be replacing[END]
 #+SWUfblgsz	but had asked to
 #^KHREUbltsd	if he might have been allowing for
-#^STWHO*rs	but in order not to receive
+#^SO*rs	but in order not to receive
 #^+TW*Erpbgtd	was that not returning to
 #SPHArlgd	but she could look at
 #+TRAOEfdz	was I going to be finding out
@@ -3595,7 +3594,7 @@
 #^SHRAO*rbgtsz	but he was not going to talk about
 #^+STPWHA*Ulgd	but could there not have helped
 #THRAO*EUpbgs	we aren't going to have been beginning
-#SROrpsd	but had to produce
+#SROrpsd	but to produce
 #SKPHREfbgtd	and she might be walking in
 #+STPWUbgtz	but had [IF_NEXT][AaIi]|(?i:e(?:[^uw]|$)|ew(?:[^e]|$)|o(?:[^n]|$)|on(?:[^ce]|$)|oner|onc(?:[^e]|$)|hour|honest|honou?r|heir)|[Uu](?:[cdehjlmpqwxyz]|n(?:[^ai]|$)|na(?:[^n]|$)|nan(?:[^i]|$)|ni[^cfoqstvxl]|nill|s(?:[^aeiu]|$)|t(?:[^aeiou]|$)|r(?:[^aeiu]|$)|b(?:[^i]|$)|g(?:[^a]|$))|[FHLMNRSX](?:[B-DF-HJ-NP-TV-Z]|[^A-Za-z]|$)|8|1[18](?:[^0-9]|$)[THEN]an[ELSE]a[END][AFTER]taken[END]
 #^WROEUpblgtz	have been having to imagine that
@@ -3616,13 +3615,13 @@
 #^SHR*Efrbgts	but he may not be carrying on
 #^+SPWHRO*EUrpbgsd	but had what not been having to consider
 #THRAfplsz	we used to seem like
-#SAOEfrpbd	but would be needing to
+#SAOEfrpbd	but to be needing to
 #SKPHAEptd	and she could be putting
 #+SWHRAEUrp	but must the[AFTER]have been reaching[END]
 #^WAO*fpbgd	would not check
 #^TKPHA*tsd	if they could not start
 #^SKHRAO*Eplt	and he is not going to be letting
-#^+TWHRA*Urbgtz	in order not to have cared about
+#^+RA*Urbgtz	in order not to have cared about
 #^+STWAO*EUfltd	but would that not have been loving
 #KPWlt	if this lives
 #+PHRUrpdz	might she have reached out
@@ -3637,16 +3636,15 @@
 #^STKPHRAO*Uft	and they are not going to have had
 #^+SPWHAO*EUgts	but will what not have been setting
 #THOpbdz	we should open
-#SErbltz	but was leading by
+#SErbltz	but to be leading by
 #SKPWROUflg	and this has had to leave
 
 ! The hole ender, `-rg`: the verb of the clause is the word written next, so the
 ! record ends in the tail that asks for its form. A base form asks for nothing,
 ! because the word as written is the base form.
-#rg
 #+SHAOErg	but will he be[AFTER][META=infl]ing[END][END]
 #^+PWROUrg	has this had to
-#STWHAEUrg	but to have been[AFTER][META=infl]ing[END][END]
+#SAEUrg	but to have been[AFTER][META=infl]ing[END][END]
 #^TKR*rg	if I may not
 #^SKPWHRA*EUrg	and what must not have been[AFTER][META=infl]ing[END][END]
 #SWArg	but can
@@ -3659,10 +3657,10 @@
 #^SWHRAErg
 #TPWHUrg	there's[AFTER][META=infl]en[END][END]
 #STKPHA*Erg	and they can't be[AFTER][META=infl]ing[END][END]
-#^SR*Urg	but may not have[AFTER][META=infl]en[END][END]
+#^SR*Urg	but in order not to have[AFTER][META=infl]en[END][END]
 #HRAO*EUrg	he isn't going to have been[AFTER][META=infl]ing[END][END]
 #+SPHAOrg	but will she
-#^+TWHROErg	in order to be[AFTER][META=infl]ing[END][END]
+#^+ROErg	in order to be[AFTER][META=infl]ing[END][END]
 #SKPAUrg	and you can have[AFTER][META=infl]en[END][END]
 #^TKWREUrg	if that may have been[AFTER][META=infl]ing[END][END]
 #^+WRA*Urg	must not have[AFTER][META=infl]en[END][END]
@@ -4001,10 +3999,9 @@
 #TH	we're
 #PW	this is
 #TPH	they're
-#TWH	to be
+#	to be
 #PWH	what's
 #TPWH	there's
-#b	adds
 #Tb	I add
 #Pb	you add
 #Wb	add
@@ -4015,53 +4012,45 @@
 #PWb	this adds
 #PHb	she adds
 #TPHb	they add
-#TWHb	to add
+#b	to add
 #PWHb	what adds
 #TPWHb	there adds
-#g	goes
 #Wg	go
-#TWHg	to go
+#g	to go
 #PWHg	what goes
 #WHg	the[AFTER]goes[END]
-#Kg
 #KWg
 #TKg	if I go
-#TKWHg
+#Kg
 #KPWHg	if what goes
 #KWHg	if the[AFTER]goes[END]
-#Sg	but goes
 #SWg	but go
 #STg	but I go
-#STWHg	but to go
+#Sg	but to go
 #SPWHg	but what goes
 #SWHg	but the[AFTER]goes[END]
-#SKg	and goes
 #SKWg	and go
 #STKg	and I go
-#STKWHg	and to go
+#SKg	and to go
 #SKPWHg	and what goes
 #SKWHg	and the[AFTER]goes[END]
-#+g	does go
 #+Wg	do go
-#+TWHg	to go
+#+g	to go
 #+PWHg	does what go
 #+WHg	does the[AFTER]go[END]
-#+Kg
 #+KWg
 #+TKg
-#+TKWHg
+#+Kg
 #+KPWHg
 #+KWHg
-#+Sg	but does go
 #+SWg	but do go
 #+STg	but do I go
-#+STWHg	but to go
+#+Sg	but to go
 #+SPWHg	but does what go
 #+SWHg	but does the[AFTER]go[END]
-#+SKg	and does go
 #+SKWg	and do go
 #+STKg	and do I go
-#+STKWHg	and to go
+#+SKg	and to go
 #+SKPWHg	and does what go
 #+SKWHg	and does the[AFTER]go[END]
 #^Tgd	I did go
@@ -4144,66 +4133,36 @@
 #^PWHRAO*g	what is not going to go
 #^PWHRAO*gd	what was not going to go
 #^PWHRAO*	what is not going to
-#^TWHg	in order to go
-#^TWHgd	in order to go
-#^TWH	in order to be
-#^TWH*g	in order not to go
-#^TWH*gd	in order not to go
-#^TWH*	in order not to be
-#^TWHAg	in order to go
-#^TWHAgd	in order to go
-#^TWHA	in order to be
-#^TWHA*g	in order not to go
-#^TWHA*gd	in order not to go
-#^TWHA*	in order not to be
-#^TWHRg	in order to go
-#^TWHRgd	in order to go
-#^TWHR	in order to be
-#^TWHR*g	in order not to go
-#^TWHR*gd	in order not to go
-#^TWHR*	in order not to be
-#^TWHROg	in order to go
-#^TWHROgd	in order to go
-#^TWHRO	in order to be
-#^TWHRO*g	in order not to go
-#^TWHRO*gd	in order not to go
-#^TWHRO*	in order not to be
-#^TWHRAOg	in order to go
-#^TWHRAOgd	in order to go
-#^TWHRAO	in order to be
-#^TWHRAO*g	in order not to go
-#^TWHRAO*gd	in order not to go
-#^TWHRAO*	in order not to be
-#^g	does go
-#^gd	did go
-#^
-#^*g	does not go
-#^*gd	did not go
-#^*
-#^Ag	can go
-#^Agd	could go
-#^A
-#^A*g	can not go
-#^A*gd	could not go
-#^A*
-#^Rg	may go
-#^Rgd	might go
-#^R
-#^R*g	may not go
-#^R*gd	might not go
-#^R*
-#^ROg	does have to go
-#^ROgd	did have to go
-#^RO
-#^RO*g	does not have to go
-#^RO*gd	did not have to go
-#^RO*
-#^RAOg	is going to go
-#^RAOgd	was going to go
-#^RAO
-#^RAO*g	is not going to go
-#^RAO*gd	was not going to go
-#^RAO*
+#^g	in order to go
+#^gd	in order to go
+#^	in order to be
+#^*g	in order not to go
+#^*gd	in order not to go
+#^*	in order not to be
+#^Ag	in order to go
+#^Agd	in order to go
+#^A	in order to be
+#^A*g	in order not to go
+#^A*gd	in order not to go
+#^A*	in order not to be
+#^Rg	in order to go
+#^Rgd	in order to go
+#^R	in order to be
+#^R*g	in order not to go
+#^R*gd	in order not to go
+#^R*	in order not to be
+#^ROg	in order to go
+#^ROgd	in order to go
+#^RO	in order to be
+#^RO*g	in order not to go
+#^RO*gd	in order not to go
+#^RO*	in order not to be
+#^RAOg	in order to go
+#^RAOgd	in order to go
+#^RAO	in order to be
+#^RAO*g	in order not to go
+#^RAO*gd	in order not to go
+#^RAO*	in order not to be
 #^Wg	do go
 #^Wgd	did go
 #^W
@@ -4324,36 +4283,6 @@
 #^KPWHRAO*g	if what is not going to go
 #^KPWHRAO*gd	if what was not going to go
 #^KPWHRAO*	if what is not going to
-#^TKWHg
-#^TKWHgd
-#^TKWH
-#^TKWH*g
-#^TKWH*gd
-#^TKWH*
-#^TKWHAg
-#^TKWHAgd
-#^TKWHA
-#^TKWHA*g
-#^TKWHA*gd
-#^TKWHA*
-#^TKWHRg
-#^TKWHRgd
-#^TKWHR
-#^TKWHR*g
-#^TKWHR*gd
-#^TKWHR*
-#^TKWHROg
-#^TKWHROgd
-#^TKWHRO
-#^TKWHRO*g
-#^TKWHRO*gd
-#^TKWHRO*
-#^TKWHRAOg
-#^TKWHRAOgd
-#^TKWHRAO
-#^TKWHRAO*g
-#^TKWHRAO*gd
-#^TKWHRAO*
 #^Kg
 #^Kgd
 #^K
@@ -4504,66 +4433,36 @@
 #^SPWHRAO*g	but what is not going to go
 #^SPWHRAO*gd	but what was not going to go
 #^SPWHRAO*	but what is not going to
-#^STWHg	but in order to go
-#^STWHgd	but in order to go
-#^STWH	but in order to be
-#^STWH*g	but in order not to go
-#^STWH*gd	but in order not to go
-#^STWH*	but in order not to be
-#^STWHAg	but in order to go
-#^STWHAgd	but in order to go
-#^STWHA	but in order to be
-#^STWHA*g	but in order not to go
-#^STWHA*gd	but in order not to go
-#^STWHA*	but in order not to be
-#^STWHRg	but in order to go
-#^STWHRgd	but in order to go
-#^STWHR	but in order to be
-#^STWHR*g	but in order not to go
-#^STWHR*gd	but in order not to go
-#^STWHR*	but in order not to be
-#^STWHROg	but in order to go
-#^STWHROgd	but in order to go
-#^STWHRO	but in order to be
-#^STWHRO*g	but in order not to go
-#^STWHRO*gd	but in order not to go
-#^STWHRO*	but in order not to be
-#^STWHRAOg	but in order to go
-#^STWHRAOgd	but in order to go
-#^STWHRAO	but in order to be
-#^STWHRAO*g	but in order not to go
-#^STWHRAO*gd	but in order not to go
-#^STWHRAO*	but in order not to be
-#^Sg	but does go
-#^Sgd	but did go
-#^S
-#^S*g	but does not go
-#^S*gd	but did not go
-#^S*
-#^SAg	but can go
-#^SAgd	but could go
-#^SA
-#^SA*g	but can not go
-#^SA*gd	but could not go
-#^SA*
-#^SRg	but may go
-#^SRgd	but might go
-#^SR
-#^SR*g	but may not go
-#^SR*gd	but might not go
-#^SR*
-#^SROg	but does have to go
-#^SROgd	but did have to go
-#^SRO
-#^SRO*g	but does not have to go
-#^SRO*gd	but did not have to go
-#^SRO*
-#^SRAOg	but is going to go
-#^SRAOgd	but was going to go
-#^SRAO
-#^SRAO*g	but is not going to go
-#^SRAO*gd	but was not going to go
-#^SRAO*
+#^Sg	but in order to go
+#^Sgd	but in order to go
+#^S	but in order to be
+#^S*g	but in order not to go
+#^S*gd	but in order not to go
+#^S*	but in order not to be
+#^SAg	but in order to go
+#^SAgd	but in order to go
+#^SA	but in order to be
+#^SA*g	but in order not to go
+#^SA*gd	but in order not to go
+#^SA*	but in order not to be
+#^SRg	but in order to go
+#^SRgd	but in order to go
+#^SR	but in order to be
+#^SR*g	but in order not to go
+#^SR*gd	but in order not to go
+#^SR*	but in order not to be
+#^SROg	but in order to go
+#^SROgd	but in order to go
+#^SRO	but in order to be
+#^SRO*g	but in order not to go
+#^SRO*gd	but in order not to go
+#^SRO*	but in order not to be
+#^SRAOg	but in order to go
+#^SRAOgd	but in order to go
+#^SRAO	but in order to be
+#^SRAO*g	but in order not to go
+#^SRAO*gd	but in order not to go
+#^SRAO*	but in order not to be
 #^SWg	but do go
 #^SWgd	but did go
 #^SW
@@ -4683,66 +4582,36 @@
 #^SKPWHRAO*g	and what is not going to go
 #^SKPWHRAO*gd	and what was not going to go
 #^SKPWHRAO*	and what is not going to
-#^STKWHg	and in order to go
-#^STKWHgd	and in order to go
-#^STKWH	and in order to be
-#^STKWH*g	and in order not to go
-#^STKWH*gd	and in order not to go
-#^STKWH*	and in order not to be
-#^STKWHAg	and in order to go
-#^STKWHAgd	and in order to go
-#^STKWHA	and in order to be
-#^STKWHA*g	and in order not to go
-#^STKWHA*gd	and in order not to go
-#^STKWHA*	and in order not to be
-#^STKWHRg	and in order to go
-#^STKWHRgd	and in order to go
-#^STKWHR	and in order to be
-#^STKWHR*g	and in order not to go
-#^STKWHR*gd	and in order not to go
-#^STKWHR*	and in order not to be
-#^STKWHROg	and in order to go
-#^STKWHROgd	and in order to go
-#^STKWHRO	and in order to be
-#^STKWHRO*g	and in order not to go
-#^STKWHRO*gd	and in order not to go
-#^STKWHRO*	and in order not to be
-#^STKWHRAOg	and in order to go
-#^STKWHRAOgd	and in order to go
-#^STKWHRAO	and in order to be
-#^STKWHRAO*g	and in order not to go
-#^STKWHRAO*gd	and in order not to go
-#^STKWHRAO*	and in order not to be
-#^SKg	and does go
-#^SKgd	and did go
-#^SK
-#^SK*g	and does not go
-#^SK*gd	and did not go
-#^SK*
-#^SKAg	and can go
-#^SKAgd	and could go
-#^SKA
-#^SKA*g	and can not go
-#^SKA*gd	and could not go
-#^SKA*
-#^SKRg	and may go
-#^SKRgd	and might go
-#^SKR
-#^SKR*g	and may not go
-#^SKR*gd	and might not go
-#^SKR*
-#^SKROg	and does have to go
-#^SKROgd	and did have to go
-#^SKRO
-#^SKRO*g	and does not have to go
-#^SKRO*gd	and did not have to go
-#^SKRO*
-#^SKRAOg	and is going to go
-#^SKRAOgd	and was going to go
-#^SKRAO
-#^SKRAO*g	and is not going to go
-#^SKRAO*gd	and was not going to go
-#^SKRAO*
+#^SKg	and in order to go
+#^SKgd	and in order to go
+#^SK	and in order to be
+#^SK*g	and in order not to go
+#^SK*gd	and in order not to go
+#^SK*	and in order not to be
+#^SKAg	and in order to go
+#^SKAgd	and in order to go
+#^SKA	and in order to be
+#^SKA*g	and in order not to go
+#^SKA*gd	and in order not to go
+#^SKA*	and in order not to be
+#^SKRg	and in order to go
+#^SKRgd	and in order to go
+#^SKR	and in order to be
+#^SKR*g	and in order not to go
+#^SKR*gd	and in order not to go
+#^SKR*	and in order not to be
+#^SKROg	and in order to go
+#^SKROgd	and in order to go
+#^SKRO	and in order to be
+#^SKRO*g	and in order not to go
+#^SKRO*gd	and in order not to go
+#^SKRO*	and in order not to be
+#^SKRAOg	and in order to go
+#^SKRAOgd	and in order to go
+#^SKRAO	and in order to be
+#^SKRAO*g	and in order not to go
+#^SKRAO*gd	and in order not to go
+#^SKRAO*	and in order not to be
 #^SKWg	and do go
 #^SKWgd	and did go
 #^SKW
@@ -4785,35 +4654,41 @@ Tb
 #@TAUb	I can[AFTER]have added[END]
 #@Trg
 
+! `TWH` is free.
+#TWH
+#TWHg
+#^TWHg
+#@TWHr
+
 ! ---- the infinitive and the "to" clauses under each aspect: a verb, the empty
 ! slot, a copula chord, `-RG`, `*` and `@`.
-#TWHfpts	to be a
-#TWHrg	to
-#TWHUg	to have gone
-#TWHU	to have been
-#TWHUfpts	to have been a
-#TWHUrg	to have[AFTER][META=infl]en[END][END]
-#TWHEg	to be going
-#TWHE	to be being
-#TWHEfpts	to be being a
-#TWHErg	to be[AFTER][META=infl]ing[END][END]
-#TWHEUg	to have been going
-#TWHEU	to have been being
-#TWHEUfpts	to have been being a
-#TWHEUrg	to have been[AFTER][META=infl]ing[END][END]
-#TWH*g	not to go
-#@TWHg	to[AFTER]go[END]
-#TWH*Ug	not to have gone
-#@TWHUg	to[AFTER]have gone[END]
-#TWH*Eg	not to be going
-#@TWHEg	to[AFTER]be going[END]
-#TWH*EUg	not to have been going
-#@TWHEUg	to[AFTER]have been going[END]
-#@TWHrg
-#@TWHUrg
-#^TWHUg	in order to have gone
-#STWHUg	but to have gone
-#+TWHUg	to have gone
+#fpts	to be a
+#rg	to
+#Ug	to have gone
+#U	to have been
+#Ufpts	to have been a
+#Urg	to have[AFTER][META=infl]en[END][END]
+#Eg	to be going
+#E	to be being
+#Efpts	to be being a
+#Erg	to be[AFTER][META=infl]ing[END][END]
+#EUg	to have been going
+#EU	to have been being
+#EUfpts	to have been being a
+#EUrg	to have been[AFTER][META=infl]ing[END][END]
+#*g	not to go
+#@g	to[AFTER]go[END]
+#*Ug	not to have gone
+#@Ug	to[AFTER]have gone[END]
+#*Eg	not to be going
+#@Eg	to[AFTER]be going[END]
+#*EUg	not to have been going
+#@EUg	to[AFTER]have been going[END]
+#@rg
+#@Urg
+#^Ug	in order to have gone
+#SUg	but to have gone
+#+Ug	to have gone
 #TROfpts	I have to be a
 #TROrg	I have to
 #TRO*EUg	I haven't been having to go

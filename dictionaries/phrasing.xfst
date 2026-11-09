@@ -97,7 +97,7 @@ define VerbEnd  [ [ Say("[PRES]") RhsPres ] | [ Say("[PAST]") RhsPast ] ] ;
 define Slot     [ EmptySlot | CopSlot | VerbEnd ] ;
 
 ! A left-key set that names no subject still heads a clause when the right bank
-! names a verb: `#-B` is "adds". It gets no empty slot, because that would leave
+! names a verb: `#W-B` is "add". It gets no empty slot, because that would leave
 ! nothing to say.
 define Cl(S, E)  [ S ModKeys PolKey AspKeys E ] ;
 
@@ -347,7 +347,7 @@ define Tail  [ [ Chr | MidW ]* ] ;
 ! Two shapes, and every mode is one of them. A clause says its finite word after
 ! the subject; a clitic hangs the word on the subject instead and leaves any
 ! `not` behind. A question inverts the two, which costs nothing on a tape where
-! the selector follows the subject. A clause with no subject at all -- `#E-B` is
+! the selector follows the subject. A clause with no subject at all -- `#WE-B` is
 ! "are adding" -- is the same shapes with the head absent.
 define SubjA  [ Kill("[SUBJ]") Word Kill("[/SUBJ]") [ Kill("[C]") | 0 ] ] ;
 define SubjC  [ Kill("[SUBJ]") Word Kill("[/SUBJ]") Kill("[C]") ] ;

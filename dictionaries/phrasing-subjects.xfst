@@ -2,19 +2,20 @@
 !
 ! Hand-written, and the source. Change the left bank here.
 !
-! The subject is a function of four keys, `T P W H`, and all sixteen sets mean
-! something. `S` and `K` are the clausal conjunctions and `R` is modality, so
-! none of them is read here. `phrasing.xfst` reads `K` before `T`, so the
-! subject keys arrive together and each row below is in tape order.
+! The subject is a function of four keys, `T P W H`, and fifteen of the sixteen
+! sets mean something. `S` and `K` are the clausal conjunctions and `R` is
+! modality, so none of them is read here. `phrasing.xfst` reads `K` before `T`,
+! so the subject keys arrive together and each row below is in tape order.
 !
 ! `[C]` marks a subject the reduced surface may cliticize onto ("it's", "I'm").
-! `[INF]` is the nonfinite "to" clause, which has no subject word.
+! `[INF]` is the nonfinite "to" clause, which is the empty set of subject keys.
 !
 ! The rules that read this map are in `phrasing.xfst`; the mined verb lexicon is
 ! in `phrasing-lexicon.xfst`.
 
 ! Twelve of the sixteen sets. Two more are the held subjects in `Determiners`
-! below, and two head a clause only when a verb follows, in `NoSubject`.
+! below, one heads a clause only when a verb follows, in `NoSubject`, and `TWH`
+! is free.
 define Subjects [
     [ [ "T" ] .x. [ "[SUBJ]" {I} "[/SUBJ]" "[C]" "[1sg]" ] ] |
     [ [ "P" ] .x. [ "[SUBJ]" {you} "[/SUBJ]" "[C]" "[pl]" ] ] |
@@ -26,14 +27,11 @@ define Subjects [
     [ [ "T" "W" ] .x. [ "[SUBJ]" {that} "[/SUBJ]" "[C]" "[3sg]" ] ] |
     [ [ "P" "W" ] .x. [ "[SUBJ]" {this} "[/SUBJ]" "[3sg]" ] ] |
     [ [ "P" "W" "H" ] .x. [ "[SUBJ]" {what} "[/SUBJ]" "[C]" "[3sg]" ] ] |
-    [ [ "T" "W" "H" ] .x. [ "[INF]" "[3sg]" ] ] |
+    [ [ 0 ] .x. [ "[INF]" "[3sg]" ] ] |
     [ [ "T" "P" "W" "H" ] .x. [ "[SUBJ]" {there} "[/SUBJ]" "[C]" "[3sg]" ] ] ] ;
 
-! No subject: the clause is its verb, so a verb is required. `W` is the plural
-! agreement: `#-B` is "adds" and `#W-B` "add".
-define NoSubject [
-    [ [ 0 ] .x. [ "[3sg]" ] ] |
-    [ [ "W" ] .x. [ "[pl]" ] ] ] ;
+! No subject: the clause is its verb, so a verb is required: `#W-B` is "add".
+define NoSubject [ [ "W" ] .x. [ "[pl]" ] ] ;
 
 ! "a" or "an", chosen by the word after it: the pattern `AEU` in `user.json`
 ! uses, which is Plover's.
