@@ -265,18 +265,16 @@ Recommendation: give lexical "do" a bank chord. `#T` with it is "I do", and
 `verbs_candidate.py` and a count of its complements, because the miner reads
 only the candidate verbs.
 
-### What @ and 🦐 do
+### What @ does
 
-`#@` has no entry, and no other dictionary may take it, because `#` is
+`#@` is the held clause, and no other dictionary may take it, because `#` is
 phrasing's. Between a finite word and the verb, also is the most frequent
 adverb: 35.0% after a modal ("can also"), 18.8% after another auxiliary, 24.2%
 after a subject. Personal text after a modal: also 25, already 24, still 20,
-only 12, never 11, just 6. Recommendation: @ writes "also" after the finite
-word, or before the verb if there is none: `#@TA` with go's chord is "I can
-also go". That is also the answer to "also, just or still after a modal".
+only 12, never 11, just 6.
 
 always, never, just and also are 55.5% of these adverbs, and the hole reaches
-them only for verbs outside the bank. Recommendation: 🦐 keeps the gap.
+them only for verbs outside the bank.
 
 ### Subjunctive "were"
 

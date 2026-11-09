@@ -21,8 +21,8 @@ lists what is still to decide.
 ## The keys
 
 ```
-🦐  held clause          #  the gate: every phrasing stroke has it
-^   full form           +  question order          @  not phrasing
+@   held clause          #  the gate: every phrasing stroke has it
+^   full form           +  question order
 S   "but"   SK "and"    K  "if"                    R A O  modality
 T P W H  the subject    *  negation                E U    aspect
 ```
@@ -240,17 +240,16 @@ past, follows it to `-RGTZ`.
 
 ## A held clause: the next stroke goes before the verb
 
-`🦐` on a clause holds it open where an adverb goes, and whatever the next stroke
-writes lands there. No board has the key: a long press on `plover-hid-timing`
-sends it, so holding the chord is holding the clause.
+`@` on a clause holds it open where an adverb goes, and whatever the next stroke
+writes lands there.
 
 ```
-🦐#T-R     OFPB      ->   I often work
-🦐#TUR     TPHEFR    ->   I've never worked
-🦐#T*R     AULS      ->   I don't always work
-🦐#+TP-R   OFPB      ->   does it often work
-🦐#TWH-R   HRAOERL   ->   to really work
-🦐#TROB   OFPB      ->   I often have to add
+#@T-R     OFPB      ->   I often work
+#@TUR     TPHEFR    ->   I've never worked
+#@T*R     AULS      ->   I don't always work
+#@+TP-R   OFPB      ->   does it often work
+#@TWH-R   HRAOERL   ->   to really work
+#@TROB   OFPB      ->   I often have to add
 ```
 
 The gap is after the finite word and before the rest of the chain, and where
@@ -262,7 +261,7 @@ does: the rest of the clause is the tail.
 
 It waits for a stroke and not a word, because a tail waits for text: a stroke
 that writes two words puts both in the gap. A gap with nothing after it holds
-nothing, so `🦐#T` then "often" is "I'm often".
+nothing, so `#@T` then "often" is "I'm often".
 
 This replaced two things. The adverb enders were eight right-bank chords that
 each wrote an adverb and held the verb, and the pre-verb satellites put
@@ -404,7 +403,7 @@ holds nothing, since there is no tail to wait with: `#+WH` is "is the", and the
 noun follows it as ordinary text.
 
 One record waits for one unit, so a clause cannot have two holes. A held subject
-therefore takes no `-RG` verb and no `🦐`: `#WH-RG` has no entry, and
+therefore takes no `-RG` verb and no `@`: `#WH-RG` has no entry, and
 `tests/golden/phrasing.tsv` asserts it.
 
 ## `#` is phrasing's
@@ -420,7 +419,7 @@ So the number bar is gone from the stack. Typey Type's digits, times, fractions
 and numerals (437 entries) and the one `#` entry in `user.json` are left out of
 their imports; Emily's literal numbers lost their 256 bit, `emily-modifiers` its
 16 bit on digits and F-keys, Shrimple its capitalised syllable, and the folds
-read no `#` stroke. `@` is the modifiers' namespace, and `#@` with it.
+read no `#` stroke. `@` alone is the modifiers' namespace, and `#@` is the held clause.
 
 ## Measured
 
@@ -440,9 +439,9 @@ writer's time, so this is not a problem.
 
 ```
 $ stfst reverse build/dicts/phrasing.stfst --system systems/stenotype-extended.toml
-it's                 #TP      #TPU     #TPE     🦐#TP    ...
-it is not            #^TP*    🦐#^TP*  #^TP*E   🦐#^TP*E
-we weren't           #TH*D    #TH*ED   🦐#TH*D  🦐#TH*ED
+it's                 #TP      #TPU     #TPE     #@TP    ...
+it is not            #^TP*    #@^TP*  #^TP*E   #@^TP*E
+we weren't           #TH*D    #TH*ED   #@TH*D  #@TH*ED
 in order not to be   #^TWH*   #^TWH*D  #^TWHR*  #^TWHA*  ...
 I'm going to         #TEGZ    #TRAO    #TRAORG
 ```
@@ -469,7 +468,7 @@ sample is chosen the way the grammar is split:
 - **The held subjects**, each dimension once, and their two exclusions as
   no-entry rows: a clause that already holds its noun cannot also hold its verb.
 - **The cases the design names**: the sixteen subjects, the conjunctions, `^`
-  over every kind of clause, `@`, and the held clause.
+  over every kind of clause, and the held clause.
 
 The whole language is 20.7M strokes and no file holds it. The file was recorded
 from this grammar and read: a line that changes is a change to what a clause

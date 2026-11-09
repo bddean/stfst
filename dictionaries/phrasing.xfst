@@ -69,9 +69,9 @@ define Chr      [ \Feature ] ;
 ! order on this board is `🦐 # @ ^ + S T K P W H R A O * E U` then the right
 ! bank, and every feature is emitted where its key sits. The one exception is
 ! `K`, which is read before `T` so that the subject keys `T P W H` arrive
-! together. `#` is the gate and writes nothing, and no entry has `@`.
+! together. `#` is the gate and writes nothing.
 
-define KFirst  [ ("🦐") "#" ("^") ("+") ("S")
+define KFirst  [ "#" ("@") ("^") ("+") ("S")
                  [ [ [ "T" "K" ] .x. [ "K" "T" ] ] | "T" | ("K") ] \[ "T" | "K" ]* ] ;
 
 ! One conjunction per clause.
@@ -106,8 +106,8 @@ define Cl(S, E)  [ S ModKeys PolKey AspKeys E ] ;
 define NoVerbHole  ~[ ?* Hole ?* ] ;
 define DetCl  [ Cl(Determiners, Slot) .o. NoVerbHole ] ;
 
-! `🦐` holds the clause open before its verb, so the next stroke lands there:
-! `🦐#T-R` then "often" is "I often run". It is a hole of its own, so it takes
+! `@` holds the clause open before its verb, so the next stroke lands there:
+! `#@T-R` then "often" is "I often run". It is a hole of its own, so it takes
 ! no held subject and no `-RG` verb either.
 define OneHole  ~[ "[GAP]" ?* [ Hole | "[HOLD]" ] ?* ] ;
 
@@ -115,8 +115,8 @@ define OneHole  ~[ "[GAP]" ?* [ Hole | "[HOLD]" ] ?* ] ;
 ! clause with no subject.
 define IfClause  [ ~[ ?* "[IF]" \"[SUBJ]" ?* ] & ~[ ?* "[Q]" ?* "[IF]" ?* ] ] ;
 
-define Chord [ [ [ [ "🦐" .x. "[GAP]" ] | 0 ]
-                 Kill("#")
+define Chord [ [ Kill("#")
+                 [ [ "@" .x. "[GAP]" ] | 0 ]
                  [ [ "^" .x. "[FULL]" ] | Say("[RED]") ]
                  [ [ "+" .x. "[Q]" ] | 0 ]
                  ConjKeys

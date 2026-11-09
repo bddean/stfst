@@ -99,7 +99,7 @@ shows as a suffix: `^PW*EU` writes "by -ing", and "run" makes it "by running".
 
 Phrasing's `-RG` says the verb of a whole clause is the next word, so `#TPERG`
 then "run" is "it's running", and every other key of the clause means what it
-meant. A held clause waits the same way before its verb: `🦐#T-R` writes "I
+meant. A held clause waits the same way before its verb: `#@T-R` writes "I
 work", and "often" makes it "I often work". A held subject waits for its noun:
 `#WHE-B` writes "the is adding", and "dog" makes it "the dog is adding".
 
