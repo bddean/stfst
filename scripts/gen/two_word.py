@@ -14,7 +14,7 @@ one word. What this script decides is the rest, which is not a rule:
 
 - Which pairs. Each two words in a row in the phrasing corpora that are both
   words of one syllable the lexicon has, at least MIN_COUNT times. Not a pair a
-  fold already writes in one stroke: "the" after a word is its -T, and "and"
+  fold already writes in one stroke: "the" after a word is its *T, and "and"
   before one is S-K-P-.
 - Which word has the stress: the content word, and between two of a kind the
   second, as English phrases are stressed. FUNCTION lists the function words.
@@ -22,8 +22,7 @@ one word. What this script decides is the rest, which is not a rule:
   any other dictionary writes is left to it. A stroke a fold reads as the pair
   needs no entry: `folds.xfst` reads "a" before a word and "of", "is" and "to"
   after one, so `+TPAOU` is a few with no entry. A stroke a fold reads as
-  something else goes to the pair if the pair is the more frequent text:
-  `+KOPLT` is come to, which the -T fold reads as "comma the".
+  something else goes to the pair if the pair is the more frequent text.
 - A pair's stroke with a suffix key, which a fold reads as the last word
   inflected, is an entry where the stressed word inflected, on either side, is
   the more common text: `+WAOPBGT` is "wanting to".
@@ -60,7 +59,7 @@ NAME = "two-word"
 # are written prose, so "go home" (114) and "my way" (111) are below it.
 MIN_COUNT = 150
 
-# Words a fold writes beside another: "and" before (S-K-P-), "the" after (-T).
+# Words a fold writes beside another: "and" before (S-K-P-), "the" after (*T).
 FOLDED_BEFORE = {"and"}
 FOLDED_AFTER = {"the"}
 

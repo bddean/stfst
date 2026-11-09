@@ -1,6 +1,6 @@
 //! A fold: a stroke read as another stroke, with something written around it.
 //!
-//! `KAOEPT` is "keep the" because `-T` comes off and `KAOEP` is "keep", and
+//! `KAO*EPT` is "keep the" because `*` and `-T` come off and `KAOEP` is "keep", and
 //! `SKPAD` is "and add" because `S-K-P-` comes off and `AD` is "add". The base
 //! belongs to whichever dictionary writes it, so a fold record names the keys it
 //! takes off and puts on rather than the base, and the host looks the base up

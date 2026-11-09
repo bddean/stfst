@@ -64,9 +64,9 @@ fn a_bitmask_from_two_thumbs_writes_the_word() {
     let stack = Stack::open(&dicts, &system, &Capabilities::all()).expect("opening the stack");
     let mut board = Board::new(&system, &stack, morph());
 
-    // The left thumb took K A O and the right took E p t, which is `KAOEPT`.
+    // The left thumb took K A O and the right took * E p t, which is `KAO*EPT`.
     let left = bits(&system, "KAO");
-    let right = bits(&system, "Ept");
+    let right = bits(&system, "*Ept");
     board.push(stroke(left | right)).expect("a stroke");
     assert_eq!("keep the", board.text());
 

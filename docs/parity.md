@@ -300,7 +300,7 @@ not be checked and would not be a function of its input, which are the two prope
 the format exists to have.
 
 What replaces it is a rule about placement. **A fold writes where its record
-says, and no part of speech moves it.** `KAOEPT` is "keep the" and never "the keep",
+says, and no part of speech moves it.** `KAO*EPT` is "keep the" and never "the keep",
 and the plugin's own README came to the same place for the same reason: the
 insertion that landed *before* a phrase fought with the ordinary reading too often.
 A fixed place needs no part of speech, which is why dropping the tagger costs
@@ -346,7 +346,7 @@ order to try them. `dictionaries/folds.xfst` writes them; `stfst_core::fold` is
 the record.
 
 ```
-KAOEPT   -T off: keep, then "the"                         keep the
+KAO*EPT  * -T off: keep, then "the"                       keep the
 TAPGS    -S off: tapping, then -s                         tappings
 SKPAD    S-K-P- off: "and", then add                      and add
 SKPHA    S-K-P- off and T- on: "and", then that           and that
@@ -358,7 +358,7 @@ the inflection is the host's morphology. None of the three knows about the other
 The host's order is Plover's. A fold is tried only where nothing matched the stroke
 as written, so `PWABGS` never folds: it has an entry of its own. Then the longest
 outline the base can end comes first, and among those the first alternative whose
-base translates. So `SEFRB/R-GTS` is reservation and then "the", because `R-GS`
+base translates. So `SEFRB/R*GTS` is reservation and then "the", because `R-GS`
 extends `SEFRB`. The base is looked up and not folded again, as in Plover, except
 that an alternative that writes nothing is the stroke respelled, and the
 respelling's alternatives follow it: `@^+UPB` is `^+SUPB`, and that is -y on

@@ -2,7 +2,7 @@
 ! written around it. `stfst_core::fold` is the record and what a host does
 ! with it.
 !
-!   KAOEPT   -T off, KAOEP is "keep", then "the"       keep the
+!   KAO*EPT  * -T off, KAOEP is "keep", then "the"     keep the
 !   SKAOFL   -F off, SKAOL is "school", then "of"      school of
 !   TAPGS    -S off, TAPG is "tapping", then -s         tappings
 !   SKPAD    S-K-P- off, "and", then AD is "add"        and add
@@ -17,7 +17,7 @@
 ! then the folds that write a word beside the base.
 ! A suffix on an "and" brief is junk (SKPA is "and a", so SKPAD would be "and
 ! aed"), and the "and" alternative needs its base to be a word, so where it is
-! not the suffix still applies: SKPAOEPT is "and keep" and then "the".
+! not the suffix still applies: SKPAO*EPT is "and keep" and then "the".
 
 define Say(X)   [ 0 .x. X ] ;
 
@@ -106,6 +106,10 @@ define AfterO(C, Af) [ BesideO([ PlusO & $[C] ], "+", C, 0, Af) .o. BesideO([ Pl
 define AfterI(C, Af) [ Beside([ CaretPlus & $[C] ], [ "^" "+" ], C, 0, Af)
                      .o. Beside([ CaretPlus & $[C] ], [ "^" "+" ], 0, 0, Af) ] ;
 
+! *T is "the". -T alone would collide with more strokes.
+define The Rule([ [ Stroke & $["*"] & $[t] ] - [ "*" t ] ],
+                [ "[FOLD]" "[STRIP]" "*" t "[END]" {the} ]) ;
+
 ! `#` is phrasing's, so no fold reads a stroke that holds it. With a mark, `@` is
 ! S, so emily-modifiers' fold respells the stroke and these read the respelling.
 ! A suffix comes before a word, so a two-syllable word's marked stroke keeps its
@@ -121,7 +125,7 @@ define Folds [ [ Stroke - $["#"] - [ $["@"] & $["^" | "+"] ] ]
   .o. Suffix(g, Infl({ing}))
   .o. Lead([ [ S ?+ ] - [ S K P ?* ] ], {is}, S)
   .o. Lead([ S T ?+ ], {it's}, S T)
-  .o. Suffix(t, {the})
+  .o. The
   .o. Suffix(f, {of})
   .o. Beside(IsA, "+", 0, 0, {a})
   .o. Beside(PlusMark, "+", 0, {a}, 0)

@@ -70,7 +70,7 @@ Among outlines of one length, a dictionary's comes before a fold's.
 | ahead | flat source in the record language |
 
 A fold is a stroke nothing matched, read as another stroke with something
-written around it: `KAOEPT` is "keep" then "the", `SKPAD` is "and" then "add",
+written around it: `KAO*EPT` is "keep" then "the", `SKPAD` is "and" then "add",
 `+TPAOU` is "a" then "few" (`TPAOU`), and `^+TAOEUP` is "type" and -y, "typey".
 `dictionaries/folds.xfst` says which keys come off and what they write, as a
 record of ordered alternatives, and the host looks the base up across the whole

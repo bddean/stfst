@@ -57,7 +57,7 @@ SUFFIX_KEYS = "SDZG"
 
 # The suffix keys of `dictionaries/folds.xfst`, which is where Stenotype
 # Extended's folds are: that system declares no `SUFFIX_KEYS` of its own.
-EXTENDED_SUFFIXES = ("-Z", "-D", "-S", "-G", "-T")
+EXTENDED_SUFFIXES = ("-Z", "-D", "-S", "-G", "*T")
 
 # A number stroke Plover writes as its digits when nothing defines it, and the
 # Rust host writes nothing, so an entry holding one is not composed there.
@@ -192,11 +192,11 @@ def broken_in(system_name, removed, alone):
         """The entry's strokes, and each with a suffix key folded onto the last,
         since a fold reads the entry as its base. Onto a word that is already an
         inflection only a key that does not inflect is asked: sheared then -S is
-        a double inflection nobody strokes, and sheared then -T is "sheared the".
+        a double inflection nobody strokes, and sheared then *T is "sheared the".
         A gerund is a noun too, so -S and -Z are asked of it: buildings.
         Onto a stroke of suffix keys alone, `-G` in `STAR/-G`, none is."""
         last = Stroke.from_steno(key[-1])
-        keys = [k for k in suffixes if k not in last]
+        keys = [k for k in suffixes if not any(p in last for p in k.keys())]
         if all(any(k in s for s in suffixes) for k in last.keys()):
             keys = []
         elif any(k in last for k in inflecting if k != gerund):

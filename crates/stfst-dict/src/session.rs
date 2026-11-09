@@ -392,7 +392,7 @@ impl<'a> Session<'a> {
     /// written and only its answer has to wait.
     ///
     /// Longest first, and among equals the first alternative, which is Plover's
-    /// order: `SEFRB/R-GTS` folds `-T` onto reservation before it tries `R-GS`
+    /// order: `SEFRB/R*GTS` folds `*T` onto reservation before it tries `R-GS`
     /// alone. The base is looked up and not folded again, as Plover does, except
     /// that a respelling's alternatives are the stroke's too.
     ///

@@ -24,7 +24,7 @@ RUPB	1	typey-type	run	". Tapth bored tapkat it's it is notcmore and-Notcmore ele
 KPA*L	1	commands	[UPPER_NEXT]	". Tapth bored tapkat it's it is notcmore and-Notcmore elephant in the room running"
 RUPB	1	typey-type	run	". Tapth bored tapkat it's it is notcmore and-Notcmore elephant in the room running RUN"
 KAOEP	1	typey-type	keep	". Tapth bored tapkat it's it is notcmore and-Notcmore elephant in the room running RUN keep"
-KAOEPT	1	typey-type+_ the	keep	". Tapth bored tapkat it's it is notcmore and-Notcmore elephant in the room running RUN keep keep the"
+KAO*EPT	1	typey-type+_ the	keep	". Tapth bored tapkat it's it is notcmore and-Notcmore elephant in the room running RUN keep keep the"
 TAPG	1	typey-type	tapping	". Tapth bored tapkat it's it is notcmore and-Notcmore elephant in the room running RUN keep keep the tapping"
 TAPGS	1	typey-type+_ [META=infl]ofs[END]	tapping	". Tapth bored tapkat it's it is notcmore and-Notcmore elephant in the room running RUN keep keep the tapping tappings"
 SKPAD	1	typey-type+and _	add	". Tapth bored tapkat it's it is notcmore and-Notcmore elephant in the room running RUN keep keep the tapping tappings and add"
@@ -44,5 +44,5 @@ OTZ	1	emily-symbols	[RETRO_SPACE]	". Tapth bored tapkat it's it is notcmore and-
 PART	1	typey-type	part	". Tapth bored tapkat it's it is notcmore and-Notcmore elephant in the room running RUN keep keep the tapping tappings and add and that tap ran childrenmore part"
 TK-PLTS	2	affixes+_ [META=infl]ofs[END]	department	". Tapth bored tapkat it's it is notcmore and-Notcmore elephant in the room running RUN keep keep the tapping tappings and add and that tap ran childrenmore departments"
 SEFRB	1	typey-type	serve	". Tapth bored tapkat it's it is notcmore and-Notcmore elephant in the room running RUN keep keep the tapping tappings and add and that tap ran childrenmore departments serve"
-R-GTS	2	affixes+_ the	reservation	". Tapth bored tapkat it's it is notcmore and-Notcmore elephant in the room running RUN keep keep the tapping tappings and add and that tap ran childrenmore departments reservation the"
+R*GTS	2	affixes+_ the	reservation	". Tapth bored tapkat it's it is notcmore and-Notcmore elephant in the room running RUN keep keep the tapping tappings and add and that tap ran childrenmore departments reservation the"
 ! 41 strokes, 10 candidates at the widest
