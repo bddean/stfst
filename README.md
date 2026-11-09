@@ -78,7 +78,6 @@ stays; only `+O` and `+U` can add a vowel key to it.
 | i or y | `^+` | happy `^+HAP`, city `^+SEUT` |
 | o | `+O` | today `+TKAOEU`, also `+AOLS` |
 | u | `+U` | focus `+TPOEUBGS` |
-| none: one syllable, its plain stroke taken | `^` | matter `^PHART`, since mart is `PHART` |
 
 The i or y mark is also a fold: where nothing holds a stroke, `^+` on it is
 the word the rest writes and `{:infl:y}`, so `^+TAOEUP` is "typey" and `^+TPUPB`

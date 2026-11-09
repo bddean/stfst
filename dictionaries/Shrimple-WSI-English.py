@@ -37,11 +37,11 @@ starter_letter={
     "STK": "dis",
     "STKPW": "z",
     "*SKP": "&",
-    "SKWR": "j",
+    "KWH": "j",
     "SKHR": "shr", #Josiah theory
     "SH" : "sh",
     "SHR" : "sl", #Josiah theory
-    "SR" : "v",
+    "TPW" : "v",
 
     "T" : "t",
     "TK": "d",
@@ -53,8 +53,7 @@ starter_letter={
     "K":"k",
     "KP":"x",
     "KW":"q",
-    "KWH":"y",
-    "KWR":"",
+    "KWR":"y",
     "KH":"ch",
     "KR":"c",
 

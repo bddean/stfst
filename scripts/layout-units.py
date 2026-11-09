@@ -421,13 +421,13 @@ def caret(op, base):
 
 SYLLABLE = re.compile(r"^([STKPWHR]*)([012])([AOEU]*):([AO*EU]*)([frpblgtsdz]*)$")
 # ToLeft: coda keys crossing to the left bank, by their sound: (keys, voiceless keys, the voiced phoneme).
-TO_LEFT = [("pblg", "SKWR", "KH", "JH"), ("fp", "KH", "KH", None), ("rb", "SH", "SH", None),
+TO_LEFT = [("pblg", "KWH", "KH", "JH"), ("fp", "KH", "KH", None), ("rb", "SH", "SH", None),
            ("pb", "TPH", "TPH", None), ("pl", "PH", "PH", None), ("bg", "K", "K", None), ("f", "TP", "TP", None),
            ("r", "R", "R", None), ("p", "P", "P", None), ("b", "PW", "P", "B"), ("l", "HR", "HR", None),
            ("g", "TKPW", "K", "G"), ("t", "T", "T", None), ("s", "S", "S", None), ("d", "TK", "T", "D"),
            ("z", "S", "S", "Z")]
-TO_RIGHT = [("STKPW", "z"), ("TKPW", "g"), ("SKWR", "pblg"), ("KWR", ""), ("TPH", "pb"), ("PH", "pl"),
-            ("PW", "b"), ("TK", "d"), ("TP", "f"), ("SR", "f"), ("HR", "l"), ("KH", "fp"), ("SH", "rb"),
+TO_RIGHT = [("STKPW", "z"), ("TKPW", "g"), ("KWH", "pblg"), ("KWR", ""), ("TPW", "f"), ("TPH", "pb"), ("PH", "pl"),
+            ("PW", "b"), ("TK", "d"), ("TP", "f"), ("HR", "l"), ("KH", "fp"), ("SH", "rb"),
             ("TH", "t"), ("K", "bg"), ("S", "s"), ("T", "t"), ("P", "p"), ("R", "r"), ("W", ""), ("H", "")]
 SONORANT = {"TPH", "PH", "HR", "R", "W", "H", "KWR"}
 # th/dh and sh/zh stay one chord each, as in the theory.
@@ -675,6 +675,7 @@ def two_syllable_units(words, enc, out):
     sides = theory_sides(pipe["theory"]) if form == "position" else {}
     fallback = enc.get("fallback") or []
     fallback = [fallback] if isinstance(fallback, str) else fallback
+    onsets = t.theory_onsets(g.Typey.load())
     if form == "typey" or "typey" in fallback:
         with open(g.SUPERSEDED) as f:
             taken.update((o, ("typey-type", tr)) for o, tr in json.load(f).items())
@@ -735,7 +736,7 @@ def two_syllable_units(words, enc, out):
                 for ch in chords:
                     tape = "".join(sorted(set(b) | set(ch), key=TAPE_ORDER.index))
                     reachable.add(_SYSTEM.outline(tape))
-            displace = form != "typey" and t.may_displace(o, outlines[w], stem(w))
+            displace = form != "typey" and t.may_displace(o, stem(w), onsets)
             alts.append({"cost": c, "strokes": strokes, "displace": displace})
             if (w, o) in tagged:
                 alts[-1]["fallback"] = tagged[w, o]

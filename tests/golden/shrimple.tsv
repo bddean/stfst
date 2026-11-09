@@ -9,11 +9,11 @@
 ^/SA	sa
 ^/STKA	disa
 ^/STKPWA	za
-^/SKWRA	ja
+^/SKWRA	sya
 ^/SKHRA	shra
 ^/SHA	sha
 ^/SHRA	sla
-^/SRA	va
+^/SRA	sra
 ^/TA	ta
 ^/TKA	da
 ^/TKPWA	ga
@@ -23,8 +23,8 @@
 ^/KA	ka
 ^/KPA
 ^/KWA	qa
-^/KWHA	ya
-^/KWRA	a
+^/KWHA	ja
+^/KWRA	ya
 ^/KHA	cha
 ^/KRA	ca
 ^/PA	pa
@@ -135,7 +135,7 @@
 ^/TKPA	txa
 ^/TKWA	tqa
 ^/TKHA	tcha
-^/TPWA	tba
+^/TPWA	va
 ^/TPRA	fra
 ^/TWHA	twha
 ^/TWRA	twra
@@ -151,7 +151,7 @@
 ^/STKWA	diswa
 ^/STKHA	disha
 ^/STKRA	sdra
-^/STPWA	stba
+^/STPWA	sva
 ^/STPHA	sna
 ^/STPRA	sfra
 ^/STWHA	stwha
@@ -167,11 +167,11 @@
 ^/SWHRA	swla
 ^/TKPHA	dma
 ^/TKPRA	txra
-^/TKWHA	tya
-^/TKWRA	ta
+^/TKWHA	tja
+^/TKWRA	tya
 ^/TKHRA	dla
-^/TPWHA	tbha
-^/TPWRA	tbra
+^/TPWHA	vha
+^/TPWRA	vra
 ^/TPHRA	tpla
 ^/TWHRA	twla
 ^/KPWHA	kbha
@@ -181,11 +181,11 @@
 ^/PWHRA	bla
 ^/STKPHA	disma
 ^/STKPRA	dispra
-^/STKWHA	stya
-^/STKWRA	sta
+^/STKWHA	stja
+^/STKWRA	stya
 ^/STKHRA	disla
-^/STPWHA	stbha
-^/STPWRA	stbra
+^/STPWHA	svha
+^/STPWRA	svra
 ^/STPHRA	stpla
 ^/STWHRA	stwla
 ^/SKPWHA	skbha
@@ -197,13 +197,13 @@
 ^/TKPWRA	gra
 ^/TKPHRA	dpla
 ^/TKWHRA	tqla
-^/TPWHRA	tbla
+^/TPWHRA	vla
 ^/KPWHRA	kbla
 ^/STKPWHA	zha
 ^/STKPWRA	zra
 ^/STKPHRA	displa
 ^/STKWHRA	diswla
-^/STPWHRA	stbla
+^/STPWHRA	svla
 ^/SKPWHRA	skbla
 ^/TKPWHRA	gla
 ^/STKPWHRA	zla
@@ -923,7 +923,7 @@
 ^/TPH/AO/bg	nook
 ! `#` is phrasing's, so it capitalises nothing here
 ^/#TAp
-^/SKWRAOEU/TPHAOf/PWA	jienoofba
+^/SKWRAOEU/TPHAOf/PWA	syienoofba
 ! The 🦐 fold: the same syllables, marked per stroke, with no entry stroke
 ! to spend and no exit to declare.
 🦐TAp	tap
@@ -935,4 +935,4 @@
 ! An exit stroke is the entry form's problem alone. `SKWHf` ends the mode there
 ! and is an ordinary syllable here.
 ^/SKWHf
-🦐SKWHf	syf
+🦐SKWHf	sjf

@@ -171,7 +171,7 @@ def typey_outlines():
             with open(path) as f:
                 for o, w in json.load(f).items():
                     out.setdefault(w, []).append(o)
-    return {w: sorted(os, key=lambda o: (g.keys(o), o)) for w, os in out.items()}
+    return {w: sorted(os, key=lambda o: (g.keys_as_upstream(o), o)) for w, os in out.items()}
 
 
 def stressed_stroke(entry, strokes):

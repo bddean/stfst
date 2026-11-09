@@ -28,8 +28,11 @@ define Caret    [ Mark(A, "+", Keys) | Mark(E, "^", Keys) | Mark({EU}, [ "^" "+"
 
 ! The mark to the front, before the prefix's keys.
 define Front(M) [ Ins(M) LeftKey+ Del(M) ?* ] ;
-define Cluster  [ [ LeftKey+ Del(Gap) LeftKey* ] .o. LeftBank ] VowelKeys RightKey* ;
+! The keys inside SPW are the onset's, and go, so that a cluster stays whole:
+! interfere is SPWAOER and not STPW.
+define Whole    [ [ T | K ] -> 0 || {SPW} LeftKey* _ ] ;
+define Cluster  [ [ LeftKey+ Del(Gap) LeftKey* ] .o. Whole .o. LeftBank ] VowelKeys RightKey* ;
 define Clustered [ [ LeftKey+ Caret ] .o. [ Front("^") | Front("+") | Front([ "^" "+" ]) ]
-                   .o. [ ("^") ("+") [ LeftKey+ .o. LeftBank ] VowelKeys RightKey* ] ] ;
+                   .o. [ ("^") ("+") [ LeftKey+ .o. Whole .o. LeftBank ] VowelKeys RightKey* ] ] ;
 
 define Stage    [ Rank Gap [ Caret | Cluster | Clustered | Del("-" Gap) ?* ] ] ;

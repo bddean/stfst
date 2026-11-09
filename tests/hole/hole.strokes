@@ -66,13 +66,13 @@ TPHEFR
 OFPB
 !buffer
 #@TWH-R
-^RAEL
+^+RAEL
 !buffer
 #@TRO-B
 OFPB
 !buffer
 #@T-FPTS
-^RAEL
+^+RAEL
 
 ! With nothing after the gap there is no tail, so the stroke just follows.
 !buffer

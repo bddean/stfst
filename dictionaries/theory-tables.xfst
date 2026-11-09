@@ -1,7 +1,7 @@
 ! Written by scripts/gen-theory.py from dictionaries/typey-vowels.toml and the vowel theory's strokes.
 ! Do not edit: see scripts/gen/theory.py for what these are.
 
-define Left [ [ B .x. {PW} ] | [ CH .x. {KH} ] | [ D .x. {TK} ] | [ DH .x. {TH} ] | [ F .x. {TP} ] | [ G .x. {TKPW} ] | [ HH .x. {H} ] | [ JH .x. {SKWR} ] | [ K .x. {K} ] | [ L .x. {HR} ] | [ M .x. {PH} ] | [ N .x. {TPH} ] | [ P .x. {P} ] | [ R .x. {R} ] | [ S .x. {S} ] | [ SH .x. {SH} ] | [ T .x. {T} ] | [ TH .x. {TH} ] | [ V .x. {SR} ] | [ W .x. {W} ] | [ Y .x. {KWR} ] | [ Z .x. {STKPW} ] | [ ZH .x. {SH} ] ] ;
+define Left [ [ B .x. {PW} ] | [ CH .x. {KH} ] | [ D .x. {TK} ] | [ DH .x. {TH} ] | [ F .x. {TP} ] | [ G .x. {TKPW} ] | [ HH .x. {H} ] | [ JH .x. {KWH} ] | [ K .x. {K} ] | [ L .x. {HR} ] | [ M .x. {PH} ] | [ N .x. {TPH} ] | [ P .x. {P} ] | [ R .x. {R} ] | [ S .x. {S} ] | [ SH .x. {SH} ] | [ T .x. {T} ] | [ TH .x. {TH} ] | [ V .x. {TPW} ] | [ W .x. {W} ] | [ Y .x. {KWR} ] | [ Z .x. {STKPW} ] | [ ZH .x. {SH} ] ] ;
 
 ! 5 onsets by sound and spelling.
 define OnsetSpelled [ [ [ 0 Eq {h} ] .x. [ {H} ] ]
@@ -9,6 +9,9 @@ define OnsetSpelled [ [ [ 0 Eq {h} ] .x. [ {H} ] ]
     | [ [ K Eq {ch} ] .x. [ {KH} ] ]
     | [ [ R Eq {wr} ] .x. [ {WR} ] ]
     | [ [ W Eq {wh} ] .x. [ {WH} ] ] ] ;
+
+! Two onset sounds that one chord writes.
+define OnsetPaired [ [ [ D Dot V ] .x. {TKW} ] ] ;
 
 ! a after w or qu
 define VowelRule1 [ [ Letter* [ {w} | {qu} ] ] Gap [ [ [ AA | AH | AAR | AOR ] Eq [ {a} ] ] .x. [ A ] ] ] ;

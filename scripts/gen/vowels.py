@@ -19,6 +19,9 @@ What is rewritten:
 - **One syllable per stroke.** A stroke of a longer outline is rewritten only
   where the word's spelling, its CMU syllables and the outline's strokes line up
   one to one and the stroke's consonants are that syllable's.
+- **V and J.** V is TPW and J is KWH, so each leaves S and R free to join it.
+  A stroke on SR or SKWR moves when its entry writes that sound: `surround` stays
+  on SR, and `{^e}` on SKWR.
 
 Two theory words on one stroke go to the more frequent, unless the other already
 writes it and the more frequent one has somewhere else to go. The theory takes a
@@ -242,11 +245,13 @@ class Stroke:
 
 LEFT = {
     "B": ["PW"], "CH": ["KH"], "D": ["TK"], "DH": ["TH"], "F": ["TP"], "G": ["TKPW"],
-    "HH": ["H"], "JH": ["SKWR"], "K": ["K", "KR"], "L": ["HR"], "M": ["PH"],
+    "HH": ["H"], "JH": ["KWH"], "K": ["K", "KR"], "L": ["HR"], "M": ["PH"],
     "N": ["TPH"], "P": ["P"], "R": ["R"], "S": ["S"], "SH": ["SH"], "T": ["T"],
-    "TH": ["TH"], "V": ["SR"], "W": ["W", "WH"], "Y": ["KWR"], "Z": ["STKPW", "S"],
-    "ZH": ["SH", "SKWR"],
+    "TH": ["TH"], "V": ["TPW"], "W": ["W", "WH"], "Y": ["KWR"], "Z": ["STKPW", "S"],
+    "ZH": ["SH", "KWH"],
 }
+# Two onset sounds one chord writes, where their keys together are another sound's.
+LEFT_PAIRS = {("D", "V"): "TKW"}
 RIGHT = {
     "P": ["P"], "B": ["B"], "T": ["T", "D"], "D": ["D"], "K": ["BG"], "G": ["G"],
     "F": ["F"], "V": ["F", "FB"], "TH": ["T"], "DH": ["T"], "S": ["S", "Z", "F"],
@@ -413,12 +418,73 @@ class Typey:
 
     @classmethod
     def load(cls, path=UPSTREAM):
-        with open(path) as f:
-            upstream = json.load(f)
+        upstream = load_upstream(path)
         words = one_syllable_words(upstream)
         return cls(upstream, words, habits(words),
                    {o: t for o, t in upstream.items() if AFFIX.match(t) or len(t) == 1},
                    set(upstream.values()), {})
+
+
+def says_j(text):
+    """Whether a translation has the sound of j: CMU's word, or its letters where
+    CMU has none."""
+    for w in re.findall("[a-z]+", text.lower()):
+        ps = CMU.get(w)
+        if ps:
+            if any(p in ("JH", "ZH") for pron in ps for p in pron):
+                return True
+        elif re.search("j|dg|g[eiy]", w):
+            return True
+    return False
+
+
+MOVED_ONSET = re.compile("(SR|SKWR)(?![STKPWHR])")
+MOVED = {"SR": ("TPW", lambda t: "v" in t.lower()), "SKWR": ("KWH", says_j)}
+MOVED_TO = re.compile("(TPW|KWH)(?![STKPWHR])")
+MOVED_FROM = {new: old for old, (new, _) in MOVED.items()}
+
+
+def moved_outline(outline, text):
+    """The outline with each stroke's V or J on its own chord, where `text` has
+    that sound."""
+    def move(stroke):
+        m = MOVED_ONSET.match(stroke)
+        if not m or not MOVED[m[1]][1](text):
+            return stroke
+        return MOVED[m[1]][0] + stroke[m.end():]
+    return "/".join(map(move, outline.split("/")))
+
+
+def move_onsets(upstream):
+    """Typey Type with V and J on their own chords. A moved entry takes its new
+    outline from what is there, unless that is an affix, a single letter, or a
+    hundred times as frequent, and then it stays where it was."""
+    new = {o: moved_outline(o, t) for o, t in upstream.items()}
+
+    def yields(o, t):
+        held = upstream.get(new[o])
+        if held is None or held == t or new[new[o]] != new[o]:
+            return True
+        return not (AFFIX.match(held) or len(held) == 1 or zipf(held) > zipf(t) + DISPLACE)
+
+    moves = {o for o, t in upstream.items() if new[o] != o and yields(o, t)}
+    taken = {new[o] for o in moves}
+    return {new[o] if o in moves else o: t for o, t in upstream.items() if o in moves or o not in taken}
+
+
+def keys_as_upstream(outline):
+    """The keys of an outline, a moved chord counted as the chord it replaced, so
+    that moving V and J does not reorder a word's outlines."""
+    def back(stroke):
+        m = MOVED_TO.match(stroke)
+        return MOVED_FROM[m[1]] + stroke[m.end():] if m else stroke
+    return keys("/".join(map(back, outline.split("/"))))
+
+
+def load_upstream(path=UPSTREAM):
+    """Typey Type as imported, V and J moved."""
+    with open(path) as f:
+        return move_onsets(json.load(f))
 
 
 def own_strokes(typey, w):

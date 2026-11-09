@@ -1,9 +1,7 @@
 ! Strokes contracted to one, marked with what caret.xfst does to it. After
 ! theory.xfst, or an outline's strokes.
 !
-! One stroke is the stroke, marked `-`, or the same keys marked `^`, which as
-! the longer the resolver takes only where the plain stroke is taken: mare is
-! mayor's `PHAEUR`, so it is `^PHAEUR`.
+! One stroke is the stroke, marked `-`.
 !
 ! Two strokes are the stressed one's, marked `^` and the other's operand, its
 ! vowel's first letter, which caret.xfst writes as a mark. The other stroke's
@@ -25,14 +23,14 @@
 
 ! Keys crossing to the other bank, by their sound.
 define Sep      "," ;
-define ToLeft   [ {pblg} -> {SKWR} Sep ] .o. [ {fp} -> {KH} Sep ] .o. [ {rb} -> {SH} Sep ]
+define ToLeft   [ {pblg} -> {KWH} Sep ] .o. [ {fp} -> {KH} Sep ] .o. [ {rb} -> {SH} Sep ]
             .o. [ {pb} -> {TPH} Sep ] .o. [ {pl} -> {PH} Sep ] .o. [ {bg} -> K Sep ] .o. [ f -> {TP} Sep ]
             .o. [ r -> R Sep ] .o. [ p -> P Sep ] .o. [ b -> {PW} Sep ] .o. [ l -> {HR} Sep ]
             .o. [ g -> {TKPW} Sep ] .o. [ t -> T Sep ] .o. [ s -> S Sep ] .o. [ d -> {TK} Sep ]
             .o. [ z -> S Sep ] ;
-define ToRight  [ {STKPW} -> z ] .o. [ {TKPW} -> g ] .o. [ {SKWR} -> {pblg} ] .o. [ {KWR} -> 0 ]
-            .o. [ {TPH} -> {pb} ] .o. [ {PH} -> {pl} ] .o. [ {PW} -> b ] .o. [ {TK} -> d ] .o. [ {TP} -> f ]
-            .o. [ {SR} -> f ] .o. [ {HR} -> l ] .o. [ {KH} -> {fp} ] .o. [ {SH} -> {rb} ] .o. [ {TH} -> t ]
+define ToRight  [ {STKPW} -> z ] .o. [ {TKPW} -> g ] .o. [ {KWH} -> {pblg} ] .o. [ {KWR} -> 0 ]
+            .o. [ {TPW} -> f ] .o. [ {TPH} -> {pb} ] .o. [ {PH} -> {pl} ] .o. [ {PW} -> b ] .o. [ {TK} -> d ]
+            .o. [ {TP} -> f ] .o. [ {HR} -> l ] .o. [ {KH} -> {fp} ] .o. [ {SH} -> {rb} ] .o. [ {TH} -> t ]
             .o. [ K -> {bg} ] .o. [ S -> s ] .o. [ T -> t ] .o. [ P -> p ] .o. [ R -> r ] .o. [ W -> 0 ]
             .o. [ H -> 0 ] ;
 define Crossed(Keys, To) [ Keys .o. To ] ;
@@ -45,7 +43,7 @@ define Seam     "|" ;
 ! The mark: `^`, after a prefix's cluster if there is one.
 define Caret    [ [ 0 | Del("^" Gap) | LeftKey+ Del(Gap) ] Ins("^" Gap) ] ;
 
-define Single   [ Rank Gap [ Ins("-" Gap) | Ins("^" Gap) | Lead Gap ] LeftKey* Del("1" ":") VowelKeys RightKey* ] ;
+define Single   [ Rank Gap [ Ins("-" Gap) | Lead Gap ] LeftKey* Del("1" ":") VowelKeys RightKey* ] ;
 define Second   [ Rank Gap Caret LeftKey* Ins(Sep) Trace Crossed(RightKey*, ToLeft) Del("/") Ins(Seam)
                   LeftKey* Del("1" ":") VowelKeys RightKey* ] ;
 define First    [ Rank Gap Caret LeftKey* Del("1" ":") VowelKeys RightKey* Del("/") Ins(Seam)
@@ -64,11 +62,14 @@ define Alone    [ ? - LeftKey ] ;
 define Combine  [ [ [ Seam H ] -> Seam || LeftKey Sep* _ Alone ] .o. [ [ Seam W ] -> Seam || [ P | K ] Sep* _ Alone ]
                 .o. [ [ Seam {KWR} ] -> Seam || LeftKey Sep* _ Alone ] ] ;
 
+! A d that crosses to a stressed v is the two sounds' one chord: advice is +TKW.
+define Dv       [ [ {TK} Sep Seam {TPW} ] -> [ Seam {TKW} ] || _ Alone ] ;
+
 ! The left bank of a stroke that crossed: the word's onset, each sound that
 ! crossed, and the stressed onset. A chord with keys on both sides of K and not
 ! K, `Lo+ Hi+`, is split by a chord that has K.
 define Chord    [ (S) (T) (K) (P) (W) (H) (R) ] ;
-define Sound    [ {SKWR} | {KH} | {SH} | {TPH} | {PH} | K | {TP} | R | P | {PW} | {HR} | {TKPW} | T | S | {TK} ] ;
+define Sound    [ {KWH} | {KH} | {SH} | {TPH} | {PH} | K | {TP} | R | P | {PW} | {HR} | {TKPW} | T | S | {TK} ] ;
 define Piece    [ Sound Sep ] ;
 define Bank     [ Chord Sep Piece* Seam Chord ] ;
 define Has(K)   [ Chord & $[K] ] ;
@@ -94,6 +95,10 @@ define Fit      [ OnsetFits(SpT, Has(T)) .o. OnsetFits(SpK, Has(K)) .o. OnsetFit
 define Fitted   [ [ Rank Gap [ ? - Gap ]* Gap Fit VowelKeys RightKey* ] | ~$[ Sep ] ] ;
 define Close    [ [ Seam | Sep ] -> 0 ] ;
 
+! F and B that share their P would read as v.
+define FB       [ [ {TP} (R) Sep Piece* Seam {PW} (R) ] | [ {PW} (R) Sep Piece* Seam {TP} (R) ] ] ;
+define NotFB    ~$[ Gap FB Alone ] ;
+
 define Banks    [ Rank Gap [ ? - Gap ]* Gap [ LeftKey* .o. LeftBank ] VowelKeys [ RightKey* .o. RightBank ] ] ;
 
-define Stage    [ Strokes .o. [ Single | Second | First ] .o. Untrace .o. Combine .o. Fitted .o. Close .o. Banks ] ;
+define Stage    [ Strokes .o. [ Single | Second | First ] .o. Untrace .o. Combine .o. Dv .o. Fitted .o. NotFB .o. Close .o. Banks ] ;

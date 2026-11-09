@@ -39,5 +39,16 @@ define OutPrefixed [ OutPre(T K "0" ":" [ E U | E ] s, {STK}, 0)
                    | [ ~[ ?* "/" P W ?* ] .o. OutPre(K "0" ":" O p l, {KPH}, 0) ]
                    | OutPre("0" ":" [ E | E U ] p l, {KPW}, [ P W | P ]) ] ;
 
-define Stage [ [ Written .o. Instead(Prefixed .o. Flagged(Affixed)) ]
-             | [ Outlined .o. Instead(OutPrefixed .o. Flagged(Affixed)) ] ] ;
+! An open first syllable on s or r, before a stressed v or j, as its onset's key
+! alone: no English onset is S or R with V or J. The word as it was is one
+! rewrite later, for when the stroke is taken.
+!
+!     severe  1 S=s 0:e=E V=v 1:e=AOE R=r_e  ->  1 S V=v 1:e=AOE R=r_e
+define OpenVJ(On, K) [ Rank Gap Ins(K Gap) Del(On Eq Letter+ Gap "0" ( r ) ":" Letter+ Eq VowelKeys Gap)
+                       [ V | JH ] Eq Letter* Gap "1" ( r ) ":" ?* ] ;
+define Opened   PU(OpenVJ(S, S), OpenVJ(R, R)) ;
+define OutOpenVJ(K) [ Rank Gap Del(K "0" ":" VowelKeys "/") Ins(K Gap) [ {TPW} | {KWH} ] "1" ":" VowelKeys RightKey* ] ;
+define OutOpened PU(OutOpenVJ(S), OutOpenVJ(R)) ;
+
+define Stage [ [ Written .o. Instead(Prefixed .o. Flagged(Affixed)) .o. Before(Opened .o. Flagged(Affixed)) ]
+             | [ Outlined .o. Instead(OutPrefixed .o. Flagged(Affixed)) .o. Before(OutOpened .o. Flagged(Affixed)) ] ] ;

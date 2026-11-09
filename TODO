@@ -25,9 +25,6 @@ decide
 dictionary
 	- I don't understand/-D writes "I'm not understood"; should be "I didn't
 		understand". RETRO in docs/phrasing-rhs.md covers it.
-	- give v its own chord. In a contracted stroke v's SR reads as re- or s-,
-		and most of what a left-hand voicing key gained came from v alone
-		(docs/caret-replacement.md, "Left-hand voicing key").
 	- the left edge of the board (`^ @` over `+ S`, `@` as S with a marker):
 		done for Plover's keymap and emily-modifiers. Not done: the Android
 		keyboard's layout and its USB keymap.

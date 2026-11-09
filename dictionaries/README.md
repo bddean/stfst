@@ -52,8 +52,8 @@ file.
 ## typey-type-upstream.json local prune
 
 Removed 108 multi-stroke entries whose outline was entirely fingerspelling
-chords mapping to plain (unglued) text, e.g. `A*/TK*/SR*` → `adv`,
-`TK*/O*/S*/T*` → `dost`, `P*/PW*/SKWR*` → `peanut butter and jelly`. These
+chords mapping to plain (unglued) text, e.g. `A*/TK*/TPW*` → `adv`,
+`TK*/O*/S*/T*` → `dost`, `P*/PW*/KWH*` → `peanut butter and jelly`. These
 hijack a fingerspelled letter run: the glued letters get replaced by the
 unglued word, so the *next* fingerspelled letter has no glue neighbour and
 gains a stray space (`a`,`d`,`v`,`a` came out `adv a`). Regenerate the list

@@ -4,6 +4,7 @@ writes a syllable's stroke by.
 - `Left`, each onset phoneme's keys: the first way `vowels.LEFT` writes it.
 - `OnsetSpelled`, an onset whose letters one-syllable words write beyond its
   sounds, as most of them do, at least `HABIT` words: wr is WR, wh WH.
+- `OnsetPaired`, two onset sounds that one chord writes: `vowels.LEFT_PAIRS`.
 
 - `VowelRules`, the vowel table of `dictionaries/typey-vowels.toml`: the onset's
   letters, a space, then the vowel's sound and spelling, to its chord. The first
@@ -163,6 +164,8 @@ def tables(rules, onset, coda):
         "define Left " + either([f"[ {p} .x. {letters(ways[0])} ]" for p, ways in g.LEFT.items()]) + " ;",
         table("OnsetSpelled", f"{len(onsets)} onsets by sound and spelling.",
               [f"[ [ {phones(p)} Eq {letters(l)} ] .x. [ {letters(k)} ] ]" for (p, l), k in sorted(onsets.items())]),
+        table("OnsetPaired", "Two onset sounds that one chord writes.",
+              [f"[ [ {phones(p)} ] .x. {letters(k)} ]" for p, k in sorted(g.LEFT_PAIRS.items())]),
         vowel_rules(rules),
         table("CodaSpelled", f"{len(spelled)} codas by sound and spelling.",
               [entry(f"{phones(p)} Eq {letters(l)}", v) for (p, l), v in sorted(spelled.items()) if p]),

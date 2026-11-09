@@ -11,8 +11,7 @@ unstressed vowel between a consonant and l, m, n or r dropped (river is
 strokes gets the prefix's cluster too (disappoint is `STKPOEUPBT`). What is
 left is one stroke:
 
-- One syllable is a plain stroke (river), or the same keys with `^` where the
-  plain stroke is taken: matter is `^PHART`, since mart is `PHART`.
+- One syllable is a plain stroke (river).
 - Two are one syllable around the stressed vowel, marked by the other
   vowel's first letter: the left bank is the consonants before it, less any
   that would split a chord, the right bank every consonant after it, and the
@@ -176,11 +175,17 @@ def add_fallbacks(strokes, given):
     return tagged
 
 
-def may_displace(outline, outlines, word):
-    """Whether `outline`, one of the `outlines` of a word whose base is `word`,
-    may take a stroke from Typey Type. A plain stroke takes nothing: where it
-    is taken, the word has the same keys with `^`."""
-    return syllables(word) > 1 and bool(marked(outline)[0] or "^" + outline not in outlines)
+def theory_onsets(typey):
+    """The left banks Typey Type's one-syllable words are written with."""
+    return {g.Stroke.parse(o).onset for w in typey.words.values() for o in g.own_strokes(typey, w)}
+
+
+def may_displace(outline, word, onsets):
+    """Whether `outline`, of a word whose base is `word`, may take a stroke from
+    Typey Type. A plain stroke of `onsets` takes nothing: it is a one-syllable
+    word's, and a cluster is not (express is `KPRES`)."""
+    mark, rest = marked(outline)
+    return syllables(word) > 1 and bool(mark or "/" in rest or re.match("[STKPWHR]*", rest)[0] not in onsets)
 
 
 def build(typey, rule, vocabulary):
@@ -215,8 +220,9 @@ def build(typey, rule, vocabulary):
     # A pair's first outline in two-word outranks a word's second, and a
     # fallback is only for a word that has no outline of its own.
     pairs = {next(iter(cs)) for cs in candidates("two-word").values()}
+    onsets = theory_onsets(typey)
     out, lost, left = resolve(strokes, lambda w: (-g.zipf(stem(w)), -g.zipf(w), w), others,
-                              lambda s, w, other: may_displace(s, strokes[w], stem(w))
+                              lambda s, w, other: may_displace(s, stem(w), onsets)
                               and typey_way(s, w, other), firsts=pairs | {o for _, o in fallback})
     written = {}
     for o, w in out.items():

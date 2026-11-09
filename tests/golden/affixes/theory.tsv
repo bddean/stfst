@@ -30,8 +30,8 @@
 1 = AH0=a P=pp OY1=oi N.T.M=ntm	1 0A:A/P1:OEUpblt
 1 = AH0=a P=pp OY1=oi N.T=nt	1 0A:A/P1:OEUpbt
 1 = AH0=a SH=ss UH1=u R=r	1 0A:A/SH1:Ur
-1 = AH0=a V=v EY1=ai L=l	1 0A:A/SR1:A*EUl
-1 = AH0=a V=v OY1=oi D=d	1 0A:A/SR1:OEUd
+1 = AH0=a V=v EY1=ai L=l	1 0A:A/TPW1:A*EUl
+1 = AH0=a V=v OY1=oi D=d	1 0A:A/TPW1:OEUd
 1 = AH0=e G.R=gr EY1=a =	1 0E:E/TKPWR1:A
 1 = AH0=e K.S.P.L=xpl IH1=i S=c	1 0E:E/SKPHR1:EUs
 1 = AH0=e K.W=qu AA1=a L=l	1 0E:E/KW1:Al
@@ -88,7 +88,7 @@
 1 = ER0=e =rr AH1=u P=p	1 0:E/R1:Up
 1 = ER0=e CH=rch EY1=a N.JH=ng_e	1 0:E/KHR1:AEUpbg
 1 = ER0=e F=rf IH1=e R=r	1 0:E/TPR1:Er
-1 = ER0=e JH=rg EH1=e T=t	1 0:E/SKWR1:Et
+1 = ER0=e JH=rg EH1=e T=t	1 0:E/KWHR1:Et
 1 = ER0=e M=rm IH1=i =s	1 0:E/PHR1:EU
 1 = ER0=e M=rm IH1=i T=tt	1 0:E/PHR1:EUt
 1 = ER0=e N=rn AE1=a =	1 0:E/TPHR1:A
@@ -96,7 +96,7 @@
 1 = ER0=e S=rs EH1=e K=c	1 0:E/SR1:*Ebg
 1 = ER0=e T=rt EY1=ai N.M=nm	1 0:E/TR1:A*EUpbl
 1 = ER0=e T=rt EY1=ai N=n	1 0:E/TR1:A*EUpb
-1 = ER0=e V=rv EH1=e N=n	1 0:E/SR1:Epb
+1 = ER0=e V=rv EH1=e N=n	1 0:E/TPWR1:Epb
 1 = ER0=o =r EY1=a =	1 0:O/R1:A
 1 = ER1=e JH=rg	1 1:Erpblg
 1 = ER1=e N=rn	1 1:Erpb
@@ -407,29 +407,29 @@
 1 HH=h IH1=e R=r	1 H1:Er
 1 HH=h IH1=e R=r AH0=e N.T=nt	1 H1:Er/0E:Epbt
 1 HH=h IH1=i B=b AH0=i T=t	1 H1:EUb/0EU:EUt
-1 JH=dj AH1=u S.T.M=stm	1 SKWR1:Ufplt
-1 JH=dj AH1=u S.T=st	1 SKWR1:Uft
-1 JH=dj EY1=a S=c	1 SKWR1:As
-1 JH=g AH0=e N=n UW1=u =	1 SKWR0E:E/TPH1:U
-1 JH=g AH0=i T=t EY1=a =	1 SKWR0EU:EU/T1:A
-1 JH=g AH1=i =	1 SKWR1:EU
-1 JH=g AH1=i M=m	1 SKWR1:EUpl
-1 JH=g AH1=i T=t	1 SKWR1:EUt
-1 JH=g EH1=e N=n AH0=i T=t	1 SKWR1:Epb/0EU:EUt
-1 JH=g EH1=e N=n ER0=e =r	1 SKWR1:Epb/0:Er
-1 JH=g EH1=e S=s	1 SKWR1:Es
-1 JH=g IH0=i S.T.R=str EY1=a =	1 SKWR0EU:EU/STR1:A
-1 JH=g IH1=i L=l	1 SKWR1:EUl
-1 JH=g IH1=i S.T.R=str	1 SKWR1:EUfrt
-1 JH=g IH1=i S.T=st	1 SKWR1:EUft
-1 JH=j AH1=u NG.K=nc	1 SKWR1:*Upbg
-1 JH=j AH1=u NG=nc	1 SKWR1:Upbg
-1 JH=j EH1=e K.CH=ct	1 SKWR1:Efpbg
-1 JH=j EH1=e K.SH=ct	1 SKWR1:Erbg
-1 JH=j EH1=e K.T=ct	1 SKWR1:Ebgt
-1 JH=j EH1=e K=c	1 SKWR1:*Ebg
-1 JH=j OY1=oy =	1 SKWR1:OEU
-1 JH=j OY1=oy M=m	1 SKWR1:OEUpl
+1 JH=dj AH1=u S.T.M=stm	1 KWH1:Ufplt
+1 JH=dj AH1=u S.T=st	1 KWH1:Uft
+1 JH=dj EY1=a S=c	1 KWH1:As
+1 JH=g AH0=e N=n UW1=u =	1 KWH0E:E/TPH1:U
+1 JH=g AH0=i T=t EY1=a =	1 KWH0EU:EU/T1:A
+1 JH=g AH1=i =	1 KWH1:EU
+1 JH=g AH1=i M=m	1 KWH1:EUpl
+1 JH=g AH1=i T=t	1 KWH1:EUt
+1 JH=g EH1=e N=n AH0=i T=t	1 KWH1:Epb/0EU:EUt
+1 JH=g EH1=e N=n ER0=e =r	1 KWH1:Epb/0:Er
+1 JH=g EH1=e S=s	1 KWH1:Es
+1 JH=g IH0=i S.T.R=str EY1=a =	1 KWH0EU:EU/STR1:A
+1 JH=g IH1=i L=l	1 KWH1:EUl
+1 JH=g IH1=i S.T.R=str	1 KWH1:EUfrt
+1 JH=g IH1=i S.T=st	1 KWH1:EUft
+1 JH=j AH1=u NG.K=nc	1 KWH1:*Upbg
+1 JH=j AH1=u NG=nc	1 KWH1:Upbg
+1 JH=j EH1=e K.CH=ct	1 KWH1:Efpbg
+1 JH=j EH1=e K.SH=ct	1 KWH1:Erbg
+1 JH=j EH1=e K.T=ct	1 KWH1:Ebgt
+1 JH=j EH1=e K=c	1 KWH1:*Ebg
+1 JH=j OY1=oy =	1 KWH1:OEU
+1 JH=j OY1=oy M=m	1 KWH1:OEUpl
 1 K.L=cl AH0=a M=m EY1=a =	1 KHR0A:A/PH1:A
 1 K.L=cl AH0=i N=n EY1=a =	1 KHR0EU:EU/TPH1:A
 1 K.L=cl AH1=a M=m	1 KHR1:Apl
@@ -477,7 +477,7 @@
 1 K=c AE1=a P.CH=pt	1 K1:Afp
 1 K=c AH0=a D=d EH1=e M=m	1 K0A:A/TK1:Epl
 1 K=c AH0=a N.D=nd EH1=e S=sc	1 K0A:A/TKPH1:Es
-1 K=c AH0=a V=v EY1=a =	1 K0A:A/SR1:A
+1 K=c AH0=a V=v EY1=a =	1 K0A:A/TPW1:A
 1 K=c AH0=o G.N=gn AY1=i Z=z	1 K0O:O/TKPWH1:AOEUz
 1 K=c AH0=o G.N=gn IH1=i =	1 K0O:O/TKPWH1:EU
 1 K=c AH0=o L=ll EH1=e K=c	1 K0O:O/HR1:*Ebg
@@ -487,7 +487,7 @@
 1 K=c AH0=o N.S=ns IH1=i D=d	1 K0O:O/STPH1:EUd
 1 K=c AH0=o N.S=ns IH1=i S.T=st	1 K0O:O/STPH1:EUft
 1 K=c AH0=o N.T.R=ntr OW1=o L=ll	1 K0O:O/TPHR1:Ol
-1 K=c AH0=o N.V=nv EH1=e N=n	1 K0O:O/STPHR1:Epb
+1 K=c AH0=o N.V=nv EH1=e N=n	1 K0O:O/TPWH1:Epb
 1 K=c AH1=a D=d	1 K1:Ad
 1 K=c AH1=a V=v	1 K1:Af
 1 K=c AH1=o G.N=gn	1 K1:Opbg
@@ -638,8 +638,8 @@
 1 N=n AH0=i M=m AA1=o S=s	1 TPH0EU:EU/PH1:Os
 1 N=n AH0=i M=m EY1=a =	1 TPH0EU:EU/PH1:A
 1 N=n AH0=o N=n IH1=y M=m	1 TPH0O:O/TPH1:EUpl
-1 N=n AH0=o V=v EY1=a =	1 TPH0O:O/SR1:A
-1 N=n AH0=o V=v EY1=a T=t	1 TPH0O:O/SR1:At
+1 N=n AH0=o V=v EY1=a =	1 TPH0O:O/TPW1:A
+1 N=n AH0=o V=v EY1=a T=t	1 TPH0O:O/TPW1:At
 1 N=n AH1=a =l	1 TPH1:A
 1 N=n AH1=i M=m	1 TPH1:EUpl
 1 N=n AH1=o DH=th	1 TPH1:O*t
@@ -653,8 +653,8 @@
 1 N=n EH1=e K=c	1 TPH1:*Ebg
 1 N=n EY1=a T=t	1 TPH1:At
 1 N=n IH0=e K.D=cd OW1=o T=t	1 TPH0E:E/TK1:Ot
-1 N=n OW0=o V=v EY1=a =	1 TPH0O:O/SR1:A
-1 N=n OW0=o V=v EY1=a T=t	1 TPH0O:O/SR1:At
+1 N=n OW0=o V=v EY1=a =	1 TPH0O:O/TPW1:A
+1 N=n OW0=o V=v EY1=a T=t	1 TPH0O:O/TPW1:At
 1 N=n OW1=o V=v	1 TPH1:Of
 1 N=n UW1=ew =	1 TPH1:AOU
 1 N=n UW1=u M=m ER0=e =r	1 TPH1:AOUpl/0:Er
@@ -715,7 +715,7 @@
 1 P.R=pr AE1=a K.T=ct IH0=i K=c	1 PR1:Abgt/0EU:*EUbg
 1 P.R=pr AH0=e Z=s EH1=e N.T=nt	1 PR0E:E/S1:Epbt
 1 P.R=pr AH0=e Z=s EH1=e N=nt	1 PR0E:E/S1:Epb
-1 P.R=pr AH0=i V=v EY1=a =	1 PR0EU:EU/SR1:A
+1 P.R=pr AH0=i V=v EY1=a =	1 PR0EU:EU/TPW1:A
 1 P.R=pr AH0=o D=d AH1=u K.T=ct	1 PR0O:O/TK1:Ubgt
 1 P.R=pr AH0=o D=d AH1=u K=c	1 PR0O:O/TK1:*Ubg
 1 P.R=pr AH0=o F=f EH1=e =s	1 PR0O:O/TP1:E
@@ -837,10 +837,10 @@
 1 R=r AA0=a S=c EH1=e L=ll	1 R0A:AU/S1:El
 1 R=r AA1=o G=g	1 R1:Og
 1 R=r AA1=o G=g AH0=a T=t	1 R1:Og/0A:At
-1 R=r AH0=a V=v IY1=e N=n	1 R0A:A/SR1:Epb
+1 R=r AH0=a V=v IY1=e N=n	1 R0A:A/TPW1:Epb
 1 R=r AH0=e L=l EY1=a =	1 R0E:E/HR1:A
 1 R=r AH0=e S.P=sp AA1=o N.D=nd	1 R0E:E/SP1:Opbd
-1 R=r AH0=i V=v EY1=a =	1 R0EU:EU/SR1:A
+1 R=r AH0=i V=v EY1=a =	1 R0EU:EU/TPW1:A
 1 R=r AH0=o D=d AH1=u K=c	1 R0O:O/TK1:*Ubg
 1 R=r AH1=e L=l	1 R1:El
 1 R=r AH1=i D=d	1 R1:EUd
@@ -950,7 +950,7 @@
 1 S=s AE1=a N=n	1 S1:Apb
 1 S=s AH0=e K.W=qu EH1=e N.T=nt	1 S0E:E/KW1:Epbt
 1 S=s AH0=e K.Y=c UW1=u =	1 S0E:E/K1:U
-1 S=s AH0=e V=v IH1=e R=r	1 S0E:E/SR1:Er
+1 S=s AH0=e V=v IH1=e R=r	1 S0E:E/TPW1:Er
 1 S=s AH0=o L=l EY1=a =	1 S0O:O/HR1:A
 1 S=s AH0=o L=l UW1=u =	1 S0O:O/HR1:U
 1 S=s AH0=o N=n AE1=a L=l	1 S0O:O/TPH1:Al
@@ -980,7 +980,7 @@
 1 S=s EH1=e N.SH=ns UW0=u =	1 S1:Erpb/0U:U
 1 S=s EH1=e P=p ER0=a =r	1 S1:Ep/0:Ar
 1 S=s ER0=e T=rt EY1=a =	1 S0:E/TR1:A
-1 S=s ER0=e V=rv EY1=a =	1 S0:E/SR1:A
+1 S=s ER0=e V=rv EY1=a =	1 S0:E/TPWR1:A
 1 S=s ER0=u =rr EH1=e K=c	1 S0:U/R1:*Ebg
 1 S=s ER0=u M=rm AW1=ou N.T=nt	1 S0:U/PHR1:OUpbt
 1 S=s ER1=e =r	1 S1:Er
@@ -1031,7 +1031,7 @@
 1 T.R=tr AH0=a S=c EH1=e L=ll	1 TR0A:A/S1:El
 1 T.R=tr AH0=a S=c EH1=e P.T=pt	1 TR0A:A/S1:Ept
 1 T.R=tr AH0=a S=c EH1=e P=p	1 TR0A:A/S1:Ep
-1 T.R=tr AH0=a V=v IY1=e N=n	1 TR0A:A/SR1:Epb
+1 T.R=tr AH0=a V=v IY1=e N=n	1 TR0A:A/TPW1:Epb
 1 T.R=tr AH0=i B.Y=b UW1=u =	1 TR0EU:EU/PW1:U
 1 T.R=tr AH0=i M=m EH1=e N.T=nt	1 TR0EU:EU/PH1:Epbt
 1 T.R=tr AH0=i M=m EH1=e N=nt	1 TR0EU:EU/PH1:Epb
@@ -1118,7 +1118,7 @@
 1 T=t ER0=e S=rs EH1=e K=c	1 T0:E/SR1:*Ebg
 1 T=t ER0=e T=rt EY1=ai N.M=nm	1 T0:E/TR1:A*EUpbl
 1 T=t ER0=e T=rt EY1=ai N=n	1 T0:E/TR1:A*EUpb
-1 T=t ER0=e V=rv EH1=e N=n	1 T0:E/SR1:Epb
+1 T=t ER0=e V=rv EH1=e N=n	1 T0:E/TPWR1:Epb
 1 T=t ER1=e JH=rg	1 T1:Erpblg
 1 T=t ER1=e M=rm AH0=i N=n	1 T1:Erpl/0EU:EUpb
 1 T=t ER1=e N=rn	1 T1:Erpb
@@ -1154,63 +1154,63 @@
 1 T=tt EY1=ai N=n	1 T1:A*EUpb
 1 T=tt IY1=i =	1 T1:AOE
 1 TH=th IH1=i NG.K=nk	1 TH1:*EUpbg
-1 V=v AA1=o K=c	1 SR1:O*bg
-1 V=v AA1=o K=c AH0=a T=t	1 SR1:O*bg/0A:At
-1 V=v AA1=o L.V=lv	1 SR1:Ofl
-1 V=v AA1=o L.V=lv_e	1 SR1:Ofl
-1 V=v AH0=a S.T=st EY1=a =	1 SR0A:A/ST1:A
-1 V=v AH0=e L=l EY1=a =	1 SR0E:E/HR1:A
-1 V=v AH0=o K=c EY1=a =	1 SR0O:O/K1:A
-1 V=v AH0=o L=l UW1=u =	1 SR0O:O/HR1:U
-1 V=v AH1=a L=l	1 SR1:Al
-1 V=v AH1=a S.T=st	1 SR1:Aft
-1 V=v AH1=e L=l	1 SR1:El
-1 V=v AH1=e N=n	1 SR1:Epb
-1 V=v AH1=i D=d	1 SR1:EUd
-1 V=v AH1=o K=c	1 SR1:O*bg
-1 V=v AY1=i D=d	1 SR1:AOEUd
-1 V=v AY1=i R=r AH0=o N.M=nm	1 SR1:AOEUr/0O:Opbl
-1 V=v AY1=i R=r AH0=o N=n	1 SR1:AOEUr/0O:Opb
-1 V=v AY1=i V=v	1 SR1:AOEUf
-1 V=v EH1=e K=c	1 SR1:*Ebg
-1 V=v EH1=e L=l AH0=o P.M=pm	1 SR1:El/0O:Opl
-1 V=v EH1=e L=l AH0=o P=p	1 SR1:El/0O:Op
-1 V=v EH1=e N.JH=ng	1 SR1:Epbg
-1 V=v EH1=e N.SH=nt AH0=io N=n	1 SR1:Erpb/0EU:EUpb
-1 V=v EH1=e N.T=nt	1 SR1:Epbt
-1 V=v EH1=e N.T=nt AH0=a T=t	1 SR1:Epbt/0A:At
-1 V=v EH1=e N=n	1 SR1:Epb
-1 V=v EH1=e N=nt	1 SR1:Epb
-1 V=v EH1=e S.M=stm	1 SR1:Epls
-1 V=v EH1=e S.T.M=stm	1 SR1:Efplt
-1 V=v EH1=e S.T=st	1 SR1:Eft
-1 V=v EH1=e S.T=st AH0=i G=g	1 SR1:Eft/0EU:EUg
-1 V=v EH1=e S=st	1 SR1:Eft
-1 V=v ER0=e S=rs EY1=a =	1 SR0:E/SR1:A
-1 V=v ER1=e =r	1 SR1:Er
-1 V=v ER1=e B=rb	1 SR1:Erb
-1 V=v ER1=e B=rb IY0=i =	1 SR1:Erb/0EU:AOE
-1 V=v ER1=e JH=rg	1 SR1:Erpblg
-1 V=v ER1=e S=rs	1 SR1:Ers
-1 V=v ER1=e S=rs_e	1 SR1:Ers
-1 V=v ER1=e T=rt	1 SR1:Ert
-1 V=v EY1=a =	1 SR1:A
-1 V=v EY1=a S=s	1 SR1:As
-1 V=v EY1=ai L=l	1 SR1:A*EUl
-1 V=v IH0=i T=t EY1=a =	1 SR0EU:EU/T1:A
-1 V=v IH1=i =	1 SR1:EU
-1 V=v IH1=i K=c	1 SR1:*EUbg
-1 V=v IH1=i N.S=nc	1 SR1:EUpbs
-1 V=v IH1=i N.S=nc IH0=i NG=ng	1 SR1:EUpbs/0EU:EUpbg
-1 V=v IH1=i T=t	1 SR1:EUt
-1 V=v IH1=i Z=s	1 SR1:EUs
-1 V=v IH1=i ZH=s AH0=io N=n	1 SR1:EUpblg/0EU:EUpb
-1 V=v IY0=i = EY1=a =	1 SR0EU:AOE/1:A
-1 V=v IY1=i =	1 SR1:AOE
-1 V=v IY1=i = AH0=ou S=s	1 SR1:AOE/0O:Us
-1 V=v OW1=o =	1 SR1:O
-1 V=v OW1=o SH=t AH0=io N=n	1 SR1:OErb/0EU:EUpb
-1 V=v OY1=oi D=d	1 SR1:OEUd
+1 V=v AA1=o K=c	1 TPW1:O*bg
+1 V=v AA1=o K=c AH0=a T=t	1 TPW1:O*bg/0A:At
+1 V=v AA1=o L.V=lv	1 TPW1:Ofl
+1 V=v AA1=o L.V=lv_e	1 TPW1:Ofl
+1 V=v AH0=a S.T=st EY1=a =	1 TPW0A:A/ST1:A
+1 V=v AH0=e L=l EY1=a =	1 TPW0E:E/HR1:A
+1 V=v AH0=o K=c EY1=a =	1 TPW0O:O/K1:A
+1 V=v AH0=o L=l UW1=u =	1 TPW0O:O/HR1:U
+1 V=v AH1=a L=l	1 TPW1:Al
+1 V=v AH1=a S.T=st	1 TPW1:Aft
+1 V=v AH1=e L=l	1 TPW1:El
+1 V=v AH1=e N=n	1 TPW1:Epb
+1 V=v AH1=i D=d	1 TPW1:EUd
+1 V=v AH1=o K=c	1 TPW1:O*bg
+1 V=v AY1=i D=d	1 TPW1:AOEUd
+1 V=v AY1=i R=r AH0=o N.M=nm	1 TPW1:AOEUr/0O:Opbl
+1 V=v AY1=i R=r AH0=o N=n	1 TPW1:AOEUr/0O:Opb
+1 V=v AY1=i V=v	1 TPW1:AOEUf
+1 V=v EH1=e K=c	1 TPW1:*Ebg
+1 V=v EH1=e L=l AH0=o P.M=pm	1 TPW1:El/0O:Opl
+1 V=v EH1=e L=l AH0=o P=p	1 TPW1:El/0O:Op
+1 V=v EH1=e N.JH=ng	1 TPW1:Epbg
+1 V=v EH1=e N.SH=nt AH0=io N=n	1 TPW1:Erpb/0EU:EUpb
+1 V=v EH1=e N.T=nt	1 TPW1:Epbt
+1 V=v EH1=e N.T=nt AH0=a T=t	1 TPW1:Epbt/0A:At
+1 V=v EH1=e N=n	1 TPW1:Epb
+1 V=v EH1=e N=nt	1 TPW1:Epb
+1 V=v EH1=e S.M=stm	1 TPW1:Epls
+1 V=v EH1=e S.T.M=stm	1 TPW1:Efplt
+1 V=v EH1=e S.T=st	1 TPW1:Eft
+1 V=v EH1=e S.T=st AH0=i G=g	1 TPW1:Eft/0EU:EUg
+1 V=v EH1=e S=st	1 TPW1:Eft
+1 V=v ER0=e S=rs EY1=a =	1 TPW0:E/SR1:A
+1 V=v ER1=e =r	1 TPW1:Er
+1 V=v ER1=e B=rb	1 TPW1:Erb
+1 V=v ER1=e B=rb IY0=i =	1 TPW1:Erb/0EU:AOE
+1 V=v ER1=e JH=rg	1 TPW1:Erpblg
+1 V=v ER1=e S=rs	1 TPW1:Ers
+1 V=v ER1=e S=rs_e	1 TPW1:Ers
+1 V=v ER1=e T=rt	1 TPW1:Ert
+1 V=v EY1=a =	1 TPW1:A
+1 V=v EY1=a S=s	1 TPW1:As
+1 V=v EY1=ai L=l	1 TPW1:A*EUl
+1 V=v IH0=i T=t EY1=a =	1 TPW0EU:EU/T1:A
+1 V=v IH1=i =	1 TPW1:EU
+1 V=v IH1=i K=c	1 TPW1:*EUbg
+1 V=v IH1=i N.S=nc	1 TPW1:EUpbs
+1 V=v IH1=i N.S=nc IH0=i NG=ng	1 TPW1:EUpbs/0EU:EUpbg
+1 V=v IH1=i T=t	1 TPW1:EUt
+1 V=v IH1=i Z=s	1 TPW1:EUs
+1 V=v IH1=i ZH=s AH0=io N=n	1 TPW1:EUpblg/0EU:EUpb
+1 V=v IY0=i = EY1=a =	1 TPW0EU:AOE/1:A
+1 V=v IY1=i =	1 TPW1:AOE
+1 V=v IY1=i = AH0=ou S=s	1 TPW1:AOE/0O:Us
+1 V=v OW1=o =	1 TPW1:O
+1 V=v OW1=o SH=t AH0=io N=n	1 TPW1:OErb/0EU:EUpb
+1 V=v OY1=oi D=d	1 TPW1:OEUd
 1 W=w EH1=a R=r_e	1 W1:AEUr
 1 W=w IH1=i L=ll IH0=i NG=ng	1 W1:EUl/0EU:EUpbg
 1 W=w IH1=i T=tt IH0=i NG=ng	1 W1:EUt/0EU:EUpbg
@@ -1233,7 +1233,7 @@
 1 Z=s EH1=e N.T.M=ntm	1 S1:Epblt
 1 Z=s EH1=e N.T=nt	1 S1:Epbt
 1 Z=s EH1=e N=nt	1 S1:Epb
-1 Z=s ER0=e V=rv EY1=a =	1 S0:E/SR1:A
+1 Z=s ER0=e V=rv EY1=a =	1 S0:E/TPWR1:A
 1 Z=s ER0=u =rr EH1=e K=c	1 S0:U/R1:*Ebg
 1 Z=s ER1=e V=rv	1 S1:Efrb
 1 Z=s IH0=i G.N=gn EY1=a =	1 S0EU:EU/TKPWH1:A

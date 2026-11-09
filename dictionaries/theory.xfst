@@ -5,9 +5,10 @@
 ! `R0E:E/P1:Ort`, and a stroke from an outline stays as it is.
 !
 ! - The onset is its keys by theory-tables.xfst: by sound and spelling where
-!   one-syllable words write a letter the sounds do not (wr is WR), else each
-!   phoneme's by `Left`. An H after another consonant is no key, as it would
-!   make another chord with it (upheld is not m).
+!   one-syllable words write a letter the sounds do not (wr is WR), else two
+!   sounds' one chord (dv is TKW), else each phoneme's by `Left`. An H after
+!   another consonant is no key, as it would make another chord with it
+!   (upheld is not m).
 ! - The chord is written.xfst's.
 ! - The coda is its keys by theory-tables.xfst: by sound and spelling, else by
 !   sound, else as two codas words have. W and H are no key there, and nor is
@@ -17,8 +18,9 @@
 ! A syllable with no keys for its coda, or an onset phoneme the left bank
 ! cannot write, has no stroke.
 
-define Sounded  [ ( Left [ Del(Dot) [ [ [ Cons - HH ] .o. Left ] | Del(HH) ] ]* ) Del(Eq Letter*) ] ;
-define Onset    [ [ PU(OnsetSpelled, Sounded) Del(Gap) ] .o. LeftBank ] ;
+! F and B share their P and together read as v, so an onset of both has no keys.
+define Sounded  [ ~$[ [ F Dot [ R Dot ]* B ] | [ B Dot [ R Dot ]* F ] ] .o. [ ( Left [ Del(Dot) [ [ [ Cons - HH ] .o. Left ] | Del(HH) ] ]* ) Del(Eq Letter*) ] ] ;
+define Onset    [ [ PU(OnsetSpelled, PU([ OnsetPaired Del(Eq Letter*) ], Sounded)) Del(Gap) ] .o. LeftBank ] ;
 
 ! The coda's letters less a final h or gh, and less a silent e: th is t.
 define Strip    [ [ Letter* - [ Letter* h ] ] | [ Letter* Del({gh}) ] | [ [ Letter* - [ Letter* g ] ] Del(h) ] ] ;
