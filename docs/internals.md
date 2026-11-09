@@ -8,7 +8,7 @@ upper tape and on the record language, recorded in `docs/key-tape.md`.
 ## Getting started
 
 ```sh
-direnv allow          # or: nix develop
+direnv allow          # or: nix-shell
 stfst compile recipe.toml
 stfst compile tests/recipe.toml --out build/test-dicts --work build/test-work
 scripts/build-morph.sh   # orthography and inflection; needs Plover installed
@@ -21,7 +21,7 @@ stfst reverse build/dicts/typey-type.stfst --system systems/stenotype-extended.t
 stfst dump build/dicts/affixes.stfst --system systems/stenotype-extended.toml --records
 ```
 
-HFST and foma come from the flake and are needed only to *build* a dictionary.
+HFST and foma come from `shell.nix` and are needed only to *build* a dictionary.
 Nothing at runtime links them, which matters because HFST is GPLv3 and the
 eventual consumer is an Android keyboard. `stfst-ol` reads the compiled
 artifact, so `lookup`, `test` and `bench` need nothing on `PATH`;

@@ -2,7 +2,7 @@ In stfst
 
 Done:
 
-- A missing HFST tool says HFST is missing and to run under `direnv exec .` or `nix develop`.
+- A missing HFST tool says HFST is missing and to run under `direnv exec .` or `nix-shell`.
 - An artifact is stale when its source files, the system, its own recipe entry or the compiler's source changed. Not the rest of the recipe and not the binary, so adding a dictionary compiles that one, and a change to the CLI compiles nothing. The artifact's `stamp` file records what it was built from. A change to stfst-core, stfst-ol or stfst-compile, tests included, still rebuilds everything, about three minutes.
 - `scripts/check.sh NAME...` compiles those dictionaries and runs their generator's `--check`, golden files and fixture. The whole suite takes about 80 seconds when nothing needs compiling.
 - The recipe names each generated dictionary's `generator` and any extra `golden`, and check.sh finds them there.

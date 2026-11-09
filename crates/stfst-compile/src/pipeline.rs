@@ -112,9 +112,9 @@ pub(crate) fn run(program: &str, args: &[&str]) -> Result<String> {
 pub fn spawn_error(program: &str, e: std::io::Error) -> anyhow::Error {
     match e.kind() {
         std::io::ErrorKind::NotFound => anyhow::anyhow!(
-            "{program} is not on PATH, so HFST is missing. It comes from the flake: \
+            "{program} is not on PATH, so HFST is missing. It comes from shell.nix: \
              run this inside the dev shell, as `direnv exec . <command>` or under \
-             `nix develop`."
+             `nix-shell`."
         ),
         _ => anyhow::Error::new(e).context(format!("running {program}")),
     }
