@@ -95,8 +95,7 @@ The separator and bracket menus, the camelCase scanner, find-versus-last, and th
 per-operation argument parsing are all gone from Rust. What stays is the buffer
 itself, the formatter, and the casing.
 
-The dial is per dictionary. `retro-words` declares 16 words, which is
-`retro-words.py`'s `WINDOW`; an orthography rule that reads the previous word
+The dial is per dictionary. `retro-words` declares 16 words; an orthography rule that reads the previous word
 would declare 1 and cost proportionally less.
 
 ## The four dictionaries
@@ -120,10 +119,6 @@ stream: `tests/retro-words/ops.strokes` runs every entry against fourteen buffer
 chosen to hit the corners, and the expectation is the finished text. 1,316 cases.
 `reach.strokes` asserts the reachable set: all 1,024 strokes in the layout, entry
 or not.
-
-The expectations were recorded from a run that `retro-words.py` had just agreed
-with, over the same cases. Its ops are pure functions of a word window, so it ran
-without Plover, and that is the last thing it did as an oracle.
 
 Three divergences, each deliberate:
 

@@ -6,6 +6,7 @@ of the pipeline stages recipe.toml names, and `two_syllable`, `two_word` and
 what the rest of the stack already writes, and `corpora` how often text occurs. Each generator's command is `scripts/gen-*.py`.
 """
 import os
+import re
 import sys
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
@@ -13,6 +14,8 @@ PLOVER = os.path.expanduser("~/.config/plover")
 DICTS = os.path.join(ROOT, "dictionaries")
 SYSTEM = os.path.join(ROOT, "systems", "stenotype-extended.toml")
 RECIPE = os.path.join(ROOT, "recipe.toml")
+with open(os.path.join(DICTS, "alphabet.xfst")) as _f:
+    ALPHABET = {m[1].lower(): m[2] for m in re.finditer(r"^define Keys(\w) \{(\w+)\} ;$", _f.read(), re.M)}
 
 # `plover_tape` beside this package, and the plugin's reader and record language,
 # which need no Plover.

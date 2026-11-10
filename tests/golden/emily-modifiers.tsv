@@ -1,15 +1,10 @@
 ! emily-modifiers. Every layer by its whole table rather than by a sample: the
 ! 39 keysym rows in all four variants, all 29 fingerspelling chords against all
 ! 32 modifier combinations, every one of the 128 payload chords as a number, and
-! all 128 literal numbers. The expectations were emily-modifiers.py's own
-! answers, taken while that dictionary was still the definition, with the skhd
-! branch emptied because a binding is a fact about a machine. This grammar is the
-! definition now, so the file is the expectation and there is nothing to
-! regenerate it from.
+! all 128 literal numbers. The file is the expectation.
 ! A line with no expectation asserts there is no entry.
-! `#` is phrasing's, so the Python's 16 bit on a digit or an F-key and its 256
-! bit on a literal number have no entry here. Nor has its 128 bit on `^`: with
-! a marker held, `@` is S.
+! `#` is phrasing's, so it adds nothing to a digit, an F-key or a literal
+! number. Nor does `^`: with a marker held, `@` is S.
 #@U
 #@TPU
 #@^R*U
@@ -2003,38 +1998,38 @@
 @AOEUfltd
 @AOEUpltd
 @AOEUfpltd
-@SKWR	j[ATTACH_L][ATTACH_R]
-@SKWRf	[KEY]j[CTRL][END]
-@SKWRp	[KEY]j[SHIFT][END]
-@SKWRl	[KEY]j[SUPER][END]
-@SKWRt	[KEY]j[ALT][END]
-@SKWRd	[KEY]j[FN][END]
-@SKWRfp	[KEY]j[CTRL][SHIFT][END]
-@SKWRfl	[KEY]j[CTRL][SUPER][END]
-@SKWRft	[KEY]j[CTRL][ALT][END]
-@SKWRfd	[KEY]j[CTRL][FN][END]
-@SKWRpl	[KEY]j[SHIFT][SUPER][END]
-@SKWRpt	[KEY]j[SHIFT][ALT][END]
-@SKWRpd	[KEY]j[SHIFT][FN][END]
-@SKWRlt	[KEY]j[SUPER][ALT][END]
-@SKWRld	[KEY]j[SUPER][FN][END]
-@SKWRtd	[KEY]j[ALT][FN][END]
-@SKWRfpl	[KEY]j[CTRL][SHIFT][SUPER][END]
-@SKWRfpt	[KEY]j[CTRL][SHIFT][ALT][END]
-@SKWRfpd	[KEY]j[CTRL][SHIFT][FN][END]
-@SKWRflt	[KEY]j[CTRL][SUPER][ALT][END]
-@SKWRfld	[KEY]j[CTRL][SUPER][FN][END]
-@SKWRftd	[KEY]j[CTRL][ALT][FN][END]
-@SKWRplt	[KEY]j[SHIFT][SUPER][ALT][END]
-@SKWRpld	[KEY]j[SHIFT][SUPER][FN][END]
-@SKWRptd	[KEY]j[SHIFT][ALT][FN][END]
-@SKWRltd	[KEY]j[SUPER][ALT][FN][END]
-@SKWRfplt	[KEY]j[CTRL][SHIFT][SUPER][ALT][END]
-@SKWRfpld	[KEY]j[CTRL][SHIFT][SUPER][FN][END]
-@SKWRfptd	[KEY]j[CTRL][SHIFT][ALT][FN][END]
-@SKWRfltd	[KEY]j[CTRL][SUPER][ALT][FN][END]
-@SKWRpltd	[KEY]j[SHIFT][SUPER][ALT][FN][END]
-@SKWRfpltd	[KEY]j[CTRL][SHIFT][SUPER][ALT][FN][END]
+@KWH	j[ATTACH_L][ATTACH_R]
+@KWHf	[KEY]j[CTRL][END]
+@KWHp	[KEY]j[SHIFT][END]
+@KWHl	[KEY]j[SUPER][END]
+@KWHt	[KEY]j[ALT][END]
+@KWHd	[KEY]j[FN][END]
+@KWHfp	[KEY]j[CTRL][SHIFT][END]
+@KWHfl	[KEY]j[CTRL][SUPER][END]
+@KWHft	[KEY]j[CTRL][ALT][END]
+@KWHfd	[KEY]j[CTRL][FN][END]
+@KWHpl	[KEY]j[SHIFT][SUPER][END]
+@KWHpt	[KEY]j[SHIFT][ALT][END]
+@KWHpd	[KEY]j[SHIFT][FN][END]
+@KWHlt	[KEY]j[SUPER][ALT][END]
+@KWHld	[KEY]j[SUPER][FN][END]
+@KWHtd	[KEY]j[ALT][FN][END]
+@KWHfpl	[KEY]j[CTRL][SHIFT][SUPER][END]
+@KWHfpt	[KEY]j[CTRL][SHIFT][ALT][END]
+@KWHfpd	[KEY]j[CTRL][SHIFT][FN][END]
+@KWHflt	[KEY]j[CTRL][SUPER][ALT][END]
+@KWHfld	[KEY]j[CTRL][SUPER][FN][END]
+@KWHftd	[KEY]j[CTRL][ALT][FN][END]
+@KWHplt	[KEY]j[SHIFT][SUPER][ALT][END]
+@KWHpld	[KEY]j[SHIFT][SUPER][FN][END]
+@KWHptd	[KEY]j[SHIFT][ALT][FN][END]
+@KWHltd	[KEY]j[SUPER][ALT][FN][END]
+@KWHfplt	[KEY]j[CTRL][SHIFT][SUPER][ALT][END]
+@KWHfpld	[KEY]j[CTRL][SHIFT][SUPER][FN][END]
+@KWHfptd	[KEY]j[CTRL][SHIFT][ALT][FN][END]
+@KWHfltd	[KEY]j[CTRL][SUPER][ALT][FN][END]
+@KWHpltd	[KEY]j[SHIFT][SUPER][ALT][FN][END]
+@KWHfpltd	[KEY]j[CTRL][SHIFT][SUPER][ALT][FN][END]
 @SKWRAEU
 @SKWRAEUf
 @SKWRAEUp
@@ -2418,38 +2413,38 @@
 @Ufltd	[KEY]u[CTRL][SUPER][ALT][FN][END]
 @Upltd	[KEY]u[SHIFT][SUPER][ALT][FN][END]
 @Ufpltd	[KEY]u[CTRL][SHIFT][SUPER][ALT][FN][END]
-@SR	v[ATTACH_L][ATTACH_R]
-@SRf	[KEY]v[CTRL][END]
-@SRp	[KEY]v[SHIFT][END]
-@SRl	[KEY]v[SUPER][END]
-@SRt	[KEY]v[ALT][END]
-@SRd	[KEY]v[FN][END]
-@SRfp	[KEY]v[CTRL][SHIFT][END]
-@SRfl	[KEY]v[CTRL][SUPER][END]
-@SRft	[KEY]v[CTRL][ALT][END]
-@SRfd	[KEY]v[CTRL][FN][END]
-@SRpl	[KEY]v[SHIFT][SUPER][END]
-@SRpt	[KEY]v[SHIFT][ALT][END]
-@SRpd	[KEY]v[SHIFT][FN][END]
-@SRlt	[KEY]v[SUPER][ALT][END]
-@SRld	[KEY]v[SUPER][FN][END]
-@SRtd	[KEY]v[ALT][FN][END]
-@SRfpl	[KEY]v[CTRL][SHIFT][SUPER][END]
-@SRfpt	[KEY]v[CTRL][SHIFT][ALT][END]
-@SRfpd	[KEY]v[CTRL][SHIFT][FN][END]
-@SRflt	[KEY]v[CTRL][SUPER][ALT][END]
-@SRfld	[KEY]v[CTRL][SUPER][FN][END]
-@SRftd	[KEY]v[CTRL][ALT][FN][END]
-@SRplt	[KEY]v[SHIFT][SUPER][ALT][END]
-@SRpld	[KEY]v[SHIFT][SUPER][FN][END]
-@SRptd	[KEY]v[SHIFT][ALT][FN][END]
-@SRltd	[KEY]v[SUPER][ALT][FN][END]
-@SRfplt	[KEY]v[CTRL][SHIFT][SUPER][ALT][END]
-@SRfpld	[KEY]v[CTRL][SHIFT][SUPER][FN][END]
-@SRfptd	[KEY]v[CTRL][SHIFT][ALT][FN][END]
-@SRfltd	[KEY]v[CTRL][SUPER][ALT][FN][END]
-@SRpltd	[KEY]v[SHIFT][SUPER][ALT][FN][END]
-@SRfpltd	[KEY]v[CTRL][SHIFT][SUPER][ALT][FN][END]
+@TPW	v[ATTACH_L][ATTACH_R]
+@TPWf	[KEY]v[CTRL][END]
+@TPWp	[KEY]v[SHIFT][END]
+@TPWl	[KEY]v[SUPER][END]
+@TPWt	[KEY]v[ALT][END]
+@TPWd	[KEY]v[FN][END]
+@TPWfp	[KEY]v[CTRL][SHIFT][END]
+@TPWfl	[KEY]v[CTRL][SUPER][END]
+@TPWft	[KEY]v[CTRL][ALT][END]
+@TPWfd	[KEY]v[CTRL][FN][END]
+@TPWpl	[KEY]v[SHIFT][SUPER][END]
+@TPWpt	[KEY]v[SHIFT][ALT][END]
+@TPWpd	[KEY]v[SHIFT][FN][END]
+@TPWlt	[KEY]v[SUPER][ALT][END]
+@TPWld	[KEY]v[SUPER][FN][END]
+@TPWtd	[KEY]v[ALT][FN][END]
+@TPWfpl	[KEY]v[CTRL][SHIFT][SUPER][END]
+@TPWfpt	[KEY]v[CTRL][SHIFT][ALT][END]
+@TPWfpd	[KEY]v[CTRL][SHIFT][FN][END]
+@TPWflt	[KEY]v[CTRL][SUPER][ALT][END]
+@TPWfld	[KEY]v[CTRL][SUPER][FN][END]
+@TPWftd	[KEY]v[CTRL][ALT][FN][END]
+@TPWplt	[KEY]v[SHIFT][SUPER][ALT][END]
+@TPWpld	[KEY]v[SHIFT][SUPER][FN][END]
+@TPWptd	[KEY]v[SHIFT][ALT][FN][END]
+@TPWltd	[KEY]v[SUPER][ALT][FN][END]
+@TPWfplt	[KEY]v[CTRL][SHIFT][SUPER][ALT][END]
+@TPWfpld	[KEY]v[CTRL][SHIFT][SUPER][FN][END]
+@TPWfptd	[KEY]v[CTRL][SHIFT][ALT][FN][END]
+@TPWfltd	[KEY]v[CTRL][SUPER][ALT][FN][END]
+@TPWpltd	[KEY]v[SHIFT][SUPER][ALT][FN][END]
+@TPWfpltd	[KEY]v[CTRL][SHIFT][SUPER][ALT][FN][END]
 @W	w[ATTACH_L][ATTACH_R]
 @Wf	[KEY]w[CTRL][END]
 @Wp	[KEY]w[SHIFT][END]
@@ -2621,6 +2616,9 @@
 @^+	[FOLD][STRIP]@[ADD]S[END]
 @^KR*	[FOLD][STRIP]@[ADD]S[END]
 @^S*U	[FOLD][STRIP]@[ADD]S[END]
+! v and j moved, so their old chords are no letters
+@SR
+@SKWR
 ! no payload, no entry
 @f
 @*

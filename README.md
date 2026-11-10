@@ -62,7 +62,8 @@ is `S`: `^@TP` is `^STP`.
 | retro-words | Recase, join and split the last words written. |
 
 `emily-symbols`, `emily-modifiers` and Shrimple are ports of other people's
-dictionaries.
+dictionaries. Their letters are `dictionaries/alphabet.xfst`'s, which the
+theory's onsets read too.
 
 ## The two-syllable mark
 

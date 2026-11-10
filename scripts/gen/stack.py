@@ -2,7 +2,7 @@
 import collections
 import configparser
 import copy
-import importlib.util
+import itertools
 import json
 import os
 import subprocess
@@ -133,13 +133,16 @@ def inflected(words):
 
 
 def retro_words():
-    """Strokes `retro-words.py` claims. Its artifact rewrites text and answers no
-    lookup, so the stack cannot say."""
-    path = os.path.join(DICTS, "retro-words.py")
-    spec = importlib.util.spec_from_file_location("retro_words", path)
-    m = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(m)
-    return set(m._ENTRIES)
+    """Strokes the retro-words layout reaches. Its artifact rewrites text and
+    answers no lookup, so the stack cannot say."""
+    menu = lambda i: "".join(k for k, v in (("L", 1), ("G", 2), ("T", 4), ("S", 8)) if i & v)
+    case = ["".join(c) for c in itertools.product(("", "F"), ("", "R"), "PB")]
+    strokes = {"^A" + k for k in case}
+    for i in range(9):  # the separators
+        strokes |= {"^AE" + menu(i), "^AU" + menu(i)} | {"^AE" + k + menu(i) for k in case}
+    for i in range(8):  # the pairs
+        strokes |= {"^AEU" + menu(i), "^AEUR" + menu(i)}
+    return strokes
 
 
 def fold_alternatives(fst, tape):

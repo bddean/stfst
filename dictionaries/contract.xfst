@@ -23,16 +23,16 @@
 
 ! Keys crossing to the other bank, by their sound.
 define Sep      "," ;
-define ToLeft   [ {pblg} -> {KWH} Sep ] .o. [ {fp} -> {KH} Sep ] .o. [ {rb} -> {SH} Sep ]
-            .o. [ {pb} -> {TPH} Sep ] .o. [ {pl} -> {PH} Sep ] .o. [ {bg} -> K Sep ] .o. [ f -> {TP} Sep ]
-            .o. [ r -> R Sep ] .o. [ p -> P Sep ] .o. [ b -> {PW} Sep ] .o. [ l -> {HR} Sep ]
-            .o. [ g -> {TKPW} Sep ] .o. [ t -> T Sep ] .o. [ s -> S Sep ] .o. [ d -> {TK} Sep ]
-            .o. [ z -> S Sep ] ;
-define ToRight  [ {STKPW} -> z ] .o. [ {TKPW} -> g ] .o. [ {KWH} -> {pblg} ] .o. [ {KWR} -> 0 ]
-            .o. [ {TPW} -> f ] .o. [ {TPH} -> {pb} ] .o. [ {PH} -> {pl} ] .o. [ {PW} -> b ] .o. [ {TK} -> d ]
-            .o. [ {TP} -> f ] .o. [ {HR} -> l ] .o. [ {KH} -> {fp} ] .o. [ {SH} -> {rb} ] .o. [ {TH} -> t ]
-            .o. [ K -> {bg} ] .o. [ S -> s ] .o. [ T -> t ] .o. [ P -> p ] .o. [ R -> r ] .o. [ W -> 0 ]
-            .o. [ H -> 0 ] ;
+define ToLeft   [ {pblg} -> KeysJ Sep ] .o. [ {fp} -> {KH} Sep ] .o. [ {rb} -> {SH} Sep ]
+            .o. [ {pb} -> KeysN Sep ] .o. [ {pl} -> KeysM Sep ] .o. [ {bg} -> KeysK Sep ] .o. [ f -> KeysF Sep ]
+            .o. [ r -> KeysR Sep ] .o. [ p -> KeysP Sep ] .o. [ b -> KeysB Sep ] .o. [ l -> KeysL Sep ]
+            .o. [ g -> KeysG Sep ] .o. [ t -> KeysT Sep ] .o. [ s -> KeysS Sep ] .o. [ d -> KeysD Sep ]
+            .o. [ z -> KeysS Sep ] ;
+define ToRight  [ KeysZ -> z ] .o. [ KeysG -> g ] .o. [ KeysJ -> {pblg} ] .o. [ KeysY -> 0 ]
+            .o. [ KeysV -> f ] .o. [ KeysN -> {pb} ] .o. [ KeysM -> {pl} ] .o. [ KeysB -> b ] .o. [ KeysD -> d ]
+            .o. [ KeysF -> f ] .o. [ KeysL -> l ] .o. [ {KH} -> {fp} ] .o. [ {SH} -> {rb} ] .o. [ {TH} -> t ]
+            .o. [ KeysK -> {bg} ] .o. [ KeysS -> s ] .o. [ KeysT -> t ] .o. [ KeysP -> p ] .o. [ KeysR -> r ] .o. [ KeysW -> 0 ]
+            .o. [ KeysH -> 0 ] ;
 define Crossed(Keys, To) [ Keys .o. To ] ;
 
 ! The other stroke: `~` and its operand, a trace that `Carry` moves to the
@@ -60,16 +60,16 @@ define Untrace  [ Carry(U) .o. Carry(E) .o. Carry(O) .o. Carry(A) .o. [ "~" -> 0
 ! which is the vowel's glide (do you).
 define Alone    [ ? - LeftKey ] ;
 define Combine  [ [ [ Seam H ] -> Seam || LeftKey Sep* _ Alone ] .o. [ [ Seam W ] -> Seam || [ P | K ] Sep* _ Alone ]
-                .o. [ [ Seam {KWR} ] -> Seam || LeftKey Sep* _ Alone ] ] ;
+                .o. [ [ Seam KeysY ] -> Seam || LeftKey Sep* _ Alone ] ] ;
 
 ! A d that crosses to a stressed v is the two sounds' one chord: advice is +TKW.
-define Dv       [ [ {TK} Sep Seam {TPW} ] -> [ Seam {TKW} ] || _ Alone ] ;
+define Dv       [ [ KeysD Sep Seam KeysV ] -> [ Seam {TKW} ] || _ Alone ] ;
 
 ! The left bank of a stroke that crossed: the word's onset, each sound that
 ! crossed, and the stressed onset. A chord with keys on both sides of K and not
 ! K, `Lo+ Hi+`, is split by a chord that has K.
 define Chord    [ (S) (T) (K) (P) (W) (H) (R) ] ;
-define Sound    [ {KWH} | {KH} | {SH} | {TPH} | {PH} | K | {TP} | R | P | {PW} | {HR} | {TKPW} | T | S | {TK} ] ;
+define Sound    [ KeysJ | {KH} | {SH} | KeysN | KeysM | KeysK | KeysF | KeysR | KeysP | KeysB | KeysL | KeysG | KeysT | KeysS | KeysD ] ;
 define Piece    [ Sound Sep ] ;
 define Bank     [ Chord Sep Piece* Seam Chord ] ;
 define Has(K)   [ Chord & $[K] ] ;

@@ -1,13 +1,10 @@
 ! Emily's glyph table, shared by two dictionaries.
 !
 ! `emily-symbols.xfst` reads it under `#`, and `emily-modifiers.xfst` reads it for
-! its literal mode, which is emily-modifiers.py importing the same table from
-! emily-symbols.py. So the table lives in one file and the grammars over it are
+! its literal mode. So the table lives in one file and the grammars over it are
 ! separate.
 !
-! Divergence from emily-symbols.py, deliberate: that file returns Plover
-! directives (`{*-|}`, `{#Tab}`) as glyph strings. Here a retrospective case
-! operation is a `[META]` request and a keystroke is a `[KEY]` item, because a
+! A retrospective case operation is a `[META]` request and a keystroke is a `[KEY]` item, because a
 ! record says what it means and the host decides.
 
 define Kb "[KEY]" ;   define Ke "[END]" ;

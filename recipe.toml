@@ -40,7 +40,7 @@ xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/th
 # lexicon.lexc's language, in aligned.xfst, says how.
 [[stage]]
 name = "prefix"
-xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/prefix.xfst"]
+xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/alphabet.xfst", "dictionaries/prefix.xfst"]
 
 [[stage]]
 name = "suffix"
@@ -75,7 +75,7 @@ xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/sp
 # Two strokes as one, marked with what the stroke adds.
 [[stage]]
 name = "contract"
-xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/contract.xfst"]
+xfst = ["dictionaries/stage.xfst", "dictionaries/aligned.xfst", "dictionaries/alphabet.xfst", "dictionaries/contract.xfst"]
 
 # Each syllable's stroke by the vowel theory, around its chord.
 [[stage]]
@@ -134,9 +134,9 @@ xfst = [
 name = "shrimple"
 priority = 90
 # A syllable at a time with no end, so the outlines have no longest and a host
-# that needs one has to be told. 40 is what `Shrimple-WSI-English.py` declares.
+# that needs one has to be told. 40 is its limit.
 strokes = 40
-xfst = ["dictionaries/shrimple-tables.xfst", "dictionaries/shrimple.xfst"]
+xfst = ["dictionaries/alphabet.xfst", "dictionaries/shrimple-tables.xfst", "dictionaries/shrimple.xfst"]
 
 # The editable dictionaries are read as their files when the stack loads, so a
 # host has somewhere to put a new entry: `user` is what Plover's Add Translation
@@ -166,7 +166,7 @@ json = "dictionaries/commands.json"
 [[dict]]
 name = "emily-modifiers"
 priority = 50
-xfst = ["dictionaries/emily-symbols-tables.xfst", "dictionaries/emily-modifiers-tables.xfst", "dictionaries/emily-modifiers.xfst"]
+xfst = ["dictionaries/alphabet.xfst", "dictionaries/emily-symbols-tables.xfst", "dictionaries/emily-modifiers-tables.xfst", "dictionaries/emily-modifiers.xfst"]
 
 # A stroke nothing matched, read as another with something written around it:
 # the suffix keys, "the" on *T, "of" on -F, "and" on S-K-P-, and -y on `^+`. A
@@ -236,7 +236,7 @@ generator = "scripts/gen-typey-vowels.py"
 # entry. It is here because host contract items 5 and 6 are what it needed, and
 # that is what M4 built.
 #
-# repeat-idioms above repeat-word, as `repeat-word.py` asks: an idiom overrides
+# repeat-idioms above repeat-word: an idiom overrides
 # the trigrams whose third word is not the first (`^SKP` after IN is "in and out",
 # not "in and in").
 
@@ -260,7 +260,7 @@ plain = "dictionaries/ahead.dict"
 [[dict]]
 name = "retro-words"
 priority = 9
-# The words this dictionary is shown, which is `retro-words.py`'s WINDOW.
+# The words this dictionary is shown.
 words = 16
 xfst = [
     "dictionaries/retro-words-chars.xfst",

@@ -47,7 +47,7 @@ define OutPrefixed [ OutPre(T K "0" ":" [ E U | E ] s, {STK}, 0)
 define OpenVJ(On, K) [ Rank Gap Ins(K Gap) Del(On Eq Letter+ Gap "0" ( r ) ":" Letter+ Eq VowelKeys Gap)
                        [ V | JH ] Eq Letter* Gap "1" ( r ) ":" ?* ] ;
 define Opened   PU(OpenVJ(S, S), OpenVJ(R, R)) ;
-define OutOpenVJ(K) [ Rank Gap Del(K "0" ":" VowelKeys "/") Ins(K Gap) [ {TPW} | {KWH} ] "1" ":" VowelKeys RightKey* ] ;
+define OutOpenVJ(K) [ Rank Gap Del(K "0" ":" VowelKeys "/") Ins(K Gap) [ KeysV | KeysJ ] "1" ":" VowelKeys RightKey* ] ;
 define OutOpened PU(OutOpenVJ(S), OutOpenVJ(R)) ;
 
 define Stage [ [ Written .o. Instead(Prefixed .o. Flagged(Affixed)) .o. Before(Opened .o. Flagged(Affixed)) ]

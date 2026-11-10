@@ -52,7 +52,7 @@ import cmudict
 import plover_tape
 from wordfreq import zipf_frequency
 
-from . import DICTS, ROOT, SYSTEM
+from . import ALPHABET as A, DICTS, ROOT, SYSTEM
 from .stack import Stack
 
 UPSTREAM = os.path.join(DICTS, "typey-type-upstream.json")
@@ -244,11 +244,11 @@ class Stroke:
 # the same letters with the same keys (Plover's orthographic habits: -GT for ght).
 
 LEFT = {
-    "B": ["PW"], "CH": ["KH"], "D": ["TK"], "DH": ["TH"], "F": ["TP"], "G": ["TKPW"],
-    "HH": ["H"], "JH": ["KWH"], "K": ["K", "KR"], "L": ["HR"], "M": ["PH"],
-    "N": ["TPH"], "P": ["P"], "R": ["R"], "S": ["S"], "SH": ["SH"], "T": ["T"],
-    "TH": ["TH"], "V": ["TPW"], "W": ["W", "WH"], "Y": ["KWR"], "Z": ["STKPW", "S"],
-    "ZH": ["SH", "KWH"],
+    "B": [A["b"]], "CH": ["KH"], "D": [A["d"]], "DH": ["TH"], "F": [A["f"]], "G": [A["g"]],
+    "HH": [A["h"]], "JH": [A["j"]], "K": [A["k"], A["c"]], "L": [A["l"]], "M": [A["m"]],
+    "N": [A["n"]], "P": [A["p"]], "R": [A["r"]], "S": [A["s"]], "SH": ["SH"], "T": [A["t"]],
+    "TH": ["TH"], "V": [A["v"]], "W": [A["w"], "WH"], "Y": [A["y"]], "Z": [A["z"], A["s"]],
+    "ZH": ["SH", A["j"]],
 }
 # Two onset sounds one chord writes, where their keys together are another sound's.
 LEFT_PAIRS = {("D", "V"): "TKW"}
@@ -439,8 +439,8 @@ def says_j(text):
 
 
 MOVED_ONSET = re.compile("(SR|SKWR)(?![STKPWHR])")
-MOVED = {"SR": ("TPW", lambda t: "v" in t.lower()), "SKWR": ("KWH", says_j)}
-MOVED_TO = re.compile("(TPW|KWH)(?![STKPWHR])")
+MOVED = {"SR": (A["v"], lambda t: "v" in t.lower()), "SKWR": (A["j"], says_j)}
+MOVED_TO = re.compile(f"({A['v']}|{A['j']})(?![STKPWHR])")
 MOVED_FROM = {new: old for old, (new, _) in MOVED.items()}
 
 

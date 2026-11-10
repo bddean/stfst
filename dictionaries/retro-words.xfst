@@ -1,4 +1,4 @@
-! Retro word operators, ported from retro-words.py.
+! Retro word operators.
 !
 ! Recase, join, split and wrap text that is already on screen, by word rather
 ! than by stroke. The text arrives on the tape after the keys, one symbol per
@@ -43,8 +43,7 @@ define Span     [ Word [ Gap Word ]* ] ;
 define Head     [ Word Gap ]* ;
 
 ! Every operation is total: where the rule does not apply, the window comes back
-! unchanged. That is the Python's ops returning `None` and their meta writing
-! nothing, said in one place instead of six.
+! unchanged, said in one place instead of six.
 define Or(E)    PU(E, Span) ;
 ! Two operations in a row, each total on its own. Both have to be, or a composed
 ! stroke would do nothing whenever either half had nothing to do: `^AEP` on a
@@ -93,9 +92,8 @@ define Join(S)  [ Head Word Regap(S) Word ] ;
 
 ! ---- split
 !
-! A run of separators becomes one space, and a leading or trailing run goes, which
-! is the Python filtering out its empty parts. `Free` is "a word with no separator
-! in it", so the pieces cannot swallow one.
+! A run of separators becomes one space, and a leading or trailing run goes.
+! `Free` is "a word with no separator in it", so the pieces cannot swallow one.
 define Free(G)  [ NotSp+ - [ NotSp* G NotSp* ] ] ;
 define Trim(G)  [ Kill([ G+ ]) | 0 ] ;
 define Split(G) [ Head Trim(G) Free(G) [ [ [ G+ ] .x. " " ] Free(G) ]+ Trim(G) ] ;
@@ -104,9 +102,8 @@ define Split(G) [ Head Trim(G) Free(G) [ [ [ G+ ] .x. " " ] Free(G) ]+ Trim(G) ]
 ! the one that keeps an acronym whole: a run of capitals gives back its last one
 ! when a lowercase letter follows, so `HTTPServer` is `HTTP` and `Server`.
 !
-! This is where the port diverges from the Python on purpose. The Python splits on
-! `[^0-9A-Za-z]+`, so it treats `é` as punctuation and breaks a word there. A
-! class knows better, and `Cs` and `Lo` are letters here.
+! A letter is a class and not `[0-9A-Za-z]`, so `é`, `Cs` and `Lo` are letters and
+! a split does not break a word there.
 define Alnum    [ Cased | Cs | Dg ] ;
 define Mark     [ NotSp - Alnum ] ;
 define Shape    [ [..] -> " " || [ Lo | Dg | Cs ] _ Up , Up _ Up Lo ] ;
@@ -138,8 +135,7 @@ define Wrap(O, C)   [ Find([ Letters .o. Round(O, C) ]) ] ;
 define NoOpen(G)    [ Word - [ NotSp* G NotSp* ] ] ;
 define Opened(G)    [ NotSp* Kill(G) NotSp* ] ;
 define Closed(G)    [ NotSp* Kill(G) ] ;
-! The inner span, brackets removed and its gaps normalised to one space, as the
-! Python's `" ".join` does.
+! The inner span, brackets removed and its gaps normalised to one space.
 define Inner(Og, Cg)
     [ [ NotSp* Kill(Og) NotSp* Kill(Cg) ]
     | [ Opened(Og) [ Regap(" ") NoOpen(Og) ]* Regap(" ") Closed(Cg) ] ] ;

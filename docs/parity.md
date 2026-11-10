@@ -327,8 +327,7 @@ A dictionary turned off stops answering at once, including a run it had already
 started. That is what `stack.solo` is for, and `plover-dict-commands` says so: a
 mode with no interference from a multi-stroke entry below it. A name this stack does
 not have is ignored, because a user's dictionary set is not a promise about anyone
-else's, and `commands.json`'s one solo entry names two dictionaries this stack does
-not load.
+else's.
 
 `stack.priority` is declared and not implemented. Reordering needs an order per
 frame rather than a flag per dictionary, and nothing here asks for it.

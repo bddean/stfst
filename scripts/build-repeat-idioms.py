@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build repeat-idioms.json: the non-literal overrides above repeat-word.py.
+"""Build repeat-idioms.json: the non-literal overrides above repeat-word.
 
 The generic {:repeat_word:<conn>} meta already yields every literal X-conn-X
 (back to back, side by side, more and more), so this dictionary holds only the
@@ -27,7 +27,7 @@ from collections import defaultdict
 DICTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "dictionaries")
 MINED = os.path.join(DICTS, "repeat-trigrams.json")
 
-# stems per connective (must match repeat-word.py STEMS).
+# stems per connective (must match repeat-word.dict).
 STEMS = {
     "and": ["^SKP"], "or": ["^OR"], "to": ["^O", "^TO"], "the": ["^-T"],
     "of": ["^-F", "^*F"], "by": ["^PWEU"], "for": ["^TP-R", "^TPOR"],

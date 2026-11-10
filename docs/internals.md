@@ -213,7 +213,7 @@ Four things an artifact can ask for have no way through Plover's dictionary API,
 which passes a lookup one argument: a bound word, a window of written text, a
 window of the text after it, and a tail. `plover_stfst/host.py` answers each with
 a meta and an extension, so `retro-words` and `repeat-word` are artifacts in
-`plover.cfg` rather than the Python plugins they were ported from, and `frames`,
+`plover.cfg`, and `frames`,
 `ahead` and phrasing's hole ender work on the desktop too. A dictionary is
 refused only for an ability the host lacks, never by a version number, because
 these are separate abilities and a version is one number.

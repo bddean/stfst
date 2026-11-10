@@ -1,24 +1,17 @@
 ! Shrimple, whole-keyboard fingerspelling for foreign words and names.
-! Ported from Shrimple-WSI-English.py; the three tables are transcribed by
-! scripts/gen-shrimple-tables.py into shrimple-tables.xfst, which must be
-! compiled before this file.
-!
-! The Python is 597 lines because a Plover dictionary cannot express a
-! multi-stroke language: it declares LONGEST_KEY = 40, re-derives the whole run
-! on every stroke, and needs lists of strokes that "exit Shrimple" to stop the
-! greedy match. Here the language is the entry:
+! The tables are in shrimple-tables.xfst, which is compiled before this file.
+! The language is the entry:
 !
 !     ^ / syllable / syllable / ...        syllable = starter vowel ender
 !
-! and the runtime's longest match ends it, so the exit lists become one
-! subtraction rather than five lookup-time tests.
+! and the runtime's longest match ends it, less the strokes that exit.
 !
 ! Segmentation is the interesting part. A chord is cut into consecutive table
-! entries, so STKPWHR can be one piece or several, and Python resolves that with
+! entries, so STKPWHR can be one piece or several, and the rule is
 ! fewest-pieces-first. That is a priority union over piece count, which xfst has,
 ! so the rule survives as a rule instead of becoming a search.
 
-! Fewest pieces is only half of Python's rule. Within a count it walks the split
+! Fewest pieces is only half the rule. Within a count it walks the split
 ! points in ascending order, so the first piece is as short as it can be, and a
 ! quarter of the left-bank chords need that tiebreak: KPWHR cuts into K+PW+HR
 ! ("kbl") or KP+W+HR ("xwl") and both are three pieces.
@@ -57,7 +50,7 @@ define Right         [ (f) (r) (p) (b) (l) (g) (t) (s) (d) (z) ] ;
 ! starred piece" relation onto the cut instead relates its *output* to the cut's
 ! input, which is not a constraint at all and quietly dropped every starred
 ! ender.
-! The starred cut needs all three of Python's preferences, not one: fewest
+! The starred cut needs all three preferences, not one: fewest
 ! pieces, then the shortest first piece, then the earliest piece claiming the
 ! star. Enumerating star positions without the length tiebreak left 68 of 916
 ! chords ambiguous.
@@ -91,7 +84,7 @@ define VowelStar  VowelStarBody ;
 define VowelPass  [ VowelSplitBody | [ "*" .x. 0 ] ] ;
 
 ! Where the star goes: the ender claims it, else the vowel, else the starter.
-! Python's cascade in that order, and priority union is that order.
+! Priority union is that order.
 ! `^` marks the syllable as attached, which is a record flag and not text, and
 ! Canonical moves it to the end. It sits before the left bank on the tape, so it
 ! sits there here: a concatenation is in tape order or it is not an outline, and
@@ -104,8 +97,7 @@ define StarVowel  [ Caret (Starters)     VowelStar  (Enders)     ] ;
 define StarStart  [ Caret StartersStar   VowelPass  (Enders)     ] ;
 define Syllable   PU(Plain, PU(StarEnder, PU(StarVowel, StarStart))) ;
 
-! The Python's `#` capitalises a syllable. `#` is phrasing's here, so a capital
-! comes from a case stroke before the word instead.
+! `#` is phrasing's, so a capital comes from a case stroke before the word instead.
 ! `[e]`, `[y]` and `[s]` are Shrimple's orthography notes, and they are not the
 ! same shape. `[e]` *moves*: a vowel carrying it lands its `e` after the ender,
 ! so `AOEU` plus `-F` is "ife" and not "ief". The other two only mark a suffix
@@ -147,10 +139,8 @@ define Free       [ ?+ .o. Body ] ;
 define Join       [ Sep .x. 0 ] ;
 define Word       [ Filled [ Join Filled ]* ] ;
 
-! The entry stroke alone announces the mode and writes nothing. `{Shrimple}` is
-! what the Python answers, and Plover knows no meta of that name, so it writes
-! nothing and logs. The empty record says that, where no entry at all would let
-! the stroke fall through the stack.
+! The entry stroke alone announces the mode and writes nothing. The empty record
+! says that, where no entry at all would let the stroke fall through the stack.
 define Enter      [ "^" .x. 0 ] ;
 
 ! The fold. `🦐` on a stroke says that stroke is a syllable, so a word is the

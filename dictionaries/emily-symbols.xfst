@@ -38,7 +38,7 @@ define Rep1     Bit({f}, "[R1=0]", "[R1=1]") ;
 define Rep2     Bit({p}, "[R2=0]", "[R2=1]") ;
 
 ! Both halves of the identifier are required, so a stroke missing -T or -Z has no
-! path. That is the absence of the Python's `raise KeyError`.
+! path.
 define Fields     Pat Variant Rep1 AttachL Rep2 AttachR Cap [ {tz} .x. 0 ] ;
 ! Repeating the empty glyph says nothing.
 define BareRepeat [ [ [ {f} ({r}) ({p}) ] | [ ({r}) {p} ] ]
@@ -75,8 +75,7 @@ define DoSpace  [ [ "[ATTACH_L]" | "[ATTACH_R]" ] -> 0
 ! `U` with the identifier writes a number, the left bank read as binary exactly as
 ! `emily-modifiers` reads it in literal mode: `R W K S` are 1 2 4 8 and `H P T ^`
 ! are 16 32 64 128. `O` appends a zero, so `SROUTZ` is 90 and `OUTZ`, with no
-! bits, is 0. Glued, as Plover glues a translation that is all digits. The table
-! has `#` as 256, and `#` is phrasing's, so that bit is not read.
+! bits, is 0. Glued, as Plover glues a translation that is all digits.
 define Bits     [ [ \"#" ]+ .o. LitNum ] ;
 define Number   [ [ Bits ([ {O} .x. {0} ]) | [ {O} .x. {0} ] ]
                   [ {Utz} .x. "[GLUE]" ] ] ;

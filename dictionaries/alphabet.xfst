@@ -1,0 +1,31 @@
+! Each consonant letter's left-bank chord: fingerspelling, Shrimple's starters
+! and the theory's onsets all read these. scripts/gen parses this file too.
+
+define KeysB {PW} ;
+define KeysC {KR} ;
+define KeysD {TK} ;
+define KeysF {TP} ;
+define KeysG {TKPW} ;
+define KeysH {H} ;
+define KeysJ {KWH} ;
+define KeysK {K} ;
+define KeysL {HR} ;
+define KeysM {PH} ;
+define KeysN {TPH} ;
+define KeysP {P} ;
+define KeysQ {KW} ;
+define KeysR {R} ;
+define KeysS {S} ;
+define KeysT {T} ;
+define KeysV {TPW} ;
+define KeysW {W} ;
+define KeysX {KP} ;
+define KeysY {KWR} ;
+define KeysZ {STKPW} ;
+
+define Alphabet [ [ KeysB .x. b ] | [ KeysC .x. c ] | [ KeysD .x. d ] | [ KeysF .x. f ]
+                | [ KeysG .x. g ] | [ KeysH .x. h ] | [ KeysJ .x. j ] | [ KeysK .x. k ]
+                | [ KeysL .x. l ] | [ KeysM .x. m ] | [ KeysN .x. n ] | [ KeysP .x. p ]
+                | [ KeysQ .x. q ] | [ KeysR .x. r ] | [ KeysS .x. s ] | [ KeysT .x. t ]
+                | [ KeysV .x. v ] | [ KeysW .x. w ] | [ KeysX .x. x ] | [ KeysY .x. y ]
+                | [ KeysZ .x. z ] ] ;

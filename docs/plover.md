@@ -78,9 +78,7 @@ Plover glued.
 "The" and not "THE". The shared table gave the glyph's case priority over the
 key's, with a reason that was a preference rather than a fact.
 
-**The empty glyph takes no repeat key.** The Python refuses it so that the
-`U9`-shaped strokes stay clear of `wm.py`'s focus-space keys, and the xfst
-allowed 24 strokes the Python did not.
+**The empty glyph takes no repeat key.** The xfst had allowed 24 such strokes.
 
 ## What the stack check reported at the end, and why
 
@@ -180,8 +178,7 @@ Every answer matches the source it was imported from, which is what
 
 Shrimple's language is `^ / syllable / syllable / …`, so its outlines have no
 longest and the layers never stop growing. That is a real property and not a
-failure to measure, so the recipe declares the cap instead: 40, which is what
-`Shrimple-WSI-English.py` declares to Plover today. A dictionary with neither a
+failure to measure, so the recipe declares the cap instead: 40. A dictionary with neither a
 longest nor a cap is refused, because Plover would silently stop looking.
 
 ## What it costs
@@ -285,8 +282,7 @@ refusal at load until the metas in `plover_stfst/host.py` answered it instead.
 Both windowed kinds take the words back with `prev_replace`, which is how
 Plover's own retro metas rewrite what is already written, and the class glyphs of
 a window record are substituted with `Record.rewrite`. So `retro-words` and
-`repeat-word` are artifacts in `plover.cfg` now rather than the Python plugins
-they were ported from, and `frames`, `ahead` and phrasing's hole ender work here
+`repeat-word` are artifacts in `plover.cfg`, and `frames`, `ahead` and phrasing's hole ender work here
 too. Every dictionary in `recipe.toml` loads.
 
 What it costs is one divergence, and it is about *which* dictionary answers

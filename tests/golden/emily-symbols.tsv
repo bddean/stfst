@@ -1,8 +1,6 @@
-! emily-symbols. Every combination of the six fields. The expectations were
-! emily-symbols.py's own answers, taken while that dictionary was still the
-! definition. This grammar is the definition now, so the file is the expectation
-! and there is nothing to regenerate it from: a line that changes is a change to
-! what a symbol writes, so read it and then update it.
+! emily-symbols. Every combination of the six fields. The file is the
+! expectation: a line that changes is a change to what a symbol writes, so read
+! it and then update it.
 TRtz	[KEY]Tab[END][ATTACH_L][ATTACH_R]
 TRftz	[KEY]Tab[END][ATTACH_L][ATTACH_R][REP2]
 TRptz	[KEY]Tab[END][ATTACH_L][ATTACH_R][REP3]

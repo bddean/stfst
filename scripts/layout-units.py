@@ -33,6 +33,8 @@ import re
 import sys
 from collections import Counter
 
+from gen import ALPHABET as A
+
 VOW = set("AA AE AH AO AW AY EH ER EY IH IY OW OY UH UW".split())
 STOP_PLACE = {"P": "lab", "B": "lab", "T": "cor", "D": "cor", "K": "dor", "G": "dor", "CH": "cor", "JH": "cor"}
 NAS_PLACE = {"M": "lab", "N": "cor", "NG": "dor"}
@@ -421,15 +423,17 @@ def caret(op, base):
 
 SYLLABLE = re.compile(r"^([STKPWHR]*)([012])([AOEU]*):([AO*EU]*)([frpblgtsdz]*)$")
 # ToLeft: coda keys crossing to the left bank, by their sound: (keys, voiceless keys, the voiced phoneme).
-TO_LEFT = [("pblg", "KWH", "KH", "JH"), ("fp", "KH", "KH", None), ("rb", "SH", "SH", None),
-           ("pb", "TPH", "TPH", None), ("pl", "PH", "PH", None), ("bg", "K", "K", None), ("f", "TP", "TP", None),
-           ("r", "R", "R", None), ("p", "P", "P", None), ("b", "PW", "P", "B"), ("l", "HR", "HR", None),
-           ("g", "TKPW", "K", "G"), ("t", "T", "T", None), ("s", "S", "S", None), ("d", "TK", "T", "D"),
-           ("z", "S", "S", "Z")]
-TO_RIGHT = [("STKPW", "z"), ("TKPW", "g"), ("KWH", "pblg"), ("KWR", ""), ("TPW", "f"), ("TPH", "pb"), ("PH", "pl"),
-            ("PW", "b"), ("TK", "d"), ("TP", "f"), ("HR", "l"), ("KH", "fp"), ("SH", "rb"),
-            ("TH", "t"), ("K", "bg"), ("S", "s"), ("T", "t"), ("P", "p"), ("R", "r"), ("W", ""), ("H", "")]
-SONORANT = {"TPH", "PH", "HR", "R", "W", "H", "KWR"}
+TO_LEFT = [("pblg", A["j"], "KH", "JH"), ("fp", "KH", "KH", None), ("rb", "SH", "SH", None),
+           ("pb", A["n"], A["n"], None), ("pl", A["m"], A["m"], None), ("bg", A["k"], A["k"], None),
+           ("f", A["f"], A["f"], None), ("r", A["r"], A["r"], None), ("p", A["p"], A["p"], None),
+           ("b", A["b"], A["p"], "B"), ("l", A["l"], A["l"], None), ("g", A["g"], A["k"], "G"),
+           ("t", A["t"], A["t"], None), ("s", A["s"], A["s"], None), ("d", A["d"], A["t"], "D"),
+           ("z", A["s"], A["s"], "Z")]
+TO_RIGHT = [(A["z"], "z"), (A["g"], "g"), (A["j"], "pblg"), (A["y"], ""), (A["v"], "f"), (A["n"], "pb"),
+            (A["m"], "pl"), (A["b"], "b"), (A["d"], "d"), (A["f"], "f"), (A["l"], "l"), ("KH", "fp"), ("SH", "rb"),
+            ("TH", "t"), (A["k"], "bg"), (A["s"], "s"), (A["t"], "t"), (A["p"], "p"), (A["r"], "r"), (A["w"], ""),
+            (A["h"], "")]
+SONORANT = {A[c] for c in "nmlrwhy"}
 # th/dh and sh/zh stay one chord each, as in the theory.
 DEVOICE = {"B": "P", "D": "T", "G": "K", "V": "F", "Z": "S", "JH": "CH"}
 

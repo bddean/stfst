@@ -1,4 +1,4 @@
-! The `@` keysym namespace, ported from emily-modifiers.py.
+! The `@` keysym namespace.
 !
 ! One left key opens the namespace and the rest of the board is a payload, so a
 ! stroke is read as five fields:
@@ -6,10 +6,7 @@
 !   @    STKPWHR    AO    *    EU    fplt d    z
 !   id   payload    var   lit  mode  mods      lit
 !
-! The Python reads `#` too, as 16 on a digit or an F-key and 256 on a literal
-! number. `#` is phrasing's here, so those are gone.
-!
-! Five layers, dispatched by the mode field exactly as the Python's if-chain is:
+! Five layers, dispatched by the mode field:
 !
 !   @E  + a consonant chord   a symbol keysym          @TRE   -> [KEY]Tab[END]
 !   @U  + payload bits        a digit or an F-key      @TPRU  -> [KEY]F1[END]
@@ -18,15 +15,13 @@
 !   otherwise                 fingerspelling           @KR    -> c
 !
 ! `@` with `^` or `+` is not this namespace's: it is the upper half of S, so a
-! marker chord reads it as S. The Python's 128 bit on `^` is gone with it.
+! marker chord reads it as S.
 !
-! Out of scope, decided: the skhd branch. Whenever an `@` combo matches an skhd
-! binding the Python shells out and emits nothing, which works around skhd not
-! seeing the synthetic events Plover injects on macOS. That is host-shaped, not
-! dictionary-shaped, so skhd owns it. See FST-DICT-DESIGN.md §6.
+! A combo that skhd binds is still a keystroke here: `plover-skhd-relay` runs
+! the binding at the output seam.
 !
-! The glyph table for literal mode is `emily-symbols-tables.xfst`, which is the
-! same sharing the Python does by importing emily-symbols.py.
+! The letters are `alphabet.xfst`'s, and the glyph table for literal mode is
+! `emily-symbols-tables.xfst`, which emily-symbols reads too.
 
 define Kill(X)  [ X .x. 0 ] ;
 define Say(X)   [ 0 .x. X ] ;
@@ -83,16 +78,19 @@ define SymLit   [ [ Kill("@") Some Variant Lit([ Kill(E) LitFlag ]) ]
                   .o. [ GlyphPair Flag* ] .o. OneCase ] ;
 
 ! A literal number: the payload read as binary.
-! Modifiers have nothing to modify here, and the Python ignores them. Glued, as
+! Modifiers have nothing to modify here, so they are ignored. Glued, as
 ! Plover glues a translation that is all digits.
 define NumLit   [ [ Kill("@") Pat (Kill(A)) (Kill(O))
                     Lit([ Kill(U) NoMod ]) ] .o. [ LitNum Say("[GLUE]") ] ] ;
 
 ! Fingerspelling, which is what a chord means when no mode key claims it. The
-! literal keys are inert, so the table carries the `*` and this drops the `-Z`.
+! literal keys are inert: `*` sits between the vowel banks, and `-Z` is dropped
+! below.
+define Spell    [ [ [ Alphabet | [ {STKPWHR} .x. {z} ] | [ {A} .x. {a} ] | [ {O} .x. {o} ] ] (Kill("*")) ]
+                | [ (Kill("*")) [ [ {E} .x. {e} ] | [ {EU} .x. {i} ] | [ {U} .x. {u} ] ] ] ] ;
 define Chord    [ (S) (T) (K) (P) (W) (H) (R) (A) (O) ("*") (E) (U) ] ;
-! `@U` under the literal marker is a number, and the Python returns one there
-! rather than falling through, so those strokes never reach the letters.
+! `@U` under the literal marker is a number, so those strokes never reach the
+! letters.
 define NumberMode  [ $[U] & ~$[E] & [ $["*"] | $[{z}] ] ] ;
 ! A letter is always printable, so the two shapes read the one table.
 define Letter   [ ~NumberMode .o. [ Kill("@") Chord Mod (Kill({z})) ]
