@@ -118,6 +118,15 @@ data class Config(
      */
     var keyEnds: Float = 1f,
     /**
+     * The gap in ring 1, in degrees, centred straight up on each bank.
+     *
+     * Ring 1's keys share the rest of the circle as one arc, each meeting its
+     * neighbours with no ground between them. The gap is the ground a slide
+     * from the hub to the outer ring passes through. At 0 the keys spread
+     * evenly round the whole circle with ground between them instead.
+     */
+    var ringGap: Float = 90f,
+    /**
      * How far the rings are turned, in degrees.
      *
      * A thumb sweeps an arc and the rings are already arcs, so this may be

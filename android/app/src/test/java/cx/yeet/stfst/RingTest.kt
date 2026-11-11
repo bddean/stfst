@@ -49,6 +49,67 @@ class RingTest {
         }
     }
 
+    /** Each ring 1 cell's centre is on its own cell. */
+    @Test
+    fun a_ring_1_centre_is_on_its_own_cell() {
+        for (bank in Bank.values()) {
+            val cells = ring.cells(bank).filter { it.level == 1 }
+            assertTrue("$bank should have a ring 1", cells.isNotEmpty())
+            for (cell in cells) {
+                assertEquals("$bank $cell", cell, ring.cellAt(bank, ring.centre(bank, cell)))
+            }
+        }
+    }
+
+    /**
+     * A run straight up from the hub to the rim, through the middle of ring
+     * 1's gap, takes no ring 1 key.
+     */
+    @Test
+    fun the_gap_is_a_run_from_the_hub_to_the_rim() {
+        for (bank in Bank.values()) {
+            val from = ring.edges(bank, 0).second
+            for (step in 0..400) {
+                val r = from + (1f - from) * step / 400f
+                val at = ring.cellAt(bank, Polar(r, 0f))
+                assertTrue("$bank takes $at at $r on the way up", at.level != 1 || at.slot < 0)
+            }
+            // The same run on the glass, which is where the gap has to be up.
+            val field = field(bank)
+            val rings = ring.rings(bank, field)
+            var y = rings.centerY
+            while (y >= rings.top) {
+                val at = ring.hit(bank, field, rings.centerX, y)
+                assertTrue("$bank takes $at at y=$y on the way up", at.level != 1 || at.slot < 0)
+                y -= 0.5f
+            }
+        }
+    }
+
+    /**
+     * Ring 1's keys are one arc: a sweep along the middle of the ring from one
+     * end of the arc to the other is on a key all the way, and meets the keys
+     * in the order the layout gives them.
+     */
+    @Test
+    fun ring_1_has_no_ground_between_its_keys() {
+        for (bank in Bank.values()) {
+            val (inner, outer) = ring.edges(bank, 1)
+            val r = (inner + outer) * 0.5f
+            val half = config.ringGap * 0.5f
+            val met = mutableListOf<Int>()
+            var deg = half + 0.05f
+            while (deg < 360f - half) {
+                val at = ring.cellAt(bank, Polar(r, deg))
+                assertEquals("$bank at $deg", 1, at.level)
+                assertTrue("$bank is on ground at $deg", at.slot >= 0)
+                if (met.lastOrNull() != at.slot) met.add(at.slot)
+                deg += 0.05f
+            }
+            assertEquals("$bank", ring.cells(bank).filter { it.level == 1 }.map { it.slot }, met)
+        }
+    }
+
     /**
      * For every chord the corpus holds, walk the path the drawing claims and
      * check that what comes out is the chord.
@@ -96,9 +157,9 @@ class RingTest {
      * Every key of the rim is a run straight out from the hub, taking nothing
      * on the way.
      *
-     * Not at any one angle: the ground between the keys of a ring is what the
-     * run passes through, so the property is that some line out from the middle
-     * lands on one of the key's cells and crosses nothing else.
+     * Not at any one angle: the gap in ring 1 is what the run passes through,
+     * so the property is that some line out from the middle lands on one of
+     * the key's cells and crosses nothing else.
      */
     @Test
     fun the_rim_is_a_run_straight_out() {

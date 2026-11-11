@@ -464,6 +464,14 @@ class SettingsActivity : Activity() {
                     unit = "of the width",
                 ),
                 Range(
+                    "Ring 1 gap", 0f, 180f, { it.ringGap }, { c, v -> c.ringGap = v },
+                    "the gap straight up in ring 1: 0 spreads its keys evenly",
+                    unit = "\u00b0",
+                    prose = "Ring 1's keys share the rest of the circle as one arc, " +
+                        "with no ground between them. The gap is where a slide " +
+                        "from the hub passes to the outer ring.",
+                ),
+                Range(
                     "Stud width", 0.2f, 1f, { it.studWidth }, { c, v -> c.studWidth = v },
                     "a stud's width, as a share of a key's", unit = "\u00d7",
                     prose = "A cell no walk can spend is drawn as a stud: a circle " +
