@@ -53,16 +53,21 @@ ring 2 + A O, five times            ring 2 dz T S, six times
 row    ^ #                          row    * @ -D -Z
 ```
 
-Ring 2 holds one group per key of ring 1, so **every key of ring 1 sees the same
-three angles**: its stud straight out from it, then the group's two keys a third
-and two thirds of a slot on round the ring. Wherever the thumb is on ring 1, the
-motion to `-T` is the same, and `-S` is the same again.
+Ring 1 is one arc. Its keys meet with no ground between them, in the order the
+layout gives, and the arc leaves **one gap, straight up on each bank**. A slide
+from the hub up through the gap reaches ring 2 and takes no ring 1 key. `Ring 1
+gap` sets the gap's width, 90 degrees as shipped, so the keys share 270. At 0
+the keys spread evenly round the whole circle with ground between them.
 
-The hub is a pie and fills its circle. A ring key is a body rather than a slice
-of its ring: one width for every ring, drawn along the middle of its slot with
-rounded ends, and everything around it is ground. That ground is what a slide
-passes through on its way to a further key, and it is the width, the length and
-the taper of the key that set how much of it there is. All three are settings.
+Ring 2 holds one group per key of ring 1, spread evenly round the whole circle,
+so a group of `-T` and `-S` is never far from wherever the thumb is on ring 1.
+
+The hub is a pie and fills its circle. A ring 2 key is a body rather than a
+slice of its ring: one width for every ring, drawn along the middle of its slot
+with rounded ends, and everything around it is ground. That ground is what a
+slide passes through on its way to a further key, and it is the width, the
+length and the taper of the key that set how much of it there is. All three are
+settings.
 
 Five facts about the shape, the first four measured against 340k strokes of
 `typey-type-full.json`:
@@ -158,11 +163,11 @@ from that text:
 | the walk | steno order over the keys the text names |
 | a float | a key steno order cannot kill, so no walk can spend it: the row's keys, and the ones `The floats` names |
 | a duplicate | the same key in two slots. Nothing special: a key is a set of cells |
-| a spoke | every angle a ring marks out, each slot's middle and each boundary's |
+| a spoke | every angle a ring marks out: each slot's middle and each boundary's on ring 2, each slot's middle and the gap's middle on ring 1 |
 | the hub is tap-only | it is level 0. Landing on a slice takes the slice; entering it from a ring takes nothing |
 | a spent cell | one holding a key already in hand. Entering it flips its ring's own key, which `The spent cells` names |
 | a stud | a slot no walk can spend: a float, or the upgrade, which `>` names. Drawn as a circle a hair outside its band, so a thumb turning along the ring passes under it |
-| the turn | a ring holding a whole number of groups per key of ring 1 takes ring 1's angles; one that does not divide is staggered half a slot instead |
+| the turn | a ring outside ring 1 holding a whole number of groups per key of ring 1 has its first slot straight up; one that does not divide is staggered half a slot instead |
 
 ## The geometry
 
@@ -200,7 +205,9 @@ towards the middle.
 A key is the set of places within half its width of the arc through the middle
 of its slot, which is a capsule, and a circle when the arc has no length. The
 width is divided by the stretch at the key's own angle, so a key in a corner of
-the bank is the same size as one on an axis rather than a stretched one.
+the bank is the same size as one on an axis rather than a stretched one. A ring
+1 key fills its slot of the arc instead and ends flat where the slot does, and
+its width is divided by the stretch at each angle along it.
 
 Radii are fractions of `r = 1`, outward: `0 .34 .67 1` on both banks, and they
 are settings, because the radial budget is the tightest thing here. Model

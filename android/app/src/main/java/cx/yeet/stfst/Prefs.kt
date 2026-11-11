@@ -132,6 +132,7 @@ object Prefs {
         size("keyWidth", { it.keyWidth }, { c, v -> c.keyWidth = v }),
         size("keySpread", { it.keySpread }, { c, v -> c.keySpread = v }),
         size("keyEnds", { it.keyEnds }, { c, v -> c.keyEnds = v }),
+        size("ringGap", { it.ringGap }, { c, v -> c.ringGap = v }),
         size("markRadius", { it.markRadius }, { c, v -> c.markRadius = v }),
         size("labelSp", { it.labelSp }, { c, v -> c.labelSp = v }),
         size("keyboardHeight", { it.keyboardHeight }, { c, v -> c.keyboardHeight = v }),

@@ -52,13 +52,39 @@ class Ring(val order: String, val config: Config) {
     val keys: Keys = Keys.of(order)
 
     /**
-     * One band of a bank: its slots, and whether it is turned half a slot.
+     * One band of a bank: its slots, and where round the bank they sit.
+     *
+     * A band with no gap spreads its slots round the whole circle, turned by
+     * [turn]. A band with a gap leaves that many degrees clear, centred
+     * straight up, and its slots share the rest as one arc.
      */
-    private class Band(val slots: List<Slot>, val rot: Float) {
-        val span: Float = 360f / slots.size
+    private class Band(val slots: List<Slot>, turn: Float, val gap: Float = 0f) {
+        val span: Float = (360f - gap) / slots.size
 
         /** Half a slot, which is the room one key has to itself. */
         val half: Float = span / 2f
+
+        /** The angle of the first slot's middle. */
+        val rot: Float = if (gap > 0f) gap / 2f + half else turn
+
+        /** The slot at this angle, or -1 in the gap. */
+        fun slotAt(deg: Float): Int {
+            if (gap <= 0f) return (wrap(deg - rot) / span).roundToInt() % slots.size
+            val along = wrap(deg) - gap / 2f
+            if (along < 0f || along > 360f - gap) return -1
+            return (along / span).toInt().coerceAtMost(slots.size - 1)
+        }
+
+        /**
+         * Whether this angle is on a seam: an end of the arc, or the line where
+         * two of its slots meet. A band with no gap has none.
+         */
+        fun seam(deg: Float): Boolean {
+            if (gap <= 0f) return false
+            val along = (wrap(deg) - gap / 2f) / span
+            return along > -SEAM / span && along < slots.size + SEAM / span &&
+                abs(along - along.roundToInt()) * span < SEAM
+        }
     }
 
     /**
@@ -69,7 +95,11 @@ class Ring(val order: String, val config: Config) {
      * carried as the arc it covers at the key's own radius, so a key is the
      * same size on every ring. A key of no length is a circle.
      */
-    private class Key(val mid: Polar, val len: Float, val half: Float, val ends: Float) {
+    private class Key(
+        val mid: Polar, val len: Float, val half: Float, val ends: Float,
+        /** A key that fills its slot of an arc, and ends flat where the slot does. */
+        val arc: Boolean = false,
+    ) {
         val cap: Float = if (len <= 0f) half else half * ends
 
         /** Half the width this far along the arc from the key's middle. */
@@ -115,18 +145,23 @@ class Ring(val order: String, val config: Config) {
 
         /**
          * The spokes: every angle the rings mark out, each slot's middle and
-         * each boundary's. A thumb travels between them, so this is the whole of
-         * where it can be between takes.
+         * each boundary's. A band with a gap marks out its slots' middles and
+         * the middle of the gap. A thumb travels between them, so this is the
+         * whole of where it can be between takes.
          */
         val spokes: List<Float> = bands.drop(1)
             .flatMap { band ->
                 band.slots.indices.flatMap {
-                    listOf(band.rot + it * band.span, band.rot + (it + 0.5f) * band.span)
-                }
+                    val mid = band.rot + it * band.span
+                    if (band.gap > 0f) listOf(mid) else listOf(mid, mid + band.half)
+                } + if (band.gap > 0f) listOf(0f) else emptyList()
             }
             .map { Math.round(((it % 360f) + 360f) % 360f * 10f) / 10f }
             .distinct()
             .sorted()
+
+        /** Whether a thumb can stand on this band at this spoke. A seam is no place to stand. */
+        fun open(level: Int, spoke: Int): Boolean = !bands[level].seam(spokes[spoke])
     }
 
     /** The keys steno order cannot kill, whichever bank they sit in. */
@@ -150,12 +185,14 @@ class Ring(val order: String, val config: Config) {
      * more than one key, and otherwise a slot is one character. A dot is
      * ground.
      *
-     * The first ring sets the angles and the rings outside it line up with it:
-     * a band holding a whole number of groups per key of that ring takes its
-     * angles, so every key sees the ring beyond at the same angles. A band that
-     * does not divide is staggered half a slot instead, which is the best a
-     * band out of step can do. The hub is staggered too, so its cuts fall on
-     * the bank's own axes.
+     * The first ring is one arc with a gap of [Config.ringGap] degrees straight
+     * up, and its keys share the rest in the order the text gives. With no gap
+     * its slots spread evenly round the circle, the first one straight up.
+     *
+     * A ring outside it holding a whole number of groups per key of the first
+     * ring puts its first slot straight up too. A band that does not divide is
+     * staggered half a slot instead. The hub is staggered too, so its cuts fall
+     * on the bank's own axes.
      */
     private fun parse(text: String): List<Band> {
         val levels = text.trim().split(WORDS)
@@ -164,7 +201,8 @@ class Ring(val order: String, val config: Config) {
         return levels.mapIndexed { level, words ->
             val span = 360f / words.size
             val aligned = level == 1 || (first > 0 && words.size % first == 0)
-            Band(words.map { slot(it) }, if (aligned) 0f else span / 2f)
+            val gap = if (level == 1) config.ringGap.coerceIn(0f, 180f) else 0f
+            Band(words.map { slot(it) }, if (aligned) 0f else span / 2f, gap)
         }
     }
 
@@ -464,8 +502,11 @@ class Ring(val order: String, val config: Config) {
 
     /**
      * One ring key's body, which is both what is drawn and what a touch is
-     * answered by. Everything around it is ground, and that ground is the room
-     * a slide has to pass between keys.
+     * answered by. Everything around it is ground.
+     *
+     * A key of a band with a gap fills its slot, so it meets its neighbours and
+     * the band's keys are one arc. Any other key leaves ground round itself,
+     * and that ground is the room a slide has to pass between keys.
      */
     private fun key(bank: Bank, cell: Cell): Key {
         val lay = banks.getValue(bank)
@@ -474,16 +515,29 @@ class Ring(val order: String, val config: Config) {
             val wide = config.keyWidth * config.studWidth.coerceIn(0.2f, 1f) * 0.5f
             return Key(mid, 0f, wide / stretch(bank, mid), 1f)
         }
+        val band = lay.bands[cell.level]
+        // The slot's half, as the arc it covers at this key's radius.
+        val room = band.half * RADIAN * mid.r
+        if (band.gap > 0f) {
+            return Key(mid, room, config.keyWidth.coerceIn(0.02f, 1f) * 0.5f, 1f, arc = true)
+        }
         val wide = config.keyWidth.coerceIn(0.02f, 1f) * 0.5f / stretch(bank, mid)
         val ends = config.keyEnds.coerceIn(0f, 1f)
-        // The slot's half, as the arc it covers at this key's radius.
-        val room = lay.bands[cell.level].half * RADIAN * mid.r
         val len = (config.keySpread.coerceIn(0f, 1f) * room - wide * ends).coerceAtLeast(0f)
         return Key(mid, len, wide, ends)
     }
 
-    private fun Key.holds(at: Polar): Boolean =
-        holds(signed(at.deg - mid.deg) * RADIAN * mid.r, at.r - mid.r)
+    private fun Key.holds(bank: Bank, at: Polar): Boolean {
+        val u = signed(at.deg - mid.deg) * RADIAN * mid.r
+        if (arc) return abs(u) <= len + EDGE && abs(at.r - mid.r) <= wide(bank, at.deg)
+        return holds(u, at.r - mid.r)
+    }
+
+    /**
+     * Half an arc key's width at this angle. The width is divided by the
+     * stretch at each angle, so the arc is one width all the way round.
+     */
+    private fun Key.wide(bank: Bank, deg: Float): Float = half / stretch(bank, Polar(mid.r, deg))
 
     /** The middle of a cell, which is the place a tap on it aims at. */
     fun centre(bank: Bank, cell: Cell): Polar {
@@ -503,8 +557,8 @@ class Ring(val order: String, val config: Config) {
     /**
      * The cell this place falls in.
      *
-     * A slot of -1 is the gap between two cells, and a level past the last band
-     * is off the rim. Both are ground, and neither is nothing: a thumb is
+     * A slot of -1 is the ground between two cells or the gap in a ring, and a
+     * level past the last band is off the rim. Both are ground, and neither is nothing: a thumb is
      * somewhere even when it is on no key.
      */
     fun cellAt(bank: Bank, at: Polar): Cell {
@@ -512,12 +566,12 @@ class Ring(val order: String, val config: Config) {
         // The hub is a pie and fills its circle, so a place inside it is always
         // on one of its slices.
         if (region.level == 0 || region.slot < 0) return region
-        return if (key(bank, region).holds(at)) region else Cell(region.level, -1)
+        return if (key(bank, region).holds(bank, at)) region else Cell(region.level, -1)
     }
 
     /**
      * The slot a place falls in whether or not it is on the key: the band, and
-     * the nearest slot round it.
+     * the slot round it, or -1 in a ring's gap.
      *
      * [cellAt] narrows this to the key body, because a cell is what a thumb
      * takes; the slot is what holds it.
@@ -525,11 +579,11 @@ class Ring(val order: String, val config: Config) {
     private fun regionAt(bank: Bank, at: Polar): Cell {
         val lay = banks.getValue(bank)
         if (at.r > 1f) return Cell(lay.bands.size, -1)
-        if (at.r <= lay.radii[1]) return Cell(0, slotAt(lay.bands[0], at.deg))
+        if (at.r <= lay.radii[1]) return Cell(0, lay.bands[0].slotAt(at.deg))
         val level = (1 until lay.bands.size).minByOrNull {
             abs(at.r - (lay.radii[it] + lay.radii[it + 1]) * 0.5f)
         } ?: return Cell(lay.bands.size, -1)
-        return Cell(level, slotAt(lay.bands[level], at.deg))
+        return Cell(level, lay.bands[level].slotAt(at.deg))
     }
 
     /**
@@ -556,9 +610,6 @@ class Ring(val order: String, val config: Config) {
 
     /** The outermost ring: the last band of the walk. */
     fun outer(bank: Bank): Int = banks.getValue(bank).bands.size - 1
-
-    private fun slotAt(band: Band, deg: Float): Int =
-        (wrap(deg - band.rot) / band.span).roundToInt() % band.slots.size
 
     /**
      * The cell under a touch: the row if the touch is in the strip under the
@@ -645,6 +696,14 @@ class Ring(val order: String, val config: Config) {
         fun add(u: Float, v: Float) = out.add(
             point(bank, field, Polar(key.mid.r + v, key.mid.deg + u / (RADIAN * key.mid.r)))
         )
+        if (key.arc) {
+            // Out along one side and back along the other, with flat ends.
+            val side = (0..2 * SIDE).map { -key.len + key.len * it / SIDE }
+            fun wide(u: Float) = key.wide(bank, key.mid.deg + u / (RADIAN * key.mid.r))
+            for (u in side) add(u, wide(u))
+            for (u in side.reversed()) add(u, -wide(u))
+            return out
+        }
         for (i in 0..SIDE) {
             val u = -key.len + 2f * key.len * i / SIDE
             add(u, key.thick(abs(u)))
@@ -668,9 +727,10 @@ class Ring(val order: String, val config: Config) {
 
     /**
      * Where a thumb can stand between takes: the hub, or one band at one of the
-     * spokes, which are the angles the layout marks out. Every slot's middle is
-     * a spoke and so is every gap's, and because the gaps of the rings line up
-     * a spoke is a corridor from the hub to the rim.
+     * spokes, which are the angles the layout marks out. A spoke is a run out
+     * from the hub, and it passes a ring wherever that ring has ground at its
+     * angle. The first ring's keys are one arc, so the spokes in its gap are
+     * the runs from the hub to the rings outside it.
      */
     private data class Node(val level: Int, val spoke: Int)
 
@@ -809,14 +869,19 @@ class Ring(val order: String, val config: Config) {
             )
         }
         if (node.level == 0) {
-            for (spoke in 0 until spokes) {
+            for (spoke in (0 until spokes).filter { lay.open(1, it) }) {
                 val to = placeOf(bank, Node(1, spoke))
                 go(Node(1, spoke), listOf(Polar(0f, to.deg), to), 0, to.r)
             }
             return out
         }
         for (way in listOf(1, -1)) {
-            val next = Node(node.level, (node.spoke + way + spokes) % spokes)
+            // The next spoke round that this band can be stood on.
+            var spoke = (node.spoke + way + spokes) % spokes
+            while (spoke != node.spoke && !lay.open(node.level, spoke)) {
+                spoke = (spoke + way + spokes) % spokes
+            }
+            val next = Node(node.level, spoke)
             val to = placeOf(bank, next)
             val deg = round(from.deg, to.deg, way)
             go(next, listOf(Polar(to.r, deg)), 0, abs(deg - from.deg) * RADIAN * to.r)
@@ -830,6 +895,7 @@ class Ring(val order: String, val config: Config) {
                 go(Node(0, 0), listOf(Polar(0f, from.deg)), 1, from.r)
                 continue
             }
+            if (!lay.open(level, node.spoke)) continue
             val next = Node(level, node.spoke)
             val to = placeOf(bank, next)
             go(next, listOf(Polar(to.r, from.deg)), 0, abs(to.r - from.r))
@@ -846,6 +912,12 @@ class Ring(val order: String, val config: Config) {
 
         /** Radians to a degree, for pricing an arc against a run outward. */
         private const val RADIAN = (Math.PI / 180.0).toFloat()
+
+        /** How near a seam of an arc a spoke may be before no route stands on it, in degrees. */
+        private const val SEAM = 1f
+
+        /** The slack an arc key's ends have, so two neighbours leave no hairline between them. */
+        private const val EDGE = 1e-4f
 
         /** How finely the hub's arcs are drawn, in degrees. */
         private const val STEP = 2f
